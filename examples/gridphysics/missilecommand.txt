@@ -1,0 +1,25 @@
+BasicGame
+  SpriteSet
+    city  > Immovable color=GREEN img=city
+    explosion > Flicker limit=5 img=explosion
+
+    movable >
+      avatar  > ShootAvatar stype=explosion
+      incoming >
+        incoming_slow  > Chaser stype=city color=ORANGE speed=0.1
+        incoming_fast  > Chaser stype=city color=YELLOW speed=0.3
+
+  LevelMapping
+    c > city
+    m > incoming_slow
+    f > incoming_fast
+
+  InteractionSet
+    movable wall  > stepBack
+    incoming city > killSprite
+    city incoming > killSprite scoreChange=-1
+    incoming explosion > killSprite scoreChange=2
+
+  TerminationSet
+    SpriteCounter stype=city   win=False
+    SpriteCounter stype=incoming win=True

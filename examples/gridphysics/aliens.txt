@@ -1,0 +1,32 @@
+BasicGame
+    SpriteSet
+        base    > Immovable    color=WHITE img=base
+        avatar  > FlakAvatar   stype=sam
+        missile > Missile
+            sam  > orientation=UP    color=BLUE singleton=True img=spaceship
+            bomb > orientation=DOWN  color=RED  speed=0.5 img=bomb
+        alien   > Bomber       stype=bomb   prob=0.01  cooldown=3 speed=0.8 img=alien
+        portal  >
+            portalSlow  > SpawnPoint   stype=alien  cooldown=16   total=20 img=portal
+            portalFast  > SpawnPoint   stype=alien  cooldown=12   total=20 img=portal
+    
+    LevelMapping
+        0 > base
+        1 > portalSlow
+        2 > portalFast
+
+    TerminationSet
+        SpriteCounter      stype=avatar               limit=0 win=False
+        MultiSpriteCounter stype1=portal stype2=alien limit=0 win=True
+        
+    InteractionSet
+        avatar  EOS  > stepBack
+        alien   EOS  > turnAround        
+        missile EOS  > killSprite
+        missile base > killSprite
+        base bomb > killSprite
+        base sam > killSprite scoreChange=1
+        base   alien > killSprite
+        avatar alien > killSprite scoreChange=-1
+        avatar bomb  > killSprite scoreChange=-1
+        alien  sam   > killSprite scoreChange=2

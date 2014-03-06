@@ -1,0 +1,16 @@
+BasicGame frame_rate=30
+    SpriteSet
+        hole   > Immovable color=DARKBLUE img=hole
+        avatar > MovingAvatar #cooldown=4
+        box    > Passive img=box
+    LevelMapping
+        0 > hole
+        1 > box
+    InteractionSet
+        avatar wall > stepBack
+        box avatar  > bounceForward
+        box wall    > undoAll
+        box box     > undoAll
+        box hole    > killSprite scoreChange=1
+    TerminationSet
+        SpriteCounter stype=box    limit=0 win=True

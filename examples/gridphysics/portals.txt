@@ -1,0 +1,39 @@
+BasicGame
+    SpriteSet
+        bullet > color=RED img=bullet
+            sitting  > Immovable
+            random   > RandomNPC speed=0.25
+            straight > Missile   speed=0.5 img=missile
+                vertical   > orientation=UP
+                horizontal > orientation=LEFT
+        structure > Immovable
+            goal  > color=GREEN img=goal
+            portalentry > Portal img=portal
+                entry1 > stype=exit1 color=LIGHTBLUE
+                entry2 > stype=exit2 color=BLUE
+            portalexit  > color=BROWN img=door
+                exit1  >
+                exit2  >
+    InteractionSet
+        random wall      > stepBack
+        random structure > stepBack
+        goal   avatar    > killSprite scoreChange=1
+        avatar bullet    > killSprite
+        avatar wall      > stepBack
+        straight wall    > reverseDirection
+        avatar portalentry > teleportToExit
+
+    TerminationSet
+        SpriteCounter stype=goal   limit=0 win=True
+        SpriteCounter stype=avatar limit=0 win=False
+
+    LevelMapping
+        h > horizontal
+        v > vertical
+        x > sitting
+        r > random
+        G > goal
+        i > entry1
+        I > entry2
+        o > exit1
+        O > exit2

@@ -1,0 +1,33 @@
+BasicGame
+  SpriteSet         
+    goal  > Door color=GREEN img=goal
+    key   > Immovable color=ORANGE img=key
+    sword > Flicker limit=5 singleton=True img=sword
+    movable >
+      avatar  > ShootAvatar   stype=sword 
+        nokey   > img=avatar
+        withkey > color=ORANGE img=alien
+      enemy >  img=monster
+        monsterQuick > RandomNPC cooldown=2
+        monsterNormal > RandomNPC cooldown=4
+        monsterSlow > RandomNPC cooldown=8
+
+  LevelMapping
+    G > goal
+    + > key        
+    A > nokey
+    1 > monsterQuick
+    2 > monsterNormal
+    3 > monsterSlow
+
+  InteractionSet
+    movable wall  > stepBack
+    nokey goal    > stepBack
+    goal withkey  > killSprite scoreChange=1
+    enemy sword > killSprite scoreChange=2
+    avatar enemy > killSprite scoreChange=-1
+    key  avatar   > killSprite scoreChange=1
+    nokey key     > transformTo stype=withkey                
+  TerminationSet
+    SpriteCounter stype=goal   win=True
+    SpriteCounter stype=avatar win=False

@@ -1,0 +1,47 @@
+BasicGame
+    SpriteSet
+        forestDense > SpawnPoint stype=log prob=0.4  cooldown=10 img=forest
+        forestSparse > SpawnPoint stype=log prob=0.1  cooldown=5 img=forest
+        structure > Immovable
+            water > color=BLUE img=water
+            goal  > Door color=GREEN img=goal
+        log    > Missile   orientation=LEFT  speed=0.1 color=BROWN img=log
+        safety > Resource  limit=2 color=BROWN img=mana
+        truck  > img=truck
+            rightTruck  > Missile   orientation=RIGHT 
+                fastRtruck  > speed=0.2  color=ORANGE
+                slowRtruck  > speed=0.1  color=RED
+            leftTruck  > Missile   orientation=LEFT
+                fastLtruck  > speed=0.2  color=ORANGE
+                slowLtruck  > speed=0.1  color=RED
+        # defining 'wall' last, makes the walls show on top of all other sprites
+        wall > Immovable color=BLACK img=wall
+        
+    InteractionSet
+        goal avatar  > killSprite scoreChange=1
+        avatar wall  > stepBack
+        avatar log   > changeResource resource=safety value=2
+        avatar log   > pullWithIt   # note how one collision can have multiple effects
+        avatar water > killIfHasLess  resource=safety limit=0
+        avatar water > changeResource resource=safety value=-1
+        avatar truck > killSprite scoreChange=-2
+        log    EOS   > killSprite
+        truck  EOS   > wrapAround
+    
+    TerminationSet
+        SpriteCounter stype=goal   limit=0 win=True
+        SpriteCounter stype=avatar limit=0 win=False
+    
+    LevelMapping
+        G > goal
+        0 > water
+        1 > forestDense water       # note how a single character can spawn multiple sprites
+        2 > forestDense wall log
+        3 > forestSparse water       # note how a single character can spawn multiple sprites
+        4 > forestSparse wall log
+        - > slowRtruck
+        x > fastRtruck
+        _ > slowLtruck
+        X > fastLtruck
+        = > log water
+        B > avatar log
