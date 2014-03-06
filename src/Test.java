@@ -30,8 +30,10 @@ public class Test
         int seed = new Random().nextInt();
 
         //Game and level to play
-        String game = gamesPath + games[0] + ".txt";
-        String level1 = gamesPath + games[0] + "_lvl" + 0 +".txt"; //level names from 0 to 4 (game_lvlN.txt).
+        int gameIdx = 0;
+        int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
+        String game = gamesPath + games[gameIdx] + ".txt";
+        String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
 
         // 1. This starts a game, in a level, played by a human.
         ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);

@@ -694,12 +694,8 @@ public abstract class Game
         //Avatar first.
         this.ki.reset();
         this.ki.setAction(action);
-        try{
+        if(avatar != null)
             avatar.performActiveMovement(this.ki.getMask());
-        }catch (Exception e)
-        {
-            e.printStackTrace();
-        }
 
         //Now, update all others (but avatar).
         int typeIndex = spriteOrder.length-1;
