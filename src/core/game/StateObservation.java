@@ -170,7 +170,8 @@ public class StateObservation
     }
 
     /**
-     * Returns a list with the positions of static objects.
+     * Returns a list with the positions of static objects. As there can be entities of different type,
+     * the positions are returned as an array of lists, each array for each type.
      * @return a list with the positions of static objects.
      */
     public ArrayList<Vector2d>[] getImmovablePositions() {
@@ -179,6 +180,8 @@ public class StateObservation
 
     /**
      * Returns a list with the positions of elements that move, but are NOT NPCs.
+     * As there can be entities of different type, the positions are returned as an array of lists,
+     * each array for each type.
      * @return a list with the positions of elements that move, but are NOT NPCs.
      */
     public ArrayList<Vector2d>[] getMovablePositions() {
@@ -186,7 +189,8 @@ public class StateObservation
     }
 
     /*
-    * Returns a list with the positions of resources.
+    * Returns a list with the positions of resources.  As there can be resources of different type,
+    * the positions are returned as an array of lists, each array for each type.
     * @return a list with the positions of resources.
     */
     public ArrayList<Vector2d>[] getResourcesPositions() {
@@ -194,7 +198,8 @@ public class StateObservation
     }
 
     /*
-    * Returns a list with the positions of portals.
+    * Returns a list with the positions of portals. As there can be portals of different type,
+    * the positions are returned as an array of lists, each array for each type.
     * @return a list with the positions of portals.
     */
     public ArrayList<Vector2d>[] getPortalsPositions() {
