@@ -38,6 +38,7 @@ public class Bomber extends SpawnPoint
         is_static = false;
         is_oriented = true;
         orientation = Types.RIGHT.copy();
+        is_npc = true;
     }
 
 
