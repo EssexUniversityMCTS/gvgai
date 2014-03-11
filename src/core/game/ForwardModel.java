@@ -214,8 +214,8 @@ public class ForwardModel extends Game
             tick(action);
             gameTick++;
             eventHandling();
-            terminationHandling();
             clearAll();
+            terminationHandling();
         }
     }
 

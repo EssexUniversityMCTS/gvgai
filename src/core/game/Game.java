@@ -557,8 +557,8 @@ public abstract class Game
         //Execute a game cycle:
         this.tick();                    //update for all entities.
         this.eventHandling();           //handle events such collisions.
+        this.clearAll();                //clear all additional data, including dead sprites.
         this.terminationHandling();     //check for game termination.
-        this.clearAll();                //clear all additional data.
         this.checkTimeOut();            //Check for end of game by time steps.
     }
 
