@@ -49,7 +49,7 @@ public class WallStop extends Effect
         if(spritesThisCycle.contains(sprite1))
             return;
 
-        sprite1.rect = sprite1.lastrect;
+        sprite1.setRect(sprite1.lastrect);
         double centerXDiff = Math.abs(sprite1.rect.getCenterX() - sprite2.rect.getCenterX());
         double centerYDiff = Math.abs(sprite1.rect.getCenterY() - sprite2.rect.getCenterY());
 

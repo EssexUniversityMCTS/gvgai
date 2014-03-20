@@ -165,13 +165,27 @@ public abstract class VGDLSprite {
     public boolean is_npc;
 
     /**
+     * ID of this sprite.
+     */
+    public int spriteID;
+
+    /**
+     * Bucket
+     */
+    public int bucket;
+
+    /**
+     * Bucket remainder.
+     */
+    public boolean bucketSharp;
+
+    /**
      * Initializes the sprite, giving its position and dimensions.
      * @param position position of the sprite
      * @param size dimensions of the sprite on the screen.
      */
     protected void init(Vector2d position, Dimension size) {
-
-        this.rect = new Rectangle((int) position.x, (int) position.y, size.width, size.height);
+        this.setRect(position, size);
         this.lastrect = rect;
         physicstype_id = Types.PHYSICS_GRID;
         physics = null;
@@ -195,6 +209,20 @@ public abstract class VGDLSprite {
 
         determinePhysics(physicstype_id, size);
         setRandomColor();
+    }
+
+    public void setRect(Vector2d position, Dimension size)
+    {
+        Rectangle r = new Rectangle((int) position.x, (int) position.y, size.width, size.height);
+        setRect(r);
+    }
+
+
+    public void setRect(Rectangle rectangle)
+    {
+        rect = rectangle;
+        bucket = rect.y / rect.height;
+        bucketSharp = (rect.y % rect.height) == 0;
     }
 
     /**
@@ -288,6 +316,8 @@ public abstract class VGDLSprite {
 
         if (cooldown <= lastmove && (Math.abs(orientation.x) + Math.abs(orientation.y) != 0)) {
             rect.translate((int) orientation.x * speed, (int) orientation.y * speed);
+            bucket = rect.y / rect.height;
+            bucketSharp = (rect.y % rect.height) == 0;
             lastmove = 0;
         }
     }
@@ -414,7 +444,6 @@ public abstract class VGDLSprite {
         {
             gphx.fillRect(r.x, r.y, r.width, r.height);
         }
-
     }
 
     /**
@@ -438,6 +467,12 @@ public abstract class VGDLSprite {
         float scale = (float)r.width/w; //assume all sprites are quadratic.
 
         gphx.drawImage(image, r.x, r.y, (int) (w*scale), (int) (h*scale), null);
+
+        //uncomment this to see lots of numbers around
+        //gphx.setColor(Color.BLACK);
+        //if(bucketSharp)   gphx.drawString("["+bucket+"]",r.x, r.y);
+        //else              gphx.drawString("{"+bucket+"}",r.x, r.y);
+
 
     }
 
@@ -564,6 +599,9 @@ public abstract class VGDLSprite {
         toSprite.draw_arrow = this.draw_arrow;
         toSprite.is_npc = this.is_npc;
         toSprite.image = this.image;
+        toSprite.spriteID = this.spriteID;
+        toSprite.bucket = this.bucket;
+        toSprite.bucketSharp = this.bucketSharp;
 
         toSprite.itypes = new ArrayList<Integer>();
         for(Integer it : this.itypes)

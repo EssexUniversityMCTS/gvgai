@@ -1,10 +1,10 @@
 package controllers.sampleRandom;
 
+import core.game.Observation;
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
-import tools.Vector2d;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -44,11 +44,11 @@ public class Agent extends AbstractPlayer {
      */
     public Types.ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
 
-        ArrayList<Vector2d>[] npcPositions = stateObs.getNPCPositions();
-        ArrayList<Vector2d>[] fixedPositions = stateObs.getImmovablePositions();
-        ArrayList<Vector2d>[] movingPositions = stateObs.getMovablePositions();
-        ArrayList<Vector2d>[] resourcesPositions = stateObs.getResourcesPositions();
-        ArrayList<Vector2d>[] portalPositions = stateObs.getPortalsPositions();
+        ArrayList<Observation>[] npcPositions = stateObs.getNPCPositions();
+        ArrayList<Observation>[] fixedPositions = stateObs.getImmovablePositions();
+        ArrayList<Observation>[] movingPositions = stateObs.getMovablePositions();
+        ArrayList<Observation>[] resourcesPositions = stateObs.getResourcesPositions();
+        ArrayList<Observation>[] portalPositions = stateObs.getPortalsPositions();
 
         long remaining = elapsedTimer.remainingTimeMillis();
         Types.ACTIONS action = null;

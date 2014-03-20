@@ -7,6 +7,7 @@ import tools.ElapsedCpuTimer;
 import tools.Vector2d;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -143,15 +144,15 @@ public class StateObservation
         return model.getAvatarOrientation();
     }
 
-
     /**
-     * Returns the resources owned by the avatar. As there can be resources of different
-     * nature, each entry of the array indicates the amount of resource of each type.
-     * If the game is finished, we cannot guarantee that this information is meaningful
-     * at all (the avatar itself could be destroyed). If game finished, this returns null.
-     * @return resources owned by the avatar, or null if game is over.
+     * Returns the resources in the avatar's possession. As there can be resources of different
+     * nature, each entry is a key-value pair where the key is the resource ID, and the value is
+     * the amount of that resource type owned. It should be assumed that there might be other resources
+     * available in the game, but the avatar could have none of them.
+     * If the avatar has no resources, an empty HashMap is returned.
+     * @return resources owned by the avatar.
      */
-    public int[] getAvatarResources() {
+    public HashMap<Integer, Integer> getAvatarResources() {
         return model.getAvatarResources();
     }
 
@@ -159,51 +160,145 @@ public class StateObservation
     //Methods to retrieve the state external to the avatar, in the game...
 
     /**
-     * Returns the positions of the other NPCs in the game. If no NPCs in the game,
-     * it returns null. As there can be NPCs of different type, the positions are returned
-     * as an array of lists, each array for each type.
-     * @return a list with the positions of the other NPCs in the game, null if there are no NPCs.
+     * Returns a list of observations of NPC in the game. As there can be
+     * NPCs of different type, each entry in the array corresponds to a sprite type.
+     * Every ArrayList contains a list of objects of type Observation.
+     * Each Observation holds the position, unique id and
+     * sprite id of that particular sprite.
+     *
+     * @return Observations of NPCs in the game.
      */
-    public ArrayList<Vector2d>[] getNPCPositions()
+    public ArrayList<Observation>[] getNPCPositions()
     {
-        return model.getNPCPositions();
+        return model.getNPCPositions(null);
+    }
+
+
+    /**
+     * Returns a list of observations of NPC in the game. As there can be
+     * NPCs of different type, each entry in the array corresponds to a sprite type.
+     * Every ArrayList contains a list of objects of type Observation, ordered asc. by
+     * distance to the reference passed. Each Observation holds the position, unique id and
+     * sprite id of that particular sprite.
+     *
+     * @param reference   Reference position to use when sorting this array,
+     *                    by ascending distance to this point.
+     * @return Observations of NPCs in the game.
+     */
+    public ArrayList<Observation>[] getNPCPositions(Vector2d reference)
+    {
+        return model.getNPCPositions(reference);
     }
 
     /**
-     * Returns a list with the positions of static objects. As there can be entities of different type,
-     * the positions are returned as an array of lists, each array for each type.
-     * @return a list with the positions of static objects.
+     * Returns a list of observations of immovable sprites in the game. As there can be
+     * immovable sprites of different type, each entry in the array corresponds to a sprite type.
+     * Every ArrayList contains a list of objects of type Observation.
+     * Each Observation holds the position, unique id and
+     * sprite id of that particular sprite.
+     *
+     * @return Observations of immovable sprites in the game.
      */
-    public ArrayList<Vector2d>[] getImmovablePositions() {
-        return model.getImmovablePositions();
+    public ArrayList<Observation>[] getImmovablePositions() {
+        return model.getImmovablePositions(null);
     }
 
     /**
-     * Returns a list with the positions of elements that move, but are NOT NPCs.
-     * As there can be entities of different type, the positions are returned as an array of lists,
-     * each array for each type.
-     * @return a list with the positions of elements that move, but are NOT NPCs.
+     * Returns a list of observations of immovable sprites in the game. As there can be
+     * immovable sprites of different type, each entry in the array corresponds to a sprite type.
+     * Every ArrayList contains a list of objects of type Observation, ordered asc. by
+     * distance to the reference passed. Each Observation holds the position, unique id and
+     * sprite id of that particular sprite.
+     *
+     * @param reference   Reference position to use when sorting this array,
+     *                    by ascending distance to this point.
+     * @return Observations of immovable sprites in the game.
      */
-    public ArrayList<Vector2d>[] getMovablePositions() {
-        return model.getMovablePositions();
+    public ArrayList<Observation>[] getImmovablePositions(Vector2d reference) {
+        return model.getImmovablePositions(reference);
     }
 
-    /*
-    * Returns a list with the positions of resources.  As there can be resources of different type,
-    * the positions are returned as an array of lists, each array for each type.
-    * @return a list with the positions of resources.
-    */
-    public ArrayList<Vector2d>[] getResourcesPositions() {
-        return model.getResourcesPositions();
+    /**
+     * Returns a list of observations of sprites that move, but are NOT NPCs in the game.
+     * As there can be movable sprites of different type, each entry in the array
+     * corresponds to a sprite type. Every ArrayList contains a list of objects of type
+     * Observation. Each Observation holds the position,
+     * unique id and sprite id of that particular sprite.
+     *
+     * @return Observations of movable, not NPCs, sprites in the game.
+     */
+    public ArrayList<Observation>[] getMovablePositions() {
+        return model.getMovablePositions(null);
     }
 
-    /*
-    * Returns a list with the positions of portals. As there can be portals of different type,
-    * the positions are returned as an array of lists, each array for each type.
-    * @return a list with the positions of portals.
-    */
-    public ArrayList<Vector2d>[] getPortalsPositions() {
-        return model.getPortalsPositions();
+    /**
+     * Returns a list of observations of movable (not NPCs) sprites in the game. As there can be
+     * movable (not NPCs) sprites of different type, each entry in the array corresponds to a sprite type.
+     * Every ArrayList contains a list of objects of type Observation, ordered asc. by
+     * distance to the reference passed. Each Observation holds the position, unique id and
+     * sprite id of that particular sprite.
+     *
+     * @param reference   Reference position to use when sorting this array,
+     *                    by ascending distance to this point.
+     * @return Observations of movable (not NPCs) sprites in the game.
+     */
+    public ArrayList<Observation>[] getMovablePositions(Vector2d reference) {
+        return model.getMovablePositions(reference);
+    }
+
+    /**
+     * Returns a list of observations of resources in the game. As there can be
+     * resources of different type, each entry in the array corresponds to a sprite type.
+     * Every ArrayList contains a list of objects of type Observation.
+     * Each Observation holds the position, unique id and
+     * sprite id of that particular sprite.
+     *
+     * @return Observations of resources in the game.
+     */
+    public ArrayList<Observation>[] getResourcesPositions() {
+        return model.getResourcesPositions(null);
+    }
+
+    /**
+     * Returns a list of observations of resources in the game. As there can be
+     * resources of different type, each entry in the array corresponds to a sprite type.
+     * Every ArrayList contains a list of objects of type Observation, ordered asc. by
+     * distance to the reference passed. Each Observation holds the position, unique id and
+     * sprite id of that particular sprite.
+     *
+     * @param reference   Reference position to use when sorting this array,
+     *                    by ascending distance to this point.
+     * @return Observations of resources in the game.
+     */
+    public ArrayList<Observation>[] getResourcesPositions(Vector2d reference) {
+        return model.getResourcesPositions(reference);
+    }
+
+    /**
+     * Returns a list of observations of portals in the game. As there can be
+     * portals of different type, each entry in the array corresponds to a sprite type.
+     * Every ArrayList contains a list of objects of type Observation. Each Observation
+     * holds the position, unique id and sprite id of that particular sprite.
+     *
+     * @return Observations of portals in the game.
+     */
+    public ArrayList<Observation>[] getPortalsPositions() {
+        return model.getPortalsPositions(null);
+    }
+
+    /**
+     * Returns a list of observations of portals in the game. As there can be
+     * portals of different type, each entry in the array corresponds to a sprite type.
+     * Every ArrayList contains a list of objects of type Observation, ordered asc. by
+     * distance to the reference passed. Each Observation holds the position, unique id and
+     * sprite id of that particular sprite.
+     *
+     * @param reference   Reference position to use when sorting this array,
+     *                    by ascending distance to this point.
+     * @return Observations of portals in the game.
+     */
+    public ArrayList<Observation>[] getPortalsPositions(Vector2d reference) {
+        return model.getPortalsPositions(reference);
     }
 
 }

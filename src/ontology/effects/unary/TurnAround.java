@@ -24,7 +24,7 @@ public class TurnAround extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
-        sprite1.rect = sprite1.lastrect;
+        sprite1.setRect(sprite1.lastrect);
         sprite1.lastmove = sprite1.cooldown;
         sprite1.physics.activeMovement(sprite1, Types.DOWN, sprite1.speed);
         sprite1.lastmove = sprite1.cooldown;

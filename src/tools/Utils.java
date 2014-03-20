@@ -74,6 +74,7 @@ public class Utils
         int vertical = 0;
         int horizontal = 0;
 
+
         if (key_pressed[Types.ACTIONS.ACTION_UP.getKey()[0]]) {
             vertical = -1;
         }

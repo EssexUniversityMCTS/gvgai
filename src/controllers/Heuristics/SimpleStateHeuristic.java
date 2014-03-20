@@ -1,10 +1,12 @@
 package controllers.Heuristics;
 
+import core.game.Observation;
 import core.game.StateObservation;
 import ontology.Types;
 import tools.Vector2d;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,9 +24,12 @@ public class SimpleStateHeuristic extends StateHeuristic {
     }
 
     public double evaluateState(StateObservation stateObs) {
-        ArrayList<Vector2d>[] npcPositions = stateObs.getNPCPositions();
         Vector2d avatarPosition = stateObs.getAvatarPosition();
-        ArrayList<Vector2d>[] portalPositions = stateObs.getPortalsPositions();
+        ArrayList<Observation>[] npcPositions = stateObs.getNPCPositions(avatarPosition);
+        ArrayList<Observation>[] portalPositions = stateObs.getPortalsPositions(avatarPosition);
+        HashMap<Integer, Integer> resources = stateObs.getAvatarResources();
+
+        ArrayList<Observation>[] npcPositionsNotSorted = stateObs.getNPCPositions();
 
         double won = 0;
         if (stateObs.getGameWinner() == Types.WINNER.PLAYER_WINS) {
@@ -36,23 +41,19 @@ public class SimpleStateHeuristic extends StateHeuristic {
 
         double minDistance = Double.POSITIVE_INFINITY;
         Vector2d minObject = null;
+        int minNPC_ID = -1;
+        int minNPCType = -1;
 
         int npcCounter = 0;
         if (npcPositions != null) {
-            for (ArrayList<Vector2d> npcs : npcPositions) {
-
-                //System.out.println("----------------------------");
-
-                for (Vector2d npc : npcs) {
-                    //System.out.println(npc);
-                    double cDistance = npc.dist(avatarPosition);
-                    npcCounter++;
-                    if (cDistance < minDistance) {
-                        minDistance = cDistance;
-                        minObject = npc;
-
-                    }
-
+            for (ArrayList<Observation> npcs : npcPositions) {
+                if(npcs.size() > 0)
+                {
+                    minObject   = npcs.get(0).position; //This is the closest guy
+                    minDistance = npcs.get(0).sqDist;   //This is the (square) distance to the closest NPC.
+                    minNPC_ID   = npcs.get(0).obsID;    //This is the id of the closest NPC.
+                    minNPCType  = npcs.get(0).itype;    //This is the type of the closest NPC.
+                    npcCounter += npcs.size();
                 }
             }
         }
@@ -71,27 +72,13 @@ public class SimpleStateHeuristic extends StateHeuristic {
 
         double minDistancePortal = Double.POSITIVE_INFINITY;
         Vector2d minObjectPortal = null;
-
-
-        for (ArrayList<Vector2d> portals : portalPositions) {
-
-            //System.out.println("----------------------------");
-
-            for (Vector2d portal : portals) {
-                //System.out.println(npc);
-                double cDistance = portal.dist(avatarPosition);
-
-                if (cDistance < minDistancePortal) {
-                    minDistancePortal = cDistance;
-                    minObjectPortal = portal;
-
-                }
-
+        for (ArrayList<Observation> portals : portalPositions) {
+            if(portals.size() > 0)
+            {
+                minObjectPortal   =  portals.get(0).position; //This is the closest portal
+                minDistancePortal =  portals.get(0).sqDist;   //This is the (square) distance to the closest portal
             }
         }
-
-
-        //System.out.println(minObject + " " + minDistance);
 
         double score = 0;
         if (minObjectPortal == null) {

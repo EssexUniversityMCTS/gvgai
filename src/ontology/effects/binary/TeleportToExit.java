@@ -13,7 +13,9 @@ import tools.Vector2d;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
+import java.util.TreeMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,10 +37,11 @@ public class TeleportToExit extends Effect
     {
         int destinationId = VGDLFactory.GetInstance().requestFieldValueInt(sprite2, "itype");
 
-        ArrayList<VGDLSprite> sprites = game.getSpriteGroup(destinationId);
+        Collection<VGDLSprite> sprites = game.getSprites(destinationId).values();
         VGDLSprite destination = (VGDLSprite) Utils.choice(sprites.toArray(), game.getRandomGenerator());
 
-        sprite1.rect =  new Rectangle(destination.rect);
+        sprite1.setRect(new Rectangle(destination.rect));
+
         sprite1.lastmove = 0;
     }
 }

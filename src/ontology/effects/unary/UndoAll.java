@@ -6,6 +6,7 @@ import core.game.Game;
 import ontology.effects.Effect;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,15 +30,12 @@ public class UndoAll extends Effect
         for(int i = 0; i < spriteOrderCount; ++i)
         {
             int spriteTypeInt = gameSpriteOrder[i];
-            ArrayList<VGDLSprite> sprites = game.getSpriteGroup(spriteTypeInt);
-            if(sprites != null)
+
+            Iterator<VGDLSprite> spriteIt = game.getSpriteGroup(spriteTypeInt);
+            if(spriteIt != null) while(spriteIt.hasNext())
             {
-                int numSprites = sprites.size();
-                for(int j = 0; j < numSprites; j++)
-                {
-                    VGDLSprite sp = sprites.get(j);
-                    sp.rect = sp.lastrect;
-                }
+                VGDLSprite sp = spriteIt.next();
+                sp.setRect(sp.lastrect);
             }
         }
     }

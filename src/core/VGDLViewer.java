@@ -2,15 +2,10 @@ package core;
 
 import core.game.Game;
 import ontology.Types;
-import ontology.sprites.missile.Missile;
-import ontology.sprites.npc.RandomNPC;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,7 +29,7 @@ public class VGDLViewer extends JComponent
     /**
      * Sprites to draw
      */
-    public ArrayList<VGDLSprite>[] spriteGroups;
+    public SpriteGroup[] spriteGroups;
 
     /**
      * Creates the viewer for the game.
@@ -68,36 +63,37 @@ public class VGDLViewer extends JComponent
         */
 
         int[] gameSpriteOrder = game.getSpriteOrder();
-        if(this.spriteGroups!= null) for(Integer spriteTypeInt : gameSpriteOrder)
+        if(this.spriteGroups != null) for(Integer spriteTypeInt : gameSpriteOrder)
         {
-            ArrayList<VGDLSprite> sprites =  this.spriteGroups[spriteTypeInt];
-
-            if(sprites != null)
+            Iterator<VGDLSprite> spriteIt = spriteGroups[spriteTypeInt].getSpriteIterator();
+            if(spriteIt != null) while(spriteIt.hasNext())
             {
-                try
-                {
-                    int numSprites = sprites.size();
-                    for(int j = 0; j < numSprites; j++)
-                    {
-                        VGDLSprite sp = sprites.get(j);
-                        sp.draw(g, game);
-                    }
-
-                }catch(Exception e)
-                {
-                    //System.out.println("Exception while drawing.");
-                }
+                VGDLSprite sp = spriteIt.next();
+                sp.draw(g, game);
             }
         }
     }
+
 
     /**
      * Paints the sprites.
      * @param spriteGroupsGame sprites to paint.
      */
-    public void paint(ArrayList<VGDLSprite>[] spriteGroupsGame)
+    public void paint(SpriteGroup[] spriteGroupsGame)
     {
-        spriteGroups = spriteGroupsGame;
+        int numSpriteTypes = spriteGroupsGame.length;
+        spriteGroups = new SpriteGroup[numSpriteTypes];
+
+        for(int i = 0; i < numSpriteTypes; ++i)
+        {
+            spriteGroups[i] = new SpriteGroup(i);
+            Collection<VGDLSprite> sprites = spriteGroupsGame[i].getSprites().values();
+
+            spriteGroups[i].addAllSprites(sprites);
+            //for(VGDLSprite sp : sprites)
+            //    spriteGroups[i].addSprite(sp.copy());
+        }
+
         this.repaint();
     }
 

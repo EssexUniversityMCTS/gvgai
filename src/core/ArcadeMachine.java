@@ -323,24 +323,51 @@ public class ArcadeMachine
         int copyStats = 0;
         int advStats = 0;
 
+        StatSummary ss1 = new StatSummary();
+        StatSummary ss2 = new StatSummary();
+
         while(!ect.exceededMaxTime())
         {
             for (Types.ACTIONS action : actions)
             {
-                StateObservation stCopy = stateObs.copy();  copyStats++;
-                stCopy.advance(action); advStats++;
+                StateObservation stCopy = stateObs.copy();
+                ElapsedCpuTimer ectAdv = new ElapsedCpuTimer();
+                stCopy.advance(action);
+
+                if( ect.remainingTimeMillis() < CompetitionParameters.WARMUP_TIME*0.5)
+                {
+                    copyStats++;
+                    advStats++;
+                    ss1.add(ectAdv.elapsedNanos());
+                }
 
                 for (int i = 0; i < playoutLength; i++) {
 
                     int index = new Random().nextInt(actions.size());
                     Types.ACTIONS actionPO = actions.get(index);
-                    stCopy.advance(actionPO); advStats++;
+
+                    ectAdv = new ElapsedCpuTimer();
+                    stCopy.advance(actionPO);
+
+                    if( ect.remainingTimeMillis() < CompetitionParameters.WARMUP_TIME*0.5)
+                    {
+                        advStats++;
+                        ss2.add(ectAdv.elapsedNanos());
+                    }
                 }
             }
-            if(VERBOSE)
-            System.out.println("[WARM-UP] Remaining time: " + ect.remainingTimeMillis() +
-                    " ms, copy() calls: " + copyStats + ", advance() calls: " + advStats);
+            //if(VERBOSE)
+            //System.out.println("[WARM-UP] Remaining time: " + ect.remainingTimeMillis() +
+            //        " ms, copy() calls: " + copyStats + ", advance() calls: " + advStats);
         }
+
+        if(VERBOSE)
+        {
+            System.out.println("[WARM-UP] Finished, copy() calls: " + copyStats + ", advance() calls: " + advStats);
+            System.out.println(ss1);
+            System.out.println(ss2);
+        }
+
 
         //Reset input to delete warm-up effects.
         Game.ki.reset();

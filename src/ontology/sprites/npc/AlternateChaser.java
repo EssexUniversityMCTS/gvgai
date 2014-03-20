@@ -10,6 +10,7 @@ import tools.Vector2d;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -133,9 +134,10 @@ public class AlternateChaser extends RandomNPC
 
         if(targetSpriteId != -1)
         {
-            ArrayList<VGDLSprite> spriteGroup = game.getSpriteGroup(targetSpriteId);
-            for( VGDLSprite s : spriteGroup )
+            Iterator<VGDLSprite> spriteIt = game.getSpriteGroup(targetSpriteId);
+            if(spriteIt != null) while(spriteIt.hasNext())
             {
+                VGDLSprite s = spriteIt.next();
                 double distance = this.physics.distance(rect, s.rect);
                 if(distance < bestDist)
                 {

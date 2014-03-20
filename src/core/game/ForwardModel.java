@@ -1,14 +1,12 @@
 package core.game;
 
+import core.SpriteGroup;
 import core.VGDLSprite;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
 import tools.Vector2d;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -80,27 +78,27 @@ public class ForwardModel extends Game
     {
         int numSpriteTypes = a_gameState.spriteGroups.length;
         kill_list = new ArrayList<VGDLSprite>();
-        lastCollisions = new ArrayList[numSpriteTypes];
+        bucketList = new Bucket[numSpriteTypes];
 
         //Copy of sprites from the game.
-        spriteGroups = new ArrayList[numSpriteTypes];
-        numSprites = new int[numSpriteTypes];
+        spriteGroups = new SpriteGroup[numSpriteTypes];
         num_sprites = 0;
 
         for(int i = 0; i < spriteGroups.length; ++i)
         {
-            lastCollisions[i] = new ArrayList<VGDLSprite>();
-            spriteGroups[i] = new ArrayList<VGDLSprite>();
-            ArrayList<VGDLSprite> sprites = a_gameState.spriteGroups[i];
-            for(VGDLSprite sp : sprites)
+            bucketList[i] = new Bucket();
+            spriteGroups[i] = new SpriteGroup(i);
+
+            Iterator<VGDLSprite> spriteIt = a_gameState.spriteGroups[i].getSpriteIterator();
+            if(spriteIt != null) while(spriteIt.hasNext())
             {
+                VGDLSprite sp = spriteIt.next();
                 VGDLSprite spCopy = sp.copy();
-                spriteGroups[i].add(spCopy);
-                //For each sprite type, record some of its features.
+                spriteGroups[i].addSprite(spCopy.spriteID, spCopy);
                 checkSpriteFeatures(spCopy, i);
             }
-            int nSprites = spriteGroups[i].size();
-            numSprites[i] = nSprites;
+
+            int nSprites = spriteGroups[i].numSprites();
             num_sprites += nSprites;
         }
 
@@ -109,6 +107,7 @@ public class ForwardModel extends Game
         this.isEnded = a_gameState.isEnded;
         this.winner = a_gameState.winner;
         this.score = a_gameState.score;
+        this.nextSpriteID = a_gameState.nextSpriteID;
     }
 
     /**
@@ -312,24 +311,27 @@ public class ForwardModel extends Game
 
 
     /**
-     * Returns the resources owned by the avatar. As there can be resources of different
-     * nature, each entry of the array indicates the amount of resource of each type.
-     * If the game is finished, we cannot guarantee that this information is meaningful
-     * at all (the avatar itself could be destroyed). If game finished, this returns null.
-     * @return resources owned by the avatar, or null if game is over.
+     * Returns the resources in the avatar's possession. As there can be resources of different
+     * nature, each entry is a key-value pair where the key is the resource ID, and the value is
+     * the amount of that resource type owned. It should be assumed that there might be other resources
+     * available in the game, but the avatar could have none of them.
+     * If the avatar has no resources, an empty HashMap is returned.
+     * @return resources owned by the avatar.
      */
-    public int[] getAvatarResources()
+    public HashMap<Integer, Integer> getAvatarResources()
     {
+
         //Determine how many different resources does the avatar have.
-        int numTypesResources = avatar.resources.size();
-        int[] owned = new int[numTypesResources];
-        int idx = 0;
+        HashMap<Integer, Integer> owned = new HashMap<Integer, Integer>();
+
+        if(avatar == null)
+            return owned;
 
         //And for each type, add their amount.
         Set<Map.Entry<Integer, Integer>> entries = avatar.resources.entrySet();
         for(Map.Entry<Integer, Integer> entry : entries)
         {
-            owned[idx++] = entry.getValue();
+            owned.put(entry.getKey(), entry.getValue());
         }
 
         return owned;
@@ -341,10 +343,10 @@ public class ForwardModel extends Game
     /**
      * Gets position from the sprites corresponding to the boolean map passed by parameter.
      * @param groupArray boolean map that indicates which sprite types must be considered.
-     * @return List of arrays with positions. Each entry in the array corresponds to a different
+     * @return List of arrays with Observations. Each entry in the array corresponds to a different
      * sprite type.
      */
-    private ArrayList<Vector2d>[] getPositionsFrom(boolean[] groupArray)
+    private ArrayList<Observation>[] getPositionsFrom(boolean[] groupArray, Vector2d refPosition)
     {
         //First, get how many types we have.
         int numDiffTypes = 0;
@@ -353,74 +355,88 @@ public class ForwardModel extends Game
         if(numDiffTypes == 0)
             return null; //Wait, no types? no sprites of this group then.
 
-        //Create the array of types and make some room for their positions.
-        ArrayList<Vector2d> allPositions[] = new ArrayList[numDiffTypes];
+        ArrayList<Observation>[] observations = new ArrayList[numDiffTypes];
+        Vector2d reference = refPosition;
+        if(refPosition == null)
+            reference = Types.NIL;
+
         int idx = 0;
         for(int i = 0; i < groupArray.length; ++i)
         {
             if(groupArray[i])
             {
-                //Create an arraylist for this type of sprite.
-                ArrayList<Vector2d> positions = new ArrayList<Vector2d>();
-                ArrayList<VGDLSprite> sprites =  spriteGroups[i];
-
-                //Add all sprites to this arraylist.
-                int numSprites = sprites.size();
-                for(int j = 0; j < numSprites; j++)
+                observations[idx] = new ArrayList<Observation>();
+                Iterator<VGDLSprite> spriteIt = spriteGroups[i].getSpriteIterator();
+                if(spriteIt != null) while(spriteIt.hasNext())
                 {
-                    VGDLSprite sp = sprites.get(j);
-                    positions.add(sp.getPosition());
+                    VGDLSprite sp = spriteIt.next();
+                    Observation observation = new Observation(i, sp.spriteID, sp.getPosition(), reference);
+                    observations[idx].add(observation);
                 }
+                if(reference != Types.NIL)
+                    Collections.sort(observations[idx]);
 
-                //add this arraylist to the array of positions.
-                allPositions[idx++] = positions;
+                idx++;
             }
         }
 
-        return allPositions;
+        return observations;
     }
 
     /**
-     * Returns the positions of the other NPCs in the game. If no NPCs in the game,
-     * it returns null. As there can be NPCs of different type, the positions are returned
-     * as an array of lists, each array for each type.
-     * @return a list with the positions of the other NPCs in the game, null if there are no NPCs.
+     * Returns a list of observations of NPC in the game. As there can be
+     * NPCs of different type, each entry in the array corresponds to a sprite type.
+     * Every ArrayList contains a list of objects of type Observation, ordered asc. by
+     * distance to the avatar. Each Observation holds the position, unique id and
+     * sprite id of that particular sprite.
+     *
+     * @param refPosition Reference position to use when sorting this array,
+     *                    by ascending distance to this point.
+     * @return Observations of NPCs in the game.
      */
-    public ArrayList<Vector2d>[] getNPCPositions()
+    public ArrayList<Observation>[] getNPCPositions(Vector2d refPosition)
     {
-        return getPositionsFrom(npcList);
+        return getPositionsFrom(npcList, refPosition);
     }
 
     /**
-     * Returns a list with the positions of static objects.
-     * @return a list with the positions of static objects.
+     * Observations of static objects in the game.
+     * @param refPosition Reference position to use when sorting this array,
+     *                    by ascending distance to this point.
+     * @return a list with the observations of static objects in the game..
      */
-    public ArrayList<Vector2d>[] getImmovablePositions() {
-        return getPositionsFrom(immList);
+    public ArrayList<Observation>[] getImmovablePositions(Vector2d refPosition) {
+        return getPositionsFrom(immList, refPosition);
     }
 
     /**
-     * Returns a list with the positions of elements that move, but are NOT NPCs.
-     * @return a list with the positions of elements that move, but are NOT NPCs.
+     * Returns a list with observations of sprites that move, but are NOT NPCs.
+     * @param refPosition Reference position to use when sorting this array,
+     *                    by ascending distance to this point.
+     * @return a list with observations of sprites that move, but are NOT NPCs.
      */
-    public ArrayList<Vector2d>[] getMovablePositions() {
-        return getPositionsFrom(movList);
+    public ArrayList<Observation>[] getMovablePositions(Vector2d refPosition) {
+        return getPositionsFrom(movList, refPosition);
     }
 
     /*
-    * Returns a list with the positions of resources.
-    * @return a list with the positions of resources.
+    * Returns a list with observations of resources.
+     * @param refPosition Reference position to use when sorting this array,
+     *                    by ascending distance to this point.
+    * @return a list with observations of resources.
     */
-    public ArrayList<Vector2d>[] getResourcesPositions() {
-        return getPositionsFrom(resList);
+    public ArrayList<Observation>[] getResourcesPositions(Vector2d refPosition) {
+        return getPositionsFrom(resList, refPosition);
     }
 
     /*
-     * Returns a list with the positions of portals.
-     * @return a list with the positions of portals.
+     * Returns a list with observations of portals.
+     * @param refPosition Reference position to use when sorting this array,
+     *                    by ascending distance to this point.
+     * @return a list with observations of portals.
      */
-    public ArrayList<Vector2d>[] getPortalsPositions() {
-        return getPositionsFrom(portalList);
+    public ArrayList<Observation>[] getPortalsPositions(Vector2d refPosition) {
+        return getPositionsFrom(portalList, refPosition);
     }
 
 

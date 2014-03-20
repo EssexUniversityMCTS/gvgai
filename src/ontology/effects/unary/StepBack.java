@@ -23,6 +23,6 @@ public class StepBack extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
-        sprite1.rect = sprite1.lastrect;
+        sprite1.setRect(sprite1.lastrect);
     }
 }
