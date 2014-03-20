@@ -58,8 +58,8 @@ public class Observation implements Comparable<Observation>
     public int compareTo(Observation o) {
         double oSqDist = o.position.sqDist(reference);
         if(sqDist < oSqDist)        return -1;
-        //else if(sqDist >= oSqDist)
-            return 1;
+        else if(sqDist > oSqDist)   return 1;
+        return 0;
     }
 
 }

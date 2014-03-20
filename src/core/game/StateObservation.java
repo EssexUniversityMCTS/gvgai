@@ -178,7 +178,7 @@ public class StateObservation
      * Returns a list of observations of NPC in the game. As there can be
      * NPCs of different type, each entry in the array corresponds to a sprite type.
      * Every ArrayList contains a list of objects of type Observation, ordered asc. by
-     * distance to the reference passed. Each Observation holds the position, unique id and
+     * distance to the reference passed. Each Observation holds the position, sprite type id and
      * sprite id of that particular sprite.
      *
      * @param reference   Reference position to use when sorting this array,
@@ -207,7 +207,7 @@ public class StateObservation
      * Returns a list of observations of immovable sprites in the game. As there can be
      * immovable sprites of different type, each entry in the array corresponds to a sprite type.
      * Every ArrayList contains a list of objects of type Observation, ordered asc. by
-     * distance to the reference passed. Each Observation holds the position, unique id and
+     * distance to the reference passed. Each Observation holds the position, sprite type id and
      * sprite id of that particular sprite.
      *
      * @param reference   Reference position to use when sorting this array,
@@ -235,7 +235,7 @@ public class StateObservation
      * Returns a list of observations of movable (not NPCs) sprites in the game. As there can be
      * movable (not NPCs) sprites of different type, each entry in the array corresponds to a sprite type.
      * Every ArrayList contains a list of objects of type Observation, ordered asc. by
-     * distance to the reference passed. Each Observation holds the position, unique id and
+     * distance to the reference passed. Each Observation holds the position, sprite type id and
      * sprite id of that particular sprite.
      *
      * @param reference   Reference position to use when sorting this array,
@@ -263,7 +263,7 @@ public class StateObservation
      * Returns a list of observations of resources in the game. As there can be
      * resources of different type, each entry in the array corresponds to a sprite type.
      * Every ArrayList contains a list of objects of type Observation, ordered asc. by
-     * distance to the reference passed. Each Observation holds the position, unique id and
+     * distance to the reference passed. Each Observation holds the position, sprite type id and
      * sprite id of that particular sprite.
      *
      * @param reference   Reference position to use when sorting this array,
@@ -290,7 +290,7 @@ public class StateObservation
      * Returns a list of observations of portals in the game. As there can be
      * portals of different type, each entry in the array corresponds to a sprite type.
      * Every ArrayList contains a list of objects of type Observation, ordered asc. by
-     * distance to the reference passed. Each Observation holds the position, unique id and
+     * distance to the reference passed. Each Observation holds the position, sprite type id and
      * sprite id of that particular sprite.
      *
      * @param reference   Reference position to use when sorting this array,
