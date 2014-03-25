@@ -9,6 +9,7 @@ import ontology.Types;
 import tools.ElapsedCpuTimer;
 import tools.Utils;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
@@ -37,6 +38,8 @@ public class Agent extends AbstractPlayer {
     private final HashMap<Integer, Types.ACTIONS> action_mapping;
     private final HashMap<Types.ACTIONS, Integer> r_action_mapping;
     protected Random randomGenerator;
+
+    private int numSimulations;
 
     /**
      * Public constructor with state observation and time due.
@@ -141,6 +144,7 @@ public class Agent extends AbstractPlayer {
             }
         }
 
+        numSimulations++;
         double score = Math.pow(GAMMA, depth) * heuristic.evaluateState(stateObs);
         return score;
 
@@ -198,6 +202,7 @@ public class Agent extends AbstractPlayer {
     public Types.ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
 
         this.timer = elapsedTimer;
+        numSimulations = 0;
 
         Types.ACTIONS lastGoodAction = microbial(stateObs, SIMULATION_DEPTH, new WinScoreHeuristic(stateObs), 100);
 
@@ -205,4 +210,9 @@ public class Agent extends AbstractPlayer {
     }
 
 
+    @Override
+    public void draw(Graphics2D g)
+    {
+        //g.drawString("Num Simulations: " + numSimulations, 10, 20);
+    }
 }

@@ -165,4 +165,25 @@ public class StatSummary {
         return s;
 
     }
+
+    public double sum(){
+        return sum;
+    }
+
+    public StatSummary copy()
+    {
+        StatSummary ss = new StatSummary();
+
+        ss.name = this.name;
+        ss.sum = this.sum;
+        ss.sumsq = this.sumsq;
+        ss.min = this.min;
+        ss.max = this.max;
+        ss.mean = this.mean;
+        ss.sd = this.sd;
+        ss.n = this.n;
+        ss.valid = this.valid;
+
+        return ss;
+    }
 }

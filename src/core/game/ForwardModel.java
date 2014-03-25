@@ -6,6 +6,7 @@ import ontology.Types;
 import ontology.avatar.MovingAvatar;
 import tools.Vector2d;
 
+import java.awt.*;
 import java.util.*;
 
 /**
@@ -54,6 +55,11 @@ public class ForwardModel extends Game
      */
     private boolean portalList[];
 
+    /**
+     * Boolean map of sprite types that created by the avatar.
+     * fromAvatar[spriteType]==true : spriteType is created by the avatar.
+     */
+    private boolean fromAvatar[];
 
     /**
      * Constructor for StateObservation. Initializes everything
@@ -79,6 +85,7 @@ public class ForwardModel extends Game
         int numSpriteTypes = a_gameState.spriteGroups.length;
         kill_list = new ArrayList<VGDLSprite>();
         bucketList = new Bucket[numSpriteTypes];
+        historicEvents = new TreeSet<Event>();
 
         //Copy of sprites from the game.
         spriteGroups = new SpriteGroup[numSpriteTypes];
@@ -100,6 +107,13 @@ public class ForwardModel extends Game
 
             int nSprites = spriteGroups[i].numSprites();
             num_sprites += nSprites;
+        }
+
+        //events:
+        Iterator<Event> itEvent = a_gameState.historicEvents.iterator();
+        while(itEvent.hasNext())
+        {
+            historicEvents.add(itEvent.next().copy());
         }
 
         //Game state variables:
@@ -136,6 +150,10 @@ public class ForwardModel extends Game
         //Is it immovable?
         else if(sp.is_static)
             immList[itype] = true;
+
+        //is it created by the avatar?
+        else if(sp.is_from_avatar)
+            fromAvatar[itype] = true;
 
         //Then it is movable.
         else
@@ -187,6 +205,7 @@ public class ForwardModel extends Game
         movList = new boolean[a_gameState.spriteGroups.length];
         resList = new boolean[a_gameState.spriteGroups.length];
         portalList = new boolean[a_gameState.spriteGroups.length];
+        fromAvatar = new boolean[a_gameState.spriteGroups.length];
     }
 
 
@@ -255,6 +274,23 @@ public class ForwardModel extends Game
      */
     public boolean isGameOver() { return getGameWinner() != Types.WINNER.NO_WINNER; }
 
+    /**
+     * Returns the world dimensions, in pixels.
+     * @return the world dimensions, in pixels.
+     */
+    public Dimension getWorldDimension()
+    {
+        return screenSize;
+    }
+
+    /**
+     * Indicates how many pixels form a block in the game.
+     * @return how many pixels form a block in the game.
+     */
+    public int getBlockSize()
+    {
+        return block_size;
+    }
 
     /** avatar-dependent functions **/
 
@@ -384,6 +420,15 @@ public class ForwardModel extends Game
     }
 
     /**
+     * Returns the list of historic events happened in this game so far.
+     * @return list of historic events happened in this game so far.
+     */
+    public TreeSet<Event> getEventsHistory()
+    {
+        return historicEvents;
+    }
+
+    /**
      * Returns a list of observations of NPC in the game. As there can be
      * NPCs of different type, each entry in the array corresponds to a sprite type.
      * Every ArrayList contains a list of objects of type Observation, ordered asc. by
@@ -437,6 +482,17 @@ public class ForwardModel extends Game
      */
     public ArrayList<Observation>[] getPortalsPositions(Vector2d refPosition) {
         return getPositionsFrom(portalList, refPosition);
+    }
+
+    /**
+     * Returns a list of observations of objects created by the avatar's actions.
+     * @param refPosition Reference position to use when sorting this array,
+     *                    by ascending distance to this point.
+     * @return a list with observations of sprites.
+     */
+    public ArrayList<Observation>[] getFromAvatarSpPositions(Vector2d refPosition)
+    {
+        return getPositionsFrom(fromAvatar, refPosition);
     }
 
 

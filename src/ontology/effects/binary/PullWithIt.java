@@ -72,6 +72,6 @@ public class PullWithIt extends Effect
             sprite1.orientation = sprite2.orientation;
         }
 
-        sprite1.lastrect = r;
+        sprite1.lastrect = new Rectangle(r);
     }
 }

@@ -4,6 +4,7 @@ import core.game.StateObservation;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
 
+import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -109,5 +110,17 @@ public abstract class AbstractPlayer {
     {
         return lasAction;
     }
+
+    /**
+     * Gets the player the control to draw something on the screen.
+     * It can be used for debug purposes.
+     * @param g Graphics device to draw to.
+     */
+    public void draw(Graphics2D g)
+    {
+        //Overwrite this method in your controller to draw on the screen.
+        //This method should be left empty in this class.
+    }
+
 
 }

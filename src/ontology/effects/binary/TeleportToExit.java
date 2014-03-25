@@ -40,7 +40,7 @@ public class TeleportToExit extends Effect
         Collection<VGDLSprite> sprites = game.getSprites(destinationId).values();
         VGDLSprite destination = (VGDLSprite) Utils.choice(sprites.toArray(), game.getRandomGenerator());
 
-        sprite1.setRect(new Rectangle(destination.rect));
+        sprite1.setRect(destination.rect);
 
         sprite1.lastmove = 0;
     }

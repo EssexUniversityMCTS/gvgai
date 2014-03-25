@@ -170,6 +170,11 @@ public abstract class VGDLSprite {
     public int spriteID;
 
     /**
+     * Indicates if this sprite was created by the avatar.
+     */
+    public boolean is_from_avatar;
+
+    /**
      * Bucket
      */
     public int bucket;
@@ -186,7 +191,7 @@ public abstract class VGDLSprite {
      */
     protected void init(Vector2d position, Dimension size) {
         this.setRect(position, size);
-        this.lastrect = rect;
+        this.lastrect = new Rectangle(rect);
         physicstype_id = Types.PHYSICS_GRID;
         physics = null;
         image = null;
@@ -198,6 +203,7 @@ public abstract class VGDLSprite {
         is_static = false;
         is_avatar = false;
         is_stochastic = false;
+        is_from_avatar = false;
         mass = 1;
         shrinkfactor = 1.0;
         is_oriented = false;
@@ -220,7 +226,7 @@ public abstract class VGDLSprite {
 
     public void setRect(Rectangle rectangle)
     {
-        rect = rectangle;
+        rect = new Rectangle(rectangle);
         bucket = rect.y / rect.height;
         bucketSharp = (rect.y % rect.height) == 0;
     }
@@ -552,6 +558,15 @@ public abstract class VGDLSprite {
         }
     }
 
+    /**
+     * Used to indicate if this sprite was created by the avatar.
+     * @param fromAvatar true if the avatar created this sprite.
+     */
+    public void setFromAvatar(boolean fromAvatar)
+    {
+        is_from_avatar = fromAvatar;
+    }
+
 
     /**
      * Returns a string representation of this string, including its name and position.
@@ -600,6 +615,7 @@ public abstract class VGDLSprite {
         toSprite.is_npc = this.is_npc;
         toSprite.image = this.image;
         toSprite.spriteID = this.spriteID;
+        toSprite.is_from_avatar = this.is_from_avatar;
         toSprite.bucket = this.bucket;
         toSprite.bucketSharp = this.bucketSharp;
 

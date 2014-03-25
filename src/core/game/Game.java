@@ -77,6 +77,12 @@ public abstract class Game
      */
     protected ArrayList<Integer> definedEOSEffects;
 
+    /**
+     * Historic of events related to the avatar happened during the game.
+     * The entries are ordered asc. by game step.
+     */
+    protected TreeSet<Event> historicEvents;
+
 
     /**
      * For each entry, int identifier of sprite type, a list with all the itypes this
@@ -223,6 +229,7 @@ public abstract class Game
         definedEOSEffects = new ArrayList<Integer>();
         charMapping = new HashMap<Character,ArrayList<String>>();
         terminations = new ArrayList<Termination>();
+        historicEvents = new TreeSet<Event>();
 
         //Game attributes:
         size = new Dimension();
@@ -482,7 +489,7 @@ public abstract class Game
         prepareGame(player, randomSeed);
 
         //Create and initialize the panel for the graphics.
-        VGDLViewer view = new VGDLViewer(this);
+        VGDLViewer view = new VGDLViewer(this, player);
         JEasyFrame frame;
         frame = new JEasyFrame(view, "Java-VGDL");
         frame.addKeyListener(ki);
@@ -563,7 +570,7 @@ public abstract class Game
     /**
      * Handles the result for the game, considering disqualifications. Prints the result
      * (score, time and winner) and returns the score of the game.
-     * @return result of the game
+     * @return
      */
     private double handleResult()
     {
@@ -838,6 +845,9 @@ public abstract class Game
                                         //There is a collision. Apply the effect.
                                         ef.execute(s1,s2,this);
 
+                                        //Add to events history.
+                                        addEvent(s1, s2);
+
                                         if(kill_list.contains(s1))
                                             break; //Stop checking this sprite if it was killed.
                                     }
@@ -856,6 +866,21 @@ public abstract class Game
 
         }//end FOR all effects in game.
 
+    }
+
+    private void addEvent(VGDLSprite s1, VGDLSprite s2)
+    {
+        if(s1.is_avatar)
+            historicEvents.add(new Event(gameTick, false, s1.getType(), s2.getType(), s1.getPosition()));
+
+        else if(s1.is_from_avatar)
+            historicEvents.add(new Event(gameTick, true, s1.getType(), s2.getType(), s1.getPosition()));
+
+        else if(s2.is_avatar)
+            historicEvents.add(new Event(gameTick, false, s2.getType(), s1.getType(), s2.getPosition()));
+
+        else if(s2.is_from_avatar)
+            historicEvents.add(new Event(gameTick, true, s2.getType(), s1.getType(), s2.getPosition()));
     }
 
     /**

@@ -1,14 +1,10 @@
 package core.game;
 
-import core.VGDLSprite;
 import ontology.Types;
-import ontology.avatar.MovingAvatar;
-import tools.ElapsedCpuTimer;
 import tools.Vector2d;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
+import java.awt.*;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -107,7 +103,23 @@ public class StateObservation
         return model.isGameOver();
     }
 
+    /**
+     * Returns the world dimensions, in pixels.
+     * @return the world dimensions, in pixels.
+     */
+    public Dimension getWorldDimension()
+    {
+        return model.getWorldDimension();
+    }
 
+    /**
+     * Indicates how many pixels form a block in the game.
+     * @return how many pixels form a block in the game.
+     */
+    public int getBlockSize()
+    {
+        return model.getBlockSize();
+    }
 
     //Methods to retrieve the state of the avatar, in the game...
 
@@ -158,6 +170,20 @@ public class StateObservation
 
 
     //Methods to retrieve the state external to the avatar, in the game...
+
+    /**
+     * This method retrieves a list of events that happened so far in the game. In this
+     * context, events are collisions of the avatar with other sprites in the game. Additionally,
+     * the list also contains information about collisions of a sprite created by the avatar
+     * (usually by using the action Types.ACTIONS.ACTION_USE) with other sprites. The list
+     * is ordered asc. by game step.
+     *
+     * @return list of events triggered by the avatar or sprites it created.
+     */
+    public TreeSet<Event> getEventsHistory()
+    {
+         return model.getEventsHistory();
+    }
 
     /**
      * Returns a list of observations of NPC in the game. As there can be
@@ -298,6 +324,36 @@ public class StateObservation
      * @return Observations of portals in the game.
      */
     public ArrayList<Observation>[] getPortalsPositions(Vector2d reference) {
+        return model.getPortalsPositions(reference);
+    }
+
+
+
+    /**
+     * Returns a list of observations of sprites created by the avatar (usually, by applying the
+     * action Types.ACTIONS.ACTION_USE). As there can be sprites of different type, each entry in
+     * the array corresponds to a sprite type. Every ArrayList contains a list of objects of
+     * type Observation. Each Observation holds the position, unique id and sprite id
+     * of that particular sprite.
+     *
+     * @return Observations of sprites the avatar created.
+     */
+    public ArrayList<Observation>[] getFromAvatarSpritesPositions() {
+        return model.getPortalsPositions(null);
+    }
+
+    /**
+     * Returns a list of observations of sprites created by the avatar (usually, by applying the
+     * action Types.ACTIONS.ACTION_USE). As there can be sprites of different type, each entry in
+     * the array corresponds to a sprite type. Every ArrayList contains a list of objects of
+     * type Observation, ordered asc. by distance to the reference passed. Each Observation holds
+     * the position, sprite type id and sprite id of that particular sprite.
+     *
+     * @param reference   Reference position to use when sorting this array,
+     *                    by ascending distance to this point.
+     * @return Observations of sprites the avatar created.
+     */
+    public ArrayList<Observation>[] getFromAvatarSpritesPositions(Vector2d reference) {
         return model.getPortalsPositions(reference);
     }
 

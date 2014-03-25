@@ -72,10 +72,12 @@ public class ShootAvatar extends OrientedAvatar
         VGDLSprite newOne = game.addSprite(itype, new Vector2d(this.rect.x + dir.x*this.lastrect.width,
                                            this.rect.y + dir.y*this.lastrect.height));
 
-        if(newOne != null && newOne.is_oriented)
+        if(newOne != null)
         {
-            newOne.orientation = dir;
+            if(newOne.is_oriented)
+                newOne.orientation = dir;
             reduceAmmo();
+            newOne.setFromAvatar(true);
         }
     }
 

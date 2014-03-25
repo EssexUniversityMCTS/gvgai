@@ -1,6 +1,7 @@
 package core;
 
 import core.game.Game;
+import core.player.AbstractPlayer;
 import ontology.Types;
 
 import javax.swing.*;
@@ -32,13 +33,20 @@ public class VGDLViewer extends JComponent
     public SpriteGroup[] spriteGroups;
 
     /**
+     * Player of the game
+     */
+    public AbstractPlayer player;
+
+
+    /**
      * Creates the viewer for the game.
      * @param game game to be displayed
      */
-    public VGDLViewer(Game game)
+    public VGDLViewer(Game game, AbstractPlayer player)
     {
         this.game = game;
         this.size = game.getScreenSize();
+        this.player = player;
     }
 
     /**
@@ -65,13 +73,20 @@ public class VGDLViewer extends JComponent
         int[] gameSpriteOrder = game.getSpriteOrder();
         if(this.spriteGroups != null) for(Integer spriteTypeInt : gameSpriteOrder)
         {
-            Iterator<VGDLSprite> spriteIt = spriteGroups[spriteTypeInt].getSpriteIterator();
-            if(spriteIt != null) while(spriteIt.hasNext())
+            SpriteGroup spGroup = spriteGroups[spriteTypeInt];
+            if(spGroup != null)
             {
-                VGDLSprite sp = spriteIt.next();
-                sp.draw(g, game);
+                Iterator<VGDLSprite> spriteIt = spGroup.getSpriteIterator();
+                if(spriteIt != null) while(spriteIt.hasNext())
+                {
+                    VGDLSprite sp = spriteIt.next();
+                    sp.draw(g, game);
+                }
             }
         }
+
+        g.setColor(Types.BLACK);
+        player.draw(g);
     }
 
 

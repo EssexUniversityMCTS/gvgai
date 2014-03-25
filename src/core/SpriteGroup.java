@@ -87,7 +87,7 @@ public class SpriteGroup
 
     /**
      * Gets the type of this SpriteGroup.
-     * @return type of this spote group
+     * @return
      */
     public int getItype()
     {

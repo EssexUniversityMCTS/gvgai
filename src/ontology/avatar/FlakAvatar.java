@@ -79,8 +79,10 @@ public class FlakAvatar extends HorizontalAvatar
         if(!hasMoved && Utils.processUseKey(game.ki.getMask()) && hasAmmo())
         {
             VGDLSprite added = game.addSprite(itype, new Vector2d(this.rect.x, this.rect.y));
-            if(added != null) //singleton sprites could not add anything here.
+            if(added != null){ //singleton sprites could not add anything here.
                 reduceAmmo();
+                added.setFromAvatar(true);
+            }
         }
     }
 
