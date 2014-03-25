@@ -570,7 +570,7 @@ public abstract class Game
     /**
      * Handles the result for the game, considering disqualifications. Prints the result
      * (score, time and winner) and returns the score of the game.
-     * @return
+     * @return the result of the game.
      */
     private double handleResult()
     {

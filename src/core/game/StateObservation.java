@@ -113,8 +113,8 @@ public class StateObservation
     }
 
     /**
-     * Indicates how many pixels form a block in the game.
-     * @return how many pixels form a block in the game.
+     * Indicates the width in pixels of a sprite in the game.
+     * @return the width pixels of a sprite in the game.
      */
     public int getBlockSize()
     {
