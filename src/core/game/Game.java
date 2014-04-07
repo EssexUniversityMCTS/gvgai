@@ -565,6 +565,8 @@ public abstract class Game
         this.clearAll();                //clear all additional data, including dead sprites.
         this.terminationHandling();     //check for game termination.
         this.checkTimeOut();            //Check for end of game by time steps.
+
+        //fwdModel.printObservationGrid(); //uncomment this to show the observation grid.
     }
 
     /**
@@ -648,7 +650,6 @@ public abstract class Game
         }
     }
 
-
     /**
      * Holds the game for the specified duration milliseconds
      * @param duration time to wait.
@@ -685,38 +686,7 @@ public abstract class Game
         }
     }
 
-    /**
-     * Performs one tick for the game: calling update(this) in all sprites. It follows the
-     * opposite order of the drawing order (spriteOrder[]). It uses the action received as the
-     * action of the avatar.
-     * @param action Action to be performed by the avatar for this game tick.
-     */
-    protected void tick(Types.ACTIONS action)
-    {
-        //Avatar first.
-        this.ki.reset();
-        this.ki.setAction(action);
-        if(avatar != null)
-            avatar.performActiveMovement(this.ki.getMask());
-
-        //Now, update all others (but avatar).
-        int typeIndex = spriteOrder.length-1;
-        for(int i = typeIndex; i >=0; --i)   //For update, opposite order than drawing.
-        {
-            int spriteTypeInt = spriteOrder[i];
-
-            Iterator<VGDLSprite> spriteIt = spriteGroups[spriteTypeInt].getSpriteIterator();
-            if(spriteIt != null) while(spriteIt.hasNext())
-            {
-                VGDLSprite sp = spriteIt.next();
-                if(sp != avatar)
-                    sp.update(this);
-            }
-        }
-
-    }
-
-    /**
+        /**
      * Handles collisions and triggers events.
      */
     protected void eventHandling()
@@ -925,6 +895,8 @@ public abstract class Game
         {
             int spriteType = sprite.getType();
             this.spriteGroups[spriteType].removeSprite(sprite.spriteID);
+            if(fwdModel != null)
+                fwdModel.removeSpriteObservation(sprite);
 
             if(sprite.is_avatar && sprite == this.avatar)
                 this.avatar = null;

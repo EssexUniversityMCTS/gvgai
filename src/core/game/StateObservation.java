@@ -113,8 +113,8 @@ public class StateObservation
     }
 
     /**
-     * Indicates the width in pixels of a sprite in the game.
-     * @return the width pixels of a sprite in the game.
+     * Indicates how many pixels form a block in the game.
+     * @return how many pixels form a block in the game.
      */
     public int getBlockSize()
     {
@@ -170,6 +170,17 @@ public class StateObservation
 
 
     //Methods to retrieve the state external to the avatar, in the game...
+
+    /**
+     * Returns a grid with all observations in the level, accessible by the x,y coordinates
+     * of the grid. Each grid cell has a width and height of getBlockSize() pixels. Each cell
+     * contains a list with all observations in that position.
+     * @return the grid of observations
+     */
+    public ArrayList<Observation>[][] getObservationGrid()
+    {
+        return model.getObservationGrid();
+    }
 
     /**
      * This method retrieves a list of events that happened so far in the game. In this

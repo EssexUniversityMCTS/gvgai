@@ -1,5 +1,7 @@
 package core.game;
 
+import core.VGDLSprite;
+import ontology.Types;
 import tools.Vector2d;
 
 /**
@@ -7,6 +9,12 @@ import tools.Vector2d;
  */
 public class Observation implements Comparable<Observation>
 {
+
+    /**
+     * Category of this observation (static, resource, npc, etc.).
+     */
+    public int category;
+
     /**
      * Type of sprite of this observation.
      */
@@ -39,14 +47,16 @@ public class Observation implements Comparable<Observation>
      * @param id ID of the observation.
      * @param pos position of the sprite.
      * @param posReference reference to compare this position to others.
+     * @param category category of this observation (NPC, static, resource, etc.)
      */
-    public Observation(int itype, int id, Vector2d pos, Vector2d posReference)
+    public Observation(int itype, int id, Vector2d pos, Vector2d posReference, int category)
     {
         this.itype = itype;
         this.obsID = id;
         this.position = pos;
         this.reference = posReference;
         sqDist = pos.sqDist(posReference);
+        this.category = category;
     }
 
     /**
@@ -61,5 +71,4 @@ public class Observation implements Comparable<Observation>
         else if(sqDist > oSqDist)   return 1;
         return 0;
     }
-
 }

@@ -62,6 +62,16 @@ public class ForwardModel extends Game
     private boolean fromAvatar[];
 
     /**
+     * List of (persistent) observations for all sprites, indexed by sprite ID.
+     */
+    private HashMap<Integer, Observation> observations;
+
+    /**
+     * Observation grid
+     */
+    private ArrayList<Observation>[][] observationGrid;
+
+    /**
      * Constructor for StateObservation. Initializes everything
      * @param a_gameState
      */
@@ -103,6 +113,7 @@ public class ForwardModel extends Game
                 VGDLSprite spCopy = sp.copy();
                 spriteGroups[i].addSprite(spCopy.spriteID, spCopy);
                 checkSpriteFeatures(spCopy, i);
+                updateObservation(spCopy);
             }
 
             int nSprites = spriteGroups[i].numSprites();
@@ -125,40 +136,229 @@ public class ForwardModel extends Game
     }
 
     /**
+     * Updates the persistent observation of this sprite, or creates it if the
+     * observation is new.
+     * @param sprite sprite to take the observation from.
+     */
+    private void updateObservation(VGDLSprite sprite)
+    {
+        int spriteId = sprite.spriteID;
+        boolean moved = false, newObs = false;
+        Observation obs;
+        Vector2d oldPosition = null;
+        if(observations.containsKey(spriteId))
+        {
+            obs = observations.get(spriteId);
+            oldPosition = obs.position;
+            moved = ! obs.position.equals(sprite.getPosition());
+            obs.position = sprite.getPosition();
+        }else
+        {
+            obs = createSpriteObservation(sprite);
+            newObs = true;
+        }
+
+        updateGrid(obs, newObs, moved, oldPosition);
+    }
+
+    /**
+     * Removes an sprite observation.
+     * @param sprite sprite to remove.
+     */
+    public final void removeSpriteObservation(VGDLSprite sprite)
+    {
+        int spriteId = sprite.spriteID;
+
+        if(observations.containsKey(spriteId))
+        {
+            Observation obs = observations.get(spriteId);
+            removeObservationFromGrid(obs, obs.position);
+            observations.remove(spriteId);
+        }
+    }
+
+    /**
+     * Updates a grid observation.
+     * @param obs observation to update
+     * @param newObs if this is a new observation.
+     * @param moved if it is a past observation, and it moved.
+     * @param oldPosition the old position of this observation if it moved.
+     */
+    private void updateGrid(Observation obs, boolean newObs, boolean moved, Vector2d oldPosition)
+    {
+        //Insert observation in the grid position.
+        if(newObs || moved)
+        {
+            //First, remove observation if the sprite moved.
+            if(moved)
+                removeObservationFromGrid(obs, oldPosition);
+
+            addObservationToGrid(obs, obs.position);
+        }
+    }
+
+    /**
+     * Removes an observation to the grid, from the position specified.
+     * @param obs observation to delete.
+     * @param position where the sprite was located last time seen.
+     */
+    private void removeObservationFromGrid(Observation obs, Vector2d position)
+    {
+        int x = (int) position.x / block_size;
+        boolean validX = x >= 0 && x < observationGrid.length;
+        boolean xPlus = (position.x % block_size) > 0 && (x+1 < observationGrid.length);
+        int y = (int) position.y / block_size;
+        boolean validY = y >= 0 && y < observationGrid[0].length;
+        boolean yPlus = (position.y % block_size) > 0 && (y+1 < observationGrid[0].length);
+
+        if(validX && validY)
+        {
+            observationGrid[x][y].remove(obs);
+            if(xPlus)
+                observationGrid[x+1][y].remove(obs);
+            if(yPlus)
+                observationGrid[x][y+1].remove(obs);
+            if(xPlus && yPlus)
+                observationGrid[x+1][y+1].remove(obs);
+        }
+    }
+
+    /**
+     * Adds an observation to the grid, in the position specified.
+     * @param obs observation to add.
+     * @param position where to be added.
+     */
+    private void addObservationToGrid(Observation obs, Vector2d position)
+    {
+        int x = (int) position.x / block_size;
+        boolean validX = x >= 0 && x < observationGrid.length;
+        boolean xPlus = (position.x % block_size) > 0 && (x+1 < observationGrid.length);
+        int y = (int) position.y / block_size;
+        boolean validY = y >= 0 && y < observationGrid[0].length;
+        boolean yPlus = (position.y % block_size) > 0 && (y+1 < observationGrid[0].length);
+
+        if(validX && validY)
+        {
+            observationGrid[x][y].add(obs);
+            if(xPlus)
+                observationGrid[x+1][y].add(obs);
+            if(yPlus)
+                observationGrid[x][y+1].add(obs);
+            if(xPlus && yPlus)
+                observationGrid[x+1][y+1].add(obs);
+        }
+    }
+
+    /**
+     * Prints the observation grid. For debug only.
+     */
+    public void printObservationGrid()
+    {
+        System.out.println("#########################");
+        for(int j = 0; j < observationGrid[0].length; ++j)
+        {
+            for(int i = 0; i < observationGrid.length; ++i)
+            {
+                int n = observationGrid[i][j].size();
+                if(n > 0)
+                    System.out.print(n);
+                else
+                    System.out.print(' ');
+            }
+            System.out.println();
+        }
+    }
+
+
+    /**
+     * Creates the sprite observation of a given sprite.
+     * @param sprite sprite to create the observation from.
+     * @return the observation object.
+     */
+    private Observation createSpriteObservation(VGDLSprite sprite)
+    {
+        int category = getSpriteCategory(sprite);
+        Observation obs = new Observation(sprite.getType(), sprite.spriteID, sprite.getPosition(), Types.NIL, category);
+        observations.put(sprite.spriteID, obs);
+        return obs;
+    }
+
+    /**
+     * Gets the sprite observation of a given sprite. Creates it if id didn't exist.
+     * @param sprite sprite to get/create the observation from.
+     * @return the observation object.
+     */
+    private Observation getSpriteObservation(VGDLSprite sprite)
+    {
+        int spriteId = sprite.spriteID;
+        if(observations.containsKey(spriteId))
+        {
+            return observations.get(spriteId);
+        }else{
+            throw new RuntimeException("This shouldn't happen. If it does, please call Emergency Services.");
+            //return createSpriteObservation(sprite);
+        }
+    }
+
+    /**
      * Checks some features of the sprite, to categorize it.
      * @param sp Sprite to categorize.
      * @param itype itype of the sprite.
      */
     private void checkSpriteFeatures(VGDLSprite sp, int itype)
     {
-        //Check for the avatar.
+        int category = getSpriteCategory(sp);
+        switch (category)
+        {
+            case Types.TYPE_AVATAR:
+                this.avatar = (MovingAvatar) sp;
+                break;
+            case Types.TYPE_RESOURCE:
+                resList[itype] = true;
+                break;
+            case Types.TYPE_PORTAL:
+                portalList[itype] = true;
+                break;
+            case Types.TYPE_NPC:
+                npcList[itype] = true;
+                break;
+            case Types.TYPE_STATIC:
+                immList[itype] = true;
+                break;
+            case Types.TYPE_FROMAVATAR:
+                fromAvatar[itype] = true;
+                break;
+            case Types.TYPE_MOVABLE:
+                movList[itype] = true;
+        }
+    }
+
+    private int getSpriteCategory(VGDLSprite sp)
+    {
         if(sp.is_avatar)
-            this.avatar = (MovingAvatar) sp;
+            return Types.TYPE_AVATAR;
 
         //Is it a resource?
-        else if(sp.is_resource)
-            resList[itype] = true;
+        if(sp.is_resource)
+            return Types.TYPE_RESOURCE;
 
         //Is it a portal?
-        else if(sp.portal)
-            portalList[itype] = true;
+        if(sp.portal)
+            return Types.TYPE_PORTAL;
 
         //Is it npc?
-        else if(sp.is_npc)
-            npcList[itype] = true;
+        if(sp.is_npc)
+            return Types.TYPE_NPC;
 
         //Is it immovable?
-        else if(sp.is_static)
-            immList[itype] = true;
+         if(sp.is_static)
+            return Types.TYPE_STATIC;
 
         //is it created by the avatar?
-        else if(sp.is_from_avatar)
-            fromAvatar[itype] = true;
+        if(sp.is_from_avatar)
+            return Types.TYPE_FROMAVATAR;
 
-        //Then it is movable.
-        else
-            movList[itype] = true;
-
+        return Types.TYPE_MOVABLE;
     }
 
     /**
@@ -206,6 +406,12 @@ public class ForwardModel extends Game
         resList = new boolean[a_gameState.spriteGroups.length];
         portalList = new boolean[a_gameState.spriteGroups.length];
         fromAvatar = new boolean[a_gameState.spriteGroups.length];
+
+        observations = new HashMap<Integer, Observation>();
+        observationGrid = new ArrayList[screenSize.width/block_size][screenSize.height/block_size];
+        for(int i = 0; i < observationGrid.length; ++i)
+            for(int j = 0; j < observationGrid[i].length; ++j)
+                observationGrid[i][j] = new ArrayList<Observation>();
     }
 
 
@@ -220,6 +426,39 @@ public class ForwardModel extends Game
     }
 
     /************** Useful functions for the agent *******************/
+
+    /**
+     * Performs one tick for the game: calling update(this) in all sprites. It follows the
+     * opposite order of the drawing order (spriteOrder[]). It uses the action received as the
+     * action of the avatar.
+     * @param action Action to be performed by the avatar for this game tick.
+     */
+    protected void tick(Types.ACTIONS action)
+    {
+        //Avatar first.
+        this.ki.reset();
+        this.ki.setAction(action);
+        if(avatar != null)
+            avatar.performActiveMovement(this.ki.getMask());
+
+        //Now, update all others (but avatar).
+        int typeIndex = spriteOrder.length-1;
+        for(int i = typeIndex; i >=0; --i)   //For update, opposite order than drawing.
+        {
+            int spriteTypeInt = spriteOrder[i];
+
+            Iterator<VGDLSprite> spriteIt = spriteGroups[spriteTypeInt].getSpriteIterator();
+            if(spriteIt != null) while(spriteIt.hasNext())
+            {
+                VGDLSprite sp = spriteIt.next();
+                if(sp != avatar)
+                    sp.update(this);
+                updateObservation(sp);
+            }
+        }
+
+    }
+
 
     /**
      * Advances the forward model using the acction supplied.
@@ -406,7 +645,9 @@ public class ForwardModel extends Game
                 if(spriteIt != null) while(spriteIt.hasNext())
                 {
                     VGDLSprite sp = spriteIt.next();
-                    Observation observation = new Observation(i, sp.spriteID, sp.getPosition(), reference);
+                    //Observation observation = new Observation(i, sp.spriteID, sp.getPosition(), reference);
+                    Observation observation = getSpriteObservation(sp);
+                    observation.reference = reference;
                     observations[idx].add(observation);
                 }
                 if(reference != Types.NIL)
@@ -417,6 +658,15 @@ public class ForwardModel extends Game
         }
 
         return observations;
+    }
+
+    /**
+     * Returns a grid with all observations in the level.
+     * @return the grid of observations
+     */
+    public ArrayList<Observation>[][] getObservationGrid()
+    {
+        return observationGrid;
     }
 
     /**

@@ -112,4 +112,12 @@ public class Types {
     public static final Color DARKBLUE = new Color(20, 20, 100);
 
     public static final Integer[] COLOR_DISC = new Integer[]{20, 80, 140, 200};
+
+    public static final int TYPE_AVATAR = 0;
+    public static final int TYPE_RESOURCE = 1;
+    public static final int TYPE_PORTAL = 2;
+    public static final int TYPE_NPC = 3;
+    public static final int TYPE_STATIC = 4;
+    public static final int TYPE_FROMAVATAR = 5;
+    public static final int TYPE_MOVABLE = 6;
 }
