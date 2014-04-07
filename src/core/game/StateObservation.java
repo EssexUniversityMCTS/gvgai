@@ -174,7 +174,8 @@ public class StateObservation
     /**
      * Returns a grid with all observations in the level, accessible by the x,y coordinates
      * of the grid. Each grid cell has a width and height of getBlockSize() pixels. Each cell
-     * contains a list with all observations in that position.
+     * contains a list with all observations in that position. Note that the same observation
+     * may occupy more than one grid cell.
      * @return the grid of observations
      */
     public ArrayList<Observation>[][] getObservationGrid()
