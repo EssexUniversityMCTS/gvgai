@@ -1,5 +1,6 @@
 package controllers.sampleMCTS;
 
+import core.game.Observation;
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
 import ontology.Types;
@@ -56,6 +57,9 @@ public class Agent extends AbstractPlayer {
      * @return An action for the current state
      */
     public Types.ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
+
+        ArrayList<Observation> obs[] = stateObs.getFromAvatarSpritesPositions();
+        ArrayList<Observation> grid[][] = stateObs.getObservationGrid();
 
         //Set the state observation object as the new root of the tree.
         mctsPlayer.init(stateObs);
