@@ -453,7 +453,6 @@ public class ForwardModel extends Game
                 VGDLSprite sp = spriteIt.next();
                 if(sp != avatar)
                     sp.update(this);
-                updateObservation(sp);
             }
         }
 
@@ -473,6 +472,27 @@ public class ForwardModel extends Game
             eventHandling();
             clearAll();
             terminationHandling();
+            updateAllObservations();
+        }
+    }
+
+    /**
+     * Updates all observations of this class.
+     */
+    final private void updateAllObservations()
+    {
+        //Now, update all others (but avatar).
+        int typeIndex = spriteOrder.length-1;
+        for(int i = typeIndex; i >=0; --i)   //For update, opposite order than drawing.
+        {
+            int spriteTypeInt = spriteOrder[i];
+
+            Iterator<VGDLSprite> spriteIt = spriteGroups[spriteTypeInt].getSpriteIterator();
+            if(spriteIt != null) while(spriteIt.hasNext())
+            {
+                VGDLSprite sp = spriteIt.next();
+                updateObservation(sp);
+            }
         }
     }
 
@@ -645,8 +665,9 @@ public class ForwardModel extends Game
                 if(spriteIt != null) while(spriteIt.hasNext())
                 {
                     VGDLSprite sp = spriteIt.next();
-                    //Observation observation = new Observation(i, sp.spriteID, sp.getPosition(), reference);
                     Observation observation = getSpriteObservation(sp);
+                    observation.update(i, sp.spriteID, sp.getPosition(), reference, getSpriteCategory(sp));
+
                     observation.reference = reference;
                     observations[idx].add(observation);
                 }
