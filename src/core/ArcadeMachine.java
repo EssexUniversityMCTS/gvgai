@@ -7,7 +7,6 @@ import core.player.AbstractPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
 import tools.StatSummary;
-import tools.Utils;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -52,6 +51,9 @@ public class ArcadeMachine
                                     String agentName, String actionFile, int randomSeed)
     {
         VGDLFactory.GetInstance().init(); //This always first thing to do.
+        VGDLRegistry.GetInstance().init();
+
+        System.out.println(" ** Playing game " + game_file + ", level " + level_file + " **");
 
         // First, we create the game to be played..
         Game toPlay = new VGDLParser().parseGame(game_file);
@@ -87,7 +89,8 @@ public class ArcadeMachine
     public static double replayGame(String game_file, String level_file, boolean visuals, String actionFile)
     {
         String agentName = "controllers.replayer.Agent";
-        VGDLFactory.GetInstance().init(); //This always first thing to do.
+        VGDLFactory.GetInstance().init();  //This always first thing to do.
+        VGDLRegistry.GetInstance().init();
 
         // First, we create the game to be played..
         Game toPlay = new VGDLParser().parseGame(game_file);
@@ -156,6 +159,7 @@ public class ArcadeMachine
                                 String agentName, String[] actionFiles, int randomSeed)
     {
         VGDLFactory.GetInstance().init(); //This always first thing to do.
+        VGDLRegistry.GetInstance().init();
 
         boolean recordActions = false;
         if(actionFiles != null)
@@ -163,19 +167,20 @@ public class ArcadeMachine
             recordActions = true;
             assert actionFiles.length >= level_files.length*level_times :
                     "runGames (actionFiles.length<level_files.length*level_times): " +
-                    "you must supply an action file for each game instance to be played, or null.";
+                            "you must supply an action file for each game instance to be played, or null.";
         }
 
         StatSummary scores = new StatSummary();
 
         Game toPlay = new VGDLParser().parseGame(game_file);
-
         int levelIdx = 0;
         for(String level_file : level_files)
         {
 
             for(int i = 0; i < level_times; ++i)
             {
+                System.out.println(" ** Playing game " + game_file + ", level " + level_file + " ("+(i+1)+"/"+level_times+") **");
+
                 //build the level in the game.
                 toPlay.buildLevel(level_file);
 
@@ -200,7 +205,9 @@ public class ArcadeMachine
             levelIdx++;
         }
 
+        System.out.println(" *** Results in game " + game_file + " *** ");
         System.out.println(scores);
+        System.out.println(" *********");
     }
 
     /**
@@ -271,7 +278,7 @@ public class ArcadeMachine
                 System.out.println("Controller initialization time: " + timeTaken + " ms.");
             }
 
-        //This code can throw many exceptions (no time related):
+            //This code can throw many exceptions (no time related):
 
         }catch(NoSuchMethodException e)
         {

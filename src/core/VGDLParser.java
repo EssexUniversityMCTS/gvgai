@@ -44,6 +44,12 @@ public class VGDLParser
      */
     private HashMap<Integer, SpriteContent> constructors;
 
+
+    /**
+     * Set to true to print out debug information about parsing.
+     */
+    private static boolean VERBOSE_PARSER = false;
+
     /**
      * Default constructor.
      */
@@ -223,8 +229,9 @@ public class VGDLParser
             //If this is a leaf node, set the information on Game to create objects of this type.
             if(el.children.size() == 0)
             {
-                System.out.println("Defining: " + identifier + " " + sc.referenceClass
-                        + " " + el.content.toString());
+                if(VERBOSE_PARSER)
+                    System.out.println("Defining: " + identifier + " " + sc.referenceClass
+                            + " " + el.content.toString());
 
                 if(spriteOrderTmp.contains(intId))
                 {
@@ -285,8 +292,9 @@ public class VGDLParser
                     //game.collisionEffects[obj1][obj2].add(ef);
                     game.getCollisionEffects(obj1, obj2).add(ef);
 
-                    System.out.println("Defining interaction " + ic.object1 + "+" + ic.object2 +
-                                       " > " + ic.function);
+                    if(VERBOSE_PARSER)
+                        System.out.println("Defining interaction " + ic.object1 + "+" + ic.object2 +
+                                " > " + ic.function);
                 }else if(obj1 != -1 && obj2 == -1)
                 {
                     //Only one sprite is defined in SpriteSet, this might be an EOS effect.
@@ -296,8 +304,9 @@ public class VGDLParser
                         game.getEosEffects(obj1).add(ef);
                     }
 
-                    System.out.println("Defining interaction " + ic.object1 + "+" + ic.object2 +
-                            " > " + ic.function);
+                    if(VERBOSE_PARSER)
+                        System.out.println("Defining interaction " + ic.object1 + "+" + ic.object2 +
+                                " > " + ic.function);
                 }
 
                 //update game stochasticity.

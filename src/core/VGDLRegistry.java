@@ -27,9 +27,15 @@ public class VGDLRegistry
     /**
      * Private constructor.
      */
-    private VGDLRegistry()
+    private VGDLRegistry(){}
+
+    /**
+     * Initializes the registry of sprites for games.
+     */
+    public void init()
     {
-        sprite_mapping = new TreeMap<String, Integer>();    }
+        sprite_mapping = new TreeMap<String, Integer>();
+    }
 
     /**
      * Returns the unique instance of this class.
@@ -38,7 +44,10 @@ public class VGDLRegistry
     public static VGDLRegistry GetInstance()
     {
         if(registry == null)
+        {
             registry = new VGDLRegistry();
+            registry.init();
+        }
         return registry;
     }
 

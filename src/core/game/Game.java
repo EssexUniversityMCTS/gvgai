@@ -341,6 +341,7 @@ public abstract class Game
                 //Create the array list of collision effects for each pair of sprite types.
                 collisionEffects[j][k] = new ArrayList<Effect>();
             }
+
         }
 
         //Add walls and avatar to the subtypes list.
@@ -611,7 +612,7 @@ public abstract class Game
      */
     private void printResult()
     {
-        System.out.println("Game:"+ winner.key() + ", Score:" + score + ", timesteps:" + this.getGameTick());
+        System.out.println("Result (1:win, 0:lose):"+ winner.key() + ", Score:" + score + ", timesteps:" + this.getGameTick());
     }
 
     /**
@@ -656,7 +657,7 @@ public abstract class Game
      */
     void waitStep(int duration) {
 
-       try
+        try
         {
             Thread.sleep(duration);
         }
@@ -686,7 +687,7 @@ public abstract class Game
         }
     }
 
-        /**
+    /**
      * Handles collisions and triggers events.
      */
     protected void eventHandling()
