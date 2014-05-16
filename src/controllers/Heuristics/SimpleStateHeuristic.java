@@ -83,7 +83,7 @@ public class SimpleStateHeuristic extends StateHeuristic {
         double score = 0;
         if (minObjectPortal == null) {
             score = stateObs.getGameScore() + won*100000000;
-            }
+        }
         else {
             score = stateObs.getGameScore() + won*1000000 - minDistancePortal * 10.0;
         }
