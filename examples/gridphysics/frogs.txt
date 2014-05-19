@@ -19,9 +19,9 @@ BasicGame
         
     InteractionSet
         goal avatar  > killSprite scoreChange=1
-        avatar wall  > stepBack
         avatar log   > changeResource resource=safety value=2
         avatar log   > pullWithIt   # note how one collision can have multiple effects
+        avatar wall  > stepBack
         avatar water > killIfHasLess  resource=safety limit=0
         avatar water > changeResource resource=safety value=-1
         avatar truck > killSprite scoreChange=-2

@@ -29,7 +29,7 @@ public class BounceForward extends Effect
         Vector2d dir = new Vector2d(sprite2.lastDirection());
         dir.normalise();
 
-        sprite1.physics.activeMovement(sprite1, dir, sprite1.speed);
+        sprite1.physics.activeMovement(sprite1, dir, sprite2.speed);
         game._updateCollisionDict(sprite1);
     }
 }

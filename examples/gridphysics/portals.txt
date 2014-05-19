@@ -17,9 +17,9 @@ BasicGame
     InteractionSet
         random wall      > stepBack
         random structure > stepBack
+        avatar wall      > stepBack
         goal   avatar    > killSprite scoreChange=1
         avatar bullet    > killSprite
-        avatar wall      > stepBack
         straight wall    > reverseDirection
         avatar portalentry > teleportToExit
 

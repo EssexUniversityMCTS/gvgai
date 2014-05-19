@@ -1,4 +1,4 @@
-BasicGame frame_rate=30
+BasicGame
     SpriteSet
         hole   > Immovable color=DARKBLUE img=hole
         avatar > MovingAvatar #cooldown=4

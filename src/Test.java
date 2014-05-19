@@ -16,6 +16,7 @@ public class Test
     {
         //Available controllers:
         String sampleRandomController = "controllers.sampleRandom.Agent";
+        String sampleOneStepController = "controllers.sampleonesteplookahead.Agent";
         String sampleMCTSController = "controllers.sampleMCTS.Agent";
         String sampleGAController = "controllers.sampleGA.Agent";
 

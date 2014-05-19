@@ -792,8 +792,8 @@ public abstract class Game
                     {
                         //Decide in what buckets to look.
                         int[] buckets;
-                        if(s1.bucketSharp)  buckets = new int[]{bucket1-1, bucket1};
-                        else                buckets = new int[]{bucket1, bucket1+1};
+                        if(s1.bucketSharp)  buckets = new int[]{s1.bucket-1, s1.bucket};
+                        else                buckets = new int[]{s1.bucket, s1.bucket+1};
 
 
                         for(int bucketId : buckets)
