@@ -45,16 +45,25 @@ public class SingleTreeNode
         lastBounds[0] = curBounds[0];
         lastBounds[1] = curBounds[1];
 
+        double avgTimeTaken = 0;
+        double acumTimeTaken = 0;
         long remaining = elapsedTimer.remainingTimeMillis();
-        //int numIters = 0;
-        while(remaining > 10)   {
+        int numIters = 0;
+
+        int remainingLimit = 5;
+        while(remaining > 2*avgTimeTaken && remaining > remainingLimit){
+            ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
             SingleTreeNode selected = treePolicy();
             double delta = selected.rollOut();
             backUp(selected, delta);
+
+            numIters++;
+            acumTimeTaken += (elapsedTimerIteration.elapsedMillis()) ;
+            //System.out.println(elapsedTimerIteration.elapsedMillis() + " --> " + acumTimeTaken + " (" + remaining + ")");
+            avgTimeTaken  = acumTimeTaken/numIters;
             remaining = elapsedTimer.remainingTimeMillis();
-            //numIters++;
         }
-        //System.out.println("-- " + numIters + " --");
+        //System.out.println("-- " + numIters + " -- ( " + avgTimeTaken + ")");
     }
 
     public SingleTreeNode treePolicy() {

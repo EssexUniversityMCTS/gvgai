@@ -1,5 +1,6 @@
 package ontology.sprites;
 
+import core.VGDLRegistry;
 import core.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
@@ -18,6 +19,10 @@ import java.awt.*;
 public class Spreader extends Flicker
 {
     public double spreadprob;
+
+    public String stype;
+
+    public int itype;
 
     public Spreader(){}
 
@@ -39,6 +44,14 @@ public class Spreader extends Flicker
         spreadprob = 1.0;
     }
 
+    public void postProcess()
+    {
+        super.postProcess();
+        itype = -1;
+        if(stype != null)
+            itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
+    }
+
     public void update(Game game)
     {
         super.update(game);
@@ -48,7 +61,8 @@ public class Spreader extends Flicker
             {
                 if(game.getRandomGenerator().nextDouble() < spreadprob)
                 {
-                    game.addSprite(this.getType(), new Vector2d(this.lastrect.x + u.x*this.lastrect.width,
+                    int newType = (itype == -1) ? this.getType() : itype;
+                    game.addSprite(newType, new Vector2d(this.lastrect.x + u.x*this.lastrect.width,
                                                     this.lastrect.y + u.y*this.lastrect.height));
                 }
             }

@@ -7,6 +7,8 @@ import core.player.AbstractPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
 
+import java.util.concurrent.TimeoutException;
+
 /**
  * Created with IntelliJ IDEA.
  * User: ssamot
@@ -43,7 +45,7 @@ public class Agent extends AbstractPlayer {
             double Q = heuristic.evaluateState(stCopy);
 
 
-            System.out.println("Action:" + action + " score:" + Q);
+            //System.out.println("Action:" + action + " score:" + Q);
             if (Q > maxQ) {
                 maxQ = Q;
                 bestAction = action;
@@ -52,7 +54,7 @@ public class Agent extends AbstractPlayer {
 
         }
 
-        System.out.println("====================");
+       // System.out.println("====================");
         return bestAction;
 
 

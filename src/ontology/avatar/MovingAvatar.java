@@ -79,14 +79,21 @@ public class MovingAvatar extends VGDLSprite {
         ElapsedCpuTimer ect = new ElapsedCpuTimer(ElapsedCpuTimer.TimerType.CPU_TIME);
         ect.setMaxTimeMillis(CompetitionParameters.ACTION_TIME);
 
-        Types.ACTIONS action =  this.player.act(game.getObservation(), ect);
+        Types.ACTIONS action = this.player.act(game.getObservation(), ect);
 
         if(ect.exceededMaxTime())
         {
             long exceeded =  - ect.remainingTimeMillis();
-            //The agent took too long to replay. The game is over and the agent is disqualified
-            System.out.println("Too long: " + "("+(exceeded)+")");
-            game.disqualify();
+
+            if(ect.elapsedMillis() > CompetitionParameters.ACTION_TIME_DISQ)
+            {
+                //The agent took too long to replay. The game is over and the agent is disqualified
+                System.out.println("Too long: " + "(exceeding "+(exceeded)+"ms): controller disqualified.");
+                game.disqualify();
+            }else{
+                System.out.println("Overspent: " + "(exceeding "+(exceeded)+"ms): applying ACTION_NIL.");
+            }
+
             action = Types.ACTIONS.ACTION_NIL;
         }
 

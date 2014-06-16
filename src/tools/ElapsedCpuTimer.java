@@ -42,6 +42,9 @@ public class ElapsedCpuTimer {
         return (long) (elapsed() / 1000000.0);
     }
 
+    public double elapsedSeconds() {
+        return elapsedMillis()/1000.0;
+    }
 
     public double elapsedMinutes() {
         return elapsedMillis()/1000.0/60.0;

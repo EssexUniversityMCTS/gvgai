@@ -407,7 +407,7 @@ public abstract class Game
     {
         VGDLFactory factory = VGDLFactory.GetInstance();
         Class refClass = VGDLFactory.registeredGames.get(content.referenceClass);
-        //System.out.println("refClass" + refClass.toString());
+        //System.out.inn("refClass" + refClass.toString());
         if (!this.getClass().equals(refClass)) {
             System.out.println("Error: Game subclass instance not the same as content.referenceClass" +
                     " " + this.getClass() +
@@ -578,8 +578,10 @@ public abstract class Game
     private double handleResult()
     {
         //If the player got disqualified, set it here.
-        if(disqualified)
+        if(disqualified){
             winner = Types.WINNER.PLAYER_DISQ;
+            score = Types.SCORE_DISQ;
+        }
 
         //For sanity: winning a game always gives a positive score
         if(winner == Types.WINNER.PLAYER_WINS)
@@ -657,7 +659,7 @@ public abstract class Game
      */
     void waitStep(int duration) {
 
-        try
+       try
         {
             Thread.sleep(duration);
         }
@@ -677,17 +679,17 @@ public abstract class Game
         for(int i = 0; i < spriteOrderCount; ++i)
         {
             int spriteTypeInt = spriteOrder[i];
+            Integer[] keys = spriteGroups[spriteTypeInt].getKeys();
 
-            Iterator<VGDLSprite> spriteIt = spriteGroups[spriteTypeInt].getSpriteIterator();
-            if(spriteIt != null) while(spriteIt.hasNext())
+            if(keys!=null) for(Integer spriteKey : keys)
             {
-                VGDLSprite sp = spriteIt.next();
+                VGDLSprite sp = spriteGroups[spriteTypeInt].getSprite(spriteKey);
                 sp.update(this);
             }
         }
     }
 
-    /**
+        /**
      * Handles collisions and triggers events.
      */
     protected void eventHandling()
@@ -842,16 +844,20 @@ public abstract class Game
     private void addEvent(VGDLSprite s1, VGDLSprite s2)
     {
         if(s1.is_avatar)
-            historicEvents.add(new Event(gameTick, false, s1.getType(), s2.getType(), s1.getPosition()));
+            historicEvents.add(new Event(gameTick, false, s1.getType(), s2.getType(),
+                                         s1.spriteID, s2.spriteID, s1.getPosition()));
 
         else if(s1.is_from_avatar)
-            historicEvents.add(new Event(gameTick, true, s1.getType(), s2.getType(), s1.getPosition()));
+            historicEvents.add(new Event(gameTick, true, s1.getType(), s2.getType(),
+                                         s1.spriteID, s2.spriteID, s1.getPosition()));
 
         else if(s2.is_avatar)
-            historicEvents.add(new Event(gameTick, false, s2.getType(), s1.getType(), s2.getPosition()));
+            historicEvents.add(new Event(gameTick, false, s2.getType(), s1.getType(),
+                                         s2.spriteID, s1.spriteID, s2.getPosition()));
 
         else if(s2.is_from_avatar)
-            historicEvents.add(new Event(gameTick, true, s2.getType(), s1.getType(), s2.getPosition()));
+            historicEvents.add(new Event(gameTick, true, s2.getType(), s1.getType(),
+                                         s2.spriteID, s1.spriteID, s2.getPosition()));
     }
 
     /**
@@ -901,6 +907,8 @@ public abstract class Game
 
             if(sprite.is_avatar && sprite == this.avatar)
                 this.avatar = null;
+
+            num_sprites--;
 
         }
         kill_list.clear();

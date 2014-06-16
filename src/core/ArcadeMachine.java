@@ -167,7 +167,7 @@ public class ArcadeMachine
             recordActions = true;
             assert actionFiles.length >= level_files.length*level_times :
                     "runGames (actionFiles.length<level_files.length*level_times): " +
-                            "you must supply an action file for each game instance to be played, or null.";
+                    "you must supply an action file for each game instance to be played, or null.";
         }
 
         StatSummary scores = new StatSummary();
@@ -278,7 +278,7 @@ public class ArcadeMachine
                 System.out.println("Controller initialization time: " + timeTaken + " ms.");
             }
 
-            //This code can throw many exceptions (no time related):
+        //This code can throw many exceptions (no time related):
 
         }catch(NoSuchMethodException e)
         {
@@ -333,18 +333,22 @@ public class ArcadeMachine
         StatSummary ss1 = new StatSummary();
         StatSummary ss2 = new StatSummary();
 
-        while(!ect.exceededMaxTime())
+
+        boolean finish = ect.exceededMaxTime() || (copyStats>CompetitionParameters.WARMUP_CP && advStats>CompetitionParameters.WARMUP_ADV);
+
+        //while(!ect.exceededMaxTime())
+        while(!finish)
         {
             for (Types.ACTIONS action : actions)
             {
                 StateObservation stCopy = stateObs.copy();
                 ElapsedCpuTimer ectAdv = new ElapsedCpuTimer();
                 stCopy.advance(action);
+                copyStats++;
+                advStats++;
 
                 if( ect.remainingTimeMillis() < CompetitionParameters.WARMUP_TIME*0.5)
                 {
-                    copyStats++;
-                    advStats++;
                     ss1.add(ectAdv.elapsedNanos());
                 }
 
@@ -355,14 +359,17 @@ public class ArcadeMachine
 
                     ectAdv = new ElapsedCpuTimer();
                     stCopy.advance(actionPO);
+                    advStats++;
 
                     if( ect.remainingTimeMillis() < CompetitionParameters.WARMUP_TIME*0.5)
                     {
-                        advStats++;
                         ss2.add(ectAdv.elapsedNanos());
                     }
                 }
             }
+
+            finish = ect.exceededMaxTime() || (copyStats>CompetitionParameters.WARMUP_CP && advStats>CompetitionParameters.WARMUP_ADV);
+
             //if(VERBOSE)
             //System.out.println("[WARM-UP] Remaining time: " + ect.remainingTimeMillis() +
             //        " ms, copy() calls: " + copyStats + ", advance() calls: " + advStats);
@@ -370,9 +377,9 @@ public class ArcadeMachine
 
         if(VERBOSE)
         {
-            System.out.println("[WARM-UP] Finished, copy() calls: " + copyStats + ", advance() calls: " + advStats);
-            System.out.println(ss1);
-            System.out.println(ss2);
+            System.out.println("[WARM-UP] Finished, copy() calls: " + copyStats + ", advance() calls: " + advStats + ", time (s): " + ect.elapsedSeconds());
+            //System.out.println(ss1);
+            //System.out.println(ss2);
         }
 
 

@@ -8,6 +8,10 @@ import ontology.avatar.MovingAvatar;
 import ontology.effects.Effect;
 import ontology.sprites.Resource;
 
+import java.awt.*;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Diego
@@ -34,11 +38,30 @@ public class TransformTo extends Effect {
         VGDLSprite newSprite = game.addSprite(itype, sprite1.getPosition());
         if(newSprite != null)
         {
+            //Orientation
             if(newSprite.is_oriented && sprite1.is_oriented)
             {
                 newSprite.orientation = sprite1.orientation;
             }
 
+            //Last position of the avatar.
+            newSprite.lastrect =  new Rectangle(sprite1.lastrect.x, sprite1.lastrect.y,
+                                                sprite1.lastrect.width, sprite1.lastrect.height);
+
+            //Copy resources
+            if(sprite1.resources.size() > 0)
+            {
+                Set<Map.Entry<Integer, Integer>> entries = sprite1.resources.entrySet();
+                for(Map.Entry<Integer, Integer> entry : entries)
+                {
+                    int resType = entry.getKey();
+                    int resValue = entry.getValue();
+                    newSprite.modifyResource(resType, resValue);
+                }
+            }
+
+
+            //Avatar handling.
             if(sprite1.is_avatar)
             {
                 try{

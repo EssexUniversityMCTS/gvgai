@@ -15,6 +15,11 @@ public class CompetitionParameters
     public static int ACTION_TIME = 40;
 
     /**
+     * Milliseconds for controller disqualification, if it returns an action after this time.
+     */
+    public static int ACTION_TIME_DISQ = 50;
+
+    /**
      * Milliseconds allowed for controller initialization.
      */
     public static int INITIALIZATION_TIME = 1000;
@@ -44,7 +49,9 @@ public class CompetitionParameters
     /**
      * Java Warm-up time before starting the game.
      */
-    public static final long WARMUP_TIME = 1000;
+    public static final long WARMUP_TIME = 5000;
+    public static final long WARMUP_CP = 100;
+    public static final long WARMUP_ADV = 1000;
 
 
 }

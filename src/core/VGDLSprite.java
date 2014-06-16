@@ -139,6 +139,12 @@ public abstract class VGDLSprite {
     public boolean portal;
 
     /**
+     * Indicates if the sprite is invisible. If it is, the effect is that
+     * it is not drawn.
+     */
+    public boolean invisible;
+
+    /**
      * List of types this sprite belongs to. It contains the ids, including itself's, from this sprite up
      * in the hierarchy of sprites defined in SpriteSet in the game definition.
      */
@@ -208,8 +214,9 @@ public abstract class VGDLSprite {
         shrinkfactor = 1.0;
         is_oriented = false;
         draw_arrow = false;
-        orientation = new Vector2d(0,0);
+        orientation = Types.NONE;
         lastmove = 0;
+        invisible = false;
         resources = new TreeMap<Integer, Integer>();
         itypes = new ArrayList<Integer>();
 
@@ -391,18 +398,21 @@ public abstract class VGDLSprite {
      */
     public void draw(Graphics2D gphx, Game game) {
 
-        if(image != null)
-            _drawImage(gphx, game);
-        else
-            _draw(gphx, game);
-
-        if(resources.size() > 0)
+        if(!invisible)
         {
-            _drawResources(gphx, game);
-        }
+            if(image != null)
+                _drawImage(gphx, game);
+            else
+                _draw(gphx, game);
 
-        if (is_oriented)
-            _drawOriented(gphx);
+            if(resources.size() > 0)
+            {
+                _drawResources(gphx, game);
+            }
+
+            if (is_oriented)
+                _drawOriented(gphx);
+        }
     }
 
     /**
@@ -529,6 +539,12 @@ public abstract class VGDLSprite {
     public void postProcess()
     {
         loadImage(img);
+
+        if(this.orientation != Types.NONE)
+        {
+            //Any sprite that receives an orientation, is oriented.
+            this.is_oriented = true;
+        }
     }
 
     /**
@@ -547,7 +563,7 @@ public abstract class VGDLSprite {
                     image = ImageIO.read(new File(image_file));
                 }
                 else {
-                    System.out.println(image_file);
+                    //System.out.println(image_file);
                     image = ImageIO.read(this.getClass().getResource("/" + image_file));
                 }
 

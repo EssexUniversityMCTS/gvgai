@@ -81,10 +81,8 @@ public class AlternateChaser extends RandomNPC
         {
             //unless, no actions really take me closer to anybody!
             act = (Vector2d) Utils.choice(Types.BASEDIRS,game.getRandomGenerator());
-            System.out.println("NOWHERE TO GO.");
         }else{
             act = Utils.choice(actions,game.getRandomGenerator());
-            System.out.println("Am I Fleeing? " + fleeing);
         }
 
         //Apply the action to move.

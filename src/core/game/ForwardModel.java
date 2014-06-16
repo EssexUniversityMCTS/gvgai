@@ -4,6 +4,7 @@ import core.SpriteGroup;
 import core.VGDLSprite;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
+import tools.ElapsedCpuTimer;
 import tools.Vector2d;
 
 import java.awt.*;
@@ -60,6 +61,12 @@ public class ForwardModel extends Game
      * fromAvatar[spriteType]==true : spriteType is created by the avatar.
      */
     private boolean fromAvatar[];
+
+    /**
+     * Boolean map of sprite types that are unknown.
+     * unknownList[spriteType]==true : spriteType is unknown.
+     */
+    private boolean knownList[];
 
     /**
      * List of (persistent) observations for all sprites, indexed by sprite ID.
@@ -295,8 +302,7 @@ public class ForwardModel extends Game
         {
             return observations.get(spriteId);
         }else{
-            throw new RuntimeException("This shouldn't happen. If it does, please call Emergency Services.");
-            //return createSpriteObservation(sprite);
+            return createSpriteObservation(sprite);
         }
     }
 
@@ -307,6 +313,7 @@ public class ForwardModel extends Game
      */
     private void checkSpriteFeatures(VGDLSprite sp, int itype)
     {
+
         int category = getSpriteCategory(sp);
         switch (category)
         {
@@ -331,6 +338,7 @@ public class ForwardModel extends Game
             case Types.TYPE_MOVABLE:
                 movList[itype] = true;
         }
+        knownList[itype] = true;
     }
 
     private int getSpriteCategory(VGDLSprite sp)
@@ -404,8 +412,9 @@ public class ForwardModel extends Game
         immList = new boolean[a_gameState.spriteGroups.length];
         movList = new boolean[a_gameState.spriteGroups.length];
         resList = new boolean[a_gameState.spriteGroups.length];
-        portalList = new boolean[a_gameState.spriteGroups.length];
-        fromAvatar = new boolean[a_gameState.spriteGroups.length];
+        portalList  = new boolean[a_gameState.spriteGroups.length];
+        fromAvatar  = new boolean[a_gameState.spriteGroups.length];
+        knownList = new boolean[a_gameState.spriteGroups.length];
 
         observations = new HashMap<Integer, Observation>();
         observationGrid = new ArrayList[screenSize.width/block_size][screenSize.height/block_size];
@@ -645,7 +654,13 @@ public class ForwardModel extends Game
     {
         //First, get how many types we have.
         int numDiffTypes = 0;
-        for(int i = 0; i < groupArray.length; ++i)    if(groupArray[i]) numDiffTypes++;
+        for(int i = 0; i < groupArray.length; ++i)
+        {
+            //There is a sprite type we don't know anything about. Need to check.
+            if(!knownList[i] && spriteGroups[i].getFirstSprite() != null)
+                checkSpriteFeatures(spriteGroups[i].getFirstSprite(), i);
+            if(groupArray[i]) numDiffTypes++;
+        }
 
         if(numDiffTypes == 0)
             return null; //Wait, no types? no sprites of this group then.
@@ -671,9 +686,9 @@ public class ForwardModel extends Game
                     observation.reference = reference;
                     observations[idx].add(observation);
                 }
-                if(reference != Types.NIL)
+                if(reference != Types.NIL){
                     Collections.sort(observations[idx]);
-
+                }
                 idx++;
             }
         }

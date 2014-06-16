@@ -41,7 +41,7 @@ public class VGDLFactory
              "FlakAvatar", "HorizontalAvatar","MovingAvatar", "VerticalAvatar",
              "NoisyRotatingFlippingAvatar","RotatingAvatar","RotatingFlippingAvatar",
              "AimedAvatar","AimedFlakAvatar","InertialAvatar","MarioAvatar",
-             "OrientedAvatar","ShootAvatar"};
+             "OrientedAvatar","ShootAvatar", "MissileAvatar"};
 
 
     /**
@@ -55,7 +55,7 @@ public class VGDLFactory
              FlakAvatar.class, HorizontalAvatar.class,MovingAvatar.class, VerticalAvatar.class,
              NoisyRotatingFlippingAvatar.class,RotatingAvatar.class,RotatingFlippingAvatar.class,
              AimedAvatar.class,AimedFlakAvatar.class,InertialAvatar.class,MarioAvatar.class,
-             OrientedAvatar.class,ShootAvatar.class};
+             OrientedAvatar.class,ShootAvatar.class, MissileAvatar.class};
 
     /**
      * Available effects for VGDL.
@@ -66,7 +66,7 @@ public class VGDLFactory
                 "killIfHasLess", "killIfHasMore", "cloneSprite", "flipDirection", "reverseDirection",
                 "undoAll", "spawnIfHasMore",
                 "pullWithIt", "wallStop", "collectResource", "killIfOtherHasMore", "killIfFromAbove",
-                "teleportToExit", "bounceForward"
+                "teleportToExit", "bounceForward", "attractGaze"
             };
 
     /**
@@ -78,7 +78,7 @@ public class VGDLFactory
                 KillIfHasLess.class, KillIfHasMore.class, CloneSprite.class, FlipDirection.class, ReverseDirection.class,
                 UndoAll.class, SpawnIfHasMore.class,
                 PullWithIt.class, WallStop.class, CollectResource.class, KillIfOtherHasMore.class, KillIfFromAbove.class,
-                TeleportToExit.class, BounceForward.class
+                TeleportToExit.class, BounceForward.class, AttractGaze.class
             };
 
 

@@ -8,7 +8,7 @@ package tools;
  of how many, the sum and the sum of the squares
  is sufficient (plus max and min, for max and min).
 
- This is a simpler version of StatisticalSummary that does
+  This is a simpler version of StatisticalSummary that does
  not include statistical tests, or the Watch class.
 
  */
@@ -140,7 +140,7 @@ public class StatSummary {
         add(n.doubleValue());
     }
 
-    //    public void add(double[] d) {
+//    public void add(double[] d) {
 //        for (int i = 0; i < d.length; i++) {
 //            add(d[i]);
 //        }

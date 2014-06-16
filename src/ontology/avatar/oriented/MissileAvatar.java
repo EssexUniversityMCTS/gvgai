@@ -1,10 +1,9 @@
-package ontology.sprites.missile;
+package ontology.avatar.oriented;
 
 import core.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
-import tools.Utils;
 import tools.Vector2d;
 
 import java.awt.*;
@@ -13,14 +12,14 @@ import java.awt.*;
  * Created with IntelliJ IDEA.
  * User: Diego
  * Date: 21/10/13
- * Time: 18:18
+ * Time: 17:35
  * This is a Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
-public class RandomMissile extends Missile
+public class MissileAvatar extends OrientedAvatar
 {
-    public RandomMissile(){}
+    public MissileAvatar(){}
 
-    public RandomMissile(Vector2d position, Dimension size, SpriteContent cnt)
+    public MissileAvatar(Vector2d position, Dimension size, SpriteContent cnt)
     {
         //Init the sprite
         this.init(position, size);
@@ -35,28 +34,27 @@ public class RandomMissile extends Missile
     protected void loadDefaults()
     {
         super.loadDefaults();
-        orientation = Types.NIL;
+        speed = 1;
+        is_oriented = true;
     }
 
     public void update(Game game)
     {
-        if(orientation == Types.NIL)
-        {
-            orientation = (Vector2d) Utils.choice(Types.BASEDIRS, game.getRandomGenerator());
-        }
-        this.updatePassive();
+        //MissileAvatar has no actions available. Just update movement.
+        updatePassive();
     }
+
 
     public VGDLSprite copy()
     {
-        RandomMissile newSprite = new RandomMissile();
+        MissileAvatar newSprite = new MissileAvatar();
         this.copyTo(newSprite);
         return newSprite;
     }
 
     public void copyTo(VGDLSprite target)
     {
-        RandomMissile targetSprite = (RandomMissile) target;
+        MissileAvatar targetSprite = (MissileAvatar) target;
         super.copyTo(targetSprite);
     }
 }

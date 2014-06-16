@@ -55,13 +55,27 @@ public class SpriteGroup
             sprites.put(sp.spriteID, sp);
     }
 
-    /**
+     /**
      * Gets the collection of sprites, as a TreeMap [KEY => VALUE].
      * @return the TreeMap with the Sprites.
      */
     public TreeMap<Integer, VGDLSprite> getSprites()
     {
         return sprites;
+    }
+
+    /**
+     * Gets the set of KEYs in an array.  It will return null if
+     * the collection of sprites is empty.
+     * @return the list of the sprite keys in this collection in an array.
+     */
+    public Integer[] getKeys()
+    {
+        int nSprites = sprites.size();
+        if(nSprites == 0)
+            return null;
+        Integer[] keys = new Integer[nSprites];
+        return sprites.keySet().toArray(keys);
     }
 
     /**

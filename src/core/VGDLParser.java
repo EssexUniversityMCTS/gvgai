@@ -231,7 +231,7 @@ public class VGDLParser
             {
                 if(VERBOSE_PARSER)
                     System.out.println("Defining: " + identifier + " " + sc.referenceClass
-                            + " " + el.content.toString());
+                        + " " + el.content.toString());
 
                 if(spriteOrderTmp.contains(intId))
                 {
@@ -294,7 +294,7 @@ public class VGDLParser
 
                     if(VERBOSE_PARSER)
                         System.out.println("Defining interaction " + ic.object1 + "+" + ic.object2 +
-                                " > " + ic.function);
+                                       " > " + ic.function);
                 }else if(obj1 != -1 && obj2 == -1)
                 {
                     //Only one sprite is defined in SpriteSet, this might be an EOS effect.
@@ -306,7 +306,7 @@ public class VGDLParser
 
                     if(VERBOSE_PARSER)
                         System.out.println("Defining interaction " + ic.object1 + "+" + ic.object2 +
-                                " > " + ic.function);
+                            " > " + ic.function);
                 }
 
                 //update game stochasticity.

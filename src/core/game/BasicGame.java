@@ -1,5 +1,6 @@
 package core.game;
 
+import core.VGDLFactory;
 import core.VGDLRegistry;
 import core.VGDLSprite;
 import core.content.GameContent;
@@ -19,6 +20,13 @@ import java.util.ArrayList;
 public class BasicGame extends Game {
 
     /**
+     * Allows definition of sprite size from the VGDL description.
+     * If indicated, super.block_size is set to this variable.
+     * square_size should be divisible by all speeds in the game definition.
+     */
+    public int square_size;
+
+    /**
      * Default constructor for a basic game.
      * @param content Contains parameters for the game.
      */
@@ -34,6 +42,7 @@ public class BasicGame extends Game {
         charMapping.get('A').add("avatar");
 
         //Default values for frame rate and maximum number of sprites allowed.
+        square_size = -1;
         frame_rate = 25;
         MAX_SPRITES = 10000;
 
@@ -54,7 +63,13 @@ public class BasicGame extends Game {
         //Dimensions of the level read from the file.
         size.width = desc_lines[0].length();
         size.height = desc_lines.length;
-        block_size = Math.max(2, (int) 800.0 / Math.max(size.width, size.height));
+
+        if(square_size != -1)
+        {
+            block_size = square_size;
+        }else{
+            block_size = Math.max(2, (int) 800.0 / Math.max(size.width, size.height));
+        }
         screenSize = new Dimension(size.width * block_size, size.height * block_size);
 
         //All sprites are created and placed here:
@@ -89,6 +104,25 @@ public class BasicGame extends Game {
 
         //Generate the initial state observation.
         this.initForwardModel();
+    }
+
+    /**
+     * Reads the parameters of a game type.
+     * @param content list of parameter-value pairs.
+     */
+    protected void parseParameters(GameContent content)
+    {
+        VGDLFactory factory = VGDLFactory.GetInstance();
+        Class refClass = VGDLFactory.registeredGames.get(content.referenceClass);
+        //System.out.println("refClass" + refClass.toString());
+        if (!this.getClass().equals(refClass)) {
+            System.out.println("Error: Game subclass instance not the same as content.referenceClass" +
+                    " " + this.getClass() +
+                    " " + refClass);
+            return;
+        }
+
+        factory.parseParameters(content,this);
     }
 
     /**

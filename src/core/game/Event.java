@@ -20,17 +20,29 @@ public class Event implements Comparable<Event>
     public boolean fromAvatar;
 
     /**
-     * Sprite id of the object that triggers the event (either the avatar,
+     * Type id of the object that triggers the event (either the avatar,
      * or something created by the avatar).
      */
-    public int activeId;
-
+    public int activeTypeId;
 
     /**
-     * Sprite id of the object that received the event (what did the avatar,
+     * Type id of the object that received the event (what did the avatar,
      * or something created by the avatar, collided with?).
      */
-    public int passiveId;
+    public int passiveTypeId;
+
+    /**
+     * Sprite ID of the object that triggers the event (either the avatar,
+     * or something created by the avatar).
+     */
+    public int activeSpriteId;
+
+    /**
+     * Sprite ID of the object that received the event (what did the avatar,
+     * or something created by the avatar, collided with?).
+     */
+    public int passiveSpriteId;
+
 
     /**
      * Position where the event took place.
@@ -40,16 +52,22 @@ public class Event implements Comparable<Event>
     /**
      * Constructor
      * @param gameStep when the event happened.
-     * @param fromAvatar did the avatar trigger the event.
-     * @param passiveId against what type of object.
+     * @param fromAvatar did the avatar trigger the event (true), or something created by him (false)?
+     * @param activeTypeId type of the sprite (avatar or from avatar).
+     * @param passiveTypeId type of the sprite that collided with activeTypeId.
+     * @param activeSpriteId sprite ID of the avatar (or something created by the avatar).
+     * @param passiveSpriteId sprite ID of the other object.
      * @param position where did the event take place.
      */
-    public Event(int gameStep, boolean fromAvatar, int activeId, int passiveId, Vector2d position)
+    public Event(int gameStep, boolean fromAvatar, int activeTypeId, int passiveTypeId,
+                 int activeSpriteId, int passiveSpriteId, Vector2d position)
     {
         this.gameStep = gameStep;
         this.fromAvatar = fromAvatar;
-        this.activeId = activeId;
-        this.passiveId = passiveId;
+        this.activeTypeId = activeTypeId;
+        this.passiveTypeId = passiveTypeId;
+        this.activeSpriteId = activeSpriteId;
+        this.passiveSpriteId = passiveSpriteId;
         this.position = position;
     }
 
@@ -59,7 +77,7 @@ public class Event implements Comparable<Event>
      */
     public Event copy()
     {
-        return new Event(gameStep, fromAvatar, activeId, passiveId, position.copy());
+        return new Event(gameStep, fromAvatar, activeTypeId, passiveTypeId, activeSpriteId, passiveSpriteId, position.copy());
     }
 
     @Override
@@ -68,10 +86,10 @@ public class Event implements Comparable<Event>
         if(this.gameStep > o.gameStep)       return 1;
         if(this.fromAvatar && !o.fromAvatar) return -1;   //Second tie break: who triggered.
         if(!this.fromAvatar && o.fromAvatar) return 1;
-        if(this.passiveId < o.passiveId)     return -1;   //Third tie break: against what.
-        if(this.passiveId > o.passiveId)     return 1;
-        if(this.activeId < o.activeId)       return -1;   //Fourth tie break: who triggered it
-        if(this.activeId > o.activeId)       return 1;
+        if(this.passiveTypeId < o.passiveTypeId)     return -1;   //Third tie break: against what.
+        if(this.passiveTypeId > o.passiveTypeId)     return 1;
+        if(this.activeTypeId < o.activeTypeId)       return -1;   //Fourth tie break: who triggered it
+        if(this.activeTypeId > o.activeTypeId)       return 1;
         return 0;
     }
 }

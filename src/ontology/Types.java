@@ -91,6 +91,8 @@ public class Types {
         public int key() {return key;}
     }
 
+    public static final int SCORE_DISQ = -1000;
+
     public static final Color GREEN = new Color(0, 200, 0);
     public static final Color BLUE = new Color(0, 0, 200);
     public static final Color RED = new Color(200, 0, 0);
