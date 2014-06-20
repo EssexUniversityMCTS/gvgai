@@ -73,15 +73,12 @@ public class VGDLViewer extends JComponent
         int[] gameSpriteOrder = game.getSpriteOrder();
         if(this.spriteGroups != null) for(Integer spriteTypeInt : gameSpriteOrder)
         {
-            SpriteGroup spGroup = spriteGroups[spriteTypeInt];
-            if(spGroup != null)
+            Integer[] keys = spriteGroups[spriteTypeInt].getKeys();
+            if(keys!=null) for(Integer spriteKey : keys)
             {
-                Iterator<VGDLSprite> spriteIt = spGroup.getSpriteIterator();
-                if(spriteIt != null) while(spriteIt.hasNext())
-                {
-                    VGDLSprite sp = spriteIt.next();
+                VGDLSprite sp = spriteGroups[spriteTypeInt].getSprite(spriteKey);
+                if(sp != null)
                     sp.draw(g, game);
-                }
             }
         }
 
@@ -96,19 +93,7 @@ public class VGDLViewer extends JComponent
      */
     public void paint(SpriteGroup[] spriteGroupsGame)
     {
-        int numSpriteTypes = spriteGroupsGame.length;
-        spriteGroups = new SpriteGroup[numSpriteTypes];
-
-        for(int i = 0; i < numSpriteTypes; ++i)
-        {
-            spriteGroups[i] = new SpriteGroup(i);
-            Collection<VGDLSprite> sprites = spriteGroupsGame[i].getSprites().values();
-
-            spriteGroups[i].addAllSprites(sprites);
-            //for(VGDLSprite sp : sprites)
-            //    spriteGroups[i].addSprite(sp.copy());
-        }
-
+        this.spriteGroups = spriteGroupsGame;
         this.repaint();
     }
 
