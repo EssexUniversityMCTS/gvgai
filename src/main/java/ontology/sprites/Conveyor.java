@@ -17,15 +17,16 @@ public class Conveyor extends VGDLSprite {
 
 	public Conveyor(Vector2d position, Dimension size, SpriteContent cnt) {
 		// Init the sprite
-		this.init(position, size);
+		init(position, size);
 
 		// Specific class default parameter values.
 		loadDefaults();
 
 		// Parse the arguments.
-		this.parseParameters(cnt);
+		parseParameters(cnt);
 	}
 
+	@Override
 	protected void loadDefaults() {
 		super.loadDefaults();
 		is_static = true;
@@ -35,12 +36,14 @@ public class Conveyor extends VGDLSprite {
 		is_oriented = true;
 	}
 
+	@Override
 	public VGDLSprite copy() {
 		Conveyor newSprite = new Conveyor();
-		this.copyTo(newSprite);
+		copyTo(newSprite);
 		return newSprite;
 	}
 
+	@Override
 	public void copyTo(VGDLSprite target) {
 		Conveyor targetSprite = (Conveyor) target;
 		super.copyTo(targetSprite);

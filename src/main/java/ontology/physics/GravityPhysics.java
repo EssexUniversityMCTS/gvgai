@@ -6,7 +6,6 @@ package ontology.physics;
  */
 public class GravityPhysics extends ContinuousPhysics {
 	public GravityPhysics() {
-		super();
 		gravity = 0.5;
 	}
 }

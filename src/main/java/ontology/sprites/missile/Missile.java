@@ -2,7 +2,6 @@ package ontology.sprites.missile;
 
 import core.VGDLSprite;
 import core.content.SpriteContent;
-import core.game.Game;
 import tools.Vector2d;
 
 import java.awt.*;
@@ -17,27 +16,30 @@ public class Missile extends VGDLSprite {
 
 	public Missile(Vector2d position, Dimension size, SpriteContent cnt) {
 		// Init the sprite
-		this.init(position, size);
+		init(position, size);
 
 		// Specific class default parameter values.
 		loadDefaults();
 
 		// Parse the arguments.
-		this.parseParameters(cnt);
+		parseParameters(cnt);
 	}
 
+	@Override
 	protected void loadDefaults() {
 		super.loadDefaults();
 		speed = 1;
 		is_oriented = true;
 	}
 
+	@Override
 	public VGDLSprite copy() {
 		Missile newSprite = new Missile();
-		this.copyTo(newSprite);
+		copyTo(newSprite);
 		return newSprite;
 	}
 
+	@Override
 	public void copyTo(VGDLSprite target) {
 		Missile targetSprite = (Missile) target;
 		super.copyTo(targetSprite);

@@ -70,12 +70,12 @@ Document title and Copyright styles
 */
 .clear {
     clear:both;
-    height:0px;
+    height:0;
     overflow:hidden;
 }
 .aboutLanguage {
     float:right;
-    padding:0px 21px;
+    padding:0 21px;
     font-size:.8em;
     z-index:200;
     margin-top:-7px;
@@ -234,7 +234,7 @@ ul.blockList ul.blockList li.blockList h3 {
     margin:15px 0;
 }
 ul.blockList li.blockList h2 {
-    padding:0px 0 20px 0;
+    padding:0 0 20px 0;
 }
 /*
 Page layout container styles
@@ -309,7 +309,7 @@ ul.blockList li.blockList, ul.blockListLast li.blockList {
     margin-bottom:25px;
 }
 ul.blockList ul.blockList li.blockList, ul.blockList ul.blockListLast li.blockList {
-    padding:0px 20px 5px 10px;
+    padding:0 20px 5px 10px;
     border:1px solid #9eadc0;
     background-color:#f9f9f9;
 }
@@ -366,8 +366,8 @@ Table styles
     font-weight:bold;
     clear:none;
     overflow:hidden;
-    padding:0px;
-    margin:0px;
+    padding:0;
+    margin:0;
 }
 caption a:link, caption a:hover, caption a:active, caption a:visited {
     color:#FFFFFF;
@@ -390,7 +390,7 @@ caption a:link, caption a:hover, caption a:active, caption a:visited {
     float:left;
 }
 ul.blockList ul.blockList li.blockList table {
-    margin:0 0 12px 0px;
+    margin:0 0 12px 0;
     width:100%;
 }
 .tableSubHeadingColor {
@@ -428,8 +428,8 @@ td.colOne, th.colOne {
     border-left:1px solid #9eadc0;
 }
 table.overviewSummary  {
-    padding:0px;
-    margin-left:0px;
+    padding:0;
+    margin-left:0;
 }
 table.overviewSummary td.colFirst, table.overviewSummary th.colFirst,
 table.overviewSummary td.colOne, table.overviewSummary th.colOne {

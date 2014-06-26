@@ -6,7 +6,6 @@ package ontology.physics;
  */
 public class NoFrictionPhysics extends ContinuousPhysics {
 	public NoFrictionPhysics() {
-		super();
 		friction = 0;
 	}
 }

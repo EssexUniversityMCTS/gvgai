@@ -6,7 +6,6 @@ import ontology.Types;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
 
 /**
  * Created with IntelliJ IDEA. User: Diego Date: 24/10/13 Time: 10:54 This is a
@@ -41,7 +40,7 @@ public class VGDLViewer extends JComponent {
 	 */
 	public VGDLViewer(Game game, AbstractPlayer player) {
 		this.game = game;
-		this.size = game.getScreenSize();
+		size = game.getScreenSize();
 		this.player = player;
 	}
 
@@ -51,47 +50,51 @@ public class VGDLViewer extends JComponent {
 	 * @param gx
 	 *            Graphics object.
 	 */
-	public void paintComponent(Graphics gx)
-    {
-        Graphics2D g = (Graphics2D) gx;
+	@Override
+	public void paintComponent(Graphics gx) {
+		Graphics2D g = (Graphics2D) gx;
 
-        //For a better graphics, enable this: (be aware this could bring performance issues depending on your HW & OS).
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		// For a better graphics, enable this: (be aware this could bring
+		// performance issues depending on your HW & OS).
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
 
-        //g.setColor(Types.LIGHTGRAY);
-        g.setColor(Types.BLACK);
-        g.fillRect(0, size.height, size.width, size.height);
+		// g.setColor(Types.LIGHTGRAY);
+		g.setColor(Types.BLACK);
+		g.fillRect(0, size.height, size.width, size.height);
 
-        //Possible efficiency improvement: static image with immovable objects.
-        /*
-        BufferedImage mapImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
-        Graphics2D gImage = mapImage.createGraphics();
-        */
+		// Possible efficiency improvement: static image with immovable objects.
+		/*
+		 * BufferedImage mapImage = new BufferedImage(size.width, size.height,
+		 * BufferedImage.TYPE_INT_RGB); Graphics2D gImage =
+		 * mapImage.createGraphics();
+		 */
 
-        int[] gameSpriteOrder = game.getSpriteOrder();
-        if(this.spriteGroups != null) for(Integer spriteTypeInt : gameSpriteOrder)
-        {
-            Integer[] keys = spriteGroups[spriteTypeInt].getKeys();
-            if(keys!=null) for(Integer spriteKey : keys)
-            {
-                VGDLSprite sp = spriteGroups[spriteTypeInt].getSprite(spriteKey);
-                if(sp != null)
-                    sp.draw(g, game);
-            }
-        }
+		int[] gameSpriteOrder = game.getSpriteOrder();
+		if (null != spriteGroups)
+			for (Integer spriteTypeInt : gameSpriteOrder) {
+				Integer[] keys = spriteGroups[spriteTypeInt].getKeys();
+				if (null != keys)
+					for (Integer spriteKey : keys) {
+						VGDLSprite sp = spriteGroups[spriteTypeInt]
+								.getSprite(spriteKey);
+						if (null != sp)
+							sp.draw(g, game);
+					}
+			}
 
-        g.setColor(Types.BLACK);
-        player.draw(g);
-    }
+		g.setColor(Types.BLACK);
+		player.draw(g);
+	}
 	/**
 	 * Paints the sprites.
 	 * 
 	 * @param spriteGroupsGame
 	 *            sprites to paint.
 	 */
-	public void paint(SpriteGroup[] spriteGroupsGame) {
-		this.spriteGroups = spriteGroupsGame;
-		this.repaint();
+	public void paint(SpriteGroup... spriteGroupsGame) {
+		spriteGroups = spriteGroupsGame;
+		repaint();
 	}
 
 	/**
@@ -99,6 +102,7 @@ public class VGDLViewer extends JComponent {
 	 * 
 	 * @return the dimensions of the window.
 	 */
+	@Override
 	public Dimension getPreferredSize() {
 		return size;
 	}

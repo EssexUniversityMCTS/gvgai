@@ -10,7 +10,7 @@ import java.awt.*;
  * Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
 public interface Physics {
-	public void passiveMovement(VGDLSprite sprite);
-	public void activeMovement(VGDLSprite sprite, Vector2d action, double speed);
-	public double distance(Rectangle r1, Rectangle r2);
+	void passiveMovement(VGDLSprite sprite);
+	void activeMovement(VGDLSprite sprite, Vector2d action, double speed);
+	double distance(Rectangle r1, Rectangle r2);
 }

@@ -22,7 +22,7 @@ public class Resource extends Passive {
 
 	public Resource(Vector2d position, Dimension size, SpriteContent cnt) {
 		// Init the sprite
-		this.init(position, size);
+		init(position, size);
 
 		// Specific class default parameter values.
 		loadDefaults();
@@ -31,16 +31,18 @@ public class Resource extends Passive {
 		resource_name = cnt.identifier;
 
 		// Parse the arguments.
-		this.parseParameters(cnt);
+		parseParameters(cnt);
 
 	}
 
+	@Override
 	public void postProcess() {
 		super.postProcess();
 		resource_type = VGDLRegistry.GetInstance().getRegisteredSpriteValue(
 				resource_name);
 	}
 
+	@Override
 	protected void loadDefaults() {
 		super.loadDefaults();
 		limit = 2;
@@ -50,18 +52,20 @@ public class Resource extends Passive {
 		is_resource = true;
 	}
 
+	@Override
 	public VGDLSprite copy() {
 		Resource newSprite = new Resource();
-		this.copyTo(newSprite);
+		copyTo(newSprite);
 		return newSprite;
 	}
 
+	@Override
 	public void copyTo(VGDLSprite target) {
 		Resource targetSprite = (Resource) target;
-		targetSprite.limit = this.limit;
-		targetSprite.value = this.value;
-		targetSprite.resource_type = this.resource_type;
-		targetSprite.resource_name = this.resource_name;
+		targetSprite.limit = limit;
+		targetSprite.value = value;
+		targetSprite.resource_type = resource_type;
+		targetSprite.resource_name = resource_name;
 		super.copyTo(targetSprite);
 	}
 

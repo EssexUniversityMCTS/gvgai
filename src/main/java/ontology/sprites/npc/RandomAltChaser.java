@@ -21,46 +21,46 @@ public class RandomAltChaser extends AlternateChaser {
 
 	public RandomAltChaser(Vector2d position, Dimension size, SpriteContent cnt) {
 		// Init the sprite
-		this.init(position, size);
+		init(position, size);
 
 		// Specific class default parameter values.
 		loadDefaults();
 
 		// Parse the arguments.
-		this.parseParameters(cnt);
+		parseParameters(cnt);
 	}
 
+	@Override
 	protected void loadDefaults() {
 		super.loadDefaults();
 		epsilon = 0.0;
 	}
 
-	public void postProcess() {
-		super.postProcess();
-	}
-
+	@Override
 	public void update(Game game) {
 		double roll = game.getRandomGenerator().nextDouble();
 		if (roll < epsilon) {
 			// do a sampleRandom move.
-			super.updatePassive();
+			updatePassive();
 			Vector2d act = (Vector2d) Utils.choice(Types.BASEDIRS,
 					game.getRandomGenerator());
-			this.physics.activeMovement(this, act, this.speed);
+			physics.activeMovement(this, act, speed);
 		} else {
 			super.update(game);
 		}
 	}
 
+	@Override
 	public VGDLSprite copy() {
 		RandomAltChaser newSprite = new RandomAltChaser();
-		this.copyTo(newSprite);
+		copyTo(newSprite);
 		return newSprite;
 	}
 
+	@Override
 	public void copyTo(VGDLSprite target) {
 		RandomAltChaser targetSprite = (RandomAltChaser) target;
-		targetSprite.epsilon = this.epsilon;
+		targetSprite.epsilon = epsilon;
 		super.copyTo(targetSprite);
 	}
 

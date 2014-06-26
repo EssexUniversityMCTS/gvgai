@@ -9,11 +9,6 @@ import java.util.ArrayList;
  * Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
 public class IO {
-	/**
-	 * Default constructor
-	 */
-	public IO() {
-	}
 
 	/**
 	 * Reads a file and returns its content as a String[]
@@ -23,16 +18,15 @@ public class IO {
 	 * @return file content as String[], one line per element
 	 */
 	public String[] readFile(String filename) {
-        ArrayList<String> lines = new ArrayList<String>();
+        ArrayList<String> lines = new ArrayList<>();
         try {
-            BufferedReader in = new BufferedReader(new FileReader(filename));
-            String line = null;
-            while ((line = in.readLine()) != null) {
-                lines.add(line);
+            try (FileReader in1 = new FileReader(filename); BufferedReader in = new BufferedReader(in1)) {
+                String line;
+                while (null != (line = in.readLine())) lines.add(line);
+                in.close();
             }
-            in.close();
         } catch (Exception e) {
-            System.out.println("Error reading the file " + filename + ": " + e.toString());
+            System.out.println("Error reading the file " + filename + ": " + e);
             e.printStackTrace();
             return null;
         }

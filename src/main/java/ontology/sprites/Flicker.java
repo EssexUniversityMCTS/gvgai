@@ -1,7 +1,6 @@
 package ontology.sprites;
 
 import core.VGDLSprite;
-import core.content.Content;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
@@ -23,15 +22,16 @@ public class Flicker extends VGDLSprite {
 
 	public Flicker(Vector2d position, Dimension size, SpriteContent cnt) {
 		// Init the sprite
-		this.init(position, size);
+		init(position, size);
 
 		// Specific class default parameter values.
 		loadDefaults();
 
 		// Parse the arguments.
-		this.parseParameters(cnt);
+		parseParameters(cnt);
 	}
 
+	@Override
 	protected void loadDefaults() {
 		super.loadDefaults();
 		limit = 1;
@@ -39,6 +39,7 @@ public class Flicker extends VGDLSprite {
 		color = Types.RED;
 	}
 
+	@Override
 	public void update(Game game) {
 		super.update(game);
 
@@ -48,16 +49,18 @@ public class Flicker extends VGDLSprite {
 
 	}
 
+	@Override
 	public VGDLSprite copy() {
 		Flicker newSprite = new Flicker();
-		this.copyTo(newSprite);
+		copyTo(newSprite);
 		return newSprite;
 	}
 
+	@Override
 	public void copyTo(VGDLSprite target) {
 		Flicker targetSprite = (Flicker) target;
-		targetSprite.limit = this.limit;
-		targetSprite.age = this.age;
+		targetSprite.limit = limit;
+		targetSprite.age = age;
 		super.copyTo(targetSprite);
 	}
 }

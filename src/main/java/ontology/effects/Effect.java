@@ -10,11 +10,11 @@ import core.game.Game;
  * Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
 public abstract class Effect {
-	public boolean is_kill_effect = false;
+	public boolean is_kill_effect;
 
-	public boolean is_stochastic = false;
+	public boolean is_stochastic;
 
-	public int scoreChange = 0;
+	public int scoreChange;
 
 	public abstract void execute(VGDLSprite sprite1, VGDLSprite sprite2,
 			Game game);

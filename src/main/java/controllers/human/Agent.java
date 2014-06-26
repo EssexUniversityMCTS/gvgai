@@ -34,6 +34,7 @@ public class Agent extends AbstractPlayer {
 	 *            Timer when the action returned is due.
 	 * @return An action for the current state
 	 */
+	@Override
 	public Types.ACTIONS act(StateObservation stateObs,
 			ElapsedCpuTimer elapsedTimer) {
 		Vector2d move = Utils.processMovementActionKeys(Game.ki.getMask());
@@ -42,7 +43,7 @@ public class Agent extends AbstractPlayer {
 		// In the keycontroller, move has preference.
 		Types.ACTIONS action = Types.ACTIONS.fromVector(move);
 
-		if (action == Types.ACTIONS.ACTION_NIL && useOn)
+		if (Types.ACTIONS.ACTION_NIL == action && useOn)
 			action = Types.ACTIONS.ACTION_USE;
 
 		return action;

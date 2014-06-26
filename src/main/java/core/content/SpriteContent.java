@@ -6,118 +6,113 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Diego
- * Date: 18/10/13
- * Time: 07:01
- * This is a Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
+ * Created with IntelliJ IDEA. User: Diego Date: 18/10/13 Time: 07:01 This is a
+ * Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
-public class SpriteContent extends Content
-{
+public class SpriteContent extends Content {
 
-    /**
-     * Class of the element defined by this content.
-     * It is only assigned when processing the tree of contents.
-     */
-    public String referenceClass;
+	/**
+	 * Class of the element defined by this content. It is only assigned when
+	 * processing the tree of contents.
+	 */
+	public String referenceClass;
 
-    /**
-     * Indicates the int - types of the sprite (hierarchical identifiers). From the type
-     * till the top of the hierarchy.
-     */
-    public ArrayList<Integer> itypes;
+	/**
+	 * Indicates the int - types of the sprite (hierarchical identifiers). From
+	 * the type till the top of the hierarchy.
+	 */
+	public ArrayList<Integer> itypes;
 
+	/**
+	 * All types under this type in the hierarchy, including itself.
+	 */
+	public ArrayList<Integer> subtypes;
 
-    /**
-     * All types under this type in the hierarchy, including itself.
-     */
-    public ArrayList<Integer> subtypes;
+	/**
+	 * Default constructor.
+	 */
+	public SpriteContent() {
+		itypes = new ArrayList<>();
+		subtypes = new ArrayList<>();
+	}
 
+	/**
+	 * Simple constructor that receives and identifier and a reference class
+	 * 
+	 * @param id
+	 *            object identifier.
+	 * @param refClass
+	 *            class this object is mapped to.
+	 */
+	public SpriteContent(String id, String refClass) {
+		line = null;
+		referenceClass = refClass;
+		identifier = id;
+		parameters = new HashMap<>();
+		itypes = new ArrayList<>();
+		subtypes = new ArrayList<>();
+	}
 
-    /**
-     * Default constructor.
-     */
-    public SpriteContent(){
-        itypes = new ArrayList<Integer>();
-        subtypes = new ArrayList<Integer>();
-    }
+	/**
+	 * Constructor that extracts the contents from a String line
+	 * 
+	 * @param line
+	 *            String with the contents in VGDL format, to be mapped to the
+	 *            data structures of this class.
+	 */
+	public SpriteContent(String line) {
+		referenceClass = null;
+		this.line = line;
+		parameters = new HashMap<>();
+		itypes = new ArrayList<>();
+		subtypes = new ArrayList<>();
 
-    /**
-     * Simple constructor that receives and identifier and a reference class
-     * @param id object identifier.
-     * @param refClass class this object is mapped to.
-     */
-    public SpriteContent(String id, String refClass)
-    {
-        this.line = null;
-        this.referenceClass = refClass;
-        this.identifier = id;
-        parameters = new HashMap<String, String>();
-        itypes = new ArrayList<Integer>();
-        subtypes = new ArrayList<Integer>();
-    }
+		// Init structures of node content.
+		parameters = new HashMap<>();
 
-    /**
-     * Constructor that extracts the contents from a String line
-     * @param line String with the contents in VGDL format, to be mapped to the
-     *             data structures of this class.
-     */
-    public SpriteContent(String line)
-    {
-        this.referenceClass = null;
-        this.line = line;
-        parameters = new HashMap<String, String>();
-        itypes = new ArrayList<Integer>();
-        subtypes = new ArrayList<Integer>();
+		// Take the pieces and the first one is the name that defines the
+		// content
+		String[] pieces = line.split(" ");
+		identifier = pieces[0].trim();
 
-        //Init structures of node content.
-        parameters = new HashMap<String, String>();
+		// Take the other pieces and extract properties and parameters
+		// key-value.
+		for (int i = 1; i < pieces.length; ++i) {
+			String piece = pieces[i].trim();
+			if (piece.contains("=")) {
+				String[] keyValue = piece.split("=");
+				String key = keyValue[0];
+				String value = keyValue[1];
 
-        //Take the pieces and the first one is the name that defines the content
-        String pieces[] = line.split(" ");
-        identifier = pieces[0].trim();
+				parameters.put(key, value);
+			} else if (">".equals(piece)) {
+				is_definition = true;
+			} else if (!piece.isEmpty()) {
+				referenceClass = piece; // I don't expect more than one keyword
+										// alone in the line... ?
+			}
+		}
+	}
 
-        //Take the other pieces and extract properties and parameters key-value.
-        for(int i = 1; i < pieces.length; ++i)
-        {
-            String piece = pieces[i].trim();
-            if(piece.contains("="))
-            {
-                String keyValue[] = piece.split("=");
-                String key = keyValue[0];
-                String value = keyValue[1];
+	public void assignTypes(Iterable<String> types) {
+		if (null == itypes)
+			itypes = new ArrayList<>();
 
-                parameters.put(key, value);
-            }else if(piece.equals(">"))
-            {
-                this.is_definition = true;
-            }else if(piece.length() > 0){
-                referenceClass = piece; //I don't expect more than one keyword alone in the line... ?
-            }
-        }
-    }
+		for (String stype : types) {
+			int itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(
+					stype);
+			itypes.add(itype);
+		}
+	}
 
-    public void assignTypes(ArrayList<String> types)
-    {
-        if(itypes == null)
-            itypes = new ArrayList<Integer>();
-
-        for(String stype : types)
-        {
-            int itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
-            this.itypes.add(itype);
-        }
-    }
-
-    /**
-     * Returns the original line of the content.
-     * @return original line, in VGDL format.
-     */
-    @Override
-    public String toString()
-    {
-        String line = "[" + identifier + ":" + referenceClass + "]";
-        return line;
-    }
+	/**
+	 * Returns the original line of the content.
+	 * 
+	 * @return original line, in VGDL format.
+	 */
+	@Override
+	public String toString() {
+		return '[' + identifier + ':' + referenceClass + ']';
+	}
 
 }

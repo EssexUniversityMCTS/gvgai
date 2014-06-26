@@ -58,8 +58,8 @@ public class Vector2d {
 	 *            Vector to copy from.
 	 */
 	public Vector2d(Vector2d v) {
-		this.x = v.x;
-		this.y = v.y;
+		x = v.x;
+		y = v.y;
 	}
 
 	/**
@@ -78,8 +78,8 @@ public class Vector2d {
 	 *            that other vector.
 	 */
 	public void set(Vector2d v) {
-		this.x = v.x;
-		this.y = v.y;
+		x = v.x;
+		y = v.y;
 	}
 
 	/**
@@ -120,8 +120,8 @@ public class Vector2d {
 	 * @return this, after the addition.
 	 */
 	public Vector2d add(Vector2d v) {
-		this.x += v.x;
-		this.y += v.y;
+		x += v.x;
+		y += v.y;
 		return this;
 	}
 
@@ -151,8 +151,8 @@ public class Vector2d {
 	 */
 	public Vector2d add(Vector2d v, double w) {
 		// weighted addition
-		this.x += w * v.x;
-		this.y += w * v.y;
+		x += w * v.x;
+		y += w * v.y;
 		return this;
 	}
 
@@ -181,8 +181,8 @@ public class Vector2d {
 	 * @return this, after the subtraction.
 	 */
 	public Vector2d subtract(Vector2d v) {
-		this.x -= v.x;
-		this.y -= v.y;
+		x -= v.x;
+		y -= v.y;
 		return this;
 	}
 
@@ -223,8 +223,8 @@ public class Vector2d {
 	public void rotate(double theta) {
 		// rotate this vector by the angle made to the horizontal by this line
 		// theta is in radians
-		double cosTheta = Math.cos(theta);
-		double sinTheta = Math.sin(theta);
+		double cosTheta = StrictMath.cos(theta);
+		double sinTheta = StrictMath.sin(theta);
 
 		double nx = x * cosTheta - y * sinTheta;
 		double ny = x * sinTheta + y * cosTheta;
@@ -264,7 +264,7 @@ public class Vector2d {
 	 * @return the square distance, in pixels, between this vector and v.
 	 */
 	public double sqDist(Vector2d v) {
-		return sqr(x - v.x) + sqr(y - v.y);
+		return Vector2d.sqr(x - v.x) + Vector2d.sqr(y - v.y);
 	}
 
 	/**
@@ -273,7 +273,7 @@ public class Vector2d {
 	 * @return the magnitude of the vector (Math.sqrt(sqr(x) + sqr(y)))
 	 */
 	public double mag() {
-		return Math.sqrt(sqr(x) + sqr(y));
+		return Math.sqrt(Vector2d.sqr(x) + Vector2d.sqr(y));
 	}
 
 	/**
@@ -298,7 +298,7 @@ public class Vector2d {
 	 *         coordinates.
 	 */
 	public double dist(double xx, double yy) {
-		return Math.sqrt(sqr(x - xx) + sqr(y - yy));
+		return Math.sqrt(Vector2d.sqr(x - xx) + Vector2d.sqr(y - yy));
 	}
 
 	/**
@@ -307,7 +307,7 @@ public class Vector2d {
 	 * @return the atan2 of this vector.
 	 */
 	public double theta() {
-		return Math.atan2(y, x);
+		return StrictMath.atan2(y, x);
 	}
 
 	/**
@@ -315,7 +315,7 @@ public class Vector2d {
 	 */
 	public void normalise() {
 		double mag = mag();
-		if (mag == 0) {
+		if (0 == mag) {
 			x = y = 0;
 		} else {
 			x /= mag;
@@ -332,16 +332,12 @@ public class Vector2d {
 	 * @return the dot product between these two vectors.
 	 */
 	public double dot(Vector2d v) {
-		double tot = this.x * v.x + this.y * v.y;
-		return tot;
+		return x * v.x + y * v.y;
 	}
 
 	public Vector2d unitVector() {
-		double l = this.mag();
-		if (l > 0) {
-			return new Vector2d(this.x / l, this.y / l);
-		} else
-			return new Vector2d(1, 0);
+		double l = mag();
+		return 0 < l ? new Vector2d(x / l, y / l) : new Vector2d(1, 0);
 	}
 
 }

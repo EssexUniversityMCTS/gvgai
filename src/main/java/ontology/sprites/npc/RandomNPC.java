@@ -19,15 +19,16 @@ public class RandomNPC extends VGDLSprite {
 
 	public RandomNPC(Vector2d position, Dimension size, SpriteContent cnt) {
 		// Init the sprite
-		this.init(position, size);
+		init(position, size);
 
 		// Specific class default parameter values.
 		loadDefaults();
 
 		// Parse the arguments.
-		this.parseParameters(cnt);
+		parseParameters(cnt);
 	}
 
+	@Override
 	protected void loadDefaults() {
 		super.loadDefaults();
 		speed = 1;
@@ -35,19 +36,22 @@ public class RandomNPC extends VGDLSprite {
 		is_stochastic = true;
 	}
 
+	@Override
 	public void update(Game game) {
-		super.updatePassive();
+		updatePassive();
 		Vector2d act = (Vector2d) Utils.choice(Types.BASEDIRS,
 				game.getRandomGenerator());
-		this.physics.activeMovement(this, act, this.speed);
+		physics.activeMovement(this, act, speed);
 	}
 
+	@Override
 	public VGDLSprite copy() {
 		RandomNPC newSprite = new RandomNPC();
-		this.copyTo(newSprite);
+		copyTo(newSprite);
 		return newSprite;
 	}
 
+	@Override
 	public void copyTo(VGDLSprite target) {
 		RandomNPC targetSprite = (RandomNPC) target;
 		super.copyTo(targetSprite);

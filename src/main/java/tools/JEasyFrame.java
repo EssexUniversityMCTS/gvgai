@@ -2,7 +2,6 @@ package tools;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowEvent;
 
 /**
  * Frame for the graphics. PTSP-Competition Created by Diego Perez, University
@@ -28,8 +27,8 @@ public class JEasyFrame extends JFrame {
 		this.comp = comp;
 		getContentPane().add(BorderLayout.CENTER, comp);
 		pack();
-		this.setVisible(true);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setVisible(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		repaint();
 	}
 

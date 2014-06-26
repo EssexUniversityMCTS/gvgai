@@ -29,16 +29,15 @@ public class GameContent extends Content {
 	 */
 	public GameContent(String line)
     {
-        super();
-        this.referenceClass = null;
+        referenceClass = null;
         this.line = line;
-        this.is_definition = false;
+        is_definition = false;
 
         //Init structures of node content.
-        parameters = new HashMap<String, String>();
+        parameters = new HashMap<>();
 
         //Take the pieces and the first one is the name that defines the content
-        String pieces[] = line.split(" ");
+        String[] pieces = line.split(" ");
         referenceClass = pieces[0].trim();
 
         //Take the other pieces and extract properties and parameters key-value.
@@ -47,7 +46,7 @@ public class GameContent extends Content {
             String piece = pieces[i].trim();
             if(piece.contains("="))
             {
-                String keyValue[] = piece.split("=");
+                String[] keyValue = piece.split("=");
                 String key = keyValue[0];
                 String value = keyValue[1];
 

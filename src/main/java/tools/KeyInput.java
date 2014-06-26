@@ -4,7 +4,6 @@ import ontology.Types;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
 /**
  * This class is used to manage the key input. PTSP-Competition Created by Diego
@@ -31,6 +30,7 @@ public class KeyInput extends KeyAdapter {
 	 * @param e
 	 *            the event.
 	 */
+	@Override
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		key_mask[key] = true;
@@ -42,6 +42,7 @@ public class KeyInput extends KeyAdapter {
 	 * @param e
 	 *            the event.
 	 */
+	@Override
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 		key_mask[key] = false;
@@ -56,8 +57,8 @@ public class KeyInput extends KeyAdapter {
 	}
 
 	public void setAction(Types.ACTIONS action) {
-        for(int i : action.getKey()){
-            key_mask[i] = true;
-        }
-    }
+		for (int i : action.getKey()) {
+			key_mask[i] = true;
+		}
+	}
 }

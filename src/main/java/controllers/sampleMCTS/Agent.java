@@ -7,6 +7,7 @@ import ontology.Types;
 import tools.ElapsedCpuTimer;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -33,20 +34,18 @@ public class Agent extends AbstractPlayer {
 	 * @param elapsedTimer
 	 *            Timer for the controller creation.
 	 */
-	public Agent(StateObservation so, ElapsedCpuTimer elapsedTimer)
-    {
-        //Get the actions in a static array.
-        ArrayList<Types.ACTIONS> act = so.getAvailableActions();
-        actions = new Types.ACTIONS[act.size()];
-        for(int i = 0; i < actions.length; ++i)
-        {
-            actions[i] = act.get(i);
-        }
-        NUM_ACTIONS = actions.length;
+	public Agent(StateObservation so, ElapsedCpuTimer elapsedTimer) {
+		// Get the actions in a static array.
+		List<Types.ACTIONS> act = so.getAvailableActions();
+		Agent.actions = new Types.ACTIONS[act.size()];
+		for (int i = 0; i < Agent.actions.length; ++i) {
+			Agent.actions[i] = act.get(i);
+		}
+		Agent.NUM_ACTIONS = Agent.actions.length;
 
-        //Create the player.
-        mctsPlayer = new SingleMCTSPlayer(new Random());
-    }
+		// Create the player.
+		mctsPlayer = new SingleMCTSPlayer(new Random());
+	}
 	/**
 	 * Picks an action. This function is called every game step to request an
 	 * action from the player.
@@ -57,18 +56,20 @@ public class Agent extends AbstractPlayer {
 	 *            Timer when the action returned is due.
 	 * @return An action for the current state
 	 */
-	public Types.ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
+	@Override
+	public Types.ACTIONS act(StateObservation stateObs,
+			ElapsedCpuTimer elapsedTimer) {
 
-        ArrayList<Observation> obs[] = stateObs.getFromAvatarSpritesPositions();
-        ArrayList<Observation> grid[][] = stateObs.getObservationGrid();
+		ArrayList<Observation>[] obs = stateObs.getFromAvatarSpritesPositions();
+		ArrayList<Observation>[][] grid = stateObs.getObservationGrid();
 
-        //Set the state observation object as the new root of the tree.
-        mctsPlayer.init(stateObs);
+		// Set the state observation object as the new root of the tree.
+		mctsPlayer.init(stateObs);
 
-        //Determine the action using MCTS...
-        int action = mctsPlayer.run(elapsedTimer);
+		// Determine the action using MCTS...
+		int action = mctsPlayer.run(elapsedTimer);
 
-        //... and return it.
-        return actions[action];
-    }
+		// ... and return it.
+		return Agent.actions[action];
+	}
 }

@@ -1,7 +1,5 @@
 package core.content;
 
-import tools.Utils;
-
 import java.util.HashMap;
 
 /**
@@ -28,9 +26,8 @@ public class InteractionContent extends Content {
 	 *            identifier of the second object in the interaction.
 	 */
 	public InteractionContent(String id1, String id2, String function) {
-		super();
-		this.object1 = id1;
-		this.object2 = id2;
+		object1 = id1;
+		object2 = id2;
 		this.function = function;
 	}
 
@@ -46,13 +43,13 @@ public class InteractionContent extends Content {
         this.line = line;
 
         //Init structures of node content.
-        parameters = new HashMap<String, String>();
+        parameters = new HashMap<>();
 
         //Take the pieces and the first one is the name that defines the content
-        String pieces[] = line.split(" ");
+        String[] pieces = line.split(" ");
         object1 = pieces[0].trim();
 
-        if(pieces.length < 2)
+        if(2 > pieces.length)
         {
             //This is the InteractionSet line. Just finish here
             identifier = pieces[0].trim();
@@ -66,15 +63,15 @@ public class InteractionContent extends Content {
             String piece = pieces[i].trim();
             if(piece.contains("="))
             {
-                String keyValue[] = piece.split("=");
+                String[] keyValue = piece.split("=");
                 String key = keyValue[0];
                 String value = keyValue[1];
 
                 parameters.put(key, value);
-            }else if(piece.equals(">"))
+            }else if(">".equals(piece))
             {
-                this.is_definition = true;
-            }else if(piece.length() > 0){
+                is_definition = true;
+            }else if(!piece.isEmpty()){
                 function = piece; //I'm assuming there is only one function per line... ?
             }
         }

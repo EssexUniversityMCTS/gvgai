@@ -18,18 +18,19 @@ public class HorizontalAvatar extends MovingAvatar {
 
 	public HorizontalAvatar(Vector2d position, Dimension size, SpriteContent cnt) {
 		// Init the sprite
-		this.init(position, size);
+		init(position, size);
 
 		// Specific class default parameter values.
 		loadDefaults();
 
 		// Parse the arguments.
-		this.parseParameters(cnt);
+		parseParameters(cnt);
 	}
 
+	@Override
 	public void postProcess() {
 		// Define actions here first.
-		if (actions.size() == 0) {
+		if (actions.isEmpty()) {
 			actions.add(Types.ACTIONS.ACTION_LEFT);
 			actions.add(Types.ACTIONS.ACTION_RIGHT);
 		}
@@ -37,20 +38,24 @@ public class HorizontalAvatar extends MovingAvatar {
 		super.postProcess();
 	}
 
+	@Override
 	protected void loadDefaults() {
 		super.loadDefaults();
 	}
 
+	@Override
 	public void update(Game game) {
 		super.update(game);
 	}
 
+	@Override
 	public VGDLSprite copy() {
 		HorizontalAvatar newSprite = new HorizontalAvatar();
-		this.copyTo(newSprite);
+		copyTo(newSprite);
 		return newSprite;
 	}
 
+	@Override
 	public void copyTo(VGDLSprite target) {
 		HorizontalAvatar targetSprite = (HorizontalAvatar) target;
 		super.copyTo(targetSprite);

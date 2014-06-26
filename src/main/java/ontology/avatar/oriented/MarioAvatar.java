@@ -1,52 +1,55 @@
 package ontology.avatar.oriented;
 
 import core.VGDLSprite;
-import ontology.Types;
 import core.content.SpriteContent;
+import ontology.Types;
 import tools.Vector2d;
 
 import java.awt.*;
 
 /**
- * Created with IntelliJ IDEA. User: Diego Date: 22/10/13 Time: 18:12 This is a
- * Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
+ * Created with IntelliJ IDEA. User: Diego Date: 22/10/13 Time: 18:12 This is a Java port from Tom Schaul's VGDL -
+ * https://github.com/schaul/py-vgdl
  */
 public class MarioAvatar extends InertialAvatar {
-	public boolean airsteering;
+  public boolean airsteering;
 
-	public MarioAvatar() {
-	}
+  public MarioAvatar() {
+  }
 
-	public MarioAvatar(Vector2d position, Dimension size, SpriteContent cnt) {
-		// Init the sprite
-		this.init(position, size);
+  public MarioAvatar(Vector2d position, Dimension size, SpriteContent cnt) {
+    // Init the sprite
+    init(position, size);
 
-		// Specific class default parameter values.
-		loadDefaults();
+    // Specific class default parameter values.
+    loadDefaults();
 
-		// Parse the arguments.
-		this.parseParameters(cnt);
-	}
+    // Parse the arguments.
+    parseParameters(cnt);
+  }
 
-	protected void loadDefaults() {
-		super.loadDefaults();
-		physicstype_id = Types.PHYSICS_GRAVITY;
-		draw_arrow = false;
-		strength = 10;
-		airsteering = false;
+  @Override
+  protected void loadDefaults() {
+    super.loadDefaults();
+    physicstype_id = Types.PHYSICS_GRAVITY;
+    draw_arrow = false;
+    strength = 10;
+    airsteering = false;
 
-	}
+  }
 
-	public VGDLSprite copy() {
-		MarioAvatar newSprite = new MarioAvatar();
-		this.copyTo(newSprite);
-		return newSprite;
-	}
+  @Override
+  public VGDLSprite copy() {
+    MarioAvatar newSprite = new MarioAvatar();
+    copyTo(newSprite);
+    return newSprite;
+  }
 
-	public void copyTo(VGDLSprite target) {
-		MarioAvatar targetSprite = (MarioAvatar) target;
-		targetSprite.airsteering = this.airsteering;
-		super.copyTo(targetSprite);
-	}
+  @Override
+  public void copyTo(VGDLSprite target) {
+    MarioAvatar targetSprite = (MarioAvatar) target;
+    targetSprite.airsteering = airsteering;
+    super.copyTo(targetSprite);
+  }
 
 }

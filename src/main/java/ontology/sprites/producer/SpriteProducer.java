@@ -16,25 +16,28 @@ public class SpriteProducer extends VGDLSprite {
 
 	public SpriteProducer(Vector2d position, Dimension size, SpriteContent cnt) {
 		// Init the sprite
-		this.init(position, size);
+		init(position, size);
 
 		// Specific class default parameter values.
 		loadDefaults();
 
 		// Parse the arguments.
-		this.parseParameters(cnt);
+		parseParameters(cnt);
 	}
 
+	@Override
 	protected void loadDefaults() {
 		super.loadDefaults();
 	}
 
+	@Override
 	public VGDLSprite copy() {
 		SpriteProducer newSprite = new SpriteProducer();
-		this.copyTo(newSprite);
+		copyTo(newSprite);
 		return newSprite;
 	}
 
+	@Override
 	public void copyTo(VGDLSprite target) {
 		SpriteProducer targetSprite = (SpriteProducer) target;
 		super.copyTo(targetSprite);

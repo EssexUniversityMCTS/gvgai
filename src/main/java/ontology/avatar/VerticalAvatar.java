@@ -17,25 +17,28 @@ public class VerticalAvatar extends MovingAvatar {
 
 	public VerticalAvatar(Vector2d position, Dimension size, SpriteContent cnt) {
 		// Init the sprite
-		this.init(position, size);
+		init(position, size);
 
 		// Specific class default parameter values.
 		loadDefaults();
 
 		// Parse the arguments.
-		this.parseParameters(cnt);
+		parseParameters(cnt);
 	}
 
+	@Override
 	protected void loadDefaults() {
 		super.loadDefaults();
 	}
 
+	@Override
 	public VGDLSprite copy() {
 		VerticalAvatar newSprite = new VerticalAvatar();
-		this.copyTo(newSprite);
+		copyTo(newSprite);
 		return newSprite;
 	}
 
+	@Override
 	public void copyTo(VGDLSprite target) {
 		VerticalAvatar targetSprite = (VerticalAvatar) target;
 		super.copyTo(targetSprite);

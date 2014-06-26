@@ -25,53 +25,55 @@ public class Spreader extends Flicker {
 
 	public Spreader(Vector2d position, Dimension size, SpriteContent cnt) {
 		// Init the sprite
-		this.init(position, size);
+		init(position, size);
 
 		// Specific class default parameter values.
 		loadDefaults();
 
 		// Parse the arguments.
-		this.parseParameters(cnt);
+		parseParameters(cnt);
 	}
 
+	@Override
 	protected void loadDefaults() {
 		super.loadDefaults();
 		spreadprob = 1.0;
 	}
 
+	@Override
 	public void postProcess() {
 		super.postProcess();
 		itype = -1;
-		if (stype != null)
+		if (null != stype)
 			itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
 	}
 
-	public void update(Game game)
-    {
-        super.update(game);
-        if(age == 2)
-        {
-            for(Vector2d u : Types.BASEDIRS)
-            {
-                if(game.getRandomGenerator().nextDouble() < spreadprob)
-                {
-                    int newType = (itype == -1) ? this.getType() : itype;
-                    game.addSprite(newType, new Vector2d(this.lastrect.x + u.x*this.lastrect.width,
-                                                    this.lastrect.y + u.y*this.lastrect.height));
-                }
-            }
-        }
+	@Override
+	public void update(Game game) {
+		super.update(game);
+		if (2 == age) {
+			for (Vector2d u : Types.BASEDIRS) {
+				if (game.getRandomGenerator().nextDouble() < spreadprob) {
+					int newType = -1 == itype ? getType() : itype;
+					game.addSprite(newType, new Vector2d(lastrect.x + u.x
+							* lastrect.width, lastrect.y + u.y
+							* lastrect.height));
+				}
+			}
+		}
 
-    }
+	}
+	@Override
 	public VGDLSprite copy() {
 		Spreader newSprite = new Spreader();
-		this.copyTo(newSprite);
+		copyTo(newSprite);
 		return newSprite;
 	}
 
+	@Override
 	public void copyTo(VGDLSprite target) {
 		Spreader targetSprite = (Spreader) target;
-		targetSprite.spreadprob = this.spreadprob;
+		targetSprite.spreadprob = spreadprob;
 		super.copyTo(targetSprite);
 	}
 }

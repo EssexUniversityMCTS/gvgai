@@ -19,34 +19,38 @@ public class RandomMissile extends Missile {
 
 	public RandomMissile(Vector2d position, Dimension size, SpriteContent cnt) {
 		// Init the sprite
-		this.init(position, size);
+		init(position, size);
 
 		// Specific class default parameter values.
 		loadDefaults();
 
 		// Parse the arguments.
-		this.parseParameters(cnt);
+		parseParameters(cnt);
 	}
 
+	@Override
 	protected void loadDefaults() {
 		super.loadDefaults();
 		orientation = Types.NIL;
 	}
 
+	@Override
 	public void update(Game game) {
 		if (orientation == Types.NIL) {
 			orientation = (Vector2d) Utils.choice(Types.BASEDIRS,
 					game.getRandomGenerator());
 		}
-		this.updatePassive();
+		updatePassive();
 	}
 
+	@Override
 	public VGDLSprite copy() {
 		RandomMissile newSprite = new RandomMissile();
-		this.copyTo(newSprite);
+		copyTo(newSprite);
 		return newSprite;
 	}
 
+	@Override
 	public void copyTo(VGDLSprite target) {
 		RandomMissile targetSprite = (RandomMissile) target;
 		super.copyTo(targetSprite);

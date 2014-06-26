@@ -25,15 +25,16 @@ public class SpawnPoint extends SpriteProducer {
 
 	public SpawnPoint(Vector2d position, Dimension size, SpriteContent cnt) {
 		// Init the sprite
-		this.init(position, size);
+		init(position, size);
 
 		// Specific class default parameter values.
 		loadDefaults();
 
 		// Parse the arguments.
-		this.parseParameters(cnt);
+		parseParameters(cnt);
 	}
 
+	@Override
 	protected void loadDefaults() {
 		super.loadDefaults();
 		prob = 1.0;
@@ -43,40 +44,44 @@ public class SpawnPoint extends SpriteProducer {
 		is_static = true;
 	}
 
+	@Override
 	public void postProcess() {
 		super.postProcess();
-		is_stochastic = (prob > 0 && prob < 1);
+		is_stochastic = 0 < prob && 1 > prob;
 		counter = 0;
 		itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
 	}
 
+	@Override
 	public void update(Game game) {
-		if ((game.getGameTick() % cooldown == 0)
+		if (0 == game.getGameTick() % cooldown
 				&& game.getRandomGenerator().nextFloat() < prob) {
-			game.addSprite(itype, this.getPosition());
+			game.addSprite(itype, getPosition());
 			counter++;
 		}
 
 		super.update(game);
 
-		if (total > 0 && counter >= total) {
+		if (0 < total && counter >= total) {
 			game.killSprite(this);
 		}
 	}
 
+	@Override
 	public VGDLSprite copy() {
 		SpawnPoint newSprite = new SpawnPoint();
-		this.copyTo(newSprite);
+		copyTo(newSprite);
 		return newSprite;
 	}
 
+	@Override
 	public void copyTo(VGDLSprite target) {
 		SpawnPoint targetSprite = (SpawnPoint) target;
-		targetSprite.prob = this.prob;
-		targetSprite.total = this.total;
-		targetSprite.counter = this.counter;
-		targetSprite.stype = this.stype;
-		targetSprite.itype = this.itype;
+		targetSprite.prob = prob;
+		targetSprite.total = total;
+		targetSprite.counter = counter;
+		targetSprite.stype = stype;
+		targetSprite.itype = itype;
 		super.copyTo(targetSprite);
 	}
 

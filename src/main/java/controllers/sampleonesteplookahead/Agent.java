@@ -1,12 +1,11 @@
 package controllers.sampleonesteplookahead;
 
 import controllers.Heuristics.SimpleStateHeuristic;
+import controllers.Heuristics.StateHeuristic;
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
-
-import java.util.concurrent.TimeoutException;
 
 /**
  * Created with IntelliJ IDEA. User: ssamot Date: 14/11/13 Time: 21:45 This is a
@@ -28,31 +27,29 @@ public class Agent extends AbstractPlayer {
 	 *            Timer when the action returned is due.
 	 * @return An action for the current state
 	 */
-	public Types.ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
+	@Override
+	public Types.ACTIONS act(StateObservation stateObs,
+			ElapsedCpuTimer elapsedTimer) {
 
-        Types.ACTIONS bestAction = null;
-        double maxQ = Double.NEGATIVE_INFINITY;
-        SimpleStateHeuristic heuristic =  new SimpleStateHeuristic(stateObs);
-        for (Types.ACTIONS action : stateObs.getAvailableActions()) {
+		Types.ACTIONS bestAction = null;
+		double maxQ = Double.NEGATIVE_INFINITY;
+		StateHeuristic heuristic = new SimpleStateHeuristic(stateObs);
+		for (Types.ACTIONS action : stateObs.getAvailableActions()) {
 
-            StateObservation stCopy = stateObs.copy();
-            stCopy.advance(action);
-            double Q = heuristic.evaluateState(stCopy);
+			StateObservation stCopy = stateObs.copy();
+			stCopy.advance(action);
+			double Q = heuristic.evaluateState(stCopy);
 
+			// System.out.println("Action:" + action + " score:" + Q);
+			if (Q > maxQ) {
+				maxQ = Q;
+				bestAction = action;
+			}
 
-            //System.out.println("Action:" + action + " score:" + Q);
-            if (Q > maxQ) {
-                maxQ = Q;
-                bestAction = action;
-            }
+		}
 
+		// System.out.println("====================");
+		return bestAction;
 
-        }
-
-       // System.out.println("====================");
-        return bestAction;
-
-
-
-    }
+	}
 }

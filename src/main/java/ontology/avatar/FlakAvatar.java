@@ -32,15 +32,16 @@ public class FlakAvatar extends HorizontalAvatar {
 
 	public FlakAvatar(Vector2d position, Dimension size, SpriteContent cnt) {
 		// Init the sprite
-		this.init(position, size);
+		init(position, size);
 
 		// Specific class default parameter values.
 		loadDefaults();
 
 		// Parse the arguments.
-		this.parseParameters(cnt);
+		parseParameters(cnt);
 	}
 
+	@Override
 	protected void loadDefaults() {
 		super.loadDefaults();
 		ammo = null;
@@ -50,9 +51,10 @@ public class FlakAvatar extends HorizontalAvatar {
 		color = Types.GREEN;
 	}
 
+	@Override
 	public void postProcess() {
 		// Define actions here first.
-		if (actions.size() == 0) {
+		if (actions.isEmpty()) {
 			actions.add(Types.ACTIONS.ACTION_USE);
 			actions.add(Types.ACTIONS.ACTION_LEFT);
 			actions.add(Types.ACTIONS.ACTION_RIGHT);
@@ -61,17 +63,18 @@ public class FlakAvatar extends HorizontalAvatar {
 		super.postProcess();
 
 		itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
-		if (ammo != null)
+		if (null != ammo)
 			ammoId = VGDLRegistry.GetInstance().getRegisteredSpriteValue(ammo);
 	}
 
+	@Override
 	public void update(Game game) {
 		super.update(game);
 
-		if (!hasMoved && Utils.processUseKey(game.ki.getMask()) && hasAmmo()) {
-			VGDLSprite added = game.addSprite(itype, new Vector2d(this.rect.x,
-					this.rect.y));
-			if (added != null) { // singleton sprites could not add anything
+		if (!hasMoved && Utils.processUseKey(Game.ki.getMask()) && hasAmmo()) {
+			VGDLSprite added = game.addSprite(itype, new Vector2d(rect.x,
+					rect.y));
+			if (null != added) { // singleton sprites could not add anything
 									// here.
 				reduceAmmo();
 				added.setFromAvatar(true);
@@ -80,39 +83,40 @@ public class FlakAvatar extends HorizontalAvatar {
 	}
 
 	private boolean hasAmmo() {
-		if (ammo == null)
+		if (null == ammo)
 			return true; // no ammo defined, I can shoot.
 
 		// If I have ammo, I must have enough resource of ammo type to be able
 		// to shoot.
 		if (resources.containsKey(ammoId))
-			if (minAmmo > -1)
-				return resources.get(ammoId) > minAmmo;
-			else
-				return resources.get(ammoId) > 0;
+			return -1 < minAmmo
+					? resources.get(ammoId) > minAmmo
+					: 0 < resources.get(ammoId);
 
 		return false;
 	}
 
 	private void reduceAmmo() {
-		if (ammo != null && resources.containsKey(ammoId)) {
+		if (null != ammo && resources.containsKey(ammoId)) {
 			resources.put(ammoId, resources.get(ammoId) - ammoCost);
 		}
 	}
+	@Override
 	public VGDLSprite copy() {
 		FlakAvatar newSprite = new FlakAvatar();
-		this.copyTo(newSprite);
+		copyTo(newSprite);
 		return newSprite;
 	}
 
+	@Override
 	public void copyTo(VGDLSprite target) {
 		FlakAvatar targetSprite = (FlakAvatar) target;
-		targetSprite.stype = this.stype;
-		targetSprite.itype = this.itype;
-		targetSprite.ammo = this.ammo;
-		targetSprite.ammoId = this.ammoId;
-		targetSprite.ammoCost = this.ammoCost;
-		targetSprite.minAmmo = this.minAmmo;
+		targetSprite.stype = stype;
+		targetSprite.itype = itype;
+		targetSprite.ammo = ammo;
+		targetSprite.ammoId = ammoId;
+		targetSprite.ammoCost = ammoCost;
+		targetSprite.minAmmo = minAmmo;
 		super.copyTo(targetSprite);
 	}
 

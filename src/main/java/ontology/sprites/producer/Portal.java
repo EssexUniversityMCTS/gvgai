@@ -21,15 +21,16 @@ public class Portal extends SpriteProducer {
 
 	public Portal(Vector2d position, Dimension size, SpriteContent cnt) {
 		// Init the sprite
-		this.init(position, size);
+		init(position, size);
 
 		// Specific class default parameter values.
 		loadDefaults();
 
 		// Parse the arguments.
-		this.parseParameters(cnt);
+		parseParameters(cnt);
 	}
 
+	@Override
 	protected void loadDefaults() {
 		super.loadDefaults();
 		is_static = true;
@@ -37,21 +38,24 @@ public class Portal extends SpriteProducer {
 		color = Types.BLUE;
 	}
 
+	@Override
 	public void postProcess() {
 		super.postProcess();
 		itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
 	}
 
+	@Override
 	public VGDLSprite copy() {
 		Portal newSprite = new Portal();
-		this.copyTo(newSprite);
+		copyTo(newSprite);
 		return newSprite;
 	}
 
+	@Override
 	public void copyTo(VGDLSprite target) {
 		Portal targetSprite = (Portal) target;
-		targetSprite.stype = this.stype;
-		targetSprite.itype = this.itype;
+		targetSprite.stype = stype;
+		targetSprite.itype = itype;
 		super.copyTo(targetSprite);
 	}
 }

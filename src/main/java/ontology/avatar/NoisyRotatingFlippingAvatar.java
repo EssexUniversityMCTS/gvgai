@@ -17,26 +17,29 @@ public class NoisyRotatingFlippingAvatar extends RotatingFlippingAvatar {
 	public NoisyRotatingFlippingAvatar(Vector2d position, Dimension size,
 			SpriteContent cnt) {
 		// Init the sprite
-		this.init(position, size);
+		init(position, size);
 
 		// Specific class default parameter values.
 		loadDefaults();
 
 		// Parse the arguments.
-		this.parseParameters(cnt);
+		parseParameters(cnt);
 	}
 
+	@Override
 	protected void loadDefaults() {
 		super.loadDefaults();
 		noiseLevel = 0.1;
 	}
 
+	@Override
 	public VGDLSprite copy() {
 		NoisyRotatingFlippingAvatar newSprite = new NoisyRotatingFlippingAvatar();
-		this.copyTo(newSprite);
+		copyTo(newSprite);
 		return newSprite;
 	}
 
+	@Override
 	public void copyTo(VGDLSprite target) {
 		NoisyRotatingFlippingAvatar targetSprite = (NoisyRotatingFlippingAvatar) target;
 		super.copyTo(targetSprite);

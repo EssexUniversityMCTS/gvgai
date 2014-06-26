@@ -1,6 +1,5 @@
 package ontology.sprites;
 
-import core.VGDLRegistry;
 import core.VGDLSprite;
 import core.content.SpriteContent;
 import tools.Vector2d;
@@ -16,30 +15,29 @@ public class Door extends Immovable {
 
 	public Door(Vector2d position, Dimension size, SpriteContent cnt) {
 		// Init the sprite
-		this.init(position, size);
+		init(position, size);
 
 		// Specific class default parameter values.
 		loadDefaults();
 
 		// Parse the arguments.
-		this.parseParameters(cnt);
+		parseParameters(cnt);
 	}
 
-	public void postProcess() {
-		super.postProcess();
-	}
-
+	@Override
 	protected void loadDefaults() {
 		super.loadDefaults();
 		portal = true;
 	}
 
+	@Override
 	public VGDLSprite copy() {
 		Door newSprite = new Door();
-		this.copyTo(newSprite);
+		copyTo(newSprite);
 		return newSprite;
 	}
 
+	@Override
 	public void copyTo(VGDLSprite target) {
 		Door targetSprite = (Door) target;
 		super.copyTo(targetSprite);

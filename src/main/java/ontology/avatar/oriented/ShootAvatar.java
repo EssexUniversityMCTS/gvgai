@@ -29,15 +29,16 @@ public class ShootAvatar extends OrientedAvatar {
 
 	public ShootAvatar(Vector2d position, Dimension size, SpriteContent cnt) {
 		// Init the sprite
-		this.init(position, size);
+		init(position, size);
 
 		// Specific class default parameter values.
 		loadDefaults();
 
 		// Parse the arguments.
-		this.parseParameters(cnt);
+		parseParameters(cnt);
 	}
 
+	@Override
 	protected void loadDefaults() {
 		super.loadDefaults();
 		ammo = null;
@@ -46,10 +47,11 @@ public class ShootAvatar extends OrientedAvatar {
 		itype = -1;
 	}
 
+	@Override
 	public void update(Game game) {
 		super.update(game);
 
-		if (!hasMoved && Utils.processUseKey(game.ki.getMask()) && hasAmmo()) {
+		if (!hasMoved && Utils.processUseKey(Game.ki.getMask()) && hasAmmo()) {
 			shoot(game);
 		}
 
@@ -58,14 +60,13 @@ public class ShootAvatar extends OrientedAvatar {
 	private void shoot(Game game) {
 		// TODO: Theoretically, we should be able to shoot many things here...
 		// to be done.
-		Vector2d dir = this.orientation.copy();
+		Vector2d dir = orientation.copy();
 		dir.normalise();
 
-		VGDLSprite newOne = game.addSprite(itype, new Vector2d(this.rect.x
-				+ dir.x * this.lastrect.width, this.rect.y + dir.y
-				* this.lastrect.height));
+		VGDLSprite newOne = game.addSprite(itype, new Vector2d(rect.x + dir.x
+				* lastrect.width, rect.y + dir.y * lastrect.height));
 
-		if (newOne != null) {
+		if (null != newOne) {
 			if (newOne.is_oriented)
 				newOne.orientation = dir;
 			reduceAmmo();
@@ -74,26 +75,25 @@ public class ShootAvatar extends OrientedAvatar {
 	}
 
 	private boolean hasAmmo() {
-		if (ammo == null)
+		if (null == ammo)
 			return true; // no ammo defined, I can shoot.
 
 		// If I have ammo, I must have enough resource of ammo type to be able
 		// to shoot.
-		if (resources.containsKey(ammoId))
-			return resources.get(ammoId) > 0;
+		return resources.containsKey(ammoId) && 0 < resources.get(ammoId);
 
-		return false;
 	}
 
 	private void reduceAmmo() {
-		if (ammo != null && resources.containsKey(ammoId)) {
+		if (null != ammo && resources.containsKey(ammoId)) {
 			resources.put(ammoId, resources.get(ammoId) - 1);
 		}
 	}
 
+	@Override
 	public void postProcess() {
 		// Define actions here first.
-		if (actions.size() == 0) {
+		if (actions.isEmpty()) {
 			actions.add(Types.ACTIONS.ACTION_USE);
 			actions.add(Types.ACTIONS.ACTION_LEFT);
 			actions.add(Types.ACTIONS.ACTION_RIGHT);
@@ -104,22 +104,24 @@ public class ShootAvatar extends OrientedAvatar {
 		super.postProcess();
 
 		itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
-		if (ammo != null)
+		if (null != ammo)
 			ammoId = VGDLRegistry.GetInstance().getRegisteredSpriteValue(ammo);
 	}
 
+	@Override
 	public VGDLSprite copy() {
 		ShootAvatar newSprite = new ShootAvatar();
-		this.copyTo(newSprite);
+		copyTo(newSprite);
 		return newSprite;
 	}
 
+	@Override
 	public void copyTo(VGDLSprite target) {
 		ShootAvatar targetSprite = (ShootAvatar) target;
-		targetSprite.stype = this.stype;
-		targetSprite.itype = this.itype;
-		targetSprite.ammo = this.ammo;
-		targetSprite.ammoId = this.ammoId;
+		targetSprite.stype = stype;
+		targetSprite.itype = itype;
+		targetSprite.ammo = ammo;
+		targetSprite.ammoId = ammoId;
 
 		super.copyTo(targetSprite);
 	}

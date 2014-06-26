@@ -4,7 +4,7 @@ package core.competition;
  * Created with IntelliJ IDEA. User: Diego Date: 17/11/13 Time: 13:48 This is a
  * Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
-public class CompetitionParameters {
+public final class CompetitionParameters {
 	/**
 	 * Milliseconds allowed per controller action.
 	 */
@@ -48,4 +48,6 @@ public class CompetitionParameters {
 	public static final long WARMUP_CP = 100;
 	public static final long WARMUP_ADV = 1000;
 
+	private CompetitionParameters() {
+	}
 }

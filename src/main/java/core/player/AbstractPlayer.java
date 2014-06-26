@@ -9,18 +9,12 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA. User: ssamot Date: 14/11/13 Time: 13:42 This is a
  * Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
 public abstract class AbstractPlayer {
-
-	/**
-	 * File where the actions played in a given game are stored.
-	 */
-	private String actionFile;
 
 	/**
 	 * Writer for the actions file.
@@ -35,7 +29,7 @@ public abstract class AbstractPlayer {
 	/**
 	 * Last action executed by this agent.
 	 */
-	private Types.ACTIONS lasAction = null;
+	private Types.ACTIONS lasAction;
 
 	/**
 	 * Picks an action. This function is called every game step to request an
@@ -61,13 +55,15 @@ public abstract class AbstractPlayer {
 	 * @param randomSeed
 	 *            Seed for the sampleRandom generator of the game to be played.
 	 */
-	final public void setup(String actionFile, int randomSeed) {
-		this.actionFile = actionFile;
+	public final void setup(String actionFile, int randomSeed) {
+		/*
+		 * File where the actions played in a given game are stored.
+		 */
 
 		try {
-			if (this.actionFile != null && SHOULD_LOG) {
-				writer = new BufferedWriter(new FileWriter(new File(
-						this.actionFile)));
+			if (null != actionFile) {
+				writer = new BufferedWriter(
+						new FileWriter(new File(actionFile)));
 				writer.write(randomSeed + "\n");
 			}
 		} catch (IOException e) {
@@ -78,9 +74,9 @@ public abstract class AbstractPlayer {
 	/**
 	 * Closes the agent, writing actions to file.
 	 */
-	final public void teardown() {
+	public final void teardown() {
 		try {
-			if (writer != null) {
+			if (null != writer) {
 				writer.close();
 			}
 		} catch (IOException e) {
@@ -94,12 +90,12 @@ public abstract class AbstractPlayer {
 	 * @param action
 	 *            the action to log.
 	 */
-	final public void logAction(Types.ACTIONS action) {
+	public final void logAction(Types.ACTIONS action) {
 
 		lasAction = action;
-		if (writer != null && SHOULD_LOG) {
+		if (null != writer) {
 			try {
-				writer.write(action.toString() + "\n");
+				writer.write(action + "\n");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

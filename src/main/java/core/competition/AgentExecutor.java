@@ -1,7 +1,6 @@
 package core.competition;
 
 import core.ArcadeMachine;
-import core.player.AbstractPlayer;
 
 import java.util.Random;
 
@@ -9,9 +8,12 @@ import java.util.Random;
  * Created with IntelliJ IDEA. User: Diego Date: 04/10/13 Time: 16:29 This is a
  * Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
-public class AgentExecutor {
+public final class AgentExecutor {
 
-	public static void main(String[] args) {
+	private AgentExecutor() {
+	}
+
+	public static void main(String... args) {
 
 		String map = args[0];
 		String level = args[1];

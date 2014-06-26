@@ -45,13 +45,13 @@
             </execution>
         </executions>
         <configuration>
-            <compilerSource>1.8</compilerSource>
-            <compilerCompliance>1.8</compilerCompliance>
-            <compilerTargetPlatform>1.8</compilerTargetPlatform>
+                    <compilerSource>1.7</compilerSource>
+                <compilerCompliance>1.7</compilerCompliance>
+            <compilerTargetPlatform>1.7</compilerTargetPlatform>
             <!--<configFile>${project.basedir}/../fmt/ugh.xml</configFile>-->
             <!--<configFile>https://raw.github.com/jnorthrup/RelaxFactory/x0uchdb/fmt/gwt-format.xml</configFile>-->
             <!--http://code.google.com/p/google-web-toolkit/source/browse/trunk/eclipse/settings/code-style/gwt-format.xml</configFile>&ndash;&gt;-->
-            <!--<configFile>${project.basedir}/../fmt/gwt-format.xml</configFile>-->
+            <configFile>fmt/gwt-format.xml</configFile>
             <lineEnding>LF</lineEnding>
         </configuration>
     </plugin>
