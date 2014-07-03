@@ -351,7 +351,7 @@ public class StateObservation
      * @return Observations of sprites the avatar created.
      */
     public ArrayList<Observation>[] getFromAvatarSpritesPositions() {
-        return model.getPortalsPositions(null);
+        return model.getFromAvatarSpPositions(null);
     }
 
     /**
@@ -366,7 +366,7 @@ public class StateObservation
      * @return Observations of sprites the avatar created.
      */
     public ArrayList<Observation>[] getFromAvatarSpritesPositions(Vector2d reference) {
-        return model.getPortalsPositions(reference);
+        return model.getFromAvatarSpPositions(reference);
     }
 
 }
