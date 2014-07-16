@@ -251,8 +251,9 @@ public class SingleTreeNode
                     allEqual = false;
                 }
 
-                if (children[i].nVisits + m_rnd.nextDouble() * epsilon > bestValue) {
-                    bestValue = children[i].nVisits;
+                double tieBreaker = m_rnd.nextDouble() * epsilon;
+                if (children[i].nVisits + tieBreaker > bestValue) {
+                    bestValue = children[i].nVisits + tieBreaker;
                     selected = i;
                 }
             }
@@ -277,8 +278,9 @@ public class SingleTreeNode
 
         for (int i=0; i<children.length; i++) {
 
-            if(children[i] != null && children[i].totValue + m_rnd.nextDouble() * epsilon > bestValue) {
-                bestValue = children[i].totValue;
+            double tieBreaker = m_rnd.nextDouble() * epsilon;
+            if(children[i] != null && children[i].totValue + tieBreaker > bestValue) {
+                bestValue = children[i].totValue + tieBreaker;
                 selected = i;
             }
         }

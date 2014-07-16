@@ -392,11 +392,8 @@ public abstract class Game
      */
     public void initForwardModel()
     {
-        if(fwdModel == null)
-        {
-            fwdModel = new ForwardModel(this);
-            fwdModel.update(this);
-        }
+        fwdModel = new ForwardModel(this);
+        fwdModel.update(this);
     }
 
     /**
@@ -567,7 +564,8 @@ public abstract class Game
         this.terminationHandling();     //check for game termination.
         this.checkTimeOut();            //Check for end of game by time steps.
 
-        //fwdModel.printObservationGrid(); //uncomment this to show the observation grid.
+        //if(gameTick == 0 || isEnded)
+        //    fwdModel.printObservationGrid(); //uncomment this to show the observation grid.
     }
 
     /**
