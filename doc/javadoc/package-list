@@ -5,6 +5,7 @@ controllers.replayer
 controllers.sampleGA
 controllers.sampleMCTS
 controllers.sampleRandom
+controllers.sampleonesteplookahead
 core
 core.competition
 core.content

@@ -596,7 +596,7 @@ public abstract class Game
      * a value stored in CompetitionParameters.MAX_TIMESTEPS. If the game is due to
      * end, the winner is determined and the flag isEnded is set to true.
      */
-    private void checkTimeOut()
+    protected void checkTimeOut()
     {
         if(gameTick >= CompetitionParameters.MAX_TIMESTEPS)
         {

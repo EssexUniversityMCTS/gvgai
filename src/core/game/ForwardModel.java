@@ -481,6 +481,7 @@ public class ForwardModel extends Game
             eventHandling();
             clearAll();
             terminationHandling();
+            checkTimeOut();
             updateAllObservations();
         }
     }
