@@ -448,7 +448,10 @@ public class ForwardModel extends Game
         this.ki.reset();
         this.ki.setAction(action);
         if(avatar != null)
+        {
             avatar.applyMovement(this.ki.getMask());
+            avatar.updateUse(this);
+        }
 
         //Now, update all others (but avatar).
         int typeIndex = spriteOrder.length-1;

@@ -112,6 +112,11 @@ public class MovingAvatar extends VGDLSprite {
         this.physics.activeMovement(this, action2D, this.speed);
     }
 
+    public void updateUse(Game game)
+    {
+        //Nothing to do by default.
+    }
+
     /**
      * Performs a given movement, with an action
      * @param actionMask action mask to perform.
