@@ -1,0 +1,44 @@
+BasicGame
+    SpriteSet
+        food > Immovable
+            fruit > color=PINK img=mushroom
+            pellet > color=LIGHTYELLOW shrinkfactor=0.5 img=pellet
+            power  > Resource color=LIGHTGREEN shrinkfactor=0.8 img=powerpill
+        nest > SpawnPoint img=portal portal=True
+            redspawn > stype=red
+            orangespawn > stype=orange
+            bluespawn > stype=blue
+            pinkspawn > stype=pink
+        moving >
+            ghost > RandomAltChaser stype1=hungry stype2=powered cooldown=3 epsilon=0.25 img=ghost
+                red    > color=LIGHTRED    singleton=True
+                blue   > color=LIGHTBLUE   singleton=True
+                pink   > color=PINK        singleton=True
+                orange > color=LIGHTORANGE singleton=True
+            pacman > OrientedAvatar img=avatar
+                hungry  > color=YELLOW
+                powered > color=ORANGE            
+            
+    InteractionSet
+        moving wall > stepBack
+        pacman EOS  > wrapAround
+        ghost EOS  > stepBack
+        hungry  power > transformTo stype=powered 
+        powered ghost > transformTo stype=hungry
+        power hungry  > killSprite
+        ghost powered > killSprite scoreChange=40
+        hungry ghost  > killSprite scoreChange=-1
+        power pacman > killSprite scoreChange=10
+        pellet pacman > killSprite scoreChange=1
+        fruit pacman > killSprite scoreChange=5
+        
+    LevelMapping
+        0 > power
+        . > pellet
+        A > hungry
+        1 > redspawn bluespawn pinkspawn orangespawn red blue pink orange
+        F > fruit
+        
+    TerminationSet
+        SpriteCounter stype=food   win=True     
+        SpriteCounter stype=pacman win=False   

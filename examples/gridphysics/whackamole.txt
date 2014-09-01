@@ -1,0 +1,27 @@
+BasicGame
+    SpriteSet
+        wall > Immovable color=LIGHTGRAY
+        entrance > SpawnPoint portal=True
+            tight > stype=slow color=WHITE prob=0.002 img=portal
+            wide  > stype=quick color=GRAY prob=0.01 img=door
+        moving >
+            cat > RandomNPC color=RED img=camel
+            avatar  > MovingAvatar
+        mole > Flicker shrinkfactor=0.7
+            quick > color=BLUE limit=20 img=mushroom
+            slow  > color=GREEN  limit=60 img=cocoon
+
+    LevelMapping
+        0 > wide
+        1 > tight
+        2 > cat
+
+    TerminationSet
+        Timeout limit=500 win=True
+        SpriteCounter  stype=avatar  limit=0 win=False
+
+    InteractionSet
+        moving  EOS  > stepBack
+        mole avatar > killSprite scoreChange=1
+        mole cat > killSprite scoreChange=-1
+        avatar cat > killSprite scoreChange=-5

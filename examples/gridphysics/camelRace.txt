@@ -1,0 +1,37 @@
+BasicGame
+    SpriteSet
+        camel > color=BROWN img=camel.png
+            randomCamel > RandomNPC speed=0.25
+            straightCamelFast > Missile speed=0.6
+                fastR > orientation=RIGHT
+                fastL > orientation=LEFT
+            straightCamelMedium > Missile speed=0.3
+                mediumR > orientation=RIGHT
+                mediumL > orientation=LEFT
+            straightCamelSlow > Missile speed=0.15
+                slowR > orientation=RIGHT
+                slowL > orientation=LEFT
+        structure >
+            goal  > Door color=GREEN img=door
+        winnerNPC > Immovable color=RED 
+        winnerPlayer > Immovable color=PINK 
+
+    InteractionSet
+        avatar goal > transformTo stype=winnerPlayer scoreChange=1
+        camel goal  > transformTo stype=winnerNPC scoreChange=-1
+        avatar wall > stepBack
+        camel wall  > stepBack
+
+    LevelMapping
+        G > goal
+        R > randomCamel
+        F > fastR
+        M > mediumR
+        S > slowR
+        f > fastL
+        m > mediumL
+        s > slowL
+
+    TerminationSet
+        MultiSpriteCounter stype1=winnerPlayer limit=1 win=True
+        MultiSpriteCounter stype1=winnerNPC limit=1 win=False

@@ -22,8 +22,15 @@ public class Test
 
         //Available games:
         String gamesPath = "examples/gridphysics/";
-        String games[] = new String[]{"aliens", "boulderdash", "butterflies", "chase", "frogs",
-                "missilecommand", "portals", "sokoban", "survivezombies", "zelda"};
+
+        //CIG 2014 Training Set Games
+        //String games[] = new String[]{"aliens", "boulderdash", "butterflies", "chase", "frogs",
+        //        "missilecommand", "portals", "sokoban", "survivezombies", "zelda"};
+
+        //CIG 2014 Validation Set Games
+        String games[] = new String[]{"camelRace", "digdug", "firestorms", "infection", "firecaster",
+                "overload", "pacman", "seaquest", "whackamole", "eggomania"};
+
 
         //Other settings
         boolean visuals = true;
@@ -37,7 +44,7 @@ public class Test
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
 
         // 1. This starts a game, in a level, played by a human.
-        //ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
+        ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
 
         // 2. This plays a game in a level by the controller.
         //ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed);
@@ -52,7 +59,7 @@ public class Test
         //ArcadeMachine.runGames(game, new String[]{level1, level2}, M, sampleRandomController, null, seed);
 
         //5. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
-        int N = 10, L = 5, M = 2;
+        /*int N = 10, L = 5, M = 2;
         boolean saveActions = false;
         String[] levels = new String[L];
         String[] actionFiles = new String[L*M];
@@ -66,6 +73,6 @@ public class Test
                     actionFiles[actionIdx++] = "actions_game_" + i + "_level_" + j + "_" + k + ".txt";
             }
             ArcadeMachine.runGames(game, levels, M, sampleMCTSController, saveActions? actionFiles:null, seed);
-        }
+        }    */
     }
 }

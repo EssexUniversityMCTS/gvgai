@@ -1,0 +1,11 @@
+wwwwwwwwwwwwwwwwwwwwwwwwwwww
+w0                w        w
+w      H   w      w    0   w
+w          w  0   H        w
+w     wwwwwwwwwwwwwwwwww   w
+w A          H         w 1 w
+w     wwwwwwwwwwwwwwwwww   w
+w          w  0            w
+w          w      w    0   w
+w0         H      w        w
+wwwwwwwwwwwwwwwwwwwwwwwwwwww

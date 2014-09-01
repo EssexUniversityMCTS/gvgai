@@ -1,0 +1,47 @@
+BasicGame square_size=30
+    SpriteSet
+        goodies > Immovable
+            gold > color=GOLD img=gold.png
+            gem  > color=GREEN shrinkfactor=0.6 img=diamond.png
+        shovel > OrientedFlicker limit=2 color=LIGHTGRAY img=shovel.png
+        weapon > singleton=True color=ORANGE
+            boulder > Missile  speed=0.2 img=boulder.png
+            resting > Immovable speed=0 img=boulder.png
+        moving >
+            avatar  > ShootAvatar stype=shovel
+            monster > Missile color=RED orientation=DOWN cooldown=4 img=monster.png
+            falling > Missile orientation=DOWN color=YELLOW speed=0.5 img=boulder.png
+        entrance > SpawnPoint total=5 cooldown=200 stype=monster img=portal.png portal=True
+
+    LevelMapping
+        0 > gem
+        1 > gold
+        E > entrance
+        M > monster
+
+    TerminationSet
+        SpriteCounter  stype=avatar  limit=0 win=False
+        MultiSpriteCounter  stype1=goodies stype2=monster limit=0 win=True
+
+    InteractionSet
+
+        gold shovel  > transformTo stype=falling
+        gold boulder > transformTo stype=falling
+        gem  avatar  > killSprite scoreChange=1
+        boulder wall > transformTo stype=resting
+        boulder wall > stepBack
+        avatar gold  > stepBack
+        avatar monster  > killSprite scoreChange=-1
+
+        monster wall > flipDirection
+        monster EOS  > flipDirection
+        monster boulder > killSprite scoreChange=2
+        falling wall > killSprite
+
+        shovel shovel > transformTo stype=boulder
+        weapon  EOS  > stepBack
+        weapon avatar  > killSprite
+        wall shovel  > killSprite
+        moving  EOS  > stepBack
+        moving  wall > stepBack
+        moving falling  > killSprite

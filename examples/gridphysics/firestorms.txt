@@ -1,0 +1,28 @@
+BasicGame
+    SpriteSet
+        fire    > RandomMissile color=ORANGE speed=0.25 img=fire
+        seed    > SpawnPoint color=RED prob=0.25 img=portal stype=fire portal=True
+        water   > Resource color=BLUE limit=10 value=2
+        escape  > Door color=GREEN img=door
+        avatar  > MovingAvatar
+        wall    > Immovable color=DARKGRAY img=wall
+
+    TerminationSet
+        SpriteCounter stype=escape win=True
+        SpriteCounter stype=avatar win=False
+
+    InteractionSet
+        avatar wall   > stepBack
+        escape avatar > killSprite
+        water avatar  > collectResource
+        water avatar  > killSprite
+        avatar fire > changeResource resource=water value=-1 scoreChange=-1
+        avatar fire  > killIfHasLess resource=water limit=0
+        fire water  > killSprite
+        fire avatar  > killSprite
+        fire   wall   > killSprite
+
+    LevelMapping
+        1 > escape
+        0 > seed
+        H > water

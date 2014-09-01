@@ -1,0 +1,43 @@
+BasicGame
+    SpriteSet
+        fireAsh > Immovable
+        goal   > Door color=GREEN img=door
+        box    > Immovable color=BROWN img=box
+        health > Resource color=RED limit=3 value=3
+        mana    > Resource color=GREEN limit=3 img=mana
+        bullet > Missile color=RED singleton=True img=bullet
+        fire   > Spreader color=ORANGE spreadprob=0.25 stype=spark img=fire
+        spark  > SpawnPoint stype=fireAsh total=1 img=explosion
+        avatar > ShootAvatar ammo=mana stype=bullet
+
+    InteractionSet
+        health avatar > collectResource
+        health avatar > killSprite
+        avatar wall  > stepBack
+        avatar box   > stepBack
+        mana avatar  > collectResource scoreChange=1
+        mana avatar  > killSprite
+        goal avatar  > killSprite
+        avatar fire > changeResource resource=health value=-1 scoreChange=-2
+        avatar fire  > killIfHasLess resource=health limit=0
+        fire avatar  > killSprite
+        bullet wall  > killSprite
+        box bullet   > killSprite scoreChange=1
+        bullet box   > transformTo stype=fire
+        fire   box   > killSprite
+        fire   fire  > killSprite
+        mana   fire  > killSprite
+        box    fireAsh  > killSprite
+        fireAsh box     > killSprite
+        fireAsh wall    > killSprite
+        fireAsh avatar  > killSprite
+
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=goal   limit=0 win=True
+
+    LevelMapping
+        G > goal
+        b > box
+        . > mana
+        A > avatar health

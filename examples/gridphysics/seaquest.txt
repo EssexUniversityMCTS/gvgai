@@ -1,0 +1,57 @@
+BasicGame
+    SpriteSet
+        bubble > Chaser stype=avatar invisible=True
+        sky   > Immovable color=WHITE
+        saved > Immovable color=LIGHTGREEN img=avatar
+        holes > SpawnPoint color=LIGHTGRAY img=portal portal=True
+            sharkhole  >  stype=shark  prob=0.01
+            whalehole  >  stype=whale  prob=0.005
+            diverhole  >  stype=diver
+                normaldiverhole > prob=0.005
+                oftendiverhole  > prob=0.025
+        bubblehole > SpawnPoint stype=bubble cooldown=25 invisible=True
+        moving >
+            avatar  > ShootAvatar color=YELLOW  stype=torpedo img=spaceship
+            torpedo > Missile color=YELLOW shrinkfactor=0.3 img=missile
+            fish >
+                shark  > Missile orientation=LEFT  speed=0.25 color=ORANGE img=frog
+                whale  > Bomber  orientation=RIGHT  speed=0.1 color=BROWN stype=pirana prob=0.02 img=bee 
+                pirana > Missile orientation=RIGHT speed=0.25 color=RED shrinkfactor=0.5 img=camel
+            diver > RandomNPC color=GREEN speed=0.5 img=ghost
+        air   > Resource color=WHITE limit=20 value=18
+        crew  > Resource color=GREEN limit=4 value=0 img=alien
+
+    LevelMapping
+        a > sky
+        X > bubblehole
+        A > air avatar crew
+        w > water
+        1 > sharkhole
+        2 > whalehole
+        3 > normaldiverhole
+        4 > oftendiverhole
+
+    TerminationSet
+        SpriteCounter      stype=avatar               limit=0 win=False
+
+    InteractionSet
+        avatar  EOS  > stepBack
+        torpedo EOS  > killSprite
+        fish EOS  > killSprite
+        diver   EOS  > stepBack
+        diver   sky  > stepBack
+        avatar fish  > killSprite
+        fish torpedo > killSprite scoreChange=1
+        air avatar > collectResource
+        air avatar > killSprite
+        crew avatar > collectResource
+        crew avatar > killSprite
+        avatar sky > changeResource resource=air
+        avatar sky > spawnIfHasMore resource=crew stype=saved limit=4
+        avatar sky > changeResource resource=crew value=-4
+        saved  sky > killSprite scoreChange=1000
+        avatar bubble > changeResource resource=air value=-1
+        bubble avatar > killSprite
+        avatar diver > changeResource resource=crew
+        diver avatar > killSprite
+        avatar bubble > killIfHasLess resource=air limit=1

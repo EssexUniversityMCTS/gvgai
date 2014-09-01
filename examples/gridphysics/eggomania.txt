@@ -1,0 +1,34 @@
+BasicGame
+
+    SpriteSet
+        trunk   > Immovable    color=BROWN  img=log
+        brokenegg > Immovable    color=YELLOW
+        explosiveegg > Resource color=GOLD limit=20
+        movable >
+            chicken  > Bomber stype=egg   img=monster
+                fastChicken > prob=0.2  cooldown=4 speed=0.8
+                slowChicken > prob=0.1  cooldown=6 speed=0.4
+            avatar  > FlakAvatar stype=sam ammo=explosiveegg minAmmo=5 ammoCost=5
+        missile > Missile
+            sam  > orientation=UP    color=BLUE singleton=True img=sword
+            egg  > orientation=DOWN  color=RED speed=0.2 img=honey
+
+    InteractionSet
+        chicken wall  > reverseDirection
+        chicken wall  > stepBack
+        avatar wall  > stepBack
+        egg wall  > transformTo stype=brokenegg
+        avatar egg > changeResource resource=explosiveegg value=1
+        egg avatar > killSprite scoreChange=1
+        chicken sam > killSprite scoreChange=100
+        sam EOS > killSprite
+
+    LevelMapping
+        s > slowChicken
+        c > fastChicken
+        t > trunk
+
+    TerminationSet
+        Timeout limit=1500 win=True
+        SpriteCounter      stype=chicken limit=0 win=True
+        MultiSpriteCounter stype1=brokenegg limit=1 win=False
