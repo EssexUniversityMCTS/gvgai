@@ -1,0 +1,23 @@
+BasicGame
+    SpriteSet
+        avatar > MovingAvatar
+        ground > Immovable img=water
+        paint > Immovable
+        prepaint > Immovable
+    LevelMapping
+        A > avatar ground
+        . > ground
+        x > paint
+    InteractionSet
+        avatar wall > wallStop
+        
+        ground avatar > transformTo stype=paint
+        paint avatar > transformTo stype=ground
+        
+        #ground avatar > transformTo stype=prepaint
+        #paint avatar > transformTo stype=ground
+        #prepaint avatar > transformTo stype=paint
+    TerminationSetb
+        SpriteCounter stype=ground limit=0 win=True
+        
+        

@@ -1,0 +1,59 @@
+#The Citadel: http://www.mobygames.com/game/citadel__
+
+BasicGame
+    SpriteSet
+        squarehole   > Immovable color=DARKBLUE img=portal
+        roundhole   > Immovable color=DARKBLUE img=hole
+        avatar > MovingAvatar #cooldown=4
+            nokey > img=alien #cooldown=4
+            withkey > img=alien #cooldown=4
+        goal > Immovable img=door
+        crate    > Passive img=box shrinkfactor=0.8
+        boulder    > Passive img=boulder shrinkfactor=0.8
+        holefilling > Flicker img=box limit=0
+    LevelMapping
+        0 > roundhole
+        1 > squarehole
+        B > boulder
+        C > crate
+        G > goal
+    InteractionSet
+        avatar wall > stepBack
+        avatar squarehole > stepBack
+        avatar roundhole > stepBack
+        boulder avatar  > bounceForward
+        boulder boulder > undoAll
+        boulder crate > undoAll
+        boulder wall > undoAll
+        boulder goal > undoAll
+        
+        boulder roundhole > killSprite
+        roundhole boulder > killSprite
+        boulder squarehole > killSprite
+        
+        crate avatar  > bounceForward
+        crate crate  > bounceForward
+        crate crate  > bounceForward
+        crate crate  > bounceForward
+        crate crate  > bounceForward
+        crate crate  > bounceForward
+        crate crate  > bounceForward
+        crate crate  > bounceForward
+        crate crate  > bounceForward
+        crate crate  > bounceForward
+        crate crate  > bounceForward
+        crate wall > undoAll
+        crate boulder > undoAll
+        crate goal > undoAll
+        crate roundhole > undoAll
+        
+        crate squarehole > killSprite
+        squarehole crate > killSprite
+        
+
+        
+        goal avatar > killSprite scoreChange=1
+
+    TerminationSet
+        SpriteCounter stype=goal limit=0 win=True
+        SpriteCounter stype=avatar limit=0 win=False

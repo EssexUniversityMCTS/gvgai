@@ -1,0 +1,28 @@
+#IceCrates: http://www.puzzlescript.net/play.html?p=6877049
+
+BasicGame
+    SpriteSet
+        avatar > OrientedAvatar
+        hole   > Immovable color=DARKBLUE img=hole
+        ground > Immovable img=water
+        box    > Passive img=box
+        boxin  > Passive img=city
+        boxmovin > Missile img=hell
+    LevelMapping
+        A > avatar
+        0 > hole
+        B > box
+    InteractionSet
+        boxmovin wall > transformTo stype=box 
+        boxmovin box > transformTo stype=box
+
+        avatar wall > stepBack
+        box avatar  > transformTo stype=boxmovin
+        boxmovin avatar > attractGaze
+        avatar box > stepBack
+        avatar boxmovin > stepBack
+        box wall > undoAll
+        box box > undoAll
+
+    TerminationSet
+        SpriteCounter stype=avatar    limit=0 win=False
