@@ -101,11 +101,15 @@ public class MovingAvatar extends VGDLSprite {
             action = Types.ACTIONS.ACTION_NIL;
 
         this.player.logAction(action);
-        game.ki.reset();
-        game.ki.setAction(action);
+        if (!(this.player instanceof controllers.human.Agent)){
+	        game.ki.reset();
+	        game.ki.setAction(action);
+        }
 
         Vector2d action2D = Utils.processMovementActionKeys(game.ki.getMask());
 
+        if (this.player instanceof controllers.human.Agent) game.ki.reset();
+        
         if(action2D != Types.NONE)
             hasMoved = true;
 
