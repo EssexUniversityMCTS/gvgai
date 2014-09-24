@@ -1,0 +1,14 @@
+BasicGame
+    SpriteSet
+        avatar  > ShootAvatar
+        egg > Passive img=city
+
+    LevelMapping
+        e > egg
+
+
+    TerminationSet
+        SpriteCounter      stype=avatar               limit=0 win=False        
+    InteractionSet
+        avatar  EOS  > stepBack
+        

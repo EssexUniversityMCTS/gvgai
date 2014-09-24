@@ -1,0 +1,24 @@
+#http://www.puzzlescript.net/editor.html?hack=6847423
+
+BasicGame
+    SpriteSet
+        isincenter > Flicker limit=1
+        avatar  > MovingAvatar
+        ground > Immovable color=RED
+        walked > Immovable color=GREEN
+        rock > Immovable img=boulder
+        
+    
+    LevelMapping
+        R > rock
+        . > ground
+        
+    TerminationSet
+        SpriteCounter      stype=avatar               limit=0 win=False  
+        MultiSpriteCounter   stype1=isincenter  stype2=ground   limit=0 win=True        
+    InteractionSet
+        avatar  EOS  > stepBack
+        avatar  rock  > stepBack
+        avatar  walked  > stepBack
+        ground avatar > transformTo stype=walked scoreChange=1
+        walked avatar > spawnIfHasMore resource=null limit=0 stype=isincenter

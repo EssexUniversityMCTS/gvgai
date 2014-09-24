@@ -1,0 +1,44 @@
+#Solar Fox: http://www.mobygames.com/game/atari-2600/solar-fox
+
+BasicGame
+    SpriteSet
+        enemyground > Immovable img=water
+        powerblibturning > Flicker limit=8
+        avatar  > MissileAvatar color=YELLOW img=spaceship cooldown=4
+        powerblib > Passive img=powerpill
+        blib > Passive img=pellet
+        enemy > Missile cooldown=3 img=camel
+            top > orientation=RIGHT shrinkfactor=1
+            btm > orientation=LEFT shrinkfactor=1
+        shot > Missile shrinkfactor=0.5 img=explosion
+            upshot > orientation=UP speed=0.15
+            downshot > orientation=DOWN speed=0.15
+        res > Resource
+        
+
+    LevelMapping
+        b > blib
+        p > powerblib
+        2 > top enemyground
+        1 > btm enemyground
+        . > enemyground
+ 
+
+    TerminationSet
+        SpriteCounter      stype=avatar               limit=0 win=False
+        MultiSpriteCounter      stype1=blib stype2=powerblib               limit=0 win=True
+
+    InteractionSet
+        avatar  wall  > killSprite scoreChange=-10
+        avatar enemy > killSprite scoreChange=-10
+        avatar enemyground > killSprite scoreChange=-10
+        avatar shot > killSprite scoreChange=-10
+        blib avatar > killSprite scoreChange=1
+        powerblib powerblibturning > spawnIfHasMore resource=res stype=blib limit=2
+        powerblibturning avatar > killSprite 
+        powerblib blib > killSprite scoreChange=1
+        powerblib avatar > spawnIfHasMore resource=null stype=powerblibturning limit=0
+        powerblib powerblibturning > changeResource resource=res
+        enemy wall > reverseDirection
+        btm enemyground > spawnIfHasMore resource=null stype=upshot limit=0 prob=0.02
+        top enemyground > spawnIfHasMore resource=null stype=downshot limit=0 prob=0.02

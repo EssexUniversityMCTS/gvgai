@@ -1,0 +1,53 @@
+#Bombuzal: http://www.mobygames.com/game/bombuzal
+
+BasicGame
+    SpriteSet
+        avatar  > ShootAvatar stype=lightfuse shrinkfactor=0.7
+        ground    > Immovable    color=WHITE
+        brokenground > Immovable img=marsh color=RED
+        bomb > Immovable 
+            bomboff > Immovable img=bomb shrinkfactor=0.8
+            bigbomboff > Immovable img=bomb
+            blowupbomb > Spreader color=ORANGE spreadprob=1 stype=explosion img=fire limit=10 invisible=True
+            bigblowupbomb > Spreader color=ORANGE spreadprob=1 stype=killexplosion img=fire limit=10 invisible=True
+        lightfuse > Chaser img=city stype=avatar singleton=TRUE
+        explosion > Flicker img=fire limit=2 shrinkfactor=0.8
+        killexplosion > Flicker img=fire limit=2
+        bombstandon > Flicker limit=2 invisible=True
+        bigbombstandon > Flicker limit=2 invisible=True
+        
+    
+    LevelMapping
+        A > avatar ground
+        . > ground
+        x > brokenground
+        b > bomboff ground
+        c > bigbomboff ground
+
+
+    TerminationSet
+        SpriteCounter      stype=avatar               limit=0 win=False        
+        SpriteCounter      stype=bomb               limit=0 win=True        
+    InteractionSet
+        avatar  EOS  > stepBack
+        avatar wall > stepBack
+        avatar killexplosion > killSprite
+        
+        bomboff explosion > transformTo stype=blowupbomb
+        bomboff killexplosion > transformTo stype=blowupbomb
+        bomboff avatar > spawnIfHasMore stype=bombstandon resource=null limit=0
+        bigbomboff explosion > transformTo stype=bigblowupbomb
+        bigbomboff killexplosion > transformTo stype=bigblowupbomb
+        bigbomboff avatar > spawnIfHasMore stype=bigbombstandon resource=null limit=0
+        
+        blowupbomb ground > spawnIfHasMore stype=killexplosion resource=null limit=0
+        bigblowupbomb ground > spawnIfHasMore stype=killexplosion resource=null limit=0
+        ground killexplosion > transformTo stype=wall
+
+        brokenground avatar > transformTo stype=wall scoreChange=1
+        brokenground killexplosion > transformTo stype=wall scoreChange=1
+        bombstandon lightfuse > transformTo stype=blowupbomb
+        bigbombstandon lightfuse > transformTo stype=bigblowupbomb
+        lightfuse avatar > killSprite 
+        
+        bomboff killexplosion > killSprite
