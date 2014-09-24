@@ -1,5 +1,3 @@
-wwwwww
-wA...w
-w..B.w
-w.xx.w
-wwwwww
+A...
+....
+.xx.

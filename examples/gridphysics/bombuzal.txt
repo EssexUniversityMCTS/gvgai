@@ -4,7 +4,7 @@ BasicGame
     SpriteSet
         avatar  > ShootAvatar stype=lightfuse shrinkfactor=0.7
         ground    > Immovable    color=WHITE
-        brokenground > Immovable color=RED
+        brokenground > Immovable img=marsh color=RED
         bomb > Immovable 
             bomboff > Immovable img=bomb shrinkfactor=0.8
             bigbomboff > Immovable img=bomb

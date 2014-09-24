@@ -19,6 +19,7 @@ BasicGame
             ldown > orientation=DOWN
             lright > orientation=RIGHT
             lleft > orientation=LEFT
+        pushingbox > Resource limit=2 value=0
     LevelMapping
         A > avatar
         B > box
@@ -34,6 +35,7 @@ BasicGame
     
         avatar wall > stepBack
         avatar lasercannon > stepBack
+        avatar box > changeResource resource=pushingbox value=1
         box avatar  > bounceForward
         box wall    > undoAll
         box box     > undoAll
@@ -67,7 +69,8 @@ BasicGame
         laser boulderm > killSprite
         laser box > killSprite
         laser hole > killSprite
-        avatar laser > killSprite
+        avatar laser > changeResource resource=pushingbox value=-1
+        avatar laser > killIfHasLess resource=pushingbox limit=0
         avatar hole > stepBack
         
         goal avatar > killSprite

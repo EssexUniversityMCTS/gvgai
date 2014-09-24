@@ -5,8 +5,8 @@ BasicGame
         black > Immovable color=BLACK
         white > Immovable color=WHITE
         grey > Immovable
-        target > Passive img=portal
-        winTarget > Immovable img=portal
+        target > Passive img=portal shrinkfactor=0.9
+        winTarget > Immovable img=portal shrinkfactor=0.9
         crate > Passive img=box shrinkfactor=0.8
         avatar > MovingAvatar img=ghost
         	inBlack > img=avatar
@@ -28,7 +28,7 @@ BasicGame
         SpriteCounter      stype=target               limit=0 win=True
         
     InteractionSet
-        avatar wall > stepBack
+        avatar EOS > stepBack
         inBlack white > stepBack
         inWhite black > stepBack
         avatar black > transformTo stype=inBlack

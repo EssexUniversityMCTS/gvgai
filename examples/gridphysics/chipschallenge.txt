@@ -55,7 +55,7 @@ BasicGame
         c > chip
         E > exit
         f > flippers
-        b > fireboots
+        i > fireboots
         C > crate
         
 
@@ -71,6 +71,9 @@ BasicGame
         crate door > undoAll
         crate key > undoAll
         crate mud > undoAll
+        crate fire > undoAll
+        crate flippers > undoAll
+        crate fireboots > undoAll
         
         crate water > killSprite
         water crate > transformTo stype=mud
@@ -107,6 +110,7 @@ BasicGame
         avatar yellowdoor > spawnIfHasMore resource=yellowkey limit=1 stype=yellowkeyused
         yellowdoor avatar > killIfOtherHasMore resource=yellowkey limit=1
         avatar yellowkeyused > changeResource resource=yellowkey value=-1
+        keyused avatar > killSprite
         
         avatar wall  > undoAll
         avatar door > undoAll
