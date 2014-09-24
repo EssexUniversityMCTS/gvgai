@@ -15,24 +15,24 @@ import tools.Vector2d;
  */
 public class AttractGaze extends Effect
 {
-//    public double prob;
+    public double prob;
 
     public AttractGaze(InteractionContent cnt)
     {
+        prob = 1;
         this.parseParameters(cnt);
 
-        setStochastic();
+        if(prob > 0 && prob < 1)
+            is_stochastic = true;
     }
 
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
-    {    	
+    {
         if(sprite1.is_oriented && sprite2.is_oriented)
         {
-        	
             if(game.getRandomGenerator().nextDouble() < prob)
                 sprite1.orientation = sprite2.orientation.copy();
-            
         }
     }
 }

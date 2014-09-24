@@ -518,13 +518,6 @@ public abstract class Game
 
             //Update the frame title to reflect current score and tick.
             frame.setTitle("Java-VGDL: Score:" + score + ". Tick:" + this.getGameTick());
-            
-//            try {
-//				Thread.sleep(5000);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
         }
 
         return handleResult();
@@ -757,11 +750,6 @@ public abstract class Game
             // two sprites could have defined between them.
             for(Effect ef : collisionEffects[p.first][p.second])
             {
-            	for (int i = 0; i < bucketList.length; i++) {
-            		bucketList[i].clear();
-            		noSprites[i] = false;
-				}
-            	
                 // Consider the two types to populate the array bucketList, that encloses the sprites
                 // of both types that could take part in any interaction.
                 for(int intId : new int[]{p.first, p.second})

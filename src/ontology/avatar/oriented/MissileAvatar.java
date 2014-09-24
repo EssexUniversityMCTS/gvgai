@@ -1,12 +1,9 @@
 package ontology.avatar.oriented;
 
 import core.VGDLSprite;
-import core.competition.CompetitionParameters;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
-import tools.ElapsedCpuTimer;
-import tools.Utils;
 import tools.Vector2d;
 
 import java.awt.*;
@@ -43,14 +40,6 @@ public class MissileAvatar extends OrientedAvatar
 
     public void update(Game game)
     {
-        ElapsedCpuTimer ect = new ElapsedCpuTimer(ElapsedCpuTimer.TimerType.CPU_TIME);
-        ect.setMaxTimeMillis(CompetitionParameters.ACTION_TIME);
-        Types.ACTIONS action = this.player.act(game.getObservation(), ect);
-        game.ki.reset();
-        game.ki.setAction(action);
-    	Vector2d action2D = Utils.processMovementActionKeys(game.ki.getMask());
-    	
-    	if (action2D.x != 0 || action2D.y != 0) orientation = action2D;
         //MissileAvatar has no actions available. Just update movement.
         updatePassive();
     }

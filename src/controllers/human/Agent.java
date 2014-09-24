@@ -33,34 +33,6 @@ public class Agent extends AbstractPlayer
      */
     public Types.ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer)
     {
-//   	 Types.ACTIONS action = Types.ACTIONS.ACTION_NIL;
-// 	
-//   	 while (action == Types.ACTIONS.ACTION_NIL){
-//   		 
-//   		 
-//   		 
-//	        Vector2d move = Utils.processMovementActionKeys(Game.ki.getMask());
-//	        boolean useOn = Utils.processUseKey(Game.ki.getMask());
-//	
-//	        //In the keycontroller, move has preference.
-//	        action = Types.ACTIONS.fromVector(move);
-//	
-//	        if(action == Types.ACTIONS.ACTION_NIL && useOn)
-//	            action = Types.ACTIONS.ACTION_USE;
-//	        
-//	        if (action == Types.ACTIONS.ACTION_NIL)
-//				try {
-//					Thread.sleep(50);
-//				} catch (InterruptedException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//
-//   	 }
-//       return action;
-    	
-    	
-    	
         Vector2d move = Utils.processMovementActionKeys(Game.ki.getMask());
         boolean useOn = Utils.processUseKey(Game.ki.getMask());
 
