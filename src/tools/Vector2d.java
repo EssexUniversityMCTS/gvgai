@@ -25,33 +25,19 @@ public class Vector2d
         this(0, 0);
     }
 
-    @Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(x);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(y);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Vector2d other = (Vector2d) obj;
-		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
-			return false;
-		if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
-			return false;
-		return true;
-	}
+    /**
+     * Checks if a vector and this are the same.
+     * @param o the other vector to check
+     * @return true if their coordinates are the same.
+     */
+    public boolean equals(Object o) {
+        if (o instanceof Vector2d) {
+            Vector2d v = (Vector2d) o;
+            return x == v.x && y == v.y;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * Builds a vector from its coordinates.
@@ -313,9 +299,6 @@ public class Vector2d
         }
         else return new Vector2d(1,0);
     }
-    
-    
-    
 
 }
 
