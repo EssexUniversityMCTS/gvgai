@@ -120,8 +120,7 @@ public class SingleTreeNode
             //System.out.println("norm child value: " + childValue);
 
             double uctValue = childValue +
-                    Agent.K * Math.sqrt(Math.log(this.nVisits + 1) / (child.nVisits + this.epsilon)) +
-                    this.m_rnd.nextDouble() * this.epsilon;
+                    Agent.K * Math.sqrt(Math.log(this.nVisits + 1) / (child.nVisits + this.epsilon));
 
             uctValue = Utils.noise(uctValue, this.epsilon, this.m_rnd.nextDouble());     //break ties randomly
 
