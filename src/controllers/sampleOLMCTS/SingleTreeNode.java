@@ -1,4 +1,4 @@
-package controllers.sampleMCTS;
+package controllers.sampleOLMCTS;
 
 import core.game.StateObservation;
 import ontology.Types;
@@ -13,24 +13,27 @@ public class SingleTreeNode
     private static final double HUGE_POSITIVE =  10000000.0;
     public static double epsilon = 1e-6;
     public static double egreedyEpsilon = 0.05;
-    public StateObservation state;
     public SingleTreeNode parent;
     public SingleTreeNode[] children;
     public double totValue;
     public int nVisits;
     public static Random m_rnd;
-    private int m_depth;
+    public int m_depth;
     protected static double[] bounds = new double[]{Double.MAX_VALUE, -Double.MAX_VALUE};
+    public int childIdx;
+
+    public static StateObservation rootState;
+
     public SingleTreeNode(Random rnd) {
-        this(null, null, rnd);
+        this(null, -1, rnd);
     }
 
-    public SingleTreeNode(StateObservation state, SingleTreeNode parent, Random rnd) {
-        this.state = state;
+    public SingleTreeNode(SingleTreeNode parent, int childIdx, Random rnd) {
         this.parent = parent;
         this.m_rnd = rnd;
         children = new SingleTreeNode[Agent.NUM_ACTIONS];
         totValue = 0.0;
+        this.childIdx = childIdx;
         if(parent != null)
             m_depth = parent.m_depth+1;
         else
@@ -47,33 +50,34 @@ public class SingleTreeNode
 
         int remainingLimit = 5;
         while(remaining > 2*avgTimeTaken && remaining > remainingLimit){
+        //while(numIters < Agent.MCTS_ITERATIONS){
+
+            StateObservation state = rootState.copy();
+
             ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
-            SingleTreeNode selected = treePolicy();
-            double delta = selected.rollOut();
+            SingleTreeNode selected = treePolicy(state);
+            double delta = selected.rollOut(state);
             backUp(selected, delta);
 
             numIters++;
             acumTimeTaken += (elapsedTimerIteration.elapsedMillis()) ;
-
+            //System.out.println(elapsedTimerIteration.elapsedMillis() + " --> " + acumTimeTaken + " (" + remaining + ")");
             avgTimeTaken  = acumTimeTaken/numIters;
             remaining = elapsedTimer.remainingTimeMillis();
-            //System.out.println(elapsedTimerIteration.elapsedMillis() + " --> " + acumTimeTaken + " (" + remaining + ")");
         }
-        //System.out.println("-- " + numIters + " -- ( " + avgTimeTaken + ")");
     }
 
-    public SingleTreeNode treePolicy() {
+    public SingleTreeNode treePolicy(StateObservation state) {
 
         SingleTreeNode cur = this;
 
-        while (!cur.state.isGameOver() && cur.m_depth < Agent.ROLLOUT_DEPTH)
+        while (!state.isGameOver() && cur.m_depth < Agent.ROLLOUT_DEPTH)
         {
             if (cur.notFullyExpanded()) {
-                return cur.expand();
+                return cur.expand(state);
 
             } else {
-                SingleTreeNode next = cur.uct();
-                //SingleTreeNode next = cur.egreedy();
+                SingleTreeNode next = cur.uct(state);
                 cur = next;
             }
         }
@@ -82,7 +86,7 @@ public class SingleTreeNode
     }
 
 
-    public SingleTreeNode expand() {
+    public SingleTreeNode expand(StateObservation state) {
 
         int bestAction = 0;
         double bestValue = -1;
@@ -95,16 +99,15 @@ public class SingleTreeNode
             }
         }
 
-        StateObservation nextState = state.copy();
-        nextState.advance(Agent.actions[bestAction]);
+        //Roll the state
+        state.advance(Agent.actions[bestAction]);
 
-        SingleTreeNode tn = new SingleTreeNode(nextState, this, this.m_rnd);
+        SingleTreeNode tn = new SingleTreeNode(this,bestAction,this.m_rnd);
         children[bestAction] = tn;
         return tn;
-
     }
 
-    public SingleTreeNode uct() {
+    public SingleTreeNode uct(StateObservation state) {
 
         SingleTreeNode selected = null;
         double bestValue = -Double.MAX_VALUE;
@@ -113,13 +116,13 @@ public class SingleTreeNode
             double hvVal = child.totValue;
             double childValue =  hvVal / (child.nVisits + this.epsilon);
 
-
             childValue = Utils.normalise(childValue, bounds[0], bounds[1]);
+            //System.out.println("norm child value: " + childValue);
 
             double uctValue = childValue +
-                    Agent.K * Math.sqrt(Math.log(this.nVisits + 1) / (child.nVisits + this.epsilon));
+                    Agent.K * Math.sqrt(Math.log(this.nVisits + 1) / (child.nVisits + this.epsilon)) +
+                    this.m_rnd.nextDouble() * this.epsilon;
 
-            // small sampleRandom numbers: break ties in unexpanded nodes
             uctValue = Utils.noise(uctValue, this.epsilon, this.m_rnd.nextDouble());     //break ties randomly
 
             // small sampleRandom numbers: break ties in unexpanded nodes
@@ -128,71 +131,39 @@ public class SingleTreeNode
                 bestValue = uctValue;
             }
         }
-
         if (selected == null)
         {
-            throw new RuntimeException("Warning! returning null: " + bestValue + " : " + this.children.length);
+            throw new RuntimeException("Warning! returning null: " + bestValue + " : " + this.children.length + " " +
+            + bounds[0] + " " + bounds[1]);
         }
 
-        return selected;
-    }
-
-    public SingleTreeNode egreedy() {
-
-
-        SingleTreeNode selected = null;
-
-        if(m_rnd.nextDouble() < egreedyEpsilon)
-        {
-            //Choose randomly
-            int selectedIdx = m_rnd.nextInt(children.length);
-            selected = this.children[selectedIdx];
-
-        }else{
-            //pick the best Q.
-            double bestValue = -Double.MAX_VALUE;
-            for (SingleTreeNode child : this.children)
-            {
-                double hvVal = child.totValue;
-                hvVal = Utils.noise(hvVal, this.epsilon, this.m_rnd.nextDouble());     //break ties randomly
-                // small sampleRandom numbers: break ties in unexpanded nodes
-                if (hvVal > bestValue) {
-                    selected = child;
-                    bestValue = hvVal;
-                }
-            }
-
-        }
-
-
-        if (selected == null)
-        {
-            throw new RuntimeException("Warning! returning null: " + this.children.length);
-        }
+        //Roll the state:
+        state.advance(Agent.actions[selected.childIdx]);
 
         return selected;
     }
 
 
-    public double rollOut()
+    public double rollOut(StateObservation state)
     {
-        StateObservation rollerState = state.copy();
         int thisDepth = this.m_depth;
 
-        while (!finishRollout(rollerState,thisDepth)) {
+        while (!finishRollout(state,thisDepth)) {
 
             int action = m_rnd.nextInt(Agent.NUM_ACTIONS);
-            rollerState.advance(Agent.actions[action]);
+            state.advance(Agent.actions[action]);
             thisDepth++;
         }
 
-        double delta = value(rollerState);
+
+        double delta = value(state);
 
         if(delta < bounds[0])
             bounds[0] = delta;
-
         if(delta > bounds[1])
             bounds[1] = delta;
+
+        //double normDelta = Utils.normalise(delta ,lastBounds[0], lastBounds[1]);
 
         return delta;
     }
@@ -281,6 +252,7 @@ public class SingleTreeNode
         for (int i=0; i<children.length; i++) {
 
             if(children[i] != null) {
+                //double tieBreaker = m_rnd.nextDouble() * epsilon;
                 double childValue = children[i].totValue / (children[i].nVisits + this.epsilon);
                 childValue = Utils.noise(childValue, this.epsilon, this.m_rnd.nextDouble());     //break ties randomly
                 if (childValue > bestValue) {
