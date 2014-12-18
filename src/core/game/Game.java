@@ -573,7 +573,7 @@ public abstract class Game
      * (score, time and winner) and returns the score of the game.
      * @return the result of the game.
      */
-    private double handleResult()
+    public double handleResult()
     {
         //If the player got disqualified, set it here.
         if(disqualified){

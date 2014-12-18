@@ -59,11 +59,21 @@ public class ArcadeMachine
         Game toPlay = new VGDLParser().parseGame(game_file);
         toPlay.buildLevel(level_file);
 
-        //Second, create the player.
+        //Warm the game up.
+        ArcadeMachine.warmUp(toPlay, CompetitionParameters.WARMUP_TIME);
+
+        //Create the player.
         AbstractPlayer player = ArcadeMachine.createPlayer(agentName, actionFile, toPlay.getObservation(), randomSeed);
 
-        //Third, warm the game up.
-        ArcadeMachine.warmUp(toPlay, CompetitionParameters.WARMUP_TIME);
+        if(player == null)
+        {
+            //Something went wrong in the constructor, controller disqualified
+            toPlay.disqualify();
+
+            //Get the score for the result.
+            return toPlay.handleResult();
+
+        }
 
         //Then, play the game.
         double score = 0.0;
@@ -99,6 +109,15 @@ public class ArcadeMachine
         //Second, create the player. Note: null as action_file and -1 as sampleRandom seed
         // (we don't want to record anything from this execution).
         AbstractPlayer player = ArcadeMachine.createPlayer(agentName, null, toPlay.getObservation(), -1);
+
+        if(player == null)
+        {
+            //Something went wrong in the constructor, controller disqualified
+            toPlay.disqualify();
+
+            //Get the score for the result.
+            return toPlay.handleResult();
+        }
 
         int seed = 0;
         ArrayList<Types.ACTIONS> actions = new ArrayList<Types.ACTIONS> ();
@@ -185,18 +204,32 @@ public class ArcadeMachine
                 toPlay.buildLevel(level_file);
 
                 String filename = recordActions ? actionFiles[levelIdx*level_times + i] : null;
-                //Second, create the player.
-                AbstractPlayer player = ArcadeMachine.createPlayer(agentName, filename, toPlay.getObservation(), randomSeed);
 
-                //Third, warm the game up.
+                //Warm the game up.
                 ArcadeMachine.warmUp(toPlay, CompetitionParameters.WARMUP_TIME);
 
-                //Then, play the game.
-                double score = toPlay.runGame(player, randomSeed);
+                //Create the player.
+                AbstractPlayer player = ArcadeMachine.createPlayer(agentName, filename, toPlay.getObservation(), randomSeed);
+
+                double score = -1;
+                if(player == null)
+                {
+                    //Something went wrong in the constructor, controller disqualified
+                    toPlay.disqualify();
+
+                    //Get the score for the result.
+                    score = toPlay.handleResult();
+
+                }else{
+
+                    //Then, play the game.
+                    score = toPlay.runGame(player, randomSeed);
+                }
+
                 scores.add(score);
 
                 //Finally, when the game is over, we need to tear the player down.
-                ArcadeMachine.tearPlayerDown(player);
+                if(player != null) ArcadeMachine.tearPlayerDown(player);
 
                 //reset the game.
                 toPlay.reset();
@@ -226,7 +259,8 @@ public class ArcadeMachine
         try{
             //create the controller.
             player = createController(playerName, so);
-            player.setup(actionFile, randomSeed);
+            if(player != null)
+                player.setup(actionFile, randomSeed);
 
         }catch (Exception e)
         {
@@ -260,7 +294,7 @@ public class ArcadeMachine
             ect.setMaxTimeMillis(CompetitionParameters.INITIALIZATION_TIME);
 
             //Call the constructor with the appropriate parameters.
-            Object[] constructorArgs = new Object[] {so, ect};
+            Object[] constructorArgs = new Object[] {so, ect.copy()};
             player = (AbstractPlayer) controllerArgsConstructor.newInstance(constructorArgs);
 
             //Check if we returned on time, and act in consequence.
@@ -270,8 +304,7 @@ public class ArcadeMachine
                 long exceeded =  - ect.remainingTimeMillis();
                 System.out.println("Controller initialization time out (" + exceeded + ").");
 
-                //if time was out, throw exception.
-                throw new RuntimeException("Controller initialization time out " + timeTaken);
+                return null;
             }
             else
             {
