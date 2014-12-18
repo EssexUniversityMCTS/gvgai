@@ -76,7 +76,7 @@ public class MovingAvatar extends VGDLSprite {
 
         hasMoved = false;
 
-        ElapsedCpuTimer ect = new ElapsedCpuTimer(ElapsedCpuTimer.TimerType.CPU_TIME);
+        ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
         ect.setMaxTimeMillis(CompetitionParameters.ACTION_TIME);
 
         Types.ACTIONS action = this.player.act(game.getObservation(), ect);

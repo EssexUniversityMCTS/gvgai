@@ -1,5 +1,7 @@
 package core.competition;
 
+import tools.ElapsedCpuTimer;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Diego
@@ -52,6 +54,11 @@ public class CompetitionParameters
     public static final long WARMUP_TIME = 5000;
     public static final long WARMUP_CP = 100;
     public static final long WARMUP_ADV = 1000;
+
+    /**
+     * Indicates the type of timer the framework should use.
+     */
+    public static ElapsedCpuTimer.TimerType TIMER_TYPE = ElapsedCpuTimer.TimerType.CPU_TIME;
 
 
 }

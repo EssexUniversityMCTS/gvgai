@@ -256,7 +256,7 @@ public class ArcadeMachine
             Constructor controllerArgsConstructor = controllerClass.getConstructor(gameArgClass);
 
             //Determine the time due for the controller creation.
-            ElapsedCpuTimer ect = new ElapsedCpuTimer(ElapsedCpuTimer.TimerType.CPU_TIME);
+            ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
             ect.setMaxTimeMillis(CompetitionParameters.INITIALIZATION_TIME);
 
             //Call the constructor with the appropriate parameters.
@@ -322,7 +322,7 @@ public class ArcadeMachine
     private static void warmUp(Game toPlay, long howLong)
     {
         StateObservation stateObs = toPlay.getObservation();
-        ElapsedCpuTimer ect = new ElapsedCpuTimer(ElapsedCpuTimer.TimerType.CPU_TIME);
+        ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
         ect.setMaxTimeMillis(howLong);
 
         int playoutLength = 10;
