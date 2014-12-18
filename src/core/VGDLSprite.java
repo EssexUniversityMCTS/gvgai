@@ -600,6 +600,9 @@ public abstract class VGDLSprite {
             } catch (IOException e) {
                 System.out.println("Image " + str + " could not be found.");
                 e.printStackTrace();
+            } catch (Exception e) {
+                //Ignore other exceptions.
+                //If no images are shown, it'll draw an coloured rectangle instead.
             }
         }
     }
