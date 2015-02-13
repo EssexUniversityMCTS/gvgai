@@ -449,8 +449,10 @@ public class ForwardModel extends Game
         this.ki.setAction(action);
         if(avatar != null)
         {
-            avatar.applyMovement(this.ki.getMask());
-            avatar.updateUse(this);
+            //avatar.applyMovement(this, this.ki.getMask());
+            //avatar.updateUse(this);
+            avatar.preMovement();
+            avatar.move(this, this.ki.getMask());
         }
 
         //Now, update all others (but avatar).
@@ -464,7 +466,10 @@ public class ForwardModel extends Game
             {
                 VGDLSprite sp = spriteIt.next();
                 if(sp != avatar)
+                {
+                    sp.preMovement();
                     sp.update(this);
+                }
             }
         }
 
@@ -607,13 +612,17 @@ public class ForwardModel extends Game
 
     /**
      * Returns the actions that are available in this game for
-     * the avatar.
-     * @return the available actions. An empty list if the game is ended.
+     * the avatar. If the parameter 'includeNIL' is true, the array contains the (always available)
+     * NIL action. If it is false, this is equivalent to calling getAvailableActions().
+     * @param includeNIL true to include Types.ACTIONS.ACTION_NIL in the array of actions.
+     * @return the available actions.
      */
-    public ArrayList<Types.ACTIONS> getAvatarActions()
+    public ArrayList<Types.ACTIONS> getAvatarActions(boolean includeNIL)
     {
         if(isEnded)
             return new ArrayList<Types.ACTIONS>();
+        if(includeNIL)
+            return avatar.actionsNIL;
         return avatar.actions;
     }
 

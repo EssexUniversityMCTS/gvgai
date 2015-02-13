@@ -4,7 +4,7 @@ BasicGame
     SpriteSet
         hole   > Immovable color=DARKBLUE img=hole
         goal > Immovable img=door
-        avatar > OrientedAvatar cooldown=2
+        avatar > OrientedAvatar cooldown=2 rotateInPlace=false
         box    > Passive img=box
         boulderinhole > Flicker img=boulder limit=1
         boulder    > Passive img=boulder
@@ -54,7 +54,7 @@ BasicGame
         
         boulderm hole > spawnIfHasMore resource=null limit=0 stype=boulderinhole
         boulderm hole > killSprite
-        hole boulderinhole > killSprite
+        hole boulderinhole > killSprite  scoreChange=1
         
         
         
@@ -73,7 +73,7 @@ BasicGame
         avatar laser > killIfHasLess resource=pushingbox limit=0
         avatar hole > stepBack
         
-        goal avatar > killSprite
+        goal avatar > killSprite scoreChange=5
     TerminationSet
         SpriteCounter stype=avatar    limit=0 win=False
         SpriteCounter stype=goal    limit=0 win=True

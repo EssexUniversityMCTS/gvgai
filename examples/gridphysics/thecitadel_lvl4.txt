@@ -1,11 +1,11 @@
 wwwwwwwwwww
+wCC    CCCw
 wCC C  CCCw
-wCC C  CCCw
-wC  C  CCCw
-www w w   w
+wC  C     w
+www w w C w
 wG11111  Aw
 www w w   w
-wC  CC    w
-wCC  C  CCw
-wCCC C CCCw
+wC  CC  C w
+wCC  C    w
+wCCC   CCCw
 wwwwwwwwwww

@@ -517,10 +517,26 @@ public abstract class Game
             view.paint(this.spriteGroups);
 
             //Update the frame title to reflect current score and tick.
-            frame.setTitle("Java-VGDL: Score:" + score + ". Tick:" + this.getGameTick());
+            this.setTitle(frame);
+
         }
 
         return handleResult();
+    }
+
+    /**
+     * Sets the title of the game screen, depending on the game ending state.
+     * @param frame The frame whose title needs to be set.
+     */
+    private void setTitle (JEasyFrame frame)
+    {
+        if(!isEnded)
+            frame.setTitle("Java-VGDL: Score:" + score + ". Tick:" + this.getGameTick());
+        else if(winner == Types.WINNER.PLAYER_WINS)
+            frame.setTitle("Java-VGDL: Score:" + score + ". Tick:" + this.getGameTick() + " [Player WINS!]");
+        else
+            frame.setTitle("Java-VGDL: Score:" + score + ". Tick:" + this.getGameTick() + " [Player LOSES!]");
+
     }
 
     /**
@@ -682,6 +698,7 @@ public abstract class Game
             if(keys!=null) for(Integer spriteKey : keys)
             {
                 VGDLSprite sp = spriteGroups[spriteTypeInt].getSprite(spriteKey);
+                sp.preMovement();
                 sp.update(this);
             }
         }
@@ -750,6 +767,12 @@ public abstract class Game
             // two sprites could have defined between them.
             for(Effect ef : collisionEffects[p.first][p.second])
             {
+
+                for (int i = 0; i < bucketList.length; i++) {
+                    bucketList[i].clear();
+                    noSprites[i] = false;
+                }
+
                 // Consider the two types to populate the array bucketList, that encloses the sprites
                 // of both types that could take part in any interaction.
                 for(int intId : new int[]{p.first, p.second})
@@ -764,7 +787,6 @@ public abstract class Game
                             Collection<VGDLSprite> sprites = this.getSprites(itype).values();
                             for(VGDLSprite sp : sprites)
                             {
-                                //bucketList[intId].insert(sp);
                                 bucketList[intId].add(sp);
                             }
                         }
@@ -809,12 +831,12 @@ public abstract class Game
                                     VGDLSprite s2 = spritesInBucket2.get(idx2);
                                     if(s1 != s2 && s1.rect.intersects(s2.rect))
                                     {
-                                        //Affect score:
-                                        this.score += ef.scoreChange;
-                                        //if(ef.scoreChange!=0) System.out.println("Score: (" + ef.scoreChange + "): " + this.score);
-
                                         //There is a collision. Apply the effect.
                                         ef.execute(s1,s2,this);
+
+                                        //Affect score:
+                                        if(ef.applyScore)
+                                            this.score += ef.scoreChange;
 
                                         //Add to events history.
                                         addEvent(s1, s2);

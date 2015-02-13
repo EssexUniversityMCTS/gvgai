@@ -1,6 +1,7 @@
 package ontology.physics;
 
 import core.VGDLSprite;
+import ontology.Types;
 import tools.Vector2d;
 
 import java.awt.*;
@@ -34,7 +35,7 @@ public class ContinuousPhysics extends GridPhysics
     }
 
     @Override
-    public void passiveMovement(VGDLSprite sprite)
+    public Types.MOVEMENT passiveMovement(VGDLSprite sprite)
     {
         if(sprite.speed != 0 && sprite.is_oriented)
         {
@@ -45,17 +46,22 @@ public class ContinuousPhysics extends GridPhysics
                 this.activeMovement(sprite, gravityAction, 0);
             }
             sprite.speed *= (1-this.friction);
+            return Types.MOVEMENT.MOVE;
         }
+        return Types.MOVEMENT.STILL;
     }
 
 
     @Override
-    public void activeMovement(VGDLSprite sprite, Vector2d action, double speed)
+    public Types.MOVEMENT activeMovement(VGDLSprite sprite, Vector2d action, double speed)
     {
         //Here the assumption is that the controls determine the direction of
         //acceleration of the sprite.
         if(speed == 0)
             speed = sprite.speed;
+
+        if(speed == 0)
+            return Types.MOVEMENT.STILL;
 
         double v1 = (action.x / (float)sprite.mass) + (sprite.orientation.x * speed);
         double v2 = (action.y / (float)sprite.mass) + (sprite.orientation.y * speed);
@@ -68,6 +74,8 @@ public class ContinuousPhysics extends GridPhysics
         sprite.orientation = dir;
         sprite.orientation.normalise();
         sprite.speed = dir.mag();
+
+        return Types.MOVEMENT.MOVE;
     }
 
 

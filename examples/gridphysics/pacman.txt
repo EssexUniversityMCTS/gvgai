@@ -15,7 +15,7 @@ BasicGame
                 blue   > color=LIGHTBLUE   singleton=True
                 pink   > color=PINK        singleton=True
                 orange > color=LIGHTORANGE singleton=True
-            pacman > OrientedAvatar img=avatar
+            pacman > OrientedAvatar img=avatar rotateInPlace=false
                 hungry  > color=YELLOW
                 powered > color=ORANGE            
             

@@ -38,10 +38,8 @@ public class VGDLFactory
              "ErraticMissile", "Missile", "RandomMissile", "Walker", "WalkerJumper",
              "ResourcePack", "Chaser", "Fleeing", "RandomInertial", "RandomNPC", "AlternateChaser", "RandomAltChaser",
              "Bomber", "Portal", "SpawnPoint", "SpriteProducer", "Door",
-             "FlakAvatar", "HorizontalAvatar","MovingAvatar", "VerticalAvatar",
-             "NoisyRotatingFlippingAvatar","RotatingAvatar","RotatingFlippingAvatar",
-             "AimedAvatar","AimedFlakAvatar","InertialAvatar","MarioAvatar",
-             "OrientedAvatar","ShootAvatar", "MissileAvatar"};
+             "FlakAvatar", "HorizontalAvatar","MovingAvatar","MissileAvatar",
+             "OrientedAvatar","ShootAvatar", "OngoingAvatar"};
 
 
     /**
@@ -52,10 +50,8 @@ public class VGDLFactory
              ErraticMissile.class, Missile.class, RandomMissile.class, Walker.class, WalkerJumper.class,
              ResourcePack.class, Chaser.class, Fleeing.class, RandomInertial.class, RandomNPC.class, AlternateChaser.class, RandomAltChaser.class,
              Bomber.class, Portal.class, SpawnPoint.class, SpriteProducer.class, Door.class,
-             FlakAvatar.class, HorizontalAvatar.class,MovingAvatar.class, VerticalAvatar.class,
-             NoisyRotatingFlippingAvatar.class,RotatingAvatar.class,RotatingFlippingAvatar.class,
-             AimedAvatar.class,AimedFlakAvatar.class,InertialAvatar.class,MarioAvatar.class,
-             OrientedAvatar.class,ShootAvatar.class, MissileAvatar.class};
+             FlakAvatar.class, HorizontalAvatar.class,MovingAvatar.class,MissileAvatar.class,
+             OrientedAvatar.class,ShootAvatar.class, OngoingAvatar.class};
 
     /**
      * Available effects for VGDL.

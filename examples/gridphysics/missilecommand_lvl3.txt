@@ -1,4 +1,4 @@
-w    m  m   m  m  m m mw
+w    m     f    m   f  w
 w                      w
 w                      w
 w                      w
@@ -8,5 +8,5 @@ w           A          w
 w                      w
 w                      w
 w                      w
-w   c c c c c c c c    w
+w   c              c   w
 wwwwwwwwwwwwwwwwwwwwwwww

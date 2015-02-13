@@ -39,25 +39,47 @@ public class OrientedAvatar extends MovingAvatar
         orientation = Types.RIGHT.copy();
         draw_arrow = true;
         is_oriented = true;
+        rotateInPlace = true;
     }
 
+
+    /**
+     * This update call is for the game tick() loop.
+     * @param game current state of the game.
+     */
     public void update(Game game)
     {
-        Vector2d tmp = orientation.copy();
-        orientation = Types.NONE.copy();
-
         super.update(game);
 
-        Vector2d dir = lastDirection();
-        if(dir.x == 0 && dir.y == 0)
+        //If the last thing the avatar did is to move (displacement), then update
+        //the orientation in the direction of the move.
+        if(lastMovementType == Types.MOVEMENT.MOVE)
         {
-            //No movement.
-            orientation = tmp;
-        }else{
-            //moved, update:
+            Vector2d dir = lastDirection();
             dir.normalise();
             orientation = dir;
         }
+        //Otherwise, orientation is already updated, no need to change anything.
+    }
+
+    /**
+     * This move call is for the Forward Model tick() loop.
+     * @param game current state of the game.
+     * @param actionMask action to apply.
+     */
+    public void move(Game game, boolean[] actionMask)
+    {
+        super.move(game, actionMask);
+
+        //If the last thing the avatar did is to move (displacement), then update
+        //the orientation in the direction of the move.
+        if(lastMovementType == Types.MOVEMENT.MOVE)
+        {
+            Vector2d dir = lastDirection();
+            dir.normalise();
+            orientation = dir;
+        }
+        //Otherwise, orientation is already updated, no need to change anything.
     }
 
     public VGDLSprite copy()

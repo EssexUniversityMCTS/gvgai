@@ -15,15 +15,10 @@ import tools.Vector2d;
  */
 public class AttractGaze extends Effect
 {
-    public double prob;
-
     public AttractGaze(InteractionContent cnt)
     {
-        prob = 1;
         this.parseParameters(cnt);
-
-        if(prob > 0 && prob < 1)
-            is_stochastic = true;
+        setStochastic();
     }
 
     @Override

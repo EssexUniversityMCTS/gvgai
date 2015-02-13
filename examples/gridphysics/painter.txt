@@ -19,10 +19,10 @@ BasicGame
         avatar EOS > stepBack
         
         prepaint avatar > killSprite
-       	ground avatar > spawnIfHasMore stype=prepaint resource=null limit=0 scoreChange=1
+       	ground avatar > spawnIfHasMore stype=prepaint resource=null limit=0
         prepaint ground > changeResource resource=prepainting value=1
         prepaint ground > spawnIfHasMore resource=prepainting limit=2 stype=paint 
-        ground prepaint > killIfOtherHasMore resource=prepainting limit=2 
+        ground prepaint > killIfOtherHasMore resource=prepainting limit=2  scoreChange=1
         
         preground avatar > killSprite
         paint avatar > spawnIfHasMore stype=preground resource=null limit=0

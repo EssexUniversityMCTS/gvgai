@@ -15,6 +15,7 @@ BasicGame
         killexplosion > Flicker img=fire limit=2
         bombstandon > Flicker limit=2 invisible=True
         bigbombstandon > Flicker limit=2 invisible=True
+        water > Immovable img=water
         
     
     LevelMapping
@@ -23,14 +24,15 @@ BasicGame
         x > brokenground
         b > bomboff ground
         c > bigbomboff ground
-
+        w > water
 
     TerminationSet
         SpriteCounter      stype=avatar               limit=0 win=False        
-        SpriteCounter      stype=bomb               limit=0 win=True        
+        SpriteCounter      stype=bomb               limit=0 win=True
+
     InteractionSet
-        avatar  EOS  > stepBack
-        avatar wall > stepBack
+        avatar EOS  > stepBack
+        avatar water > stepBack
         avatar killexplosion > killSprite
         
         bomboff explosion > transformTo stype=blowupbomb
@@ -42,10 +44,10 @@ BasicGame
         
         blowupbomb ground > spawnIfHasMore stype=killexplosion resource=null limit=0
         bigblowupbomb ground > spawnIfHasMore stype=killexplosion resource=null limit=0
-        ground killexplosion > transformTo stype=wall
+        ground killexplosion > transformTo stype=water
 
-        brokenground avatar > transformTo stype=wall scoreChange=1
-        brokenground killexplosion > transformTo stype=wall scoreChange=1
+        brokenground avatar > transformTo stype=water scoreChange=1
+        brokenground killexplosion > transformTo stype=water scoreChange=1
         bombstandon lightfuse > transformTo stype=blowupbomb
         bigbombstandon lightfuse > transformTo stype=bigblowupbomb
         lightfuse avatar > killSprite 

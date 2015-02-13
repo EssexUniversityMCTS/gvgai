@@ -15,7 +15,8 @@ BasicGame
         
     TerminationSet
         SpriteCounter      stype=avatar               limit=0 win=False  
-        MultiSpriteCounter   stype1=isincenter  stype2=ground   limit=0 win=True        
+        MultiSpriteCounter   stype1=isincenter  stype2=ground   limit=0 win=True
+
     InteractionSet
         avatar  EOS  > stepBack
         avatar  rock  > stepBack

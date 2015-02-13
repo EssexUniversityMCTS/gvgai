@@ -91,6 +91,13 @@ public class Types {
         public int key() {return key;}
     }
 
+    public static enum MOVEMENT {
+        STILL,
+        ROTATE,
+        MOVE
+    }
+
+
     public static final int SCORE_DISQ = -1000;
 
     public static final Color GREEN = new Color(0, 200, 0);

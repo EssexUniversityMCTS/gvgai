@@ -1,17 +1,17 @@
 wwwwwwwwwwwwwwwwwwwwwww
 w                     w
 w                     w
-w    C     A     C    w
+w    C  C  A  C  C    w
 w     w w  w  w w     w
 w                     w
-w     w w 0w0 w w     w
+w    Cw w 0w0 w wC    w
 w        00000        w
 w    Cw w00G00w wC    w
 w        00000        w
-w     w w 0w0 w w     w
+w    Cw w 0w0 w wC    w
 w                     w
 w     w w  w  w w     w
-w    C     C     C    w
+w    C  C  C  C  C    w
 w                     w
 w                     w
 wwwwwwwwwwwwwwwwwwwwwww

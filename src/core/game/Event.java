@@ -13,9 +13,8 @@ public class Event implements Comparable<Event>
     public int gameStep;
 
     /**
-     * True if the avatar triggered the event, false
-     * otherwise (example: something that is thrown by the
-     * avatar hits a sprite).
+     * True if the event is caused by a sprite coming from (or created by) the avatar.
+     * False if it's the avatar itself who collides with another sprite.
      */
     public boolean fromAvatar;
 
@@ -52,7 +51,7 @@ public class Event implements Comparable<Event>
     /**
      * Constructor
      * @param gameStep when the event happened.
-     * @param fromAvatar did the avatar trigger the event (true), or something created by him (false)?
+     * @param fromAvatar did the avatar trigger the event (false), or something created by him (true)?
      * @param activeTypeId type of the sprite (avatar or from avatar).
      * @param passiveTypeId type of the sprite that collided with activeTypeId.
      * @param activeSpriteId sprite ID of the avatar (or something created by the avatar).

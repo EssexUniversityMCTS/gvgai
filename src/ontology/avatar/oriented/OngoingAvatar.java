@@ -4,6 +4,7 @@ import core.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
+import tools.Utils;
 import tools.Vector2d;
 
 import java.awt.*;
@@ -15,11 +16,11 @@ import java.awt.*;
  * Time: 17:35
  * This is a Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
-public class MissileAvatar extends OrientedAvatar
+public class OngoingAvatar extends OrientedAvatar
 {
-    public MissileAvatar(){}
+    public OngoingAvatar(){}
 
-    public MissileAvatar(Vector2d position, Dimension size, SpriteContent cnt)
+    public OngoingAvatar(Vector2d position, Dimension size, SpriteContent cnt)
     {
         //Init the sprite
         this.init(position, size);
@@ -44,7 +45,20 @@ public class MissileAvatar extends OrientedAvatar
      */
     public void update(Game game)
     {
-        //MissileAvatar has no actions available. Just update movement.
+        lastMovementType = Types.MOVEMENT.MOVE;
+
+        //Get the input from the player.
+        requestPlayerInput(game);
+
+        //Map from the action mask to a Vector2D action.
+        Vector2d action2D = Utils.processMovementActionKeys(game.ki.getMask());
+
+        //Update the orientation for this cycle's movement,
+        // but only if there was a direction indicated.
+        if(action2D != Types.NONE)
+            this._updateOrientation(action2D);
+
+        //Update movement.
         super.updatePassive();
     }
 
@@ -56,20 +70,31 @@ public class MissileAvatar extends OrientedAvatar
      */
     public void move(Game game, boolean[] actionMask)
     {
+        lastMovementType = Types.MOVEMENT.MOVE;
+
+        //Map from the action mask to a Vector2D action.
+        Vector2d action2D = Utils.processMovementActionKeys(actionMask);
+
+        //Update the orientation for this cycle's movement,
+        // but only if there was a direction indicated.
+        if(action2D != Types.NONE)
+            this._updateOrientation(action2D);
+
+        //Update movement.
         super.updatePassive();
     }
 
 
     public VGDLSprite copy()
     {
-        MissileAvatar newSprite = new MissileAvatar();
+        OngoingAvatar newSprite = new OngoingAvatar();
         this.copyTo(newSprite);
         return newSprite;
     }
 
     public void copyTo(VGDLSprite target)
     {
-        MissileAvatar targetSprite = (MissileAvatar) target;
+        OngoingAvatar targetSprite = (OngoingAvatar) target;
         super.copyTo(targetSprite);
     }
 }

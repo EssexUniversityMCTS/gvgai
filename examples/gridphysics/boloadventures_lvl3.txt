@@ -3,16 +3,15 @@ w        wwwwwwwwww
 w CA   C wwwwwwwwww
 w     w  wwwwwwwwww
 w       wwwwwwwwwww
-w         00000000G
-w        wwwwwwwwww
+w           000000G
+w C      wwwwwwwwww
 w   C    wwwwwwwwww
 w        wwwwwwwwww
 w  w       wwwwwwww
 w      C   wwwwwwww
-w          wwwwwwww
 w        C wwwwwwww
 w   C w    wwwwwwww
-w          wwwwwwww
+w       C  wwwwwwww
 w C    C  wwwwwwwww
 w          wwwwwwww
 wwwwwwwwwwwwwwwwwww

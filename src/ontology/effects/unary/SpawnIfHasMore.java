@@ -28,9 +28,14 @@ public class SpawnIfHasMore  extends Effect {
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
+        applyScore = false;
+
+        if(game.getRandomGenerator().nextDouble() >= prob) return;
+
         if(sprite1.getAmountResource(resourceId) >= limit)
         {
             game.addSprite(itype, sprite1.getPosition());
+            applyScore = true;
         }
     }
 }

@@ -30,8 +30,12 @@ public class KillIfOtherHasMore extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
+        applyScore = false;
         //If 'sprite2' has more than a limit of the resource type given, sprite dies.
         if(sprite2.getAmountResource(resourceId) >= limit)
+        {
+            applyScore = true;
             game.killSprite(sprite1);
+        }
     }
 }

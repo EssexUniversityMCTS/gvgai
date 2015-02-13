@@ -28,7 +28,7 @@ BasicGame
         boulder goal > undoAll
         
         boulder roundhole > killSprite
-        roundhole boulder > killSprite
+        roundhole boulder > killSprite scoreChange=1
         boulder squarehole > killSprite
         
         crate avatar  > bounceForward
@@ -48,11 +48,11 @@ BasicGame
         crate roundhole > undoAll
         
         crate squarehole > killSprite
-        squarehole crate > killSprite
+        squarehole crate > killSprite scoreChange=1
         
 
         
-        goal avatar > killSprite scoreChange=1
+        goal avatar > killSprite scoreChange=5
 
     TerminationSet
         SpriteCounter stype=goal limit=0 win=True

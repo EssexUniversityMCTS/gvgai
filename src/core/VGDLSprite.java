@@ -191,6 +191,11 @@ public abstract class VGDLSprite {
     public boolean bucketSharp;
 
     /**
+     * Indicates if the sprite is able to rotate in place.
+     */
+    public boolean rotateInPlace;
+
+    /**
      * Initializes the sprite, giving its position and dimensions.
      * @param position position of the sprite
      * @param size dimensions of the sprite on the screen.
@@ -217,6 +222,7 @@ public abstract class VGDLSprite {
         orientation = Types.NONE;
         lastmove = 0;
         invisible = false;
+        rotateInPlace = false;
         resources = new TreeMap<Integer, Integer>();
         itypes = new ArrayList<Integer>();
 
@@ -306,14 +312,17 @@ public abstract class VGDLSprite {
 
     /**
      * Applies both the passive and active movement for the avatar in the forward model.
+     * This method is DEPRECATED.
      */
-    public void applyMovement(boolean[] actionMask) {
+    @Deprecated
+    public void applyMovement(Game game, boolean[] actionMask) {
 
         //First, lock orientation, if any.
         Vector2d tmp = orientation.copy();
         orientation = Types.NONE.copy();
 
         //Then, update the passive movement.
+        preMovement();
         updatePassive();
 
         //Apply action supplied.
@@ -331,20 +340,42 @@ public abstract class VGDLSprite {
             dir.normalise();
             orientation = dir;
         }
+
     }
 
+    /**
+     * Prepares the sprite for movement.
+     */
+    public void preMovement()
+    {
+        lastrect = new Rectangle(rect);
+        lastmove += 1;
+    }
 
     /**
      * Updates this sprite applying the passive movement.
      */
     public void updatePassive() {
 
-        lastrect = new Rectangle(rect);
-        lastmove += 1;
-
         if (!is_static && !only_active) {
             physics.passiveMovement(this);
         }
+    }
+
+
+    /**
+     * Updates the orientation of the avatar to match the orientation parameter.
+     * @param orientation final orientation the avatar must have.
+     * @return true if orientation could be changed. This returns false in two circumstances:
+     * the avatar is not oriented (is_oriented == false) or the previous orientation is the
+     * same as the one received by parameter.
+     */
+    public boolean _updateOrientation(Vector2d orientation)
+    {
+        if(!this.is_oriented) return false;
+        if(this.orientation.equals(orientation)) return false;
+        this.orientation = orientation.copy();
+        return true;
     }
 
     /**

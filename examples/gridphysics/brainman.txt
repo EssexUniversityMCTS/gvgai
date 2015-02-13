@@ -2,7 +2,7 @@
 
 BasicGame
     SpriteSet
-        avatar > OrientedAvatar img=alien
+        avatar > OrientedAvatar img=alien rotateInPlace=false
         gem > Immovable
             green > Immovable img=diamond
             red > Immovable img=powerpill
@@ -37,7 +37,7 @@ BasicGame
         avatar key > stepBack
         avatar keym > stepBack
         
-        door keym > killSprite
+        door keym > killSprite scoreChange=4
         keym door > killSprite
         
         green avatar > killSprite scoreChange=1
