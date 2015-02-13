@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Diego on 18/03/14.
@@ -19,10 +20,10 @@ public class SpriteGroup
     private int itype;
 
     /**
-     * Collection of sprites. They are maintained in a TreeMap, where the key is the
+     * Collection of sprites. They are maintained in a ConcurrentHashMap, where the key is the
      * unique identifier for the given sprite (in the whole game).
      */
-    private TreeMap<Integer, VGDLSprite> sprites;
+    private ConcurrentHashMap<Integer, VGDLSprite> sprites;
 
     /**
      * Creates a new SpriteGroup, specifying the type of sprites this will hold.
@@ -31,7 +32,7 @@ public class SpriteGroup
     public SpriteGroup(int itype)
     {
         this.itype = itype;
-        sprites = new TreeMap<Integer, VGDLSprite>();
+        sprites = new ConcurrentHashMap<Integer, VGDLSprite>();
     }
 
     /**
@@ -56,10 +57,10 @@ public class SpriteGroup
     }
 
      /**
-     * Gets the collection of sprites, as a TreeMap [KEY => VALUE].
+     * Gets the collection of sprites, as a ConcurrentHashMap [KEY => VALUE].
      * @return the TreeMap with the Sprites.
      */
-    public TreeMap<Integer, VGDLSprite> getSprites()
+    public ConcurrentHashMap<Integer, VGDLSprite> getSprites()
     {
         return sprites;
     }
@@ -144,6 +145,6 @@ public class SpriteGroup
     {
         if(numSprites() == 0)
             return null;
-        return sprites.firstEntry().getValue();
+        return (VGDLSprite) sprites.values().toArray()[0]; //  firstEntry().getValue();
     }
 }

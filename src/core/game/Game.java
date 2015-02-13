@@ -15,6 +15,7 @@ import tools.*;
 
 import java.awt.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -1028,7 +1029,7 @@ public abstract class Game
      * @param spriteItype type of the sprite to retrieve.
      * @return sprite collection of the specified type.
      */
-    public TreeMap<Integer, VGDLSprite> getSprites(int spriteItype)
+    public ConcurrentHashMap<Integer, VGDLSprite> getSprites(int spriteItype)
     {
         return spriteGroups[spriteItype].getSprites();
     }

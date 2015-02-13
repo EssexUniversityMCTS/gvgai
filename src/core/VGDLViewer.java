@@ -7,6 +7,7 @@ import ontology.Types;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -73,10 +74,11 @@ public class VGDLViewer extends JComponent
         int[] gameSpriteOrder = game.getSpriteOrder();
         if(this.spriteGroups != null) for(Integer spriteTypeInt : gameSpriteOrder)
         {
-            Integer[] keys = spriteGroups[spriteTypeInt].getKeys();
-            if(keys!=null) for(Integer spriteKey : keys)
+            ConcurrentHashMap<Integer, VGDLSprite> cMap = spriteGroups[spriteTypeInt].getSprites();
+            Set<Integer> s = cMap.keySet();
+            for(Integer key : s)
             {
-                VGDLSprite sp = spriteGroups[spriteTypeInt].getSprite(spriteKey);
+                VGDLSprite sp = cMap.get(key);
                 if(sp != null)
                     sp.draw(g, game);
             }
