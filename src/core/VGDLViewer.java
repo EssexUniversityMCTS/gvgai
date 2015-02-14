@@ -89,13 +89,21 @@ public class VGDLViewer extends JComponent
     }
 
 
+
     /**
      * Paints the sprites.
      * @param spriteGroupsGame sprites to paint.
      */
     public void paint(SpriteGroup[] spriteGroupsGame)
     {
-        this.spriteGroups = spriteGroupsGame;
+        //this.spriteGroups = spriteGroupsGame;
+        this.spriteGroups = new SpriteGroup[spriteGroupsGame.length];
+        for(int i = 0; i < this.spriteGroups.length; ++i)
+        {
+            this.spriteGroups[i] = new SpriteGroup(spriteGroupsGame[i].getItype());
+            this.spriteGroups[i].copyAllSprites(spriteGroupsGame[i].getSprites().values());
+        }
+
         this.repaint();
     }
 

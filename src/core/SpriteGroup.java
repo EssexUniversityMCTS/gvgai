@@ -56,6 +56,18 @@ public class SpriteGroup
             sprites.put(sp.spriteID, sp);
     }
 
+
+    /**
+     * Adds a collection of sprites to this collection. Each sprite added is a copy
+     * of the original sprite in the array received.
+     * @param spritesToCopy Sprites to copy.
+     */
+    public void copyAllSprites(Collection<VGDLSprite> spritesToCopy)
+    {
+        for(VGDLSprite sp : spritesToCopy)
+            sprites.put(sp.spriteID, sp.copy());
+    }
+
      /**
      * Gets the collection of sprites, as a ConcurrentHashMap [KEY => VALUE].
      * @return the TreeMap with the Sprites.

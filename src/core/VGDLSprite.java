@@ -5,6 +5,7 @@ import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
 import ontology.physics.*;
+import ontology.sprites.npc.RandomNPC;
 import tools.Utils;
 import tools.Vector2d;
 
@@ -461,18 +462,20 @@ public abstract class VGDLSprite {
 
         if(!invisible)
         {
+            Rectangle r = new Rectangle(rect);
+
             if(image != null)
-                _drawImage(gphx, game);
+                _drawImage(gphx, game, r);
             else
-                _draw(gphx, game);
+                _draw(gphx, game, r);
 
             if(resources.size() > 0)
             {
-                _drawResources(gphx, game);
+                _drawResources(gphx, game, r);
             }
 
             if (is_oriented)
-                _drawOriented(gphx);
+                _drawOriented(gphx, r);
         }
     }
 
@@ -480,12 +483,12 @@ public abstract class VGDLSprite {
      * In case this sprite is oriented and has an arrow to draw, it draws it.
      * @param g graphics device to draw in.
      */
-    public void _drawOriented(Graphics2D g)
+    public void _drawOriented(Graphics2D g, Rectangle r)
     {
         if(draw_arrow)
         {
             Color arrowColor = new Color(color.getRed(), 255-color.getGreen(), color.getBlue());
-            Polygon p = Utils.triPoints(rect, orientation);
+            Polygon p = Utils.triPoints(r, orientation);
 
             g.setColor(arrowColor);
             //g.drawPolygon(p);
@@ -498,15 +501,15 @@ public abstract class VGDLSprite {
      * @param gphx graphics object to draw in.
      * @param game reference to the game that is being played now.
      */
-    public void _draw(Graphics2D gphx, Game game)
+    public void _draw(Graphics2D gphx, Game game, Rectangle r)
     {
-        Rectangle r = new Rectangle(rect);
+
         if(shrinkfactor != 1)
         {
             r.width *= shrinkfactor;
             r.height *= shrinkfactor;
-            r.x += (rect.width-r.width)/2;
-            r.y += (rect.height-r.height)/2;
+            r.x += (r.width-r.width)/2;
+            r.y += (r.height-r.height)/2;
         }
 
         gphx.setColor(color);
@@ -521,6 +524,7 @@ public abstract class VGDLSprite {
         {
             gphx.fillRect(r.x, r.y, r.width, r.height);
         }
+
     }
 
     /**
@@ -528,15 +532,14 @@ public abstract class VGDLSprite {
      * @param gphx graphics object to draw in.
      * @param game reference to the game that is being played now.
      */
-    public void _drawImage(Graphics2D gphx, Game game)
+    public void _drawImage(Graphics2D gphx, Game game, Rectangle r)
     {
-        Rectangle r = new Rectangle(rect);
         if(shrinkfactor != 1)
         {
             r.width *= shrinkfactor;
             r.height *= shrinkfactor;
-            r.x += (rect.width-r.width)/2;
-            r.y += (rect.height-r.height)/2;
+            r.x += (r.width-r.width)/2;
+            r.y += (r.height-r.height)/2;
         }
 
         int w = image.getWidth(null);
@@ -558,11 +561,11 @@ public abstract class VGDLSprite {
      * @param gphx graphics to draw in.
      * @param game game being played at the moment.
      */
-    protected void _drawResources(Graphics2D gphx, Game game)
+    protected void _drawResources(Graphics2D gphx, Game game, Rectangle r)
     {
         int numResources = resources.size();
-        double barheight = rect.getHeight() / 3.5f / numResources;
-        double offset = rect.getMinY() + 2*rect.height / 3.0f;
+        double barheight = r.getHeight() / 3.5f / numResources;
+        double offset = r.getMinY() + 2*r.height / 3.0f;
 
         Set<Map.Entry<Integer, Integer>> entries = resources.entrySet();
         for(Map.Entry<Integer, Integer> entry : entries)
@@ -570,11 +573,11 @@ public abstract class VGDLSprite {
             int resType = entry.getKey();
             int resValue = entry.getValue();
 
-            double wiggle = rect.width/10.0f;
+            double wiggle = r.width/10.0f;
             double prop = Math.max(0,Math.min(1,resValue / (double)(game.getResourceLimit(resType))));
 
-            Rectangle filled = new Rectangle((int) (rect.x+wiggle/2), (int) offset, (int) (prop*(rect.width-wiggle)), (int) barheight);
-            Rectangle rest   = new Rectangle((int) (rect.x+wiggle/2+prop*(rect.width-wiggle)), (int)offset, (int) ((1-prop)*(rect.width-wiggle)), (int)barheight);
+            Rectangle filled = new Rectangle((int) (r.x+wiggle/2), (int) offset, (int) (prop*(r.width-wiggle)), (int) barheight);
+            Rectangle rest   = new Rectangle((int) (r.x+wiggle/2+prop*(r.width-wiggle)), (int)offset, (int) ((1-prop)*(r.width-wiggle)), (int)barheight);
 
             gphx.setColor(game.getResourceColor(resType));
             gphx.fillRect(filled.x, filled.y, filled.width, filled.height);
