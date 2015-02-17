@@ -5,7 +5,7 @@ BasicGame
         box    > Immovable color=BROWN img=box
         health > Resource color=RED limit=3 value=3
         mana    > Resource color=GREEN limit=3 img=mana
-        bullet > Missile color=RED singleton=True img=bullet
+        bullet > Missile color=RED speed=0.5 singleton=True img=bullet
         fire   > Spreader color=ORANGE spreadprob=0.25 stype=spark img=fire
         spark  > SpawnPoint stype=fireAsh total=1 img=explosion
         avatar > ShootAvatar ammo=mana stype=bullet

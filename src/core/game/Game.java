@@ -686,12 +686,18 @@ public abstract class Game
 
     /**
      * Performs one tick for the game: calling update(this) in all sprites. It follows the
-     * opposite order of the drawing order (spriteOrder[]).
+     * opposite order of the drawing order (inverse spriteOrder[]). Avatar is always
+     * updated first.
      */
     protected void tick()
     {
+        //Now, do the avatar.
+        avatar.preMovement();
+        avatar.update(this);
+        //random = new Random(this.gameTick * 100); //uncomment this for testing a new rnd generator after avatar's move
+
         int spriteOrderCount = spriteOrder.length;
-        for(int i = 0; i < spriteOrderCount; ++i)
+        for(int i = spriteOrderCount-1; i >= 0 ; --i)
         {
             int spriteTypeInt = spriteOrder[i];
             Integer[] keys = spriteGroups[spriteTypeInt].getKeys();
@@ -699,10 +705,15 @@ public abstract class Game
             if(keys!=null) for(Integer spriteKey : keys)
             {
                 VGDLSprite sp = spriteGroups[spriteTypeInt].getSprite(spriteKey);
-                sp.preMovement();
-                sp.update(this);
+                if(sp != avatar)
+                {
+                    sp.preMovement();
+                    sp.update(this);
+                }
+
             }
         }
+
     }
 
         /**

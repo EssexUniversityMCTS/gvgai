@@ -5,6 +5,7 @@ import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
 import ontology.physics.*;
+import ontology.sprites.Flicker;
 import ontology.sprites.npc.RandomNPC;
 import tools.Utils;
 import tools.Vector2d;
@@ -383,10 +384,12 @@ public abstract class VGDLSprite {
      * Updates the position of the sprite, giving its orientation and speed.
      * @param orientation the orientation of the sprite.
      * @param speed the speed of the sprite.
+     * @return true if the position changed.
      */
-    public void _updatePos(Vector2d orientation, int speed) {
+    public boolean _updatePos(Vector2d orientation, int speed) {
         if (speed == 0) {
             speed = (int) this.speed;
+            if(speed == 0) return false;
         }
 
         if (cooldown <= lastmove && (Math.abs(orientation.x) + Math.abs(orientation.y) != 0)) {
@@ -394,7 +397,9 @@ public abstract class VGDLSprite {
             bucket = rect.y / rect.height;
             bucketSharp = (rect.y % rect.height) == 0;
             lastmove = 0;
+            return true;
         }
+        return false;
     }
 
     /**
@@ -508,8 +513,8 @@ public abstract class VGDLSprite {
         {
             r.width *= shrinkfactor;
             r.height *= shrinkfactor;
-            r.x += (r.width-r.width)/2;
-            r.y += (r.height-r.height)/2;
+            r.x += (rect.width-r.width)/2;
+            r.y += (rect.height-r.height)/2;
         }
 
         gphx.setColor(color);
@@ -538,8 +543,8 @@ public abstract class VGDLSprite {
         {
             r.width *= shrinkfactor;
             r.height *= shrinkfactor;
-            r.x += (r.width-r.width)/2;
-            r.y += (r.height-r.height)/2;
+            r.x += (rect.width-r.width)/2;
+            r.y += (rect.height-r.height)/2;
         }
 
         int w = image.getWidth(null);
@@ -701,6 +706,8 @@ public abstract class VGDLSprite {
         toSprite.is_from_avatar = this.is_from_avatar;
         toSprite.bucket = this.bucket;
         toSprite.bucketSharp = this.bucketSharp;
+        toSprite.invisible = this.invisible;
+        toSprite.rotateInPlace = this.rotateInPlace;
 
         toSprite.itypes = new ArrayList<Integer>();
         for(Integer it : this.itypes)
@@ -713,6 +720,47 @@ public abstract class VGDLSprite {
             toSprite.resources.put(entry.getKey(), entry.getValue());
         }
 
+    }
+
+    /**
+     * Determines if two the object passed is equal to this.
+     * We are NOT overriding EQUALS on purpose (Costly operation for eventHandling).
+     */
+    public boolean equiv(Object o)
+    {
+        if(this == o) return true;
+        if(!(o instanceof VGDLSprite)) return false;
+        VGDLSprite other = (VGDLSprite)o;
+
+        if(other.name != this.name) return false;
+        if(other.is_static != this.is_static) return false;
+        if(other.only_active != this.only_active) return false;
+        if(other.is_avatar != this.is_avatar) return false;
+        if(other.is_stochastic != this.is_stochastic) return false;
+        if(other.cooldown != this.cooldown) return false;
+        if(other.speed != this.speed) return false;
+        if(other.mass != this.mass) return false;
+        if(other.physicstype_id != this.physicstype_id) return false;
+        if(other.shrinkfactor != this.shrinkfactor) return false;
+        if(other.is_oriented != this.is_oriented) return false;
+        if(!other.orientation.equals(this.orientation)) return false;
+        if(!other.rect.equals(this.rect)) return false;
+        if(other.lastmove != this.lastmove) return false;
+        if(other.strength != this.strength) return false;
+        if(other.singleton != this.singleton) return false;
+        if(other.is_resource != this.is_resource) return false;
+        if(other.portal != this.portal) return false;
+        if(other.is_npc != this.is_npc) return false;
+        if(other.is_from_avatar != this.is_from_avatar) return false;
+        if(other.invisible != this.invisible) return false;
+        if(other.spriteID != this.spriteID) return false;
+
+        int numTypes = other.itypes.size();
+        if(numTypes != this.itypes.size()) return false;
+        for(int i = 0; i < numTypes; ++i)
+            if(other.itypes.get(i) != this.itypes.get(i)) return false;
+
+        return true;
     }
 
 }

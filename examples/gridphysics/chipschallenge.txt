@@ -70,6 +70,8 @@ BasicGame
         crate wall > undoAll
         crate door > undoAll
         crate key > undoAll
+        crate chip > undoAll
+        crate gate > undoAll
         crate mud > undoAll
         crate fire > undoAll
         crate flippers > undoAll

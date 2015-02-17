@@ -9,7 +9,7 @@ BasicGame
                  carrier  > color=RED img=alien
             npc    > RandomNPC speed=0.25
                  host     > color=GREEN
-                 infected > color=ORANGE speed=1
+                 infected > color=ORANGE speed=0.5
                  guardian > color=BLUE speed=0.2
 
     TerminationSet

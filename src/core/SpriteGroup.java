@@ -32,7 +32,7 @@ public class SpriteGroup
     public SpriteGroup(int itype)
     {
         this.itype = itype;
-        sprites = new ConcurrentHashMap<Integer, VGDLSprite>();
+        sprites = new ConcurrentHashMap<Integer, VGDLSprite>(100);
     }
 
     /**

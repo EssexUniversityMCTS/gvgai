@@ -2,6 +2,7 @@ package ontology.sprites.missile;
 
 import core.VGDLSprite;
 import core.content.SpriteContent;
+import core.game.ForwardModel;
 import core.game.Game;
 import tools.Vector2d;
 

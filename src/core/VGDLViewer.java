@@ -74,13 +74,14 @@ public class VGDLViewer extends JComponent
         int[] gameSpriteOrder = game.getSpriteOrder();
         if(this.spriteGroups != null) for(Integer spriteTypeInt : gameSpriteOrder)
         {
-            ConcurrentHashMap<Integer, VGDLSprite> cMap = spriteGroups[spriteTypeInt].getSprites();
-            Set<Integer> s = cMap.keySet();
-            for(Integer key : s)
-            {
-                VGDLSprite sp = cMap.get(key);
-                if(sp != null)
-                    sp.draw(g, game);
+            if(spriteGroups[spriteTypeInt] != null) {
+                ConcurrentHashMap<Integer, VGDLSprite> cMap =spriteGroups[spriteTypeInt].getSprites();
+                Set<Integer> s = cMap.keySet();
+                for (Integer key : s) {
+                    VGDLSprite sp = cMap.get(key);
+                    if (sp != null)
+                        sp.draw(g, game);
+                }
             }
         }
 

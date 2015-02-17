@@ -20,21 +20,22 @@ public class Test
         String sampleMCTSController = "controllers.sampleMCTS.Agent";
         String sampleOLMCTSController = "controllers.sampleOLMCTS.Agent";
         String sampleGAController = "controllers.sampleGA.Agent";
+        String tester = "controllers.Tester.Agent";
 
         //Available games:
         String gamesPath = "examples/gridphysics/";
 
         //CIG 2014 Training Set Games
-        //String games[] = new String[]{"aliens", "boulderdash", "butterflies", "chase", "frogs",
-        //        "missilecommand", "portals", "sokoban", "survivezombies", "zelda"};
+        String games[] = new String[]{"aliens", "boulderdash", "butterflies", "chase", "frogs",
+                "missilecommand", "portals", "sokoban", "survivezombies", "zelda"};
 
         //CIG 2014 Validation Set Games
         //String games[] = new String[]{"camelRace", "digdug", "firestorms", "infection", "firecaster",
         //        "overload", "pacman", "seaquest", "whackamole", "eggomania"};
 
         //CIG 2015 New Training Set Games
-        String games[] = new String[]{"bait", "boloadventures", "brainman", "chipschallenge",
-                                      "modality", "painter", "realsokoban", "solarfox", "thecitadel", "zenpuzzle"};
+        //String games[] = new String[]{"bait", "boloadventures", "brainman", "chipschallenge",
+        //                              "modality", "painter", "realsokoban", "solarfox", "thecitadel", "zenpuzzle"};
 
         //Other settings
         boolean visuals = true;
@@ -42,16 +43,17 @@ public class Test
         int seed = new Random().nextInt();
 
         //Game and level to play
-        int gameIdx = 1;
-        int levelIdx = 2; //level names from 0 to 4 (game_lvlN.txt).
+        int gameIdx = 0;
+        int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
 
         // 1. This starts a game, in a level, played by a human.
-        ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
+        //ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
 
         // 2. This plays a game in a level by the controller.
-        //ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed);
+        ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed);
+        //ArcadeMachine.runOneGame(game, level1, visuals, tester, recordActionsFile, seed);
 
         // 3. This replays a game from an action file previously recorded
         //String readActionsFile = "actionsFile_aliens_lvl0.txt";  //This example is for

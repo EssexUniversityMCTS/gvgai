@@ -91,4 +91,21 @@ public class Event implements Comparable<Event>
         if(this.activeTypeId > o.activeTypeId)       return 1;
         return 0;
     }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if(this == o) return true;
+        if(!(o instanceof Event)) return false;
+        Event other = (Event)o;
+
+        if(this.gameStep != other.gameStep) return false;
+        if(this.fromAvatar != other.fromAvatar) return false;
+        if(this.activeTypeId != other.activeTypeId) return false;
+        if(this.passiveTypeId != other.passiveTypeId) return false;
+        if(this.activeSpriteId != other.activeSpriteId) return false;
+        if(this.passiveSpriteId != other.passiveSpriteId) return false;
+        if(! this.position.equals(other.position)) return false;
+        return true;
+    }
 }

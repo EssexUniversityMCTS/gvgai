@@ -37,6 +37,8 @@ public class ContinuousPhysics extends GridPhysics
     @Override
     public Types.MOVEMENT passiveMovement(VGDLSprite sprite)
     {
+        //This needs to be thoroughly tested when continuous physics are added
+        //Specially the returned type.
         if(sprite.speed != 0 && sprite.is_oriented)
         {
             sprite._updatePos(sprite.orientation, (int) sprite.speed);
@@ -44,8 +46,9 @@ public class ContinuousPhysics extends GridPhysics
             {
                 Vector2d gravityAction = new Vector2d(0, this.gravity * sprite.mass);
                 this.activeMovement(sprite, gravityAction, 0);
-            }
+            }else return Types.MOVEMENT.STILL;
             sprite.speed *= (1-this.friction);
+
             return Types.MOVEMENT.MOVE;
         }
         return Types.MOVEMENT.STILL;

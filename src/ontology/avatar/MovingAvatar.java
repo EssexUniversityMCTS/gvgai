@@ -28,6 +28,9 @@ public class MovingAvatar extends VGDLSprite {
     public ArrayList<Types.ACTIONS> actionsNIL;
     public AbstractPlayer player;
 
+    //This is the last action executed in the game.
+    public Types.ACTIONS lastAction;
+
     public Types.MOVEMENT lastMovementType = Types.MOVEMENT.STILL;
 
     public MovingAvatar() {
@@ -51,6 +54,7 @@ public class MovingAvatar extends VGDLSprite {
         super.loadDefaults();
         actions = new ArrayList<Types.ACTIONS>();
         actionsNIL = new ArrayList<Types.ACTIONS>();
+        lastAction = Types.ACTIONS.ACTION_NIL;
 
         color = Types.WHITE;
         speed = 1;
@@ -107,7 +111,7 @@ public class MovingAvatar extends VGDLSprite {
 
         //Apply action supplied (active movement). USE is checked up in the hierarchy.
         Vector2d action = Utils.processMovementActionKeys(actionMask);
-        this.physics.activeMovement(this, action, this.speed);
+        lastMovementType = this.physics.activeMovement(this, action, this.speed);
     }
 
     /**
@@ -142,6 +146,7 @@ public class MovingAvatar extends VGDLSprite {
             action = Types.ACTIONS.ACTION_NIL;
 
         this.player.logAction(action);
+        lastAction = action;
         game.ki.reset();
         game.ki.setAction(action);
     }
@@ -152,15 +157,6 @@ public class MovingAvatar extends VGDLSprite {
         //Nothing to do by default.
     }
 
-    /**
-     * Performs a given movement, with an action
-     * @param actionMask action mask to perform.
-     */
-    public void performActiveMovement(boolean[] actionMask)
-    {
-        Vector2d action = Utils.processMovementActionKeys(actionMask);
-        this.physics.activeMovement(this, action, this.speed);
-    }
 
     public VGDLSprite copy() {
         MovingAvatar newSprite = new MovingAvatar();
@@ -173,6 +169,7 @@ public class MovingAvatar extends VGDLSprite {
         targetSprite.alternate_keys = this.alternate_keys;
         targetSprite.actions = new ArrayList<Types.ACTIONS>();
         targetSprite.actionsNIL = new ArrayList<Types.ACTIONS>();
+        targetSprite.lastAction = this.lastAction;
         targetSprite.postProcess();
         super.copyTo(targetSprite);
     }

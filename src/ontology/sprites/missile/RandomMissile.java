@@ -2,6 +2,7 @@ package ontology.sprites.missile;
 
 import core.VGDLSprite;
 import core.content.SpriteContent;
+import core.game.ForwardModel;
 import core.game.Game;
 import ontology.Types;
 import tools.Utils;
@@ -44,6 +45,7 @@ public class RandomMissile extends Missile
         {
             orientation = (Vector2d) Utils.choice(Types.BASEDIRS, game.getRandomGenerator());
         }
+
         this.updatePassive();
     }
 

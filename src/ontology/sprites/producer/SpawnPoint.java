@@ -3,6 +3,7 @@ package ontology.sprites.producer;
 import core.VGDLRegistry;
 import core.VGDLSprite;
 import core.content.SpriteContent;
+import core.game.ForwardModel;
 import core.game.Game;
 import ontology.Types;
 import tools.Vector2d;
@@ -58,7 +59,8 @@ public class SpawnPoint extends SpriteProducer
 
     public void update(Game game)
     {
-        if((game.getGameTick() % cooldown == 0) && game.getRandomGenerator().nextFloat() < prob)
+        float rollDie = game.getRandomGenerator().nextFloat();
+        if((game.getGameTick() % cooldown == 0) && rollDie < prob)
         {
             game.addSprite(itype, this.getPosition());
             counter++;

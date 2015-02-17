@@ -9,6 +9,7 @@ import tools.Vector2d;
 
 import java.awt.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -379,6 +380,8 @@ public class ForwardModel extends Game
         this.gameTick = 0;
         this.isEnded = false;
         this.winner = Types.WINNER.NO_WINNER;
+
+
     }
 
     /**
@@ -434,30 +437,36 @@ public class ForwardModel extends Game
         return randomObs;
     }
 
+    /**
+     * Sets a new seed for the forward model's random generator (creates a new object)
+     *
+     * @param seed the new seed.
+     */
+    public void setNewSeed(int seed)
+    {
+        randomObs = new Random(seed);
+    }
+
+
     /************** Useful functions for the agent *******************/
 
     /**
      * Performs one tick for the game: calling update(this) in all sprites. It follows the
-     * opposite order of the drawing order (spriteOrder[]). It uses the action received as the
-     * action of the avatar.
+     * same order of update calls as in the real game (inverse spriteOrder[]). Avatar moves
+     * the first one. It uses the action received as the action of the avatar.
      * @param action Action to be performed by the avatar for this game tick.
      */
     protected void tick(Types.ACTIONS action)
     {
-        //Avatar first.
+
         this.ki.reset();
         this.ki.setAction(action);
-        if(avatar != null)
-        {
-            //avatar.applyMovement(this, this.ki.getMask());
-            //avatar.updateUse(this);
-            avatar.preMovement();
-            avatar.move(this, this.ki.getMask());
-        }
+        avatar.preMovement();
+        avatar.move(this, this.ki.getMask());
 
-        //Now, update all others (but avatar).
-        int typeIndex = spriteOrder.length-1;
-        for(int i = typeIndex; i >=0; --i)   //For update, opposite order than drawing.
+        //Update all sprites except the avatar (always the last one).
+        int typeIndex = 0;
+        for(int i = spriteOrder.length-1; i >= 0; --i)
         {
             int spriteTypeInt = spriteOrder[i];
 
@@ -465,6 +474,7 @@ public class ForwardModel extends Game
             if(spriteIt != null) while(spriteIt.hasNext())
             {
                 VGDLSprite sp = spriteIt.next();
+
                 if(sp != avatar)
                 {
                     sp.preMovement();
@@ -485,12 +495,12 @@ public class ForwardModel extends Game
         if(!isEnded)
         {
             tick(action);
-            gameTick++;
             eventHandling();
             clearAll();
             terminationHandling();
             checkTimeOut();
             updateAllObservations();
+            gameTick++;
         }
     }
 
@@ -654,6 +664,17 @@ public class ForwardModel extends Game
         return owned;
     }
 
+    /**
+     * Returns the avatar's last move. At the first game cycle, it returns ACTION_NIL.
+     * Note that this may NOT be the same as the last action given by the agent, as it may
+     * have overspent in the last game cycle.
+     * @return the action that was executed in the real game in the last cycle. ACTION_NIL
+     * is returned in the very first game step.
+     */
+    public Types.ACTIONS getAvatarLastAction()
+    {
+        return avatar.lastAction;
+    }
 
     /** Methods that return positions of things **/
 
@@ -794,6 +815,41 @@ public class ForwardModel extends Game
         return getPositionsFrom(fromAvatar, refPosition);
     }
 
+    /**
+     * Checks if the observations of both models are the same.
+     * DEBUG ONLY METHOD.
+     * @param other the forward model to compare to.
+     * @return true if everything is the same.
+     */
+    public boolean equalObservations(ForwardModel other)
+    {
+        for(int i = 0; i < spriteGroups.length; ++i)
+        {
+            ConcurrentHashMap<Integer, VGDLSprite> thisSpriteMap = this.spriteGroups[i].getSprites();
+            ConcurrentHashMap<Integer, VGDLSprite> otherSpriteMap = other.spriteGroups[i].getSprites();
+            if(thisSpriteMap.size() != otherSpriteMap.size())
+            {
+                if(thisSpriteMap.size() > 25 && otherSpriteMap.size() > 25)
+                {
+                    //For reasons I don't fully understand (balancing?), ConcurrentHashMap returns the keySet
+                    // in different order some times when there are many elements. This makes the update happen
+                    // in a different order and therefore (in stochastic environments) things change. If this
+                    // happens, we ignore this case (this scenario has only been seen in Firestorms so far).
+                    return true;
+                }
+                return false;
+            }
+
+            Set<Integer> allOtherSpriteKeys = otherSpriteMap.keySet();
+            for(Integer key : allOtherSpriteKeys)
+            {
+                VGDLSprite sp = thisSpriteMap.get(key);
+                if(!otherSpriteMap.get(key).equiv(sp))
+                    return false;
+            }
+        }
+        return true;
+    }
 
     //Must override this:
     @Override
