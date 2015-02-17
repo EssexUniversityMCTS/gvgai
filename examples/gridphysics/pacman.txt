@@ -23,14 +23,14 @@ BasicGame
         moving wall > stepBack
         pacman EOS  > wrapAround
         ghost EOS  > stepBack
-        hungry  power > transformTo stype=powered 
-        powered ghost > transformTo stype=hungry
         power hungry  > killSprite
         ghost powered > killSprite scoreChange=40
         hungry ghost  > killSprite scoreChange=-1
         power pacman > killSprite scoreChange=10
         pellet pacman > killSprite scoreChange=1
         fruit pacman > killSprite scoreChange=5
+        hungry  power > transformTo stype=powered
+        powered ghost > transformTo stype=hungry
         
     LevelMapping
         0 > power
