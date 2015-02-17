@@ -11,6 +11,9 @@ BasicGame
         avatar > ShootAvatar ammo=mana stype=bullet
 
     InteractionSet
+        fire   box   > killSprite
+        fire   fire  > killSprite
+        mana   fire  > killSprite
         health avatar > collectResource
         health avatar > killSprite
         avatar wall  > stepBack
@@ -24,9 +27,6 @@ BasicGame
         bullet wall  > killSprite
         box bullet   > killSprite scoreChange=1
         bullet box   > transformTo stype=fire
-        fire   box   > killSprite
-        fire   fire  > killSprite
-        mana   fire  > killSprite
         box    fireAsh  > killSprite
         fireAsh box     > killSprite
         fireAsh wall    > killSprite

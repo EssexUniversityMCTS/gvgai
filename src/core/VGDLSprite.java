@@ -198,6 +198,12 @@ public abstract class VGDLSprite {
     public boolean rotateInPlace;
 
     /**
+     * Indicates if the sprite is in its first cycle of existence.
+     * Passive movement is not allowed in the first tick.
+     */
+    public boolean isFirstTick;
+
+    /**
      * Initializes the sprite, giving its position and dimensions.
      * @param position position of the sprite
      * @param size dimensions of the sprite on the screen.
@@ -225,6 +231,7 @@ public abstract class VGDLSprite {
         lastmove = 0;
         invisible = false;
         rotateInPlace = false;
+        isFirstTick = true;
         resources = new TreeMap<Integer, Integer>();
         itypes = new ArrayList<Integer>();
 
@@ -708,6 +715,7 @@ public abstract class VGDLSprite {
         toSprite.bucketSharp = this.bucketSharp;
         toSprite.invisible = this.invisible;
         toSprite.rotateInPlace = this.rotateInPlace;
+        toSprite.isFirstTick = this.isFirstTick;
 
         toSprite.itypes = new ArrayList<Integer>();
         for(Integer it : this.itypes)
@@ -754,6 +762,7 @@ public abstract class VGDLSprite {
         if(other.is_from_avatar != this.is_from_avatar) return false;
         if(other.invisible != this.invisible) return false;
         if(other.spriteID != this.spriteID) return false;
+        if(other.isFirstTick != this.isFirstTick) return false;
 
         int numTypes = other.itypes.size();
         if(numTypes != this.itypes.size()) return false;

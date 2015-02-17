@@ -58,9 +58,9 @@ public class VGDLFactory
      */
     private String[] effectStrings = new String[]
             {
-                "stepBack", "turnAround", "killSprite", "transformTo", "wrapAround", "changeResource",
-                "killIfHasLess", "killIfHasMore", "cloneSprite", "flipDirection", "reverseDirection",
-                "undoAll", "spawnIfHasMore",
+                "stepBack", "turnAround", "killSprite", "transformTo", "transformToSingleton",
+                    "wrapAround", "changeResource", "killIfHasLess", "killIfHasMore", "cloneSprite",
+                    "flipDirection", "reverseDirection", "undoAll", "spawnIfHasMore",
                 "pullWithIt", "wallStop", "collectResource", "killIfOtherHasMore", "killIfFromAbove",
                 "teleportToExit", "bounceForward", "attractGaze"
             };
@@ -70,9 +70,9 @@ public class VGDLFactory
      */
     private Class[] effectClasses = new Class[]
             {
-                StepBack.class, TurnAround.class, KillSprite.class, TransformTo.class, WrapAround.class,ChangeResource.class,
-                KillIfHasLess.class, KillIfHasMore.class, CloneSprite.class, FlipDirection.class, ReverseDirection.class,
-                UndoAll.class, SpawnIfHasMore.class,
+                StepBack.class, TurnAround.class, KillSprite.class, TransformTo.class, TransformToSingleton.class,
+                    WrapAround.class,ChangeResource.class, KillIfHasLess.class, KillIfHasMore.class, CloneSprite.class,
+                    FlipDirection.class, ReverseDirection.class, UndoAll.class, SpawnIfHasMore.class,
                 PullWithIt.class, WallStop.class, CollectResource.class, KillIfOtherHasMore.class, KillIfFromAbove.class,
                 TeleportToExit.class, BounceForward.class, AttractGaze.class
             };

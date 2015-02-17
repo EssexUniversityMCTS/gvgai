@@ -40,6 +40,12 @@ public class GridPhysics implements Physics {
     @Override
     public Types.MOVEMENT passiveMovement(VGDLSprite sprite)
     {
+        if(sprite.isFirstTick)
+        {
+            sprite.isFirstTick = false;
+            return Types.MOVEMENT.STILL;
+        }
+
         double speed;
         if(sprite.speed == -1)
             speed = 1;

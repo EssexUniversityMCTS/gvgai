@@ -38,10 +38,20 @@ public class TeleportToExit extends Effect
         int destinationId = VGDLFactory.GetInstance().requestFieldValueInt(sprite2, "itype");
 
         Collection<VGDLSprite> sprites = game.getSprites(destinationId).values();
-        VGDLSprite destination = (VGDLSprite) Utils.choice(sprites.toArray(), game.getRandomGenerator());
 
-        sprite1.setRect(destination.rect);
+        if(sprites.size() > 0)
+        {
+            VGDLSprite destination = (VGDLSprite) Utils.choice(sprites.toArray(), game.getRandomGenerator());
+            sprite1.setRect(destination.rect);
+            sprite1.lastmove = 0;
 
-        sprite1.lastmove = 0;
+            if(destination.is_oriented)
+            {
+                sprite1.orientation = destination.orientation.copy();
+            }
+        }else{
+            //If there is no exit... kill the sprite
+            game.killSprite(sprite1);
+        }
     }
 }
