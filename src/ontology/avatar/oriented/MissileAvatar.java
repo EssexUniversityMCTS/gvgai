@@ -44,6 +44,9 @@ public class MissileAvatar extends OrientedAvatar
      */
     public void update(Game game)
     {
+        //Get the input from the player (it won't be processed, but we allow thinking time).
+        requestPlayerInput(game);
+
         //MissileAvatar has no actions available. Just update movement.
         super.updatePassive();
     }
