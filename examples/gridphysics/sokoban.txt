@@ -1,7 +1,7 @@
 BasicGame
     SpriteSet
         hole   > Immovable color=DARKBLUE img=hole
-        avatar > MovingAvatar #cooldown=4
+        avatar > MovingAvatar
         box    > Passive img=box
     LevelMapping
         0 > hole

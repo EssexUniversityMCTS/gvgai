@@ -4,7 +4,7 @@ BasicGame
     SpriteSet
         hole   > Immovable color=DARKBLUE img=hole
         goal > Immovable img=door
-        avatar > OrientedAvatar cooldown=2 rotateInPlace=false
+        avatar > OrientedAvatar rotateInPlace=false
         box    > Passive img=box
         boulderinhole > Flicker img=boulder limit=1
         boulder    > Passive img=boulder

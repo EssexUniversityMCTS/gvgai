@@ -31,7 +31,7 @@ BasicGame
         gate > Immovable img=base
         exit > Immovable img=goal
         chip > Resource img=gold limit=11 value=0
-        avatar > MovingAvatar img=alien cooldown=2
+        avatar > MovingAvatar img=alien
             normal > OrientedAvatar img=alien
             gliding > InertialAvatar img=ghost
             

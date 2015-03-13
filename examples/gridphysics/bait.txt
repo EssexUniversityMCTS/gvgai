@@ -4,9 +4,9 @@ BasicGame
     SpriteSet
         hole   > Immovable color=DARKBLUE img=hole
         ground > Immovable color=WHITE
-        avatar > MovingAvatar #cooldown=4
-            nokey > img=alien #cooldown=4
-            withkey > img=alien #cooldown=4
+        avatar > MovingAvatar
+            nokey > img=alien 
+            withkey > img=alien 
         mushroom > Immovable img=mushroom
         key > Passive img=key
         goal > Immovable img=door

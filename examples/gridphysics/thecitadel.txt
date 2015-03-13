@@ -4,9 +4,9 @@ BasicGame
     SpriteSet
         squarehole   > Immovable color=DARKBLUE img=portal
         roundhole   > Immovable color=DARKBLUE img=hole
-        avatar > MovingAvatar #cooldown=4
-            nokey > img=alien #cooldown=4
-            withkey > img=alien #cooldown=4
+        avatar > MovingAvatar
+            nokey > img=alien
+            withkey > img=alien
         goal > Immovable img=door
         crate    > Passive img=box shrinkfactor=0.8
         boulder    > Passive img=boulder shrinkfactor=0.8

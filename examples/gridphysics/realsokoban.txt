@@ -2,7 +2,7 @@ BasicGame
     SpriteSet
         hole   > Immovable color=DARKBLUE img=hole
         ground > Immovable img=water
-        avatar > MovingAvatar # cooldown=4
+        avatar > MovingAvatar 
         box    > Passive img=box
         boxin  > Passive img=city
     LevelMapping

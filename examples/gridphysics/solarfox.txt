@@ -4,7 +4,7 @@ BasicGame
     SpriteSet
         enemyground > Immovable img=water
         powerblibturning > Flicker limit=8
-        avatar  > OngoingAvatar color=YELLOW img=spaceship cooldown=4
+        avatar  > OngoingAvatar color=YELLOW img=spaceship
         powerblib > Passive img=powerpill
         blib > Passive img=pellet
         enemy > Missile cooldown=3 img=camel
