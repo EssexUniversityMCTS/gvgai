@@ -496,7 +496,7 @@ public class ForwardModel extends Game
         {
             tick(action);
             eventHandling();
-            clearAll();
+            clearAll(this);
             terminationHandling();
             checkTimeOut();
             updateAllObservations();

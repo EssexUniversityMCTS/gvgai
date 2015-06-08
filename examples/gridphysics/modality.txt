@@ -37,5 +37,6 @@ BasicGame
         crate avatar > bounceForward
         crate wall > undoAll
         target wall > undoAll
+        avatar wall > stepBack
         target crate > transformTo stype=winTarget scoreChange=1
 

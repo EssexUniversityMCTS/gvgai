@@ -577,7 +577,7 @@ public abstract class Game
         //Execute a game cycle:
         this.tick();                    //update for all entities.
         this.eventHandling();           //handle events such collisions.
-        this.clearAll();                //clear all additional data, including dead sprites.
+        this.clearAll(fwdModel);        //clear all additional data, including dead sprites.
         this.terminationHandling();     //check for game termination.
         this.checkTimeOut();            //Check for end of game by time steps.
 
@@ -927,15 +927,18 @@ public abstract class Game
     /**
      * Deletes all the sprites killed in the previous step. Also, clears the array of collisions
      * from the last step.
+     * @param fm Forward model where we are cleaning sprites.
      */
-    protected void clearAll()
+    protected void clearAll(ForwardModel fm)
     {
         for(VGDLSprite sprite : kill_list)
         {
             int spriteType = sprite.getType();
             this.spriteGroups[spriteType].removeSprite(sprite.spriteID);
-            if(fwdModel != null)
-                fwdModel.removeSpriteObservation(sprite);
+            if(fm != null) {
+                fm.removeSpriteObservation(sprite);
+            }
+
 
             if(sprite.is_avatar && sprite == this.avatar)
                 this.avatar = null;
