@@ -1,4 +1,4 @@
-BasicGame frame_rate=30
+BasicGame
     SpriteSet
         snow   > Immovable color=WHITE
         mud    > Immovable color=LIGHTGREEN img=dirt
