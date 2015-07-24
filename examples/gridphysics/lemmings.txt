@@ -1,0 +1,29 @@
+BasicGame
+    SpriteSet
+        hole   > Immovable color=DARKBLUE img=hole portal=True
+        shovel > Flicker color=LIGHTGRAY limit=1 singleton=True img=sword.png
+
+        entrance > SpawnPoint total=20 cooldown=50 stype=lemming img=portal.png portal=True
+        exit > Door color=GREEN img=door.png
+
+        moving >
+            avatar  > ShootAvatar stype=shovel
+            lemming > Chaser stype=exit cooldown=5 color=RED img=alien.png shrinkfactor=0.75
+
+    LevelMapping
+        X > exit
+        E > entrance
+        h > hole
+
+    TerminationSet
+        SpriteCounter  stype=avatar  limit=0 win=False
+        MultiSpriteCounter stype1=entrance stype2=lemming limit=0 win=True
+
+    InteractionSet
+        boulder wall > stepBack
+        avatar hole  > killSprite scoreChange=-5
+        lemming hole  > killSprite scoreChange=-2
+        moving wall > stepBack
+        moving EOS  > stepBack
+        wall shovel  > killSprite scoreChange=-1
+        lemming exit > killSprite scoreChange=2

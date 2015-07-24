@@ -1,0 +1,47 @@
+BasicGame
+  SpriteSet
+    fullMolar >
+        fullMolarInf > Immovable img=shield
+        fullMolarSup > Immovable img=shield
+    deadMolar > img=shovel
+        deadMolarInf > Immovable img=shovel
+        deadMolarSup > Immovable img=shovel
+
+    movable >
+        avatar  > ShootAvatar stype=fluor
+        food >
+            hotdog > Chaser stype=fullMolarInf img=mushroom speed=0.1
+            burger > Chaser stype=fullMolarSup img=flower speed=0.1
+
+    holes > SpawnPoint color=LIGHTGRAY img=portal portal=True
+        hotdoghole  >  stype=hotdog  prob=0.15 cooldown=8 total=5
+        burgerhole  >  stype=burger  prob=0.15 cooldown=8 total=5
+
+    fluor > Missile color=YELLOW shrinkfactor=0.5 img=sword
+
+
+  LevelMapping
+    h > hotdog
+    H > hotdoghole
+    b > burger
+    B > burgerhole
+    M > fullMolarSup
+    m > fullMolarInf
+
+  InteractionSet
+    movable wall > stepBack
+    food fluor   > killSprite scoreChange=2
+    fluor food   > killSprite
+    fluor wall   > killSprite
+
+    fullMolarInf food > transformTo stype=deadMolarInf scoreChange=-3
+    food fullMolarInf > killSprite
+    deadMolarInf avatar > transformTo stype=fullMolarInf scoreChange=1
+
+    fullMolarSup food > transformTo stype=deadMolarSup scoreChange=-3
+    food fullMolarSup > killSprite
+    deadMolarSup avatar > transformTo stype=fullMolarSup scoreChange=1
+
+  TerminationSet
+    SpriteCounter stype=fullMolar win=False
+    MultiSpriteCounter stype1=holes stype2=food limit=0 win=True

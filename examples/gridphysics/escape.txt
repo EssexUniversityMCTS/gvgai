@@ -1,0 +1,26 @@
+BasicGame
+    SpriteSet
+        avatar > MovingAvatar 
+        box    > Passive img=box
+        exit > Door color=GREEN img=door.png
+        hole   > Immovable color=DARKBLUE img=hole portal=True
+
+    LevelMapping
+        X > exit
+        h > hole
+        1 > box
+
+    InteractionSet
+        avatar wall > stepBack
+        box avatar  > bounceForward
+        box wall    > undoAll
+        box exit    > undoAll
+        box box     > undoAll
+        avatar hole > killSprite scoreChange=-1
+        exit avatar > killSprite scoreChange=1
+        box hole    > killSprite
+
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=exit limit=0 win=True
+        Timeout limit=1000 win=False

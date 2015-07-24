@@ -1,0 +1,44 @@
+BasicGame
+    SpriteSet
+        static > Immovable
+            marsh > color=BROWN img=marsh
+            eatenBrains > color=RED img=flower
+            tomb > color=GRAY img=truck
+        shooters > Bomber
+            plant > color=GREEN img=honeyRight stype=pea prob=0.05 cooldown=2
+            zombie > Bomber color=BROWN img=zombie speed=0.1 orientation=LEFT stype=axe prob=0.005
+        bullets > Missile
+            axe > orientation=LEFT speed=0.3 color=RED shrinkfactor=0.75 img=sword
+            pea > orientation=RIGHT speed=0.3 color=GREEN shrinkfactor=0.75 img=coin
+        goal > Door color=GREEN img=door
+        hell > SpawnPoint portal=True stype=zombie color=RED img=hell
+            fastHell > prob=0.01
+            slowHell > prob=0.005
+        shovel > OrientedFlicker limit=2 color=LIGHTGRAY img=shovel.png
+        avatar  > ShootAvatar stype=shovel
+
+    InteractionSet
+        shovel marsh > transformTo stype=plant
+        marsh shovel > killSprite
+        zombie goal  > transformTo stype=eatenBrains scoreChange=-1
+        axe plant > killSprite
+        plant axe > transformTo stype=marsh
+        zombie pea > killSprite scoreChange=1
+        pea zombie > killSprite
+        pea tomb > killSprite
+        avatar wall > stepBack
+        zombie wall  > stepBack
+
+    LevelMapping
+        G > goal
+        h > slowHell
+        H > fastHell
+        Z > zombie
+        x > marsh
+        T > tomb
+        A > avatar marsh
+
+    TerminationSet
+        Timeout limit=1000 win=True
+        MultiSpriteCounter stype1=eatenBrains limit=1 win=False
+        SpriteCounter stype=avatar limit=0 win=False

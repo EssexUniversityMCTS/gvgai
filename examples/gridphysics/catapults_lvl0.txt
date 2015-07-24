@@ -1,0 +1,16 @@
+wwwwwwwwwwwwwwww
+wA  ..   1  0..w
+w   ..       ..w
+w010..   w   ..w
+w......... 1 ..w
+w..  ..........w
+w.. 1..........w
+w..  .....   ..w
+w..ww        ..w
+w....     1wwwww
+w....1     ....w
+w0  ...........w
+w   .0.. w.....w
+www...         w
+w..... 000...  G
+wwwwwwwwwwwwwwww

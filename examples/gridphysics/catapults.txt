@@ -1,0 +1,42 @@
+BasicGame frame_rate=30
+    SpriteSet
+        water > Immovable color=BLUE img=water
+        catapult > Immovable
+            southfacing > orientation=DOWN  color=RED img=honey
+            northfacing > orientation=UP  color=ORANGE img=honeyUp
+            eastfacing  > orientation=RIGHT color=YELLOW img=honeyRight
+            westfacing  > orientation=LEFT color=YELLOW img=honeyLeft
+        avatar >
+            moving > MovingAvatar img=avatar
+            bullet > MissileAvatar img=alien
+                north  > orientation=UP color=RED
+                south  > orientation=DOWN color=ORANGE
+                east   > orientation=RIGHT color=YELLOW
+                west   > orientation=LEFT color=GREEN
+        goal  > Immovable color=GREEN img=door portal=True
+    LevelMapping
+        . > water
+        0 > eastfacing
+        1 > southfacing
+        2 > northfacing
+        3 > westfacing
+        G > goal
+        A > moving
+    InteractionSet
+        bullet wall > transformTo stype=moving
+        moving wall > stepBack
+        moving water       > killSprite
+        avatar catapult    > attractGaze prob=1
+        avatar westfacing  > transformTo stype=west
+        avatar westfacing  > attractGaze prob=1
+        avatar eastfacing  > transformTo stype=east
+        avatar eastfacing  > attractGaze prob=1
+        avatar southfacing > transformTo stype=south
+        avatar southfacing > attractGaze prob=1
+        avatar northfacing > transformTo stype=north
+        avatar northfacing > attractGaze prob=1
+        catapult avatar    > killSprite scoreChange=1
+        goal avatar        > killSprite
+    TerminationSet
+        SpriteCounter stype=goal    limit=0 win=True
+        SpriteCounter stype=avatar  limit=0 win=False
