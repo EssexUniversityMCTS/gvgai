@@ -1,4 +1,4 @@
-BasicGame square_size=40
+BasicGame frame_rate=30 square_size=30
     SpriteSet
         water > Immovable color=BLUE img=water
         catapult > Immovable

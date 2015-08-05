@@ -1,4 +1,4 @@
-BasicGame square_size=30
+BasicGame square_size=25
   SpriteSet
     fullMolar >
         fullMolarInf > Immovable img=shield
