@@ -413,7 +413,7 @@ public abstract class Game
             return;
         }
 
-        factory.parseParameters(content,this);
+        factory.parseParameters(content, this);
     }
 
     /**
@@ -1037,6 +1037,28 @@ public abstract class Game
         return spriteGroups[spriteItype].getSpriteIterator();
     }
 
+    /**
+     * Gets an iterator for the collection of sprites for a particular sprite type, AND all subtypes.
+     * @param spriteItype type of the sprite to retrieve.
+     * @return sprite collection of the specified type and subtypes.
+     */
+    public Iterator<VGDLSprite> getSubSpritesGroup(int spriteItype)
+    {
+        //Create a sprite group for all the sprites
+        SpriteGroup allSprites = new SpriteGroup(spriteItype);
+        //Get all the subtypes
+        ArrayList<Integer> allTypes = iSubTypes[spriteItype];
+
+        //Add sprites of this type, and all subtypes.
+        allSprites.addAllSprites(this.getSprites(spriteItype).values());
+        for(Integer itype : allTypes)
+        {
+            allSprites.addAllSprites(this.getSprites(itype).values());
+        }
+
+        //Return the iterator.
+        return allSprites.getSpriteIterator();
+    }
 
     /**
      * Gets the collection of sprites for a particular sprite type.

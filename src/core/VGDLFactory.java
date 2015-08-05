@@ -37,7 +37,7 @@ public class VGDLFactory
             {"Conveyor", "Flicker", "Immovable", "OrientedFlicker", "Passive", "Resource", "Spreader",
              "ErraticMissile", "Missile", "RandomMissile", "Walker", "WalkerJumper",
              "ResourcePack", "Chaser", "Fleeing", "RandomInertial", "RandomNPC", "AlternateChaser", "RandomAltChaser",
-             "Bomber", "Portal", "SpawnPoint", "SpriteProducer", "Door",
+             "Bomber", "RandomBomber", "Portal", "SpawnPoint", "SpriteProducer", "Door",
              "FlakAvatar", "HorizontalAvatar","MovingAvatar","MissileAvatar",
              "OrientedAvatar","ShootAvatar", "OngoingAvatar"};
 
@@ -49,7 +49,7 @@ public class VGDLFactory
             {Conveyor.class, Flicker.class, Immovable.class, OrientedFlicker.class, Passive.class, Resource.class, Spreader.class,
              ErraticMissile.class, Missile.class, RandomMissile.class, Walker.class, WalkerJumper.class,
              ResourcePack.class, Chaser.class, Fleeing.class, RandomInertial.class, RandomNPC.class, AlternateChaser.class, RandomAltChaser.class,
-             Bomber.class, Portal.class, SpawnPoint.class, SpriteProducer.class, Door.class,
+             Bomber.class, RandomBomber.class, Portal.class, SpawnPoint.class, SpriteProducer.class, Door.class,
              FlakAvatar.class, HorizontalAvatar.class,MovingAvatar.class,MissileAvatar.class,
              OrientedAvatar.class,ShootAvatar.class, OngoingAvatar.class};
 
@@ -60,7 +60,7 @@ public class VGDLFactory
             {
                 "stepBack", "turnAround", "killSprite", "transformTo", "transformToSingleton",
                     "wrapAround", "changeResource", "killIfHasLess", "killIfHasMore", "cloneSprite",
-                    "flipDirection", "reverseDirection", "undoAll", "spawnIfHasMore",
+                    "flipDirection", "reverseDirection", "undoAll", "spawnIfHasMore", "spawnIfHasLess",
                 "pullWithIt", "wallStop", "collectResource", "killIfOtherHasMore", "killIfFromAbove",
                 "teleportToExit", "bounceForward", "attractGaze"
             };
@@ -72,7 +72,7 @@ public class VGDLFactory
             {
                 StepBack.class, TurnAround.class, KillSprite.class, TransformTo.class, TransformToSingleton.class,
                     WrapAround.class,ChangeResource.class, KillIfHasLess.class, KillIfHasMore.class, CloneSprite.class,
-                    FlipDirection.class, ReverseDirection.class, UndoAll.class, SpawnIfHasMore.class,
+                    FlipDirection.class, ReverseDirection.class, UndoAll.class, SpawnIfHasMore.class, SpawnIfHasLess.class,
                 PullWithIt.class, WallStop.class, CollectResource.class, KillIfOtherHasMore.class, KillIfFromAbove.class,
                 TeleportToExit.class, BounceForward.class, AttractGaze.class
             };
