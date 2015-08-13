@@ -676,6 +676,18 @@ public class ForwardModel extends Game
         return avatar.lastAction;
     }
 
+
+    /**
+     * Returns the avatar's type. In case it has multiple types, it returns the most specific one.
+     * @return the itype of the avatar.
+     */
+    public int getAvatarType()
+    {
+        return avatar.getType();
+    }
+
+
+
     /** Methods that return positions of things **/
 
     /**

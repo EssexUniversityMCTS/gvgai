@@ -201,6 +201,16 @@ public class StateObservation {
         return model.getAvatarLastAction();
     }
 
+    /**
+     * Returns the avatar's type. In case it has multiple types, it returns the most specific one.
+     * @return the itype of the avatar.
+     */
+    public int getAvatarType()
+    {
+        return model.getAvatarType();
+    }
+
+
     //Methods to retrieve the state external to the avatar, in the game...
 
     /**
