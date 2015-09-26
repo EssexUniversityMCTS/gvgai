@@ -1,10 +1,15 @@
 package core;
 
-import core.content.*;
+import java.util.ArrayList;
+
+import core.content.Content;
+import core.content.GameContent;
+import core.content.InteractionContent;
+import core.content.MappingContent;
+import core.content.SpriteContent;
+import core.content.TerminationContent;
 import ontology.Types;
 import tools.Utils;
-
-import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.

@@ -1,13 +1,13 @@
 package ontology.sprites.npc;
 
+import java.awt.Dimension;
+
 import core.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
 import tools.Utils;
 import tools.Vector2d;
-
-import java.awt.*;
 
 /**
  * Created by Diego on 24/02/14.

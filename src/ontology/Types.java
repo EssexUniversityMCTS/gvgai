@@ -1,12 +1,9 @@
 package ontology;
 
-import tools.Vector2d;
-
 import java.awt.Color;
-
-import java.util.ArrayList;
 import java.awt.event.KeyEvent;
-import java.util.Vector;
+
+import tools.Vector2d;
 
 /**
  * Created with IntelliJ IDEA.

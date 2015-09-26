@@ -1,11 +1,11 @@
 package ontology.sprites.npc;
 
-import core.VGDLSprite;
-import ontology.Types;
-import core.content.SpriteContent;
-import tools.Vector2d;
+import java.awt.Dimension;
 
-import java.awt.*;
+import core.VGDLSprite;
+import core.content.SpriteContent;
+import ontology.Types;
+import tools.Vector2d;
 
 /**
  * Created with IntelliJ IDEA.

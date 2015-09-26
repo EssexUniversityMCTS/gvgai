@@ -1,9 +1,9 @@
 package core.content;
 
-import core.VGDLRegistry;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import core.VGDLRegistry;
 
 /**
  * Created with IntelliJ IDEA.

@@ -1,5 +1,10 @@
 package ontology.sprites.npc;
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import core.VGDLRegistry;
 import core.VGDLSprite;
 import core.content.SpriteContent;
@@ -7,10 +12,6 @@ import core.game.Game;
 import ontology.Types;
 import tools.Utils;
 import tools.Vector2d;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -170,4 +171,13 @@ public class AlternateChaser extends RandomNPC
         super.copyTo(targetSprite);
     }
 
+    @Override
+    public ArrayList<String> getDependentSprites(){
+    	ArrayList<String> result = new ArrayList<String>();
+    	if(stype1 != null) result.add(stype1);
+    	if(stype2 != null) result.add(stype2);
+    	
+    	return result;
+    }
+    
 }

@@ -1,5 +1,9 @@
 package ontology.effects.unary;
 
+import java.awt.Rectangle;
+import java.util.Map;
+import java.util.Set;
+
 import core.VGDLRegistry;
 import core.VGDLSprite;
 import core.content.InteractionContent;
@@ -7,11 +11,6 @@ import core.game.Game;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.Effect;
-import ontology.sprites.Resource;
-
-import java.awt.*;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.

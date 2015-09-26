@@ -1,14 +1,27 @@
 package core;
 
-import core.content.*;
+import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import core.content.GameContent;
+import core.content.InteractionContent;
+import core.content.MappingContent;
+import core.content.SpriteContent;
+import core.content.TerminationContent;
 import core.game.Game;
+import core.game.GameDescription;
+import core.game.GameDescription.InteractionData;
+import core.game.GameDescription.SpriteData;
+import core.game.GameDescription.TerminationData;
 import core.termination.Termination;
 import ontology.Types;
 import ontology.effects.Effect;
 import tools.IO;
 import tools.Pair;
-
-import java.util.*;
+import tools.Vector2d;
 
 /**
  * Created with IntelliJ IDEA.
@@ -97,7 +110,7 @@ public class VGDLParser
 
         return game;
     }
-
+    
     /**
      * Builds the tree structure that defines the game.
      * @param lines array with the lines read from the game description file.
@@ -348,7 +361,4 @@ public class VGDLParser
         }
 
     }
-
-
-
 }

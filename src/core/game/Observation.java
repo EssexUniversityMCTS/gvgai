@@ -1,7 +1,5 @@
 package core.game;
 
-import core.VGDLSprite;
-import ontology.Types;
 import tools.Vector2d;
 
 /**

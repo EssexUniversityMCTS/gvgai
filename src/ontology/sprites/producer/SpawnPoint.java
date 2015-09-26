@@ -1,13 +1,14 @@
 package ontology.sprites.producer;
 
+import java.awt.Dimension;
+import java.util.ArrayList;
+
 import core.VGDLRegistry;
 import core.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
 import tools.Vector2d;
-
-import java.awt.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -103,4 +104,11 @@ public class SpawnPoint extends SpriteProducer
         super.copyTo(targetSprite);
     }
 
+    @Override
+    public ArrayList<String> getDependentSprites(){
+    	ArrayList<String> result = new ArrayList<String>();
+    	if(stype != null) result.add(stype);
+    	
+    	return result;
+    }
 }

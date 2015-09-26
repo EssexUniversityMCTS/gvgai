@@ -3,12 +3,7 @@ package ontology.effects.unary;
 import core.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
-import ontology.Types;
 import ontology.effects.Effect;
-import tools.Utils;
-import tools.Vector2d;
-
-import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.

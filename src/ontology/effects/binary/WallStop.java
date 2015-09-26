@@ -1,16 +1,12 @@
 package ontology.effects.binary;
 
+import java.util.ArrayList;
+
 import core.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
-import ontology.Types;
 import ontology.effects.Effect;
-import ontology.physics.ContinuousPhysics;
-import ontology.physics.GridPhysics;
 import tools.Vector2d;
-
-import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.

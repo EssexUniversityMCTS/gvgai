@@ -1,8 +1,9 @@
 package tools;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.WindowEvent;
+import java.awt.BorderLayout;
+import java.awt.Component;
+
+import javax.swing.JFrame;
 
 /**
  * Frame for the graphics.

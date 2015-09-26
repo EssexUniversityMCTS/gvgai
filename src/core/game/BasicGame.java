@@ -1,14 +1,14 @@
 package core.game;
 
+import java.awt.Dimension;
+import java.util.ArrayList;
+
 import core.VGDLFactory;
 import core.VGDLRegistry;
 import core.VGDLSprite;
 import core.content.GameContent;
 import tools.IO;
 import tools.Vector2d;
-
-import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -55,10 +55,10 @@ public class BasicGame extends Game {
      * Builds a level from this game, reading it from file.
      * @param gamelvl filename of the level to load.
      */
-    public void buildLevel(String gamelvl)
+    public void buildStringLevel(String[] lines)
     {
         //Read the level description
-        String[] desc_lines = new IO().readFile(gamelvl);
+        String[] desc_lines = lines;
 
         //Dimensions of the level read from the file.
         size.width = desc_lines[0].length();

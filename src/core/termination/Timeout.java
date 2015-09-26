@@ -1,11 +1,10 @@
 package core.termination;
 
-import core.content.SpriteContent;
+import java.util.ArrayList;
+
 import core.content.TerminationContent;
 import core.game.Game;
-import tools.Vector2d;
-
-import java.awt.*;
+import core.game.GameDescription.TerminationData;
 
 /**
  * Created with IntelliJ IDEA.
