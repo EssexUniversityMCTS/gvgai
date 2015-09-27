@@ -43,6 +43,12 @@ public class ArcadeMachine
         return runOneGame(game_file, level_file, visuals, agentName, actionFile, randomSeed);
     }
     
+    /**
+     * Reads game description then generate level using the supplied generator.
+     * It also launches the game for a human to be played. Graphics always on. 
+     * @param gameFile			the game description file
+     * @param levelGenerator	the level generator name
+     */
     public static double playGeneratedLevel(String gameFile, String levelGenerator, String actionFile, int randomSeed){
     	String agentName = "controllers.human.Agent";
         boolean visuals = true;
@@ -99,6 +105,13 @@ public class ArcadeMachine
         return score;
     }
     
+    /**
+     * Generate a level for the described game using the supplied level generator.
+     * @param gd		Abstract description of game elements
+     * @param game		Current game object.
+     * @param generator Current level generator.
+     * @return			String of symbols contains the generated level. Same as Level Description File string.
+     */
     private static String GenerateLevel(GameDescription gd, Game game, AbstractLevelGenerator generator){
     	ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
         ect.setMaxTimeMillis(CompetitionParameters.LEVEL_ACTION_TIME);
@@ -122,7 +135,15 @@ public class ArcadeMachine
         
         return level;
     }
-
+    
+    /**
+     * Check if the generated level string is valid. Checks for only one avatar. 
+     * Checks all symbols used in the description are defined in character Mapping.
+     * @param level			current generated level
+     * @param avatarStype	Avatar sprite name defined in this game.
+     * @param charMapping	Current character mapping
+     * @return				True if the level is valid, false otherwise.
+     */
     private static boolean checkLevelStringValidity(String level, String avatarStype, HashMap<Character, ArrayList<String>> charMapping){
     	int numOfAvatar = 0;
     	ArrayList<Character> avatarChar = new ArrayList<Character>();
@@ -151,6 +172,14 @@ public class ArcadeMachine
     	return numOfAvatar == 1;
     }
     
+    /**
+     * Generate a level for a certain described game and test it against a supplied agent
+     * @param gameFile			game description file.
+     * @param levelGenerator	level generator class path.
+     * @param visuals			true to show the graphics, false otherwise.
+     * @param agentName			agent that will play the game after generation.
+     * @param actionFile 		name of the file where the actions of this player, for this game, must be read from.
+     */
     public static double runGeneratedLevel(String gameFile, String levelGenerator, boolean visuals,
             String agentName, String actionFile, int randomSeed){
     	VGDLFactory.GetInstance().init(); //This always first thing to do.
@@ -471,11 +500,11 @@ public class ArcadeMachine
     }
     
     /**
-     * Generate AbstractLevelGenerator object to generate levels for the game
-     * @param levelGenerator
-     * @param gd
-     * @return
-     * @throws RuntimeException
+     * Generate AbstractLevelGenerator object to generate levels 
+     * for the game using the supplied class path.
+     * @param levelGenerator	class path for the supplied level generator
+     * @param gd				abstract object describes the game
+     * @return					AbstractLevelGenerator object.	
      */
     protected static AbstractLevelGenerator createLevelGenerator(String levelGenerator, GameDescription gd) throws RuntimeException
     {

@@ -382,6 +382,11 @@ public abstract class Game
         }
     }
     
+    /**
+     * Check if the current itype has no children nodes
+     * @param itype	sprite index
+     * @return		true if its lead node, false otherwise
+     */
     private boolean isLeafNode(int itype){
     	SpriteContent sc = (SpriteContent)classConst[itype];
     	
@@ -389,6 +394,11 @@ public abstract class Game
     			sc.subtypes.get(sc.subtypes.size() - 1) == itype;
     }
     
+    /**
+     * Expand a non leaf node using its children
+     * @param itype	sprite index
+     * @return		a list of all leaf children under the hierarchy of itype sprite
+     */
     private ArrayList<String> expandNonLeafNode(int itype){
     	ArrayList<String> result = new ArrayList<String>();
     	boolean[] visited = new boolean[classConst.length];
@@ -414,6 +424,11 @@ public abstract class Game
     	return result;
     }
     
+    /**
+     * return sprite type of certain sprite
+     * @param sp	sprite object
+     * @return		sprite type (avatar, resource, portal, npc, static, moving)
+     */
     private int getSpriteCategory(VGDLSprite sp)
     {
         if(sp.is_avatar)
@@ -442,6 +457,11 @@ public abstract class Game
         return Types.TYPE_MOVABLE;
     }
     
+    /**
+     * Convert a sprite content object to Sprite Data object
+     * @param sc	sprite content object for a certain sprite
+     * @return		sprite data object for the current sprite content
+     */
     private SpriteData initializeSpriteData(SpriteContent sc){
     	SpriteData data = new SpriteData();
     	data.name = sc.identifier;
@@ -474,7 +494,11 @@ public abstract class Game
     	
     	return data;
     }
-
+    
+    /**
+     * Get an array of sprite data objects for all leaf sprite nodes.
+     * @return	Array of sprite data
+     */
     public ArrayList<SpriteData> getSpriteData(){
     	ArrayList<SpriteData> result = new ArrayList<SpriteData>();
     	
@@ -488,10 +512,19 @@ public abstract class Game
     	return result;
     }
     
+    /**
+     * Construct and return a temporary avatar sprite
+     * @return a temproary avatar sprite
+     */
     public VGDLSprite getTempAvatar(){
     	return VGDLFactory.GetInstance().createSprite((SpriteContent) classConst[avatarId], new Vector2d(), new Dimension(1, 1));
     }
     
+    /**
+     * Return an array of termination data objects. These objects represents 
+     * the termination conditions for the game
+     * @return array of Termination Data objects
+     */
     public ArrayList<TerminationData> getTerminationData(){
     	ArrayList<TerminationData> result = new ArrayList<TerminationData>();
     	
@@ -520,6 +553,13 @@ public abstract class Game
     	return result;
     }
     
+    /**
+     * Get a list of interaction data objects between two sprite types. 
+     * These objects represents the effect happened to the first sprite type.
+     * @param itype1	The first sprite type object
+     * @param itype2	The second sprite type object
+     * @return			array of interaction data objects.
+     */
     public ArrayList<InteractionData> getInteractionData(int itype1, int itype2){
     	ArrayList<InteractionData> results = new ArrayList<InteractionData>();
     	
@@ -1305,6 +1345,10 @@ public abstract class Game
         return charMapping;
     }
     
+    /**
+     * Set the char mapping that is used to parse loaded levels
+     * @param charMapping	new character mapping
+     */
     public void setCharMapping(HashMap<Character, ArrayList<String>> charMapping){
     	this.charMapping = charMapping;
     }

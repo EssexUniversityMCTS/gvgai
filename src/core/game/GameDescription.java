@@ -15,7 +15,7 @@ import ontology.effects.Effect;
  * @author Ahmed A Khalifa
  */
 public class GameDescription {
-
+	
 	/**
 	 * object from the current loaded game. This object is used to initialize
 	 * other fields and get interaction data.
@@ -43,29 +43,34 @@ public class GameDescription {
 	private ArrayList<SpriteData> npcList;
 	
 	/**
-	 * 
+	 * list of sprite data for all portal labeled objects
 	 */
 	private ArrayList<SpriteData> portalList;
 	
 	/**
-	 * 
+	 * list of sprite data for all resource labeled objects
 	 */
 	private ArrayList<SpriteData> resourceList;
 	
 	/**
-	 * 
+	 * list of sprite data for all static labeled objects
 	 */
 	private ArrayList<SpriteData> staticList;
 	
 	/**
-	 * 
+	 * list of sprite data that is not labeled any of the previous
 	 */
 	private ArrayList<SpriteData> movingList;
 	
 	/**
-	 * 
+	 * list of termination data objects that supplies game termination conditions
 	 */
 	private ArrayList<TerminationData> terminationData;
+	
+	/**
+	 * 
+	 */
+	private HashMap<Character, ArrayList<String>> charMapping;
 	
 	/**
 	 * Constructor to the Game Description. It initialize all the data using
@@ -79,6 +84,7 @@ public class GameDescription {
 		this.resourceList = new ArrayList<SpriteData>();
 		this.staticList = new ArrayList<SpriteData>();
 		this.movingList = new ArrayList<SpriteData>();
+		this.charMapping = (HashMap<Character, ArrayList<String>>)currentGame.getCharMapping().clone();
 		
 		ArrayList<SpriteData> allSprites = this.currentGame.getSpriteData();
 		for (SpriteData sd:allSprites){
@@ -109,13 +115,37 @@ public class GameDescription {
 		terminationData = currentGame.getTerminationData();
 	}
 	
+	/**
+	 * Build the generated level to be tested using an agent using the original Level Mapping.
+	 * @param 	level	a string of characters that are supplied in the character mapping
+	 * @return 	StateObservation object that can be used to simulate the game.
+	 */
 	public StateObservation testLevel(String level){
+		return testLevel(level, null);
+	}
+	
+	/**
+	 * Build the generated level to be tested using an agent. You should call this version
+	 * if you are using your own character mapping
+	 * @param 	level	a string of characters that are supplied in the character mapping
+	 * @return	StateObservation object that can be used to simulate the game.
+	 */
+	public StateObservation testLevel(String level, HashMap<Character, ArrayList<String>> charMapping){
+		if(charMapping != null){
+			currentGame.setCharMapping(charMapping);
+		}
 		String[] lines = level.split("\n");
 		currentGame.buildStringLevel(lines);
+		currentGame.setCharMapping(this.charMapping);
 		
 		return currentGame.getObservation();
 	}
 	
+	/**
+	 * Get player supported actions
+	 * @param includeNIL boolean to identify if the NIL action should exists in the supported actions
+	 * @return		     list of all player supported actions
+	 */
 	public ArrayList<Types.ACTIONS> getAvailableActions(boolean includeNIL){
 		if(includeNIL){
 			return actionsNIL;
@@ -124,26 +154,50 @@ public class GameDescription {
 		return actions;
 	}
 	
+	/**
+	 * Get avatar sprite data information
+	 * @return avatar's sprite data
+	 */
 	public SpriteData getAvatar(){
 		return avatar;
 	}
 	
+	/**
+	 * Get NPCs sprite data information
+	 * @return array of sprite data
+	 */
 	public ArrayList<SpriteData> getNPC(){
 		return npcList;
 	}
 	
+	/**
+	 * Get Statics sprite data information
+	 * @return array of sprite data
+	 */
 	public ArrayList<SpriteData> getStatic(){
 		return staticList;
 	}
 	
+	/**
+	 * Get Resources sprite data information
+	 * @return array of sprite data
+	 */
 	public ArrayList<SpriteData> getResource(){
 		return resourceList;
 	}
 	
+	/**
+	 * Get Portals sprite data information
+	 * @return array of sprite data
+	 */
 	public ArrayList<SpriteData> getPortal(){
 		return portalList;
 	}
 	
+	/**
+	 * Get all defined game sprites
+	 * @return an array of sprite data
+	 */
 	public ArrayList<SpriteData> getAllSpriteData(){
 		ArrayList<SpriteData> result = new ArrayList<SpriteData>();
 		result.add(avatar);
@@ -151,6 +205,12 @@ public class GameDescription {
 		return result;
 	}
 	
+	/**
+	 * Get a list of all effects happening to the first sprite
+	 * @param stype1	the sprite name of the first sprite in the collision
+	 * @param stype2	the sprite name of the second sprite in the collision
+	 * @return			an array of all possible effects. If there is no effects, an empty array is returned
+	 */
 	public ArrayList<GameDescription.InteractionData> getInteraction(String stype1, String stype2){
 		int itype1 = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype1);
 		int itype2 = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype2);
@@ -158,17 +218,39 @@ public class GameDescription {
 		return currentGame.getInteractionData(itype1, itype2);
 	}
 	
+	/**
+	 * Get a list of all termination conditions for the current game
+	 * @return an array of termination data objects
+	 */
 	public ArrayList<GameDescription.TerminationData> getTerminationConditions(){
 		return terminationData;
 	}
 	
+	/**
+	 * Get default character mapping
+	 * @return hashmap of level characters and their corresponding sprites
+	 */
 	public HashMap<Character, ArrayList<String>> getLevelMapping(){
-		return (HashMap<Character, ArrayList<String>>)currentGame.getCharMapping().clone();
+		return charMapping;
 	}
 	
+	/**
+	 * Simple data class represents all game sprites
+	 */
 	public static class SpriteData{
+		/**
+		 * VGDL class type for the current sprite
+		 */
 		public String type;
+		
+		/**
+		 * Sprite name
+		 */
 		public String name;
+		
+		/**
+		 * List of all dependent sprite names
+		 */
 		public ArrayList<String> sprites;
 		
 		public boolean isAvatar;
@@ -187,10 +269,28 @@ public class GameDescription {
 		}
 	}
 	
+	/**
+	 * Simple data class represents all game termination conditions
+	 */
 	public static class TerminationData{
+		/**
+		 * Termination Condition type
+		 */
 		public String type;
+		
+		/**
+		 * Array of all dependent sprite names
+		 */
 		public ArrayList<String> sprites;
+		
+		/**
+		 * Condition Limit
+		 */
 		public int limit;
+		
+		/**
+		 * Boolean to differentiate between Winning or Losing Condition
+		 */
 		public boolean win;
 		
 		public TerminationData(){
@@ -205,8 +305,18 @@ public class GameDescription {
 		}
 	}
 	
+	/**
+	 * Simple data class represents the interaction between game sprites
+	 */
 	public static class InteractionData{
+		/**
+		 * Interaction class type
+		 */
 		public String type;
+		
+		/**
+		 * The amount of score this interaction changes
+		 */
 		public int scoreChange;
 	}
 }

@@ -12,12 +12,25 @@ import tools.ElapsedCpuTimer;
 
 public class LevelGenerator extends AbstractLevelGenerator{
 
+	/**
+	 * Random number generator for the level generator
+	 */
 	private Random random;
 	
+	/**
+	 * Constructor for the RandomLevelGenerator where it initialize the random object used.
+	 * @param game			Abstract game description object. This object contains all needed information about the current game.
+	 * @param elapsedTimer	Timer to define the maximum amount of time for the constructor.
+	 */
 	public LevelGenerator(GameDescription game, ElapsedCpuTimer elapsedTimer){
 		random = new Random();
 	}
 	
+	/**
+	 * Generate a level string randomly contains only one avatar, 80% free space, and 20% of random sprites
+	 * @param game			Abstract game description object. This object contains all needed information about the current game.
+	 * @param elapsedTimer	Timer to define the maximum amount of time for the level generation.
+	 */
 	@Override
 	public String GenerateLevel(GameDescription game, ElapsedCpuTimer elapsedTimer) {
 		String result = "";
