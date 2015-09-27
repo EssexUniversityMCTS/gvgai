@@ -1,14 +1,14 @@
 package controllers.sampleRandom;
 
+import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.Random;
+
 import core.game.Observation;
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.

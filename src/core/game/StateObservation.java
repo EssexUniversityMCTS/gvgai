@@ -1,10 +1,14 @@
 package core.game;
 
+import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
+
 import ontology.Types;
 import tools.Vector2d;
-
-import java.awt.*;
-import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.

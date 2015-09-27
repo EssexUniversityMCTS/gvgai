@@ -1,18 +1,17 @@
 package ontology.avatar;
 
+import java.awt.Dimension;
+import java.util.ArrayList;
+
 import core.VGDLSprite;
 import core.competition.CompetitionParameters;
 import core.content.SpriteContent;
 import core.game.Game;
+import core.player.AbstractPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
 import tools.Utils;
 import tools.Vector2d;
-
-import java.awt.*;
-import java.util.ArrayList;
-
-import core.player.AbstractPlayer;
 
 /**
  * Created with IntelliJ IDEA.

@@ -1,6 +1,5 @@
 package ontology.effects.binary;
 
-import core.VGDLRegistry;
 import core.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;

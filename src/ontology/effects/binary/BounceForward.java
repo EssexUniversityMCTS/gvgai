@@ -6,8 +6,6 @@ import core.game.Game;
 import ontology.effects.Effect;
 import tools.Vector2d;
 
-import java.util.ArrayList;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Diego

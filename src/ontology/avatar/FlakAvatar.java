@@ -1,5 +1,8 @@
 package ontology.avatar;
 
+import java.awt.Dimension;
+import java.util.ArrayList;
+
 import core.VGDLRegistry;
 import core.VGDLSprite;
 import core.content.SpriteContent;
@@ -7,8 +10,6 @@ import core.game.Game;
 import ontology.Types;
 import tools.Utils;
 import tools.Vector2d;
-
-import java.awt.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -146,5 +147,13 @@ public class FlakAvatar extends HorizontalAvatar
         targetSprite.minAmmo= this.minAmmo;
         super.copyTo(targetSprite);
     }
-
+    
+    @Override
+    public ArrayList<String> getDependentSprites(){
+    	ArrayList<String> result = new ArrayList<String>();
+    	if(ammo != null) result.add(ammo);
+    	if(stype != null) result.add(stype);
+    	
+    	return result;
+    }
 }

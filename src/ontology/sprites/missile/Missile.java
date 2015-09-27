@@ -1,12 +1,10 @@
 package ontology.sprites.missile;
 
+import java.awt.Dimension;
+
 import core.VGDLSprite;
 import core.content.SpriteContent;
-import core.game.ForwardModel;
-import core.game.Game;
 import tools.Vector2d;
-
-import java.awt.*;
 
 /**
  * Created with IntelliJ IDEA.

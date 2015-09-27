@@ -65,7 +65,8 @@ public class ElapsedCpuTimer {
     }
 
 
-    public String toString() {
+    @Override
+	public String toString() {
         // now resets the timer...
         String ret = elapsed() / 1000000.0 + " ms elapsed";
         //reset();

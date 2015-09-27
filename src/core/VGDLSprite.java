@@ -1,20 +1,32 @@
 package core;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+import java.util.TreeMap;
+
+import javax.imageio.ImageIO;
+
 import core.competition.CompetitionParameters;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
-import ontology.physics.*;
-import ontology.sprites.Flicker;
-import ontology.sprites.npc.RandomNPC;
+import ontology.physics.ContinuousPhysics;
+import ontology.physics.GravityPhysics;
+import ontology.physics.GridPhysics;
+import ontology.physics.NoFrictionPhysics;
+import ontology.physics.Physics;
 import tools.Utils;
 import tools.Vector2d;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -772,4 +784,12 @@ public abstract class VGDLSprite {
         return true;
     }
 
+    /**
+     * Get all sprites that affect or being affected by the current sprite
+     * @return a list of all dependent sprites
+     */
+    public ArrayList<String> getDependentSprites(){
+    	return new ArrayList<String>();
+    }
+    
 }
