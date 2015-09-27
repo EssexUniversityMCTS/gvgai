@@ -1,12 +1,12 @@
 package controllers.Heuristics;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import core.game.Observation;
 import core.game.StateObservation;
 import ontology.Types;
 import tools.Vector2d;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.

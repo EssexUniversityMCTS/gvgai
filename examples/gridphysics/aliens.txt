@@ -1,14 +1,14 @@
 BasicGame
     SpriteSet
         base    > Immovable    color=WHITE img=base
-        avatar  > FlakAvatar   stype=sam
+        avatar  > FlakAvatar   stype=sam 
         missile > Missile
             sam  > orientation=UP    color=BLUE singleton=True img=spaceship
             bomb > orientation=DOWN  color=RED  speed=0.5 img=bomb
         alien   > Bomber       stype=bomb   prob=0.01  cooldown=3 speed=0.8 img=alien
         portal  >
-            portalSlow  > SpawnPoint   stype=alien  cooldown=16   total=20 img=portal
-            portalFast  > SpawnPoint   stype=alien  cooldown=12   total=20 img=portal
+        	portalSlow  > SpawnPoint   stype=alien  cooldown=16   total=20 img=portal
+        	portalFast  > SpawnPoint   stype=alien  cooldown=12   total=20 img=portal
     
     LevelMapping
         0 > base

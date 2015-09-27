@@ -1,10 +1,10 @@
 package ontology.sprites;
 
+import java.awt.Dimension;
+
 import core.VGDLSprite;
 import core.content.SpriteContent;
 import tools.Vector2d;
-
-import java.awt.Dimension;
 
 /**
  * Created with IntelliJ IDEA.

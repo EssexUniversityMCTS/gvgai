@@ -2,7 +2,7 @@ BasicGame
   SpriteSet         
     goal  > Door color=GREEN img=goal
     key   > Immovable color=ORANGE img=key
-    sword > Flicker limit=5 singleton=True img=sword
+    sword > OrientedFlicker limit=5 singleton=True img=sword
     movable >
       avatar  > ShootAvatar   stype=sword 
         nokey   > img=avatar

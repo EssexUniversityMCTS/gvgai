@@ -1,10 +1,9 @@
 package tools;
 
-import ontology.Types;
-
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
+
+import ontology.Types;
 
 /**
  * This class is used to manage the key input.
@@ -34,7 +33,8 @@ public class KeyInput extends KeyAdapter
      * Manages KeyPressed events
      * @param e the event.
      */
-    public void keyPressed(KeyEvent e) {
+    @Override
+	public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         key_mask[key] = true;
     }
@@ -43,7 +43,8 @@ public class KeyInput extends KeyAdapter
      * Manages keyReleased events
      * @param e the event.
      */
-    public void keyReleased(KeyEvent e) {
+    @Override
+	public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
         key_mask[key] = false;
 

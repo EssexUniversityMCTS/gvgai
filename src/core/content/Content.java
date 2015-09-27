@@ -1,6 +1,6 @@
 package core.content;
 
-import java.util.*;
+import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.

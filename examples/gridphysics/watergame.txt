@@ -1,0 +1,26 @@
+BasicGame square_size=80
+    SpriteSet
+        door > Door img=exit
+        wall > Immovable img=wall
+        water > Immovable img=water
+        box > Passive img=box
+        avatar > MovingAvatar img=avatar
+    TerminationSet
+        SpriteCounter stype=door limit=0 win=True
+        SpriteCounter stype=avatar limit=0 win=False
+    InteractionSet
+        avatar wall > stepBack
+        box avatar > bounceForward
+        box wall > undoAll
+        wall box > undoAll
+        box box > undoAll
+        water box > killSprite
+        box water > killSprite
+        avatar water > killSprite
+        door avatar > killSprite
+    LevelMapping
+        p > avatar
+        w > wall
+        x > water
+        c > box
+        o > door

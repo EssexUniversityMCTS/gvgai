@@ -1,6 +1,11 @@
 package controllers.sampleGA;
 
 
+import java.awt.Graphics2D;
+import java.util.HashMap;
+import java.util.Random;
+import java.util.concurrent.TimeoutException;
+
 import controllers.Heuristics.StateHeuristic;
 import controllers.Heuristics.WinScoreHeuristic;
 import core.game.StateObservation;
@@ -8,11 +13,6 @@ import core.player.AbstractPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
 import tools.Utils;
-
-import java.awt.*;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Created with IntelliJ IDEA.

@@ -5,7 +5,6 @@ import core.content.InteractionContent;
 import core.game.Game;
 import ontology.Types;
 import ontology.effects.Effect;
-import ontology.sprites.Resource;
 
 /**
  * Created with IntelliJ IDEA.

@@ -1,0 +1,41 @@
+BasicGame
+    SpriteSet
+        cannon > Passive invisible=TRUE
+        avatar > MovingAvatar img=avatar
+        bullet > RandomMissile img=bullet
+        enemyW >
+            enemy   >
+                randomEnemy > RandomNPC cooldown=5 img=bee
+                chaseEnemy  > Chaser cooldown=5 stype=avatar img=monster
+                dirEnemy   > Missile cooldown=5 img=camel
+            spawner >
+                spawnRandom > SpawnPoint stype=randomEnemy total=10 cooldown=20 img=portal
+                spawnChase  > SpawnPoint stype=chaseEnemy total=10 cooldown=40 img=hole
+                spawnHorzR  > SpawnPoint stype=dirEnemy total=5 cooldown=30 orientation=RIGHT img=door
+                spawnHorzL  > SpawnPoint stype=dirEnemy total=5 cooldown=30 orientation=LEFT img=door
+                spawnHorzU  > SpawnPoint stype=dirEnemy total=5 cooldown=30 orientation=UP img=door
+                spawnHorzD  > SpawnPoint stype=dirEnemy total=5 cooldown=30 orientation=DOWN img=door
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=enemyW limit=0 win=True
+    InteractionSet
+        cannon avatar      > spawnIfHasMore stype=bullet resource=null limit=0 prob=0.5
+        
+        bullet enemy       > killSprite
+        enemy bullet       > killSprite scoreChange=1
+        avatar enemy       > killSprite
+        
+        avatar EOS         > stepBack
+        cannon EOS         > stepBack
+        dirEnemy EOS       > reverseDirection
+        randomEnemy EOS    > stepBack
+        bullet EOS         > killSprite
+    LevelMapping
+        a > avatar cannon
+        r > spawnRandom cannon
+        c > spawnChase cannon
+        z > spawnHorzR cannon
+        x > spawnHorzL cannon
+        f > spawnHorzD cannon
+        v > spawnHorzU cannon
+        . > cannon

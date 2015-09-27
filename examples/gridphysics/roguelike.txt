@@ -1,4 +1,4 @@
-BasicGame square_size=30
+BasicGame square_size=25
     SpriteSet
         exit > Door color=GREEN img=goal
 

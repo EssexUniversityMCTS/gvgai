@@ -1,11 +1,11 @@
 package controllers.replayer;
 
+import java.util.ArrayList;
+
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
-
-import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.

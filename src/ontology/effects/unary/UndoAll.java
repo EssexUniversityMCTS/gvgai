@@ -1,12 +1,11 @@
 package ontology.effects.unary;
 
+import java.util.Iterator;
+
 import core.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
 import ontology.effects.Effect;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Created with IntelliJ IDEA.
