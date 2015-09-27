@@ -24,23 +24,31 @@ public class Test
 
         //Available games:
         String gamesPath = "examples/gridphysics/";
+        String games[] = new String[]{};
 
-        //CIG 2014 Training Set Games
-        //String games[] = new String[]{"aliens", "boulderdash", "butterflies", "chase", "frogs",
+        //Training Set 1 (2015; CIG 2014)
+        //games = new String[]{"aliens", "boulderdash", "butterflies", "chase", "frogs",
         //        "missilecommand", "portals", "sokoban", "survivezombies", "zelda"};
 
-        //CIG 2014 Validation Set Games
-        //String games[] = new String[]{"camelRace", "digdug", "firestorms", "infection", "firecaster",
+        //Training Set 2 (2015; Validation CIG 2014)
+        //games = new String[]{"camelRace", "digdug", "firestorms", "infection", "firecaster",
         //      "overload", "pacman", "seaquest", "whackamole", "eggomania"};
 
-        //CIG 2015 New Training Set Games
-        //String games[] = new String[]{"bait", "boloadventures", "brainman", "chipschallenge",  "modality",
+        //Training Set 3 (2015)
+        //games = new String[]{"bait", "boloadventures", "brainman", "chipschallenge",  "modality",
         //                              "painter", "realportals", "realsokoban", "thecitadel", "zenpuzzle"};
 
+        //Training Set 4 (Validation GECCO 2015, Test CIG 2014)
+        //games = new String[]{"roguelike", "surround", "catapults", "plants", "plaqueattack",
+        //        "jaws", "labyrinth", "boulderchase", "escape", "lemmings"};
 
-        //CIG 2014 TEST SET / GECCO 2015 VALIDATION SET
-        String games[] = new String[]{"roguelike", "surround", "catapults", "plants", "plaqueattack",
-                "jaws", "labyrinth", "boulderchase", "escape", "lemmings"};
+        //Training Set 5 (Validation CIG 2015, Test GECCO 2015)
+        //String games[] = new String[]{ "solarfox", "defender", "enemycitadel", "crossfire", "lasers",
+        //                               "sheriff", "chopper", "superman", "waitforbreakfast", "cakybaky"};
+
+        //Training Set 6 (Validation CEEC 2015)
+        games = new String[]{"lasers2", "hungrybirds" ,"cookmepasta", "factorymanager", "raceBet2",
+                "intersection", "blacksmoke", "iceandfire", "gymkhana", "tercio"};
 
 
         //Other settings

@@ -1,0 +1,73 @@
+BasicGame
+    SpriteSet
+        goal  > Door color=GREEN img=door
+        trap > Immovable img=hell
+
+        camel > Missile img=camel.png orientation=RIGHT
+            camelA > speed=0.45
+            camelB > speed=0.35
+            camelC > speed=0.25
+            camelD > speed=0.15
+
+        winner > Immovable singleton=True
+            winA > speed=0.25 img=diamond
+            winB > speed=0.25 img=mana
+            winC > speed=0.25 img=powerpill
+            winD > speed=0.25 img=crystal
+
+        pit > Immovable
+            arena > color=LIGHTYELLOW
+            pitA > color=LIGHTBLUE
+            pitB > color=LIGHTGREEN
+            pitC > color=LIGHTORANGE
+            pitD > color=LIGHTGRAY
+
+        avatar > MovingAvatar speed=1.0
+            normal > img=avatar
+            betA > img=diamond
+            betB > img=mana
+            betC > img=powerpill
+            betD > img=crystal
+
+    InteractionSet
+
+        avatar arena > transformTo stype=normal
+        avatar pitA > transformTo stype=betA
+        avatar pitB > transformTo stype=betB
+        avatar pitC > transformTo stype=betC
+        avatar pitD > transformTo stype=betD
+
+        camelA goal > transformTo stype=winA
+        camelB goal > transformTo stype=winB
+        camelC goal > transformTo stype=winC
+        camelD goal > transformTo stype=winD
+
+        avatar wall > stepBack
+        camel wall  > stepBack
+        camel trap > killSprite
+
+    LevelMapping
+        A > normal arena
+        . > arena
+        1 > pitA
+        2 > pitB
+        3 > pitC
+        4 > pitD
+        a > camelA
+        b > camelB
+        c > camelC
+        d > camelD
+        T > trap
+        G > goal
+
+
+    TerminationSet
+        MultiSpriteCounter stype1=winA stype2=betA limit=2 win=True
+        MultiSpriteCounter stype1=winB stype2=betB limit=2 win=True
+        MultiSpriteCounter stype1=winC stype2=betC limit=2 win=True
+        MultiSpriteCounter stype1=winD stype2=betD limit=2 win=True
+
+        MultiSpriteCounter stype1=winA limit=1 win=False
+        MultiSpriteCounter stype1=winB limit=1 win=False
+        MultiSpriteCounter stype1=winC limit=1 win=False
+        MultiSpriteCounter stype1=winD limit=1 win=False

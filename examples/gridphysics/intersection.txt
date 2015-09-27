@@ -1,0 +1,57 @@
+BasicGame
+    SpriteSet
+
+        goal  > Portal color=GREEN img=goal singleton=True portal=True stype=start
+        deadPortal  > Portal invisible=True singleton=True portal=True stype=start
+        truck  > img=bus
+            rightTruck  > Missile   orientation=RIGHT 
+                fastRtruck  > speed=0.9  color=ORANGE
+                slowRtruck  > speed=0.7  color=RED
+            downTruck  > Missile   orientation=DOWN
+                fastDtruck  > speed=0.9  color=ORANGE
+                slowDtruck  > speed=0.7  color=RED
+
+        start > Immovable invisible=True
+        wall > Immovable color=BLACK img=wall
+        tree > Immovable color=GREEN img=forest
+        input > SpawnPoint stype=goal cooldown=16 prob=0.05 total=1 invisible=True
+        lifes > Resource color=GOLD limit=5 img=shield
+
+        avatar >
+            moving > MovingAvatar img=avatar
+
+    LevelMapping
+        t > tree
+        - > slowRtruck
+        x > fastDtruck
+        _ > slowRtruck
+        X > fastDtruck
+
+        I > input
+        S > start moving lifes
+
+    InteractionSet
+
+        moving lifes > changeResource resource=lifes value=5
+        lifes moving > killSprite
+
+        goal moving  > killSprite scoreChange=10
+        moving goal > teleportToExit
+        moving tree > stepBack
+
+        moving truck > changeResource resource=lifes value=-1 scoreChange=-5
+        moving truck > killIfHasLess resource=lifes limit=0
+
+        moving truck > spawnIfHasMore resource=lifes limit=0 stype=deadPortal
+        deadPortal moving > killSprite
+        moving deadPortal > teleportToExit
+
+        moving wall  > stepBack
+
+        truck  EOS   > wrapAround
+    
+    TerminationSet
+        Timeout limit=1000 win=True
+        SpriteCounter stype=avatar limit=0 win=False
+
+

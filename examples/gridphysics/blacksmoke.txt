@@ -1,0 +1,58 @@
+BasicGame
+    SpriteSet
+
+        safety > Resource  limit=2 color=BROWN img=mana
+        key > Resource limit=1 img=key singleton=True
+        shovel > Flicker color=LIGHTGRAY limit=1 singleton=True img=sword.png
+        box    > Passive img=box
+        avatar  > ShootAvatar stype=shovel
+
+        death > Immovable color=GRAY
+        ground > Immovable color=BLACK img=dirt
+        lock   > Immovable color=WHITE img=lock
+
+        smoke   > SpawnPoint cooldown=2  total=6 stype=smokespawn img=smoke
+        smokespawn > RandomMissile color=ORANGE speed=0.25 invisible=True
+        exit > Door img=door
+
+        key > Resource limit=1 img=key singleton=True
+
+        box    > Immovable img=box
+
+    InteractionSet
+
+        avatar ground > changeResource resource=safety value=2
+        avatar smoke > changeResource resource=safety value=2
+        avatar death > killIfHasLess  resource=safety limit=0
+        avatar death > changeResource resource=safety value=-1
+
+        exit avatar > killSprite scoreChange=1
+        avatar wall > stepBack
+
+        ground smokespawn  > transformTo stype=smoke
+        smokespawn ground > killSprite
+        smokespawn wall > killSprite
+
+        key avatar      > collectResource
+        key avatar      > killSprite
+        lock avatar > killIfOtherHasMore resource=key limit=1
+        avatar lock > changeResource resource=key value=-1
+        avatar lock > stepBack
+        avatar box > stepBack
+
+        box shovel  > killSprite scoreChange=1
+        box smokespawn > killSprite
+
+    LevelMapping
+        . > ground death
+        c > death
+        d > smoke death
+        e > exit
+        A > avatar ground death
+        k > key ground death
+        l > lock ground death
+        B > box ground death
+
+    TerminationSet
+        SpriteCounter stype=exit win=True
+        SpriteCounter stype=avatar    win=False

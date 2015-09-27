@@ -1,0 +1,99 @@
+BasicGame
+    SpriteSet
+        goal > Immovable img=door portal=true
+        avatar > ShootAvatar stype=boulder rotateInPlace=true
+        box    > Passive img=box
+        mirror > Passive img=crystal
+           mup > orientation=UP
+           mdown > orientation=DOWN
+           mright > orientation=RIGHT
+           mleft > orientation=LEFT
+           mswap >
+
+        lasercannon > SpawnPoint 
+            lcup > img=spaceship stype=lup
+            lcdown > img=spaceship stype=ldown
+            lcright > img=spaceship stype=lright
+            lcleft > img=spaceship stype=lleft
+            lcswap > img=spaceship stype=lleft
+        laser > Missile color=YELLOW  shrinkfactor=0.5 speed=0.5
+            lup > orientation=UP
+            ldown > orientation=DOWN
+            lright > orientation=RIGHT
+            lleft > orientation=LEFT
+        pushingbox > Resource limit=2 value=0
+        boulder > Missile color=BLUE singleton=True img=bullet
+        boulder2 > Immovable color=BLUE img=boulder
+        obstacle > Immovable img=damaged
+
+    LevelMapping
+        A > avatar
+        B > box
+        L > lcleft
+        R > lcright
+        U > lcup
+        D > lcdown
+        G > goal
+        u > mup
+        d > mdown
+        r > mright
+        l > mleft
+        O > obstacle
+
+    InteractionSet
+        boulderm boulder > transformTo stype=boulder
+
+        avatar wall > stepBack
+        avatar obstacle > stepBack
+        avatar lasercannon > stepBack
+        avatar box > changeResource resource=pushingbox value=1
+        box avatar  > bounceForward
+        avatar mirror > changeResource resource=pushingbox value=1
+        mirror avatar  > bounceForward
+
+        box wall    > undoAll
+        box box     > undoAll
+        box mirror  > undoAll
+        box obstacle > undoAll
+        box lasercannon > undoAll
+
+        mirror wall    > undoAll
+        mirror mirror     > undoAll
+        mirror box > undoAll
+        mirror lasercannon > undoAll
+
+        avatar wall > stepBack
+
+        laser wall > killSprite
+        laser box > killSprite
+        laser boulder > killSprite
+        obstacle laser > killSprite
+        boulder wall > killSprite
+        boulder EOS > killSprite
+        avatar laser > killIfHasLess resource=pushingbox limit=0
+        avatar laser > changeResource resource=pushingbox value=-1
+
+
+
+        goal avatar > killSprite scoreChange=5
+
+        lcdown boulder > transformTo stype=lcswap
+        lcleft boulder > transformTo stype=lcdown
+        lcup boulder > transformTo stype=lcleft
+        lcright boulder > transformTo stype=lcup
+        lcswap boulder > transformTo stype=lcright
+
+        boulder lasercannon > killSprite
+
+        laser mirror > attractGaze
+        mdown boulder > transformTo stype=mswap
+        mleft boulder > transformTo stype=mdown
+        mup boulder > transformTo stype=mleft
+        mright boulder > transformTo stype=mup
+        mswap boulder > transformTo stype=mright
+
+        boulder mirror > killSprite
+
+    TerminationSet
+        SpriteCounter stype=avatar    limit=0 win=False
+        SpriteCounter stype=goal    limit=0 win=True

@@ -1,0 +1,81 @@
+BasicGame square_size=30
+    SpriteSet
+        goal  > Immovable color=GREEN img=door portal=True
+        water > Immovable color=BLUE img=water
+
+        forest > SpawnPoint stype=log prob=0.25  cooldown=10 img=forest
+            forestR > stype=logR
+            forestL > stype=logL
+
+        log    > Missile speed=0.1 color=BROWN img=log
+            logR > orientation=RIGHT
+            logL > orientation=LEFT
+            landingpad > speed=0.0 img=ice
+
+
+        catapult > Immovable
+            southfacing > orientation=DOWN  color=RED img=honey
+            northfacing > orientation=UP  color=ORANGE img=honeyUp
+            eastfacing  > orientation=RIGHT color=YELLOW img=honeyRight
+            westfacing  > orientation=LEFT color=YELLOW img=honeyLeft
+        avatar >
+            moving > MovingAvatar img=avatar
+                onground >
+                onlog >
+            bullet > MissileAvatar img=alien
+                north  > orientation=UP color=RED
+                south  > orientation=DOWN color=ORANGE
+                east   > orientation=RIGHT color=YELLOW
+                west   > orientation=LEFT color=GREEN
+        safety > Resource  limit=2 color=BROWN img=mana
+
+    LevelMapping
+        . > water
+        , > landingpad
+        0 > eastfacing
+        1 > southfacing
+        2 > northfacing
+        3 > westfacing
+
+        E > eastfacing landingpad
+        S > southfacing landingpad
+        N > northfacing landingpad
+        W > westfacing landingpad
+
+        R > forestR log
+        L > forestL log
+        G > goal
+        A > onground
+
+    InteractionSet
+        bullet wall > transformTo stype=onground
+        bullet log > transformTo stype=onground
+        moving wall > stepBack
+
+        onground log   > changeResource resource=safety value=2
+        onground log   > pullWithIt adjustPosition=True #This allows jumping between platforms
+        landingpad onground > killSprite
+        log    wall   > killSprite
+
+        avatar catapult    > attractGaze prob=1
+        avatar westfacing  > transformTo stype=west
+        avatar westfacing  > attractGaze prob=1
+        avatar eastfacing  > transformTo stype=east
+        avatar eastfacing  > attractGaze prob=1
+        avatar southfacing > transformTo stype=south
+        avatar southfacing > attractGaze prob=1
+        avatar northfacing > transformTo stype=north
+        avatar northfacing > attractGaze prob=1
+        catapult avatar    > killSprite scoreChange=1
+        goal avatar        > killSprite
+
+
+        onground water > killIfHasLess  resource=safety limit=0
+        onground water > changeResource resource=safety value=-1
+
+        avatar forest > stepBack
+
+    TerminationSet
+        SpriteCounter stype=goal    limit=0 win=True
+        SpriteCounter stype=avatar  limit=0 win=False
+        Timeout limit=500 win=False
