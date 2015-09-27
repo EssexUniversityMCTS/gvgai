@@ -19,7 +19,6 @@ BasicGame
 
 
     LevelMapping
-        w > water
         1 > piranhahole
         2 > whalehole
         3 > sharkhole

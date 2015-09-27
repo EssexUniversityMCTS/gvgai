@@ -516,8 +516,19 @@ public abstract class Game
      * Construct and return a temporary avatar sprite
      * @return a temproary avatar sprite
      */
-    public VGDLSprite getTempAvatar(){
-    	return VGDLFactory.GetInstance().createSprite((SpriteContent) classConst[avatarId], new Vector2d(), new Dimension(1, 1));
+    public VGDLSprite getTempAvatar(ArrayList<SpriteData> spriteData){
+    	for(SpriteData sprite:spriteData){
+        	avatarId = VGDLRegistry.GetInstance().getRegisteredSpriteValue(sprite.name);
+    		if(((SpriteContent)classConst[avatarId]).referenceClass != null){
+    			VGDLSprite result = VGDLFactory.GetInstance().createSprite((SpriteContent) classConst[avatarId], 
+    					new Vector2d(), new Dimension(1, 1));
+    			if(result != null){
+    				return result;
+    			}
+    		}
+        }
+    	
+    	return null;
     }
     
     /**

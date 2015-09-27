@@ -60,7 +60,7 @@ public class Test
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
 
         // 1. This starts a game, in a level, played by a human.
-        ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
+        //ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
         
         // 2. This plays a game in a level by the controller.
         //ArcadeMachine.runOneGame(game, level1, visuals, breadthFirstSearch, recordActionsFile, seed);
@@ -76,7 +76,7 @@ public class Test
         //ArcadeMachine.runGames(game, new String[]{level1, level2}, M, sampleMCTSController, null);
         
         //5. This starts a game, in a generated level created by a specific level generator
-        //ArcadeMachine.playGeneratedLevel(game, randomLevelGenerator, recordActionsFile, seed);
+        ArcadeMachine.playGeneratedLevel(game, randomLevelGenerator, recordActionsFile, seed);
         
         //6. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
         /*int N = 10, L = 5, M = 2;

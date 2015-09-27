@@ -25,7 +25,7 @@ public class GameDescription {
 	/**
 	 * abstract data about main avatar
 	 */
-	private SpriteData avatar;
+	private ArrayList<SpriteData> avatar;
 	
 	/**
 	 * list of all allowed actions by the avatar including the NIL action
@@ -79,6 +79,7 @@ public class GameDescription {
 	 */
 	public GameDescription(Game currentGame){
 		this.currentGame = currentGame;
+		this.avatar = new ArrayList<SpriteData>();
 		this.npcList = new ArrayList<SpriteData>();
 		this.portalList = new ArrayList<SpriteData>();
 		this.resourceList = new ArrayList<SpriteData>();
@@ -89,7 +90,7 @@ public class GameDescription {
 		ArrayList<SpriteData> allSprites = this.currentGame.getSpriteData();
 		for (SpriteData sd:allSprites){
 			if(sd.isAvatar){
-				avatar = sd;
+				avatar.add(sd);
 			}
 			else if(sd.isNPC){
 				npcList.add(sd);
@@ -108,7 +109,7 @@ public class GameDescription {
 			}
 		}
 		
-		MovingAvatar temp = (MovingAvatar)currentGame.getTempAvatar();
+		MovingAvatar temp = (MovingAvatar)currentGame.getTempAvatar(avatar);
 		actionsNIL = temp.actionsNIL;
 		actions = temp.actions;
 		
@@ -158,7 +159,7 @@ public class GameDescription {
 	 * Get avatar sprite data information
 	 * @return avatar's sprite data
 	 */
-	public SpriteData getAvatar(){
+	public ArrayList<SpriteData> getAvatar(){
 		return avatar;
 	}
 	
@@ -200,7 +201,12 @@ public class GameDescription {
 	 */
 	public ArrayList<SpriteData> getAllSpriteData(){
 		ArrayList<SpriteData> result = new ArrayList<SpriteData>();
-		result.add(avatar);
+		result.addAll(avatar);
+		result.addAll(npcList);
+		result.addAll(resourceList);
+		result.addAll(staticList);
+		result.addAll(portalList);
+		result.addAll(movingList);
 		
 		return result;
 	}

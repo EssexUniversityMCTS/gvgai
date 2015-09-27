@@ -13,6 +13,7 @@ import java.util.Random;
 import core.competition.CompetitionParameters;
 import core.game.Game;
 import core.game.GameDescription;
+import core.game.GameDescription.SpriteData;
 import core.game.StateObservation;
 import core.generator.AbstractLevelGenerator;
 import core.player.AbstractPlayer;
@@ -144,15 +145,16 @@ public class ArcadeMachine
      * @param charMapping	Current character mapping
      * @return				True if the level is valid, false otherwise.
      */
-    private static boolean checkLevelStringValidity(String level, String avatarStype, HashMap<Character, ArrayList<String>> charMapping){
+    private static boolean checkLevelStringValidity(String level, ArrayList<SpriteData> avatarStype, HashMap<Character, ArrayList<String>> charMapping){
     	int numOfAvatar = 0;
     	ArrayList<Character> avatarChar = new ArrayList<Character>();
     	ArrayList<Character> allChar = new ArrayList<Character>(Arrays.asList(charMapping.keySet().toArray(new Character[0])));
     	
     	for(Entry<Character, ArrayList<String>> pair:charMapping.entrySet()){
-    		if(pair.getValue().contains(avatarStype)){
-    			avatarChar.add(pair.getKey());
-    			break;
+    		for (SpriteData atype:avatarStype){
+    			if(pair.getValue().contains(atype.name)){
+        			avatarChar.add(pair.getKey());
+        		}
     		}
     	}
     	
@@ -202,7 +204,7 @@ public class ArcadeMachine
         if(charMapping != null){
         	toPlay.setCharMapping(charMapping);
         }
-        if(!checkLevelStringValidity(level, description.getAvatar().name, toPlay.getCharMapping())){
+        if(!checkLevelStringValidity(level, description.getAvatar(), toPlay.getCharMapping())){
         	toPlay.disqualify();
 
             //Get the score for the result.

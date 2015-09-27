@@ -36,12 +36,12 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		String result = "";
 		HashMap<Character, ArrayList<String>> levelMapping = game.getLevelMapping();
 		ArrayList<SpriteData> sprites = game.getAllSpriteData();
-		String avatarName = game.getAvatar().name;
+		ArrayList<SpriteData> avatars = game.getAvatar();
 		
-		int length = (int)(sprites.size() * (1 + random.nextDouble() / 2) * 8);
-		int width = (int)(sprites.size() * (1 + random.nextDouble() / 2) * 10);
+		int length = (int)(sprites.size() * (1 + random.nextDouble()));
+		int width = (int)(sprites.size() * (1 + random.nextDouble()));
 		
-		Character avatar = 'a';
+		ArrayList<Character> avatar = new ArrayList<Character>();
 		int avatarX = random.nextInt(width);
 		int avatarY = random.nextInt(length);
 		
@@ -52,18 +52,29 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			choices.add(' ');
 			choices.add(' ');
 			
-			if(!pair.getValue().contains(avatarName)){
+			boolean avatarExists = false;
+			for (SpriteData avatarName:avatars){
+				if(pair.getValue().contains(avatarName.name)){
+					avatarExists = true;
+				}
+			}
+			
+			if(!avatarExists){
 				choices.add(pair.getKey());
 			}
 			else{
-				avatar = pair.getKey();
+				avatar.add(pair.getKey());
 			}
+		}
+		
+		if(avatar.size() == 0){
+			avatar.add('a');
 		}
 		
 		for(int y=0; y < length; y++){
 			for(int x=0; x < width; x++){
 				if(x == avatarX && y == avatarY){
-					result += avatar;
+					result += avatar.get(random.nextInt(avatar.size()));
 				}
 				else
 				{
