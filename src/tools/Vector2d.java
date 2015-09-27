@@ -30,7 +30,8 @@ public class Vector2d
      * @param o the other vector to check
      * @return true if their coordinates are the same.
      */
-    public boolean equals(Object o) {
+    @Override
+	public boolean equals(Object o) {
         if (o instanceof Vector2d) {
             Vector2d v = (Vector2d) o;
             return x == v.x && y == v.y;
@@ -98,7 +99,8 @@ public class Vector2d
      * Returns a representative String of this vector.
      * @return a representative String of this vector.
      */
-    public String toString() {
+    @Override
+	public String toString() {
         return x + " : " + y;
     }
 

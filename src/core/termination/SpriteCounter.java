@@ -1,8 +1,11 @@
 package core.termination;
 
+import java.util.ArrayList;
+
 import core.VGDLRegistry;
 import core.content.TerminationContent;
 import core.game.Game;
+import core.game.GameDescription.TerminationData;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,5 +40,13 @@ public class SpriteCounter extends Termination
 
         return false;
     }
+
+	@Override
+	public ArrayList<String> getTerminationSprites() {
+		ArrayList<String> result = new ArrayList<String>();
+		result.add(stype);
+		
+		return result;
+	}
 
 }

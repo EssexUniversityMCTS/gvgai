@@ -89,7 +89,7 @@ public class VGDLRegistry
     public String getRegisteredSpriteKey(int value)
     {
         //This method should not be used.
-        System.out.println("This method is deprecated, should not be used (other than debug).");
+        //System.out.println("This method is deprecated, should not be used (other than debug).");
         if(sprite_mapping.containsValue(value))
         {
             Set<Map.Entry<String, Integer>> entries = sprite_mapping.entrySet();

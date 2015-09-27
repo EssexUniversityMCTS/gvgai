@@ -8,8 +8,6 @@ import ontology.effects.Effect;
 import tools.Utils;
 import tools.Vector2d;
 
-import java.util.Random;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Diego

@@ -1,6 +1,6 @@
-import core.ArcadeMachine;
-
 import java.util.Random;
+
+import core.ArcadeMachine;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,10 +18,15 @@ public class Test
         String sampleRandomController = "controllers.sampleRandom.Agent";
         String sampleOneStepController = "controllers.sampleonesteplookahead.Agent";
         String sampleMCTSController = "controllers.sampleMCTS.Agent";
+        String sampleFlatMCTSController = "controllers.sampleFlatMCTS.Agent";
         String sampleOLMCTSController = "controllers.sampleOLMCTS.Agent";
         String sampleGAController = "controllers.sampleGA.Agent";
         String tester = "controllers.Tester.Agent";
+        String breadthFirstSearch = "controllers.breadthFirstSearch.Agent";
 
+        //Available Generators
+        String randomLevelGenerator = "levelGenerators.randomLevelGenerator.LevelGenerator";
+        
         //Available games:
         String gamesPath = "examples/gridphysics/";
         String games[] = new String[]{};
@@ -63,10 +68,10 @@ public class Test
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
 
         // 1. This starts a game, in a level, played by a human.
-        ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
-
+        //ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
+        
         // 2. This plays a game in a level by the controller.
-        //ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed);
+        //ArcadeMachine.runOneGame(game, level1, visuals, breadthFirstSearch, recordActionsFile, seed);
         //ArcadeMachine.runOneGame(game, level1, visuals, tester, recordActionsFile, seed);
 
         // 3. This replays a game from an action file previously recorded
@@ -77,8 +82,11 @@ public class Test
         //String level2 = gamesPath + games[gameIdx] + "_lvl" + 1 +".txt";
         //int M = 3;
         //ArcadeMachine.runGames(game, new String[]{level1, level2}, M, sampleMCTSController, null);
-
-        //5. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
+        
+        //5. This starts a game, in a generated level created by a specific level generator
+        ArcadeMachine.playGeneratedLevel(game, randomLevelGenerator, recordActionsFile, seed);
+        
+        //6. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
         /*int N = 10, L = 5, M = 2;
         boolean saveActions = false;
         String[] levels = new String[L];

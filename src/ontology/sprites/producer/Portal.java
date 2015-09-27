@@ -1,12 +1,13 @@
 package ontology.sprites.producer;
 
+import java.awt.Dimension;
+import java.util.ArrayList;
+
 import core.VGDLRegistry;
 import core.VGDLSprite;
 import core.content.SpriteContent;
 import ontology.Types;
 import tools.Vector2d;
-
-import java.awt.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -61,5 +62,13 @@ public class Portal extends SpriteProducer
         targetSprite.stype = this.stype;
         targetSprite.itype = this.itype;
         super.copyTo(targetSprite);
+    }
+    
+    @Override
+    public ArrayList<String> getDependentSprites(){
+    	ArrayList<String> result = new ArrayList<String>();
+    	if(stype != null) result.add(stype);
+    	
+    	return result;
     }
 }
