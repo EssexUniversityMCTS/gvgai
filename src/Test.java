@@ -1,6 +1,7 @@
 import java.util.Random;
 
 import core.ArcadeMachine;
+import ontology.sprites.npc.RandomNPC;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,9 +24,12 @@ public class Test
         String sampleGAController = "controllers.sampleGA.Agent";
         String tester = "controllers.Tester.Agent";
         String breadthFirstSearch = "controllers.breadthFirstSearch.Agent";
+        String simulatedAnnealing = "controllers.simulatedAnnealing.Agent";
+        String greedySearch = "controllers.greedySearch.Agent";
 
         //Available Generators
         String randomLevelGenerator = "levelGenerators.randomLevelGenerator.LevelGenerator";
+        String randomGeneticGenerator = "levelGenerators.randomGeneticAlgorithm.LevelGenerator";
         
         //Available games:
         String gamesPath = "examples/gridphysics/";
@@ -44,7 +48,7 @@ public class Test
 
 
         //CIG 2014 TEST SET / GECCO 2015 VALIDATION SET
-        String games[] = new String[]{"roguelike", "aliens", "frogs", "realsokoban", "pacman", "chase", "aliens", "zelda", "surround", 
+        String games[] = new String[]{"roguelike", "defem", "frogs", "realsokoban", "pacman", "chase", "aliens", "zelda", "surround", 
         		"catapults", "realportals", "plants", "plaqueattack", "jaws", "labyrinth", "boulderchase", "escape", "lemmings"};
 
 
@@ -58,6 +62,8 @@ public class Test
         int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
+        
+        String recordLevelFile = "examples/generatedLevels/" + games[gameIdx] + ".txt";
 
         // 1. This starts a game, in a level, played by a human.
         //ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
@@ -76,7 +82,9 @@ public class Test
         //ArcadeMachine.runGames(game, new String[]{level1, level2}, M, sampleMCTSController, null);
         
         //5. This starts a game, in a generated level created by a specific level generator
-        ArcadeMachine.playGeneratedLevel(game, randomLevelGenerator, recordActionsFile, seed);
+        if(ArcadeMachine.generateOneLevel(game, randomGeneticGenerator, recordLevelFile)){
+        	ArcadeMachine.playOneGeneratedLevel(game, recordActionsFile, recordLevelFile, seed);
+        }
         
         //6. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
         /*int N = 10, L = 5, M = 2;

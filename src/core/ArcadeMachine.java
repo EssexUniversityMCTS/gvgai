@@ -1,7 +1,10 @@
 package core;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -19,6 +22,7 @@ import core.generator.AbstractLevelGenerator;
 import core.player.AbstractPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
+import tools.IO;
 import tools.StatSummary;
 
 /**
@@ -49,11 +53,12 @@ public class ArcadeMachine
      * It also launches the game for a human to be played. Graphics always on. 
      * @param gameFile			the game description file
      * @param levelGenerator	the level generator name
+     * @param levelFile			a file to save the generated level
      */
-    public static double playGeneratedLevel(String gameFile, String levelGenerator, String actionFile, int randomSeed){
+    public static double playOneGeneratedLevel(String gameFile, String actionFile, String levelFile, int randomSeed){
     	String agentName = "controllers.human.Agent";
         boolean visuals = true;
-        return runGeneratedLevel(gameFile, levelGenerator, visuals, agentName, actionFile, randomSeed);
+    	return runOneGeneratedLevel(gameFile, visuals, agentName, actionFile, levelFile, randomSeed);
     }
     
     /**
@@ -107,100 +112,31 @@ public class ArcadeMachine
     }
     
     /**
-     * Generate a level for the described game using the supplied level generator.
-     * @param gd		Abstract description of game elements
-     * @param game		Current game object.
-     * @param generator Current level generator.
-     * @return			String of symbols contains the generated level. Same as Level Description File string.
-     */
-    private static String GenerateLevel(GameDescription gd, Game game, AbstractLevelGenerator generator){
-    	ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
-        ect.setMaxTimeMillis(CompetitionParameters.LEVEL_ACTION_TIME);
-
-        String level = generator.GenerateLevel(gd, ect.copy());
-
-        if(ect.exceededMaxTime())
-        {
-            long exceeded =  - ect.remainingTimeMillis();
-
-            if(ect.elapsedMillis() > CompetitionParameters.LEVEL_ACTION_TIME_DISQ)
-            {
-                //The agent took too long to replay. The game is over and the agent is disqualified
-                System.out.println("Too long: " + "(exceeding "+(exceeded)+"ms): controller disqualified.");
-                level = "";
-            }else{
-                System.out.println("Overspent: " + "(exceeding "+(exceeded)+"ms): applying Empty Level.");
-                level = " ";
-            }
-        }
-        
-        return level;
-    }
-    
-    /**
-     * Check if the generated level string is valid. Checks for only one avatar. 
-     * Checks all symbols used in the description are defined in character Mapping.
-     * @param level			current generated level
-     * @param avatarStype	Avatar sprite name defined in this game.
-     * @param charMapping	Current character mapping
-     * @return				True if the level is valid, false otherwise.
-     */
-    private static boolean checkLevelStringValidity(String level, ArrayList<SpriteData> avatarStype, HashMap<Character, ArrayList<String>> charMapping){
-    	int numOfAvatar = 0;
-    	ArrayList<Character> avatarChar = new ArrayList<Character>();
-    	ArrayList<Character> allChar = new ArrayList<Character>(Arrays.asList(charMapping.keySet().toArray(new Character[0])));
-    	
-    	for(Entry<Character, ArrayList<String>> pair:charMapping.entrySet()){
-    		for (SpriteData atype:avatarStype){
-    			if(pair.getValue().contains(atype.name)){
-        			avatarChar.add(pair.getKey());
-        		}
-    		}
-    	}
-    	
-    	for(int i=0; i < level.length(); i++){
-    		Character current = level.charAt(i);
-    		if(current == ' ' || current == '\n'){
-    			continue;
-    		}
-    		if(avatarChar.contains(current)){
-    			numOfAvatar += 1;
-    		}
-    		if(!allChar.contains(current)){
-    			return false;
-    		}
-    	}
-    	
-    	return numOfAvatar == 1;
-    }
-    
-    /**
      * Generate a level for a certain described game and test it against a supplied agent
      * @param gameFile			game description file.
      * @param levelGenerator	level generator class path.
-     * @param visuals			true to show the graphics, false otherwise.
-     * @param agentName			agent that will play the game after generation.
-     * @param actionFile 		name of the file where the actions of this player, for this game, must be read from.
+     * @param levelFile			file to save the generated level in it
      */
-    public static double runGeneratedLevel(String gameFile, String levelGenerator, boolean visuals,
-            String agentName, String actionFile, int randomSeed){
+    public static boolean generateOneLevel(String gameFile, String levelGenerator, String levelFile){
     	VGDLFactory.GetInstance().init(); //This always first thing to do.
         VGDLRegistry.GetInstance().init();
 
-        System.out.println(" ** Playing game " + gameFile + ", using level generator " + levelGenerator + " **");
+        System.out.println(" ** Generating a level for " + gameFile + ", using level generator " + levelGenerator + " **");
 
         // First, we create the game to be played..
         Game toPlay = new VGDLParser().parseGame(gameFile);
         GameDescription description = new GameDescription(toPlay);
         AbstractLevelGenerator generator = createLevelGenerator(levelGenerator, description);
-        String level = GenerateLevel(description, toPlay, generator);
+        String level = getGeneratedLevel(description, toPlay, generator);
         if(level == "" || level == null){
         	toPlay.disqualify();
 
             //Get the score for the result.
-            return toPlay.handleResult();
+            toPlay.handleResult();
+            return false;
         }
-        HashMap<Character, ArrayList<String>> charMapping = generator.GetLevelMapping();
+        
+        HashMap<Character, ArrayList<String>> charMapping = generator.getLevelMapping();
         if(charMapping != null){
         	toPlay.setCharMapping(charMapping);
         }
@@ -208,14 +144,34 @@ public class ArcadeMachine
         	toPlay.disqualify();
 
             //Get the score for the result.
-            return toPlay.handleResult();
+            toPlay.handleResult();
+            return false;
         }
+        if(levelFile != null){
+        	saveLevel(level, levelFile, toPlay.getCharMapping());
+        }
+        
+        return true;
+    }
+    
+    public static double runOneGeneratedLevel(String gameFile, boolean visuals,
+            String agentName, String actionFile, String levelFile, int randomSeed){
+    	VGDLFactory.GetInstance().init(); //This always first thing to do.
+        VGDLRegistry.GetInstance().init();
+
+        System.out.println(" ** Playing game " + gameFile + ", using generate level file " + levelFile + " **");
+
+        // First, we create the game to be played..
+        Game toPlay = new VGDLParser().parseGame(gameFile);
+        String level = loadGeneratedFile(toPlay, levelFile);
         String[] levelLines = level.split("\n");
+        
+        toPlay.reset();
         toPlay.buildStringLevel(levelLines);
 
         //Warm the game up.
         ArcadeMachine.warmUp(toPlay, CompetitionParameters.WARMUP_TIME);
-
+        
         //Create the player.
         AbstractPlayer player = ArcadeMachine.createPlayer(agentName, actionFile, toPlay.getObservation(), randomSeed);
 
@@ -399,6 +355,126 @@ public class ArcadeMachine
     }
 
     /**
+     * Generate multiple levels for a certain game
+     * @param gameFile			The game description file path
+     * @param levelGenerator	The current used level generator
+     * @param levelFile			array of level files to save the generated levels
+     */
+    public static void generateLevels(String gameFile, String levelGenerator, String[] levelFile){
+    	VGDLFactory.GetInstance().init(); //This always first thing to do.
+        VGDLRegistry.GetInstance().init();
+
+        // First, we create the game to be played..
+        Game toPlay = new VGDLParser().parseGame(gameFile);
+        GameDescription description = new GameDescription(toPlay);
+        AbstractLevelGenerator generator = createLevelGenerator(levelGenerator, description);
+        HashMap<Character, ArrayList<String>> originalMapping = toPlay.getCharMapping();
+        
+    	for(int i=0;i<levelFile.length;i++){
+    		System.out.println(" ** Generating a level " + (i + 1) +  " for " + gameFile + ", using level generator " + levelGenerator + " **");
+    		toPlay.reset();
+    		description.reset(toPlay);
+    		
+    		String level = getGeneratedLevel(description, toPlay, generator);
+            if(level == "" || level == null){
+            	toPlay.disqualify();
+
+                //Get the score for the result.
+                toPlay.handleResult();
+            }
+            
+            HashMap<Character, ArrayList<String>> charMapping = generator.getLevelMapping();
+            if(charMapping != null){
+            	toPlay.setCharMapping(charMapping);
+            }
+            if(!checkLevelStringValidity(level, description.getAvatar(), toPlay.getCharMapping())){
+            	toPlay.disqualify();
+
+                //Get the score for the result.
+                toPlay.handleResult();
+            }
+            if(levelFile != null){
+            	saveLevel(level, levelFile[i], toPlay.getCharMapping());
+            }
+            toPlay.setCharMapping(originalMapping);
+    	}
+    }
+    
+    /**
+     * play a couple of generated levels for a certain game
+     * @param gameFile
+     * @param actionFile
+     * @param levelFile
+     * @param randomSeed
+     */
+    public static void playGeneratedLevels(String gameFile, String[] actionFile, String[] levelFile){
+    	String agentName = "controllers.human.Agent";
+    	
+    	VGDLFactory.GetInstance().init(); //This always first thing to do.
+        VGDLRegistry.GetInstance().init();
+
+        boolean recordActions = false;
+        if(actionFile != null)
+        {
+            recordActions = true;
+            assert actionFile.length >= levelFile.length :
+                    "runGames (actionFiles.length<level_files.length*level_times): " +
+                    "you must supply an action file for each game instance to be played, or null.";
+        }
+
+        StatSummary scores = new StatSummary();
+
+        Game toPlay = new VGDLParser().parseGame(gameFile);
+        int levelIdx = 0;
+        for(String file : levelFile){
+        	System.out.println(" ** Playing game " + gameFile + ", level " + file +" **");
+        	
+            //build the level in the game.
+        	String level = loadGeneratedFile(toPlay, file);
+            String[] levelLines = level.split("\n");
+            
+            toPlay.buildStringLevel(levelLines);
+
+            String filename = recordActions ? actionFile[levelIdx] : null;
+
+            //Determine the random seed, different for each game to be played.
+            int randomSeed = new Random().nextInt();
+
+            //Create the player.
+            AbstractPlayer player = ArcadeMachine.createPlayer(agentName, filename, toPlay.getObservation(), randomSeed);
+
+            double score = -1;
+            if(player == null)
+            {
+            	//Something went wrong in the constructor, controller disqualified
+                toPlay.disqualify();
+                
+                //Get the score for the result.
+                score = toPlay.handleResult();
+
+            }else{
+
+            	//Then, play the game.
+                score = toPlay.playGame(player, randomSeed);
+            }
+
+            scores.add(score);
+
+            //Finally, when the game is over, we need to tear the player down.
+            if(player != null) ArcadeMachine.tearPlayerDown(player);
+            
+            //reset the game.
+            toPlay.reset();
+                
+            levelIdx += 1;
+        }
+
+        System.out.println(" *** Results in game " + gameFile + " *** ");
+        System.out.println(scores);
+        System.out.println(" *********");
+    }
+    
+    /**
      * Creates a player given its name with package. This class calls the constructor of the agent
      * and initializes the action recording procedure.
      * @param playerName name of the agent to create. It must be of the type "<agentPackage>.Agent".
@@ -573,6 +649,151 @@ public class ArcadeMachine
         }
 
         return generator;
+    }
+
+
+    /**
+     * Generate a level for the described game using the supplied level generator.
+     * @param gd		Abstract description of game elements
+     * @param game		Current game object.
+     * @param generator Current level generator.
+     * @return			String of symbols contains the generated level. Same as Level Description File string.
+     */
+    private static String getGeneratedLevel(GameDescription gd, Game game, AbstractLevelGenerator generator){
+    	ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
+        ect.setMaxTimeMillis(CompetitionParameters.LEVEL_ACTION_TIME);
+
+        String level = generator.generateLevel(gd, ect.copy());
+
+        if(ect.exceededMaxTime())
+        {
+            long exceeded =  - ect.remainingTimeMillis();
+
+            if(ect.elapsedMillis() > CompetitionParameters.LEVEL_ACTION_TIME_DISQ)
+            {
+                //The agent took too long to replay. The game is over and the agent is disqualified
+                System.out.println("Too long: " + "(exceeding "+(exceeded)+"ms): controller disqualified.");
+                level = "";
+            }else{
+                System.out.println("Overspent: " + "(exceeding "+(exceeded)+"ms): applying Empty Level.");
+                level = " ";
+            }
+        }
+        
+        return level;
+    }
+    
+    /**
+     * Check if the generated level string is valid. Checks for only one avatar. 
+     * Checks all symbols used in the description are defined in character Mapping.
+     * @param level			current generated level
+     * @param avatarStype	Avatar sprite name defined in this game.
+     * @param charMapping	Current character mapping
+     * @return				True if the level is valid, false otherwise.
+     */
+    private static boolean checkLevelStringValidity(String level, ArrayList<SpriteData> avatarStype, HashMap<Character, ArrayList<String>> charMapping){
+    	int numOfAvatar = 0;
+    	ArrayList<Character> avatarChar = new ArrayList<Character>();
+    	ArrayList<Character> allChar = new ArrayList<Character>(Arrays.asList(charMapping.keySet().toArray(new Character[0])));
+    	
+    	for(Entry<Character, ArrayList<String>> pair:charMapping.entrySet()){
+    		for (SpriteData atype:avatarStype){
+    			if(pair.getValue().contains(atype.name)){
+        			avatarChar.add(pair.getKey());
+        		}
+    		}
+    	}
+    	
+    	for(int i=0; i < level.length(); i++){
+    		Character current = level.charAt(i);
+    		if(current == ' ' || current == '\n'){
+    			continue;
+    		}
+    		if(avatarChar.contains(current)){
+    			numOfAvatar += 1;
+    		}
+    		if(!allChar.contains(current)){
+    			return false;
+    		}
+    	}
+    	
+    	return numOfAvatar == 1;
+    }
+    
+    /**
+     * Saves a level string to a file
+     * @param level		current level to save
+     * @param levelFile	saved file
+     */
+    private static void saveLevel(String level, String levelFile, HashMap<Character, ArrayList<String>> charMapping){
+    	try{
+    		if(levelFile != null){
+    			BufferedWriter writer = new BufferedWriter(new FileWriter(levelFile));
+    			writer.write("LevelMapping");
+    			writer.newLine();
+    			for(Entry<Character, ArrayList<String>> e:charMapping.entrySet()){
+    				writer.write("    " + e.getKey() + " > ");
+    				for(String s:e.getValue()){
+    					writer.write(s + " ");
+    				}
+    				writer.newLine();
+    			}
+    			writer.newLine();
+    			writer.write("LevelDescription");
+    			writer.newLine();
+    			writer.write(level);
+    			writer.close();
+    		}
+    	}
+    	catch(IOException e){
+    		e.printStackTrace();
+    	}
+    }
+    
+    /**
+     * Load a generated level file
+     * @param currentGame	Current Game object to se the Level Mapping
+     * @param levelFile		The generated level file path
+     * @return				Level String to be loaded
+     */
+    private static String loadGeneratedFile(Game currentGame, String levelFile){
+    	HashMap<Character, ArrayList<String>> levelMapping = new HashMap<Character, ArrayList<String>>();
+    	String level = "";
+    	int mode = 0;
+    	String[] lines = new IO().readFile(levelFile);
+    	for(String line:lines){
+    		if(line.equals("LevelMapping")){
+    			mode = 0;
+    		}
+    		else if(line.equals("LevelDescription")){
+    			mode = 1;
+    		}
+    		else{
+    			if(line.trim().length() == 0){
+    				continue;
+    			}
+    			switch(mode){
+    			case 0:
+    				String[] sides = line.split(">");
+    				ArrayList<String> sprites = new ArrayList<String>();
+    				for(String sprite:sides[1].trim().split(" ")){
+    					if(sprite.trim().length() == 0){
+    						continue;
+    					}
+    					else{
+    						sprites.add(sprite.trim());
+    					}
+    				}
+    				levelMapping.put(sides[0].trim().charAt(0), sprites);
+    				break;
+    			case 1:
+    				level += line + "\n";
+    				break;
+    			}
+    		}
+    	}
+    	currentGame.setCharMapping(levelMapping);
+    	return level;
     }
     
     /**

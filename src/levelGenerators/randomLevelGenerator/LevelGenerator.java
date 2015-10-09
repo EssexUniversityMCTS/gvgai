@@ -1,7 +1,6 @@
 package levelGenerators.randomLevelGenerator;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -32,9 +31,8 @@ public class LevelGenerator extends AbstractLevelGenerator{
 	 * @param elapsedTimer	Timer to define the maximum amount of time for the level generation.
 	 */
 	@Override
-	public String GenerateLevel(GameDescription game, ElapsedCpuTimer elapsedTimer) {
+	public String generateLevel(GameDescription game, ElapsedCpuTimer elapsedTimer) {
 		String result = "";
-		HashMap<Character, ArrayList<String>> levelMapping = game.getLevelMapping();
 		ArrayList<SpriteData> sprites = game.getAllSpriteData();
 		ArrayList<SpriteData> avatars = game.getAvatar();
 		
@@ -46,7 +44,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		int avatarY = random.nextInt(length);
 		
 		ArrayList<Character> choices = new ArrayList<Character>();
-		for(Map.Entry<Character, ArrayList<String>> pair:levelMapping.entrySet()){
+		for(Map.Entry<Character, ArrayList<String>> pair:game.getLevelMapping().entrySet()){
 			choices.add(' ');
 			choices.add(' ');
 			choices.add(' ');

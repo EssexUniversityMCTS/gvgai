@@ -39,7 +39,7 @@ public class Agent extends AbstractPlayer{
 				continue;
 			}
 			for(int i=0;i<possibleActions.size();i++){
-				StateObservation newState = stateObs.copy();
+				StateObservation newState = currentNode.state.copy();
 				newState.advance(possibleActions.get(i));
 				queue.add(new Node(currentNode, possibleActions.get(i), newState));
 			}

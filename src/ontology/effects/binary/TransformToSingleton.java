@@ -1,6 +1,7 @@
 package ontology.effects.binary;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -108,5 +109,14 @@ public class TransformToSingleton extends Effect {
         }
 
         game.killSprite(oldSprite);
+    }
+    
+    @Override
+    public ArrayList<String> getEffectSprites(){
+    	ArrayList<String> result = new ArrayList<String>();
+    	if(stype!=null) result.add(stype);
+    	if(stype_other!=null) result.add(stype_other);
+    	
+    	return result;
     }
 }

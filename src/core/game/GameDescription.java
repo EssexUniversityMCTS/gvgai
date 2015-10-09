@@ -2,6 +2,8 @@ package core.game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import core.VGDLRegistry;
 import core.termination.Termination;
@@ -85,7 +87,20 @@ public class GameDescription {
 		this.resourceList = new ArrayList<SpriteData>();
 		this.staticList = new ArrayList<SpriteData>();
 		this.movingList = new ArrayList<SpriteData>();
-		this.charMapping = (HashMap<Character, ArrayList<String>>)currentGame.getCharMapping().clone();
+		this.charMapping = currentGame.getCharMapping();
+		
+		reset(currentGame);
+	}
+	
+	public void reset(Game currentGame){
+		this.currentGame = currentGame;
+		this.avatar.clear();
+		this.npcList.clear();
+		this.portalList.clear();
+		this.resourceList.clear();
+		this.staticList.clear();
+		this.movingList.clear();
+		this.charMapping = currentGame.getCharMapping();
 		
 		ArrayList<SpriteData> allSprites = this.currentGame.getSpriteData();
 		for (SpriteData sd:allSprites){
@@ -136,6 +151,7 @@ public class GameDescription {
 			currentGame.setCharMapping(charMapping);
 		}
 		String[] lines = level.split("\n");
+		currentGame.reset();
 		currentGame.buildStringLevel(lines);
 		currentGame.setCharMapping(this.charMapping);
 		
@@ -324,5 +340,19 @@ public class GameDescription {
 		 * The amount of score this interaction changes
 		 */
 		public int scoreChange;
+		
+		/**
+		 * All the depending sprites on that
+		 */
+		public ArrayList<String> sprites;
+		
+		public InteractionData(){
+			sprites = new ArrayList<String>();
+		}
+		
+		@Override
+		public String toString(){
+			return type + " (" + scoreChange + ") " + sprites.toString();
+		}
 	}
 }

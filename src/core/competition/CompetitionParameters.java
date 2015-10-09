@@ -24,22 +24,22 @@ public class CompetitionParameters
     /**
      * Milliseconds allowed for controller initialization.
      */
-    public static int INITIALIZATION_TIME = 1000;
+    public static int INITIALIZATION_TIME = 60000;
 
     /**
      * Milliseconds allowed for the level generator to generate a level
      */
-    public static int LEVEL_ACTION_TIME = 1000;
+    public static int LEVEL_ACTION_TIME = 9000000;
     
     /**
      * Milliseconds allowed for the level generator disqualification, if it returns a level after this time.
      */
-    public static int LEVEL_ACTION_TIME_DISQ = 1100;
+    public static int LEVEL_ACTION_TIME_DISQ = 10000000;
     
     /**
      * Milliseconds allowed for level generator to initialize
      */
-    public static int LEVEL_INITIALIZATION_TIME = 1000;
+    public static int LEVEL_INITIALIZATION_TIME = 60000;
     
     /**
      * Path to sprite images.

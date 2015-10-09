@@ -1,5 +1,7 @@
 package ontology.effects.unary;
 
+import java.util.ArrayList;
+
 import core.VGDLRegistry;
 import core.VGDLSprite;
 import core.content.InteractionContent;
@@ -37,5 +39,13 @@ public class SpawnIfHasLess extends Effect {
             game.addSprite(itype, sprite1.getPosition());
             applyScore = true;
         }
+    }
+    
+    @Override
+    public ArrayList<String> getEffectSprites(){
+    	ArrayList<String> result = new ArrayList<String>();
+    	if(stype!=null) result.add(stype);
+    	
+    	return result;
     }
 }

@@ -395,6 +395,21 @@ public abstract class Game
     }
     
     /**
+     * Get all parent sprites for a certain sprite
+     * @param itype id for the current node
+     * @return a list of all parent nodes' ids
+     */
+    private ArrayList<Integer> parentNodes(int itype){
+    	SpriteContent sc = (SpriteContent)classConst[itype];
+    	
+    	ArrayList<Integer> parents = new ArrayList<Integer>();
+    	parents.addAll(sc.itypes);
+    	parents.remove(parents.size() - 1);
+    	
+    	return parents;
+    }
+    
+    /**
      * Expand a non leaf node using its children
      * @param itype	sprite index
      * @return		a list of all leaf children under the hierarchy of itype sprite
@@ -574,27 +589,48 @@ public abstract class Game
     public ArrayList<InteractionData> getInteractionData(int itype1, int itype2){
     	ArrayList<InteractionData> results = new ArrayList<InteractionData>();
     	
-    	ArrayList<Effect> effects = null;
-    	if(itype1 != -1 && itype2 != -1){
-    		effects = getCollisionEffects(itype1, itype2);
-    	}
-    	else if(itype1 != -1){
-    		effects = getEosEffects(itype1);
-    	}
-    	else if(itype2 != -1){
-    		effects = getEosEffects(itype2);
+    	ArrayList<Integer> parent1 = new ArrayList<Integer>();
+    	ArrayList<Integer> parent2 = new ArrayList<Integer>();
+    	
+    	if(itype1 != -1){
+    		parent1.addAll(parentNodes(itype1));
+    		parent1.add(itype1);
     	}
     	
-    	if(effects != null){
-    		InteractionData temp;
-    		for(Effect e:effects){
-    			temp = new InteractionData();
-    			temp.type = e.getClass().getName();
-    			temp.scoreChange = e.scoreChange;
-    			
-    			results.add(temp);
+    	if(itype2 != -1){
+    		parent2.addAll(parentNodes(itype2));
+    		parent2.add(itype2);
+    	}
+    	
+    	ArrayList<Effect> effects = new ArrayList<Effect>();
+    	if(parent1.size() > 0 && parent2.size() > 0){
+    		for(int p1:parent1){
+    			for(int p2:parent2){
+    				effects.addAll(getCollisionEffects(p1, p2));
+    			}
     		}
     	}
+    	else if(parent1.size() > 0){
+    		for(int p1:parent1){
+    			effects.addAll(getEosEffects(p1));
+    		}
+    	}
+    	else if(parent2.size() > 0){
+    		for(int p2:parent2){
+    			effects.addAll(getEosEffects(p2));
+    		}
+    	}
+    	
+    	InteractionData temp;
+    	for(Effect e:effects){
+    		temp = new InteractionData();
+    		temp.type = e.getClass().getName();
+    		temp.type = temp.type.substring(temp.type.lastIndexOf('.') + 1);
+    		temp.scoreChange = e.scoreChange;
+    		temp.sprites.addAll(e.getEffectSprites());
+    			
+    		results.add(temp);
+     	}
     	
     	return results;
     }
@@ -618,8 +654,10 @@ public abstract class Game
             //Create the space for the sprites and effects of this type.
             spriteGroups[i].clear();
         }
-
-        kill_list.clear();
+        
+        if(kill_list != null){
+        	kill_list.clear();
+        }
         for(int j = 0; j < spriteGroups.length; ++j)
         {
             bucketList[j].clear();
