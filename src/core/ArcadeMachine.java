@@ -129,6 +129,7 @@ public class ArcadeMachine
         AbstractLevelGenerator generator = createLevelGenerator(levelGenerator, description);
         String level = getGeneratedLevel(description, toPlay, generator);
         if(level == "" || level == null){
+        	System.out.println("Empty Level Disqualified");
         	toPlay.disqualify();
 
             //Get the score for the result.
@@ -140,13 +141,19 @@ public class ArcadeMachine
         if(charMapping != null){
         	toPlay.setCharMapping(charMapping);
         }
-        if(!checkLevelStringValidity(level, description.getAvatar(), toPlay.getCharMapping())){
+        
+        try{
+        	toPlay.buildStringLevel(level.split("\n"));
+        }
+        catch(Exception e){
+        	System.out.println("Undefined symbols or wrong number of avatars Disqualified ");
         	toPlay.disqualify();
 
             //Get the score for the result.
             toPlay.handleResult();
             return false;
         }
+        
         if(levelFile != null){
         	saveLevel(level, levelFile, toPlay.getCharMapping());
         }
@@ -175,8 +182,7 @@ public class ArcadeMachine
         //Create the player.
         AbstractPlayer player = ArcadeMachine.createPlayer(agentName, actionFile, toPlay.getObservation(), randomSeed);
 
-        if(player == null)
-        {
+        if(player == null){
             //Something went wrong in the constructor, controller disqualified
             toPlay.disqualify();
 
@@ -387,7 +393,11 @@ public class ArcadeMachine
             if(charMapping != null){
             	toPlay.setCharMapping(charMapping);
             }
-            if(!checkLevelStringValidity(level, description.getAvatar(), toPlay.getCharMapping())){
+            try{
+            	toPlay.buildStringLevel(level.split("\n"));
+            }
+            catch(Exception e){
+            	System.out.println("Undefined symbols or wrong number of avatars Disqualified ");
             	toPlay.disqualify();
 
                 //Get the score for the result.
@@ -684,43 +694,6 @@ public class ArcadeMachine
     }
     
     /**
-     * Check if the generated level string is valid. Checks for only one avatar. 
-     * Checks all symbols used in the description are defined in character Mapping.
-     * @param level			current generated level
-     * @param avatarStype	Avatar sprite name defined in this game.
-     * @param charMapping	Current character mapping
-     * @return				True if the level is valid, false otherwise.
-     */
-    private static boolean checkLevelStringValidity(String level, ArrayList<SpriteData> avatarStype, HashMap<Character, ArrayList<String>> charMapping){
-    	int numOfAvatar = 0;
-    	ArrayList<Character> avatarChar = new ArrayList<Character>();
-    	ArrayList<Character> allChar = new ArrayList<Character>(Arrays.asList(charMapping.keySet().toArray(new Character[0])));
-    	
-    	for(Entry<Character, ArrayList<String>> pair:charMapping.entrySet()){
-    		for (SpriteData atype:avatarStype){
-    			if(pair.getValue().contains(atype.name)){
-        			avatarChar.add(pair.getKey());
-        		}
-    		}
-    	}
-    	
-    	for(int i=0; i < level.length(); i++){
-    		Character current = level.charAt(i);
-    		if(current == ' ' || current == '\n'){
-    			continue;
-    		}
-    		if(avatarChar.contains(current)){
-    			numOfAvatar += 1;
-    		}
-    		if(!allChar.contains(current)){
-    			return false;
-    		}
-    	}
-    	
-    	return numOfAvatar == 1;
-    }
-    
-    /**
      * Saves a level string to a file
      * @param level		current level to save
      * @param levelFile	saved file
@@ -756,7 +729,7 @@ public class ArcadeMachine
      * @param levelFile		The generated level file path
      * @return				Level String to be loaded
      */
-    private static String loadGeneratedFile(Game currentGame, String levelFile){
+    public static String loadGeneratedFile(Game currentGame, String levelFile){
     	HashMap<Character, ArrayList<String>> levelMapping = new HashMap<Character, ArrayList<String>>();
     	String level = "";
     	int mode = 0;
@@ -769,11 +742,11 @@ public class ArcadeMachine
     			mode = 1;
     		}
     		else{
-    			if(line.trim().length() == 0){
-    				continue;
-    			}
     			switch(mode){
     			case 0:
+    				if(line.trim().length() == 0){
+        				continue;
+        			}
     				String[] sides = line.split(">");
     				ArrayList<String> sprites = new ArrayList<String>();
     				for(String sprite:sides[1].trim().split(" ")){
@@ -802,7 +775,7 @@ public class ArcadeMachine
      * @param toPlay game to be warmed up.
      * @param howLong for how long the warming up process must last (in milliseconds).
      */
-    private static void warmUp(Game toPlay, long howLong)
+    public static void warmUp(Game toPlay, long howLong)
     {
         StateObservation stateObs = toPlay.getObservation();
         ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);

@@ -14,12 +14,12 @@ public class CompetitionParameters
     /**
      * Milliseconds allowed per controller action.
      */
-    public static int ACTION_TIME = 50;
+    public static int ACTION_TIME = 40;
 
     /**
      * Milliseconds for controller disqualification, if it returns an action after this time.
      */
-    public static int ACTION_TIME_DISQ = 60;
+    public static int ACTION_TIME_DISQ = 50;
 
     /**
      * Milliseconds allowed for controller initialization.
@@ -29,17 +29,17 @@ public class CompetitionParameters
     /**
      * Milliseconds allowed for the level generator to generate a level
      */
-    public static int LEVEL_ACTION_TIME = 9000000;
+    public static int LEVEL_ACTION_TIME = 90000000;
     
     /**
      * Milliseconds allowed for the level generator disqualification, if it returns a level after this time.
      */
-    public static int LEVEL_ACTION_TIME_DISQ = 10000000;
+    public static int LEVEL_ACTION_TIME_DISQ = 100000000;
     
     /**
      * Milliseconds allowed for level generator to initialize
      */
-    public static int LEVEL_INITIALIZATION_TIME = 60000;
+    public static int LEVEL_INITIALIZATION_TIME = 1000;
     
     /**
      * Path to sprite images.
@@ -62,7 +62,16 @@ public class CompetitionParameters
      */
     public static int MAX_TIMESTEPS = 2000;
 
-
+    /**
+     * Terminates the program when the playing window is closed
+     */
+    public static boolean closeAppOnClosingWindow = false;
+    
+    /**
+     * Close the open window when you die or win
+     */
+    public static boolean killWindowOnEnd = true;
+    
     /**
      * Java Warm-up time before starting the game.
      */

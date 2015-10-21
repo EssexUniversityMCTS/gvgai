@@ -17,12 +17,51 @@ public class LevelGenerator extends AbstractLevelGenerator{
 	private Random random;
 	
 	/**
+	 * Minimum size of the level
+	 */
+	private int minSize;
+	
+	/**
+	 * Maximum size of the level
+	 */
+	private int maxSize;
+	
+	/**
+	 * Amount of empty spaces in the playground
+	 */
+	private double emptyPercentage;
+	
+	/**
 	 * Constructor for the RandomLevelGenerator where it initialize the random object used.
 	 * @param game			Abstract game description object. This object contains all needed information about the current game.
 	 * @param elapsedTimer	Timer to define the maximum amount of time for the constructor.
 	 */
 	public LevelGenerator(GameDescription game, ElapsedCpuTimer elapsedTimer){
 		random = new Random();
+		minSize = 4;
+		maxSize = 18;
+		emptyPercentage = 0.4;
+	}
+	
+	private DataPoint isUnique(ArrayList<DataPoint> points, int x, int y){
+		for(DataPoint temp:points){
+			if(temp.x == x && temp.y == y){
+				return temp;
+			}
+		}
+		
+		return null;
+	}
+	
+	private void addUnique(ArrayList<DataPoint> points, int width, int length, char c){
+		int x =0;
+		int y = 0;
+		do{
+			x = random.nextInt(width);
+			y = random.nextInt(length);
+		}while(isUnique(points, x, y) != null);
+		
+		points.add(new DataPoint(x, y, c));
 	}
 	
 	/**
@@ -36,20 +75,14 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		ArrayList<SpriteData> sprites = game.getAllSpriteData();
 		ArrayList<SpriteData> avatars = game.getAvatar();
 		
-		int length = (int)(sprites.size() * (1 + random.nextDouble()));
-		int width = (int)(sprites.size() * (1 + random.nextDouble()));
+		int width = (int)Math.max(minSize, sprites.size() * (1 + 0.25 * random.nextDouble()));
+		int length = (int)Math.max(minSize, sprites.size() * (1 + 0.25 * random.nextDouble()));
+		width = (int)Math.min(width, maxSize);
+		length = (int)Math.min(length, maxSize);
 		
 		ArrayList<Character> avatar = new ArrayList<Character>();
-		int avatarX = random.nextInt(width);
-		int avatarY = random.nextInt(length);
-		
 		ArrayList<Character> choices = new ArrayList<Character>();
 		for(Map.Entry<Character, ArrayList<String>> pair:game.getLevelMapping().entrySet()){
-			choices.add(' ');
-			choices.add(' ');
-			choices.add(' ');
-			choices.add(' ');
-			
 			boolean avatarExists = false;
 			for (SpriteData avatarName:avatars){
 				if(pair.getValue().contains(avatarName.name)){
@@ -65,17 +98,26 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			}
 		}
 		
+		ArrayList<DataPoint> dataPoints = new ArrayList<DataPoint>();
+		for(Character c:choices){
+			addUnique(dataPoints, width, length, c);
+		}
+		
 		if(avatar.size() == 0){
 			avatar.add('a');
 		}
+		addUnique(dataPoints, width, length, avatar.get(random.nextInt(avatar.size())));
 		
 		for(int y=0; y < length; y++){
 			for(int x=0; x < width; x++){
-				if(x == avatarX && y == avatarY){
-					result += avatar.get(random.nextInt(avatar.size()));
+				DataPoint p = isUnique(dataPoints, x, y);
+				if(p != null){
+					result += p.c;
 				}
-				else
-				{
+				else if(random.nextDouble() < emptyPercentage){
+					result += " ";
+				}
+				else{
 					result += choices.get(random.nextInt(choices.size()));
 				}
 			}
@@ -85,4 +127,16 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		return result;
 	}
 
+	private class DataPoint{
+		public int x;
+		public int y;
+		public char c;
+		
+		public DataPoint(int x, int y, char c){
+			this.x = x;
+			this.y = y;
+			this.c = c;
+		}
+	}
+	
 }

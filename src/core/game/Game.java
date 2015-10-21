@@ -37,6 +37,7 @@ import tools.JEasyFrame;
 import tools.KeyInput;
 import tools.Pair;
 import tools.Vector2d;
+import tools.WindowInput;
 
 /**
  * Created with IntelliJ IDEA.
@@ -173,6 +174,11 @@ public abstract class Game
      */
     public static KeyInput ki = new KeyInput();
 
+    /**
+     * Handling when the window is closed
+     */
+    public static WindowInput wi = new WindowInput();
+    
     /**
      * Size of the block in pixels.
      */
@@ -531,17 +537,15 @@ public abstract class Game
      * Construct and return a temporary avatar sprite
      * @return a temproary avatar sprite
      */
-    public VGDLSprite getTempAvatar(ArrayList<SpriteData> spriteData){
-    	for(SpriteData sprite:spriteData){
-        	avatarId = VGDLRegistry.GetInstance().getRegisteredSpriteValue(sprite.name);
-    		if(((SpriteContent)classConst[avatarId]).referenceClass != null){
-    			VGDLSprite result = VGDLFactory.GetInstance().createSprite((SpriteContent) classConst[avatarId], 
-    					new Vector2d(), new Dimension(1, 1));
-    			if(result != null){
-    				return result;
-    			}
+    public VGDLSprite getTempAvatar(SpriteData sprite){
+    	avatarId = VGDLRegistry.GetInstance().getRegisteredSpriteValue(sprite.name);
+    	if(((SpriteContent)classConst[avatarId]).referenceClass != null){
+    		VGDLSprite result = VGDLFactory.GetInstance().createSprite((SpriteContent) classConst[avatarId], 
+    				new Vector2d(), new Dimension(1, 1));
+    		if(result != null){
+    			return result;
     		}
-        }
+    	}
     	
     	return null;
     }
@@ -768,6 +772,8 @@ public abstract class Game
         JEasyFrame frame;
         frame = new JEasyFrame(view, "Java-VGDL");
         frame.addKeyListener(ki);
+        frame.addWindowListener(wi);
+        wi.windowClosed = false;
 
         //Determine the delay for playing with a good fps.
         double delay = CompetitionParameters.LONG_DELAY;
@@ -776,7 +782,7 @@ public abstract class Game
 
 
         //Play until the game is ended
-        while(!isEnded)
+        while(!isEnded && !wi.windowClosed)
         {
             //Determine the time to adjust framerate.
             long then = System.currentTimeMillis();
@@ -796,6 +802,10 @@ public abstract class Game
             //Update the frame title to reflect current score and tick.
             this.setTitle(frame);
 
+        }
+        
+        if(!wi.windowClosed && CompetitionParameters.killWindowOnEnd){
+        	frame.dispose();
         }
 
         return handleResult();

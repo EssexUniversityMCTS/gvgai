@@ -92,6 +92,24 @@ public class GameDescription {
 		reset(currentGame);
 	}
 	
+	private boolean checkHaveInteraction(String stype){
+		ArrayList<SpriteData> allSprites = currentGame.getSpriteData();
+		for(SpriteData sprite:allSprites){
+			if(getInteraction(stype, sprite.name).size() > 0){
+				return true;
+			}
+			if(getInteraction(sprite.name, stype).size() > 0){
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Reset the game description object and assign new game object
+	 * @param currentGame	new game object assigned
+	 */
 	public void reset(Game currentGame){
 		this.currentGame = currentGame;
 		this.avatar.clear();
@@ -105,7 +123,9 @@ public class GameDescription {
 		ArrayList<SpriteData> allSprites = this.currentGame.getSpriteData();
 		for (SpriteData sd:allSprites){
 			if(sd.isAvatar){
-				avatar.add(sd);
+				if(checkHaveInteraction(sd.name)){
+					avatar.add(sd);
+				}
 			}
 			else if(sd.isNPC){
 				npcList.add(sd);
@@ -124,9 +144,13 @@ public class GameDescription {
 			}
 		}
 		
-		MovingAvatar temp = (MovingAvatar)currentGame.getTempAvatar(avatar);
-		actionsNIL = temp.actionsNIL;
-		actions = temp.actions;
+		for(int i=0; i<avatar.size(); i++){
+			MovingAvatar temp = (MovingAvatar)currentGame.getTempAvatar(avatar.get(i));
+			if(actions == null || actions.size() < temp.actions.size()){
+				actionsNIL = temp.actionsNIL;
+				actions = temp.actions;
+			}
+		}
 		
 		terminationData = currentGame.getTerminationData();
 	}
@@ -209,6 +233,14 @@ public class GameDescription {
 	 */
 	public ArrayList<SpriteData> getPortal(){
 		return portalList;
+	}
+	
+	/**
+	 * Get all movable sprites
+	 * @return arary of sprite data
+	 */
+	public ArrayList<SpriteData> getMoving(){
+		return movingList;
 	}
 	
 	/**

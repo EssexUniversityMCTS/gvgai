@@ -24,15 +24,24 @@ public class Test
         String sampleGAController = "controllers.sampleGA.Agent";
         String tester = "controllers.Tester.Agent";
         String breadthFirstSearch = "controllers.breadthFirstSearch.Agent";
+        String depthFirstSearch = "controllers.depthFirstSearch.Agent";
+        String iterativeDeepening = "controllers.iterativeDeepening.Agent";
+        String aStar = "controllers.aStar.Agent";
+        String hillClimber = "controllers.hillClimber.Agent";
         String simulatedAnnealing = "controllers.simulatedAnnealing.Agent";
+        String evolutionStrategies = "controllers.evolutionStrategies.Agent";
+        String geneticAlgorithm = "controllers.geneticAlgorithm.Agent";
+        String mctsUCT = "controllers.sampleUCT.Agent";
         String greedySearch = "controllers.greedySearch.Agent";
 
         //Available Generators
         String randomLevelGenerator = "levelGenerators.randomLevelGenerator.LevelGenerator";
-        String randomGeneticGenerator = "levelGenerators.randomGeneticAlgorithm.LevelGenerator";
+        String geneticGenerator = "levelGenerators.geneticAlgorithm.LevelGenerator";
+        String constructiveLevelGenerator = "levelGenerators.constructiveLevelGenerator.LevelGenerator";
         
         //Available games:
         String gamesPath = "examples/gridphysics/";
+        String generateLevelPath = "examples/generatedLevels/";
 
         //CIG 2014 Training Set Games
         //String games[] = new String[]{"aliens", "boulderdash", "butterflies", "chase", "frogs",
@@ -48,9 +57,8 @@ public class Test
 
 
         //CIG 2014 TEST SET / GECCO 2015 VALIDATION SET
-        String games[] = new String[]{"roguelike", "defem", "frogs", "realsokoban", "pacman", "chase", "aliens", "zelda", "surround", 
+        String games[] = new String[]{"roguelike", "defem", "frogs", "sokoban", "pacman", "chase", "aliens", "zelda", "surround", 
         		"catapults", "realportals", "plants", "plaqueattack", "jaws", "labyrinth", "boulderchase", "escape", "lemmings"};
-
 
         //Other settings
         boolean visuals = true;
@@ -58,18 +66,18 @@ public class Test
         int seed = new Random().nextInt();
 
         //Game and level to play
-        int gameIdx = 0;
+        int gameIdx = 4;
         int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
         
-        String recordLevelFile = "examples/generatedLevels/" + games[gameIdx] + ".txt";
+        String recordLevelFile = generateLevelPath + games[gameIdx] + ".txt";
 
         // 1. This starts a game, in a level, played by a human.
         //ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
         
         // 2. This plays a game in a level by the controller.
-        //ArcadeMachine.runOneGame(game, level1, visuals, breadthFirstSearch, recordActionsFile, seed);
+        //ArcadeMachine.runOneGame(game, level1, visuals, evolutionStrategies, recordActionsFile, seed);
         //ArcadeMachine.runOneGame(game, level1, visuals, tester, recordActionsFile, seed);
 
         // 3. This replays a game from an action file previously recorded
@@ -82,7 +90,7 @@ public class Test
         //ArcadeMachine.runGames(game, new String[]{level1, level2}, M, sampleMCTSController, null);
         
         //5. This starts a game, in a generated level created by a specific level generator
-        if(ArcadeMachine.generateOneLevel(game, randomGeneticGenerator, recordLevelFile)){
+        if(ArcadeMachine.generateOneLevel(game, constructiveLevelGenerator, recordLevelFile)){
         	ArcadeMachine.playOneGeneratedLevel(game, recordActionsFile, recordLevelFile, seed);
         }
         

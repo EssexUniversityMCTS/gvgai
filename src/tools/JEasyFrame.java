@@ -5,6 +5,8 @@ import java.awt.Component;
 
 import javax.swing.JFrame;
 
+import core.competition.CompetitionParameters;
+
 /**
  * Frame for the graphics.
  * PTSP-Competition
@@ -29,7 +31,10 @@ public class JEasyFrame extends JFrame {
         getContentPane().add(BorderLayout.CENTER, comp);
         pack();
         this.setVisible(true);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        if(CompetitionParameters.closeAppOnClosingWindow){
+        	setDefaultCloseOperation(EXIT_ON_CLOSE);
+        }
         repaint();
     }
 

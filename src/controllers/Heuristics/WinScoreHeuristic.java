@@ -12,8 +12,8 @@ import ontology.Types;
  */
 public class WinScoreHeuristic extends StateHeuristic {
 
-    private static final double HUGE_NEGATIVE = -10000000.0;
-    private static final double HUGE_POSITIVE =  10000000.0;
+    private static final double HUGE_NEGATIVE = -1000.0;
+    private static final double HUGE_POSITIVE =  1000.0;
 
     double initialNpcCounter = 0;
 
