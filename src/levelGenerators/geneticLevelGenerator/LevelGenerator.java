@@ -156,9 +156,21 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			chromosomes.add(chromosome);
 		}
 		
-		for(int i = 0; i < SharedData.GENERATIONS_SIZE; i++){
-			System.out.println("Generation #" + (i+1) + ": ");
+		double worstTime = 2 * SharedData.EVALUATION_TIME * SharedData.POPULATION_SIZE;
+		double avgTime = worstTime;
+		double totalTime = 0;
+		int numberOfIterations = 0;
+		
+		while(elapsedTimer.remainingTimeMillis() > 2 * avgTime && 
+				elapsedTimer.remainingTimeMillis() > worstTime){
+			ElapsedCpuTimer timer = new ElapsedCpuTimer();
+			
+			System.out.println("Generation #" + (numberOfIterations + 1) + ": ");
 			chromosomes = getNextPopulation(chromosomes);
+			
+			numberOfIterations += 1;
+			totalTime += timer.elapsedMillis();
+			avgTime = totalTime / numberOfIterations;
 		}
 		
 		for(int i=0;i<chromosomes.size();i++){

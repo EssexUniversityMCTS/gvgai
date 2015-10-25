@@ -11,6 +11,10 @@ import core.game.GameDescription.TerminationData;
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
 import levelGenerators.StepController;
+import levelGenerators.constraints.CombinedConstraints;
+import levelGenerators.constraints.CoverPercentageConstraint;
+import levelGenerators.constraints.DeathConstraint;
+import levelGenerators.constraints.SolutionLengthConstraint;
 import ontology.Types;
 import ontology.Types.WINNER;
 import tools.ElapsedCpuTimer;
@@ -297,6 +301,17 @@ public class Chromosome implements Comparable<Chromosome>, Runnable{
 		return levelString;
 	}
 	
+	private double getCoverPercentage(){
+		int objects = 0;
+		for (int y = 0; y < level.length; y++) {
+			for (int x = 0; x < level[y].length; x++) {
+				objects += Math.min(1, level[y][x].size());
+			}
+		}
+		
+		return 1.0 * objects / (level.length * level[0].length);
+	}
+	
 	private StateObservation getStateObservation(){
 		LevelMapping levelMapping = getLevelMapping();
 		String levelString = getLevelString(levelMapping);
@@ -369,15 +384,16 @@ public class Chromosome implements Comparable<Chromosome>, Runnable{
 		return 2 / (1 + Math.exp(-3 * solution.size() / minSol)) - 1;
 	}
 	
-	private StateObservation getDoNothingState(StateObservation stateObs, int steps){
-		for(int i=0;i<steps;i++){
+	private int getDoNothingState(StateObservation stateObs, int steps){
+		int i =0;
+		for(i=0;i<steps;i++){
 			if(stateObs.isGameOver()){
 				break;
 			}
 			stateObs.advance(Types.ACTIONS.ACTION_NIL);
 		}
 		
-		return stateObs;
+		return i;
 	}
 	
 	public double calculateFitness(long time, boolean recalculate){
@@ -392,13 +408,35 @@ public class Chromosome implements Comparable<Chromosome>, Runnable{
 			
 			StateObservation bestState = stepAgent.getFinalState();
 			ArrayList<Types.ACTIONS> bestSol = stepAgent.getSolution();
-			StateObservation doNothingState = getDoNothingState(stateObs.copy(), bestSol.size());
+			StateObservation doNothingState = stateObs.copy(); 
+			int doNothingLength = getDoNothingState(stateObs.copy(), bestSol.size());
+			double coverPercentage = getCoverPercentage();
 			
 			double maxScore = 0;
 			if(SharedData.gameAnalyzer.getMinScoreUnit() > 0){
 				double numberOfUnits = SharedData.gameAnalyzer.getMaxScoreUnit() / (SharedData.MAX_SCORE_PERCENTAGE * SharedData.gameAnalyzer.getMinScoreUnit());
 				maxScore = numberOfUnits * SharedData.gameAnalyzer.getMinScoreUnit();
 			}
+			
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("solutionLength", bestSol.size());
+			parameters.put("maxSolutionLength", SharedData.MIN_SOLUTION_LENGTH);
+			parameters.put("doNothingSteps", doNothingLength);
+			parameters.put("bestPlayer", bestState.getGameWinner());
+			parameters.put("doNothingPlayer", doNothingState.getGameWinner());
+			parameters.put("minDoNothingSteps", SharedData.MIN_DOTHING_STEPS);
+			parameters.put("coverPercentage", coverPercentage);
+			parameters.put("minCoverPercentage", SharedData.MIN_COVER_PERCENTAGE);
+			parameters.put("maxCoverPercentage", SharedData.MAX_COVER_PERCENTAGE);
+			parameters.put("numOfObjects", calculateNumberOfObjects());
+			parameters.put("gameAnalyzer", SharedData.gameAnalyzer);
+			parameters.put("gameDescription", SharedData.gameDescription);
+			
+			CombinedConstraints constraint = new CombinedConstraints();
+			constraint.addConstraints(new String[]{"SolutionLengthConstraint", "DeathConstraint", 
+					"CoverPercentageConstraint", "SpriteNumberConstraint", "GoalConstraint"});
+			constraint.setParameters(parameters);
+			System.out.println(constraint.checkConstraint());
 			
 			double scoreDiffScore = getGameScore(bestState.getGameScore() - doNothingState.getGameScore(), maxScore);
 			double deathDiffScore = getDeathScore(getDeaths(bestState.getGameWinner(), SharedData.DRAW_FITNESS), getDeaths(doNothingState.getGameWinner(), SharedData.DRAW_FITNESS));

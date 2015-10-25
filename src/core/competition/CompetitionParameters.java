@@ -29,12 +29,12 @@ public class CompetitionParameters
     /**
      * Milliseconds allowed for the level generator to generate a level
      */
-    public static int LEVEL_ACTION_TIME = 90000000;
+    public static int LEVEL_ACTION_TIME = 18000000;
     
     /**
      * Milliseconds allowed for the level generator disqualification, if it returns a level after this time.
      */
-    public static int LEVEL_ACTION_TIME_DISQ = 100000000;
+    public static int LEVEL_ACTION_TIME_DISQ = 21600000;
     
     /**
      * Milliseconds allowed for level generator to initialize
@@ -66,6 +66,11 @@ public class CompetitionParameters
      * Terminates the program when the playing window is closed
      */
     public static boolean closeAppOnClosingWindow = false;
+    
+    /**
+     * Pause the game at the beginning and at the end
+     */
+    public static boolean dialogBoxOnStartAndEnd = true;
     
     /**
      * Close the open window when you die or win

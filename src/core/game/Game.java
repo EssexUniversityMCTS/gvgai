@@ -14,6 +14,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.swing.JOptionPane;
+
 import core.SpriteGroup;
 import core.VGDLFactory;
 import core.VGDLRegistry;
@@ -780,10 +782,11 @@ public abstract class Game
         if(player instanceof controllers.human.Agent)
             delay = 1000.0/CompetitionParameters.DELAY; //in milliseconds
 
+        boolean firstRun = true;
 
         //Play until the game is ended
         while(!isEnded && !wi.windowClosed)
-        {
+        {	
             //Determine the time to adjust framerate.
             long then = System.currentTimeMillis();
 
@@ -801,10 +804,22 @@ public abstract class Game
 
             //Update the frame title to reflect current score and tick.
             this.setTitle(frame);
-
+            
+            if(firstRun){
+            	if(CompetitionParameters.dialogBoxOnStartAndEnd){
+            		JOptionPane.showMessageDialog(frame, 
+            				"Click OK to start.");
+            	}
+            	
+            	firstRun = false;
+            }
         }
         
         if(!wi.windowClosed && CompetitionParameters.killWindowOnEnd){
+        	if(CompetitionParameters.dialogBoxOnStartAndEnd){
+        		JOptionPane.showMessageDialog(frame,
+        				"GAMEOVER: YOU " + (winner == Types.WINNER.PLAYER_WINS? "WIN.": "LOSE."));
+        	}
         	frame.dispose();
         }
 

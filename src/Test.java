@@ -36,7 +36,7 @@ public class Test
 
         //Available Generators
         String randomLevelGenerator = "levelGenerators.randomLevelGenerator.LevelGenerator";
-        String geneticGenerator = "levelGenerators.geneticAlgorithm.LevelGenerator";
+        String geneticGenerator = "levelGenerators.geneticLevelGenerator.LevelGenerator";
         String constructiveLevelGenerator = "levelGenerators.constructiveLevelGenerator.LevelGenerator";
         
         //Available games:
@@ -90,7 +90,7 @@ public class Test
         //ArcadeMachine.runGames(game, new String[]{level1, level2}, M, sampleMCTSController, null);
         
         //5. This starts a game, in a generated level created by a specific level generator
-        if(ArcadeMachine.generateOneLevel(game, constructiveLevelGenerator, recordLevelFile)){
+        if(ArcadeMachine.generateOneLevel(game, geneticGenerator, recordLevelFile)){
         	ArcadeMachine.playOneGeneratedLevel(game, recordActionsFile, recordLevelFile, seed);
         }
         

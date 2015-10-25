@@ -7,8 +7,7 @@ import levelGenerators.GameAnalyzer;
 
 public class SharedData {
 	public static final int POPULATION_SIZE = 50;
-	public static final int GENERATIONS_SIZE = 50;
-	public static final long EVALUATION_TIME = 1000;
+	public static final long EVALUATION_TIME = 5000;
 	public static final double CROSSOVER_PROB = 0.7;
 	public static final double MUTATION_PROB = 0.1;
 	public static final int ELITISM_NUMBER = 1;
@@ -23,6 +22,9 @@ public class SharedData {
 	public static final double MIN_SIZE = 4;
 	public static final double MAX_SIZE = 18;
 	public static final double MIN_SOLUTION_LENGTH = 50;
+	public static final double MIN_DOTHING_STEPS = 100;
+	public static final double MIN_COVER_PERCENTAGE = 0.2;
+	public static final double MAX_COVER_PERCENTAGE = 0.8;
 	public static final double MIN_RULE_NUMBER = 30;
 	public static final boolean CONSTRUCTIVE_INITIALIZATION = true;
 	
