@@ -1,0 +1,70 @@
+BasicGame
+   SpriteSet
+      chef > Chaser img=alien color=ORANGE stype=avatar speed=0.4
+         chef1 > stype=avatar
+         chef2 > stype=avatar2
+         chef3 > stype=avatar3
+         chef4 > stype=avatar4
+         chef5 > stype=avatar5
+         chef6 > stype=avatar6
+
+      table > Immovable img=tableused
+      inc > Resource
+         inc1 > img=base limit=1
+         inc2 > img=water  limit=1
+         inc3 > img=mushroom limit=1
+         inc4 > img=honey limit=1
+         inc5 > img=cocoon limit=1
+         inc6 > img=carcass limit=1
+
+      player > OrientedAvatar img=avatar rotateInPlace=false
+         avatar > img=avatar
+         avatar2 > img=avatar
+         avatar3 > img=avatar
+         avatar4 > img=avatar
+         avatar5 > img=avatar
+         avatar6 > img=avatar
+         endAvatar > img=avatar
+    
+   LevelMapping
+      1 > inc1
+      2 > inc2
+      3 > inc3
+      4 > inc4
+      5 > inc5
+      6 > inc6
+      t > table
+      C > avatar3
+      A > avatar
+      a > chef1
+      b > chef2
+      c > chef3
+      d > chef4
+      e > chef5
+      f > chef6
+           
+   TerminationSet
+      Timeout limit=1500 win=False
+      SpriteCounter stype=player win=False
+      MultiSpriteCounter stype1=endAvatar limit=1 win=True  
+        
+   InteractionSet
+      player  wall  > stepBack
+      chef  wall  > stepBack
+      chef table > stepBack
+      player table > stepBack
+
+      player chef > killSprite scoreChange=-1
+
+      avatar inc1 > transformTo stype=avatar2
+      inc1 avatar2 > killSprite scoreChange=1
+      avatar2 inc2 > transformTo stype=avatar3
+      inc2 avatar3 > killSprite scoreChange=1        
+      avatar3 inc3 > transformTo stype=avatar4
+      inc3 avatar4 > killSprite scoreChange=1
+      avatar4 inc4 > transformTo stype=avatar5
+      inc4 avatar5 > killSprite scoreChange=1
+      avatar5 inc5 > transformTo stype=avatar6
+      inc5 avatar6 > killSprite scoreChange=1
+      avatar6 inc6 > transformTo stype=endAvatar
+      inc6 endAvatar > killSprite scoreChange=1

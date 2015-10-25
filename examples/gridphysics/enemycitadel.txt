@@ -1,0 +1,80 @@
+#The Citadel: http://www.mobygames.com/game/citadel__
+
+BasicGame square_size=40
+    SpriteSet
+        squarehole   > Immovable color=DARKBLUE img=portal
+        roundhole   > Immovable color=DARKBLUE img=hole
+        avatar > MovingAvatar
+            nokey > img=alien
+            withkey > img=alien
+        goal > Immovable img=door
+        crate    > Passive img=box shrinkfactor=0.8
+        boulder    > Passive img=boulder shrinkfactor=0.8
+        holefilling > Flicker img=box limit=0
+        honey  > Resource color=GOLD limit=30 img=honey
+        enemy > RandomNPC speed=0.5 color=PINK img=butterfly.png
+
+    LevelMapping
+        0 > roundhole
+        1 > squarehole
+        B > boulder
+        C > crate
+        G > goal
+        A > avatar honey
+        E > enemy
+
+    InteractionSet
+
+        avatar honey   > changeResource resource=honey value=30
+        honey avatar > killSprite
+        avatar wall > stepBack
+        avatar squarehole > stepBack
+        avatar roundhole > stepBack
+        boulder avatar  > bounceForward
+        boulder boulder > undoAll
+        boulder crate > undoAll
+        boulder wall > undoAll
+        boulder goal > undoAll
+        
+        boulder roundhole > killSprite
+        roundhole boulder > killSprite scoreChange=1
+        boulder squarehole > killSprite
+        
+        crate avatar  > bounceForward
+        crate crate  > bounceForward
+        crate crate  > bounceForward
+        crate crate  > bounceForward
+        crate crate  > bounceForward
+        crate crate  > bounceForward
+        crate crate  > bounceForward
+        crate crate  > bounceForward
+        crate crate  > bounceForward
+        crate crate  > bounceForward
+        crate crate  > bounceForward
+        crate wall > undoAll
+        crate boulder > undoAll
+        crate goal > undoAll
+        crate roundhole > undoAll
+        
+        crate squarehole > killSprite
+        squarehole crate > killSprite scoreChange=1
+
+        goal avatar > killSprite scoreChange=5
+
+        enemy crate > stepBack
+        crate enemy > undoAll
+        enemy squarehole > stepBack
+        enemy roundhole > stepBack
+        enemy goal > stepBack
+        enemy boulder > stepBack
+        enemy holefilling > stepBack
+        holefilling enemy > undoAll
+        enemy wall > stepBack
+
+        avatar enemy   > killIfHasLess resource=honey limit=1 scoreChange=-1
+        avatar enemy   > changeResource resource=honey value=-1
+        #enemy avatar   > killSprite scoreChange=1
+
+    TerminationSet
+        SpriteCounter stype=goal limit=0 win=True
+        SpriteCounter stype=avatar limit=0 win=False

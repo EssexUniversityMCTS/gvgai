@@ -1,0 +1,46 @@
+BasicGame
+    SpriteSet
+        city    > Immovable    color=WHITE img=base
+        avatar  > ShootAvatar color=YELLOW ammo=bullet stype=sam img=spaceship rotateInPlace=False
+        missile > Missile
+            sam  > orientation=RIGHT color=BLUE img=spaceship
+            bomb > orientation=DOWN color=RED speed=0.5 img=bomb
+        alien   > Bomber   orientation=LEFT stype=bomb   prob=0.04  cooldown=4 speed=0.6 img=alien
+        portal  >
+            portalSlow  > SpawnPoint   stype=alien  cooldown=10 prob=0.2 img=portal
+            portalFast  > SpawnPoint   stype=alien  cooldown=10 prob=0.5 img=portal
+            portalAmmo  > SpawnPoint   stype=supply cooldown=10 prob=0.15 img=portal
+        supply > Missile orientation=DOWN speed=0.25 img=coin
+        bullet > Resource limit=20
+    
+    LevelMapping
+        0 > city
+        1 > portalSlow
+        2 > portalFast
+        3 > portalAmmo
+        A > avatar supply
+
+    TerminationSet
+        SpriteCounter      stype=avatar             limit=0 win=False
+        SpriteCounter      stype=city               limit=0 win=False
+        Timeout limit=1000 win=True
+        
+    InteractionSet
+        avatar  EOS  > stepBack
+        avatar  city  > stepBack
+        avatar  wall > stepBack
+        alien   EOS  > killSprite
+        missile EOS  > killSprite
+        missile city > killSprite
+        city bomb > killSprite scoreChange=-1
+        city sam > killSprite
+        city alien > killSprite
+        supply alien > killSprite
+        avatar bomb  > killSprite scoreChange=-1
+        alien  sam   > killSprite scoreChange=2
+        sam alien > killSprite
+        supply city > stepBack
+        supply wall > stepBack
+        supply supply > stepBack
+        avatar supply > changeResource resource=bullet value=5
+        supply avatar > killSprite
