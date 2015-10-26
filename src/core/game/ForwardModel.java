@@ -458,14 +458,11 @@ public class ForwardModel extends Game
      */
     protected void tick(Types.ACTIONS action)
     {
-
         this.ki.reset();
         this.ki.setAction(action);
         avatar.preMovement();
         avatar.move(this, this.ki.getMask());
 
-        //Update all sprites except the avatar (always the last one).
-        int typeIndex = 0;
         for(int i = spriteOrder.length-1; i >= 0; --i)
         {
             int spriteTypeInt = spriteOrder[i];

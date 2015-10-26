@@ -150,7 +150,9 @@ public abstract class Game
     /**
      * Key input
      */
-    public static KeyInput ki = new KeyInput();
+    //public static KeyHandler ki = new KeyInput();
+    public static KeyHandler ki =
+            CompetitionParameters.KEY_HANDLER == CompetitionParameters.KEY_INPUT ? new KeyInput() : new KeyPulse();
 
     /**
      * Size of the block in pixels.

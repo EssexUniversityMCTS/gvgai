@@ -61,4 +61,11 @@ public class CompetitionParameters
     public static ElapsedCpuTimer.TimerType TIMER_TYPE = ElapsedCpuTimer.TimerType.CPU_TIME;
 
 
+    /**
+     * Key input type. We set the default here, but this will be set by the game in VGDL.
+     */
+    public static final int KEY_INPUT = 0;
+    public static final int KEY_PULSE = 1;
+
+    public static int KEY_HANDLER = KEY_INPUT;
 }
