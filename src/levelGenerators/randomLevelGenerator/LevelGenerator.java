@@ -91,7 +91,9 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			}
 			
 			if(!avatarExists){
-				choices.add(pair.getKey());
+				if(!pair.getValue().contains("avatar")){
+					choices.add(pair.getKey());
+				}
 			}
 			else{
 				avatar.add(pair.getKey());
@@ -104,7 +106,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		}
 		
 		if(avatar.size() == 0){
-			avatar.add('a');
+			avatar.add('A');
 		}
 		addUnique(dataPoints, width, length, avatar.get(random.nextInt(avatar.size())));
 		

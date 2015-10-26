@@ -25,7 +25,7 @@ public class SharedData {
 	public static final double MIN_DOTHING_STEPS = 100;
 	public static final double MIN_COVER_PERCENTAGE = 0.2;
 	public static final double MAX_COVER_PERCENTAGE = 0.8;
-	public static final double MIN_RULE_NUMBER = 30;
+	public static final double MIN_RULE_NUMBER = 40;
 	public static final boolean CONSTRUCTIVE_INITIALIZATION = true;
 	
 	public static final String AGENT_NAME = "controllers.sampleUCT.Agent";

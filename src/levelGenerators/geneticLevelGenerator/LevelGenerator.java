@@ -14,8 +14,8 @@ import tools.LevelMapping;
 public class LevelGenerator extends AbstractLevelGenerator{
 	private LevelMapping bestChromosomeLevelMapping;
 	private ArrayList<Double> bestFitness;
-	private ArrayList<Double> averageFitness;
-	private ArrayList<Double> stdFitness;
+	private ArrayList<Integer> numOfFeasible;
+	private ArrayList<Integer> numOfInFeasible;
 	
 	public LevelGenerator(GameDescription game, ElapsedCpuTimer elapsedTimer){
 		SharedData.random = new Random();
@@ -24,45 +24,53 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		SharedData.constructiveGen = new levelGenerators.constructiveLevelGenerator.LevelGenerator(game, null);
 		bestChromosomeLevelMapping = null;
 		bestFitness = null;
-		averageFitness = null;
-		stdFitness = null;
+		numOfFeasible = null;
+		numOfInFeasible = null;
 	}
 	
-	private double getMean(ArrayList<Double> array){
-		double total = 0;
-		for(double d:array){
-			total += d;
-		}
-		
-		return total / array.size();
-	}
+//	private double getMean(ArrayList<Double> array){
+//		double total = 0;
+//		for(double d:array){
+//			total += d;
+//		}
+//		
+//		return total / array.size();
+//	}
+//	
+//	private double getSTD(ArrayList<Double> array){
+//		double total = 0;
+//		double average = getMean(array);
+//		for(double d:array){
+//			total += d * d;
+//		}
+//		
+//		return Math.sqrt(total / array.size() - average * average);
+//	}
 	
-	private double getSTD(ArrayList<Double> array){
-		double total = 0;
-		double average = getMean(array);
-		for(double d:array){
-			total += d * d;
-		}
-		
-		return Math.sqrt(total / array.size() - average * average);
-	}
-	
-	private ArrayList<Chromosome> getNextPopulation(ArrayList<Chromosome> population){
+	private ArrayList<Chromosome> getNextPopulation(ArrayList<Chromosome> fPopulation, ArrayList<Chromosome> iPopulation){
 		ArrayList<Chromosome> newPopulation = new ArrayList<Chromosome>();
 		
 		ArrayList<Double> fitnessArray = new ArrayList<Double>();
-		for(int i=0;i<population.size();i++){
-			population.get(i).calculateFitness(SharedData.EVALUATION_TIME, true);
-			System.out.println("\tChromosome #" + (i+1) + " Fitness: " + population.get(i).getFitness());
-			fitnessArray.add(population.get(i).getFitness());
+		for(int i=0;i<fPopulation.size();i++){
+			fitnessArray.add(fPopulation.get(i).getFitness());
+		}
+		
+		ArrayList<Double> constrainFitnessArray = new ArrayList<Double>();
+		for(int i=0;i<iPopulation.size();i++){
+			constrainFitnessArray.add(iPopulation.get(i).getConstrainFitness());
 		}
 		
 		Collections.sort(fitnessArray);
 		bestFitness.add(fitnessArray.get(fitnessArray.size() - 1));
-		averageFitness.add(getMean(fitnessArray));
-		stdFitness.add(getSTD(fitnessArray));
+		numOfFeasible.add(fPopulation.size());
+		numOfInFeasible.add(iPopulation.size());
 		
 		while(newPopulation.size() < SharedData.POPULATION_SIZE){
+			ArrayList<Chromosome> population = fPopulation;
+			if(SharedData.random.nextDouble() < 0.5){
+				population = iPopulation;
+			}
+			
 			Chromosome parent1 = rouletteWheelSelection(population);
 			Chromosome parent2 = rouletteWheelSelection(population);
 			Chromosome child1 = parent1.clone();
@@ -91,14 +99,32 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			newPopulation.add(child2);
 		}
 		
+		for(int i=0;i<newPopulation.size();i++){
+			newPopulation.get(i).calculateFitness(SharedData.EVALUATION_TIME, true);
+			if(newPopulation.get(i).getConstrainFitness() < 1){
+				System.out.println("\tChromosome #" + (i+1) + " Constrain Fitness: " + newPopulation.get(i).getConstrainFitness());
+			}
+			else{
+				System.out.println("\tChromosome #" + (i+1) + " Fitness: " + newPopulation.get(i).getFitness());
+			}
+		}
+		
 		Collections.sort(newPopulation);
 		for(int i=SharedData.POPULATION_SIZE - SharedData.ELITISM_NUMBER;i<newPopulation.size();i++){
 			newPopulation.remove(i);
 		}
 		
-		Collections.sort(population);
-		for(int i=0;i<SharedData.ELITISM_NUMBER;i++){
-			newPopulation.add(population.get(i));
+		if(fPopulation.isEmpty()){
+			Collections.sort(iPopulation);
+			for(int i=0;i<SharedData.ELITISM_NUMBER;i++){
+				newPopulation.add(iPopulation.get(i));
+			}
+		}
+		else{
+			Collections.sort(fPopulation);
+			for(int i=0;i<SharedData.ELITISM_NUMBER;i++){
+				newPopulation.add(fPopulation.get(i));
+			}
 		}
 		
 		return newPopulation;
@@ -129,8 +155,8 @@ public class LevelGenerator extends AbstractLevelGenerator{
 	@Override
 	public String generateLevel(GameDescription game, ElapsedCpuTimer elapsedTimer) {
 		bestFitness = new ArrayList<Double>();
-		averageFitness = new ArrayList<Double>();
-		stdFitness  = new ArrayList<Double>();
+		numOfFeasible = new ArrayList<Integer>();
+		numOfInFeasible = new ArrayList<Integer>();
 		
 		SharedData.gameDescription = game;
 		
@@ -144,7 +170,9 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		width = (int)Math.min(width, SharedData.MAX_SIZE + size);
 		height = (int)Math.min(height, SharedData.MAX_SIZE + size);
 		
-		ArrayList<Chromosome> chromosomes = new ArrayList<Chromosome>();
+		System.out.println("Generation #1: ");
+		ArrayList<Chromosome> fChromosomes = new ArrayList<Chromosome>();
+		ArrayList<Chromosome> iChromosomes = new ArrayList<Chromosome>();
 		for(int i =0; i < SharedData.POPULATION_SIZE; i++){
 			Chromosome chromosome = new Chromosome(width, height);
 			if(SharedData.CONSTRUCTIVE_INITIALIZATION){
@@ -153,7 +181,15 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			else{
 				chromosome.InitializeRandom();
 			}
-			chromosomes.add(chromosome);
+			chromosome.calculateFitness(SharedData.EVALUATION_TIME, true);
+			if(chromosome.getConstrainFitness() < 1){
+				iChromosomes.add(chromosome);
+				System.out.println("\tChromosome #" + (i+1) + " Constrain Fitness: " + chromosome.getConstrainFitness());
+			}
+			else{
+				fChromosomes.add(chromosome);
+				System.out.println("\tChromosome #" + (i+1) + " Fitness: " + chromosome.getFitness());
+			}
 		}
 		
 		double worstTime = 2 * SharedData.EVALUATION_TIME * SharedData.POPULATION_SIZE;
@@ -165,26 +201,46 @@ public class LevelGenerator extends AbstractLevelGenerator{
 				elapsedTimer.remainingTimeMillis() > worstTime){
 			ElapsedCpuTimer timer = new ElapsedCpuTimer();
 			
-			System.out.println("Generation #" + (numberOfIterations + 1) + ": ");
-			chromosomes = getNextPopulation(chromosomes);
+			System.out.println("Generation #" + (numberOfIterations + 2) + ": ");
+			
+			ArrayList<Chromosome> chromosomes = getNextPopulation(fChromosomes, iChromosomes);
+			fChromosomes.clear();
+			iChromosomes.clear();
+			for(Chromosome c:chromosomes){
+				if(c.getConstrainFitness() < 1){
+					iChromosomes.add(c);
+				}
+				else{
+					fChromosomes.add(c);
+				}
+			}
 			
 			numberOfIterations += 1;
 			totalTime += timer.elapsedMillis();
 			avgTime = totalTime / numberOfIterations;
 		}
 		
-		for(int i=0;i<chromosomes.size();i++){
-			chromosomes.get(i).calculateFitness(SharedData.EVALUATION_TIME, true);
+		if(fChromosomes.isEmpty()){
+			for(int i=0;i<iChromosomes.size();i++){
+				iChromosomes.get(i).calculateFitness(SharedData.EVALUATION_TIME, true);
+			}
+			
+			Collections.sort(iChromosomes);
+			return iChromosomes.get(0).getLevelString(bestChromosomeLevelMapping);
 		}
 		
-		Collections.sort(chromosomes);
+		for(int i=0;i<fChromosomes.size();i++){
+			fChromosomes.get(i).calculateFitness(SharedData.EVALUATION_TIME, true);
+		}
 		
-		bestChromosomeLevelMapping = chromosomes.get(0).getLevelMapping();
-		System.out.println("Best Chromosome Fitness: " + chromosomes.get(0).getFitness());
+		Collections.sort(fChromosomes);
+		
+		bestChromosomeLevelMapping = fChromosomes.get(0).getLevelMapping();
+		System.out.println("Best Chromosome Fitness: " + fChromosomes.get(0).getFitness());
 		System.out.println(bestFitness);
-		System.out.println(averageFitness);
-		System.out.println(stdFitness);
-		return chromosomes.get(0).getLevelString(bestChromosomeLevelMapping);
+		System.out.println(numOfFeasible);
+		System.out.println(numOfInFeasible);
+		return fChromosomes.get(0).getLevelString(bestChromosomeLevelMapping);
 	}
 
 	@Override

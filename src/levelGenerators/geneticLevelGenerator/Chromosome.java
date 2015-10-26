@@ -2,27 +2,21 @@ package levelGenerators.geneticLevelGenerator;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 import core.game.GameDescription.SpriteData;
-import core.game.GameDescription.TerminationData;
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
 import levelGenerators.StepController;
 import levelGenerators.constraints.CombinedConstraints;
-import levelGenerators.constraints.CoverPercentageConstraint;
-import levelGenerators.constraints.DeathConstraint;
-import levelGenerators.constraints.SolutionLengthConstraint;
 import ontology.Types;
-import ontology.Types.WINNER;
 import tools.ElapsedCpuTimer;
 import tools.LevelMapping;
 
-public class Chromosome implements Comparable<Chromosome>, Runnable{
+public class Chromosome implements Comparable<Chromosome>{
 	private ArrayList<String>[][] level;
 	private double fitness;
+	private double constrainFitness;
 	private boolean calculated;
 	private AbstractPlayer automatedAgent;
 	
@@ -173,30 +167,6 @@ public class Chromosome implements Comparable<Chromosome>, Runnable{
 		return positions;
 	}
 	
-	private ArrayList<SpritePointData> getFreePositions(ArrayList<String> sprites){
-		ArrayList<SpritePointData> positions = new ArrayList<SpritePointData>();
-		
-		for(int y = 0; y < level.length; y++){
-			for(int x = 0; x < level[y].length; x++){
-				ArrayList<String> tileSprites = level[y][x];
-				boolean isNotFound = true;
-				for(String stype:tileSprites){
-					for(String s:sprites){
-						if(s.equals(stype)){
-							isNotFound = false;
-						}
-					}
-				}
-				
-				if(isNotFound){
-					positions.add(new SpritePointData(sprites.get(SharedData.random.nextInt(sprites.size())), x, y));
-				}
-			}
-		}
-		
-		return positions;
-	}
-	
 	private void FixPlayer(){
 		ArrayList<SpriteData> avatar = SharedData.gameDescription.getAvatar();
 		ArrayList<String> avatarNames = new ArrayList<String>();
@@ -223,51 +193,7 @@ public class Chromosome implements Comparable<Chromosome>, Runnable{
 		}
 	}
 	
-	private void FixGoal(){
-		HashMap<String, Integer> numObjects = calculateNumberOfObjects();
-		ArrayList<TerminationData> termination = SharedData.gameDescription.getTerminationConditions();
-		
-		int acheived = 0;
-		for(TerminationData ter:termination){
-			for(String stype:ter.sprites){
-				acheived += numObjects.get(stype);
-			}
-			
-			if(acheived <= ter.limit){
-				ArrayList<SpritePointData> positions = getFreePositions(ter.sprites);
-				int increase = (ter.limit - acheived) + 1;
-				if(ter.limit > 0){
-					increase += SharedData.random.nextInt(ter.limit);
-				}
-				for(int i = 0; i < increase; i++){
-					int index = SharedData.random.nextInt(positions.size());
-					SpritePointData position = positions.remove(index);
-					level[position.y][position.x].add(ter.sprites.get(SharedData.random.nextInt(ter.sprites.size())));
-				}
-			}
-		}
-	}
-	
-	private void FixObjects(){
-		HashMap<String, Integer> numObjects = calculateNumberOfObjects();
-		
-		for(Entry<String, Integer> entry:numObjects.entrySet()){
-			int value = entry.getValue();
-			if(value > 0){
-				value = 1;
-			}
-			if(value != SharedData.gameAnalyzer.getMinRequiredNumber(entry.getKey())){
-				ArrayList<SpritePointData> positions = getFreePositions(new ArrayList<String>(Arrays.asList(new String[]{entry.getKey()})));
-				int index = SharedData.random.nextInt(positions.size());
-				SpritePointData position = positions.remove(index);
-				level[position.y][position.x].add(entry.getKey());
-			}
-		}
-	}
-	
 	private void FixLevel(){
-		FixObjects();
-		FixGoal();
 		FixPlayer();
 	}
 	
@@ -354,34 +280,11 @@ public class Chromosome implements Comparable<Chromosome>, Runnable{
 		return 2 / (1 + Math.exp(-result)) - 1;
 	}
 	
-	private double getDeaths(WINNER win, double drawScore){
-		if(win == WINNER.NO_WINNER){
-			return drawScore;
-		}
-		if(win == WINNER.PLAYER_LOSES){
-			return 1;
-		}
-		
-		return 0;
-	}
-	
-	private double getDeathScore(double bestScore, double doNothingScore){
-		if(bestScore == 0){
-			return 1;
-		}
-		
-		return 0;
-	}
-	
 	private double getRuleScore(double ruleDiff, double minRule){
 		if(ruleDiff < 0){
 			return 0;
 		}
 		return 2 / (1 + Math.exp(-3 * ruleDiff / minRule)) - 1;
-	}
-	
-	private double getSolutionLengthScore(ArrayList<Types.ACTIONS> solution, double minSol){
-		return 2 / (1 + Math.exp(-3 * solution.size() / minSol)) - 1;
 	}
 	
 	private int getDoNothingState(StateObservation stateObs, int steps){
@@ -434,16 +337,14 @@ public class Chromosome implements Comparable<Chromosome>, Runnable{
 			
 			CombinedConstraints constraint = new CombinedConstraints();
 			constraint.addConstraints(new String[]{"SolutionLengthConstraint", "DeathConstraint", 
-					"CoverPercentageConstraint", "SpriteNumberConstraint", "GoalConstraint"});
+					"CoverPercentageConstraint", "SpriteNumberConstraint", "GoalConstraint", "AvatarNumberConstraint"});
 			constraint.setParameters(parameters);
-			System.out.println(constraint.checkConstraint());
+			constrainFitness = constraint.checkConstraint();
 			
 			double scoreDiffScore = getGameScore(bestState.getGameScore() - doNothingState.getGameScore(), maxScore);
-			double deathDiffScore = getDeathScore(getDeaths(bestState.getGameWinner(), SharedData.DRAW_FITNESS), getDeaths(doNothingState.getGameWinner(), SharedData.DRAW_FITNESS));
 			double ruleScore = getRuleScore(bestState.getEventsHistory().size() - doNothingState.getEventsHistory().size(), SharedData.MIN_RULE_NUMBER);
-			double solutionLengthScore = getSolutionLengthScore(bestSol, SharedData.MIN_SOLUTION_LENGTH);
 			
-			fitness = (ruleScore + deathDiffScore + scoreDiffScore + solutionLengthScore) / 4;
+			fitness = (ruleScore + scoreDiffScore) / 2;
 		}
 		
 		return fitness;
@@ -451,6 +352,10 @@ public class Chromosome implements Comparable<Chromosome>, Runnable{
 	
 	public double getFitness(){
 		return fitness;
+	}
+	
+	public double getConstrainFitness(){
+		return constrainFitness;
 	}
 	
 	public class SpritePointData{
@@ -467,6 +372,16 @@ public class Chromosome implements Comparable<Chromosome>, Runnable{
 
 	@Override
 	public int compareTo(Chromosome o) {
+		if(this.constrainFitness < 1 || o.constrainFitness < 1){
+			if(this.constrainFitness < o.constrainFitness){
+				return 1;
+			}
+			if(this.constrainFitness > o.constrainFitness){
+				return -1;
+			}
+			return 0;
+		}
+		
 		if(this.fitness < o.fitness){
 			return 1;
 		}
@@ -474,10 +389,5 @@ public class Chromosome implements Comparable<Chromosome>, Runnable{
 			return -1;
 		}
 		return 0;
-	}
-
-	@Override
-	public void run() {
-		calculateFitness(SharedData.EVALUATION_TIME, true);
 	}
 }
