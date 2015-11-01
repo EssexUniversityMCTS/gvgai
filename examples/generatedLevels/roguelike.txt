@@ -1,0 +1,26 @@
+LevelMapping
+    a > wall 
+    b > exit 
+    c > key 
+    d > market 
+    e > phantom 
+    f > gold 
+    g > avatar 
+    h > spider 
+    i > health 
+    j > lock 
+
+LevelDescription
+aaaaaaaaaaaaaaa
+a  b b  c b d a
+a e      b    a
+a fb         ca
+a baa  e  g  ha
+afb aaa  h dd a
+a  b f ib     a
+ah   j  ijbjbba
+a  b    bbdh  a
+a     b     b a
+a  b fe  h    a
+a  d    h e   a
+aaaaaaaaaaaaaaa

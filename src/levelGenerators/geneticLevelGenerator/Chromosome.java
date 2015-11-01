@@ -2,8 +2,11 @@ package levelGenerators.geneticLevelGenerator;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.TreeSet;
 
+import core.game.Event;
 import core.game.GameDescription.SpriteData;
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
@@ -19,6 +22,7 @@ public class Chromosome implements Comparable<Chromosome>{
 	private double constrainFitness;
 	private boolean calculated;
 	private AbstractPlayer automatedAgent;
+	private AbstractPlayer naiveAgent;
 	
 	public Chromosome(int width, int height){
 		this.level = new ArrayList[height][width];
@@ -49,6 +53,15 @@ public class Chromosome implements Comparable<Chromosome>{
 			Class agentClass = Class.forName(SharedData.AGENT_NAME);
 			Constructor agentConst = agentClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
 			automatedAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation(), null);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		try{
+			Class agentClass = Class.forName(SharedData.NAIVE_AGENT_NAME);
+			Constructor agentConst = agentClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
+			naiveAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation(), null);
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -124,20 +137,24 @@ public class Chromosome implements Comparable<Chromosome>{
 		
 		for(int i = 0; i < SharedData.MUTATION_AMOUNT; i++)
 		{
-			int pointX = SharedData.random.nextInt(level[0].length);
-			int pointY = SharedData.random.nextInt(level.length);
+			int solidFrame = 0;
+			if(SharedData.gameAnalyzer.getSolidSprites().size() > 0){
+				solidFrame = 2;
+			}
+			int pointX = SharedData.random.nextInt(level[0].length - solidFrame) + solidFrame / 2;
+			int pointY = SharedData.random.nextInt(level.length - solidFrame) + solidFrame / 2;
 			if(SharedData.random.nextDouble() < SharedData.INSERTION_PROB){
 				String spriteName = allSprites.get(SharedData.random.nextInt(allSprites.size())).name;
-				if(!level[pointY][pointX].contains(spriteName)){
-					level[pointY][pointX].add(spriteName);
-				}
+				ArrayList<SpritePointData> freePositions = getFreePositions(new ArrayList<String>(Arrays.asList(new String[]{spriteName})));
+				int index = SharedData.random.nextInt(freePositions.size());
+				level[freePositions.get(index).y][freePositions.get(index).x].add(spriteName);
 			}
 			else if(SharedData.random.nextDouble() < SharedData.INSERTION_PROB + SharedData.DELETION_PROB){
 				level[pointY][pointX].clear();
 			}
 			else{
-				int point2X = SharedData.random.nextInt(level[0].length);
-				int point2Y = SharedData.random.nextInt(level.length);
+				int point2X = SharedData.random.nextInt(level[0].length - solidFrame) + solidFrame / 2;
+				int point2Y = SharedData.random.nextInt(level.length - solidFrame) + solidFrame / 2;
 				
 				ArrayList<String> temp = level[pointY][pointX];
 				level[pointY][pointX] = level[point2Y][point2X];
@@ -146,6 +163,27 @@ public class Chromosome implements Comparable<Chromosome>{
 		}
 		
 		FixLevel();
+	}
+	
+	private ArrayList<SpritePointData> getFreePositions(ArrayList<String> sprites){
+		ArrayList<SpritePointData> positions = new ArrayList<SpritePointData>();
+		
+		for(int y = 0; y < level.length; y++){
+			for(int x = 0; x < level[y].length; x++){
+				ArrayList<String> tileSprites = level[y][x];
+				boolean found = false;
+				for(String stype:tileSprites){
+					found = found || sprites.contains(stype);
+					found = found || SharedData.gameAnalyzer.getSolidSprites().contains(stype);
+				}
+				
+				if(!found){
+					positions.add(new SpritePointData("", x, y));
+				}
+			}
+		}
+		
+		return positions;
 	}
 	
 	private ArrayList<SpritePointData> getPositions(ArrayList<String> sprites){
@@ -176,10 +214,10 @@ public class Chromosome implements Comparable<Chromosome>{
 		ArrayList<SpritePointData> avatarPositions = getPositions(avatarNames);
 		
 		if(avatarPositions.size() == 0){
-			int pointX = SharedData.random.nextInt(level[0].length);
-			int pointY = SharedData.random.nextInt(level.length);
+			ArrayList<SpritePointData> freePositions = getFreePositions(avatarNames);
 			
-			level[pointY][pointX].add(avatarNames.get(SharedData.random.nextInt(avatarNames.size())));
+			int index = SharedData.random.nextInt(freePositions.size());
+			level[freePositions.get(index).y][freePositions.get(index).x].add(avatarNames.get(SharedData.random.nextInt(avatarNames.size())));
 		}
 		else if(avatarPositions.size() > 1){
 			int notDelete = SharedData.random.nextInt(avatarPositions.size());
@@ -280,20 +318,28 @@ public class Chromosome implements Comparable<Chromosome>{
 		return 2 / (1 + Math.exp(-result)) - 1;
 	}
 	
-	private double getRuleScore(double ruleDiff, double minRule){
-		if(ruleDiff < 0){
-			return 0;
+	private double getUniqueRuleScore(TreeSet<Event> events, double minUniqueRule){
+		double unique = 0;
+		HashMap<Integer, Boolean> uniqueEvents = new HashMap<Integer, Boolean>();
+		for(Event e:events){
+			int code = e.activeTypeId + 10000 * e.passiveTypeId;
+			if(!uniqueEvents.containsKey(code)){
+				unique += 1;
+				uniqueEvents.put(code, true);
+			}
 		}
-		return 2 / (1 + Math.exp(-3 * ruleDiff / minRule)) - 1;
+		
+		return 2 / (1 + Math.exp(-3 * unique / minUniqueRule)) - 1;
 	}
 	
-	private int getDoNothingState(StateObservation stateObs, int steps){
+	private int getNaivePlayerResult(StateObservation stateObs, int steps, AbstractPlayer agent){
 		int i =0;
 		for(i=0;i<steps;i++){
 			if(stateObs.isGameOver()){
 				break;
 			}
-			stateObs.advance(Types.ACTIONS.ACTION_NIL);
+			Types.ACTIONS bestAction = agent.act(stateObs, null);
+			stateObs.advance(bestAction);
 		}
 		
 		return i;
@@ -312,7 +358,7 @@ public class Chromosome implements Comparable<Chromosome>{
 			StateObservation bestState = stepAgent.getFinalState();
 			ArrayList<Types.ACTIONS> bestSol = stepAgent.getSolution();
 			StateObservation doNothingState = stateObs.copy(); 
-			int doNothingLength = getDoNothingState(stateObs.copy(), bestSol.size());
+			int doNothingLength = getNaivePlayerResult(doNothingState, bestSol.size(), naiveAgent);
 			double coverPercentage = getCoverPercentage();
 			
 			double maxScore = 0;
@@ -342,7 +388,7 @@ public class Chromosome implements Comparable<Chromosome>{
 			constrainFitness = constraint.checkConstraint();
 			
 			double scoreDiffScore = getGameScore(bestState.getGameScore() - doNothingState.getGameScore(), maxScore);
-			double ruleScore = getRuleScore(bestState.getEventsHistory().size() - doNothingState.getEventsHistory().size(), SharedData.MIN_RULE_NUMBER);
+			double ruleScore = getUniqueRuleScore(bestState.getEventsHistory(), SharedData.MIN_UNIQUE_RULE_NUMBER);
 			
 			fitness = (ruleScore + scoreDiffScore) / 2;
 		}

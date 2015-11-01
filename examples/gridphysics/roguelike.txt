@@ -31,7 +31,6 @@ BasicGame square_size=25
 
         moving wall > stepBack
         lock avatar > killIfOtherHasMore resource=key limit=1
-        avatar lock > stepBack
         moving lock > stepBack
         exit avatar > killSprite scoreChange=10
 

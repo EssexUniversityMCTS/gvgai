@@ -28,25 +28,6 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		numOfInFeasible = null;
 	}
 	
-//	private double getMean(ArrayList<Double> array){
-//		double total = 0;
-//		for(double d:array){
-//			total += d;
-//		}
-//		
-//		return total / array.size();
-//	}
-//	
-//	private double getSTD(ArrayList<Double> array){
-//		double total = 0;
-//		double average = getMean(array);
-//		for(double d:array){
-//			total += d * d;
-//		}
-//		
-//		return Math.sqrt(total / array.size() - average * average);
-//	}
-	
 	private ArrayList<Chromosome> getNextPopulation(ArrayList<Chromosome> fPopulation, ArrayList<Chromosome> iPopulation){
 		ArrayList<Chromosome> newPopulation = new ArrayList<Chromosome>();
 		
@@ -61,15 +42,27 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		}
 		
 		Collections.sort(fitnessArray);
-		bestFitness.add(fitnessArray.get(fitnessArray.size() - 1));
+		if(fitnessArray.size() > 0){
+			bestFitness.add(fitnessArray.get(fitnessArray.size() - 1));
+		}
+		else{
+			bestFitness.add((double) 0);
+		}
 		numOfFeasible.add(fPopulation.size());
 		numOfInFeasible.add(iPopulation.size());
 		
 		while(newPopulation.size() < SharedData.POPULATION_SIZE){
 			ArrayList<Chromosome> population = fPopulation;
-			if(SharedData.random.nextDouble() < 0.5){
+			if(fPopulation.size() <= 0){
 				population = iPopulation;
 			}
+			if(SharedData.random.nextDouble() < 0.5){
+				population = iPopulation;
+				if(iPopulation.size() <= 0){
+					population = fPopulation;
+				}
+			}
+			
 			
 			Chromosome parent1 = rouletteWheelSelection(population);
 			Chromosome parent2 = rouletteWheelSelection(population);

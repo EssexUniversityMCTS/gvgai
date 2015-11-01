@@ -1,0 +1,22 @@
+LevelMapping
+    a > wall 
+    b > tomb 
+    c > eatenBrains 
+    d > goal 
+    e > fastHell 
+    f > slowHell 
+    g > avatar 
+
+LevelDescription
+aaaaaaaaaaaaaaaa
+abc  addb ebabda
+a  fdaec    ed a
+a edaaaae aaaaaa
+a b c ge  fa  da
+ad e  dd d   bba
+a aa ed   faaaaa
+af a fef d a   a
+a da    f aa   a
+ad abd ef bc fba
+a     be  ae   a
+aaaaaaaaaaaaaaaa

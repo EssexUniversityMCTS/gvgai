@@ -1,0 +1,21 @@
+LevelMapping
+    a > wall 
+    b > west 
+
+LevelDescription
+aaaaaaaaaaaaaaa
+a             a
+a             a
+a             a
+a             a
+a      a      a
+a      a      a
+a     aa      a
+a        a    a
+a        a    a
+a        a    a
+a             a
+a    b        a
+a             a
+a             a
+aaaaaaaaaaaaaaa
