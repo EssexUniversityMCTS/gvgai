@@ -33,7 +33,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		
 		ArrayList<Double> fitnessArray = new ArrayList<Double>();
 		for(int i=0;i<fPopulation.size();i++){
-			fitnessArray.add(fPopulation.get(i).getFitness());
+			fitnessArray.add(fPopulation.get(i).getFitness().get(0));
 		}
 		
 		ArrayList<Double> constrainFitnessArray = new ArrayList<Double>();
@@ -64,8 +64,8 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			}
 			
 			
-			Chromosome parent1 = rouletteWheelSelection(population);
-			Chromosome parent2 = rouletteWheelSelection(population);
+			Chromosome parent1 = rouletteWheelSelection(population, 0);
+			Chromosome parent2 = rouletteWheelSelection(population, 0);
 			Chromosome child1 = parent1.clone();
 			Chromosome child2 = parent2.clone();
 			if(SharedData.random.nextDouble() < SharedData.CROSSOVER_PROB){
@@ -123,26 +123,33 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		return newPopulation;
 	}
 	
-	private Chromosome rouletteWheelSelection(ArrayList<Chromosome> population){
+	private Chromosome rouletteWheelSelection(ArrayList<Chromosome> population, int index){
 		double[] probabilities = new double[population.size()];
-		probabilities[0] = population.get(0).getFitness();
+		probabilities[0] = population.get(0).getFitness().get(index);
 		for(int i=1; i<population.size(); i++){
-			probabilities[i] = probabilities[i-1] + population.get(i).getFitness();
+			probabilities[i] = probabilities[i-1] + population.get(i).getFitness().get(index);
 		}
 		
 		for(int i=0; i<probabilities.length; i++){
 			probabilities[i] = probabilities[i] / probabilities[probabilities.length - 1];
 		}
 		
-		double prob = SharedData.random.nextDouble();
-		
-		for(int i=0; i<probabilities.length; i++){
-			if(prob < probabilities[i]){
-				return population.get(i);
+		ArrayList<Chromosome> newPopulation = new ArrayList<Chromosome>();
+		for(int j=0; j < Math.ceil(SharedData.SELECTION_PERCENTAGE * population.size()); j++){
+			double prob = SharedData.random.nextDouble();
+			
+			for(int i=0; i<probabilities.length; i++){
+				if(prob < probabilities[i]){
+					newPopulation.add(population.get(i));
+				}
 			}
 		}
 		
-		return null;
+		if(index == newPopulation.get(0).getFitness().size() - 1){
+			return newPopulation.get(0);
+		}
+		
+		return rouletteWheelSelection(newPopulation, index + 1);
 	}
 	
 	@Override

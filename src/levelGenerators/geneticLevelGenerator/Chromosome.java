@@ -18,7 +18,7 @@ import tools.LevelMapping;
 
 public class Chromosome implements Comparable<Chromosome>{
 	private ArrayList<String>[][] level;
-	private double fitness;
+	private ArrayList<Double> fitness;
 	private double constrainFitness;
 	private boolean calculated;
 	private AbstractPlayer automatedAgent;
@@ -31,7 +31,7 @@ public class Chromosome implements Comparable<Chromosome>{
 				this.level[y][x] = new ArrayList<String>();
 			}
 		}
-		this.fitness = 0;
+		this.fitness = new ArrayList<Double>();
 		this.calculated = false;
 	}
 	
@@ -345,7 +345,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		return i;
 	}
 	
-	public double calculateFitness(long time, boolean recalculate){
+	public ArrayList<Double> calculateFitness(long time, boolean recalculate){
 		if(!calculated || recalculate){
 			calculated = true;
 			StateObservation stateObs = getStateObservation();
@@ -390,13 +390,15 @@ public class Chromosome implements Comparable<Chromosome>{
 			double scoreDiffScore = getGameScore(bestState.getGameScore() - doNothingState.getGameScore(), maxScore);
 			double ruleScore = getUniqueRuleScore(bestState.getEventsHistory(), SharedData.MIN_UNIQUE_RULE_NUMBER);
 			
-			fitness = (ruleScore + scoreDiffScore) / 2;
+			fitness.clear();
+			fitness.add(scoreDiffScore);
+			fitness.add(ruleScore);
 		}
 		
 		return fitness;
 	}
 	
-	public double getFitness(){
+	public ArrayList<Double> getFitness(){
 		return fitness;
 	}
 	
@@ -428,12 +430,19 @@ public class Chromosome implements Comparable<Chromosome>{
 			return 0;
 		}
 		
-		if(this.fitness < o.fitness){
-			return 1;
+		boolean equal = true;
+		for(int i=0; i<this.fitness.size(); i++){
+			if(this.fitness.get(i) > o.fitness.get(i)){
+				return -1;
+			}
+			else if(this.fitness.get(i) != o.fitness.get(i)){
+				equal = false;
+			}
 		}
-		if(this.fitness > o.fitness){
-			return -1;
+		if(equal){
+			return 0;
 		}
-		return 0;
+		
+		return 1;
 	}
 }
