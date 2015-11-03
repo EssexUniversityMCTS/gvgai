@@ -7,12 +7,15 @@ import java.util.HashMap;
 import java.util.TreeSet;
 
 import core.game.Event;
+import core.game.GameDescription;
 import core.game.GameDescription.SpriteData;
+import core.game.GameDescription.TerminationData;
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
 import levelGenerators.StepController;
 import levelGenerators.constraints.CombinedConstraints;
 import ontology.Types;
+import ontology.Types.WINNER;
 import tools.ElapsedCpuTimer;
 import tools.LevelMapping;
 
@@ -318,15 +321,32 @@ public class Chromosome implements Comparable<Chromosome>{
 		return 2 / (1 + Math.exp(-result)) - 1;
 	}
 	
-	private double getUniqueRuleScore(TreeSet<Event> events, double minUniqueRule){
+	private boolean isPlayerCauseDeath(){
+		for(TerminationData t:SharedData.gameDescription.getTerminationConditions()){
+			for(String s:t.sprites){
+				if(!t.win & SharedData.gameDescription.getAvatar().contains(s)){
+					return true;
+				}
+			}
+			
+		}
+		
+		return false;
+	}
+	
+	private double getUniqueRuleScore(StateObservation gameState, double minUniqueRule){
 		double unique = 0;
 		HashMap<Integer, Boolean> uniqueEvents = new HashMap<Integer, Boolean>();
-		for(Event e:events){
+		for(Event e:gameState.getEventsHistory()){
 			int code = e.activeTypeId + 10000 * e.passiveTypeId;
 			if(!uniqueEvents.containsKey(code)){
 				unique += 1;
 				uniqueEvents.put(code, true);
 			}
+		}
+		
+		if(isPlayerCauseDeath() && gameState.getGameWinner() == WINNER.PLAYER_LOSES){
+			unique -= 1;
 		}
 		
 		return 2 / (1 + Math.exp(-3 * unique / minUniqueRule)) - 1;
@@ -388,7 +408,7 @@ public class Chromosome implements Comparable<Chromosome>{
 			constrainFitness = constraint.checkConstraint();
 			
 			double scoreDiffScore = getGameScore(bestState.getGameScore() - doNothingState.getGameScore(), maxScore);
-			double ruleScore = getUniqueRuleScore(bestState.getEventsHistory(), SharedData.MIN_UNIQUE_RULE_NUMBER);
+			double ruleScore = getUniqueRuleScore(bestState, SharedData.MIN_UNIQUE_RULE_NUMBER);
 			
 			fitness.clear();
 			fitness.add(scoreDiffScore);
@@ -430,19 +450,15 @@ public class Chromosome implements Comparable<Chromosome>{
 			return 0;
 		}
 		
-		boolean equal = true;
 		for(int i=0; i<this.fitness.size(); i++){
 			if(this.fitness.get(i) > o.fitness.get(i)){
 				return -1;
 			}
-			else if(this.fitness.get(i) != o.fitness.get(i)){
-				equal = false;
+			if(this.fitness.get(i) < o.fitness.get(i)){
+				return 1;
 			}
 		}
-		if(equal){
-			return 0;
-		}
 		
-		return 1;
+		return 0;
 	}
 }

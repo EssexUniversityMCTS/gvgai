@@ -36,11 +36,6 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			fitnessArray.add(fPopulation.get(i).getFitness().get(0));
 		}
 		
-		ArrayList<Double> constrainFitnessArray = new ArrayList<Double>();
-		for(int i=0;i<iPopulation.size();i++){
-			constrainFitnessArray.add(iPopulation.get(i).getConstrainFitness());
-		}
-		
 		Collections.sort(fitnessArray);
 		if(fitnessArray.size() > 0){
 			bestFitness.add(fitnessArray.get(fitnessArray.size() - 1));
@@ -141,6 +136,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			for(int i=0; i<probabilities.length; i++){
 				if(prob < probabilities[i]){
 					newPopulation.add(population.get(i));
+					break;
 				}
 			}
 		}

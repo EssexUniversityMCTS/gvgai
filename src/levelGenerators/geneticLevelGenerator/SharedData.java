@@ -7,7 +7,7 @@ import levelGenerators.GameAnalyzer;
 
 public class SharedData {
 	public static final int POPULATION_SIZE = 50;
-	public static final double SELECTION_PERCENTAGE = 0.1;
+	public static final double SELECTION_PERCENTAGE = 0.3;
 	public static final long EVALUATION_TIME = 5000;
 	public static final double CROSSOVER_PROB = 0.7;
 	public static final double MUTATION_PROB = 0.1;
