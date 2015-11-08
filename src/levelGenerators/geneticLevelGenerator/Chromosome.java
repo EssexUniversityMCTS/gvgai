@@ -4,10 +4,8 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.TreeSet;
 
 import core.game.Event;
-import core.game.GameDescription;
 import core.game.GameDescription.SpriteData;
 import core.game.GameDescription.TerminationData;
 import core.game.StateObservation;
@@ -26,6 +24,8 @@ public class Chromosome implements Comparable<Chromosome>{
 	private boolean calculated;
 	private AbstractPlayer automatedAgent;
 	private AbstractPlayer naiveAgent;
+	private AbstractPlayer doNothingAgent;
+	private StateObservation stateObs;
 	
 	public Chromosome(int width, int height){
 		this.level = new ArrayList[height][width];
@@ -36,6 +36,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		}
 		this.fitness = new ArrayList<Double>();
 		this.calculated = false;
+		this.stateObs = null;
 	}
 	
 	public Chromosome clone(){
@@ -55,7 +56,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		try{
 			Class agentClass = Class.forName(SharedData.AGENT_NAME);
 			Constructor agentConst = agentClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
-			automatedAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation(), null);
+			automatedAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation().copy(), null);
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -64,7 +65,16 @@ public class Chromosome implements Comparable<Chromosome>{
 		try{
 			Class agentClass = Class.forName(SharedData.NAIVE_AGENT_NAME);
 			Constructor agentConst = agentClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
-			naiveAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation(), null);
+			naiveAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation().copy(), null);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		try{
+			Class agentClass = Class.forName(SharedData.NAIVE_AGENT_NAME);
+			Constructor agentConst = agentClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
+			doNothingAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation().copy(), null);
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -280,9 +290,14 @@ public class Chromosome implements Comparable<Chromosome>{
 	}
 	
 	private StateObservation getStateObservation(){
+		if(stateObs != null){
+			return stateObs;
+		}
+		
 		LevelMapping levelMapping = getLevelMapping();
 		String levelString = getLevelString(levelMapping);
-		return SharedData.gameDescription.testLevel(levelString, levelMapping.getCharMapping());
+		stateObs = SharedData.gameDescription.testLevel(levelString, levelMapping.getCharMapping());
+		return stateObs;
 	}
 	
 	private HashMap<String, Integer> calculateNumberOfObjects(){
@@ -365,8 +380,8 @@ public class Chromosome implements Comparable<Chromosome>{
 		return i;
 	}
 	
-	public ArrayList<Double> calculateFitness(long time, boolean recalculate){
-		if(!calculated || recalculate){
+	public ArrayList<Double> calculateFitness(long time){
+		if(!calculated){
 			calculated = true;
 			StateObservation stateObs = getStateObservation();
 			
@@ -377,8 +392,9 @@ public class Chromosome implements Comparable<Chromosome>{
 			
 			StateObservation bestState = stepAgent.getFinalState();
 			ArrayList<Types.ACTIONS> bestSol = stepAgent.getSolution();
-			StateObservation doNothingState = stateObs.copy(); 
-			int doNothingLength = getNaivePlayerResult(doNothingState, bestSol.size(), naiveAgent);
+			StateObservation naiveState = stateObs.copy(); 
+			getNaivePlayerResult(naiveState, bestSol.size(), naiveAgent);
+			int doNothingLength = getNaivePlayerResult(stateObs.copy(), bestSol.size(), doNothingAgent);
 			double coverPercentage = getCoverPercentage();
 			
 			double maxScore = 0;
@@ -392,7 +408,6 @@ public class Chromosome implements Comparable<Chromosome>{
 			parameters.put("maxSolutionLength", SharedData.MIN_SOLUTION_LENGTH);
 			parameters.put("doNothingSteps", doNothingLength);
 			parameters.put("bestPlayer", bestState.getGameWinner());
-			parameters.put("doNothingPlayer", doNothingState.getGameWinner());
 			parameters.put("minDoNothingSteps", SharedData.MIN_DOTHING_STEPS);
 			parameters.put("coverPercentage", coverPercentage);
 			parameters.put("minCoverPercentage", SharedData.MIN_COVER_PERCENTAGE);
@@ -407,12 +422,15 @@ public class Chromosome implements Comparable<Chromosome>{
 			constraint.setParameters(parameters);
 			constrainFitness = constraint.checkConstraint();
 			
-			double scoreDiffScore = getGameScore(bestState.getGameScore() - doNothingState.getGameScore(), maxScore);
+			double scoreDiffScore = getGameScore(bestState.getGameScore() - naiveState.getGameScore(), maxScore);
 			double ruleScore = getUniqueRuleScore(bestState, SharedData.MIN_UNIQUE_RULE_NUMBER);
 			
-			fitness.clear();
 			fitness.add(scoreDiffScore);
 			fitness.add(ruleScore);
+			
+			this.automatedAgent = null;
+			this.naiveAgent = null;
+			this.stateObs = null;
 		}
 		
 		return fitness;
@@ -450,13 +468,19 @@ public class Chromosome implements Comparable<Chromosome>{
 			return 0;
 		}
 		
+		double firstFitness = 0;
+		double secondFitness = 0;
 		for(int i=0; i<this.fitness.size(); i++){
-			if(this.fitness.get(i) > o.fitness.get(i)){
-				return -1;
-			}
-			if(this.fitness.get(i) < o.fitness.get(i)){
-				return 1;
-			}
+			firstFitness += this.fitness.get(i);
+			secondFitness += o.fitness.get(i);
+		}
+		
+		if(firstFitness > secondFitness){
+			return -1;
+		}
+		
+		if(firstFitness < secondFitness){
+			return 1;
 		}
 		
 		return 0;

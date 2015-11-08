@@ -6,7 +6,6 @@ import ontology.Types.WINNER;
 public class DeathConstraint extends AbstractConstraint{
 
 	public Types.WINNER bestPlayer;
-	public Types.WINNER doNothingPlayer;
 	public double doNothingSteps;
 	public double minDoNothingSteps;
 	

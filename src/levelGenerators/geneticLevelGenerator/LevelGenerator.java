@@ -88,7 +88,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		}
 		
 		for(int i=0;i<newPopulation.size();i++){
-			newPopulation.get(i).calculateFitness(SharedData.EVALUATION_TIME, true);
+			newPopulation.get(i).calculateFitness(SharedData.EVALUATION_TIME);
 			if(newPopulation.get(i).getConstrainFitness() < 1){
 				System.out.println("\tChromosome #" + (i+1) + " Constrain Fitness: " + newPopulation.get(i).getConstrainFitness());
 			}
@@ -177,7 +177,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			else{
 				chromosome.InitializeRandom();
 			}
-			chromosome.calculateFitness(SharedData.EVALUATION_TIME, true);
+			chromosome.calculateFitness(SharedData.EVALUATION_TIME);
 			if(chromosome.getConstrainFitness() < 1){
 				iChromosomes.add(chromosome);
 				System.out.println("\tChromosome #" + (i+1) + " Constrain Fitness: " + chromosome.getConstrainFitness());
@@ -188,7 +188,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			}
 		}
 		
-		double worstTime = 2 * SharedData.EVALUATION_TIME * SharedData.POPULATION_SIZE;
+		double worstTime = 3 * SharedData.EVALUATION_TIME * SharedData.POPULATION_SIZE;
 		double avgTime = worstTime;
 		double totalTime = 0;
 		int numberOfIterations = 0;
@@ -218,7 +218,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		
 		if(fChromosomes.isEmpty()){
 			for(int i=0;i<iChromosomes.size();i++){
-				iChromosomes.get(i).calculateFitness(SharedData.EVALUATION_TIME, true);
+				iChromosomes.get(i).calculateFitness(SharedData.EVALUATION_TIME);
 			}
 			
 			Collections.sort(iChromosomes);
@@ -226,7 +226,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		}
 		
 		for(int i=0;i<fChromosomes.size();i++){
-			fChromosomes.get(i).calculateFitness(SharedData.EVALUATION_TIME, true);
+			fChromosomes.get(i).calculateFitness(SharedData.EVALUATION_TIME);
 		}
 		
 		Collections.sort(fChromosomes);

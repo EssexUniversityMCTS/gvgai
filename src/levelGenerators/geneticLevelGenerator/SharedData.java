@@ -32,6 +32,7 @@ public class SharedData {
 	
 	public static final String AGENT_NAME = "controllers.adrienctx.Agent";
 	public static final String NAIVE_AGENT_NAME = "controllers.sampleonesteplookahead.Agent";
+	public static final String DO_NOTHING_AGENT_NAME = "controllers.doNothing.Agent";
 	
 	public static GameDescription gameDescription;
 	public static GameAnalyzer gameAnalyzer;

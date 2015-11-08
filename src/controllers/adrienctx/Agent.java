@@ -145,7 +145,7 @@ public class Agent extends AbstractPlayer {
             treeSearchPlayer.init(stateObs);
         }
 
-                while (remaining > 2 * avgTimeTaken && remaining > remainingLimit) {
+                do{
                     ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
                     treeSearchPlayer.iterateOnPuzzle();
 
@@ -153,7 +153,7 @@ public class Agent extends AbstractPlayer {
                     acumTimeTaken += (elapsedTimerIteration.elapsedMillis());
                     avgTimeTaken = acumTimeTaken / numIters;
                     remaining = elapsedTimer.remainingTimeMillis();
-                }
+                }while (remaining > 2 * avgTimeTaken && remaining > remainingLimit);
                 
                 treeSearchPlayer.lastActionPicked = treeSearchPlayer.returnBestAction();
                 return actions[treeSearchPlayer.lastActionPicked];
