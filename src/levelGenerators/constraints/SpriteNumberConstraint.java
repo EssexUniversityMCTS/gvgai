@@ -3,7 +3,7 @@ package levelGenerators.constraints;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import levelGenerators.GameAnalyzer;
+import tools.GameAnalyzer;
 
 public class SpriteNumberConstraint extends AbstractConstraint{
 	
@@ -16,7 +16,7 @@ public class SpriteNumberConstraint extends AbstractConstraint{
 		double acheivedNum = 0;
 		
 		for(Entry<String, Integer> n:numOfObjects.entrySet()){
-			if(gameAnalyzer.getMinRequiredNumber(n.getKey()) > 0){
+			if(gameAnalyzer.checkIfSpawned(n.getKey()) > 0){
 				totalNum += 1;
 				if(n.getValue() > 0){
 					acheivedNum += 1;

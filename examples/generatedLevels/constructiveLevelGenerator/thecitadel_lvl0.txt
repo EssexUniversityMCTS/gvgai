@@ -1,0 +1,25 @@
+LevelMapping
+    a > wall 
+    b > roundhole 
+    c > boulder 
+    d > goal 
+    e > crate 
+    f > withkey 
+    g > squarehole 
+
+LevelDescription
+aaaaaaaaaaaaa
+a   b ccbd  a
+a  e ddec   a
+a  b ccdddfca
+aeb caaaaadga
+acgc cd c gda
+age cd   be a
+a c  cce aaaa
+ag  cbc  bc a
+acdc   cdd  a
+a ecaaaaaccda
+a db  ged  ga
+acg bggb g ea
+acdg  ccdb  a
+aaaaaaaaaaaaa

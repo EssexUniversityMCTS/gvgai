@@ -1,0 +1,19 @@
+LevelMapping
+    a > wall 
+    b > slowChicken 
+    c > brokenegg 
+    d > fastChicken 
+    e > avatar 
+
+LevelDescription
+aaaaaaaaaaaaaa
+a a  b  a c  a
+ac  aacaac   a
+aaaab    bd ca
+a d aaa aaaaaa
+a aa caba c  a
+ada   bdaaa  a
+ab b   d    ca
+a  aaaac  aaaa
+aea d     db a
+aaaaaaaaaaaaaa

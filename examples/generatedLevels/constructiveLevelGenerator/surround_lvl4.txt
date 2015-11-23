@@ -1,0 +1,15 @@
+LevelMapping
+    a > wall 
+    b > sword 
+    c > dog 
+    d > snow 
+    e > avatar 
+
+LevelDescription
+aaaaaaa
+a a   a
+abaaa a
+a c a a
+a  deda
+ac b  a
+aaaaaaa

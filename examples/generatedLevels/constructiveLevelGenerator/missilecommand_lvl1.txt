@@ -1,0 +1,16 @@
+LevelMapping
+    a > wall 
+    b > incoming_fast 
+    c > city 
+    d > incoming_slow 
+    e > avatar 
+
+LevelDescription
+aaaaaaaaa
+abc dbcda
+ae a bcaa
+a aaaa ca
+aaa  bdaa
+abaaacbca
+ab bc   a
+aaaaaaaaa

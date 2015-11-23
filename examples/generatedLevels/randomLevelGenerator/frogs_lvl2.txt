@@ -1,0 +1,29 @@
+LevelMapping
+    A > avatar 
+    B > avatar log 
+    G > goal 
+    - > slowRtruck 
+    0 > water 
+    1 > forestDense water 
+    2 > forestDense wall log 
+    3 > forestSparse water 
+    4 > forestSparse wall log 
+    w > wall 
+    x > fastRtruck 
+    X > fastLtruck 
+    = > log water 
+    _ > slowLtruck 
+
+LevelDescription
+43  - =G12  4
+203     3BxG 
+ 1 X     G   
+ =     = _ x 
+        1    
+ =G   X  4x x
+       _x G_4
+    G XX     
+ 2 0 3_-00   
+   w 3  -   4
+   _Gx3 =    
+_  _  w0w 0- 

@@ -1,0 +1,30 @@
+LevelMapping
+    a > sky 
+    b > normaldiverhole 
+    c > air 
+    d > crew 
+    e > oftendiverhole 
+    f > bubblehole 
+    g > sharkhole 
+    h > whalehole 
+    i > avatar 
+
+LevelDescription
+a            aa   
+    b c  dcea fc  
+g   cb aa e cfe   
+    dc   a g    da
+f ee  dd d hca    
+ e     gbce c  a  
+ d        hc b d e
+       g d  e     
+  aa ag           
+  cgc d  d        
+de  a   cc  dc  b 
+     e         b  
+      g      ha ah
+ fc     h h   ecaf
+          a  a a c
+ bd f  h c bbg    
+ g  ge   dfb  c bd
+  e    c   bia   g

@@ -33,7 +33,10 @@ public class Agent extends AbstractPlayer{
 		double[] probabilities = new double[population.size()];
 		probabilities[0] = population.get(0).getFitness();
 		for(int i=1; i<population.size(); i++){
-			probabilities[i] = probabilities[i-1] + population.get(i).getFitness();
+			probabilities[i] = probabilities[i-1];
+			if(population.get(i).getFitness() > 0){
+				probabilities[i] = probabilities[i-1] + population.get(i).getFitness();
+			}
 		}
 		
 		for(int i=0; i<probabilities.length; i++){

@@ -1,0 +1,31 @@
+LevelMapping
+    a > wall 
+    b > goal 
+    c > randomCamel 
+    d > winnerNPC 
+    e > winnerPlayer 
+    f > mediumL 
+    g > slowL 
+    h > fastL 
+    i > mediumR 
+    j > fastR 
+    k > slowR 
+    l > avatar 
+
+LevelDescription
+aaaaaaaaaaaaa
+a   bc d eefa
+aaa  dfbf gca
+ahadcc  h f a
+afa     hhe a
+ab iacj b   a
+a  aagf  ei a
+a  b aaa    a
+aaaaabba    a
+a b  k ajc ga
+akf i j bfaaa
+a hgeaaaafkea
+a  il h ejgda
+aiikdjib  fda
+adj b  dj h a
+aaaaaaaaaaaaa

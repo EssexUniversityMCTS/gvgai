@@ -10,12 +10,12 @@ import core.game.GameDescription.SpriteData;
 import core.game.GameDescription.TerminationData;
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
-import levelGenerators.StepController;
 import levelGenerators.constraints.CombinedConstraints;
 import ontology.Types;
 import ontology.Types.WINNER;
 import tools.ElapsedCpuTimer;
 import tools.LevelMapping;
+import tools.StepController;
 
 public class Chromosome implements Comparable<Chromosome>{
 	private ArrayList<String>[][] level;
@@ -385,7 +385,7 @@ public class Chromosome implements Comparable<Chromosome>{
 			calculated = true;
 			StateObservation stateObs = getStateObservation();
 			
-			StepController stepAgent = new StepController(automatedAgent);
+			StepController stepAgent = new StepController(automatedAgent, SharedData.EVALUATION_STEP_TIME);
 			ElapsedCpuTimer elapsedTimer = new ElapsedCpuTimer();
 			elapsedTimer.setMaxTimeMillis(time);
 			stepAgent.playGame(stateObs.copy(), elapsedTimer);
@@ -421,6 +421,8 @@ public class Chromosome implements Comparable<Chromosome>{
 					"CoverPercentageConstraint", "SpriteNumberConstraint", "GoalConstraint", "AvatarNumberConstraint"});
 			constraint.setParameters(parameters);
 			constrainFitness = constraint.checkConstraint();
+			
+			System.out.println("SolutionLength:" + bestSol.size() + " doNothingSteps:" + doNothingLength + " coverPercentage:" + coverPercentage + " bestPlayer:" + bestState.getGameWinner());
 			
 			double scoreDiffScore = getGameScore(bestState.getGameScore() - naiveState.getGameScore(), maxScore);
 			double ruleScore = getUniqueRuleScore(bestState, SharedData.MIN_UNIQUE_RULE_NUMBER);

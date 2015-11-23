@@ -1,0 +1,24 @@
+LevelMapping
+    a > wall 
+    b > butterfly 
+    c > exitdoor 
+    d > boulder 
+    e > diamond 
+    f > crab 
+    g > dirt 
+    h > avatar 
+
+LevelDescription
+aaaaaaaaaaaaaa
+a bc   de c  a
+a fd    f  dba
+a     cg   c a
+a  d   f    ba
+ag      e  e a
+a ce    cbc  a
+a     a c  fca
+a  caaa  c b a
+a    f aaa   a
+a c          a
+a eh   f f  da
+aaaaaaaaaaaaaa

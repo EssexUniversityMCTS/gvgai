@@ -2,6 +2,7 @@ package controllers.simulatedAnnealing;
 
 import java.util.Random;
 
+import controllers.Heuristics.SimpleStateHeuristic;
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
 import ontology.Types;
@@ -49,7 +50,7 @@ public class Agent extends AbstractPlayer{
 			if(delta > 0){
 				currentState = nextState;
 			}
-			else if(random.nextDouble() < MAX_PROP * ((SEQ_LENGTH - Math.abs(delta)) / SEQ_LENGTH) * (elapsedTimer.remainingTimeMillis() / maxValue)){
+			else if(random.nextDouble() < Math.pow(MAX_PROP * (elapsedTimer.remainingTimeMillis() / maxValue), Math.abs(delta) / HUGE_VALUE + 1)){
 				currentState = nextState;
 			}
 
@@ -99,26 +100,8 @@ public class Agent extends AbstractPlayer{
 		}
 		
 		public double getFitness(Agent agent){
-			StateObservation tempState = stateObs.copy();
-			for(int i=0;i<sequence.length;i++){
-				tempState.advance(sequence[i]);
-			}
-			
-			if(tempState.isGameOver()){
-				if(tempState.getGameWinner() == WINNER.PLAYER_WINS){
-					return HUGE_VALUE;
-				}
-				else{
-					return -HUGE_VALUE;
-				}
-			}
-			
-			Vector2d point = tempState.getAvatarPosition().mul(1.0/tempState.getBlockSize());
-			agent.totalMoves += 1;
-			agent.tiles[(int)point.x][(int)point.y] += 1;
-			
-			double value = (agent.totalMoves - agent.tiles[(int)point.x][(int)point.y]) / (agent.totalMoves * 1.0);
-			return tempState.getGameScore() * value;
+			SimpleStateHeuristic simpleHeuristic = new SimpleStateHeuristic(stateObs.copy());
+			return simpleHeuristic.evaluateState(stateObs.copy());
 		}
 	}
 	

@@ -1,0 +1,25 @@
+LevelMapping
+    a > sharkFang 
+    b > shell 
+    c > piranhahole 
+    d > sharkhole 
+    e > whalehole 
+    f > avatar 
+
+LevelDescription
+ ab c a   
+c  db  aa 
+  ceb   aa
+        f 
+     b d  
+  ed aaa  
+   bab  b 
+b         
+ aec    ab
+    d  c b
+   a bacb 
+  a   b ab
+ ce c     
+d     c ca
+      da  
+  db d   b

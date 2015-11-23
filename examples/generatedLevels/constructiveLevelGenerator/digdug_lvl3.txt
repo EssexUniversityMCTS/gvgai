@@ -1,0 +1,19 @@
+LevelMapping
+    a > wall 
+    b > entrance 
+    c > gem 
+    d > monster 
+    e > gold 
+    f > avatar 
+
+LevelDescription
+a b a ca
+ adaaa a
+ c ebaaa
+cc e   b
+  daec  
+cbb    c
+a a  cd 
+cca    a
+cd cbea 
+cf  d ea

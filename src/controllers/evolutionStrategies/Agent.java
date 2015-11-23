@@ -2,14 +2,11 @@ package controllers.evolutionStrategies;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.PriorityQueue;
 import java.util.Random;
 
-import controllers.Heuristics.WinScoreHeuristic;
+import controllers.Heuristics.SimpleStateHeuristic;
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
-import levelGenerators.geneticLevelGenerator.Chromosome;
-import levelGenerators.geneticLevelGenerator.SharedData;
 import ontology.Types;
 import ontology.Types.ACTIONS;
 import tools.ElapsedCpuTimer;
@@ -25,7 +22,7 @@ public class Agent extends AbstractPlayer{
 		random = new Random();
 		actions = stateObs.getAvailableActions();
 		
-		maxLength = 10;
+		maxLength = 8;
 		lambda = 5;
 		mu = 5;
 		
@@ -35,7 +32,10 @@ public class Agent extends AbstractPlayer{
 		double[] probabilities = new double[population.size()];
 		probabilities[0] = population.get(0).getFitness();
 		for(int i=1; i<population.size(); i++){
-			probabilities[i] = probabilities[i-1] + population.get(i).getFitness();
+			probabilities[i] = probabilities[i-1];
+			if(population.get(i).getFitness() > 0){
+				probabilities[i] = probabilities[i-1] + population.get(i).getFitness();
+			}
 		}
 		
 		for(int i=0; i<probabilities.length; i++){
@@ -103,7 +103,7 @@ public class Agent extends AbstractPlayer{
 				list.add(act);
 				newState.advance(act);
 			}
-			WinScoreHeuristic win = new WinScoreHeuristic(stateObs);
+			SimpleStateHeuristic win = new SimpleStateHeuristic(newState);
 			fitness = win.evaluateState(newState);
 		}
 		
@@ -114,7 +114,7 @@ public class Agent extends AbstractPlayer{
 			for(int i=0; i<list.size(); i++){
 				newState.advance(list.get(i));
 			}
-			WinScoreHeuristic win = new WinScoreHeuristic(stateObs);
+			SimpleStateHeuristic win = new SimpleStateHeuristic(newState);
 			fitness = win.evaluateState(newState);
 		}
 		

@@ -1,0 +1,19 @@
+LevelMapping
+    a > wall 
+    b > lemming 
+    c > exit 
+    d > hole 
+    e > entrance 
+    f > avatar 
+
+LevelDescription
+    a 
+  b   
+      
+cade e
+  bfdc
+adc a 
+ dda  
+    eb
+      
+   e  

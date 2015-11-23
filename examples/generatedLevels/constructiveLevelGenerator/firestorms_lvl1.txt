@@ -1,0 +1,18 @@
+LevelMapping
+    a > wall 
+    b > escape 
+    c > water 
+    d > seed 
+    e > avatar 
+
+LevelDescription
+aaaaaa
+ab  ca
+abccba
+adc da
+a  b a
+acaa a
+aead a
+ab aaa
+ac   a
+aaaaaa

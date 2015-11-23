@@ -1,0 +1,27 @@
+LevelMapping
+    a > lcright 
+    b > lcleft 
+    c > hole 
+    d > box 
+    e > goal 
+    f > avatar 
+    g > lcdown 
+    h > lcup 
+
+LevelDescription
+aaaaaaaaaaaaaaaaaaaa
+a   b       a a  c a
+a    a d   eaa   e a
+a   a  d e    e    a
+acf    ee    e b   a
+ad   b  ec c       a
+a      aaa     e   a
+a   ea   a         a
+aaaa    ea g       a
+a              d   a
+ae  ee        c    a
+a aaaa    e d e    a
+a       c          a
+ae e  ge     h  e  a
+a   d              a
+aaaaaaaaaaaaaaaaaaaa

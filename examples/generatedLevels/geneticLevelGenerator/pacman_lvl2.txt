@@ -1,0 +1,36 @@
+LevelMapping
+    a > wall 
+    b > power 
+    c > pink 
+    d > pinkspawn 
+    e > pellet 
+    f > orange 
+    g > blue 
+    h > redspawn 
+    i > bluespawn 
+    j > red 
+    k > fruit 
+    l > orangespawn 
+    m > fruit bluespawn 
+    n > fruit powered 
+
+LevelDescription
+aaaaaaaaaaaaaaaaa
+abc bdee  b c  fa
+a gh   ijj bcck a
+a b k  aa  e  b a
+ab h iblkee  ekma
+ajbe ekef afg fia
+ak bf ebcaa a kba
+ak  b   kb  aacka
+a   fb eklaaaibga
+akge g c khkbb  a
+a le  e b bec cla
+ag   e hb bkb  ea
+agfkhc j gb    ea
+aaaa     ie aaafa
+abci   dgk  f f a
+abe lbb enhjg gka
+a ac kekaaeek eea
+aebfbbfgbbggbbgfa
+aaaaaaaaaaaaaaaaa

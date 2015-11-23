@@ -1,0 +1,20 @@
+LevelMapping
+    a > wall 
+    b > random 
+    c > gold 
+    d > goal 
+    e > weapon 
+    f > marsh 
+    g > avatar 
+
+LevelDescription
+aaaaaaaaa
+a  babb a
+a  caaa a
+a  ddedda
+a     dfa
+a cfbdf a
+abfcdfada
+abg d a a
+a    ca a
+aaaaaaaaa

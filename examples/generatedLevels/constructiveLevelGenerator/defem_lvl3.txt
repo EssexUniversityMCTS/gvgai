@@ -1,0 +1,32 @@
+LevelMapping
+    a > spawnChase 
+    b > spawnHorzL 
+    c > randomEnemy 
+    d > spawnRandom 
+    e > spawnHorzR 
+    f > chaseEnemy 
+    g > dirEnemy 
+    h > cannon 
+    i > spawnHorzD 
+    j > spawnHorzU 
+    k > avatar 
+
+LevelDescription
+ab bb  cde
+fb egh    
+hcgiiidci 
+cchbjjced 
+ hi dejfje
+ jc figdjd
+f aei   ic
+i hfa  g  
+ d bh jiji
+ cfjghi gb
+c d d g  e
+bc bf    b
+cdhjciee a
+jeaicdgj d
+j  i aeie 
+  ebbhgbeb
+f dd dkd i
+cc j d   f

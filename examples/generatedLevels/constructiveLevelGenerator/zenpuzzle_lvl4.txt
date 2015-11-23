@@ -1,0 +1,17 @@
+LevelMapping
+    a > rock 
+    b > ground 
+    c > avatar 
+    d > isincenter 
+
+LevelDescription
+aaaaaaa
+a     a
+aa aaaa
+a    ba
+a  aaaa
+aac a a
+a     a
+aabaaaa
+ad   da
+aaaaaaa

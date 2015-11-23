@@ -1,0 +1,21 @@
+LevelMapping
+    a > wall 
+    b > normal 
+    c > virus 
+    d > entrance 
+    e > host 
+
+LevelDescription
+aaaaaaaaa
+a b  ccca
+a  d  c a
+a aaa a a
+aaa   a a
+a   aaa a
+aae  a ca
+a eaaaaaa
+addddd  a
+aaaaaacda
+a c     a
+a   c  da
+aaaaaaaaa

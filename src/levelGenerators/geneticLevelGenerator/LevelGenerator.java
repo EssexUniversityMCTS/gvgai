@@ -7,8 +7,8 @@ import java.util.Random;
 
 import core.game.GameDescription;
 import core.generator.AbstractLevelGenerator;
-import levelGenerators.GameAnalyzer;
 import tools.ElapsedCpuTimer;
+import tools.GameAnalyzer;
 import tools.LevelMapping;
 
 public class LevelGenerator extends AbstractLevelGenerator{
@@ -118,11 +118,37 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		return newPopulation;
 	}
 	
+	private Chromosome constraintRouletteWheelSelection(ArrayList<Chromosome> population){
+		double[] probabilities = new double[population.size()];
+		probabilities[0] = population.get(0).getConstrainFitness();
+		for(int i=1; i<population.size(); i++){
+			probabilities[i] = probabilities[i-1] + population.get(i).getConstrainFitness() + SharedData.EIPSLON;
+		}
+		
+		for(int i=0; i<probabilities.length; i++){
+			probabilities[i] = probabilities[i] / probabilities[probabilities.length - 1];
+		}
+		
+		double prob = SharedData.random.nextDouble();
+			
+		for(int i=0; i<probabilities.length; i++){
+			if(prob < probabilities[i]){
+				return population.get(i);
+			}
+		}
+		
+		return population.get(0);
+	}
+	
 	private Chromosome rouletteWheelSelection(ArrayList<Chromosome> population, int index){
+		if(population.get(0).getConstrainFitness() < 1){
+			return constraintRouletteWheelSelection(population);
+		}
+		
 		double[] probabilities = new double[population.size()];
 		probabilities[0] = population.get(0).getFitness().get(index);
 		for(int i=1; i<population.size(); i++){
-			probabilities[i] = probabilities[i-1] + population.get(i).getFitness().get(index);
+			probabilities[i] = probabilities[i-1] + population.get(i).getFitness().get(index) + SharedData.EIPSLON;
 		}
 		
 		for(int i=0; i<probabilities.length; i++){

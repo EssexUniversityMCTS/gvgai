@@ -1,0 +1,21 @@
+LevelMapping
+    a > wall 
+    b > box 
+    c > health 
+    d > goal 
+    e > avatar 
+    f > mana 
+
+LevelDescription
+aaaaaaaaaaaaaaaa
+abc d b b ba ada
+a  e c fd c  afa
+ac   dbcb  caa a
+ab  bd f    bcba
+a c  b   aaaaaba
+a bc c   b  bcda
+a   baaaaa   aca
+a d    dbfb caaa
+abb   bb c  bfca
+a  bd ff    b  a
+aaaaaaaaaaaaaaaa

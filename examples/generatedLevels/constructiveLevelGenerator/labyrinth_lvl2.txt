@@ -1,0 +1,13 @@
+LevelMapping
+    a > wall 
+    b > trap 
+    c > avatar 
+    d > exit 
+
+LevelDescription
+aaaaaa
+ab   a
+aaaaca
+ad aba
+a dbda
+aaaaaa

@@ -1,0 +1,20 @@
+LevelMapping
+    a > wall 
+    b > hole 
+    c > goal 
+    d > box 
+    e > mushroom 
+    f > key 
+    g > withkey 
+
+LevelDescription
+aaaaaaaaaa
+a b  cd  a
+aaaaaa eca
+accd fg da
+af   d c a
+ac   f  ba
+a  f b d a
+ad  b  b a
+ac  c dc a
+aaaaaaaaaa

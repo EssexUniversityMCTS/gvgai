@@ -1,0 +1,22 @@
+LevelMapping
+    a > wall 
+    b > honey 
+    c > fastHell 
+    d > slowHell 
+    e > flower 
+    f > avatar 
+
+LevelDescription
+aaaaaaaaaaa
+a   b b   a
+a  bb c   a
+a    d aaaa
+a  d  ce ba
+a         a
+a   bc f ea
+aed   b eea
+a    c a da
+a  aaa a  a
+a  bd aa  a
+a    c    a
+aaaaaaaaaaa

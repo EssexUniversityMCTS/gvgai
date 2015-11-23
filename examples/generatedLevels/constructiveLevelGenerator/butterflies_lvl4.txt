@@ -1,0 +1,14 @@
+LevelMapping
+    a > wall 
+    b > butterfly 
+    c > avatar 
+    d > cocoon 
+
+LevelDescription
+aaaaaaa
+abb bba
+abaaaaa
+abbb  a
+abaaaaa
+abcbbda
+aaaaaaa

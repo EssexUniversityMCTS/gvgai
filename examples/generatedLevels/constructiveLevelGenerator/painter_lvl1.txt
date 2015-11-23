@@ -1,0 +1,13 @@
+LevelMapping
+    a > ground 
+    b > avatar 
+
+LevelDescription
+       
+   a   
+       
+       
+  b    
+       
+ a     
+       

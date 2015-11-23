@@ -1,0 +1,32 @@
+LevelMapping
+    a > wall 
+    b > goal 
+    c > exit1 
+    d > vertical 
+    e > entry1 
+    f > exit2 
+    g > random 
+    h > sitting 
+    i > entry2 
+    j > avatar 
+    k > horizontal 
+
+LevelDescription
+aaaaaaaaaaaaaaaaaa
+a b    bc a  de fa
+a         a      a
+ag      b a  d   a
+a       h a fd   a
+a      b  a    c a
+a      g    baaaaa
+a     bhb  b  b  a
+a   i     aaaa   a
+ai bb   eh  bb bda
+a  j h  e  bi  dba
+a edk h b        a
+a  bb       gb  ka
+a     eh      i  a
+ab  b  h b c bkh a
+a  db i     g  b a
+a kb             a
+aaaaaaaaaaaaaaaaaa

@@ -10,9 +10,9 @@ import core.game.GameDescription;
 import core.game.GameDescription.SpriteData;
 import core.game.GameDescription.TerminationData;
 import core.generator.AbstractLevelGenerator;
-import levelGenerators.GameAnalyzer;
 import levelGenerators.constructiveLevelGenerator.LevelData.Point;
 import tools.ElapsedCpuTimer;
+import tools.GameAnalyzer;
 import tools.Utils;
 
 public class LevelGenerator extends AbstractLevelGenerator{
@@ -49,7 +49,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		
 		int numberOfCreationalObjects = 0;
 		for(SpriteData sprite:game.getAllSpriteData()){
-			if(gameAnalyzer.getMinRequiredNumber(sprite.name) == 0){
+			if(gameAnalyzer.checkIfSpawned(sprite.name) == 0){
 				numberOfCreationalObjects += 1;
 			}
 		}
@@ -60,7 +60,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		double otherValue = 0;
 		double totalValue = 0;
 		for(SpriteData sprite:game.getAllSpriteData()){
-			double value = gameAnalyzer.getMinRequiredNumber(sprite.name) * 
+			double value = gameAnalyzer.checkIfSpawned(sprite.name) * 
 					(gameAnalyzer.getPriorityNumber(sprite.name) + 1);
 			if(gameAnalyzer.getSolidSprites().contains(sprite.name)){
 				solidValue += value;
@@ -318,7 +318,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		ArrayList<Point> freePositions = level.getAllFreeSpots();
 		while(numberOfHarmful > 0){
 			String randomHarm = harmfulSprites.get(random.nextInt(harmfulSprites.size()));
-			if(gameAnalyzer.getMinRequiredNumber(randomHarm) == 0){
+			if(gameAnalyzer.checkIfSpawned(randomHarm) == 0){
 				continue;
 			}
 			if(isMoving(game, randomHarm)){
@@ -347,7 +347,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		ArrayList<Point> freePositions = level.getAllFreeSpots();
 		while(numberOfOther > 0){
 			String randomSprite = otherSprites.get(random.nextInt(otherSprites.size()));
-			if(gameAnalyzer.getMinRequiredNumber(randomSprite) == 0){
+			if(gameAnalyzer.checkIfSpawned(randomSprite) == 0){
 				continue;
 			}
 			
@@ -366,7 +366,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		ArrayList<Point> freePositions = level.getAllFreeSpots();
 		while(numberOfOther > 0){
 			String randomSprite = otherSprites.get(random.nextInt(otherSprites.size()));
-			if(gameAnalyzer.getMinRequiredNumber(randomSprite) == 0){
+			if(gameAnalyzer.checkIfSpawned(randomSprite) == 0){
 				continue;
 			}
 			

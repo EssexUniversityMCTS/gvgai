@@ -1,0 +1,18 @@
+LevelMapping
+    a > wall 
+    b > entrance 
+    c > virus 
+    d > carrier 
+    e > host 
+
+LevelDescription
+aaaaaaaaaaaaaaa
+abc ab dbccb  a
+a caa c     aaa
+a c   e aaa a a
+acc      be a a
+ac aabaaaaac ba
+a aa      ac  a
+ac  aaaaa   aaa
+ab  c c   ce  a
+aaaaaaaaaaaaaaa

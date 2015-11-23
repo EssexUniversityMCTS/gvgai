@@ -40,7 +40,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		random = new Random();
 		minSize = 4;
 		maxSize = 18;
-		emptyPercentage = 0.4;
+		emptyPercentage = 0.7;
 	}
 	
 	private DataPoint isUnique(ArrayList<DataPoint> points, int x, int y){

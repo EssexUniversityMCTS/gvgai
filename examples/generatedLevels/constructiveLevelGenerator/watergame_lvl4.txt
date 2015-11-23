@@ -1,0 +1,17 @@
+LevelMapping
+    a > wall 
+    b > water 
+    c > box 
+    d > door 
+    e > avatar 
+
+LevelDescription
+aaaaaaa
+ab  c a
+a dd da
+abbdc a
+aeaaaaa
+a    da
+ab  dca
+a cddca
+aaaaaaa

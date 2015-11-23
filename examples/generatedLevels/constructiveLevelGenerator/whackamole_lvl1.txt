@@ -1,0 +1,15 @@
+LevelMapping
+    a > tight 
+    b > cat 
+    c > wide 
+    d > avatar 
+
+LevelDescription
+  a   b b
+  c      
+     b   
+       b 
+     b bb
+   a  d  
+         
+c   b  a 

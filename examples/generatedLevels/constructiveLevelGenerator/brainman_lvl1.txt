@@ -1,0 +1,21 @@
+LevelMapping
+    a > wall 
+    b > exit 
+    c > door 
+    d > red 
+    e > boulder 
+    f > green 
+    g > avatar 
+    h > blue 
+
+LevelDescription
+aaaaaaaaaaaaa
+abbb  c cdaea
+a  f  baaaaea
+ab g h cbc ea
+afhehd f  c a
+ah  bhbbc   a
+aaaaabbc   ca
+ab ec  b  b a
+a hff c ed ca
+aaaaaaaaaaaaa

@@ -1,0 +1,23 @@
+LevelMapping
+    a > wall 
+    b > black 
+    c > grey 
+    d > crate 
+    e > white 
+    f > target 
+    g > inWhite 
+
+LevelDescription
+aaaaaaaaaaaaa
+ab  b   c bda
+a aaaaa baaaa
+a ceddbcc c a
+a   d    e ba
+aaaa  d   dea
+add   c  f ba
+accceb ge   a
+a c   bcabe a
+ae   ee a d a
+af  aa  ab da
+a  ca  fa   a
+aaaaaaaaaaaaa

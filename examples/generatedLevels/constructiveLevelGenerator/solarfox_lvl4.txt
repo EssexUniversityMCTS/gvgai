@@ -1,0 +1,20 @@
+LevelMapping
+    a > blib 
+    b > powerblib 
+    c > btm 
+    d > avatar 
+    e > wall 
+    f > top 
+    g > enemyground 
+
+LevelDescription
+   a     a    
+ba ba b    b  
+ca     b   d a
+a c ea    b be
+        a ae f
+ b   fb a     
+cbaa     b    
+ b  e  bbcg   
+        g  b  
+e f  e c f  f 

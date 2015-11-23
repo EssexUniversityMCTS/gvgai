@@ -1,0 +1,24 @@
+LevelMapping
+    a > wall 
+    b > northfacing 
+    c > eastfacing 
+    d > goal 
+    e > southfacing 
+    f > north 
+    g > westfacing 
+    h > water 
+
+LevelDescription
+aaaaaaaaaaaaaaaaaaa
+a b cdd defb      a
+ad ghh aaaaadc  dea
+a c  c  dc d   c  a
+ae   dbdgdb  d  bca
+acdgbg  d h d   dda
+aadcd  bd   e cdcda
+agaaaaadeedhd d b a
+a ddhg  ce dbggdeha
+agd     g de ec  da
+a ee hehd db c    a
+a b  dd      e  dca
+aaaaaaaaaaaaaaaaaaa

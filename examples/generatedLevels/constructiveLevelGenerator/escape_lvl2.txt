@@ -1,0 +1,14 @@
+LevelMapping
+    a > wall 
+    b > box 
+    c > hole 
+    d > exit 
+    e > avatar 
+
+LevelDescription
+aaaaaaaaa
+abcda c a
+ad aabb a
+a b   dba
+a  c   ea
+aaaaaaaaa

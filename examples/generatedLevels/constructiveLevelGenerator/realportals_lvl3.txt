@@ -1,0 +1,35 @@
+LevelMapping
+    a > portalexit 
+    b > boulder 
+    c > goal 
+    d > water 
+    e > weapon 
+    f > weaponToggle2 
+    g > portalentry 
+    h > weaponToggle1 
+    i > wall 
+    j > key 
+    k > lock 
+    l > avatarIn 
+
+LevelDescription
+aaaaaaaaaaaaaaaaaaaa
+abc bd ed     f c ca
+ad    gh i    jdgaaa
+acb   edgb ci  e  ka
+affgcfccgjkhb dd f a
+acd  e   b  e    cfa
+a kd c id  i h j  ba
+a aak  daaah   c k a
+a  a  jb   i   gc ja
+aeaac cc  c  cij fca
+akhfaaa  c     g gga
+ab dc i cie c c   ha
+a   f h   cjck c ika
+ae dd  e b i ddd cba
+adch j   c b   h c a
+a g ec    bb h   c a
+a f fhccdhl  h  jc a
+a bhec eaaaa h bcbia
+ajk  jeka  e c  ccea
+aaaaaaaaaaaaaaaaaaaa

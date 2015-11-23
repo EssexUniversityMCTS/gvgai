@@ -10,6 +10,9 @@ public class WindowInput extends WindowAdapter{
 	 */
 	public boolean windowClosed;
 	
+	/**
+	 * Constructor to initilize the class
+	 */
 	public WindowInput(){
 		windowClosed = false;
 	}
