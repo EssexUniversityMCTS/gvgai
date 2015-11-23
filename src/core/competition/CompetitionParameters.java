@@ -14,12 +14,12 @@ public class CompetitionParameters
     /**
      * Milliseconds allowed per controller action.
      */
-    public static int ACTION_TIME = 40;
+    public static int ACTION_TIME = 20;
 
     /**
      * Milliseconds for controller disqualification, if it returns an action after this time.
      */
-    public static int ACTION_TIME_DISQ = 50;
+    public static int ACTION_TIME_DISQ = 30;
 
     /**
      * Milliseconds allowed for controller initialization.
@@ -50,12 +50,12 @@ public class CompetitionParameters
     /**
      * Delay for human play.
      */
-    public static int DELAY = 20;
+    public static int DELAY = 40;
 
     /**
      * Longer delay for human play.
      */
-    public static int LONG_DELAY = 30;
+    public static int LONG_DELAY = 50;
 
     /**
      * Max time a game can run
@@ -65,17 +65,17 @@ public class CompetitionParameters
     /**
      * Terminates the program when the playing window is closed
      */
-    public static boolean closeAppOnClosingWindow = false;
+    public static boolean closeAppOnClosingWindow = true;
     
     /**
      * Pause the game at the beginning and at the end
      */
-    public static boolean dialogBoxOnStartAndEnd = true;
+    public static boolean dialogBoxOnStartAndEnd = false;
     
     /**
      * Close the open window when you die or win
      */
-    public static boolean killWindowOnEnd = true;
+    public static boolean killWindowOnEnd = false;
     
     /**
      * Java Warm-up time before starting the game.
@@ -89,5 +89,11 @@ public class CompetitionParameters
      */
     public static ElapsedCpuTimer.TimerType TIMER_TYPE = ElapsedCpuTimer.TimerType.CPU_TIME;
 
-
+    /**
+     * Key input type. We set the default here, but this will be set by the game in VGDL.
+     */
+    public static final int KEY_INPUT = 0;
+    public static final int KEY_PULSE = 1;
+    
+    public static int KEY_HANDLER = KEY_INPUT;
 }

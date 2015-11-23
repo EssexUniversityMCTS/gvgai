@@ -29,7 +29,7 @@ public abstract class Termination {
     public boolean isFinished(Game game)
     {
         //It's finished if the player pressed ESCAPE or the game is over..
-        return game.ki.getMask()[Types.ACTIONS.ACTION_ESCAPE.getKey()[0]] || game.isGameOver();
+        return game.isGameOver();
     }
 
     /**

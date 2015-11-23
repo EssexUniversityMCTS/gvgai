@@ -90,6 +90,9 @@ public class MovingAvatar extends VGDLSprite {
 
         lastMovementType = Types.MOVEMENT.STILL;
 
+        //Sets the input mask for this cycle.
+        game.ki.setMask();
+        
         //Get the input from the player.
         requestPlayerInput(game);
 

@@ -36,7 +36,9 @@ import ontology.effects.Effect;
 import ontology.sprites.Resource;
 import tools.IO;
 import tools.JEasyFrame;
+import tools.KeyHandler;
 import tools.KeyInput;
+import tools.KeyPulse;
 import tools.Pair;
 import tools.Vector2d;
 import tools.WindowInput;
@@ -174,7 +176,8 @@ public abstract class Game
     /**
      * Key input
      */
-    public static KeyInput ki = new KeyInput();
+    public static KeyHandler ki = CompetitionParameters.KEY_HANDLER == CompetitionParameters.KEY_INPUT ? 
+    		new KeyInput() : new KeyPulse();
 
     /**
      * Handling when the window is closed
