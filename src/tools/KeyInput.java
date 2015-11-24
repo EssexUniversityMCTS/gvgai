@@ -1,10 +1,6 @@
 package tools;
 
-import ontology.Types;
-
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
 /**
  * This class is used to manage the key input.
@@ -33,4 +29,5 @@ public class KeyInput extends KeyHandler {
         key_mask[key] = false;
 
     }
+
 }

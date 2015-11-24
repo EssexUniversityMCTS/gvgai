@@ -4,7 +4,6 @@ import core.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
 import ontology.effects.Effect;
-import ontology.sprites.Resource;
 
 /**
  * Created with IntelliJ IDEA.

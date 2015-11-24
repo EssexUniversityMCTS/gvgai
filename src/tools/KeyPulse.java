@@ -1,8 +1,6 @@
 package tools;
 
-import ontology.Types;
 
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
@@ -58,4 +56,5 @@ public class KeyPulse extends KeyHandler {
         public Pulse(int key)  { this.key = key; }
 
     }
+
 }

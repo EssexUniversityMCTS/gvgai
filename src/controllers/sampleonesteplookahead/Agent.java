@@ -7,8 +7,6 @@ import core.player.AbstractPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
 
-import java.util.concurrent.TimeoutException;
-
 /**
  * Created with IntelliJ IDEA.
  * User: ssamot

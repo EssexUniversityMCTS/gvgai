@@ -1,11 +1,10 @@
 package ontology.sprites;
 
-import core.VGDLRegistry;
+import java.awt.Dimension;
+
 import core.VGDLSprite;
 import core.content.SpriteContent;
 import tools.Vector2d;
-
-import java.awt.*;
 
 /**
  * Created by diego on 17/02/14.

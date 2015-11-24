@@ -1,5 +1,11 @@
 package ontology.effects.binary;
 
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import core.VGDLRegistry;
 import core.VGDLSprite;
 import core.content.InteractionContent;
@@ -7,11 +13,6 @@ import core.game.Game;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.Effect;
 import tools.Vector2d;
-
-import java.awt.*;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -108,5 +109,14 @@ public class TransformToSingleton extends Effect {
         }
 
         game.killSprite(oldSprite);
+    }
+    
+    @Override
+    public ArrayList<String> getEffectSprites(){
+    	ArrayList<String> result = new ArrayList<String>();
+    	if(stype!=null) result.add(stype);
+    	if(stype_other!=null) result.add(stype_other);
+    	
+    	return result;
     }
 }

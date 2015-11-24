@@ -1,11 +1,11 @@
 package controllers.sampleOLMCTS;
 
+import java.util.Random;
+
 import core.game.StateObservation;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
 import tools.Utils;
-
-import java.util.Random;
 
 public class SingleTreeNode
 {

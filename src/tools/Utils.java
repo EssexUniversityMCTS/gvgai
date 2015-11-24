@@ -1,15 +1,11 @@
 package tools;
 
-import core.VGDLSprite;
-import core.game.Game;
-import ontology.Types;
-import ontology.physics.Physics;
-
-import java.awt.*;
-import java.lang.reflect.Field;
+import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.TreeMap;
+
+import ontology.Types;
 
 /**
  * Created with IntelliJ IDEA.
@@ -150,5 +146,4 @@ public class Utils
         }
         return maxIndex;
     }
-
 }

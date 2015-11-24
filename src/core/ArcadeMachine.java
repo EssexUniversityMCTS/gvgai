@@ -1,19 +1,29 @@
 package core;
 
-import core.competition.CompetitionParameters;
-import core.game.Game;
-import core.game.StateObservation;
-import core.player.AbstractPlayer;
-import ontology.Types;
-import tools.ElapsedCpuTimer;
-import tools.StatSummary;
-
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Random;
+
+import core.competition.CompetitionParameters;
+import core.game.Game;
+import core.game.GameDescription;
+import core.game.GameDescription.SpriteData;
+import core.game.StateObservation;
+import core.generator.AbstractLevelGenerator;
+import core.player.AbstractPlayer;
+import ontology.Types;
+import tools.ElapsedCpuTimer;
+import tools.IO;
+import tools.StatSummary;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,7 +47,20 @@ public class ArcadeMachine
         boolean visuals = true;
         return runOneGame(game_file, level_file, visuals, agentName, actionFile, randomSeed);
     }
-
+    
+    /**
+     * Reads game description then generate level using the supplied generator.
+     * It also launches the game for a human to be played. Graphics always on. 
+     * @param gameFile			the game description file
+     * @param levelGenerator	the level generator name
+     * @param levelFile			a file to save the generated level
+     */
+    public static double playOneGeneratedLevel(String gameFile, String actionFile, String levelFile, int randomSeed){
+    	String agentName = "controllers.human.Agent";
+        boolean visuals = true;
+    	return runOneGeneratedLevel(gameFile, visuals, agentName, actionFile, levelFile, randomSeed);
+    }
+    
     /**
      * Reads and launches a game for a bot to be played. Graphics can be on or off.
      * @param game_file game description file.
@@ -87,8 +110,100 @@ public class ArcadeMachine
 
         return score;
     }
+    
+    /**
+     * Generate a level for a certain described game and test it against a supplied agent
+     * @param gameFile			game description file.
+     * @param levelGenerator	level generator class path.
+     * @param levelFile			file to save the generated level in it
+     */
+    public static boolean generateOneLevel(String gameFile, String levelGenerator, String levelFile){
+    	VGDLFactory.GetInstance().init(); //This always first thing to do.
+        VGDLRegistry.GetInstance().init();
 
+        System.out.println(" ** Generating a level for " + gameFile + ", using level generator " + levelGenerator + " **");
 
+        // First, we create the game to be played..
+        Game toPlay = new VGDLParser().parseGame(gameFile);
+        GameDescription description = new GameDescription(toPlay);
+        AbstractLevelGenerator generator = createLevelGenerator(levelGenerator, description);
+        String level = getGeneratedLevel(description, toPlay, generator);
+        if(level == "" || level == null){
+        	System.out.println("Empty Level Disqualified");
+        	toPlay.disqualify();
+
+            //Get the score for the result.
+            toPlay.handleResult();
+            return false;
+        }
+        
+        HashMap<Character, ArrayList<String>> charMapping = generator.getLevelMapping();
+        if(charMapping != null){
+        	toPlay.setCharMapping(charMapping);
+        }
+        
+        try{
+        	toPlay.buildStringLevel(level.split("\n"));
+        }
+        catch(Exception e){
+        	System.out.println("Undefined symbols or wrong number of avatars Disqualified ");
+        	toPlay.disqualify();
+
+            //Get the score for the result.
+            toPlay.handleResult();
+            return false;
+        }
+        
+        if(levelFile != null){
+        	saveLevel(level, levelFile, toPlay.getCharMapping());
+        }
+        
+        return true;
+    }
+    
+    public static double runOneGeneratedLevel(String gameFile, boolean visuals,
+            String agentName, String actionFile, String levelFile, int randomSeed){
+    	VGDLFactory.GetInstance().init(); //This always first thing to do.
+        VGDLRegistry.GetInstance().init();
+
+        System.out.println(" ** Playing game " + gameFile + ", using generate level file " + levelFile + " **");
+
+        // First, we create the game to be played..
+        Game toPlay = new VGDLParser().parseGame(gameFile);
+        String level = loadGeneratedFile(toPlay, levelFile);
+        String[] levelLines = level.split("\n");
+        
+        toPlay.reset();
+        toPlay.buildStringLevel(levelLines);
+
+        //Warm the game up.
+        ArcadeMachine.warmUp(toPlay, CompetitionParameters.WARMUP_TIME);
+        
+        //Create the player.
+        AbstractPlayer player = ArcadeMachine.createPlayer(agentName, actionFile, toPlay.getObservation(), randomSeed);
+
+        if(player == null){
+            //Something went wrong in the constructor, controller disqualified
+            toPlay.disqualify();
+
+            //Get the score for the result.
+            return toPlay.handleResult();
+
+        }
+
+        //Then, play the game.
+        double score = 0.0;
+        if(visuals)
+            score = toPlay.playGame(player, randomSeed);
+        else
+            score = toPlay.runGame(player, randomSeed);
+
+        //Finally, when the game is over, we need to tear the player down.
+        ArcadeMachine.tearPlayerDown(player);
+
+        return score;
+    }
+    
     /**
      * Runs a replay given a game, level and file with the actions to execute.
      * @param game_file game description file.
@@ -162,7 +277,6 @@ public class ArcadeMachine
 
         return score;
     }
-
 
     /**
      * Reads and launches a game for a bot to be played. It specifies which levels to play and how many times.
@@ -246,6 +360,130 @@ public class ArcadeMachine
         System.out.println(" *********");
     }
 
+    /**
+     * Generate multiple levels for a certain game
+     * @param gameFile			The game description file path
+     * @param levelGenerator	The current used level generator
+     * @param levelFile			array of level files to save the generated levels
+     */
+    public static void generateLevels(String gameFile, String levelGenerator, String[] levelFile){
+    	VGDLFactory.GetInstance().init(); //This always first thing to do.
+        VGDLRegistry.GetInstance().init();
+
+        // First, we create the game to be played..
+        Game toPlay = new VGDLParser().parseGame(gameFile);
+        GameDescription description = new GameDescription(toPlay);
+        AbstractLevelGenerator generator = createLevelGenerator(levelGenerator, description);
+        HashMap<Character, ArrayList<String>> originalMapping = toPlay.getCharMapping();
+        
+    	for(int i=0;i<levelFile.length;i++){
+    		System.out.println(" ** Generating a level " + (i + 1) +  " for " + gameFile + ", using level generator " + levelGenerator + " **");
+    		toPlay.reset();
+    		description.reset(toPlay);
+    		
+    		String level = getGeneratedLevel(description, toPlay, generator);
+            if(level == "" || level == null){
+            	toPlay.disqualify();
+
+                //Get the score for the result.
+                toPlay.handleResult();
+            }
+            
+            HashMap<Character, ArrayList<String>> charMapping = generator.getLevelMapping();
+            if(charMapping != null){
+            	toPlay.setCharMapping(charMapping);
+            }
+            try{
+            	toPlay.buildStringLevel(level.split("\n"));
+            }
+            catch(Exception e){
+            	System.out.println("Undefined symbols or wrong number of avatars Disqualified ");
+            	toPlay.disqualify();
+
+                //Get the score for the result.
+                toPlay.handleResult();
+            }
+            if(levelFile != null){
+            	saveLevel(level, levelFile[i], toPlay.getCharMapping());
+            }
+            toPlay.setCharMapping(originalMapping);
+    	}
+    }
+    
+    /**
+     * play a couple of generated levels for a certain game
+     * @param gameFile
+     * @param actionFile
+     * @param levelFile
+     * @param randomSeed
+     */
+    public static void playGeneratedLevels(String gameFile, String[] actionFile, String[] levelFile){
+    	String agentName = "controllers.human.Agent";
+    	
+    	VGDLFactory.GetInstance().init(); //This always first thing to do.
+        VGDLRegistry.GetInstance().init();
+
+        boolean recordActions = false;
+        if(actionFile != null)
+        {
+            recordActions = true;
+            assert actionFile.length >= levelFile.length :
+                    "runGames (actionFiles.length<level_files.length*level_times): " +
+                    "you must supply an action file for each game instance to be played, or null.";
+        }
+
+        StatSummary scores = new StatSummary();
+
+        Game toPlay = new VGDLParser().parseGame(gameFile);
+        int levelIdx = 0;
+        for(String file : levelFile){
+        	System.out.println(" ** Playing game " + gameFile + ", level " + file +" **");
+        	
+            //build the level in the game.
+        	String level = loadGeneratedFile(toPlay, file);
+            String[] levelLines = level.split("\n");
+            
+            toPlay.buildStringLevel(levelLines);
+
+            String filename = recordActions ? actionFile[levelIdx] : null;
+
+            //Determine the random seed, different for each game to be played.
+            int randomSeed = new Random().nextInt();
+
+            //Create the player.
+            AbstractPlayer player = ArcadeMachine.createPlayer(agentName, filename, toPlay.getObservation(), randomSeed);
+
+            double score = -1;
+            if(player == null)
+            {
+            	//Something went wrong in the constructor, controller disqualified
+                toPlay.disqualify();
+                
+                //Get the score for the result.
+                score = toPlay.handleResult();
+
+            }else{
+
+            	//Then, play the game.
+                score = toPlay.playGame(player, randomSeed);
+            }
+
+            scores.add(score);
+
+            //Finally, when the game is over, we need to tear the player down.
+            if(player != null) ArcadeMachine.tearPlayerDown(player);
+            
+            //reset the game.
+            toPlay.reset();
+                
+            levelIdx += 1;
+        }
+
+        System.out.println(" *** Results in game " + gameFile + " *** ");
+        System.out.println(scores);
+        System.out.println(" *********");
+    }
+    
     /**
      * Creates a player given its name with package. This class calls the constructor of the agent
      * and initializes the action recording procedure.
@@ -348,14 +586,196 @@ public class ArcadeMachine
 
         return player;
     }
+    
+    /**
+     * Generate AbstractLevelGenerator object to generate levels 
+     * for the game using the supplied class path.
+     * @param levelGenerator	class path for the supplied level generator
+     * @param gd				abstract object describes the game
+     * @return					AbstractLevelGenerator object.	
+     */
+    protected static AbstractLevelGenerator createLevelGenerator(String levelGenerator, GameDescription gd) throws RuntimeException
+    {
+        AbstractLevelGenerator generator = null;
+        try
+        {
+            //Get the class and the constructor with arguments (StateObservation, long).
+            Class<? extends AbstractLevelGenerator> controllerClass = Class.forName(levelGenerator).asSubclass(AbstractLevelGenerator.class);
+            Class[] gameArgClass = new Class[]{GameDescription.class, ElapsedCpuTimer.class};
+            Constructor controllerArgsConstructor = controllerClass.getConstructor(gameArgClass);
 
+            //Determine the time due for the controller creation.
+            ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
+            ect.setMaxTimeMillis(CompetitionParameters.LEVEL_INITIALIZATION_TIME);
+
+            //Call the constructor with the appropriate parameters.
+            Object[] constructorArgs = new Object[] {gd, ect.copy()};
+            generator = (AbstractLevelGenerator) controllerArgsConstructor.newInstance(constructorArgs);
+
+            //Check if we returned on time, and act in consequence.
+            long timeTaken = ect.elapsedMillis();
+            if(ect.exceededMaxTime())
+            {
+                long exceeded =  - ect.remainingTimeMillis();
+                System.out.println("Generator initialization time out (" + exceeded + ").");
+
+                return null;
+            }
+            else
+            {
+                System.out.println("Generator initialization time: " + timeTaken + " ms.");
+            }
+
+        //This code can throw many exceptions (no time related):
+
+        }catch(NoSuchMethodException e)
+        {
+            e.printStackTrace();
+            System.err.println("Constructor " + levelGenerator + "(StateObservation,long) not found in controller class:");
+            System.exit(1);
+
+        }catch(ClassNotFoundException e)
+        {
+            System.err.println("Class " + levelGenerator + " not found for the controller:");
+            e.printStackTrace();
+            System.exit(1);
+
+        }catch(InstantiationException e)
+        {
+            System.err.println("Exception instantiating " + levelGenerator + ":");
+            e.printStackTrace();
+            System.exit(1);
+
+        }catch(IllegalAccessException e)
+        {
+            System.err.println("Illegal access exception when instantiating " + levelGenerator + ":");
+            e.printStackTrace();
+            System.exit(1);
+        }catch(InvocationTargetException e)
+        {
+            System.err.println("Exception calling the constructor " + levelGenerator + "(StateObservation,long):");
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        return generator;
+    }
+
+
+    /**
+     * Generate a level for the described game using the supplied level generator.
+     * @param gd		Abstract description of game elements
+     * @param game		Current game object.
+     * @param generator Current level generator.
+     * @return			String of symbols contains the generated level. Same as Level Description File string.
+     */
+    private static String getGeneratedLevel(GameDescription gd, Game game, AbstractLevelGenerator generator){
+    	ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
+        ect.setMaxTimeMillis(CompetitionParameters.LEVEL_ACTION_TIME);
+
+        String level = generator.generateLevel(gd, ect.copy());
+
+        if(ect.exceededMaxTime())
+        {
+            long exceeded =  - ect.remainingTimeMillis();
+
+            if(ect.elapsedMillis() > CompetitionParameters.LEVEL_ACTION_TIME_DISQ)
+            {
+                //The agent took too long to replay. The game is over and the agent is disqualified
+                System.out.println("Too long: " + "(exceeding "+(exceeded)+"ms): controller disqualified.");
+                level = "";
+            }else{
+                System.out.println("Overspent: " + "(exceeding "+(exceeded)+"ms): applying Empty Level.");
+                level = " ";
+            }
+        }
+        
+        return level;
+    }
+    
+    /**
+     * Saves a level string to a file
+     * @param level		current level to save
+     * @param levelFile	saved file
+     */
+    private static void saveLevel(String level, String levelFile, HashMap<Character, ArrayList<String>> charMapping){
+    	try{
+    		if(levelFile != null){
+    			BufferedWriter writer = new BufferedWriter(new FileWriter(levelFile));
+    			writer.write("LevelMapping");
+    			writer.newLine();
+    			for(Entry<Character, ArrayList<String>> e:charMapping.entrySet()){
+    				writer.write("    " + e.getKey() + " > ");
+    				for(String s:e.getValue()){
+    					writer.write(s + " ");
+    				}
+    				writer.newLine();
+    			}
+    			writer.newLine();
+    			writer.write("LevelDescription");
+    			writer.newLine();
+    			writer.write(level);
+    			writer.close();
+    		}
+    	}
+    	catch(IOException e){
+    		e.printStackTrace();
+    	}
+    }
+    
+    /**
+     * Load a generated level file
+     * @param currentGame	Current Game object to se the Level Mapping
+     * @param levelFile		The generated level file path
+     * @return				Level String to be loaded
+     */
+    public static String loadGeneratedFile(Game currentGame, String levelFile){
+    	HashMap<Character, ArrayList<String>> levelMapping = new HashMap<Character, ArrayList<String>>();
+    	String level = "";
+    	int mode = 0;
+    	String[] lines = new IO().readFile(levelFile);
+    	for(String line:lines){
+    		if(line.equals("LevelMapping")){
+    			mode = 0;
+    		}
+    		else if(line.equals("LevelDescription")){
+    			mode = 1;
+    		}
+    		else{
+    			switch(mode){
+    			case 0:
+    				if(line.trim().length() == 0){
+        				continue;
+        			}
+    				String[] sides = line.split(">");
+    				ArrayList<String> sprites = new ArrayList<String>();
+    				for(String sprite:sides[1].trim().split(" ")){
+    					if(sprite.trim().length() == 0){
+    						continue;
+    					}
+    					else{
+    						sprites.add(sprite.trim());
+    					}
+    				}
+    				levelMapping.put(sides[0].trim().charAt(0), sprites);
+    				break;
+    			case 1:
+    				level += line + "\n";
+    				break;
+    			}
+    		}
+    	}
+    	currentGame.setCharMapping(levelMapping);
+    	return level;
+    }
+    
     /**
      * This methods takes the game and warms it up. This allows Java to finish the runtime compilation
      * process and optimize the code before the proper game starts.
      * @param toPlay game to be warmed up.
      * @param howLong for how long the warming up process must last (in milliseconds).
      */
-    private static void warmUp(Game toPlay, long howLong)
+    public static void warmUp(Game toPlay, long howLong)
     {
         StateObservation stateObs = toPlay.getObservation();
         ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);

@@ -14,18 +14,33 @@ public class CompetitionParameters
     /**
      * Milliseconds allowed per controller action.
      */
-    public static int ACTION_TIME = 40;
+    public static int ACTION_TIME = 20;
 
     /**
      * Milliseconds for controller disqualification, if it returns an action after this time.
      */
-    public static int ACTION_TIME_DISQ = 50;
+    public static int ACTION_TIME_DISQ = 30;
 
     /**
      * Milliseconds allowed for controller initialization.
      */
-    public static int INITIALIZATION_TIME = 1000;
+    public static int INITIALIZATION_TIME = 60000;
 
+    /**
+     * Milliseconds allowed for the level generator to generate a level
+     */
+    public static int LEVEL_ACTION_TIME = 18000000;
+    
+    /**
+     * Milliseconds allowed for the level generator disqualification, if it returns a level after this time.
+     */
+    public static int LEVEL_ACTION_TIME_DISQ = 21600000;
+    
+    /**
+     * Milliseconds allowed for level generator to initialize
+     */
+    public static int LEVEL_INITIALIZATION_TIME = 1000;
+    
     /**
      * Path to sprite images.
      */
@@ -35,19 +50,33 @@ public class CompetitionParameters
     /**
      * Delay for human play.
      */
-    public static int DELAY = 20;
+    public static int DELAY = 40;
 
     /**
      * Longer delay for human play.
      */
-    public static int LONG_DELAY = 30;
+    public static int LONG_DELAY = 50;
 
     /**
      * Max time a game can run
      */
     public static int MAX_TIMESTEPS = 2000;
 
-
+    /**
+     * Terminates the program when the playing window is closed
+     */
+    public static boolean closeAppOnClosingWindow = true;
+    
+    /**
+     * Pause the game at the beginning and at the end
+     */
+    public static boolean dialogBoxOnStartAndEnd = false;
+    
+    /**
+     * Close the open window when you die or win
+     */
+    public static boolean killWindowOnEnd = false;
+    
     /**
      * Java Warm-up time before starting the game.
      */
@@ -59,7 +88,6 @@ public class CompetitionParameters
      * Indicates the type of timer the framework should use.
      */
     public static ElapsedCpuTimer.TimerType TIMER_TYPE = ElapsedCpuTimer.TimerType.CPU_TIME;
-
 
     /**
      * Key input type. We set the default here, but this will be set by the game in VGDL.

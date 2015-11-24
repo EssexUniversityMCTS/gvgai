@@ -1,10 +1,10 @@
 package ontology.physics;
 
+import java.awt.Rectangle;
+
 import core.VGDLSprite;
 import ontology.Types;
 import tools.Vector2d;
-
-import java.awt.*;
 
 /**
  * Created with IntelliJ IDEA.

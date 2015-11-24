@@ -1,11 +1,12 @@
 package core.termination;
 
+import java.util.ArrayList;
+
 import core.VGDLFactory;
 import core.content.TerminationContent;
 import core.game.Game;
+import core.game.GameDescription;
 import ontology.Types;
-
-import java.awt.event.KeyEvent;
 /**
  * Created with IntelliJ IDEA.
  * User: Diego
@@ -30,4 +31,11 @@ public abstract class Termination {
         return game.isGameOver();
     }
 
+    /**
+     * Get all sprites that are used to check the termination condition
+     * @return all termination condition sprites
+     */
+    public ArrayList<String> getTerminationSprites(){
+    	return new ArrayList<String>();
+    }
 }

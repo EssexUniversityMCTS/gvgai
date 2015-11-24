@@ -1,5 +1,10 @@
 package ontology.effects.unary;
 
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+
 import core.VGDLRegistry;
 import core.VGDLSprite;
 import core.content.InteractionContent;
@@ -7,11 +12,6 @@ import core.game.Game;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.Effect;
-import ontology.sprites.Resource;
-
-import java.awt.*;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -74,5 +74,13 @@ public class TransformTo extends Effect {
 
             game.killSprite(sprite1);
         }
+    }
+    
+    @Override
+    public ArrayList<String> getEffectSprites(){
+    	ArrayList<String> result = new ArrayList<String>();
+    	if(stype!=null) result.add(stype);
+    	
+    	return result;
     }
 }

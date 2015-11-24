@@ -1,9 +1,8 @@
 package core.competition;
 
-import core.ArcadeMachine;
-import core.player.AbstractPlayer;
-
 import java.util.Random;
+
+import core.ArcadeMachine;
 
 /**
  * Created with IntelliJ IDEA.

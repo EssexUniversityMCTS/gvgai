@@ -1,15 +1,21 @@
 package core.game;
 
+import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
+
 import core.SpriteGroup;
 import core.VGDLSprite;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
-import tools.ElapsedCpuTimer;
 import tools.Vector2d;
-
-import java.awt.*;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -861,9 +867,9 @@ public class ForwardModel extends Game
     }
 
     //Must override this:
-    @Override
-    public void buildLevel(String gamelvl) {
-        throw new RuntimeException("buildLevel should not be called in this instance.");
-    }
+	@Override
+	public void buildStringLevel(String[] levelString) {
+		throw new RuntimeException("buildLevel should not be called in this instance.");
+	}
 
 }

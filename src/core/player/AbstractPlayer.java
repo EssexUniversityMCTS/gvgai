@@ -1,15 +1,14 @@
 package core.player;
 
-import core.game.StateObservation;
-import ontology.Types;
-import tools.ElapsedCpuTimer;
-
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+
+import core.game.StateObservation;
+import ontology.Types;
+import tools.ElapsedCpuTimer;
 
 /**
  * Created with IntelliJ IDEA.

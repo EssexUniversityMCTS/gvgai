@@ -47,4 +47,5 @@ public abstract class KeyHandler extends KeyAdapter {
      * @param e the event.
      */
     public abstract void keyReleased(KeyEvent e);
+
 }

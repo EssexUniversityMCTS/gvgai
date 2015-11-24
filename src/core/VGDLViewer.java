@@ -1,13 +1,17 @@
 package core;
 
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.swing.JComponent;
+
 import core.game.Game;
 import core.player.AbstractPlayer;
 import ontology.Types;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created with IntelliJ IDEA.

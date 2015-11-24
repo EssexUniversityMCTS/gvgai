@@ -1,13 +1,12 @@
 package controllers.Tester;
 
-import core.game.ForwardModel;
+import java.util.ArrayList;
+import java.util.Random;
+
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
