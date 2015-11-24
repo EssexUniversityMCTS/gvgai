@@ -14,17 +14,17 @@ public class CompetitionParameters
     /**
      * Milliseconds allowed per controller action.
      */
-    public static int ACTION_TIME = 20;
+    public static int ACTION_TIME = 40;
 
     /**
      * Milliseconds for controller disqualification, if it returns an action after this time.
      */
-    public static int ACTION_TIME_DISQ = 30;
+    public static int ACTION_TIME_DISQ = 50;
 
     /**
      * Milliseconds allowed for controller initialization.
      */
-    public static int INITIALIZATION_TIME = 60000;
+    public static int INITIALIZATION_TIME = 1000;
 
     /**
      * Milliseconds allowed for the level generator to generate a level
@@ -50,7 +50,7 @@ public class CompetitionParameters
     /**
      * Delay for human play.
      */
-    public static int DELAY = 40;
+    public static int DELAY = 30;
 
     /**
      * Longer delay for human play.
