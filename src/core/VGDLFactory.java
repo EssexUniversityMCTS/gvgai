@@ -25,15 +25,7 @@ import ontology.avatar.oriented.OngoingAvatar;
 import ontology.avatar.oriented.OrientedAvatar;
 import ontology.avatar.oriented.ShootAvatar;
 import ontology.effects.Effect;
-import ontology.effects.binary.AttractGaze;
-import ontology.effects.binary.BounceForward;
-import ontology.effects.binary.CollectResource;
-import ontology.effects.binary.KillIfFromAbove;
-import ontology.effects.binary.KillIfOtherHasMore;
-import ontology.effects.binary.PullWithIt;
-import ontology.effects.binary.TeleportToExit;
-import ontology.effects.binary.TransformToSingleton;
-import ontology.effects.binary.WallStop;
+import ontology.effects.binary.*;
 import ontology.effects.unary.ChangeResource;
 import ontology.effects.unary.CloneSprite;
 import ontology.effects.unary.FlipDirection;
@@ -113,7 +105,7 @@ public class VGDLFactory
      */
     private String[] effectStrings = new String[]
             {
-                "stepBack", "turnAround", "killSprite", "transformTo", "transformToSingleton",
+                "stepBack", "turnAround", "killSprite", "killBoth", "transformTo", "transformToSingleton",
                     "wrapAround", "changeResource", "killIfHasLess", "killIfHasMore", "cloneSprite",
                     "flipDirection", "reverseDirection", "undoAll", "spawnIfHasMore", "spawnIfHasLess",
                 "pullWithIt", "wallStop", "collectResource", "killIfOtherHasMore", "killIfFromAbove",
@@ -125,7 +117,7 @@ public class VGDLFactory
      */
     private Class[] effectClasses = new Class[]
             {
-                StepBack.class, TurnAround.class, KillSprite.class, TransformTo.class, TransformToSingleton.class,
+                StepBack.class, TurnAround.class, KillSprite.class, KillBoth.class, TransformTo.class, TransformToSingleton.class,
                     WrapAround.class,ChangeResource.class, KillIfHasLess.class, KillIfHasMore.class, CloneSprite.class,
                     FlipDirection.class, ReverseDirection.class, UndoAll.class, SpawnIfHasMore.class, SpawnIfHasLess.class,
                 PullWithIt.class, WallStop.class, CollectResource.class, KillIfOtherHasMore.class, KillIfFromAbove.class,

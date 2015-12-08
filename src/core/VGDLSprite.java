@@ -159,6 +159,11 @@ public abstract class VGDLSprite {
     public boolean invisible;
 
     /**
+     * If true, this sprite is never present in the observations passed to the controller.
+     */
+    public boolean hidden;
+
+    /**
      * List of types this sprite belongs to. It contains the ids, including itself's, from this sprite up
      * in the hierarchy of sprites defined in SpriteSet in the game definition.
      */
@@ -728,6 +733,7 @@ public abstract class VGDLSprite {
         toSprite.invisible = this.invisible;
         toSprite.rotateInPlace = this.rotateInPlace;
         toSprite.isFirstTick = this.isFirstTick;
+        toSprite.hidden = this.hidden;
 
         toSprite.itypes = new ArrayList<Integer>();
         for(Integer it : this.itypes)
@@ -775,6 +781,7 @@ public abstract class VGDLSprite {
         if(other.invisible != this.invisible) return false;
         if(other.spriteID != this.spriteID) return false;
         if(other.isFirstTick != this.isFirstTick) return false;
+        if(other.hidden != this.hidden) return false;
 
         int numTypes = other.itypes.size();
         if(numTypes != this.itypes.size()) return false;
