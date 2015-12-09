@@ -52,7 +52,7 @@ public class ArcadeMachine
      * Reads game description then generate level using the supplied generator.
      * It also launches the game for a human to be played. Graphics always on. 
      * @param gameFile			the game description file
-     * @param levelGenerator	the level generator name
+     * @param actionFile       	the action file name
      * @param levelFile			a file to save the generated level
      */
     public static double playOneGeneratedLevel(String gameFile, String actionFile, String levelFile, int randomSeed){
@@ -106,7 +106,8 @@ public class ArcadeMachine
             score = toPlay.runGame(player, randomSeed);
 
         //Finally, when the game is over, we need to tear the player down.
-        ArcadeMachine.tearPlayerDown(player);
+        if(! ArcadeMachine.tearPlayerDown(toPlay, player) )
+            return toPlay.handleResult();
 
         return score;
     }
@@ -199,7 +200,8 @@ public class ArcadeMachine
             score = toPlay.runGame(player, randomSeed);
 
         //Finally, when the game is over, we need to tear the player down.
-        ArcadeMachine.tearPlayerDown(player);
+        if(! ArcadeMachine.tearPlayerDown(toPlay, player) )
+            return toPlay.handleResult();
 
         return score;
     }
@@ -273,7 +275,8 @@ public class ArcadeMachine
             score = toPlay.runGame(player, seed);
 
         //Finally, when the game is over, we need to tear the player down. Actually in this case this might never do anything.
-        ArcadeMachine.tearPlayerDown(player);
+        if(! ArcadeMachine.tearPlayerDown(toPlay, player) )
+            return toPlay.handleResult();
 
         return score;
     }
@@ -346,7 +349,7 @@ public class ArcadeMachine
                 scores.add(score);
 
                 //Finally, when the game is over, we need to tear the player down.
-                if(player != null) ArcadeMachine.tearPlayerDown(player);
+                if(player != null) ArcadeMachine.tearPlayerDown(toPlay, player);
 
                 //reset the game.
                 toPlay.reset();
@@ -415,7 +418,6 @@ public class ArcadeMachine
      * @param gameFile
      * @param actionFile
      * @param levelFile
-     * @param randomSeed
      */
     public static void playGeneratedLevels(String gameFile, String[] actionFile, String[] levelFile){
     	String agentName = "controllers.human.Agent";
@@ -471,7 +473,7 @@ public class ArcadeMachine
             scores.add(score);
 
             //Finally, when the game is over, we need to tear the player down.
-            if(player != null) ArcadeMachine.tearPlayerDown(player);
+            if(player != null) ArcadeMachine.tearPlayerDown(toPlay, player);
             
             //reset the game.
             toPlay.reset();
@@ -848,10 +850,33 @@ public class ArcadeMachine
      * Tears the player down. This initiates the saving of actions to file.
      * It should be called when the game played is over.
      * @param player player to be closed.
+     * @return false if there was a timeout from the palyer. true otherwise.
      */
-    private static void tearPlayerDown(AbstractPlayer player)
+    private static boolean tearPlayerDown(Game toPlay, AbstractPlayer player)
     {
+        //This is finished, no more actions, close the writer.
         player.teardown();
+
+        //Determine the time due for the controller close up.
+        ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
+        ect.setMaxTimeMillis(CompetitionParameters.TEAR_DOWN_TIME);
+
+        //Inform about the result and the final game state.
+        player.result(toPlay.getObservation(), ect);
+
+        //Check if we returned on time, and act in consequence.
+        long timeTaken = ect.elapsedMillis();
+        if(ect.exceededMaxTime())
+        {
+            long exceeded =  - ect.remainingTimeMillis();
+            System.out.println("Controller tear down time out (" + exceeded + ").");
+
+            toPlay.disqualify();
+            return false;
+        }
+
+        System.out.println("Controller tear down time: " + timeTaken + " ms.");
+        return true;
     }
 
 

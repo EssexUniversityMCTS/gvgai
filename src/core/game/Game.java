@@ -757,6 +757,9 @@ public abstract class Game
             this.gameCycle(); //Execute a game cycle.
         }
 
+        //Update the forward model for the game state sent to the controller.
+        fwdModel.update(this);
+
         return handleResult();
     }
 
@@ -825,6 +828,9 @@ public abstract class Game
         	}
         	frame.dispose();
         }
+
+        //Update the forward model for the game state sent to the controller.
+        fwdModel.update(this);
 
         return handleResult();
     }

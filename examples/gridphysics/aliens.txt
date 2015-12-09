@@ -20,9 +20,9 @@ BasicGame
         MultiSpriteCounter stype1=portal stype2=alien limit=0 win=True
         
     InteractionSet
-        avatar  EOS  > stepBack
-        alien   EOS  > turnAround        
-        missile EOS  > killSprite
+        avatar  wall  > stepBack
+        alien   wall  > turnAround
+        missile wall  > killSprite
 
         base bomb > killBoth
         base sam > killBoth scoreChange=1

@@ -51,6 +51,17 @@ public abstract class AbstractPlayer {
      */
     public abstract Types.ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer);
 
+    /**
+     * Function called when the game is over. This method must finish before CompetitionParameters.TEAR_DOWN_TIME,
+     *  or the agent will be DISQUALIFIED
+     * @param stateObservation the game state at the end of the game
+     * @param elapsedCpuTimer timer when this method is meant to finish.
+     */
+    public void result(StateObservation stateObservation, ElapsedCpuTimer elapsedCpuTimer)
+    {
+
+    }
+
 
     /**
      * This function sets up the controller to save the actions executed in a given game.
