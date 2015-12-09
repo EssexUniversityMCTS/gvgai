@@ -34,8 +34,8 @@ public class Test
         String generateLevelPath = "examples/generatedLevels/";
 
         //Training Set 1 (2015; CIG 2014)
-        games = new String[]{"aliens", "boulderdash", "butterflies", "chase", "frogs",
-                "missilecommand", "portals", "sokoban", "survivezombies", "zelda"};
+        //games = new String[]{"aliens", "boulderdash", "butterflies", "chase", "frogs",
+        //        "missilecommand", "portals", "sokoban", "survivezombies", "zelda"};
 
         //Training Set 2 (2015; Validation CIG 2014)
         //games = new String[]{"camelRace", "digdug", "firestorms", "infection", "firecaster",
@@ -59,24 +59,39 @@ public class Test
         //        "intersection", "blacksmoke", "iceandfire", "gymkhana", "tercio"};
 
 
+        //All public games
+        games = new String[]{"aliens", "boulderdash", "butterflies", "chase", "frogs",              //0-4
+                             "missilecommand", "portals", "sokoban", "survivezombies", "zelda",     //5-9
+                             "camelRace", "digdug", "firestorms", "infection", "firecaster",        //10-14
+                             "overload", "pacman", "seaquest", "whackamole", "eggomania",           //15-19
+                             "bait", "boloadventures", "brainman", "chipschallenge",  "modality",   //20-24
+                             "painter", "realportals", "realsokoban", "thecitadel", "zenpuzzle",    //25-29
+                             "roguelike", "surround", "catapults", "plants", "plaqueattack",        //30-34
+                             "jaws", "labyrinth", "boulderchase", "escape", "lemmings",             //35-39
+                             "solarfox", "defender", "enemycitadel", "crossfire", "lasers",         //40-44
+                             "sheriff", "chopper", "superman", "waitforbreakfast", "cakybaky",      //45-49
+                             "lasers2", "hungrybirds" ,"cookmepasta", "factorymanager", "raceBet2", //50-54
+                             "intersection", "blacksmoke", "iceandfire", "gymkhana", "tercio"};     //55-59
+
+
         //Other settings
         boolean visuals = true;
         String recordActionsFile = null; //where to record the actions executed. null if not to save.
         int seed = new Random().nextInt();
 
         //Game and level to play
-        int gameIdx = 0;
-        int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
+        int gameIdx = 20;
+        int levelIdx = 2; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
         
         String recordLevelFile = generateLevelPath +"geneticLevelGenerator/" + games[gameIdx] + "_lvl0.txt";
 
         // 1. This starts a game, in a level, played by a human.
-        //ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
+        ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
         
         // 2. This plays a game in a level by the controller.
-        ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed);
+        //ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed);
         //ArcadeMachine.runOneGame(game, level1, visuals, sampleOneStepController, recordActionsFile, seed);
 
         // 3. This replays a game from an action file previously recorded

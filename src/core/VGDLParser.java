@@ -293,40 +293,50 @@ public class VGDLParser
             {
                 Effect ef = VGDLFactory.GetInstance().createEffect(ic);
 
-                //Get the identifiers of both sprites taking part in the effect
+                //Get the identifiers of the first sprite taking part in the effect.
                 int obj1 = VGDLRegistry.GetInstance().getRegisteredSpriteValue(ic.object1);
-                int obj2 = VGDLRegistry.GetInstance().getRegisteredSpriteValue(ic.object2);
-                if(obj1 != -1 && obj2 != -1)
-                {
-                    Pair newPair = new Pair(obj1,obj2);
-                    if(!game.getDefinedEffects().contains(newPair))
-                        game.getDefinedEffects().add(newPair);
 
-                    //game.collisionEffects[obj1][obj2].add(ef);
-                    game.getCollisionEffects(obj1, obj2).add(ef);
-
-                    if(VERBOSE_PARSER)
-                        System.out.println("Defining interaction " + ic.object1 + "+" + ic.object2 +
-                                       " > " + ic.function);
-                }else if(obj1 != -1 && obj2 == -1)
+                //The second identifier comes from a list of sprites. We go one by one.
+                for(String obj2Str : ic.object2)
                 {
-                    //Only one sprite is defined in SpriteSet, this might be an EOS effect.
-                    if(ic.object2.equalsIgnoreCase("EOS"))
+                    int obj2 = VGDLRegistry.GetInstance().getRegisteredSpriteValue(obj2Str);
+
+                    if(obj1 != -1 && obj2 != -1)
                     {
-                        game.getDefinedEosEffects().add(obj1);
-                        game.getEosEffects(obj1).add(ef);
+                        Pair newPair = new Pair(obj1,obj2);
+                        if(!game.getDefinedEffects().contains(newPair))
+                            game.getDefinedEffects().add(newPair);
+
+                        //game.collisionEffects[obj1][obj2].add(ef);
+                        game.getCollisionEffects(obj1, obj2).add(ef);
+
+                        if(VERBOSE_PARSER)
+                            System.out.println("Defining interaction " + ic.object1 + "+" + obj2Str +
+                                    " > " + ic.function);
+
+                    }else if(obj1 != -1 && obj2 == -1)
+                    {
+                        //Only one sprite is defined in SpriteSet, this might be an EOS effect.
+                        if(obj2Str.equalsIgnoreCase("EOS"))
+                        {
+                            game.getDefinedEosEffects().add(obj1);
+                            game.getEosEffects(obj1).add(ef);
+                        }
+
+                        if(VERBOSE_PARSER)
+                            System.out.println("Defining interaction " + ic.object1 + "+" + obj2Str +
+                                    " > " + ic.function);
                     }
 
-                    if(VERBOSE_PARSER)
-                        System.out.println("Defining interaction " + ic.object1 + "+" + ic.object2 +
-                            " > " + ic.function);
+                    //update game stochasticity.
+                    if(ef.is_stochastic)
+                    {
+                        game.setStochastic(true);
+                    }
+
                 }
 
-                //update game stochasticity.
-                if(ef.is_stochastic)
-                {
-                    game.setStochastic(true);
-                }
+
             }else{
                 System.out.println("[PARSE ERROR] bad format interaction entry: " + ic.line);
             }

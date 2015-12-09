@@ -1,5 +1,6 @@
 package core.content;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -11,8 +12,16 @@ import java.util.HashMap;
  */
 public class InteractionContent extends Content
 {
+    /**
+     * First sprite of the interaction
+     */
     public String object1;
-    public String object2;
+
+    /**
+     * Array of sprites that the first sprite interacts with.
+     */
+    public String[] object2;
+
     public String function;
 
     /**
@@ -23,13 +32,13 @@ public class InteractionContent extends Content
     /**
      * Simple constructor that receives an identifier and a reference class
      * @param id1 identifier of the first object in the interaction.
-     * @param id2 identifier of the second object in the interaction.
+     * @param id2List list of identifiers of the second part in the interaction.
      */
-    public InteractionContent(String id1, String id2, String function)
+    public InteractionContent(String id1, String id2List, String function)
     {
         super();
         this.object1 = id1;
-        this.object2 = id2;
+        this.object2 = id2List.split(" ");
         this.function = function;
     }
 
@@ -55,10 +64,26 @@ public class InteractionContent extends Content
             identifier = pieces[0].trim();
             return;
         }
-        object2 = pieces[1].trim();
+
+        ArrayList<String> secondEffectors = new ArrayList<>();
+        int i = 1;
+        boolean finsihed = false;
+        while(!finsihed && i < pieces.length)
+        {
+            String word = pieces[i].trim();
+            if(word.equals(">"))
+            {
+                finsihed=true;
+            }else{
+                secondEffectors.add(word);
+            }
+            i++;
+        }
+
+        object2 = secondEffectors.toArray(new String[secondEffectors.size()]);
 
         //Take the other pieces and extract properties and parameters key-value.
-        for(int i = 2; i < pieces.length; ++i)
+        for(i = 1 + object2.length; i < pieces.length; ++i)
         {
             String piece = pieces[i].trim();
             if(piece.contains("="))
@@ -72,7 +97,7 @@ public class InteractionContent extends Content
             {
                 this.is_definition = true;
             }else if(piece.length() > 0){
-                function = piece; //I'm assuming there is only one function per line... ?
+                function = piece; //I'm assuming there is only one function per line.
             }
         }
     }
