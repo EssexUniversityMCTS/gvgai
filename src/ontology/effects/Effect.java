@@ -16,14 +16,19 @@ import core.game.Game;
  */
 public abstract class Effect
 {
+    //Indicates if this effect kills any sprite
     public boolean is_kill_effect = false;
 
+    //Indicates if this effect has some random element.
     public boolean is_stochastic = false;
 
+    //Change of the score this effect makes.
     public int scoreChange = 0;
 
+    //Probabilty for stochastic effects.
     public double prob = 1;
 
+    //Indicates if this effects changes the score.
     public boolean applyScore = true;
 
     public abstract void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game);
