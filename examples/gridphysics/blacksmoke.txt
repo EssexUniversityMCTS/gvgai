@@ -1,8 +1,6 @@
 BasicGame
     SpriteSet
 
-        safety > Resource  limit=2 color=BROWN img=mana
-
         key > Resource limit=1 img=key singleton=True
         shovel > Flicker color=LIGHTGRAY limit=1 singleton=True img=sword.png
         avatar  > ShootAvatar stype=shovel
@@ -19,13 +17,12 @@ BasicGame
 
     InteractionSet
 
-        avatar ground > changeResource resource=safety value=1
-        avatar smoke > changeResource resource=safety value=1
-        avatar death > killIfHasLess  resource=safety limit=0
-        avatar death > changeResource resource=safety value=-1
+        avatar wall > stepBack
+
+        avatar ground smoke > shieldFrom ftype=killSprite stype=death
+        avatar death > killSprite
 
         exit avatar > killSprite scoreChange=1
-        avatar wall > stepBack
 
         ground smokespawn  > transformTo stype=smoke
         smokespawn ground wall > killSprite

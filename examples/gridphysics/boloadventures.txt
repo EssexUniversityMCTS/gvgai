@@ -37,6 +37,7 @@ BasicGame
         boulderm hole > killBoth scoreChange=1
 
         avatar wall lasercannon > stepBack
+        #avatar box > shieldFrom ftype=killSprite stype=laser
         avatar box > changeResource resource=pushingbox value=1
         box avatar  > bounceForward
         box wall box hole lasercannon   > undoAll
@@ -49,6 +50,7 @@ BasicGame
         boulder box wall boulder lasercannon > undoAll
         laser wall boulder boulderm box hole > killSprite
 
+        #avatar laser > killSprite
         avatar laser > changeResource resource=pushingbox value=-1
         avatar laser > killIfHasLess resource=pushingbox limit=0
         avatar hole > stepBack

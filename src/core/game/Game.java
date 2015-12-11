@@ -90,7 +90,7 @@ public abstract class Game
     /**
      * Pairs of all defined effects in the game.
      */
-    protected ArrayList<Pair> definedEffects;
+    protected ArrayList<Pair<Integer,Integer>> definedEffects;
 
 
     /**
@@ -116,6 +116,14 @@ public abstract class Game
      * sprite belongs to.
      */
     protected ArrayList<Integer>[] iSubTypes;
+
+
+    /**
+     * For each entry, int identifier of sprite type, a list with all the itypes this
+     * sprite belongs to.
+     */
+    protected ArrayList<Pair<Integer,Long>>[] shieldedEffects;
+
 
     /**
      * Arraylist to hold collisions between objects in every frame
@@ -258,7 +266,7 @@ public abstract class Game
     public Game()
     {
         //data structures to hold the game definition.
-        definedEffects = new ArrayList<Pair>();
+        definedEffects = new ArrayList<Pair<Integer,Integer>>();
         definedEOSEffects = new ArrayList<Integer>();
         charMapping = new HashMap<Character,ArrayList<String>>();
         terminations = new ArrayList<Termination>();
@@ -351,6 +359,7 @@ public abstract class Game
 
         //Structures to hold game sprites, as many as number of sprite types, so they are accessed by its id:
         spriteGroups = new SpriteGroup[classConst.length];
+        shieldedEffects = new ArrayList[classConst.length];
         collisionEffects = new ArrayList[classConst.length][classConst.length];
         eosEffects = new ArrayList[classConst.length];
         iSubTypes = new ArrayList[classConst.length];
@@ -363,6 +372,7 @@ public abstract class Game
         {
             //Create the space for the sprites and effects of this type.
             spriteGroups[j] = new SpriteGroup(j);
+            shieldedEffects[j] = new ArrayList<>();
             eosEffects[j] = new ArrayList<Effect>();
             bucketList[j] = new Bucket();
 
@@ -671,6 +681,8 @@ public abstract class Game
         {
             bucketList[j].clear();
         }
+
+        resetShieldEffects();
     }
 
     /**
@@ -1026,7 +1038,7 @@ public abstract class Game
 
     }
 
-        /**
+    /**
      * Handles collisions and triggers events.
      */
     protected void eventHandling()
@@ -1081,14 +1093,22 @@ public abstract class Game
 
         }
 
+
+
         // Now, we handle events between pairs of sprites, for each pair of sprites that
         // has a paired effect defined:
-        for(Pair p : definedEffects)
+        for(Pair<Integer,Integer> p : definedEffects)
         {
             // We iterate over the (potential) multiple effects that these
             // two sprites could have defined between them.
             for(Effect ef : collisionEffects[p.first][p.second])
             {
+
+                if(shieldedEffects[p.first].size() > 0) {
+                    if (shieldedEffects[p.first].contains(new Pair(p.second, ef.hashCode)))
+                        continue;
+                }
+
 
                 for (int i = 0; i < bucketList.length; i++) {
                     bucketList[i].clear();
@@ -1262,6 +1282,29 @@ public abstract class Game
         {
             bucketList[j].clear();
         }
+
+        resetShieldEffects();
+    }
+
+    /**
+     * Cleans the array of shielded effects.
+     */
+    private void resetShieldEffects()
+    {
+        for(int i =0; i < shieldedEffects.length; ++i)
+            shieldedEffects[i].clear();
+    }
+
+    /**
+     * Adds a new Shield effect to the scene.
+     * @param type1 Recipient of the effect (sprite ID)
+     * @param type2 Second sprite ID
+     * @param functHash Hash of the effect name to shield.
+     */
+    public void addShield(int type1, int type2, long functHash)
+    {
+        Pair newShield = new Pair(type2, functHash);
+        shieldedEffects[type1].add(newShield);
     }
 
     /**
@@ -1395,7 +1438,7 @@ public abstract class Game
      * Returns all paired effects defined in the game.
      * @return all paired effects defined in the game.
      */
-    public ArrayList<Pair> getDefinedEffects()
+    public ArrayList<Pair<Integer,Integer>> getDefinedEffects()
     {
         return definedEffects;
     }

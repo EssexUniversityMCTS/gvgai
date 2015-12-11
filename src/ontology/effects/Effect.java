@@ -31,6 +31,12 @@ public abstract class Effect
     //Indicates if this effects changes the score.
     public boolean applyScore = true;
 
+    /**
+     * 'Unique' hashcode for this effect
+     */
+    public long hashCode;
+
+
     public abstract void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game);
 
     public void setStochastic()
@@ -42,6 +48,7 @@ public abstract class Effect
     public void parseParameters(InteractionContent content) {
         //parameters from the object.
         VGDLFactory.GetInstance().parseParameters(content,this);
+        hashCode = content.hashCode;
     }
     
     public ArrayList<String> getEffectSprites(){

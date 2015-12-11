@@ -15,6 +15,7 @@ import core.SpriteGroup;
 import core.VGDLSprite;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
+import tools.Pair;
 import tools.Vector2d;
 
 /**
@@ -110,6 +111,7 @@ public class ForwardModel extends Game
         kill_list = new ArrayList<VGDLSprite>();
         bucketList = new Bucket[numSpriteTypes];
         historicEvents = new TreeSet<Event>();
+        shieldedEffects = new ArrayList[numSpriteTypes];
 
         //Copy of sprites from the game.
         spriteGroups = new SpriteGroup[numSpriteTypes];
@@ -135,6 +137,11 @@ public class ForwardModel extends Game
 
             int nSprites = spriteGroups[i].numSprites();
             num_sprites += nSprites;
+
+            //copy the shields
+            shieldedEffects[i] = new ArrayList<>();
+            for(Pair p : a_gameState.shieldedEffects[i])
+                shieldedEffects[i].add(p.copy());
         }
 
         //events:

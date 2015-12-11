@@ -26,20 +26,7 @@ import ontology.avatar.oriented.OrientedAvatar;
 import ontology.avatar.oriented.ShootAvatar;
 import ontology.effects.Effect;
 import ontology.effects.binary.*;
-import ontology.effects.unary.ChangeResource;
-import ontology.effects.unary.CloneSprite;
-import ontology.effects.unary.FlipDirection;
-import ontology.effects.unary.KillIfHasLess;
-import ontology.effects.unary.KillIfHasMore;
-import ontology.effects.unary.KillSprite;
-import ontology.effects.unary.ReverseDirection;
-import ontology.effects.unary.SpawnIfHasLess;
-import ontology.effects.unary.SpawnIfHasMore;
-import ontology.effects.unary.StepBack;
-import ontology.effects.unary.TransformTo;
-import ontology.effects.unary.TurnAround;
-import ontology.effects.unary.UndoAll;
-import ontology.effects.unary.WrapAround;
+import ontology.effects.unary.*;
 import ontology.sprites.Conveyor;
 import ontology.sprites.Door;
 import ontology.sprites.Flicker;
@@ -107,7 +94,7 @@ public class VGDLFactory
             {
                 "stepBack", "turnAround", "killSprite", "killBoth", "transformTo", "transformToSingleton",
                     "wrapAround", "changeResource", "killIfHasLess", "killIfHasMore", "cloneSprite",
-                    "flipDirection", "reverseDirection", "undoAll", "spawnIfHasMore", "spawnIfHasLess",
+                    "flipDirection", "reverseDirection", "shieldFrom", "undoAll", "spawnIfHasMore", "spawnIfHasLess",
                 "pullWithIt", "wallStop", "collectResource", "killIfOtherHasMore", "killIfFromAbove",
                 "teleportToExit", "bounceForward", "attractGaze"
             };
@@ -119,7 +106,7 @@ public class VGDLFactory
             {
                 StepBack.class, TurnAround.class, KillSprite.class, KillBoth.class, TransformTo.class, TransformToSingleton.class,
                     WrapAround.class,ChangeResource.class, KillIfHasLess.class, KillIfHasMore.class, CloneSprite.class,
-                    FlipDirection.class, ReverseDirection.class, UndoAll.class, SpawnIfHasMore.class, SpawnIfHasLess.class,
+                    FlipDirection.class, ReverseDirection.class, ShieldFrom.class, UndoAll.class, SpawnIfHasMore.class, SpawnIfHasLess.class,
                 PullWithIt.class, WallStop.class, CollectResource.class, KillIfOtherHasMore.class, KillIfFromAbove.class,
                 TeleportToExit.class, BounceForward.class, AttractGaze.class
             };

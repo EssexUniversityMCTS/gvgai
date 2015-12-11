@@ -22,7 +22,15 @@ public class InteractionContent extends Content
      */
     public String[] object2;
 
+    /**
+     * Name of the function/effect.
+     */
     public String function;
+
+    /**
+     * 'Unique' hashcode for this effect
+     */
+    public long hashCode;
 
     /**
      * Default constructor.
@@ -40,6 +48,7 @@ public class InteractionContent extends Content
         this.object1 = id1;
         this.object2 = id2List.split(" ");
         this.function = function;
+        this.hashCode = this.function.hashCode();
     }
 
     /**
@@ -100,5 +109,6 @@ public class InteractionContent extends Content
                 function = piece; //I'm assuming there is only one function per line.
             }
         }
+        this.hashCode = this.function.hashCode();
     }
 }
