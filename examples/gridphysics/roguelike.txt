@@ -21,13 +21,9 @@ BasicGame square_size=25
 
     InteractionSet
         weapon avatar   > collectResource scoreChange=2
-        weapon avatar   > killSprite
         gold avatar     > collectResource scoreChange=1
-        gold avatar     > killSprite
         health avatar   > collectResource scoreChange=1
-        health avatar   > killSprite
         key avatar      > collectResource scoreChange=1
-        key avatar      > killSprite
 
         moving wall > stepBack
         lock avatar > killIfOtherHasMore resource=key limit=1

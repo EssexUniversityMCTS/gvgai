@@ -60,18 +60,18 @@ public class Test
 
 
         //All public games
-        games = new String[]{"aliens", "boulderdash", "butterflies", "chase", "frogs",              //0-4
-                             "missilecommand", "portals", "sokoban", "survivezombies", "zelda",     //5-9
+        games = new String[]{"aliens", "bait", "blacksmoke", "boloadventures", "boulderchase",              //0-4
+                             "boulderdash", "brainman", "butterflies", "cakybaky", "zelda",     //5-9
                              "camelRace", "digdug", "firestorms", "infection", "firecaster",        //10-14
                              "overload", "pacman", "seaquest", "whackamole", "eggomania",           //15-19
-                             "bait", "boloadventures", "brainman", "chipschallenge",  "modality",   //20-24
+                             "missilecommand", "chase", "portals", "chipschallenge",  "modality",   //20-24
                              "painter", "realportals", "realsokoban", "thecitadel", "zenpuzzle",    //25-29
                              "roguelike", "surround", "catapults", "plants", "plaqueattack",        //30-34
-                             "jaws", "labyrinth", "boulderchase", "escape", "lemmings",             //35-39
+                             "jaws", "labyrinth", "frogs", "escape", "lemmings",             //35-39
                              "solarfox", "defender", "enemycitadel", "crossfire", "lasers",         //40-44
-                             "sheriff", "chopper", "superman", "waitforbreakfast", "cakybaky",      //45-49
+                             "sheriff", "chopper", "superman", "waitforbreakfast", "survivezombies",      //45-49
                              "lasers2", "hungrybirds" ,"cookmepasta", "factorymanager", "raceBet2", //50-54
-                             "intersection", "blacksmoke", "iceandfire", "gymkhana", "tercio"};     //55-59
+                             "intersection", "sokoban", "iceandfire", "gymkhana", "tercio"};     //55-59
 
 
         //Other settings
@@ -80,8 +80,8 @@ public class Test
         int seed = new Random().nextInt();
 
         //Game and level to play
-        int gameIdx = 21;
-        int levelIdx = 2; //level names from 0 to 4 (game_lvlN.txt).
+        int gameIdx = 8;
+        int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
         

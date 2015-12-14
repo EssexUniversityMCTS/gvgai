@@ -10,7 +10,6 @@ BasicGame
 
     InteractionSet
         food avatar > collectResource
-        food avatar > killSprite
         avatar foodbank > changeResource resource=food value=15
         foodbank avatar > killSprite scoreChange=40
         goal avatar  > killSprite scoreChange=100

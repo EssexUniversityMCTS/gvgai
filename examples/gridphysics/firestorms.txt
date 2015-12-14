@@ -15,7 +15,6 @@ BasicGame
         avatar wall   > stepBack
         escape avatar > killSprite
         water avatar  > collectResource
-        water avatar  > killSprite
         avatar fire > changeResource resource=water value=-1 scoreChange=-1
         avatar fire  > killIfHasLess resource=water limit=0
         fire water  > killSprite

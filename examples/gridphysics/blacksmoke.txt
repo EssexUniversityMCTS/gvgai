@@ -28,7 +28,6 @@ BasicGame
         smokespawn ground wall > killSprite
 
         key avatar      > collectResource
-        key avatar      > killSprite
         lock avatar > killIfOtherHasMore resource=key limit=1
         avatar lock > changeResource resource=key value=-1
         avatar lock box > stepBack

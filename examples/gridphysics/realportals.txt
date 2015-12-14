@@ -50,7 +50,6 @@ BasicGame
         avatar portalentry > teleportToExit scoreChange=1
         avatar water       > killSprite
         weapon avatar   > collectResource
-        weapon avatar   > killSprite
 
         avatar key > changeResource resource=key value=1
         key avatar > killSprite

@@ -12,11 +12,9 @@ BasicGame
 
     InteractionSet
         weapon avatar   > collectResource scoreChange=2
-        weapon avatar   > killSprite
         marsh sword     > killSprite scoreChange=1
         gold avatar     > collectResource scoreChange=1
         gold random     > collectResource
-        gold moving     > killSprite
         moving wall     > stepBack
         avatar marsh    > killIfHasMore      resource=gold limit=11
         random marsh    > killIfHasMore      resource=gold limit=11

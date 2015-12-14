@@ -12,7 +12,6 @@ BasicGame
 
     InteractionSet
         honey avatar    > collectResource scoreChange=1
-        honey avatar    > killSprite
         moving wall     > stepBack
         avatar zombie   > killIfHasLess resource=honey limit=1 scoreChange=-1
         avatar zombie   > changeResource resource=honey value=-1

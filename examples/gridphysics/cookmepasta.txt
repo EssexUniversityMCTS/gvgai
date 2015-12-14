@@ -79,7 +79,6 @@ BasicGame
         tuna pastainplace > transformTo stype=wrongplace scoreChange=-1
 
         key avatar      > collectResource scoreChange=1
-        key avatar      > killSprite
 
         lock avatar > killIfOtherHasMore resource=key limit=1
         avatar lock > stepBack

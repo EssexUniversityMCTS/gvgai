@@ -95,7 +95,7 @@ public class VGDLFactory
                 "stepBack", "turnAround", "killSprite", "killBoth", "transformTo", "transformToSingleton",
                     "wrapAround", "changeResource", "killIfHasLess", "killIfHasMore", "cloneSprite",
                     "flipDirection", "reverseDirection", "shieldFrom", "undoAll", "spawnIfHasMore", "spawnIfHasLess",
-                "pullWithIt", "wallStop", "collectResource", "killIfOtherHasMore", "killIfFromAbove",
+                "pullWithIt", "wallStop", "collectResource", "collectResourceIfHeld", "killIfOtherHasMore", "killIfFromAbove",
                 "teleportToExit", "bounceForward", "attractGaze"
             };
 
@@ -107,7 +107,7 @@ public class VGDLFactory
                 StepBack.class, TurnAround.class, KillSprite.class, KillBoth.class, TransformTo.class, TransformToSingleton.class,
                     WrapAround.class,ChangeResource.class, KillIfHasLess.class, KillIfHasMore.class, CloneSprite.class,
                     FlipDirection.class, ReverseDirection.class, ShieldFrom.class, UndoAll.class, SpawnIfHasMore.class, SpawnIfHasLess.class,
-                PullWithIt.class, WallStop.class, CollectResource.class, KillIfOtherHasMore.class, KillIfFromAbove.class,
+                PullWithIt.class, WallStop.class, CollectResource.class, CollectResourceIfHeld.class, KillIfOtherHasMore.class, KillIfFromAbove.class,
                 TeleportToExit.class, BounceForward.class, AttractGaze.class
             };
 

@@ -44,9 +44,7 @@ BasicGame
         avatar fish  > killSprite
         fish torpedo > killSprite scoreChange=1
         air avatar > collectResource
-        air avatar > killSprite
         crew avatar > collectResource
-        crew avatar > killSprite
         avatar sky > changeResource resource=air
         avatar sky > spawnIfHasMore resource=crew stype=saved limit=4
         avatar sky > changeResource resource=crew value=-4

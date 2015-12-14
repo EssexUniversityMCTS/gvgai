@@ -1,5 +1,6 @@
 package ontology.effects.binary;
 
+import core.VGDLRegistry;
 import core.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
@@ -13,16 +14,21 @@ import ontology.sprites.Resource;
  * Time: 13:25
  * This is a Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
-public class CollectResource extends Effect
+public class CollectResourceIfHeld extends Effect
 {
+    public boolean killResource; //Only if the resource is collected.
+    public String heldResource;
+    public int heldResourceId;
+    public int value;
 
-    public boolean killResource;
-
-    public CollectResource(InteractionContent cnt)
+    public CollectResourceIfHeld(InteractionContent cnt)
     {
+        value = 1;
         killResource = true;
         this.parseParameters(cnt);
         is_kill_effect = killResource;
+        heldResourceId = VGDLRegistry.GetInstance().getRegisteredSpriteValue(heldResource);
+
     }
 
     @Override
@@ -31,6 +37,11 @@ public class CollectResource extends Effect
         if(sprite1.is_resource)
         {
             Resource r = (Resource) sprite1;
+
+            //Check if we have the secondary resource first
+            int numResourcesHeld = sprite2.getAmountResource(heldResourceId);
+            if(numResourcesHeld < value)
+                return;
 
             int numResources = sprite2.getAmountResource(r.resource_type);
             if(numResources + r.value <= game.getResourceLimit(r.resource_type))

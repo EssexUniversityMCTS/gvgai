@@ -25,6 +25,7 @@ public class Chaser extends RandomNPC
     public boolean fleeing;
     public String stype;
     public int itype;
+    public float maxDistance;
 
     ArrayList<VGDLSprite> targets;
     ArrayList<Vector2d> actions;
@@ -47,6 +48,7 @@ public class Chaser extends RandomNPC
     {
         super.loadDefaults();
         fleeing = false;
+        maxDistance = -1;
         targets = new ArrayList<VGDLSprite>();
         actions = new ArrayList<Vector2d>();
     }
@@ -90,6 +92,14 @@ public class Chaser extends RandomNPC
     protected void movesToward(VGDLSprite target)
     {
         double distance = this.physics.distance(rect, target.rect);
+
+        if(maxDistance != -1 && distance > maxDistance)
+        {
+            //We have a maximum distance set up, and the target is further than that.
+            // -> We don't react to this target.
+            return;
+        }
+
         for(Vector2d act : Types.BASEDIRS)
         {
             //Calculate the distance if I'd apply this move.
@@ -146,6 +156,7 @@ public class Chaser extends RandomNPC
         targetSprite.fleeing = this.fleeing;
         targetSprite.stype = this.stype;
         targetSprite.itype = this.itype;
+        targetSprite.maxDistance = this.maxDistance;
         targetSprite.targets = new ArrayList<VGDLSprite>();
         targetSprite.actions = new ArrayList<Vector2d>();
         super.copyTo(targetSprite);
