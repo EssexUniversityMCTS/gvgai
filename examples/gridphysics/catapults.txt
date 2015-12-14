@@ -23,20 +23,21 @@ BasicGame square_size=30
         G > goal
         A > moving
     InteractionSet
+
         bullet wall > transformTo stype=moving
         moving wall > stepBack
-        moving water       > killSprite
+        moving water > killSprite
+
         avatar catapult    > attractGaze prob=1
+
         avatar westfacing  > transformTo stype=west
-        avatar westfacing  > attractGaze prob=1
         avatar eastfacing  > transformTo stype=east
-        avatar eastfacing  > attractGaze prob=1
         avatar southfacing > transformTo stype=south
-        avatar southfacing > attractGaze prob=1
         avatar northfacing > transformTo stype=north
-        avatar northfacing > attractGaze prob=1
+
         catapult avatar    > killSprite scoreChange=1
         goal avatar        > killSprite
+
     TerminationSet
         SpriteCounter stype=goal    limit=0 win=True
         SpriteCounter stype=avatar  limit=0 win=False
