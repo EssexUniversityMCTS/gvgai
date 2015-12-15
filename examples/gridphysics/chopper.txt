@@ -1,6 +1,6 @@
 BasicGame
     SpriteSet
-        layers > Immovable
+        layers > Immovable hidden=True
             stratosphere > color=BLUE
             thermosphere > color=LIGHTBLUE
             troposphere >
@@ -44,36 +44,26 @@ BasicGame
         MultiSpriteCounter stype1=portalBase stype2=tank limit=0 win=True
         
     InteractionSet
-        avatar  wall > stepBack
+        avatar wall EOS > stepBack
         avatar sam > killSprite
-        avatar EOS > stepBack
-        sam avatar > killSprite
-        sam wall > killSprite
+        sam avatar wall > killSprite
 
         tank bomb > killSprite scoreChange=1
-        bomb tank > killSprite
-        bomb wall > killSprite
-        bomb EOS > killSprite
+        bomb tank wall EOS > killSprite
 
-        bomb sam > killSprite
-        sam bomb > killSprite
+        bomb sam > killBoth
 
         tank wall  > reverseDirection
         tank wall  > stepBack
 
-        sam shield > killSprite
-        shield sam > killSprite scoreChange=-1
+        shield sam > killBoth scoreChange=-1
         shield wall > stepBack
 
         avatar supply > changeResource resource=bullet value=5
-        supply avatar > killSprite
-        supply wall > killSprite
+        supply avatar wall > killSprite
 
-        avatar portal > stepBack
-        avatar thermosphere > stepBack
-        avatar troposphere > stepBack
+        avatar portal thermosphere troposphere > stepBack
         shield stratosphere > stepBack
 
-        cloud sam > killSprite
-        sam cloud > killSprite
+        cloud sam > killBoth
         cloud EOS > wrapAround

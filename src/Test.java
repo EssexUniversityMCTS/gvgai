@@ -62,14 +62,14 @@ public class Test
         //All public games
         games = new String[]{"aliens", "bait", "blacksmoke", "boloadventures", "boulderchase",              //0-4
                              "boulderdash", "brainman", "butterflies", "cakybaky", "camelRace",     //5-9
-                             "catapults", "chase", "chipschallenge", "infection", "firecaster",        //10-14
+                             "catapults", "chase", "chipschallenge", "chopper", "firecaster",        //10-14
                              "overload", "pacman", "seaquest", "whackamole", "eggomania",           //15-19
                              "missilecommand", "digdug", "portals", "firestorms",  "modality",   //20-24
                              "painter", "realportals", "realsokoban", "thecitadel", "zenpuzzle",    //25-29
                              "roguelike", "surround", "zelda", "plants", "plaqueattack",        //30-34
                              "jaws", "labyrinth", "frogs", "escape", "lemmings",             //35-39
                              "solarfox", "defender", "enemycitadel", "crossfire", "lasers",         //40-44
-                             "sheriff", "chopper", "superman", "waitforbreakfast", "survivezombies",      //45-49
+                             "sheriff", "infection", "superman", "waitforbreakfast", "survivezombies",      //45-49
                              "lasers2", "hungrybirds" ,"cookmepasta", "factorymanager", "raceBet2", //50-54
                              "intersection", "sokoban", "iceandfire", "gymkhana", "tercio"};     //55-59
 
@@ -80,8 +80,8 @@ public class Test
         int seed = new Random().nextInt();
 
         //Game and level to play
-        int gameIdx = 12;
-        int levelIdx = 2; //level names from 0 to 4 (game_lvlN.txt).
+        int gameIdx = 0;
+        int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
         

@@ -739,6 +739,13 @@ public class ForwardModel extends Game
                 if(spriteIt != null) while(spriteIt.hasNext())
                 {
                     VGDLSprite sp = spriteIt.next();
+
+                    if(sp.hidden)
+                    {
+                        observations[idx] = null;
+                        break;
+                    }
+
                     Observation observation = getSpriteObservation(sp);
                     observation.update(i, sp.spriteID, sp.getPosition(), reference, getSpriteCategory(sp));
 
