@@ -260,6 +260,12 @@ public abstract class Game
      */
     protected int nextSpriteID;
 
+
+    /**
+     * Key Handler for human play. The default is CompetitionParameters.KEY_INPUT
+     */
+    public String key_handler;
+
     /**
      * Default constructor.
      */
@@ -711,6 +717,12 @@ public abstract class Game
         }
 
         factory.parseParameters(content, this);
+
+        if(key_handler != null && key_handler.equalsIgnoreCase("Pulse"))
+            CompetitionParameters.KEY_HANDLER = CompetitionParameters.KEY_PULSE;
+
+        ki = CompetitionParameters.KEY_HANDLER == CompetitionParameters.KEY_INPUT ?
+                new KeyInput() : new KeyPulse();
     }
 
     /**

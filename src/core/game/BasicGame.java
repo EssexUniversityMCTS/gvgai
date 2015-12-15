@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import core.VGDLFactory;
 import core.VGDLRegistry;
 import core.VGDLSprite;
+import core.competition.CompetitionParameters;
 import core.content.GameContent;
 import tools.IO;
 import tools.Vector2d;
@@ -26,6 +27,8 @@ public class BasicGame extends Game {
      */
     public int square_size;
 
+
+
     /**
      * Default constructor for a basic game.
      * @param content Contains parameters for the game.
@@ -35,10 +38,10 @@ public class BasicGame extends Game {
         super();
 
         //Add here whatever mappings are common for all BasicGames.
-        charMapping.put('w',new ArrayList<String>());
+        charMapping.put('w', new ArrayList<String>());
         charMapping.get('w').add("wall");
 
-        charMapping.put('A',new ArrayList<String>());
+        charMapping.put('A', new ArrayList<String>());
         charMapping.get('A').add("avatar");
 
         //Default values for frame rate and maximum number of sprites allowed.
@@ -112,6 +115,8 @@ public class BasicGame extends Game {
      */
     protected void parseParameters(GameContent content)
     {
+        super.parseParameters(content);
+
         VGDLFactory factory = VGDLFactory.GetInstance();
         Class refClass = VGDLFactory.registeredGames.get(content.referenceClass);
         //System.out.println("refClass" + refClass.toString());
