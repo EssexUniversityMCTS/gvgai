@@ -29,7 +29,7 @@ BasicGame square_size=25
     m > fullMolarInf
 
   InteractionSet
-    movable wall > stepBack
+    movable wall > stepBack pixelPerfect=True
     food fluor   > killSprite scoreChange=2
     fluor food   > killSprite
     fluor wall   > killSprite
