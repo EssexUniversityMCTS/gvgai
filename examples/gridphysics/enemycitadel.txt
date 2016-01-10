@@ -5,12 +5,9 @@ BasicGame square_size=40 key_handler=Pulse
         squarehole   > Immovable color=DARKBLUE img=portal
         roundhole   > Immovable color=DARKBLUE img=hole
         avatar > MovingAvatar healthPoints=30
-            nokey > img=alien
-            withkey > img=alien
         goal > Immovable img=door
         crate    > Passive img=box shrinkfactor=0.8
         boulder    > Passive img=boulder shrinkfactor=0.8
-        holefilling > Flicker img=box limit=0
         enemy > RandomNPC speed=0.5 color=PINK img=butterfly.png
 
     LevelMapping
@@ -40,10 +37,9 @@ BasicGame square_size=40 key_handler=Pulse
         crate squarehole > killBoth scoreChange=1
         goal avatar > killSprite scoreChange=5
 
-        enemy crate squarehole roundhole goal boulder holefilling > stepBack
+        enemy crate squarehole roundhole goal boulder > stepBack
         crate enemy > undoAll notStype=enemy
 
-        holefilling enemy > undoAll notStype=enemy
         enemy wall > stepBack
 
         avatar enemy > subtractHealthPoints
