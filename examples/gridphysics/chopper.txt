@@ -59,8 +59,8 @@ BasicGame
         satellite sam > killBoth scoreChange=-1
         satellite wall > stepBack
 
-        avatar supply > changeResource resource=bullet value=5
-        supply avatar wall > killSprite
+        avatar supply > changeResource resource=bullet value=5  killResource=True
+        supply wall > killSprite
 
         avatar portal thermosphere troposphere > stepBack
         satellite stratosphere > stepBack

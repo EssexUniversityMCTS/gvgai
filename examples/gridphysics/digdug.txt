@@ -25,16 +25,14 @@ BasicGame square_size=30
 
     InteractionSet
 
-        gold shovel  > transformTo stype=falling
-        gold boulder > transformTo stype=falling
+        gold shovel boulder > transformTo stype=falling
         gem  avatar  > killSprite scoreChange=1
         boulder wall > transformTo stype=resting
         boulder wall > stepBack
         avatar gold  > stepBack
         avatar monster  > killSprite scoreChange=-1
 
-        monster wall > flipDirection
-        monster EOS  > flipDirection
+        monster wall EOS > flipDirection
         monster boulder > killSprite scoreChange=2
         falling wall > killSprite
 
@@ -42,6 +40,5 @@ BasicGame square_size=30
         weapon  EOS  > stepBack
         weapon avatar  > killSprite
         wall shovel  > killSprite
-        moving  EOS  > stepBack
-        moving  wall > stepBack
+        moving wall EOS  > stepBack
         moving falling  > killSprite

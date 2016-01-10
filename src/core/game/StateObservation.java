@@ -214,6 +214,18 @@ public class StateObservation {
         return model.getAvatarType();
     }
 
+    /**
+     * Returns the health points of the avatar. A value of 0 doesn't necessarily
+     * mean that the avatar is dead (could be that no health points are in use in that game).
+     * @return a numeric value, the amount of remaining health points.
+     */
+    public int getAvatarHealthPoints() { return model.getAvatarHealthPoints(); }
+
+    /**
+     * Returns the maximum amount of health points.
+     * @return the maximum amount of health points the avatar can have.
+     */
+    public int getAvatarMaxHealthPoints() { return model.getAvatarMaxHealthPoints(); }
 
     //Methods to retrieve the state external to the avatar, in the game...
 

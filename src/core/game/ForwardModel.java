@@ -700,6 +700,19 @@ public class ForwardModel extends Game
     }
 
 
+    /**
+     * Returns the health points of the avatar. A value of 0 doesn't necessarily
+     * mean that the avatar is dead (could be that no health points are in use in that game).
+     * @return a numeric value, the amount of remaining health points.
+     */
+    public int getAvatarHealthPoints() { return avatar.healthPoints; }
+
+    /**
+     * Returns the maximum amount of health points.
+     * @return the maximum amount of health points the avatar can have.
+     */
+    public int getAvatarMaxHealthPoints() { return avatar.maxHealthPoints; }
+
 
     /** Methods that return positions of things **/
 

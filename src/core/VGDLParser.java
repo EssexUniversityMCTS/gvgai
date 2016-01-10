@@ -307,8 +307,11 @@ public class VGDLParser
                         if(!game.getDefinedEffects().contains(newPair))
                             game.getDefinedEffects().add(newPair);
 
-                        //game.collisionEffects[obj1][obj2].add(ef);
-                        game.getCollisionEffects(obj1, obj2).add(ef);
+                        ArrayList<Effect> collEffects = game.getCollisionEffects(obj1, obj2);
+
+                        //Add the effects as many times as indicated in its 'repeat' field (1 by defualt).
+                        for(int r = 0; r < ef.repeat; ++r)
+                            collEffects.add(ef);
 
                         if(VERBOSE_PARSER)
                             System.out.println("Defining interaction " + ic.object1 + "+" + obj2Str +

@@ -31,6 +31,11 @@ public abstract class Effect
     //Indicates if this effects changes the score.
     public boolean applyScore = true;
 
+    //Indicates the number of repetitions of this effect. This affects how many times this
+    // effect is taken into account at each step. This is useful for chain effects (i.e. pushing
+    // boxes in a chain - thecitadel, enemycitadel).
+    public int repeat = 1;
+
     /**
      * 'Unique' hashcode for this effect
      */

@@ -36,10 +36,11 @@ public class CollectResource extends Effect
             if(numResources + r.value <= game.getResourceLimit(r.resource_type))
             {
                 sprite2.modifyResource(r.resource_type, r.value);
+
+                if(killResource)
+                    game.killSprite(sprite1);
             }
 
-            if(killResource)
-                game.killSprite(sprite1);
         }
     }
 }

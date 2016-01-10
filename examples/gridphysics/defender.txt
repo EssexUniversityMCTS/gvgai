@@ -1,4 +1,4 @@
-BasicGame
+BasicGame key_handler=Pulse
     SpriteSet
         city    > Immovable    color=WHITE img=base
         avatar  > ShootAvatar color=YELLOW ammo=bullet stype=sam img=spaceship rotateInPlace=False
@@ -38,12 +38,9 @@ BasicGame
         city sam alien > killSprite
 
         supply alien > killSprite
-        #avatar bomb  > killSprite scoreChange=-1
-        alien  sam   > killSprite scoreChange=2
-        sam alien > killSprite
+        alien  sam   > killBoth scoreChange=2
 
-        supply wall supply > stepBack pixelPerfect=True
-        supply city > stepBack pixelPerfect=True
+        supply supply > stepBack
+        supply wall city > stepBack pixelPerfect=True
 
-        avatar supply > changeResource resource=bullet value=5
-        supply avatar > killSprite
+        avatar supply > changeResource resource=bullet value=5 killResource=True
