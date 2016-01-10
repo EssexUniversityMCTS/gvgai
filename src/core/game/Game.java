@@ -1164,48 +1164,53 @@ public abstract class Game
                     ArrayList<VGDLSprite> sprites1nBucket1 = first.get(bucket1);
 
                     //For every sprite:
-                    if(sprites1nBucket1!=null) for(VGDLSprite s1 : sprites1nBucket1)
-                    {
-                        //Decide in what buckets to look.
-                        int[] buckets;
-                        if(s1.bucketSharp)  buckets = new int[]{s1.bucket-1, s1.bucket};
-                        else                buckets = new int[]{s1.bucket, s1.bucket+1};
-
-
-                        for(int bucketId : buckets)
+                    if(sprites1nBucket1!=null)
+                        s1loop: for(VGDLSprite s1 : sprites1nBucket1)
                         {
-                            //On each bucket, take the sprites if the p.second sprite type.
-                            ArrayList<VGDLSprite> spritesInBucket2 = second.get(bucketId);
-                            if(spritesInBucket2 != null && !kill_list.contains(s1))
+                            //Decide in what buckets to look.
+                            int[] buckets;
+                            if(s1.bucketSharp)  buckets = new int[]{s1.bucket-1, s1.bucket};
+                            else                buckets = new int[]{s1.bucket, s1.bucket+1};
+
+
+                            for(int bucketId : buckets)
                             {
-                                int numSprites2 = spritesInBucket2.size();
-                                for(int idx2 = 0; idx2 < numSprites2; idx2++)
+                                //On each bucket, take the sprites if the p.second sprite type.
+                                ArrayList<VGDLSprite> spritesInBucket2 = second.get(bucketId);
+                                if(spritesInBucket2 != null && !kill_list.contains(s1))
                                 {
-                                    //Take each sprite of p.second and check for collision
-                                    VGDLSprite s2 = spritesInBucket2.get(idx2);
-                                    if(s1 != s2 && s1.rect.intersects(s2.rect))
+                                    int numSprites2 = spritesInBucket2.size();
+                                    for(int idx2 = 0; idx2 < numSprites2; idx2++)
                                     {
-                                        //There is a collision. Apply the effect.
-                                        ef.execute(s1,s2,this);
+                                        //Take each sprite of p.second and check for collision
+                                        VGDLSprite s2 = spritesInBucket2.get(idx2);
+                                        if(s1 != s2 && s1.rect.intersects(s2.rect))
+                                        {
+                                            if(kill_list.contains(s2))
+                                                continue; //Ignore this sprite2 if it was killed.
 
-                                        //Affect score:
-                                        if(ef.applyScore)
-                                            this.score += ef.scoreChange;
+                                            //There is a collision. Apply the effect.
+                                            ef.execute(s1,s2,this);
 
-                                        //Add to events history.
-                                        addEvent(s1, s2);
+                                            //Affect score:
+                                            if(ef.applyScore)
+                                                this.score += ef.scoreChange;
 
-                                        if(kill_list.contains(s1))
-                                            break; //Stop checking this sprite if it was killed.
-                                    }
+                                            //Add to events history.
+                                            addEvent(s1, s2);
 
-                                } //end FOR sprites s2.
+                                            if(kill_list.contains(s1))
+                                                break s1loop; //Stop checking sprite 1 if it was killed.
 
-                            }
+                                        }
 
-                        } //end FOR buckets p.second.
+                                    } //end FOR sprites s2.
 
-                    }//end FOR sprites s1
+                                }
+
+                            } //end FOR buckets p.second.
+
+                        }//end FOR sprites s1
 
                 }//end FOR buckets p.first
 

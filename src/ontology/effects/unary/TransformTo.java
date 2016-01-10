@@ -25,6 +25,8 @@ public class TransformTo extends Effect {
     //TODO: Theoretically, we could have an array of types here... to be done.
     public String stype;
     public int itype;
+    //Indicates if the second effect should be killed.
+    public boolean killSecond = false;
 
     public TransformTo(InteractionContent cnt)
     {
@@ -73,6 +75,9 @@ public class TransformTo extends Effect {
             }
 
             game.killSprite(sprite1);
+
+            if(killSecond)
+                game.killSprite(sprite2);
         }
     }
     
