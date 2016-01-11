@@ -8,6 +8,7 @@ BasicGame
             lcdown > img=spaceship stype=ldown
             lcright > img=spaceship stype=lright
             lcleft > img=spaceship stype=lleft
+            lcswap > img=spaceship stype=lleft
         laser > Missile shrinkfactor=0.5 speed=0.5 color=YELLOW
             lup > orientation=UP
             ldown > orientation=DOWN
@@ -46,10 +47,11 @@ BasicGame
         box wall box line  > undoAll notStype=car
         laser box > killSprite
 
-        lcdown boulder > transformTo stype=lcright killSecond=True
-        lcleft boulder > transformTo stype=lcdown killSecond=True
-        lcup boulder > transformTo stype=lcleft killSecond=True
-        lcright boulder > transformTo stype=lcup killSecond=True
+        lcdown boulder > transformTo stype=lcswap
+        lcleft boulder > transformTo stype=lcdown
+        lcup boulder > transformTo stype=lcleft
+        lcright boulder > transformTo stype=lcup
+        lcswap boulder > transformTo stype=lcright
 
         boulder line wall EOS > killSprite
 

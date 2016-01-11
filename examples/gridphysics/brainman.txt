@@ -33,8 +33,7 @@ BasicGame
         keym avatar > attractGaze
         avatar key keym > stepBack
         
-        door keym > killSprite scoreChange=4
-        keym door > killSprite
+        door keym > killBoth scoreChange=4
 
         green avatar > killSprite scoreChange=1
         blue avatar > killSprite scoreChange=2

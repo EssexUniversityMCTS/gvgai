@@ -231,6 +231,8 @@ public abstract class VGDLSprite {
     /**
      * Maximum health points of this sprite.
      * If not set specifically in VGDL, the default value is set to the healthPoints value set.
+     * This is NOT the maximum possible amount of points, it's the max. ever had (so far, there's no
+     * maximum limit defined).
      */
     public int maxHealthPoints;
 

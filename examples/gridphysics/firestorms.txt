@@ -4,7 +4,7 @@ BasicGame
         seed    > SpawnPoint color=RED prob=0.25 img=portal stype=fire portal=True
         water   > Resource color=BLUE limit=10 value=2
         escape  > Door color=GREEN img=door
-        avatar  > MovingAvatar
+        avatar  > MovingAvatar healthPoints=1
         wall    > Immovable color=DARKGRAY img=wall
 
     TerminationSet
@@ -14,12 +14,12 @@ BasicGame
     InteractionSet
         avatar wall   > stepBack
         escape avatar > killSprite
-        water avatar  > collectResource
-        avatar fire > changeResource resource=water value=-1 scoreChange=-1
-        avatar fire  > killIfHasLess resource=water limit=0
-        fire water  > killSprite
-        fire avatar  > killSprite
-        fire   wall   > killSprite
+
+        avatar water > addHealthPoints
+        water avatar > killSprite
+
+        avatar fire > subtractHealthPoints scoreChange=-1
+        fire water avatar wall > killSprite
 
     LevelMapping
         1 > escape

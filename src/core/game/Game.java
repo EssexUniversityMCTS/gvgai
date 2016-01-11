@@ -1186,9 +1186,6 @@ public abstract class Game
                                         VGDLSprite s2 = spritesInBucket2.get(idx2);
                                         if(s1 != s2 && s1.rect.intersects(s2.rect))
                                         {
-                                            if(kill_list.contains(s2))
-                                                continue; //Ignore this sprite2 if it was killed.
-
                                             //There is a collision. Apply the effect.
                                             ef.execute(s1,s2,this);
 

@@ -61,8 +61,7 @@ BasicGame square_size=45 key_handler=Pulse
         crate avatar > bounceForward
         crate crate wall door key chip gate mud fire boots > undoAll
 
-        crate water > killSprite
-        water crate > transformTo stype=mud scoreChange=1
+        water crate > transformTo stype=mud scoreChange=1 killSecond=true
         
         mud avatar > killSprite
         
