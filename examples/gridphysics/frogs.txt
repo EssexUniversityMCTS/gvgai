@@ -13,13 +13,13 @@ BasicGame
             leftTruck  > Missile   orientation=LEFT
                 fastLtruck  > speed=0.2  color=ORANGE
                 slowLtruck  > speed=0.1  color=RED
-        # defining 'wall' last, makes the walls show on top of all other sprites
+
         wall > Immovable color=BLACK img=wall
         
     InteractionSet
         goal avatar  > killSprite scoreChange=1
         avatar log   > shieldFrom ftype=killSprite stype=water
-        avatar log   > pullWithIt   # note how one collision can have multiple effects
+        avatar log   > pullWithIt
         avatar wall  > stepBack
         avatar truck water > killSprite
         log    EOS   > killSprite

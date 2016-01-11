@@ -25,8 +25,11 @@ public class PullWithIt extends Effect
 
     private ArrayList<VGDLSprite> spritesThisCycle;
 
+    public boolean pixelPerfect;
+
     public PullWithIt(InteractionContent cnt)
     {
+        pixelPerfect = false;
         lastGameTime = -1;
         spritesThisCycle = new ArrayList<VGDLSprite>();
         this.parseParameters(cnt);
@@ -73,5 +76,10 @@ public class PullWithIt extends Effect
         }
 
         sprite1.lastrect = new Rectangle(r);
+
+        if(pixelPerfect)
+        {
+            sprite1.setRect(sprite2.rect);
+        }
     }
 }

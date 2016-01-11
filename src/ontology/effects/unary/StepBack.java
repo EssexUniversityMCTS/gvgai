@@ -42,11 +42,6 @@ public class StepBack extends Effect
 
         sprite1Dir.normalise();
 
-        //if(sprite1.getType() == 11 && sprite2.getType() == 11)
-       // {
-        //    int a = 0;
-       // }
-
         if(sprite1Dir.equals(Types.DOWN))
         {
             int overlay = (sprite1.rect.y + sprite1.rect.height) - sprite2.rect.y;
