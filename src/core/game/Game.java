@@ -1165,7 +1165,7 @@ public abstract class Game
 
                     //For every sprite:
                     if(sprites1nBucket1!=null)
-                        s1loop: for(VGDLSprite s1 : sprites1nBucket1)
+                        for(VGDLSprite s1 : sprites1nBucket1)
                         {
                             //Decide in what buckets to look.
                             int[] buckets;
@@ -1180,7 +1180,7 @@ public abstract class Game
                                 if(spritesInBucket2 != null && !kill_list.contains(s1))
                                 {
                                     int numSprites2 = spritesInBucket2.size();
-                                    for(int idx2 = 0; idx2 < numSprites2; idx2++)
+                                    s2loop: for(int idx2 = 0; idx2 < numSprites2; idx2++)
                                     {
                                         //Take each sprite of p.second and check for collision
                                         VGDLSprite s2 = spritesInBucket2.get(idx2);
@@ -1197,7 +1197,7 @@ public abstract class Game
                                             addEvent(s1, s2);
 
                                             if(kill_list.contains(s1))
-                                                break s1loop; //Stop checking sprite 1 if it was killed.
+                                                break s2loop; //Stop checking sprite 1 if it was killed.
 
                                         }
 

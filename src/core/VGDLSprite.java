@@ -231,10 +231,16 @@ public abstract class VGDLSprite {
     /**
      * Maximum health points of this sprite.
      * If not set specifically in VGDL, the default value is set to the healthPoints value set.
-     * This is NOT the maximum possible amount of points, it's the max. ever had (so far, there's no
-     * maximum limit defined).
+     * This is NOT the maximum possible amount of points, it's the max. ever had.
      */
     public int maxHealthPoints;
+
+
+    /**
+     * Limit of health points of this can have.
+     * If not set specifically in VGDL, the default value is set to a very high value (1000)
+     */
+    public int limitHealthPoints;
 
     /**
      * Initializes the sprite, giving its position and dimensions.
@@ -265,6 +271,7 @@ public abstract class VGDLSprite {
         invisible = false;
         rotateInPlace = false;
         isFirstTick = true;
+        limitHealthPoints = 1000;
         resources = new TreeMap<Integer, Integer>();
         itypes = new ArrayList<Integer>();
 
@@ -647,10 +654,13 @@ public abstract class VGDLSprite {
      */
     protected void _drawHealthBar(Graphics2D gphx, Game game, Rectangle r)
     {
+        int maxHP = maxHealthPoints;
+        if(limitHealthPoints != 1000)
+            maxHP = limitHealthPoints;
 
         double wiggleX = r.width * 0.1f;
         double wiggleY = r.height * 0.1f;
-        double prop = Math.max(0,Math.min(1, healthPoints / (double) maxHealthPoints));
+        double prop = Math.max(0,Math.min(1, healthPoints / (double) maxHP));
 
         double barHeight = r.height-wiggleY;
         int heightHealth = (int) (prop*barHeight);
@@ -791,6 +801,7 @@ public abstract class VGDLSprite {
         toSprite.hidden = this.hidden;
         toSprite.healthPoints = this.healthPoints;
         toSprite.maxHealthPoints = this.maxHealthPoints;
+        toSprite.limitHealthPoints = this.limitHealthPoints;
 
         toSprite.itypes = new ArrayList<Integer>();
         for(Integer it : this.itypes)
@@ -841,6 +852,7 @@ public abstract class VGDLSprite {
         if(other.hidden != this.hidden) return false;
         if(other.healthPoints != this.healthPoints) return false;
         if(other.maxHealthPoints != this.maxHealthPoints) return false;
+        if(other.limitHealthPoints != this.limitHealthPoints) return false;
 
         int numTypes = other.itypes.size();
         if(numTypes != this.itypes.size()) return false;

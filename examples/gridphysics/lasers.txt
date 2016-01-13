@@ -1,4 +1,4 @@
-BasicGame
+BasicGame key_handler=Pulse
     SpriteSet
         goal > Immovable img=door portal=true
         avatar > ShootAvatar stype=boulder rotateInPlace=true
@@ -14,12 +14,11 @@ BasicGame
             ldown > orientation=DOWN
             lright > orientation=RIGHT
             lleft > orientation=LEFT
-        pushingbox > Resource limit=2 value=0
+
         boulder > Missile color=BLUE singleton=True img=bullet
-        boulder2 > Immovable color=BLUE img=boulder
 
     LevelMapping
-        A > avatar pushingbox
+        A > avatar
         B > box
         L > lcleft
         R > lcright
@@ -28,29 +27,16 @@ BasicGame
         G > goal
 
     InteractionSet
-        boulderm boulder > transformTo stype=boulder
-    
-        avatar wall > stepBack
-        avatar lasercannon > stepBack
-        avatar box > changeResource resource=pushingbox value=1
-        avatar pushingbox > changeResource resource=pushingbox value=2
-        pushingbox avatar > killSprite
 
+        avatar wall lasercannon > stepBack
+
+        avatar box > shieldFrom ftype=killSprite stype=laser
         box avatar  > bounceForward
-        box wall    > undoAll
-        box box     > undoAll
-        box lasercannon > undoAll
-        
-        avatar wall > stepBack
+        box wall box lasercannon > undoAll
 
-        laser wall > killSprite
-        laser box > killSprite
-        laser boulder > killSprite
-        boulder wall > killSprite
-        boulder EOS > killSprite
-        avatar laser > changeResource resource=pushingbox value=-1
-        avatar laser > killIfHasLess resource=pushingbox limit=0
-        
+        avatar wall > stepBack
+        laser wall box > killSprite
+        boulder wall lasercannon EOS > killSprite
         goal avatar > killSprite scoreChange=5
 
         lcdown boulder > transformTo stype=lcswap
@@ -58,8 +44,6 @@ BasicGame
         lcup boulder > transformTo stype=lcleft
         lcright boulder > transformTo stype=lcup
         lcswap boulder > transformTo stype=lcright
-
-        boulder lasercannon > killSprite
 
 
     TerminationSet

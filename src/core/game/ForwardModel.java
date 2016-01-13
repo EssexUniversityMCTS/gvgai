@@ -713,6 +713,12 @@ public class ForwardModel extends Game
      */
     public int getAvatarMaxHealthPoints() { return avatar.maxHealthPoints; }
 
+    /**
+     * Returns the limit of health points this avatar can have.
+     * @return the limit of health points the avatar can have.
+     */
+    public int getAvatarLimitHealthPoints() {return avatar.limitHealthPoints;}
+
 
     /** Methods that return positions of things **/
 

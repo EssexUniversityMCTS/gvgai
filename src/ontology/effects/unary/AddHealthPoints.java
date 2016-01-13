@@ -25,8 +25,11 @@ public class AddHealthPoints extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
-        sprite1.healthPoints += value;
-        if(sprite1.healthPoints > sprite1.maxHealthPoints)
-            sprite1.maxHealthPoints = sprite1.healthPoints;
+        if(sprite1.healthPoints + value < sprite1.limitHealthPoints) {
+            sprite1.healthPoints += value;
+
+            if (sprite1.healthPoints > sprite1.maxHealthPoints)
+                sprite1.maxHealthPoints = sprite1.healthPoints;
+        }
     }
 }

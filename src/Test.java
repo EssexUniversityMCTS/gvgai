@@ -65,14 +65,14 @@ public class Test
                              "catapults", "chase", "chipschallenge", "chopper", "cookmepasta",        //10-14
                              "crossfire", "defem", "defender", "digdug", "eggomania",           //15-19
                              "enemycitadel", "escape", "factorymanager", "firecaster",  "firestorms",   //20-24
-                             "frogs", "gymkhana", "realsokoban", "thecitadel", "zenpuzzle",    //25-29
-                             "roguelike", "surround", "zelda", "plants", "plaqueattack",        //30-34
-                             "jaws", "labyrinth", "painter", "whackamole", "lemmings",             //35-39
-                             "solarfox", "seaquest", "missilecommand", "overload", "lasers",         //40-44
-                             "sheriff", "infection", "superman", "waitforbreakfast", "survivezombies",      //45-49
-                             "lasers2", "hungrybirds" ,"modality", "portals", "raceBet2", //50-54
-                             "intersection", "sokoban", "iceandfire", "realportals", "tercio", //55-59
-                              "pacman"  }; //60,61
+                             "frogs", "gymkhana", "hungrybirds", "iceandfire", "infection",    //25-29
+                             "intersection", "jaws", "labyrinth", "lasers", "lasers2",        //30-34
+                             "surround", "zelda", "painter", "whackamole", "lemmings",             //35-39
+                             "solarfox", "seaquest", "missilecommand", "overload", "plants",         //40-44
+                             "sheriff", "zenpuzzle", "superman", "waitforbreakfast", "survivezombies",      //45-49
+                             "plaqueattack", "realsokoban" ,"modality", "portals", "raceBet2", //50-54
+                             "roguelike", "sokoban", "thecitadel", "realportals", "tercio", //55-59
+                              "pacman"  }; //60 ...
 
 
         //Other settings
@@ -81,7 +81,7 @@ public class Test
         int seed = new Random().nextInt();
 
         //Game and level to play
-        int gameIdx = 26;
+        int gameIdx = 34;
         int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";

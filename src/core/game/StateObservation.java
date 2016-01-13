@@ -227,6 +227,12 @@ public class StateObservation {
      */
     public int getAvatarMaxHealthPoints() { return model.getAvatarMaxHealthPoints(); }
 
+    /**
+     * Returns the limit of health points this avatar can have.
+     * @return the limit of health points the avatar can have.
+     */
+    public int getAvatarLimitHealthPoints() {return model.getAvatarLimitHealthPoints();}
+
     //Methods to retrieve the state external to the avatar, in the game...
 
     /**

@@ -3,11 +3,13 @@ BasicGame
         exit > Door color=GREEN img=goal
         avatar > MovingAvatar img=avatar
         trap > Immovable img=hell
-
         ice > Immovable img=ice
         fire > Immovable img=fire
-        iceshoes > Resource img=diamond limit=1 value=0
-        fireboots > Resource img=powerpill limit=1 value=0
+
+        feetwear > Resource limit=1 value=1
+            iceshoes > img=diamond
+            fireboots > img=powerpill
+
         chip > Immovable img=gold
 
     InteractionSet
@@ -15,14 +17,11 @@ BasicGame
         avatar wall > stepBack
         exit avatar > killSprite scoreChange=1
         avatar trap > killSprite scoreChange=-1
+        chip avatar > killSprite scoreChange=1
 
-        avatar iceshoes > changeResource resource=iceshoes value=1 scoreChange=3
-        iceshoes avatar > killSprite
-        avatar fireboots > changeResource resource=fireboots value=1 scoreChange=3
-        fireboots avatar > killSprite
+        feetwear avatar > collectResource scoreChange=3
         avatar ice > killIfHasLess resource=iceshoes limit=0
         avatar fire > killIfHasLess resource=fireboots limit=0
-        chip avatar > killSprite scoreChange=1
 
     TerminationSet
         Timeout limit=500 win=False

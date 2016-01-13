@@ -1,22 +1,26 @@
 BasicGame
     SpriteSet
-        avatar > MovingAvatar img=butterfly
+        avatar > MovingAvatar img=butterfly healthPoints=5 limitHealthPoints=30
         foodbank > Immovable invisible=true
         wall > Immovable color=BLACK img=wall
         goal > Door color=GREEN img=goal
-        bubble > Chaser stype=avatar invisible=True
-        bubblehole > SpawnPoint stype=bubble cooldown=15 invisible=True
-        food > Resource limit=30 value=5 img=carcass img=carcass
+
+        bubble > Chaser stype=avatar invisible=True hidden=True
+        bubblehole > SpawnPoint stype=bubble cooldown=15 invisible=True hidden=True
+
+        food > Resource img=carcass img=carcass
 
     InteractionSet
-        food avatar > collectResource
-        avatar foodbank > changeResource resource=food value=15
+        food avatar > addHealthPoints value=15
+        food avatar > killSprite
+        avatar foodbank > addHealthPoints value=15
         foodbank avatar > killSprite scoreChange=40
+
         goal avatar  > killSprite scoreChange=100
         avatar wall  > stepBack
-        avatar bubble > changeResource resource=food value=-1
+
+        avatar bubble > subtractHealthPoints
         bubble avatar > killSprite
-        avatar bubble > killIfHasLess resource=food limit=1
 
     TerminationSet
         SpriteCounter stype=goal   limit=0 win=True

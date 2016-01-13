@@ -1,6 +1,6 @@
 #Bolo Adventures III: http://www.mobygames.com/game/dos/bolo-adventures-iii
 
-BasicGame
+BasicGame key_handler=Pulse
     SpriteSet
         hole   > Immovable color=DARKBLUE img=hole
         goal > Immovable img=door
@@ -13,7 +13,7 @@ BasicGame
             lcdown > img=spaceship stype=ldown
             lcright > img=spaceship stype=lright
             lcleft > img=spaceship stype=lleft
-        laser > Missile color=YELLOW  shrinkfactor=0.5 speed=0.5
+        laser > Missile color=YELLOW  shrinkfactor=0.5 speed=0.1
             lup > orientation=UP
             ldown > orientation=DOWN
             lright > orientation=RIGHT
