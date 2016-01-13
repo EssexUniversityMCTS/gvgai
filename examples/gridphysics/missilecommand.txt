@@ -16,8 +16,7 @@ BasicGame
 
   InteractionSet
     movable wall  > stepBack
-    incoming city > killSprite
-    city incoming > killSprite scoreChange=-1
+    incoming city > killBoth scoreChange=-1
     incoming explosion > killSprite scoreChange=2
 
   TerminationSet

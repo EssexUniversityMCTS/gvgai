@@ -67,12 +67,12 @@ public class Test
                              "enemycitadel", "escape", "factorymanager", "firecaster",  "firestorms",   //20-24
                              "frogs", "gymkhana", "hungrybirds", "iceandfire", "infection",    //25-29
                              "intersection", "jaws", "labyrinth", "lasers", "lasers2",        //30-34
-                             "surround", "zelda", "painter", "whackamole", "lemmings",             //35-39
-                             "solarfox", "seaquest", "missilecommand", "overload", "plants",         //40-44
+                             "lemmings", "missilecommand", "modality", "overload", "pacman",             //35-39
+                             "solarfox", "seaquest", "zelda", "whackamole", "plants",         //40-44
                              "sheriff", "zenpuzzle", "superman", "waitforbreakfast", "survivezombies",      //45-49
-                             "plaqueattack", "realsokoban" ,"modality", "portals", "raceBet2", //50-54
+                             "plaqueattack", "realsokoban" ,"painter", "portals", "raceBet2", //50-54
                              "roguelike", "sokoban", "thecitadel", "realportals", "tercio", //55-59
-                              "pacman"  }; //60 ...
+                              "surround"  }; //60 ...
 
 
         //Other settings
@@ -81,7 +81,7 @@ public class Test
         int seed = new Random().nextInt();
 
         //Game and level to play
-        int gameIdx = 34;
+        int gameIdx = 39;
         int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
