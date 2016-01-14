@@ -2,15 +2,22 @@ package levelGenerators.randomLevelGenerator;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import core.game.GameDescription;
 import core.game.GameDescription.SpriteData;
 import core.generator.AbstractLevelGenerator;
 import tools.ElapsedCpuTimer;
+import tools.GameAnalyzer;
 
 public class LevelGenerator extends AbstractLevelGenerator{
 
+	/**
+	 * Add Borders to the generated random level
+	 */
+	public static boolean includeBorders = false;
+	
 	/**
 	 * Random number generator for the level generator
 	 */
@@ -43,6 +50,60 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		emptyPercentage = 0.7;
 	}
 	
+	/**
+	 * Get the first solid character that is described in the level mapping
+	 * @param gameDescription	game description object to get all data
+	 * @return					character of the first solid object found or null otherwise
+	 */
+	private Character getSolidCharacter(GameDescription gameDescription){
+		GameAnalyzer gameAnalyzer = new GameAnalyzer(gameDescription);
+		ArrayList<String> solidSprites = gameAnalyzer.getSolidSprites();
+		for(Entry<Character, ArrayList<String>> entry:gameDescription.getLevelMapping().entrySet()){
+			for(String s:solidSprites){
+				if(entry.getValue().contains(s)){
+					return entry.getKey();
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Surround the level with solid border
+	 * @param gameDescription	game description that describe all aspects of games
+	 * @param points			array of the unique points to be added
+	 * @param width				width of the level
+	 * @param height			height of the level
+	 * @return					true if it build the border and false otherwise
+	 */
+	private boolean buildLayout(GameDescription gameDescription, ArrayList<DataPoint> points, int width, int height){
+		Character solidCharacter = getSolidCharacter(gameDescription);
+		
+		if(solidCharacter != null){
+			for(int x=0; x<width; x++){
+				points.add(new DataPoint(x, 0, solidCharacter));
+				points.add(new DataPoint(x, height - 1, solidCharacter));
+			}
+			
+			for(int y=0; y<height; y++){
+				points.add(new DataPoint(0, y, solidCharacter));
+				points.add(new DataPoint(width - 1, y, solidCharacter));
+			}
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Check if the input x and y are found in the ArrayList
+	 * @param points	list of points required to check
+	 * @param x			the x value to be checked
+	 * @param y			the y value to be checked
+	 * @return			the point if its in the list or null otherwise
+	 */
 	private DataPoint isUnique(ArrayList<DataPoint> points, int x, int y){
 		for(DataPoint temp:points){
 			if(temp.x == x && temp.y == y){
@@ -53,12 +114,24 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		return null;
 	}
 	
+	/**
+	 * Add random unique x and y value that is not found in the 
+	 * list of points associated with a certain character c
+	 * @param points	list of points to check uniqueness with
+	 * @param width		the maximum x value
+	 * @param length	the maximum y value
+	 * @param c			the character associated with the new point
+	 */
 	private void addUnique(ArrayList<DataPoint> points, int width, int length, char c){
 		int x =0;
 		int y = 0;
 		do{
-			x = random.nextInt(width);
-			y = random.nextInt(length);
+			int border = 0;
+			if(includeBorders){
+				border = 1;
+			}
+			x = random.nextInt(width - 2 * border) + border;
+			y = random.nextInt(length - 2 * border) + border;
 		}while(isUnique(points, x, y) != null);
 		
 		points.add(new DataPoint(x, y, c));
@@ -101,6 +174,10 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		}
 		
 		ArrayList<DataPoint> dataPoints = new ArrayList<DataPoint>();
+		if(includeBorders){
+			includeBorders = buildLayout(game, dataPoints, width, length);
+		}
+		
 		for(Character c:choices){
 			addUnique(dataPoints, width, length, c);
 		}
@@ -129,6 +206,11 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		return result;
 	}
 
+	/**
+	 * Helper class to store some data points with a 
+	 * character associated with it
+	 * @author AhmedKhalifa
+	 */
 	private class DataPoint{
 		public int x;
 		public int y;

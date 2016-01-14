@@ -14,12 +14,12 @@ public class CompetitionParameters
     /**
      * Milliseconds allowed per controller action.
      */
-    public static int ACTION_TIME = 20;
+    public static int ACTION_TIME = 40;
 
     /**
      * Milliseconds for controller disqualification, if it returns an action after this time.
      */
-    public static int ACTION_TIME_DISQ = 30;
+    public static int ACTION_TIME_DISQ = 50;
 
     /**
      * Milliseconds allowed for controller initialization.
@@ -50,12 +50,12 @@ public class CompetitionParameters
     /**
      * Delay for human play.
      */
-    public static int DELAY = 40;
+    public static int DELAY = 20;
 
     /**
      * Longer delay for human play.
      */
-    public static int LONG_DELAY = 50;
+    public static int LONG_DELAY = 20;
 
     /**
      * Max time a game can run
@@ -65,17 +65,17 @@ public class CompetitionParameters
     /**
      * Terminates the program when the playing window is closed
      */
-    public static boolean closeAppOnClosingWindow = true;
+    public static boolean closeAppOnClosingWindow = false;
     
     /**
      * Pause the game at the beginning and at the end
      */
-    public static boolean dialogBoxOnStartAndEnd = false;
+    public static boolean dialogBoxOnStartAndEnd = true;
     
     /**
      * Close the open window when you die or win
      */
-    public static boolean killWindowOnEnd = false;
+    public static boolean killWindowOnEnd = true;
     
     /**
      * Java Warm-up time before starting the game.
