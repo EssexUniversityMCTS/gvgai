@@ -58,15 +58,19 @@ public class LevelGenerator extends AbstractLevelGenerator{
 	private Character getSolidCharacter(GameDescription gameDescription){
 		GameAnalyzer gameAnalyzer = new GameAnalyzer(gameDescription);
 		ArrayList<String> solidSprites = gameAnalyzer.getSolidSprites();
+		int minValue = Integer.MAX_VALUE;
+		Character result = ' ';
 		for(Entry<Character, ArrayList<String>> entry:gameDescription.getLevelMapping().entrySet()){
 			for(String s:solidSprites){
 				if(entry.getValue().contains(s)){
-					return entry.getKey();
+					if(entry.getValue().size() < minValue){
+						result = entry.getKey();
+					}
 				}
 			}
 		}
 		
-		return null;
+		return result;
 	}
 	
 	/**
