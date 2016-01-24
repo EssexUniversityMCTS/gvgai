@@ -46,7 +46,7 @@ public class Test
 
 
         //CIG 2014 TEST SET / GECCO 2015 VALIDATION SET
-        String games[] = new String[]{"aliens", "boulderdash", "butterflies", "chase", "frogs", "missileCommand",
+        String games[] = new String[]{"zelda", "boulderdash", "butterflies", "chase", "frogs", "missileCommand",
         		"portals", "sokoban", "survivezombies", "zelda"};
 
         //Other settings
@@ -63,7 +63,7 @@ public class Test
         String recordLevelFile = generateLevelPath +"geneticLevelGenerator/" + games[gameIdx] + "_lvl0.txt";
 
         // 1. This starts a game, in a level, played by a human.
-        ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
+        //ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
         
         // 2. This plays a game in a level by the controller.
         //ArcadeMachine.runOneGame(game, level1, visuals, sampleOneStepController, recordActionsFile, seed);
@@ -83,9 +83,9 @@ public class Test
         //}
         
         //5. This starts a game, in a generated level created by a specific level generator
-        //if(ArcadeMachine.generateOneLevel(game, geneticGenerator, recordLevelFile)){
-        //	ArcadeMachine.playOneGeneratedLevel(game, recordActionsFile, recordLevelFile, seed);
-        //}
+        if(ArcadeMachine.generateOneLevel(game, geneticGenerator, recordLevelFile)){
+        	ArcadeMachine.playOneGeneratedLevel(game, recordActionsFile, recordLevelFile, seed);
+        }
         
         //6. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
         /*int N = 10, L = 1, M = 5;

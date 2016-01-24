@@ -47,7 +47,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		random = new Random();
 		minSize = 4;
 		maxSize = 18;
-		emptyPercentage = 0.7;
+		emptyPercentage = 0.9;
 	}
 	
 	/**

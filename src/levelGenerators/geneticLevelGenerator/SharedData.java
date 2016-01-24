@@ -26,13 +26,13 @@ public class SharedData {
 	public static final double MAX_SIZE = 18;
 	public static final double MIN_SOLUTION_LENGTH = 50;
 	public static final double MIN_DOTHING_STEPS = 100;
-	public static final double MIN_COVER_PERCENTAGE = 0.2;
-	public static final double MAX_COVER_PERCENTAGE = 0.8;
+	public static final double MIN_COVER_PERCENTAGE = 0.05;
+	public static final double MAX_COVER_PERCENTAGE = 0.3;
 	public static final double MIN_RULE_NUMBER = 40;
 	public static final double MIN_UNIQUE_RULE_NUMBER = 3;
 	public static final boolean CONSTRUCTIVE_INITIALIZATION = true;
 	
-	public static final String AGENT_NAME = "controllers.adrienctx.Agent";
+	public static final String AGENT_NAME = "controllers.repeatAdrienctx.Agent";
 	public static final String NAIVE_AGENT_NAME = "controllers.sampleonesteplookahead.Agent";
 	public static final String DO_NOTHING_AGENT_NAME = "controllers.doNothing.Agent";
 	

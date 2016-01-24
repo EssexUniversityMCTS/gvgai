@@ -39,9 +39,9 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		levelSizeRandomPercentage = 0.75;
 		levelSizeMaxPercentage = 1.5;
 		
-		maxCoverPercentage = 0.614;
-		randomnessPercentage = 0.1;
-		coverTradeOffPercentage = 0.5;
+		maxCoverPercentage = 0.1;
+		randomnessPercentage = 0.05;
+		coverTradeOffPercentage = 0.8;
 	}
 	
 	private LevelCoverData getPercentagesCovered(GameDescription game){
@@ -115,6 +115,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		ArrayList<String> solidSprites = gameAnalyzer.getSolidSprites();
 		if(solidSprites.size() > 0){
 			String randomSolid = solidSprites.get(random.nextInt(solidSprites.size()));
+			
 			for(int x=0; x<level.getWidth(); x++){
 				level.set(x, 0, randomSolid);
 				level.set(x, level.getHeight() - 1, randomSolid);
@@ -199,15 +200,23 @@ public class LevelGenerator extends AbstractLevelGenerator{
 	private Point addAvatar(LevelData level, GameDescription game){
 		ArrayList<Point> freePositions = level.getAllFreeSpots();
 		Point randomPoint = freePositions.get(random.nextInt(freePositions.size()));
-		ArrayList<SpriteData> avatar = game.getAvatar();
-		SpriteData randomAvatar = avatar.get(random.nextInt(avatar.size()));
+		ArrayList<String> avatar = gameAnalyzer.getAvatarSprites();
+		String randomAvatar = avatar.get(random.nextInt(avatar.size()));
 		
-		if(gameAnalyzer.horzAvatar.contains(randomAvatar.type)){
+		String type = "";
+		for(SpriteData data:game.getAvatar()){
+			if(randomAvatar.equals(data.name)){
+				type = data.type;
+				break;
+			}
+		}
+		
+		if(gameAnalyzer.horzAvatar.contains(type)){
 			freePositions = getUpperLowerPoints(freePositions);
 			randomPoint = freePositions.get(random.nextInt(freePositions.size()));
 		}
 		
-		level.set(randomPoint.x, randomPoint.y, randomAvatar.name);
+		level.set(randomPoint.x, randomPoint.y, randomAvatar);
 		
 		return randomPoint;
 	}
@@ -266,16 +275,6 @@ public class LevelGenerator extends AbstractLevelGenerator{
 				}
 			}
 		}
-		
-		if(totalSprites.size() > 0){
-			increase = random.nextInt((int)Math.ceil(positions.size() * 1.0 * 
-					gameAnalyzer.getGoalSprites().size() / game.getAllSpriteData().size()));
-			for(int i = 0; i < increase; i++){
-				int index = random.nextInt(positions.size());
-				Point pos = positions.remove(index);
-				level.set(pos.x, pos.y, totalSprites.get(random.nextInt(totalSprites.size())));
-			}
-		}
 	}
 
 	private boolean isMoving(GameDescription game, String stype){
@@ -314,6 +313,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 	private void addHarmfulObjects(GameDescription game, LevelData level, LevelCoverData coverPercentage, Point avatarPosition){
 		double numberOfHarmful = coverPercentage.levelPercentage * coverPercentage.harmfulPercentage * 
 				getArea(generatedLevel);
+		
 		ArrayList<String> harmfulSprites = gameAnalyzer.getHarmfulSprites();
 		ArrayList<Point> freePositions = level.getAllFreeSpots();
 		while(numberOfHarmful > 0){
@@ -347,6 +347,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		ArrayList<Point> freePositions = level.getAllFreeSpots();
 		while(numberOfOther > 0){
 			String randomSprite = otherSprites.get(random.nextInt(otherSprites.size()));
+			
 			if(gameAnalyzer.checkIfSpawned(randomSprite) == 0){
 				continue;
 			}
@@ -366,6 +367,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		ArrayList<Point> freePositions = level.getAllFreeSpots();
 		while(numberOfOther > 0){
 			String randomSprite = otherSprites.get(random.nextInt(otherSprites.size()));
+			
 			if(gameAnalyzer.checkIfSpawned(randomSprite) == 0){
 				continue;
 			}
@@ -387,7 +389,6 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		addHarmfulObjects(game, generatedLevel, coverPercentages, avatarPosition);
 		addCollectableObjects(game, generatedLevel, coverPercentages);
 		addOtherObjects(game, generatedLevel, coverPercentages);
-		
 		fixGoals(game, generatedLevel, coverPercentages);
 		
 		return generatedLevel.getLevel();

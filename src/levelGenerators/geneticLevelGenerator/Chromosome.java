@@ -280,8 +280,12 @@ public class Chromosome implements Comparable<Chromosome>{
 	
 	private double getCoverPercentage(){
 		int objects = 0;
-		for (int y = 0; y < level.length; y++) {
-			for (int x = 0; x < level[y].length; x++) {
+		int borders = 0;
+		if(SharedData.gameAnalyzer.getSolidSprites().size() > 0){
+			borders = 1;
+		}
+		for (int y = borders; y < level.length - borders; y++) {
+			for (int x = borders; x < level[y].length - borders; x++) {
 				objects += Math.min(1, level[y][x].size());
 			}
 		}
