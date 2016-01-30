@@ -146,32 +146,52 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		}
 		
 		double[] probabilities = new double[population.size()];
-		probabilities[0] = population.get(0).getFitness().get(index);
+		probabilities[0] = population.get(0).getCombinedFitness();
 		for(int i=1; i<population.size(); i++){
-			probabilities[i] = probabilities[i-1] + population.get(i).getFitness().get(index) + SharedData.EIPSLON;
+			probabilities[i] = probabilities[i-1] + population.get(i).getCombinedFitness() + SharedData.EIPSLON;
 		}
 		
 		for(int i=0; i<probabilities.length; i++){
 			probabilities[i] = probabilities[i] / probabilities[probabilities.length - 1];
 		}
 		
-		ArrayList<Chromosome> newPopulation = new ArrayList<Chromosome>();
-		for(int j=0; j < Math.ceil(SharedData.SELECTION_PERCENTAGE * population.size()); j++){
-			double prob = SharedData.random.nextDouble();
+		double prob = SharedData.random.nextDouble();
 			
-			for(int i=0; i<probabilities.length; i++){
-				if(prob < probabilities[i]){
-					newPopulation.add(population.get(i));
-					break;
-				}
+		for(int i=0; i<probabilities.length; i++){
+			if(prob < probabilities[i]){
+				return population.get(i);
 			}
 		}
 		
-		if(index == newPopulation.get(0).getFitness().size() - 1){
-			return newPopulation.get(0);
-		}
+		return population.get(0);
 		
-		return rouletteWheelSelection(newPopulation, index + 1);
+//		double[] probabilities = new double[population.size()];
+//		probabilities[0] = population.get(0).getFitness().get(index);
+//		for(int i=1; i<population.size(); i++){
+//			probabilities[i] = probabilities[i-1] + population.get(i).getFitness().get(index) + SharedData.EIPSLON;
+//		}
+//		
+//		for(int i=0; i<probabilities.length; i++){
+//			probabilities[i] = probabilities[i] / probabilities[probabilities.length - 1];
+//		}
+//		
+//		ArrayList<Chromosome> newPopulation = new ArrayList<Chromosome>();
+//		for(int j=0; j < Math.ceil(SharedData.SELECTION_PERCENTAGE * population.size()); j++){
+//			double prob = SharedData.random.nextDouble();
+//			
+//			for(int i=0; i<probabilities.length; i++){
+//				if(prob < probabilities[i]){
+//					newPopulation.add(population.get(i));
+//					break;
+//				}
+//			}
+//		}
+//		
+//		if(index == newPopulation.get(0).getFitness().size() - 1){
+//			return newPopulation.get(0);
+//		}
+//		
+//		return rouletteWheelSelection(newPopulation, index + 1);
 	}
 	
 	@Override
@@ -214,11 +234,12 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			}
 		}
 		
-		double worstTime = 3 * SharedData.EVALUATION_TIME * SharedData.POPULATION_SIZE;
+		double worstTime = SharedData.EVALUATION_TIME * SharedData.POPULATION_SIZE;
 		double avgTime = worstTime;
 		double totalTime = 0;
 		int numberOfIterations = 0;
 		
+		System.out.println(elapsedTimer.remainingTimeMillis() + " " + avgTime + " " + worstTime);
 		while(elapsedTimer.remainingTimeMillis() > 2 * avgTime && 
 				elapsedTimer.remainingTimeMillis() > worstTime){
 			ElapsedCpuTimer timer = new ElapsedCpuTimer();
@@ -248,6 +269,8 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			}
 			
 			Collections.sort(iChromosomes);
+			bestChromosomeLevelMapping = iChromosomes.get(0).getLevelMapping();
+			System.out.println("Best Fitness: " + iChromosomes.get(0).getConstrainFitness());
 			return iChromosomes.get(0).getLevelString(bestChromosomeLevelMapping);
 		}
 		

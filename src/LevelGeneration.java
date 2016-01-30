@@ -3,12 +3,8 @@ import core.ArcadeMachine;
 public class LevelGeneration {
 	public static void main(String[] args){
 		String levelGenerator = "levelGenerators." + args[0] + ".LevelGenerator";
-		int numberOfLevels = 5;
-		if(args[0].equals("randomLevelGenerator")){
-			if(Boolean.parseBoolean(args[2])){
-				levelGenerators.randomLevelGenerator.LevelGenerator.includeBorders = true;
-			}
-		}
+		int numberOfLevels = 1;
+		levelGenerators.randomLevelGenerator.LevelGenerator.includeBorders = true;
 		
 		String[] folderName = levelGenerator.split("\\.");
 		String gamesPath = "examples/gridphysics/";
@@ -16,7 +12,7 @@ public class LevelGeneration {
 		
 		String game = gamesPath + args[1] + ".txt";
 		for(int i=0; i<numberOfLevels; i++){
-	        String recordLevelFile = generateLevelPath + args[1] + "_lvl" + i +".txt";
+	        String recordLevelFile = generateLevelPath + args[1] + "_lvl" + args[2] +".txt";
 	        ArcadeMachine.generateOneLevel(game, levelGenerator, recordLevelFile);
 		}
     }

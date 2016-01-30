@@ -396,9 +396,16 @@ public class Chromosome implements Comparable<Chromosome>{
 			
 			StateObservation bestState = stepAgent.getFinalState();
 			ArrayList<Types.ACTIONS> bestSol = stepAgent.getSolution();
-			StateObservation naiveState = stateObs.copy(); 
-			getNaivePlayerResult(naiveState, bestSol.size(), naiveAgent);
-			int doNothingLength = getNaivePlayerResult(stateObs.copy(), bestSol.size(), doNothingAgent);
+			StateObservation doNothingState = null;
+			int doNothingLength = Integer.MAX_VALUE;
+			for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
+				StateObservation tempState = stateObs.copy();
+				int temp = getNaivePlayerResult(tempState, bestSol.size(), doNothingAgent);
+				if(temp < doNothingLength){
+					doNothingLength = temp;
+					doNothingState = tempState;
+				}
+			}
 			double coverPercentage = getCoverPercentage();
 			
 			double maxScore = 0;
@@ -411,6 +418,7 @@ public class Chromosome implements Comparable<Chromosome>{
 			parameters.put("solutionLength", bestSol.size());
 			parameters.put("maxSolutionLength", SharedData.MIN_SOLUTION_LENGTH);
 			parameters.put("doNothingSteps", doNothingLength);
+			parameters.put("doNothingState", doNothingState.getGameWinner());
 			parameters.put("bestPlayer", bestState.getGameWinner());
 			parameters.put("minDoNothingSteps", SharedData.MIN_DOTHING_STEPS);
 			parameters.put("coverPercentage", coverPercentage);
@@ -422,17 +430,28 @@ public class Chromosome implements Comparable<Chromosome>{
 			
 			CombinedConstraints constraint = new CombinedConstraints();
 			constraint.addConstraints(new String[]{"SolutionLengthConstraint", "DeathConstraint", 
-					"CoverPercentageConstraint", "SpriteNumberConstraint", "GoalConstraint", "AvatarNumberConstraint"});
+					"CoverPercentageConstraint", "SpriteNumberConstraint", "GoalConstraint", "AvatarNumberConstraint", "WinConstraint"});
 			constraint.setParameters(parameters);
 			constrainFitness = constraint.checkConstraint();
 			
 			System.out.println("SolutionLength:" + bestSol.size() + " doNothingSteps:" + doNothingLength + " coverPercentage:" + coverPercentage + " bestPlayer:" + bestState.getGameWinner());
 			
-			double scoreDiffScore = getGameScore(bestState.getGameScore() - naiveState.getGameScore(), maxScore);
-			double ruleScore = getUniqueRuleScore(bestState, SharedData.MIN_UNIQUE_RULE_NUMBER);
-			
-			fitness.add(scoreDiffScore);
-			fitness.add(ruleScore);
+			if(constrainFitness >= 1){
+				StateObservation naiveState = null;
+				for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
+					StateObservation tempState = stateObs.copy();
+					getNaivePlayerResult(tempState, bestSol.size(), naiveAgent);
+					if(naiveState == null || tempState.getGameScore() > naiveState.getGameScore()){
+						naiveState = tempState;
+					}
+				}
+				
+				double scoreDiffScore = getGameScore(bestState.getGameScore() - naiveState.getGameScore(), maxScore);
+				double ruleScore = getUniqueRuleScore(bestState, SharedData.MIN_UNIQUE_RULE_NUMBER);
+				
+				fitness.add(scoreDiffScore);
+				fitness.add(ruleScore);
+			}
 			
 			this.automatedAgent = null;
 			this.naiveAgent = null;
@@ -444,6 +463,14 @@ public class Chromosome implements Comparable<Chromosome>{
 	
 	public ArrayList<Double> getFitness(){
 		return fitness;
+	}
+	
+	public double getCombinedFitness(){
+		double result = 0;
+		for(double v: this.fitness){
+			result += v;
+		}
+		return result / this.fitness.size();
 	}
 	
 	public double getConstrainFitness(){

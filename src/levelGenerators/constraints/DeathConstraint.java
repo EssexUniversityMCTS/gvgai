@@ -5,18 +5,18 @@ import ontology.Types.WINNER;
 
 public class DeathConstraint extends AbstractConstraint{
 
-	public Types.WINNER bestPlayer;
 	public double doNothingSteps;
 	public double minDoNothingSteps;
+	public Types.WINNER doNothingState;
 	
 	@Override
 	public double checkConstraint() {
-		double result = 0;
-		if(bestPlayer == WINNER.NO_WINNER){
-			result += 0.5;
+		double result = 0.75 * doNothingSteps / minDoNothingSteps;
+		if(result >= 0.75){
+			result = 0.75;
 		}
-		if(doNothingSteps >= minDoNothingSteps){
-			result += 0.5;
+		if(doNothingState != WINNER.PLAYER_WINS){
+			result += 0.25;
 		}
 		return result;
 	}

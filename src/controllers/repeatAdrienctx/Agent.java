@@ -92,7 +92,8 @@ public class Agent extends AbstractPlayer{
 				pastAction != ACTIONS.ACTION_USE && pastAction != ACTIONS.ACTION_NIL){
 			StateObservation tempState = stateObs.copy();
 			tempState.advance(pastAction);
-			if(tempState.getAvatarPosition().equals(stateObs.getAvatarPosition())){
+			if(tempState.getAvatarPosition().equals(stateObs.getAvatarPosition()) &&
+				tempState.getAvatarOrientation().equals(stateObs.getAvatarOrientation())){
 				moves = 0;
 				nilMoves = 0;
 				currentState = DECIDE_ACTION;

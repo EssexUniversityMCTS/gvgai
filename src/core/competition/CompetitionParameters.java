@@ -29,7 +29,7 @@ public class CompetitionParameters
     /**
      * Milliseconds allowed for the level generator to generate a level
      */
-    public static int LEVEL_ACTION_TIME = 18000000;
+    public static int LEVEL_ACTION_TIME = 1800000*10;
     
     /**
      * Milliseconds allowed for the level generator disqualification, if it returns a level after this time.
@@ -60,7 +60,7 @@ public class CompetitionParameters
     /**
      * Max time a game can run
      */
-    public static int MAX_TIMESTEPS = 2000;
+    public static int MAX_TIMESTEPS = 1000;
 
     /**
      * Terminates the program when the playing window is closed

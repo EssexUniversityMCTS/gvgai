@@ -4,18 +4,19 @@ import java.util.HashMap;
 
 import core.game.GameDescription;
 import core.game.GameDescription.SpriteData;
+import tools.GameAnalyzer;
 
 public class AvatarNumberConstraint extends AbstractConstraint{
 
 	public HashMap<String, Integer> numOfObjects;
-	public GameDescription gameDescription;
+	public GameAnalyzer gameAnalyzer;
 	
 	@Override
 	public double checkConstraint() {
 		int totalAvatars = 0;
-		for(SpriteData avatar:gameDescription.getAvatar()){
-			if(numOfObjects.containsKey(avatar.name)){
-				totalAvatars += numOfObjects.get(avatar.name);
+		for(String avatar:gameAnalyzer.getAvatarSprites()){
+			if(numOfObjects.containsKey(avatar)){
+				totalAvatars += numOfObjects.get(avatar);
 			}
 		}
 		
