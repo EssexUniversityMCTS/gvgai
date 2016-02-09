@@ -7,7 +7,6 @@ BasicGame square_size=25
         health > Resource img=mana limit=10
 
         lock > Immovable img=lock
-        exit > Door color=GREEN img=goal
         gold > Resource color=GOLD limit=11 img=gold
         key > Resource img=key limit=1
 

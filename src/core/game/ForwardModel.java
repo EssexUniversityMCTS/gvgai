@@ -440,6 +440,8 @@ public class ForwardModel extends Game
         for(int i = 0; i < observationGrid.length; ++i)
             for(int j = 0; j < observationGrid[i].length; ++j)
                 observationGrid[i][j] = new ArrayList<Observation>();
+
+        this.pathf = a_gameState.pathf;
     }
 
 

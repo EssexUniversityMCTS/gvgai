@@ -1,10 +1,10 @@
 #Solar Fox: http://www.mobygames.com/game/atari-2600/solar-fox
 
-BasicGame
+BasicGame square_size=25
     SpriteSet
         enemyground > Immovable img=water
         powerblibturning > Flicker limit=8
-        avatar  > OngoingAvatar color=YELLOW img=spaceship
+        avatar  > OngoingAvatar color=YELLOW img=spaceship speed=0.15
         powerblib > Passive img=powerpill
         blib > Passive img=pellet
         enemy > Missile cooldown=3 img=camel

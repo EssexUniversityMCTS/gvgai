@@ -43,6 +43,7 @@ public class ArcadeMachine
      */
     public static double playOneGame(String game_file, String level_file, String actionFile, int randomSeed)
     {
+        //String agentName = "tools.pathfinder.Agent";
         String agentName = "controllers.human.Agent";
         boolean visuals = true;
         return runOneGame(game_file, level_file, visuals, agentName, actionFile, randomSeed);
@@ -83,7 +84,7 @@ public class ArcadeMachine
         toPlay.buildLevel(level_file);
 
         //Warm the game up.
-        ArcadeMachine.warmUp(toPlay, CompetitionParameters.WARMUP_TIME);
+        //ArcadeMachine.warmUp(toPlay, CompetitionParameters.WARMUP_TIME);
 
         //Create the player.
         AbstractPlayer player = ArcadeMachine.createPlayer(agentName, actionFile, toPlay.getObservation(), randomSeed);

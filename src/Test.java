@@ -68,11 +68,11 @@ public class Test
                              "frogs", "gymkhana", "hungrybirds", "iceandfire", "infection",    //25-29
                              "intersection", "jaws", "labyrinth", "lasers", "lasers2",        //30-34
                              "lemmings", "missilecommand", "modality", "overload", "pacman",             //35-39
-                             "solarfox", "seaquest", "zelda", "whackamole", "plants",         //40-44
-                             "sheriff", "zenpuzzle", "superman", "waitforbreakfast", "survivezombies",      //45-49
-                             "plaqueattack", "realsokoban" ,"painter", "portals", "raceBet2", //50-54
-                             "roguelike", "sokoban", "thecitadel", "realportals", "tercio", //55-59
-                              "surround"  }; //60 ...
+                             "painter", "plants", "plaqueattack", "portals", "raceBet2",         //40-44
+                             "realportals", "realsokoban", "roguelike", "seaquest", "sheriff",      //45-49
+                             "sokoban", "solarfox" ,"superman", "surround", "survivezombies", //50-54
+                             "tercio", "thecitadel", "waitforbreakfast", "watergame", "whackamole", //55-59
+                             "zelda", "zenpuzzle" }; //60, 61 ...
 
 
         //Other settings

@@ -42,6 +42,8 @@ import tools.KeyPulse;
 import tools.Pair;
 import tools.Vector2d;
 import tools.WindowInput;
+import tools.pathfinder.Node;
+import tools.pathfinder.PathFinder;
 
 /**
  * Created with IntelliJ IDEA.
@@ -265,6 +267,12 @@ public abstract class Game
      * Key Handler for human play. The default is CompetitionParameters.KEY_INPUT
      */
     public String key_handler;
+
+
+    /**
+     * Pathfinder.
+     */
+    protected PathFinder pathf;
 
     /**
      * Default constructor.
@@ -1328,7 +1336,18 @@ public abstract class Game
      */
     public VGDLSprite addSprite(int itype, Vector2d position)
     {
-        return this.addSprite((SpriteContent) classConst[itype], position, itype);
+        return this.addSprite((SpriteContent) classConst[itype], position, itype, false);
+    }
+
+    /**
+     * Adds a sprite given a content and position.
+     * @param itype integer that identifies the definition of the sprite to add
+     * @param position where the sprite has to be placed.
+     * @param force if true, ignores the singleton restrictions and creates it anyway.
+     */
+    public VGDLSprite addSprite(int itype, Vector2d position, boolean force)
+    {
+        return this.addSprite((SpriteContent) classConst[itype], position, itype, force);
     }
 
     /**
@@ -1336,8 +1355,9 @@ public abstract class Game
      * @param content definition of the sprite to add
      * @param position where the sprite has to be placed.
      * @param itype integer identifier of this type of sprite.
+     * @param force If true, forces the creation ignoring singleton restrictions
      */
-    public VGDLSprite addSprite(SpriteContent content, Vector2d position, int itype)
+    public VGDLSprite addSprite(SpriteContent content, Vector2d position, int itype, boolean force)
     {
         if(num_sprites > MAX_SPRITES)
         {
@@ -1347,14 +1367,15 @@ public abstract class Game
 
         //Check for singleton Sprites
         boolean anyother = false;
-        for (Integer typeInt : content.itypes)
-        {
-            //If this type is a singleton and we have one already
-            if(singletons[typeInt] && getNumSprites(typeInt) > 0)
-            {
-                //that's it, no more creations of this type.
-                anyother = true;
-                break;
+        if(!force) {
+
+            for (Integer typeInt : content.itypes) {
+                //If this type is a singleton and we have one already
+                if (singletons[typeInt] && getNumSprites(typeInt) > 0) {
+                    //that's it, no more creations of this type.
+                    anyother = true;
+                    break;
+                }
             }
         }
 
@@ -1601,8 +1622,23 @@ public abstract class Game
      */
     public void buildLevel(String gamelvl){
     	String[] lines = new IO().readFile(gamelvl);
-    	
+
+        ArrayList<Integer> list = new ArrayList<>(0);
+        list.add(0); //wall TODO: Need to make this general!
+    	pathf = new PathFinder(list);
+
     	buildStringLevel(lines);
+
+        pathf.run(this.getObservation());
+    }
+
+
+    public ArrayList<Node> getPath(Vector2d start, Vector2d end)
+    {
+        start.mul(1.0/(double)block_size);
+        end.mul(1.0/(double)block_size);
+
+        return pathf.getPath(start, end);
     }
     
     /**

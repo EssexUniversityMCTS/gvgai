@@ -41,12 +41,7 @@ import ontology.sprites.missile.Missile;
 import ontology.sprites.missile.RandomMissile;
 import ontology.sprites.missile.Walker;
 import ontology.sprites.missile.WalkerJumper;
-import ontology.sprites.npc.AlternateChaser;
-import ontology.sprites.npc.Chaser;
-import ontology.sprites.npc.Fleeing;
-import ontology.sprites.npc.RandomAltChaser;
-import ontology.sprites.npc.RandomInertial;
-import ontology.sprites.npc.RandomNPC;
+import ontology.sprites.npc.*;
 import ontology.sprites.producer.Bomber;
 import ontology.sprites.producer.Portal;
 import ontology.sprites.producer.RandomBomber;
@@ -70,7 +65,8 @@ public class VGDLFactory
     private String[] spriteStrings = new String[]
             {"Conveyor", "Flicker", "Immovable", "OrientedFlicker", "Passive", "Resource", "Spreader",
              "ErraticMissile", "Missile", "RandomMissile", "Walker", "WalkerJumper",
-             "ResourcePack", "Chaser", "Fleeing", "RandomInertial", "RandomNPC", "AlternateChaser", "RandomAltChaser",
+             "ResourcePack", "Chaser", "PathChaser", "Fleeing", "RandomInertial",
+             "RandomNPC", "AlternateChaser", "RandomAltChaser","PathAltChaser", "RandomPathAltChaser",
              "Bomber", "RandomBomber", "Portal", "SpawnPoint", "SpriteProducer", "Door",
              "FlakAvatar", "HorizontalAvatar","MovingAvatar","MissileAvatar",
              "OrientedAvatar","ShootAvatar", "OngoingAvatar"};
@@ -82,7 +78,8 @@ public class VGDLFactory
     private Class[] spriteClasses = new Class[]
             {Conveyor.class, Flicker.class, Immovable.class, OrientedFlicker.class, Passive.class, Resource.class, Spreader.class,
              ErraticMissile.class, Missile.class, RandomMissile.class, Walker.class, WalkerJumper.class,
-             ResourcePack.class, Chaser.class, Fleeing.class, RandomInertial.class, RandomNPC.class, AlternateChaser.class, RandomAltChaser.class,
+             ResourcePack.class, Chaser.class, PathChaser.class, Fleeing.class, RandomInertial.class,
+             RandomNPC.class, AlternateChaser.class, RandomAltChaser.class, PathAltChaser.class, RandomPathAltChaser.class,
              Bomber.class, RandomBomber.class, Portal.class, SpawnPoint.class, SpriteProducer.class, Door.class,
              FlakAvatar.class, HorizontalAvatar.class,MovingAvatar.class,MissileAvatar.class,
              OrientedAvatar.class,ShootAvatar.class, OngoingAvatar.class};
@@ -96,7 +93,8 @@ public class VGDLFactory
                     "wrapAround", "changeResource", "killIfHasLess", "killIfHasMore", "cloneSprite",
                     "flipDirection", "reverseDirection", "shieldFrom", "undoAll", "spawn", "spawnIfHasMore", "spawnIfHasLess",
                 "pullWithIt", "wallStop", "collectResource", "collectResourceIfHeld", "killIfOtherHasMore", "killIfFromAbove",
-                "teleportToExit", "bounceForward", "attractGaze", "subtractHealthPoints", "addHealthPoints"
+                "teleportToExit", "bounceForward", "attractGaze", "subtractHealthPoints", "addHealthPoints",
+                    "transformToAll"
             };
 
     /**
@@ -108,7 +106,8 @@ public class VGDLFactory
                     WrapAround.class,ChangeResource.class, KillIfHasLess.class, KillIfHasMore.class, CloneSprite.class,
                     FlipDirection.class, ReverseDirection.class, ShieldFrom.class, UndoAll.class, Spawn.class, SpawnIfHasMore.class, SpawnIfHasLess.class,
                 PullWithIt.class, WallStop.class, CollectResource.class, CollectResourceIfHeld.class, KillIfOtherHasMore.class, KillIfFromAbove.class,
-                TeleportToExit.class, BounceForward.class, AttractGaze.class, SubtractHealthPoints.class, AddHealthPoints.class
+                TeleportToExit.class, BounceForward.class, AttractGaze.class, SubtractHealthPoints.class, AddHealthPoints.class,
+                    TransformToAll.class
             };
 
 

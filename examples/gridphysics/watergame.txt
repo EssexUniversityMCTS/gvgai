@@ -1,4 +1,4 @@
-BasicGame square_size=80
+BasicGame square_size=80 key_handler=Pulse
     SpriteSet
         door > Door img=exit
         wall > Immovable img=wall

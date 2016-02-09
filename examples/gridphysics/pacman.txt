@@ -4,17 +4,29 @@ BasicGame square_size=20
             fruit > color=PINK img=mushroom
             pellet > color=LIGHTYELLOW shrinkfactor=0.5 img=pellet
             power  > Resource color=LIGHTGREEN shrinkfactor=0.8 img=powerpill
-        nest > SpawnPoint img=portal portal=True
-            redspawn > stype=red
-            orangespawn > stype=orange
-            bluespawn > stype=blue
-            pinkspawn > stype=pink
+        nest > SpawnPoint img=portal portal=True invisible=True
+            redspawn > stype=redOk
+            orangespawn > stype=orangeOk
+            bluespawn > stype=blueOk
+            pinkspawn > stype=pinkOk
         moving >
-            ghost > RandomAltChaser stype1=hungry stype2=powered cooldown=3 epsilon=0.25 img=ghost
-                red    > color=LIGHTRED    singleton=True
-                blue   > color=LIGHTBLUE   singleton=True
-                pink   > color=PINK        singleton=True
-                orange > color=LIGHTORANGE singleton=True
+
+
+            ghost >
+                red > singleton=True
+                    redOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=ghostRed
+                    redSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=ghostscared
+                blue > singleton=True
+                    blueOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=ghostBlue
+                    blueSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=ghostscared
+                pink > singleton=True
+                    pinkOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=ghostPink
+                    pinkSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=ghostscared
+                orange > singleton=True
+                    orangeOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=ghostOrange
+                    orangeSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=ghostscared
+
+
             pacman > OrientedAvatar img=avatar rotateInPlace=false
                 hungry  > color=YELLOW
                 powered > color=ORANGE            
@@ -22,21 +34,41 @@ BasicGame square_size=20
     InteractionSet
         moving wall > stepBack
         pacman EOS  > wrapAround
-        ghost EOS  > stepBack
+
+        ghost EOS ghost > stepBack
+
         power hungry  > killSprite
-        ghost powered > killSprite scoreChange=40
         hungry ghost  > killSprite scoreChange=-1
+
         power pacman > killSprite scoreChange=10
         pellet pacman > killSprite scoreChange=1
         fruit pacman > killSprite scoreChange=5
+
+        hungry  power > transformToAll stype=redOk stype2=redSc
+        hungry  power > transformToAll stype=pinkOk stype2=pinkSc
+        hungry  power > transformToAll stype=blueOk stype2=blueSc
+        hungry  power > transformToAll stype=orangeOk stype2=orangeSc
+
         hungry  power > transformTo stype=powered
-        powered ghost > transformTo stype=hungry
+
+        powered orangeSc pinkSc blueSc > transformToAll stype=redSc stype2=redOk killSecond=True
+        powered orangeSc redSc blueSc > transformToAll stype=pinkSc stype2=pinkOk killSecond=True
+        powered orangeSc pinkSc redSc > transformToAll stype=blueSc stype2=blueOk killSecond=True
+        powered redSc pinkSc blueSc > transformToAll stype=orangeSc stype2=orangeOk killSecond=True
+
+        ghost powered > killSprite scoreChange=40
+
+        powered ghost > transformTo stype=hungry scoreChange=40
+
         
     LevelMapping
         0 > power
         . > pellet
         A > hungry
-        1 > redspawn bluespawn pinkspawn orangespawn red blue pink orange
+        1 > redspawn
+        2 > orangespawn
+        3 > bluespawn
+        4 > pinkspawn
         F > fruit
         
     TerminationSet

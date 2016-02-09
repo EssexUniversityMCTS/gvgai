@@ -25,7 +25,7 @@ public class TransformTo extends Effect {
     //TODO: Theoretically, we could have an array of types here... to be done.
     public String stype;
     public int itype;
-    //Indicates if the second effect should be killed.
+    //Indicates if the second sprite should be killed.
     public boolean killSecond = false;
 
     public TransformTo(InteractionContent cnt)
@@ -39,6 +39,11 @@ public class TransformTo extends Effect {
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
         VGDLSprite newSprite = game.addSprite(itype, sprite1.getPosition());
+        transformTo(newSprite, sprite1,  sprite2,  game);
+    }
+
+    protected void transformTo(VGDLSprite newSprite, VGDLSprite sprite1, VGDLSprite sprite2, Game game)
+    {
         if(newSprite != null)
         {
             //Orientation
@@ -49,7 +54,7 @@ public class TransformTo extends Effect {
 
             //Last position of the avatar.
             newSprite.lastrect =  new Rectangle(sprite1.lastrect.x, sprite1.lastrect.y,
-                                                sprite1.lastrect.width, sprite1.lastrect.height);
+                    sprite1.lastrect.width, sprite1.lastrect.height);
 
             //Copy resources
             if(sprite1.resources.size() > 0)
@@ -80,7 +85,7 @@ public class TransformTo extends Effect {
                 game.killSprite(sprite2);
         }
     }
-    
+
     @Override
     public ArrayList<String> getEffectSprites(){
     	ArrayList<String> result = new ArrayList<String>();
