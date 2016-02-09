@@ -1,4 +1,4 @@
-BasicGame
+BasicGame key_handler=Pulse
     SpriteSet
         water > Immovable color=BLUE img=water
         weaponToggle1 > Immovable color=RED img=city
@@ -43,8 +43,9 @@ BasicGame
 
         boulderm boulder > transformTo stype=boulder
         boulder boulder > stepBack
-        moving wall      > stepBack
-        moving  EOS  > stepBack
+
+        moving wall EOS     > stepBack
+
         goal   avatar    > killSprite scoreChange=5
         avatar portalexit > stepBack
         avatar portalentry > teleportToExit scoreChange=1
@@ -63,8 +64,7 @@ BasicGame
         #Avatar and Boulder
         boulder avatar > transformTo stype=boulderm
         boulderm avatar > attractGaze
-        avatar boulder > stepBack
-        avatar boulderm > stepBack
+        avatar boulder boulderm > stepBack
 
         #moving boulder stops after hitting:
         boulderm wall > transformTo stype=boulder
@@ -78,8 +78,7 @@ BasicGame
         boulderm weaponToggle2 > transformTo stype=boulder
         boulder weaponToggle2 > undoAll
 
-        water boulderm > killSprite
-        boulderm water > killSprite
+        water boulderm > killBoth
 
         boulderm portalentry > teleportToExit
         boulderm EOS > stepBack
@@ -93,5 +92,4 @@ BasicGame
         wall missileIn > transformToSingleton stype=portalentry stype_other=wall
         wall missileOut > transformToSingleton stype=portalexit stype_other=wall takeOrientation=True
 
-        missile goal > killSprite
-        missile wall > killSprite
+        missile goal wall > killSprite

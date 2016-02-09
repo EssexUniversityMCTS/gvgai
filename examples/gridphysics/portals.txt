@@ -15,8 +15,7 @@ BasicGame
                 exit1  >
                 exit2  >
     InteractionSet
-        random wall      > stepBack
-        random structure > stepBack
+        random wall structure     > stepBack
         avatar wall      > stepBack
         goal   avatar    > killSprite scoreChange=1
         avatar bullet    > killSprite
