@@ -7,9 +7,20 @@ import tools.GameAnalyzer;
 
 public class SpriteNumberConstraint extends AbstractConstraint{
 	
+	/**
+	 * hashmap contains the number of objects for each type
+	 */
 	public HashMap<String, Integer> numOfObjects;
+	/**
+	 * Object for game analyzer
+	 */
 	public GameAnalyzer gameAnalyzer;
 	
+	/**
+	 * 
+	 * @return	1 if all objects appears at least once and 
+	 * 			percentage of different objects in the level otherwise
+	 */
 	@Override
 	public double checkConstraint() {
 		double totalNum = 0;

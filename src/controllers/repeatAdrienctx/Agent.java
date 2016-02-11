@@ -12,24 +12,60 @@ import tools.IO;
 
 public class Agent extends AbstractPlayer{
 	
-	public static double lambda = 5;
-	public static double sigma = 2;
+	/**
+	 * probability it will react to surprise
+	 */
 	public static double surpriseProb = 1;
+	/**
+	 * probability it will react to not hit walls
+	 */
 	public static double nonMoveProb = 1;
 	
+	/**
+	 * different states the player can be at
+	 */
 	private final int DECIDE_ACTION = 0;
 	private final int REPEAT_MOVE = 1;
 	private final int REPEAT_NIL = 2;
 	
+	/**
+	 * the previous action taken by the agent
+	 */
 	private ACTIONS pastAction;
+	/**
+	 * the amount of moves it has to repeat
+	 */
 	private double moves;
+	/**
+	 * the amount of nil moves it has to repeat
+	 */
 	private double nilMoves;
+	/**
+	 * the current state 
+	 */
 	private int currentState;
+	/**
+	 * 
+	 */
 	private AbstractPlayer automatedPlayer;
+	/**
+	 * 
+	 */
 	private Random random;
+	/**
+	 * 
+	 */
 	private ArrayList<Double> actDist;
+	/**
+	 * 
+	 */
 	private ArrayList<Double> nilDist;
 	
+	/**
+	 * 
+	 * @param stateObs Observation of the current state.
+     * @param elapsedTimer Timer when the action returned is due.
+	 */
 	public Agent(StateObservation stateObs, ElapsedCpuTimer elapsedTimer){
 		moves = 0;
 		nilMoves = 0;
@@ -53,6 +89,11 @@ public class Agent extends AbstractPlayer{
         }
 	}
 	
+	/**
+	 * 
+	 * @param dist
+	 * @return
+	 */
 	private ArrayList<Double> getCDF(ArrayList<Double> dist){
 		ArrayList<Double> array = new ArrayList<Double>();
 		
@@ -63,6 +104,11 @@ public class Agent extends AbstractPlayer{
 		return array;
 	}
 	
+	/**
+	 * 
+	 * @param dist
+	 * @return
+	 */
 	private int getNextEmpericalDist(ArrayList<Double> dist){
 		ArrayList<Double> cdf = getCDF(dist);
 		double value = random.nextDouble();
@@ -74,6 +120,12 @@ public class Agent extends AbstractPlayer{
 		return dist.size();
 	}
 	
+	/**
+	 * 
+	 * @param stateObs Observation of the current state.
+     * @param elapsedTimer Timer when the action returned is due.
+	 * @return
+	 */
 	@Override
 	public ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
 		ACTIONS currentAction = ACTIONS.ACTION_NIL;

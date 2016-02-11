@@ -522,7 +522,6 @@ public class GameAnalyzer {
 	
 	/**
 	 * Internal Enum for getAllInteractions function
-	 *
 	 */
 	private enum InteractionType{
 		ALL,

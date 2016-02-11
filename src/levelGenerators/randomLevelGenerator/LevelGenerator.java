@@ -16,7 +16,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 	/**
 	 * Add Borders to the generated random level
 	 */
-	public static boolean includeBorders = false;
+	public static boolean includeBorders = true;
 	
 	/**
 	 * Random number generator for the level generator

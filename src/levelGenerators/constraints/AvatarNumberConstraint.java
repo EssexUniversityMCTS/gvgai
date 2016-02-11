@@ -1,16 +1,23 @@
 package levelGenerators.constraints;
 
 import java.util.HashMap;
-
-import core.game.GameDescription;
-import core.game.GameDescription.SpriteData;
 import tools.GameAnalyzer;
 
 public class AvatarNumberConstraint extends AbstractConstraint{
 
+	/**
+	 * hashmap contains the number of objects for each type
+	 */
 	public HashMap<String, Integer> numOfObjects;
+	/**
+	 * Object for game analyzer
+	 */
 	public GameAnalyzer gameAnalyzer;
 	
+	/**
+	 * Check if there is only 1 avatar in the level
+	 * @return	1 if constraint is staisfied and 0 otherwise
+	 */
 	@Override
 	public double checkConstraint() {
 		int totalAvatars = 0;

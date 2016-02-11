@@ -416,7 +416,7 @@ public class Chromosome implements Comparable<Chromosome>{
 			
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("solutionLength", bestSol.size());
-			parameters.put("maxSolutionLength", SharedData.MIN_SOLUTION_LENGTH);
+			parameters.put("minSolutionLength", SharedData.MIN_SOLUTION_LENGTH);
 			parameters.put("doNothingSteps", doNothingLength);
 			parameters.put("doNothingState", doNothingState.getGameWinner());
 			parameters.put("bestPlayer", bestState.getGameWinner());
