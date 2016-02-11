@@ -5,14 +5,29 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 public class LevelData {
+	/**
+	 * a 2D matrix hold data about the level
+	 */
 	private String[][] level;
+	/**
+	 * hashmap to hold the current level mapping
+	 */
 	private HashMap<String, Character> levelMapping;
 	
+	/**
+	 * construct data for a level
+	 * @param width		level width
+	 * @param length	level height
+	 */
 	public LevelData(int width, int length){
 		level = new String[width][length];
 		levelMapping = new HashMap<String, Character>();
 	}
 	
+	/**
+	 * get the 2D level in form of string
+	 * @return	string describe the level
+	 */
 	public String getLevel(){
 		String result = "";
 		char mapChar = 'a';
@@ -37,22 +52,50 @@ public class LevelData {
 		return result;
 	}
 	
+	/**
+	 * set a position in the map to a certain type
+	 * @param x		x position on the map
+	 * @param y		y position on the map
+	 * @param stype	the sprite to added
+	 */
 	public void set(int x, int y, String stype){
 		level[x][y] = stype;
 	}
 	
+	/**
+	 * get the sprite at a certain position
+	 * @param x	x position on the map
+	 * @param y	y position on the map
+	 * @return
+	 */
 	public String get(int x, int y){
 		return level[x][y];
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getWidth(){
 		return level.length;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getHeight(){
 		return level[0].length;
 	}
 	
+	/**
+	 * 
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 * @return
+	 */
 	public boolean checkConnectivity(int x1, int y1, int x2, int y2){
 		if(level[x1][y1] != null || level[x2][y2] != null){
 			return false;
@@ -80,6 +123,12 @@ public class LevelData {
 		return false;
 	}
 	
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public boolean checkConnectivity(int x, int y){
 		boolean result = false;
 		set(x, y, "wall");
@@ -93,10 +142,20 @@ public class LevelData {
 		return result;
 	}
 	
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public boolean checkInLevel(int x, int y){
 		return (x >= 0 && y >=0 && x < getWidth() && y < getHeight());
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public ArrayList<Point> getAllFreeSpots(){
 		ArrayList<Point> result = new ArrayList<Point>();
 		for(int x=0; x<level.length; x++){
@@ -110,6 +169,10 @@ public class LevelData {
 		return result;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public HashMap<Character, ArrayList<String>> getLevelMapping(){
 		HashMap<Character, ArrayList<String>> result = new HashMap<Character, ArrayList<String>>();
 		for(Entry<String,Character> entry:levelMapping.entrySet()){
@@ -120,6 +183,11 @@ public class LevelData {
 		return result;
 	}
 	
+	/**
+	 * Special point class that is used to get neighbors and handle
+	 * other useful functions
+	 * @author AhmedKhalifa
+	 */
 	public static class Point{
 		public int x;
 		public int y;
@@ -134,6 +202,10 @@ public class LevelData {
 			this.y = y;
 		}
 		
+		/**
+		 * 
+		 * @return
+		 */
 		public ArrayList<Point> getSurroundingPoints(){
 			ArrayList<Point> result = new ArrayList<Point>();
 			result.add(new Point(this.x + 1, this.y));
@@ -144,6 +216,11 @@ public class LevelData {
 			return result;
 		}
 		
+		/**
+		 * 
+		 * @param p
+		 * @return
+		 */
 		public double getDistance(Point p){
 			return Math.sqrt(Math.pow(this.x - p.x, 2) + Math.pow(this.y - p.y, 2));
 		}

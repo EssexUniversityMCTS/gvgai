@@ -32,7 +32,7 @@ public class Test
         
         //Available games:
         String gamesPath = "examples/gridphysics/";
-        String generateLevelPath = "examples/generatedLevels/";
+        String generateLevelPath = "examples/";
 
         //CIG 2014 Training Set Games
         //String games[] = new String[]{"aliens", "boulderdash", "butterflies", "chase", "frogs",
@@ -62,7 +62,7 @@ public class Test
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
         
-        String recordLevelFile = generateLevelPath +"geneticLevelGenerator/" + games[gameIdx] + "_lvl0.txt";
+        String recordLevelFile = generateLevelPath + games[gameIdx] + ".txt";
 
         // 1. This starts a game, in a level, played by a human.
         //ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
@@ -85,7 +85,7 @@ public class Test
         //}
         
         //5. This starts a game, in a generated level created by a specific level generator
-        if(ArcadeMachine.generateOneLevel(game, geneticGenerator, recordLevelFile)){
+        if(ArcadeMachine.generateOneLevel(game, randomLevelGenerator, recordLevelFile)){
         	ArcadeMachine.playOneGeneratedLevel(game, recordActionsFile, recordLevelFile, seed);
         }
         

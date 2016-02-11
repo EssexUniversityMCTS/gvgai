@@ -41,28 +41,28 @@ public class Agent extends AbstractPlayer{
 	 */
 	private double nilMoves;
 	/**
-	 * the current state 
+	 * the current state of the agent
 	 */
 	private int currentState;
 	/**
-	 * 
+	 * the automated player used for playing
 	 */
 	private AbstractPlayer automatedPlayer;
 	/**
-	 * 
+	 * random object for deciding the distribution
 	 */
 	private Random random;
 	/**
-	 * 
+	 * the action repetition distribution
 	 */
 	private ArrayList<Double> actDist;
 	/**
-	 * 
+	 * the nil repetition distribution
 	 */
 	private ArrayList<Double> nilDist;
 	
 	/**
-	 * 
+	 * Initialize the parameters and construct the automated player
 	 * @param stateObs Observation of the current state.
      * @param elapsedTimer Timer when the action returned is due.
 	 */
@@ -90,9 +90,9 @@ public class Agent extends AbstractPlayer{
 	}
 	
 	/**
-	 * 
-	 * @param dist
-	 * @return
+	 * get CDF distribution of the distribution sent
+	 * @param dist	an array of probabilities
+	 * @return		return CDF array
 	 */
 	private ArrayList<Double> getCDF(ArrayList<Double> dist){
 		ArrayList<Double> array = new ArrayList<Double>();
@@ -105,9 +105,9 @@ public class Agent extends AbstractPlayer{
 	}
 	
 	/**
-	 * 
-	 * @param dist
-	 * @return
+	 * get a random number for the input distribution
+	 * @param dist	an array of probabilities
+	 * @return		return a number that is sampled from this dist
 	 */
 	private int getNextEmpericalDist(ArrayList<Double> dist){
 		ArrayList<Double> cdf = getCDF(dist);
@@ -121,15 +121,16 @@ public class Agent extends AbstractPlayer{
 	}
 	
 	/**
-	 * 
+	 * decide the next action to be done (either repeating same action or nil or deciding new action)
 	 * @param stateObs Observation of the current state.
      * @param elapsedTimer Timer when the action returned is due.
-	 * @return
+	 * @return the most suitable action
 	 */
 	@Override
 	public ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
 		ACTIONS currentAction = ACTIONS.ACTION_NIL;
 		
+		//respond to surprises by giving adrienctx the control again
 		if(random.nextDouble() < surpriseProb){
 			StateObservation tempState = stateObs.copy();
 			tempState.advance(pastAction);
@@ -140,6 +141,7 @@ public class Agent extends AbstractPlayer{
 			}
 		}
 		
+		//respond to walking into walls by giving adrienctx the control again
 		if(random.nextDouble() < nonMoveProb && 
 				pastAction != ACTIONS.ACTION_USE && pastAction != ACTIONS.ACTION_NIL){
 			StateObservation tempState = stateObs.copy();
@@ -152,7 +154,9 @@ public class Agent extends AbstractPlayer{
 			}
 		}
 		
+		//handling different states of the controller
 		switch(currentState){
+		//give the control to adrienctx to decide what i gonna do
 		case DECIDE_ACTION:
 			int temp = getNextEmpericalDist(nilDist);
 			
@@ -172,6 +176,7 @@ public class Agent extends AbstractPlayer{
 				}
 			}
 			break;
+		//repeat the previous move multiple time
 		case REPEAT_MOVE:
 			currentAction = pastAction;
 			if(moves >= 1){
@@ -181,6 +186,7 @@ public class Agent extends AbstractPlayer{
 				currentState = DECIDE_ACTION;
 			}
 			break;
+		//repeat the nil move between two different actions
 		case REPEAT_NIL:
 			currentAction = ACTIONS.ACTION_NIL;
 			if(nilMoves >= 1){
