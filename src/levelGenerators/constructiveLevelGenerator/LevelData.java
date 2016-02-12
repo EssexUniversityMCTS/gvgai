@@ -66,35 +66,35 @@ public class LevelData {
 	 * get the sprite at a certain position
 	 * @param x	x position on the map
 	 * @param y	y position on the map
-	 * @return
+	 * @return	sprite at a certain position on the map
 	 */
 	public String get(int x, int y){
 		return level[x][y];
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * get the width of the level
+	 * @return	return the width of the level
 	 */
 	public int getWidth(){
 		return level.length;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * get the height of the level
+	 * @return	return the height of the level
 	 */
 	public int getHeight(){
 		return level[0].length;
 	}
 	
 	/**
-	 * 
-	 * @param x1
-	 * @param y1
-	 * @param x2
-	 * @param y2
-	 * @return
+	 * check if the two positions are connected
+	 * @param x1	x position of the first point
+	 * @param y1	y position of the first point
+	 * @param x2	x position of the second point
+	 * @param y2	y position of the second point
+	 * @return	true if they are connected and false otherwise
 	 */
 	public boolean checkConnectivity(int x1, int y1, int x2, int y2){
 		if(level[x1][y1] != null || level[x2][y2] != null){
@@ -124,10 +124,10 @@ public class LevelData {
 	}
 	
 	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @return
+	 * check if this wall will case the world not to be connected any more
+	 * @param x x position for the point
+	 * @param y	y position for the point
+	 * @return	true if the wall didn't split the world into two halves and false otherwise
 	 */
 	public boolean checkConnectivity(int x, int y){
 		boolean result = false;
@@ -143,18 +143,18 @@ public class LevelData {
 	}
 	
 	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @return
+	 * check if the point is inside the borders of the level
+	 * @param x	x position for the point
+	 * @param y	y position for the point
+	 * @return	true if the point in the level and false otherwise
 	 */
 	public boolean checkInLevel(int x, int y){
 		return (x >= 0 && y >=0 && x < getWidth() && y < getHeight());
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * get all empty locations in the level
+	 * @return	array of points contains all empty locations
 	 */
 	public ArrayList<Point> getAllFreeSpots(){
 		ArrayList<Point> result = new ArrayList<Point>();
@@ -170,8 +170,8 @@ public class LevelData {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * get the level mapping hashmap
+	 * @return	the used hashmap for constructing the level
 	 */
 	public HashMap<Character, ArrayList<String>> getLevelMapping(){
 		HashMap<Character, ArrayList<String>> result = new HashMap<Character, ArrayList<String>>();
@@ -203,8 +203,8 @@ public class LevelData {
 		}
 		
 		/**
-		 * 
-		 * @return
+		 * get a list of all 4 neighbor points
+		 * @return	array of the 4 neighboring points
 		 */
 		public ArrayList<Point> getSurroundingPoints(){
 			ArrayList<Point> result = new ArrayList<Point>();
@@ -217,9 +217,9 @@ public class LevelData {
 		}
 		
 		/**
-		 * 
-		 * @param p
-		 * @return
+		 * get distance between this point and the input point
+		 * @param p	an input point
+		 * @return	distance between this point and the input point
 		 */
 		public double getDistance(Point p){
 			return Math.sqrt(Math.pow(this.x - p.x, 2) + Math.pow(this.y - p.y, 2));
