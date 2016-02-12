@@ -46,6 +46,7 @@ public class TransformTo extends Effect {
     {
         if(newSprite != null)
         {
+            //System.out.println(game.getGameTick() + " " + sprite1 + " --> " + newSprite) ;
             //Orientation
             if(newSprite.is_oriented && sprite1.is_oriented && newSprite.orientation == Types.NONE)
             {
@@ -81,7 +82,7 @@ public class TransformTo extends Effect {
 
             game.killSprite(sprite1);
 
-            if(killSecond)
+            if(killSecond && sprite2 != null)
                 game.killSprite(sprite2);
         }
     }

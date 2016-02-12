@@ -1,6 +1,7 @@
 package core.game;
 
 import java.awt.Dimension;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import core.SpriteGroup;
 import core.VGDLSprite;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
+import ontology.effects.TimeEffect;
 import tools.Pair;
 import tools.Vector2d;
 
@@ -150,6 +152,16 @@ public class ForwardModel extends Game
         {
             historicEvents.add(itEvent.next().copy());
         }
+
+        //copy the time effects:
+        this.timeEffects = new TreeSet<TimeEffect>();
+        Iterator<TimeEffect> timeEffects = a_gameState.timeEffects.descendingIterator();
+        while(timeEffects.hasNext())
+        {
+            TimeEffect tef = timeEffects.next().copy();
+            this.timeEffects.add(tef);
+        }
+        //System.out.println("Tef size: " + this.timeEffects.size());
 
         //Game state variables:
         this.gameTick = a_gameState.gameTick;

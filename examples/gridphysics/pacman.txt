@@ -44,21 +44,21 @@ BasicGame square_size=20
         pellet pacman > killSprite scoreChange=1
         fruit pacman > killSprite scoreChange=5
 
-        hungry  power > transformToAll stype=redOk stype2=redSc
-        hungry  power > transformToAll stype=pinkOk stype2=pinkSc
-        hungry  power > transformToAll stype=blueOk stype2=blueSc
-        hungry  power > transformToAll stype=orangeOk stype2=orangeSc
+        hungry power > transformToAll stype=redOk stype2=redSc
+        hungry power > transformToAll stype=pinkOk stype2=pinkSc
+        hungry power > transformToAll stype=blueOk stype2=blueSc
+        hungry power > transformToAll stype=orangeOk stype2=orangeSc
 
-        hungry  power > transformTo stype=powered
+        hungry power > addTimer timer=200 ftype=transformToAll stype=redSc stype2=redOk killSecond=True
+        hungry power > addTimer timer=200 ftype=transformToAll stype=pinkSc stype2=pinkOk killSecond=True
+        hungry power > addTimer timer=200 ftype=transformToAll stype=blueSc stype2=blueOk killSecond=True
+        hungry power > addTimer timer=200 ftype=transformToAll stype=orangeSc stype2=orangeOk killSecond=True
 
-        powered orangeSc pinkSc blueSc > transformToAll stype=redSc stype2=redOk killSecond=True
-        powered orangeSc redSc blueSc > transformToAll stype=pinkSc stype2=pinkOk killSecond=True
-        powered orangeSc pinkSc redSc > transformToAll stype=blueSc stype2=blueOk killSecond=True
-        powered redSc pinkSc blueSc > transformToAll stype=orangeSc stype2=orangeOk killSecond=True
+        hungry power > addTimer timer=200 ftype=transformToAll stype=powered stype2=hungry
+        hungry power > transformTo stype=powered
 
         ghost powered > killSprite scoreChange=40
 
-        powered ghost > transformTo stype=hungry scoreChange=40
 
         
     LevelMapping

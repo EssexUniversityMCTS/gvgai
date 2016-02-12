@@ -1,6 +1,6 @@
 BasicGame
     SpriteSet
-        bubble > Chaser stype=avatar invisible=True
+
         sky   > Immovable color=WHITE
         saved > Immovable color=LIGHTGREEN img=avatar
         holes > SpawnPoint color=LIGHTGRAY img=portal portal=True
@@ -9,22 +9,40 @@ BasicGame
             diverhole  >  stype=diver
                 normaldiverhole > prob=0.005
                 oftendiverhole  > prob=0.025
-        bubblehole > SpawnPoint stype=bubble cooldown=25 invisible=True
+
         moving >
-            avatar  > ShootAvatar color=YELLOW  stype=torpedo img=spaceship
+            avatar  > ShootAvatar color=YELLOW  stype=torpedo img=spaceship healthPoints=18 limitHealthPoints=20
             torpedo > Missile color=YELLOW shrinkfactor=0.3 img=missile
             fish >
                 shark  > Missile orientation=LEFT  speed=0.25 color=ORANGE img=frog
                 whale  > Bomber  orientation=RIGHT  speed=0.1 color=BROWN stype=pirana prob=0.02 img=bee 
                 pirana > Missile orientation=RIGHT speed=0.25 color=RED shrinkfactor=0.5 img=camel
             diver > RandomNPC color=GREEN speed=0.5 img=ghost
-        air   > Resource color=WHITE limit=20 value=18
+
         crew  > Resource color=GREEN limit=4 value=0 img=alien
+
+    InteractionSet
+
+        avatar TIME > subtractHealthPoints timer=24 repeating=True
+
+        EOS avatar diver sky   > stepBack
+        fish EOS  > killSprite #Note that from vgdl 2.0, EOS can be the first or the second sprite.
+
+        fish torpedo > killBoth scoreChange=1
+        avatar fish  > killSprite
+        crew avatar > collectResource
+
+        avatar sky > addHealthPoints value=1
+        avatar sky > spawnIfHasMore resource=crew stype=saved limit=4
+        avatar sky > changeResource resource=crew value=-4
+        saved  sky > killSprite scoreChange=1000
+
+        avatar diver > changeResource resource=crew
+        diver avatar > killSprite
 
     LevelMapping
         a > sky
-        X > bubblehole
-        A > air avatar crew
+        A > avatar crew
         w > water
         1 > sharkhole
         2 > whalehole
@@ -34,23 +52,3 @@ BasicGame
     TerminationSet
         SpriteCounter      stype=avatar               limit=0 win=False
         Timeout limit=1000 win=True
-
-    InteractionSet
-        avatar  EOS  > stepBack
-        torpedo EOS  > killSprite
-        fish EOS  > killSprite
-        diver   EOS  > stepBack
-        diver   sky  > stepBack
-        avatar fish  > killSprite
-        fish torpedo > killSprite scoreChange=1
-        air avatar > collectResource
-        crew avatar > collectResource
-        avatar sky > changeResource resource=air
-        avatar sky > spawnIfHasMore resource=crew stype=saved limit=4
-        avatar sky > changeResource resource=crew value=-4
-        saved  sky > killSprite scoreChange=1000
-        avatar bubble > changeResource resource=air value=-1
-        bubble avatar > killSprite
-        avatar diver > changeResource resource=crew
-        diver avatar > killSprite
-        avatar bubble > killIfHasLess resource=air limit=1

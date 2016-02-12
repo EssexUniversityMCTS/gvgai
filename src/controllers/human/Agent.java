@@ -36,6 +36,21 @@ public class Agent extends AbstractPlayer
         Vector2d move = Utils.processMovementActionKeys(Game.ki.getMask());
         boolean useOn = Utils.processUseKey(Game.ki.getMask());
 
+//        StateObservation st = stateObs.copy();
+//        boolean end = false;
+//        int i = 0;
+//        //System.out.println("TURN " + stateObs.getGameTick());
+//        while(!end)
+//        {
+////            if(!st.isGameOver())
+////                System.out.println(i + " " + st.getAvatarType() + " " + stateObs.getGameTick());
+//
+//            st.advance(Types.ACTIONS.ACTION_NIL);
+//            ++i;
+//            if(i > 10)
+//                end = true;
+//        }
+
         //In the keycontroller, move has preference.
         Types.ACTIONS action = Types.ACTIONS.fromVector(move);
 

@@ -19,6 +19,7 @@ import core.game.GameDescription.TerminationData;
 import core.termination.Termination;
 import ontology.Types;
 import ontology.effects.Effect;
+import ontology.effects.TimeEffect;
 import tools.IO;
 import tools.Pair;
 import tools.Vector2d;
@@ -317,19 +318,26 @@ public class VGDLParser
                             System.out.println("Defining interaction " + ic.object1 + "+" + obj2Str +
                                     " > " + ic.function);
 
-                    }else if(obj1 != -1 && obj2 == -1)
-                    {
-                        //Only one sprite is defined in SpriteSet, this might be an EOS effect.
-                        if(obj2Str.equalsIgnoreCase("EOS"))
-                        {
+                    }else if(obj1 == -1 || obj2 == -1) {
+
+                        //EOS or a TIME Effect (since VGDL 2.0)
+                        if (obj2Str.equalsIgnoreCase("EOS")) {
                             game.getDefinedEosEffects().add(obj1);
                             game.getEosEffects(obj1).add(ef);
-                        }
 
-                        if(VERBOSE_PARSER)
-                            System.out.println("Defining interaction " + ic.object1 + "+" + obj2Str +
-                                    " > " + ic.function);
+                        }else if (ic.object1.equalsIgnoreCase("EOS")) {
+                            game.getDefinedEosEffects().add(obj2);
+                            game.getEosEffects(obj2).add(ef);
+
+                        }else if (ic.object1.equalsIgnoreCase("TIME") ||
+                                   obj2Str.equalsIgnoreCase("TIME")) {
+                            game.addTimeEffect((TimeEffect) ef);
+                        }
                     }
+
+                    if(VERBOSE_PARSER)
+                        System.out.println("Defining interaction " + ic.object1 + "+" + obj2Str +
+                                " > " + ic.function);
 
                     //update game stochasticity.
                     if(ef.is_stochastic)

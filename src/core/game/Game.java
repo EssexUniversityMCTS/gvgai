@@ -3,15 +3,7 @@ package core.game;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.JOptionPane;
@@ -33,6 +25,7 @@ import core.termination.Termination;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.Effect;
+import ontology.effects.TimeEffect;
 import ontology.sprites.Resource;
 import tools.IO;
 import tools.JEasyFrame;
@@ -99,6 +92,11 @@ public abstract class Game
      * List of EOS effects
      */
     protected ArrayList<Effect>[] eosEffects;
+
+    /**
+     * List of TIME effects
+     */
+    protected TreeSet<TimeEffect> timeEffects;
 
 
     /**
@@ -285,6 +283,7 @@ public abstract class Game
         charMapping = new HashMap<Character,ArrayList<String>>();
         terminations = new ArrayList<Termination>();
         historicEvents = new TreeSet<Event>();
+        timeEffects = new TreeSet<TimeEffect>();
 
         //Game attributes:
         size = new Dimension();
@@ -388,6 +387,7 @@ public abstract class Game
             spriteGroups[j] = new SpriteGroup(j);
             shieldedEffects[j] = new ArrayList<>();
             eosEffects[j] = new ArrayList<Effect>();
+            timeEffects = new TreeSet<TimeEffect>();
             bucketList[j] = new Bucket();
 
             //Declare the extended types list of this sprite type.
@@ -1066,7 +1066,65 @@ public abstract class Game
         //Array to indicate that the sprite type has no representative in collisions.
         boolean noSprites[] = new boolean[spriteGroups.length];
 
-        //First, we handle single sprite events (EOS). Take each sprite itype that has
+        //First, check the effects that are triggered in a timely manner.
+        while (timeEffects.size() > 0 && timeEffects.first().nextExecution <= gameTick)
+        {
+            TimeEffect ef = timeEffects.pollFirst();
+            int intId = ef.itype;
+
+            //if intId==-1, we have no sprite
+            if(intId == -1)
+            {
+                //With no sprite, the effect is independent from particular sprites.
+                ef.execute(null,null,this);
+
+                //Affect score:
+                if(ef.applyScore)
+                    this.score += ef.scoreChange;
+
+            }else {
+
+                if (!noSprites[intId] && bucketList[intId].size() == 0) {
+                    //Take all the subtypes in the hierarchy of this sprite.
+                    ArrayList<Integer> allTypes = iSubTypes[intId];
+                    for (Integer itype : allTypes) {
+                        //Add all sprites of this subtype to the list of sprites.
+                        //This are sprites that could potentially collide with EOS
+                        Collection<VGDLSprite> sprites = this.getSprites(itype).values();
+                        for (VGDLSprite sp : sprites) {
+                            //bucketList[intId].insert(sp);
+                            bucketList[intId].add(sp);
+                        }
+                    }
+
+                    //If no sprites were added here, mark it in the array.
+                    if (bucketList[intId].size() == 0)
+                        noSprites[intId] = true;
+                }
+
+                //For all sprites that can collide.
+                for (VGDLSprite s1 : bucketList[intId].getAllSprites()) {
+                    //Check that they are not dead (could happen in this same cycle).
+                    if (!kill_list.contains(s1)) {
+                        executeEffect(ef, s1, null);
+                    }
+                }
+
+                //Clear the array of sprites for this effect.
+                bucketList[intId].clear();
+                noSprites[intId] = false;
+            }
+
+            //If the time effect is repetitive, need to reinsert in the list of effects
+            if(ef.repeating)
+            {
+                this.addTimeEffect(ef);
+            }
+
+        }
+
+
+        //Secondly, we handle single sprite events (EOS). Take each sprite itype that has
         //a EOS effect defined.
         for(Integer intId : definedEOSEffects)
         {
@@ -1099,10 +1157,8 @@ public abstract class Game
                 {
                     //Check if they are at the edge to trigger the effect. Also check that they
                     //are not dead (could happen in this same cycle).
-                    if(isAtEdge(s1.rect) && !kill_list.contains(s1))
-                    {
-                        //There is a collision. Trigger the effect.
-                        ef.execute(s1,null,this);
+                    if(isAtEdge(s1.rect) && !kill_list.contains(s1)) {
+                        executeEffect(ef, s1, null);
                     }
                 }
 
@@ -1194,15 +1250,7 @@ public abstract class Game
                                         VGDLSprite s2 = spritesInBucket2.get(idx2);
                                         if(s1 != s2 && s1.rect.intersects(s2.rect))
                                         {
-                                            //There is a collision. Apply the effect.
-                                            ef.execute(s1,s2,this);
-
-                                            //Affect score:
-                                            if(ef.applyScore)
-                                                this.score += ef.scoreChange;
-
-                                            //Add to events history.
-                                            addEvent(s1, s2);
+                                            executeEffect(ef, s1, s2);
 
                                             if(kill_list.contains(s1))
                                                 break s2loop; //Stop checking sprite 1 if it was killed.
@@ -1223,6 +1271,20 @@ public abstract class Game
 
         }//end FOR all effects in game.
 
+    }
+
+    private void executeEffect(Effect ef, VGDLSprite s1, VGDLSprite s2)
+    {
+        //There is a collision. Apply the effect.
+        ef.execute(s1,s2,this);
+
+        //Affect score:
+        if(ef.applyScore)
+            this.score += ef.scoreChange;
+
+        //Add to events history.
+        if(s1 != null && s2 != null)
+            addEvent(s1, s2);
     }
 
     private void addEvent(VGDLSprite s1, VGDLSprite s2)
@@ -1497,6 +1559,14 @@ public abstract class Game
     }
 
     /**
+     * Adds a time effect to the game.
+     */
+    public void addTimeEffect(TimeEffect ef)
+    {
+        timeEffects.add(ef);
+    }
+
+    /**
      * Returns the char mapping of this array, that relates characters in the level with
      * sprite names that it references.
      * @return the char mapping of this array. For each character, there is a list of N sprite names.
@@ -1635,10 +1705,13 @@ public abstract class Game
 
     public ArrayList<Node> getPath(Vector2d start, Vector2d end)
     {
-        start.mul(1.0/(double)block_size);
-        end.mul(1.0/(double)block_size);
+        Vector2d pathStart = new Vector2d(start);
+        Vector2d pathEnd = new Vector2d(end);
 
-        return pathf.getPath(start, end);
+        pathStart.mul(1.0 / (double) block_size);
+        pathEnd.mul(1.0/(double)block_size);
+
+        return pathf.getPath(pathStart, pathEnd);
     }
     
     /**

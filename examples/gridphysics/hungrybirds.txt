@@ -4,13 +4,12 @@ BasicGame
         foodbank > Immovable invisible=true
         wall > Immovable color=BLACK img=wall
         goal > Door color=GREEN img=goal
-
-        bubble > Chaser stype=avatar invisible=True hidden=True
-        bubblehole > SpawnPoint stype=bubble cooldown=15 invisible=True hidden=True
-
         food > Resource img=carcass img=carcass
 
     InteractionSet
+
+        avatar TIME > subtractHealthPoints timer=15 repeating=True
+
         food avatar > addHealthPoints value=15
         food avatar > killSprite
         avatar foodbank > addHealthPoints value=15
@@ -18,9 +17,6 @@ BasicGame
 
         goal avatar  > killSprite scoreChange=100
         avatar wall  > stepBack
-
-        avatar bubble > subtractHealthPoints
-        bubble avatar > killSprite
 
     TerminationSet
         SpriteCounter stype=goal   limit=0 win=True
@@ -30,5 +26,5 @@ BasicGame
         G > goal
         A > avatar food
         f > foodbank food food food
-        X > bubblehole wall
+        X > wall
 

@@ -25,6 +25,7 @@ import ontology.avatar.oriented.OngoingAvatar;
 import ontology.avatar.oriented.OrientedAvatar;
 import ontology.avatar.oriented.ShootAvatar;
 import ontology.effects.Effect;
+import ontology.effects.TimeEffect;
 import ontology.effects.binary.*;
 import ontology.effects.unary.*;
 import ontology.sprites.Conveyor;
@@ -94,7 +95,7 @@ public class VGDLFactory
                     "flipDirection", "reverseDirection", "shieldFrom", "undoAll", "spawn", "spawnIfHasMore", "spawnIfHasLess",
                 "pullWithIt", "wallStop", "collectResource", "collectResourceIfHeld", "killIfOtherHasMore", "killIfFromAbove",
                 "teleportToExit", "bounceForward", "attractGaze", "subtractHealthPoints", "addHealthPoints",
-                    "transformToAll"
+                    "transformToAll", "addTimer"
             };
 
     /**
@@ -107,7 +108,7 @@ public class VGDLFactory
                     FlipDirection.class, ReverseDirection.class, ShieldFrom.class, UndoAll.class, Spawn.class, SpawnIfHasMore.class, SpawnIfHasLess.class,
                 PullWithIt.class, WallStop.class, CollectResource.class, CollectResourceIfHeld.class, KillIfOtherHasMore.class, KillIfFromAbove.class,
                 TeleportToExit.class, BounceForward.class, AttractGaze.class, SubtractHealthPoints.class, AddHealthPoints.class,
-                    TransformToAll.class
+                    TransformToAll.class, AddTimer.class
             };
 
 
@@ -263,6 +264,11 @@ public class VGDLFactory
             Constructor effectConstructor = effectClass.getConstructor
                     (new Class[] {InteractionContent.class});
             Effect ef = (Effect) effectConstructor.newInstance(new Object[]{content});
+
+            if( content.object1.equalsIgnoreCase("TIME") ||
+                content.object2[0].equalsIgnoreCase("TIME"))
+                return new TimeEffect(content, ef);
+
             return ef;
 
         }catch (NoSuchMethodException e)
@@ -369,7 +375,19 @@ public class VGDLFactory
             }
             else
             {
-                System.out.println("Unknown field (" + parameter + "=" + value +
+                //Ignore unknown fields in dependent Effects (TimeEffect).
+                boolean warn = true;
+                boolean isInteraction = (content instanceof InteractionContent);
+                if(isInteraction)
+                {
+                    boolean isTimeEffect = ((InteractionContent)content).object2[0].equalsIgnoreCase("TIME") ||
+                                            ((InteractionContent)content).object1.equalsIgnoreCase("TIME") ||
+                                            (((InteractionContent) content).line.contains("addTimer")) ;
+                    if(isTimeEffect) warn = false;
+                }
+
+                if( warn )
+                    System.out.println("Unknown field (" + parameter + "=" + value +
                         ") from " + content.toString());
             }
         }

@@ -20,7 +20,7 @@ import java.util.ArrayList;
  */
 public class PathAltChaser extends AlternateChaser
 {
-
+    private Vector2d lastKnownTargetPosition;
 
     public PathAltChaser(){}
 
@@ -42,6 +42,7 @@ public class PathAltChaser extends AlternateChaser
         fleeing = false;
         targets = new ArrayList<VGDLSprite>();
         actions = new ArrayList<Vector2d>();
+        lastKnownTargetPosition = null;
     }
 
     public void postProcess()
@@ -67,8 +68,19 @@ public class PathAltChaser extends AlternateChaser
             VGDLSprite target = targets.get(0);
             ArrayList<Node> path = game.getPath(this.getPosition(), target.getPosition());
 
+            if(path==null && lastKnownTargetPosition!=null)
+            {
+                //System.out.println("Recalculating to " + lastKnownTargetPosition);
+                path = game.getPath(this.getPosition(), lastKnownTargetPosition);
+            }else{
+                lastKnownTargetPosition = target.getPosition().copy();
+            }
+
             if(path!=null && path.size()>0)
+            {
+                //lastKnownTargetPosition = target.getPosition().copy();
                 act = path.get(0).comingFrom;
+            }
 
         }else
         {
@@ -110,6 +122,8 @@ public class PathAltChaser extends AlternateChaser
         targetSprite.fleeing = this.fleeing;
         targetSprite.targets = new ArrayList<VGDLSprite>();
         targetSprite.actions = new ArrayList<Vector2d>();
+        targetSprite.lastKnownTargetPosition = lastKnownTargetPosition != null ?
+                        lastKnownTargetPosition.copy() : null;
         super.copyTo(targetSprite);
     }
 

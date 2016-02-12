@@ -14,8 +14,8 @@ import core.game.Game;
  * Time: 15:20
  * This is a Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
-public abstract class Effect
-{
+public abstract class Effect{
+
     //Indicates if this effect kills any sprite
     public boolean is_kill_effect = false;
 
@@ -42,21 +42,29 @@ public abstract class Effect
     public long hashCode;
 
 
+    /**
+     * Executes the effect
+     *
+     * @param sprite1 first sprite of the collision
+     * @param sprite2 second sprite of the collision
+     * @param game    reference to the game object with the current state.
+     */
     public abstract void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game);
 
-    public void setStochastic()
-    {
-        if(prob > 0 && prob < 1)
+    public void setStochastic() {
+        if (prob > 0 && prob < 1)
             is_stochastic = true;
     }
 
     public void parseParameters(InteractionContent content) {
         //parameters from the object.
-        VGDLFactory.GetInstance().parseParameters(content,this);
+        VGDLFactory.GetInstance().parseParameters(content, this);
         hashCode = content.hashCode;
     }
+
     
     public ArrayList<String> getEffectSprites(){
     	return new ArrayList<String>();
     }
+
 }
