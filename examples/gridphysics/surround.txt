@@ -14,8 +14,7 @@ BasicGame frame_rate=30 square_size=30
     InteractionSet
         avatar dog > killSprite
         avatar mud  > stepBack
-        moving wall > stepBack
-        moving grass > stepBack
+        moving wall grass > stepBack
         snow dog    > transformTo stype=mud
         snow avatar > transformTo stype=grass scoreChange=1
 

@@ -35,8 +35,7 @@ BasicGame square_size=25
         phantom sword > killSprite scoreChange=1
 
         avatar market > spawnIfHasMore resource=gold limit=1 stype=health spend=1
-        avatar health  > addHealthPoints value=1
-        health avatar  > killSprite
+        avatar health  > addHealthPoints value=1 killSecond=True
 
     TerminationSet
         SpriteCounter stype=avatar limit=0 win=False

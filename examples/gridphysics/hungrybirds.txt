@@ -9,11 +9,8 @@ BasicGame
     InteractionSet
 
         avatar TIME > subtractHealthPoints timer=15 repeating=True
-
-        food avatar > addHealthPoints value=15
-        food avatar > killSprite
-        avatar foodbank > addHealthPoints value=15
-        foodbank avatar > killSprite scoreChange=40
+        food avatar > addHealthPoints value=15 killSecond=True
+        avatar foodbank > addHealthPoints value=15 scoreChange=40 killSecond=True
 
         goal avatar  > killSprite scoreChange=100
         avatar wall  > stepBack

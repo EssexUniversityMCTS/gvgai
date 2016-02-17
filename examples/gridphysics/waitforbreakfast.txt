@@ -1,4 +1,3 @@
-#TestGame
 BasicGame
   SpriteSet
     exit > Immovable color=DARKBLUE img=portal portal=True
@@ -40,14 +39,9 @@ BasicGame
     leavingavatar singlechair > transformTo stype=satavatar
     standingavatar singlechair > transformTo stype=satavatar
 
-    avatar EOS > stepBack
-    avatar table > stepBack
-    waiter table > stepBack
-    avatar othertable > stepBack
-    waiter othertable > stepBack
-    avatar wall > stepBack
-    waiter wall > stepBack
-    waiter EOS > stepBack
+    waiter table othertable wall EOS > stepBack
+    avatar othertable wall EOS table > stepBack
+
 
 
   TerminationSet

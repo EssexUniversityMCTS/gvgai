@@ -630,17 +630,19 @@ public abstract class VGDLSprite {
             int resType = entry.getKey();
             int resValue = entry.getValue();
 
-            double wiggle = r.width/10.0f;
-            double prop = Math.max(0,Math.min(1,resValue / (double)(game.getResourceLimit(resType))));
+            if(resType > -1) {
+                double wiggle = r.width / 10.0f;
+                double prop = Math.max(0, Math.min(1, resValue / (double) (game.getResourceLimit(resType))));
 
-            Rectangle filled = new Rectangle((int) (r.x+wiggle/2), (int) offset, (int) (prop*(r.width-wiggle)), (int) barheight);
-            Rectangle rest   = new Rectangle((int) (r.x+wiggle/2+prop*(r.width-wiggle)), (int)offset, (int) ((1-prop)*(r.width-wiggle)), (int)barheight);
+                Rectangle filled = new Rectangle((int) (r.x + wiggle / 2), (int) offset, (int) (prop * (r.width - wiggle)), (int) barheight);
+                Rectangle rest = new Rectangle((int) (r.x + wiggle / 2 + prop * (r.width - wiggle)), (int) offset, (int) ((1 - prop) * (r.width - wiggle)), (int) barheight);
 
-            gphx.setColor(game.getResourceColor(resType));
-            gphx.fillRect(filled.x, filled.y, filled.width, filled.height);
-            gphx.setColor(Types.BLACK);
-            gphx.fillRect(rest.x, rest.y, rest.width, rest.height);
-            offset += barheight;
+                gphx.setColor(game.getResourceColor(resType));
+                gphx.fillRect(filled.x, filled.y, filled.width, filled.height);
+                gphx.setColor(Types.BLACK);
+                gphx.fillRect(rest.x, rest.y, rest.width, rest.height);
+                offset += barheight;
+            }
         }
 
     }

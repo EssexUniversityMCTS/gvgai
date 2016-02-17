@@ -40,25 +40,17 @@ BasicGame
         Timeout limit=1000 win=True
         
     InteractionSet
-        avatar  surround  > stepBack
-        avatar  base  > stepBack
-        avatar  wall > stepBack
+        avatar surround base wall > stepBack
 
-        base missile > killSprite
-        missile base > killSprite
-        base bullet > killSprite
-        bullet base > killSprite
-
-        missile EOS > killSprite
-        bullet EOS > killSprite
+        base missile bullet > killBoth
+        EOS missile bullet > killSprite
 
         bleft turndown > transformTo stype=bdown
         bright turnup > transformTo stype=bup
         bdown turnright > transformTo stype=bright
         bup turnleft > transformTo stype=bleft
 
-        bandit bullet > killSprite scoreChange=1
-        bullet bandit > killSprite
-        avatar missile > killSprite scoreChange=-1
-        missile avatar > killSprite
+        bandit bullet > killBoth scoreChange=1
+        avatar missile > killBoth scoreChange=-1
+
         bullet wall > killSprite

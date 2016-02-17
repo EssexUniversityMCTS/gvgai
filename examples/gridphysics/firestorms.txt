@@ -15,8 +15,7 @@ BasicGame
         avatar wall   > stepBack
         escape avatar > killSprite
 
-        avatar water > addHealthPoints
-        water avatar > killSprite
+        avatar water > addHealthPoints killSecond=True
 
         avatar fire > subtractHealthPoints scoreChange=-1
         fire water avatar wall > killSprite

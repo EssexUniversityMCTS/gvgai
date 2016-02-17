@@ -22,6 +22,5 @@ BasicGame
 
     InteractionSet
         moving  EOS  > stepBack
-        mole avatar > killSprite scoreChange=1
-        mole cat > killSprite scoreChange=-1
+        mole avatar cat > killSprite scoreChange=1
         avatar cat > killSprite scoreChange=-5

@@ -15,6 +15,7 @@ import ontology.effects.Effect;
 public class AddHealthPoints extends Effect
 {
     public int value; //healthpoints added from sprite1
+    public boolean killSecond = false;
 
     public AddHealthPoints(InteractionContent cnt)
     {
@@ -30,6 +31,9 @@ public class AddHealthPoints extends Effect
 
             if (sprite1.healthPoints > sprite1.maxHealthPoints)
                 sprite1.maxHealthPoints = sprite1.healthPoints;
+
+            if(killSecond && sprite2 != null)
+                game.killSprite(sprite2);
         }
     }
 }
