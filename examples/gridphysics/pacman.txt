@@ -27,7 +27,7 @@ BasicGame square_size=20
                     orangeSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=ghostscared
 
 
-            pacman > OrientedAvatar img=avatar rotateInPlace=false
+            pacman > OrientedAvatar img=avatar rotateInPlace=false speed=0.5
                 hungry  > color=YELLOW
                 powered > color=ORANGE            
             
