@@ -30,9 +30,13 @@ BasicGame key_handler=Pulse
 
         avatar wall lasercannon > stepBack
 
-        avatar box > shieldFrom ftype=killSprite stype=laser
+        avatar box > shieldFrom ftype=killIfFrontal stype=laser
         box avatar  > bounceForward
         box wall box lasercannon > undoAll
+
+        avatar laser > killIfFrontal
+        avatar laser > killIfNotFrontal
+
 
         avatar wall > stepBack
         laser wall box > killSprite

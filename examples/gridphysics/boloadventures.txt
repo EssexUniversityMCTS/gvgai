@@ -1,5 +1,4 @@
 #Bolo Adventures III: http://www.mobygames.com/game/dos/bolo-adventures-iii
-
 BasicGame key_handler=Pulse
     SpriteSet
         hole   > Immovable color=DARKBLUE img=hole
@@ -36,7 +35,8 @@ BasicGame key_handler=Pulse
         boulderm hole > killBoth scoreChange=1
 
         avatar wall lasercannon > stepBack
-        avatar box > shieldFrom ftype=killSprite stype=laser
+        avatar box > shieldFrom ftype=killIfFrontal stype=laser
+
         box avatar  > bounceForward
         box wall box hole lasercannon   > undoAll
         
@@ -47,8 +47,11 @@ BasicGame key_handler=Pulse
 
         boulder box wall boulder lasercannon > undoAll
         laser wall boulder boulderm box hole > killSprite
-        avatar laser > killSprite
         avatar hole > stepBack
+
+        avatar laser > killIfFrontal
+        avatar laser > killIfNotFrontal
+
         
         goal avatar > killSprite scoreChange=5
 
