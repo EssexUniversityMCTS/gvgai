@@ -8,8 +8,8 @@ BasicGame
         nokey   > img=avatar
         withkey > color=ORANGE img=alien
       enemy >  img=monster
-        monsterQuick > RandomNPC cooldown=2
-        monsterNormal > RandomNPC cooldown=4
+        monsterQuick > RandomNPC cooldown=2 cons=6
+        monsterNormal > RandomNPC cooldown=4 cons=8
         monsterSlow > RandomNPC cooldown=8
 
   LevelMapping

@@ -8,7 +8,7 @@ BasicGame square_size=40 key_handler=Pulse
         goal > Immovable img=door
         crate    > Passive img=box shrinkfactor=0.8
         boulder    > Passive img=boulder shrinkfactor=0.8
-        enemy > RandomNPC speed=0.5 color=PINK img=butterfly.png
+        enemy > RandomNPC speed=0.5 color=PINK img=butterfly.png cons=1
 
     LevelMapping
         0 > roundhole

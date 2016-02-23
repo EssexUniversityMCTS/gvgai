@@ -80,10 +80,12 @@ public class PathChaser extends RandomNPC
             if(path!=null && path.size()>0)
                 act = path.get(0).comingFrom;
 
+            this.counter = this.cons; //Reset the counter of consecutive moves.
+
         }else
         {
             //No target, just move random.
-            act = (Vector2d) Utils.choice(Types.BASEDIRS,game.getRandomGenerator());
+            act = getRandomMove(game);
         }
 
         //Apply the action to move.

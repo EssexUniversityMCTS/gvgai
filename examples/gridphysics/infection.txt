@@ -7,7 +7,7 @@ BasicGame
             avatar > ShootAvatar stype=sword
                  normal   > color=WHITE img=avatar
                  carrier  > color=RED img=alien
-            npc    > RandomNPC speed=0.25
+            npc    > RandomNPC speed=0.25  cons=1
                  host     > color=GREEN
                  infected > color=ORANGE speed=0.5
                  doctor > color=BLUE speed=0.2

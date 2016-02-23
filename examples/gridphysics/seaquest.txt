@@ -17,7 +17,7 @@ BasicGame
                 shark  > Missile orientation=LEFT  speed=0.25 color=ORANGE img=frog
                 whale  > Bomber  orientation=RIGHT  speed=0.1 color=BROWN stype=pirana prob=0.02 img=bee 
                 pirana > Missile orientation=RIGHT speed=0.25 color=RED shrinkfactor=0.5 img=camel
-            diver > RandomNPC color=GREEN speed=0.5 img=ghost
+            diver > RandomNPC color=GREEN speed=0.5 img=ghost cons=2
 
         crew  > Resource color=GREEN limit=4 value=0 img=alien
 

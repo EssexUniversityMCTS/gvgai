@@ -5,7 +5,7 @@ BasicGame
             goal  > Door color=GREEN img=goal
         moving >
             avatar > ShootAvatar ammo=weapon stype=sword img=avatar
-            random > RandomNPC speed=1 cooldown=4 img=monster
+            random > RandomNPC speed=1 cooldown=4 img=monster cons=8
         sword > Flicker limit=5 singleton=True img=sword
         weapon > Resource color=BLUE value=10000 limit=10000 img=sword
         gold  > Resource color=GOLD limit=11 img=gold # this limit is only used for visualizing progress

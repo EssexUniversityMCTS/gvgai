@@ -16,7 +16,7 @@ BasicGame square_size=25
 
         moving >
             avatar > ShootAvatar ammo=weapon stype=sword img=avatar healthPoints=1 limitHealthPoints=10
-            spider > RandomNPC speed=1 cooldown=4 img=monster
+            spider > RandomNPC speed=1 cooldown=4 img=monster cons=3
             phantom > Chaser stype=avatar cooldown=6 speed=0.5 color=BROWN  img=ghost
 
     InteractionSet

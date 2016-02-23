@@ -14,16 +14,16 @@ BasicGame square_size=20
 
             ghost >
                 red > singleton=True
-                    redOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=ghostRed
+                    redOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=ghostRed cons=4
                     redSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=ghostscared
                 blue > singleton=True
-                    blueOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=ghostBlue
+                    blueOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=ghostBlue cons=4
                     blueSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=ghostscared
                 pink > singleton=True
-                    pinkOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=ghostPink
+                    pinkOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=ghostPink cons=4
                     pinkSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=ghostscared
                 orange > singleton=True
-                    orangeOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=ghostOrange
+                    orangeOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=ghostOrange cons=4
                     orangeSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=ghostscared
 
 

@@ -1,7 +1,7 @@
 BasicGame
     SpriteSet
         camel > color=BROWN img=camel.png
-            randomCamel > RandomNPC speed=0.25
+            randomCamel > RandomNPC speed=0.25 cons=8
             straightCamelFast > Missile speed=0.6
                 fastR > orientation=RIGHT
                 fastL > orientation=LEFT

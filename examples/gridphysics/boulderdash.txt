@@ -7,7 +7,7 @@ BasicGame
 		boulder > Missile orientation=DOWN color=GRAY speed=0.2 img=boulder.png
 		moving >
 			avatar  > ShootAvatar   stype=sword img=avatar.png
-			enemy > RandomNPC
+			enemy > RandomNPC cons=1
 				crab > color=RED img=camel.png
 				butterfly > color=PINK img=butterfly.png
 
