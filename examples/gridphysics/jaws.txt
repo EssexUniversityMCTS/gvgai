@@ -27,10 +27,8 @@ BasicGame
         Timeout limit=1000 win=True
 
     InteractionSet
-        avatar  EOS  > stepBack
-        shark EOS > stepBack
-        torpedo EOS  > killSprite
-        fish EOS  > killSprite
+        EOS avatar shark > stepBack
+        EOS torpedo fish > killSprite
 
         whale torpedo > transformTo stype=shell scoreChange=1
         piranha torpedo > transformTo stype=shell scoreChange=1

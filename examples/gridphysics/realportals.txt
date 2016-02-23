@@ -44,8 +44,6 @@ BasicGame key_handler=Pulse
         boulderm boulder > transformTo stype=boulder
         boulder boulder > stepBack
 
-        moving wall EOS     > stepBack
-
         goal   avatar    > killSprite scoreChange=5
         avatar portalexit > stepBack
         avatar portalentry > teleportToExit scoreChange=1
@@ -56,7 +54,7 @@ BasicGame key_handler=Pulse
         key avatar > killSprite
         lock avatar > killIfOtherHasMore resource=key limit=1
         avatar lock > stepBack
-        moving lock > stepBack
+        moving lock wall > stepBack
 
         avatarIn weaponToggle1 > transformTo stype=avatarOut
         avatarOut weaponToggle2 > transformTo stype=avatarIn
@@ -81,13 +79,12 @@ BasicGame key_handler=Pulse
         water boulderm > killBoth
 
         boulderm portalentry > teleportToExit
-        boulderm EOS > stepBack
 
 
         #Missiles - order is important.
         missile portalentry > teleportToExit
         missile portalexit > attractGaze
-        missile EOS > stepBack
+        EOS missile boulderm moving  > stepBack
 
         wall missileIn > transformToSingleton stype=portalentry stype_other=wall
         wall missileOut > transformToSingleton stype=portalexit stype_other=wall takeOrientation=True

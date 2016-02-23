@@ -29,8 +29,7 @@ BasicGame
         cannon avatar      > spawnIfHasMore stype=bullet resource=null limit=0 prob=0.5
         enemy bullet       > killSprite scoreChange=1
         avatar enemy       > killSprite
-        avatar EOS         > stepBack
-        cannon EOS         > stepBack
+        EOS avatar cannon  > stepBack
         dirEnemy EOS       > reverseDirection
         bullet enemy EOS   > killSprite
 
