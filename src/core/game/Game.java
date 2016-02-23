@@ -233,7 +233,6 @@ public abstract class Game
      */
     protected int MAX_SPRITES;
 
-
     /**
      * Random number generator for this game. It can only be received when the game is started.
      */
@@ -271,6 +270,12 @@ public abstract class Game
      * Pathfinder.
      */
     protected PathFinder pathf;
+
+
+    /**
+     * Avatar last action.
+     */
+    protected Types.ACTIONS avatarLastAction;
 
     /**
      * Default constructor.
@@ -1636,6 +1641,15 @@ public abstract class Game
      * @param newAvatar the avatar of the game.
      */
     public void setAvatar(MovingAvatar newAvatar) {avatar = newAvatar;}
+
+    /**
+     * Sets the last action executed by the avatar. It could be NIL in case of time overspent.
+     * @param action the action to set.
+     */
+    public void setAvatarLastAction(Types.ACTIONS action)
+    {
+        this.avatarLastAction = action;
+    }
 
     /**
      * Indicates if the game is over, or if it is still being played.

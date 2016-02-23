@@ -168,6 +168,7 @@ public class ForwardModel extends Game
         this.isEnded = a_gameState.isEnded;
         this.winner = a_gameState.winner;
         this.score = a_gameState.score;
+        this.avatarLastAction = a_gameState.avatarLastAction;
         this.nextSpriteID = a_gameState.nextSpriteID;
     }
 
@@ -437,6 +438,7 @@ public class ForwardModel extends Game
         this.score = a_gameState.score;
         this.frame_rate = a_gameState.frame_rate; //is this needed?
         this.MAX_SPRITES = a_gameState.MAX_SPRITES;
+        this.avatarLastAction = a_gameState.avatarLastAction;
 
         //create the boolean maps of sprite types.
         npcList = new boolean[a_gameState.spriteGroups.length];
@@ -692,7 +694,9 @@ public class ForwardModel extends Game
      */
     public Types.ACTIONS getAvatarLastAction()
     {
-        return avatar.lastAction;
+        if(avatarLastAction != null)
+            return avatarLastAction;
+        else return Types.ACTIONS.ACTION_NIL;
     }
 
 
