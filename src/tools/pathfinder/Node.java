@@ -24,7 +24,7 @@ public class Node implements Comparable<Node> {
         totalCost = 1.0f;
         parent = null;
         position = pos;
-        id = (int) (position.x * 100 + position.y);
+        id = ((int)(position.x) * 100 + (int)(position.y));
     }
 
     @Override

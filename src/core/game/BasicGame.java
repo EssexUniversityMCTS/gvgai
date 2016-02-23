@@ -10,6 +10,7 @@ import core.competition.CompetitionParameters;
 import core.content.GameContent;
 import tools.IO;
 import tools.Vector2d;
+import tools.pathfinder.PathFinder;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,6 +28,14 @@ public class BasicGame extends Game {
      */
     public int square_size;
 
+    /**
+     * List of sprites that should not be traversable for the pathfinder. This list can be specified
+     * with sprite string identifiers separated by commas.
+     */
+    public String obs;
+
+    //List of IDs of the sprites should not be traversable for the pathfinder.
+    private ArrayList<Integer> obstacles;
 
 
     /**
@@ -51,6 +60,30 @@ public class BasicGame extends Game {
 
         //Parse the arguments.
         this.parseParameters(content);
+    }
+
+    /**
+     * Builds a level, receiving a file name.
+     * @param gamelvl file name containing the level.
+     */
+    public void buildLevel(String gamelvl){
+        String[] lines = new IO().readFile(gamelvl);
+
+        //Pathfinder
+        obstacles = new ArrayList<>();
+        obstacles.add(0); //Walls always in.
+        if(obs != null)
+        {
+            int obsArray[] = VGDLRegistry.GetInstance().explode(obs);
+            for(Integer it : obsArray)
+                obstacles.add(it);
+        }
+
+        pathf = new PathFinder(obstacles);
+
+        buildStringLevel(lines);
+
+        pathf.run(this.getObservation());
     }
 
     @Override

@@ -597,14 +597,6 @@ public class ForwardModel extends Game
         return screenSize;
     }
 
-    /**
-     * Indicates how many pixels form a block in the game.
-     * @return how many pixels form a block in the game.
-     */
-    public int getBlockSize()
-    {
-        return block_size;
-    }
 
     /** avatar-dependent functions **/
 

@@ -1,6 +1,6 @@
 #Bait: http://www.mobygames.com/game/bait
 
-BasicGame  key_handler=Pulse
+BasicGame  key_handler=Pulse square_size=50
     SpriteSet
 
         hole   > Immovable color=DARKBLUE img=hole

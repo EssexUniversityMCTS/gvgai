@@ -1684,23 +1684,23 @@ public abstract class Game
      */
     public int[] getSpriteOrder() {return spriteOrder;}
 
+
+    /**
+     * Indicates how many pixels form a block in the game.
+     * @return how many pixels form a block in the game.
+     */
+    public int getBlockSize()
+    {
+        return block_size;
+    }
+
     public abstract void buildStringLevel(String[] levelString);
     
     /**
      * Builds a level, receiving a file name.
      * @param gamelvl file name containing the level.
      */
-    public void buildLevel(String gamelvl){
-    	String[] lines = new IO().readFile(gamelvl);
-
-        ArrayList<Integer> list = new ArrayList<>(0);
-        list.add(0); //wall TODO: Need to make this general!
-    	pathf = new PathFinder(list);
-
-    	buildStringLevel(lines);
-
-        pathf.run(this.getObservation());
-    }
+    public void buildLevel(String gamelvl){}
 
 
     public ArrayList<Node> getPath(Vector2d start, Vector2d end)

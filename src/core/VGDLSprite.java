@@ -360,39 +360,6 @@ public abstract class VGDLSprite {
     }
 
     /**
-     * Applies both the passive and active movement for the avatar in the forward model.
-     * This method is DEPRECATED.
-     */
-    @Deprecated
-    public void applyMovement(Game game, boolean[] actionMask) {
-
-        //First, lock orientation, if any.
-        Vector2d tmp = orientation.copy();
-        orientation = Types.NONE.copy();
-
-        //Then, update the passive movement.
-        preMovement();
-        updatePassive();
-
-        //Apply action supplied.
-        Vector2d action = Utils.processMovementActionKeys(actionMask);
-        this.physics.activeMovement(this, action, this.speed);
-
-        //Set orientation of the avatar.
-        Vector2d dir = lastDirection();
-        if(dir.x == 0 && dir.y == 0)
-        {
-            //No movement.
-            orientation = tmp;
-        }else{
-            //moved, update:
-            dir.normalise();
-            orientation = dir;
-        }
-
-    }
-
-    /**
      * Prepares the sprite for movement.
      */
     public void preMovement()
