@@ -1,7 +1,6 @@
 BasicGame
     SpriteSet
 
-        key > Resource limit=1 img=key singleton=True
         shovel > Flicker color=LIGHTGRAY limit=1 singleton=True img=sword.png
         avatar  > ShootAvatar stype=shovel
 
@@ -14,6 +13,7 @@ BasicGame
         exit > Door img=door
 
         box    > Immovable img=box
+        key > Resource limit=1 img=key singleton=True
 
     InteractionSet
 

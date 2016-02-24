@@ -6,7 +6,7 @@ BasicGame
         surround > Immovable    color=YELLOW img=dirt invisible=True
         bullet > Missile img=explosion shrinkfactor=0.5 singleton=True
 
-        turn > Immovable invisible=True
+        turn > Immovable invisible=True hidden=True
             turnup > orientation=UP img=dirt
             turndown > orientation=DOWN img=dirt
             turnleft > orientation=LEFT img=dirt

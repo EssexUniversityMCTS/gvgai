@@ -80,6 +80,9 @@ public class TransformTo extends Effect {
                 }catch (ClassCastException e) {}
             }
 
+            //Health points should be copied too.
+            newSprite.healthPoints = sprite1.healthPoints;
+
             game.killSprite(sprite1);
 
             if(killSecond && sprite2 != null)
