@@ -33,32 +33,6 @@ public class Test
         String games[] = new String[]{};
         String generateLevelPath = "examples/generatedLevels/";
 
-        //Training Set 1 (2015; CIG 2014)
-        //games = new String[]{"aliens", "boulderdash", "butterflies", "chase", "frogs",
-        //        "missilecommand", "portals", "sokoban", "survivezombies", "zelda"};
-
-        //Training Set 2 (2015; Validation CIG 2014)
-        //games = new String[]{"camelRace", "digdug", "firestorms", "infection", "firecaster",
-        //      "overload", "pacman", "seaquest", "whackamole", "eggomania"};
-
-        //Training Set 3 (2015)
-        //games = new String[]{"bait", "boloadventures", "brainman", "chipschallenge",  "modality",
-        //                              "painter", "realportals", "realsokoban", "thecitadel", "zenpuzzle"};
-
-        //Training Set 4 (Validation GECCO 2015, Test CIG 2014)
-        //games = new String[]{"roguelike", "surround", "catapults", "plants", "plaqueattack",
-        //        "jaws", "labyrinth", "boulderchase", "escape", "lemmings"};
-
-
-        //Training Set 5 (Validation CIG 2015, Test GECCO 2015)
-        //games = new String[]{ "solarfox", "defender", "enemycitadel", "crossfire", "lasers",
-        //                               "sheriff", "chopper", "superman", "waitforbreakfast", "cakybaky"};
-
-        //Training Set 6 (Validation CEEC 2015)
-        //games = new String[]{"lasers2", "hungrybirds" ,"cookmepasta", "factorymanager", "raceBet2",
-        //        "intersection", "blacksmoke", "iceandfire", "gymkhana", "tercio"};
-
-
         //All public games
         games = new String[]{"aliens", "bait", "blacksmoke", "boloadventures", "boulderchase",              //0-4
                              "boulderdash", "brainman", "butterflies", "cakybaky", "camelRace",     //5-9
@@ -74,6 +48,7 @@ public class Test
                              "tercio", "thecitadel", "waitforbreakfast", "watergame", "whackamole", //55-59
                              "zelda", "zenpuzzle" }; //60, 61 ...
 
+        
 
         //Other settings
         boolean visuals = true;
