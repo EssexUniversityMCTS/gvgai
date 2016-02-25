@@ -6,9 +6,8 @@ BasicGame
             scared > Fleeing color=BLUE img=virus
 
     InteractionSet
-        goat   wall    > stepBack
+        goat   wall goat   > stepBack
         avatar wall    > stepBack
-        goat   goat    > stepBack
         avatar  angry  > killSprite scoreChange=-1
         carcass scared > killSprite
         scared avatar  > transformTo stype=carcass scoreChange=1

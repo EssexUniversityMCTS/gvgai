@@ -1,11 +1,11 @@
 #Modality: #http://www.puzzlescript.net/play.html?p=6888061
 
-BasicGame
+BasicGame key_handler=Pulse  square_size=50
     SpriteSet
         black > Immovable color=BLACK
         white > Immovable color=WHITE
         grey > Immovable
-        target > Passive img=portal shrinkfactor=0.9
+        target > Passive img=portal shrinkfactor=0.9 portal=True
         winTarget > Immovable img=portal shrinkfactor=0.9
         crate > Passive img=box shrinkfactor=0.8
         avatar > MovingAvatar img=ghost

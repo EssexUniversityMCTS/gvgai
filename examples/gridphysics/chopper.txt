@@ -1,11 +1,11 @@
 BasicGame
     SpriteSet
-        layers > Immovable
-            stratosphere > color=BLUE
-            thermosphere > color=LIGHTBLUE
+        layers > Immovable hidden=True
+            stratosphere > color=LIGHTBLUE
+            thermosphere > color=BLUE
             troposphere >
 
-        shield   > RandomNPC    color=WHITE img=shield
+        satellite   > RandomNPC    color=WHITE img=satellite cons=1
         avatar   > ShootAvatar orientation=DOWN color=YELLOW ammo=bullet stype=bomb img=spaceship rotateInPlace=False
         missile > Missile
             sam  > orientation=UP color=BLUE speed=0.25 img=spaceship
@@ -26,7 +26,7 @@ BasicGame
         bullet > Resource limit=20
     
     LevelMapping
-        S > shield thermosphere
+        S > satellite thermosphere
         b > portalBase troposphere
         a > portalAmmo
         t > thermosphere
@@ -40,40 +40,30 @@ BasicGame
 
     TerminationSet
         SpriteCounter      stype=avatar               limit=0 win=False
-        SpriteCounter      stype=shield               limit=0 win=False
+        SpriteCounter      stype=satellite               limit=0 win=False
         MultiSpriteCounter stype1=portalBase stype2=tank limit=0 win=True
         
     InteractionSet
-        avatar  wall > stepBack
+        avatar wall EOS > stepBack
         avatar sam > killSprite
-        avatar EOS > stepBack
-        sam avatar > killSprite
-        sam wall > killSprite
+        sam avatar wall > killSprite
 
         tank bomb > killSprite scoreChange=1
-        bomb tank > killSprite
-        bomb wall > killSprite
-        bomb EOS > killSprite
+        bomb tank wall EOS > killSprite
 
-        bomb sam > killSprite
-        sam bomb > killSprite
+        bomb sam > killBoth
 
         tank wall  > reverseDirection
         tank wall  > stepBack
 
-        sam shield > killSprite
-        shield sam > killSprite scoreChange=-1
-        shield wall > stepBack
+        satellite sam > killBoth scoreChange=-1
+        satellite wall > stepBack
 
-        avatar supply > changeResource resource=bullet value=5
-        supply avatar > killSprite
+        avatar supply > changeResource resource=bullet value=5  killResource=True
         supply wall > killSprite
 
-        avatar portal > stepBack
-        avatar thermosphere > stepBack
-        avatar troposphere > stepBack
-        shield stratosphere > stepBack
+        avatar portal thermosphere troposphere > stepBack
+        satellite stratosphere > stepBack
 
-        cloud sam > killSprite
-        sam cloud > killSprite
+        cloud sam > killBoth
         cloud EOS > wrapAround

@@ -3,10 +3,12 @@
 BasicGame
     SpriteSet
         
-        ground > Immovable color=GRAY #img=wall
-        paint > Immovable color=DARKBLUE #img=marsh
+        ground > Immovable color=GRAY
+        paint > Immovable color=DARKBLUE
+
         prepaint > Flicker limit=2 invisible=TRUE
         prepainting > Resource limit=2 value=0
+
         preground > Flicker limit=2 invisible=TRUE
         pregrounding > Resource limit=2 value=0
 

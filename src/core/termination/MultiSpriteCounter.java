@@ -16,9 +16,10 @@ import core.game.GameDescription.TerminationData;
  */
 public class MultiSpriteCounter extends Termination
 {
-    //TODO: Theoretically, we could have an array of types here... to be done.
+    //TODO if needed: Theoretically, we could have an array of types here... to be done.
     public String stype1, stype2;
     public int itype1=-1, itype2=-1;
+    public boolean min = false;
 
     public MultiSpriteCounter(){}
 
@@ -44,6 +45,9 @@ public class MultiSpriteCounter extends Termination
 
         if(countAcum == limit)
             return true;
+
+        if(min && countAcum > limit)
+            return true; //If the limit is a lower bound in what's required.
 
         return false;
     }

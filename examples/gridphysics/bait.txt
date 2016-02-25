@@ -1,9 +1,9 @@
 #Bait: http://www.mobygames.com/game/bait
 
-BasicGame
+BasicGame  key_handler=Pulse square_size=50
     SpriteSet
+
         hole   > Immovable color=DARKBLUE img=hole
-        ground > Immovable color=WHITE
         avatar > MovingAvatar
             nokey > img=alien 
             withkey > img=alien 
@@ -11,28 +11,26 @@ BasicGame
         key > Passive img=key
         goal > Immovable img=door
         box    > Passive img=box shrinkfactor=0.8
-        holefilling > Flicker img=box limit=0
+
     LevelMapping
-        . > ground
         0 > hole
-        1 > box ground
-        K > key ground
+        1 > box
+        K > key
         G > goal
-        M > mushroom ground
+        M > mushroom
+
     InteractionSet
         avatar wall > stepBack
         avatar hole > killSprite
         box avatar  > bounceForward
-        box wall    > undoAll
-        box box     > undoAll
-        box mushroom > undoAll
-        box hole    > transformTo stype=holefilling scoreChange=1
-        hole holefilling > killSprite
+        box wall box mushroom > undoAll
+        box hole > killBoth scoreChange=1
         nokey key > transformTo stype=withkey
         key avatar > killSprite
         nokey goal    > stepBack
         goal withkey > killSprite scoreChange=5
         mushroom avatar > killSprite scoreChange=1
+
     TerminationSet
         SpriteCounter stype=goal limit=0 win=True
         SpriteCounter stype=avatar limit=0 win=False

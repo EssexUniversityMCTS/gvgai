@@ -34,8 +34,8 @@ public class Test
         String generateLevelPath = "examples/generatedLevels/";
 
         //Training Set 1 (2015; CIG 2014)
-        games = new String[]{"aliens", "boulderdash", "butterflies", "chase", "frogs",
-                "missilecommand", "portals", "sokoban", "survivezombies", "zelda"};
+        //games = new String[]{"aliens", "boulderdash", "butterflies", "chase", "frogs",
+        //        "missilecommand", "portals", "sokoban", "survivezombies", "zelda"};
 
         //Training Set 2 (2015; Validation CIG 2014)
         //games = new String[]{"camelRace", "digdug", "firestorms", "infection", "firecaster",
@@ -59,6 +59,22 @@ public class Test
         //        "intersection", "blacksmoke", "iceandfire", "gymkhana", "tercio"};
 
 
+        //All public games
+        games = new String[]{"aliens", "bait", "blacksmoke", "boloadventures", "boulderchase",              //0-4
+                             "boulderdash", "brainman", "butterflies", "cakybaky", "camelRace",     //5-9
+                             "catapults", "chase", "chipschallenge", "chopper", "cookmepasta",        //10-14
+                             "crossfire", "defem", "defender", "digdug", "eggomania",           //15-19
+                             "enemycitadel", "escape", "factorymanager", "firecaster",  "firestorms",   //20-24
+                             "frogs", "gymkhana", "hungrybirds", "iceandfire", "infection",    //25-29
+                             "intersection", "jaws", "labyrinth", "lasers", "lasers2",        //30-34
+                             "lemmings", "missilecommand", "modality", "overload", "pacman",             //35-39
+                             "painter", "plants", "plaqueattack", "portals", "raceBet2",         //40-44
+                             "realportals", "realsokoban", "roguelike", "seaquest", "sheriff",      //45-49
+                             "sokoban", "solarfox" ,"superman", "surround", "survivezombies", //50-54
+                             "tercio", "thecitadel", "waitforbreakfast", "watergame", "whackamole", //55-59
+                             "zelda", "zenpuzzle" }; //60, 61 ...
+
+
         //Other settings
         boolean visuals = true;
         String recordActionsFile = null; //where to record the actions executed. null if not to save.
@@ -77,7 +93,7 @@ public class Test
         
         // 2. This plays a game in a level by the controller.
         //ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed);
-        //ArcadeMachine.runOneGame(game, level1, visuals, tester, recordActionsFile, seed);
+        //ArcadeMachine.runOneGame(game, level1, visuals, sampleOneStepController, recordActionsFile, seed);
 
         // 3. This replays a game from an action file previously recorded
         //String readActionsFile = "actionsFile_aliens_lvl0.txt";  //This example is for

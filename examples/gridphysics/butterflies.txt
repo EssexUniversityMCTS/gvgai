@@ -3,7 +3,7 @@ BasicGame
         cocoon > Immovable color=BLUE img=cocoon
         animal > physicstype=GridPhysics
             avatar    > MovingAvatar
-            butterfly > RandomNPC speed=0.6 img=butterfly
+            butterfly > RandomNPC speed=0.6 img=butterfly cons=1
 
     TerminationSet
         SpriteCounter stype=butterfly win=True

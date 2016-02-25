@@ -1,4 +1,4 @@
-BasicGame
+BasicGame key_handler=Pulse
     SpriteSet
         city    > Immovable    color=WHITE img=base
         avatar  > ShootAvatar color=YELLOW ammo=bullet stype=sam img=spaceship rotateInPlace=False
@@ -6,10 +6,13 @@ BasicGame
             sam  > orientation=RIGHT color=BLUE img=spaceship
             bomb > orientation=DOWN color=RED speed=0.5 img=bomb
         alien   > Bomber   orientation=LEFT stype=bomb   prob=0.04  cooldown=4 speed=0.6 img=alien
-        portal  >
-            portalSlow  > SpawnPoint   stype=alien  cooldown=10 prob=0.2 img=portal
-            portalFast  > SpawnPoint   stype=alien  cooldown=10 prob=0.5 img=portal
-            portalAmmo  > SpawnPoint   stype=supply cooldown=10 prob=0.15 img=portal
+
+        portal  > SpawnPoint stype=alien  cooldown=10  invisible=True hidden=True
+            portalSlow  > prob=0.2
+            portalFast  > prob=0.5
+
+        portalAmmo  > SpawnPoint stype=supply cooldown=10 prob=0.15 invisible=True
+
         supply > Missile orientation=DOWN speed=0.25 img=coin
         bullet > Resource limit=20
     
@@ -26,21 +29,18 @@ BasicGame
         Timeout limit=1000 win=True
         
     InteractionSet
-        avatar  EOS  > stepBack
-        avatar  city  > stepBack
-        avatar  wall > stepBack
+        avatar  EOS city wall  > stepBack
+
         alien   EOS  > killSprite
-        missile EOS  > killSprite
-        missile city > killSprite
+        missile EOS city > killSprite
+
         city bomb > killSprite scoreChange=-1
-        city sam > killSprite
-        city alien > killSprite
+        city sam alien > killSprite
+
         supply alien > killSprite
-        avatar bomb  > killSprite scoreChange=-1
-        alien  sam   > killSprite scoreChange=2
-        sam alien > killSprite
-        supply city > stepBack
-        supply wall > stepBack
+        alien  sam   > killBoth scoreChange=2
+
         supply supply > stepBack
-        avatar supply > changeResource resource=bullet value=5
-        supply avatar > killSprite
+        supply wall city > stepBack pixelPerfect=True
+
+        avatar supply > changeResource resource=bullet value=5 killResource=True

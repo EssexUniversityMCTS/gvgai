@@ -1,4 +1,4 @@
-package ontology.effects.unary;
+package ontology.effects.binary;
 
 import core.VGDLRegistry;
 import core.VGDLSprite;
@@ -18,13 +18,16 @@ public class ChangeResource extends Effect
     public String resource;
     public int resourceId;
     public int value;
+    public boolean killResource;
 
     public ChangeResource(InteractionContent cnt)
     {
         value=1;
         resourceId = -1;
+        killResource = false;
         this.parseParameters(cnt);
         resourceId = VGDLRegistry.GetInstance().getRegisteredSpriteValue(resource);
+        is_kill_effect = killResource;
     }
 
     @Override
@@ -33,6 +36,9 @@ public class ChangeResource extends Effect
         if(numResources + value <= game.getResourceLimit(resourceId))
         {
             sprite1.modifyResource(resourceId, value);
+
+            if(killResource)
+                game.killSprite(sprite2);
         }
     }
 }

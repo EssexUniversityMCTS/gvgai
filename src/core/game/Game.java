@@ -3,15 +3,7 @@ package core.game;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.JOptionPane;
@@ -33,6 +25,7 @@ import core.termination.Termination;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.Effect;
+import ontology.effects.TimeEffect;
 import ontology.sprites.Resource;
 import tools.IO;
 import tools.JEasyFrame;
@@ -42,6 +35,8 @@ import tools.KeyPulse;
 import tools.Pair;
 import tools.Vector2d;
 import tools.WindowInput;
+import tools.pathfinder.Node;
+import tools.pathfinder.PathFinder;
 
 /**
  * Created with IntelliJ IDEA.
@@ -90,13 +85,18 @@ public abstract class Game
     /**
      * Pairs of all defined effects in the game.
      */
-    protected ArrayList<Pair> definedEffects;
+    protected ArrayList<Pair<Integer,Integer>> definedEffects;
 
 
     /**
      * List of EOS effects
      */
     protected ArrayList<Effect>[] eosEffects;
+
+    /**
+     * List of TIME effects
+     */
+    protected TreeSet<TimeEffect> timeEffects;
 
 
     /**
@@ -116,6 +116,14 @@ public abstract class Game
      * sprite belongs to.
      */
     protected ArrayList<Integer>[] iSubTypes;
+
+
+    /**
+     * For each entry, int identifier of sprite type, a list with all the itypes this
+     * sprite belongs to.
+     */
+    protected ArrayList<Pair<Integer,Long>>[] shieldedEffects;
+
 
     /**
      * Arraylist to hold collisions between objects in every frame
@@ -225,7 +233,6 @@ public abstract class Game
      */
     protected int MAX_SPRITES;
 
-
     /**
      * Random number generator for this game. It can only be received when the game is started.
      */
@@ -252,17 +259,36 @@ public abstract class Game
      */
     protected int nextSpriteID;
 
+
+    /**
+     * Key Handler for human play. The default is CompetitionParameters.KEY_INPUT
+     */
+    public String key_handler;
+
+
+    /**
+     * Pathfinder.
+     */
+    protected PathFinder pathf;
+
+
+    /**
+     * Avatar last action.
+     */
+    protected Types.ACTIONS avatarLastAction;
+
     /**
      * Default constructor.
      */
     public Game()
     {
         //data structures to hold the game definition.
-        definedEffects = new ArrayList<Pair>();
+        definedEffects = new ArrayList<Pair<Integer,Integer>>();
         definedEOSEffects = new ArrayList<Integer>();
         charMapping = new HashMap<Character,ArrayList<String>>();
         terminations = new ArrayList<Termination>();
         historicEvents = new TreeSet<Event>();
+        timeEffects = new TreeSet<TimeEffect>();
 
         //Game attributes:
         size = new Dimension();
@@ -351,6 +377,7 @@ public abstract class Game
 
         //Structures to hold game sprites, as many as number of sprite types, so they are accessed by its id:
         spriteGroups = new SpriteGroup[classConst.length];
+        shieldedEffects = new ArrayList[classConst.length];
         collisionEffects = new ArrayList[classConst.length][classConst.length];
         eosEffects = new ArrayList[classConst.length];
         iSubTypes = new ArrayList[classConst.length];
@@ -363,7 +390,9 @@ public abstract class Game
         {
             //Create the space for the sprites and effects of this type.
             spriteGroups[j] = new SpriteGroup(j);
+            shieldedEffects[j] = new ArrayList<>();
             eosEffects[j] = new ArrayList<Effect>();
+            timeEffects = new TreeSet<TimeEffect>();
             bucketList[j] = new Bucket();
 
             //Declare the extended types list of this sprite type.
@@ -671,6 +700,8 @@ public abstract class Game
         {
             bucketList[j].clear();
         }
+
+        resetShieldEffects();
     }
 
     /**
@@ -699,6 +730,12 @@ public abstract class Game
         }
 
         factory.parseParameters(content, this);
+
+        if(key_handler != null && key_handler.equalsIgnoreCase("Pulse"))
+            CompetitionParameters.KEY_HANDLER = CompetitionParameters.KEY_PULSE;
+
+        ki = CompetitionParameters.KEY_HANDLER == CompetitionParameters.KEY_INPUT ?
+                new KeyInput() : new KeyPulse();
     }
 
     /**
@@ -756,6 +793,9 @@ public abstract class Game
         {
             this.gameCycle(); //Execute a game cycle.
         }
+
+        //Update the forward model for the game state sent to the controller.
+        fwdModel.update(this);
 
         return handleResult();
     }
@@ -825,6 +865,9 @@ public abstract class Game
         	}
         	frame.dispose();
         }
+
+        //Update the forward model for the game state sent to the controller.
+        fwdModel.update(this);
 
         return handleResult();
     }
@@ -1020,7 +1063,7 @@ public abstract class Game
 
     }
 
-        /**
+    /**
      * Handles collisions and triggers events.
      */
     protected void eventHandling()
@@ -1028,7 +1071,65 @@ public abstract class Game
         //Array to indicate that the sprite type has no representative in collisions.
         boolean noSprites[] = new boolean[spriteGroups.length];
 
-        //First, we handle single sprite events (EOS). Take each sprite itype that has
+        //First, check the effects that are triggered in a timely manner.
+        while (timeEffects.size() > 0 && timeEffects.first().nextExecution <= gameTick)
+        {
+            TimeEffect ef = timeEffects.pollFirst();
+            int intId = ef.itype;
+
+            //if intId==-1, we have no sprite
+            if(intId == -1)
+            {
+                //With no sprite, the effect is independent from particular sprites.
+                ef.execute(null,null,this);
+
+                //Affect score:
+                if(ef.applyScore)
+                    this.score += ef.scoreChange;
+
+            }else {
+
+                if (!noSprites[intId] && bucketList[intId].size() == 0) {
+                    //Take all the subtypes in the hierarchy of this sprite.
+                    ArrayList<Integer> allTypes = iSubTypes[intId];
+                    for (Integer itype : allTypes) {
+                        //Add all sprites of this subtype to the list of sprites.
+                        //This are sprites that could potentially collide with EOS
+                        Collection<VGDLSprite> sprites = this.getSprites(itype).values();
+                        for (VGDLSprite sp : sprites) {
+                            //bucketList[intId].insert(sp);
+                            bucketList[intId].add(sp);
+                        }
+                    }
+
+                    //If no sprites were added here, mark it in the array.
+                    if (bucketList[intId].size() == 0)
+                        noSprites[intId] = true;
+                }
+
+                //For all sprites that can collide.
+                for (VGDLSprite s1 : bucketList[intId].getAllSprites()) {
+                    //Check that they are not dead (could happen in this same cycle).
+                    if (!kill_list.contains(s1)) {
+                        executeEffect(ef, s1, null);
+                    }
+                }
+
+                //Clear the array of sprites for this effect.
+                bucketList[intId].clear();
+                noSprites[intId] = false;
+            }
+
+            //If the time effect is repetitive, need to reinsert in the list of effects
+            if(ef.repeating)
+            {
+                this.addTimeEffect(ef);
+            }
+
+        }
+
+
+        //Secondly, we handle single sprite events (EOS). Take each sprite itype that has
         //a EOS effect defined.
         for(Integer intId : definedEOSEffects)
         {
@@ -1061,10 +1162,8 @@ public abstract class Game
                 {
                     //Check if they are at the edge to trigger the effect. Also check that they
                     //are not dead (could happen in this same cycle).
-                    if(isAtEdge(s1.rect) && !kill_list.contains(s1))
-                    {
-                        //There is a collision. Trigger the effect.
-                        ef.execute(s1,null,this);
+                    if(isAtEdge(s1.rect) && !kill_list.contains(s1)) {
+                        executeEffect(ef, s1, null);
                     }
                 }
 
@@ -1075,14 +1174,22 @@ public abstract class Game
 
         }
 
+
+
         // Now, we handle events between pairs of sprites, for each pair of sprites that
         // has a paired effect defined:
-        for(Pair p : definedEffects)
+        for(Pair<Integer,Integer> p : definedEffects)
         {
             // We iterate over the (potential) multiple effects that these
             // two sprites could have defined between them.
             for(Effect ef : collisionEffects[p.first][p.second])
             {
+
+                if(shieldedEffects[p.first].size() > 0) {
+                    if (shieldedEffects[p.first].contains(new Pair(p.second, ef.hashCode)))
+                        continue;
+                }
+
 
                 for (int i = 0; i < bucketList.length; i++) {
                     bucketList[i].clear();
@@ -1126,48 +1233,42 @@ public abstract class Game
                     ArrayList<VGDLSprite> sprites1nBucket1 = first.get(bucket1);
 
                     //For every sprite:
-                    if(sprites1nBucket1!=null) for(VGDLSprite s1 : sprites1nBucket1)
-                    {
-                        //Decide in what buckets to look.
-                        int[] buckets;
-                        if(s1.bucketSharp)  buckets = new int[]{s1.bucket-1, s1.bucket};
-                        else                buckets = new int[]{s1.bucket, s1.bucket+1};
-
-
-                        for(int bucketId : buckets)
+                    if(sprites1nBucket1!=null)
+                        for(VGDLSprite s1 : sprites1nBucket1)
                         {
-                            //On each bucket, take the sprites if the p.second sprite type.
-                            ArrayList<VGDLSprite> spritesInBucket2 = second.get(bucketId);
-                            if(spritesInBucket2 != null && !kill_list.contains(s1))
+                            //Decide in what buckets to look.
+                            int[] buckets;
+                            if(s1.bucketSharp)  buckets = new int[]{s1.bucket-1, s1.bucket};
+                            else                buckets = new int[]{s1.bucket, s1.bucket+1};
+
+
+                            for(int bucketId : buckets)
                             {
-                                int numSprites2 = spritesInBucket2.size();
-                                for(int idx2 = 0; idx2 < numSprites2; idx2++)
+                                //On each bucket, take the sprites if the p.second sprite type.
+                                ArrayList<VGDLSprite> spritesInBucket2 = second.get(bucketId);
+                                if(spritesInBucket2 != null && !kill_list.contains(s1))
                                 {
-                                    //Take each sprite of p.second and check for collision
-                                    VGDLSprite s2 = spritesInBucket2.get(idx2);
-                                    if(s1 != s2 && s1.rect.intersects(s2.rect))
+                                    int numSprites2 = spritesInBucket2.size();
+                                    s2loop: for(int idx2 = 0; idx2 < numSprites2; idx2++)
                                     {
-                                        //There is a collision. Apply the effect.
-                                        ef.execute(s1,s2,this);
+                                        //Take each sprite of p.second and check for collision
+                                        VGDLSprite s2 = spritesInBucket2.get(idx2);
+                                        if(s1 != s2 && s1.rect.intersects(s2.rect))
+                                        {
+                                            executeEffect(ef, s1, s2);
 
-                                        //Affect score:
-                                        if(ef.applyScore)
-                                            this.score += ef.scoreChange;
+                                            if(kill_list.contains(s1))
+                                                break s2loop; //Stop checking sprite 1 if it was killed.
 
-                                        //Add to events history.
-                                        addEvent(s1, s2);
+                                        }
 
-                                        if(kill_list.contains(s1))
-                                            break; //Stop checking this sprite if it was killed.
-                                    }
+                                    } //end FOR sprites s2.
 
-                                } //end FOR sprites s2.
+                                }
 
-                            }
+                            } //end FOR buckets p.second.
 
-                        } //end FOR buckets p.second.
-
-                    }//end FOR sprites s1
+                        }//end FOR sprites s1
 
                 }//end FOR buckets p.first
 
@@ -1175,6 +1276,20 @@ public abstract class Game
 
         }//end FOR all effects in game.
 
+    }
+
+    private void executeEffect(Effect ef, VGDLSprite s1, VGDLSprite s2)
+    {
+        //There is a collision. Apply the effect.
+        ef.execute(s1,s2,this);
+
+        //Affect score:
+        if(ef.applyScore)
+            this.score += ef.scoreChange;
+
+        //Add to events history.
+        if(s1 != null && s2 != null)
+            addEvent(s1, s2);
     }
 
     private void addEvent(VGDLSprite s1, VGDLSprite s2)
@@ -1256,6 +1371,29 @@ public abstract class Game
         {
             bucketList[j].clear();
         }
+
+        resetShieldEffects();
+    }
+
+    /**
+     * Cleans the array of shielded effects.
+     */
+    private void resetShieldEffects()
+    {
+        for(int i =0; i < shieldedEffects.length; ++i)
+            shieldedEffects[i].clear();
+    }
+
+    /**
+     * Adds a new Shield effect to the scene.
+     * @param type1 Recipient of the effect (sprite ID)
+     * @param type2 Second sprite ID
+     * @param functHash Hash of the effect name to shield.
+     */
+    public void addShield(int type1, int type2, long functHash)
+    {
+        Pair newShield = new Pair(type2, functHash);
+        shieldedEffects[type1].add(newShield);
     }
 
     /**
@@ -1265,7 +1403,18 @@ public abstract class Game
      */
     public VGDLSprite addSprite(int itype, Vector2d position)
     {
-        return this.addSprite((SpriteContent) classConst[itype], position, itype);
+        return this.addSprite((SpriteContent) classConst[itype], position, itype, false);
+    }
+
+    /**
+     * Adds a sprite given a content and position.
+     * @param itype integer that identifies the definition of the sprite to add
+     * @param position where the sprite has to be placed.
+     * @param force if true, ignores the singleton restrictions and creates it anyway.
+     */
+    public VGDLSprite addSprite(int itype, Vector2d position, boolean force)
+    {
+        return this.addSprite((SpriteContent) classConst[itype], position, itype, force);
     }
 
     /**
@@ -1273,8 +1422,9 @@ public abstract class Game
      * @param content definition of the sprite to add
      * @param position where the sprite has to be placed.
      * @param itype integer identifier of this type of sprite.
+     * @param force If true, forces the creation ignoring singleton restrictions
      */
-    public VGDLSprite addSprite(SpriteContent content, Vector2d position, int itype)
+    public VGDLSprite addSprite(SpriteContent content, Vector2d position, int itype, boolean force)
     {
         if(num_sprites > MAX_SPRITES)
         {
@@ -1284,14 +1434,15 @@ public abstract class Game
 
         //Check for singleton Sprites
         boolean anyother = false;
-        for (Integer typeInt : content.itypes)
-        {
-            //If this type is a singleton and we have one already
-            if(singletons[typeInt] && getNumSprites(typeInt) > 0)
-            {
-                //that's it, no more creations of this type.
-                anyother = true;
-                break;
+        if(!force) {
+
+            for (Integer typeInt : content.itypes) {
+                //If this type is a singleton and we have one already
+                if (singletons[typeInt] && getNumSprites(typeInt) > 0) {
+                    //that's it, no more creations of this type.
+                    anyother = true;
+                    break;
+                }
             }
         }
 
@@ -1389,7 +1540,7 @@ public abstract class Game
      * Returns all paired effects defined in the game.
      * @return all paired effects defined in the game.
      */
-    public ArrayList<Pair> getDefinedEffects()
+    public ArrayList<Pair<Integer,Integer>> getDefinedEffects()
     {
         return definedEffects;
     }
@@ -1410,6 +1561,14 @@ public abstract class Game
     public ArrayList<Effect> getEosEffects(int obj1)
     {
         return eosEffects[obj1];
+    }
+
+    /**
+     * Adds a time effect to the game.
+     */
+    public void addTimeEffect(TimeEffect ef)
+    {
+        timeEffects.add(ef);
     }
 
     /**
@@ -1484,6 +1643,15 @@ public abstract class Game
     public void setAvatar(MovingAvatar newAvatar) {avatar = newAvatar;}
 
     /**
+     * Sets the last action executed by the avatar. It could be NIL in case of time overspent.
+     * @param action the action to set.
+     */
+    public void setAvatarLastAction(Types.ACTIONS action)
+    {
+        this.avatarLastAction = action;
+    }
+
+    /**
      * Indicates if the game is over, or if it is still being played.
      * @return true if the game is over, false if it is still being played.
      */
@@ -1530,16 +1698,34 @@ public abstract class Game
      */
     public int[] getSpriteOrder() {return spriteOrder;}
 
+
+    /**
+     * Indicates how many pixels form a block in the game.
+     * @return how many pixels form a block in the game.
+     */
+    public int getBlockSize()
+    {
+        return block_size;
+    }
+
     public abstract void buildStringLevel(String[] levelString);
     
     /**
      * Builds a level, receiving a file name.
      * @param gamelvl file name containing the level.
      */
-    public void buildLevel(String gamelvl){
-    	String[] lines = new IO().readFile(gamelvl);
-    	
-    	buildStringLevel(lines);
+    public void buildLevel(String gamelvl){}
+
+
+    public ArrayList<Node> getPath(Vector2d start, Vector2d end)
+    {
+        Vector2d pathStart = new Vector2d(start);
+        Vector2d pathEnd = new Vector2d(end);
+
+        pathStart.mul(1.0 / (double) block_size);
+        pathEnd.mul(1.0/(double)block_size);
+
+        return pathf.getPath(pathStart, pathEnd);
     }
     
     /**

@@ -9,29 +9,29 @@ import java.util.Map;
  * Time: 17:07
  * This is a Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
-public class Pair implements Map.Entry<Integer, Integer>, Comparable{
+public class Pair<T,U> implements Map.Entry<T, U>, Comparable{
 
-    public Integer first;
-    public Integer second;
+    public T first;
+    public U second;
 
-    public Pair(Integer first, Integer second)
+    public Pair(T first, U second)
     {
         this.first = first;
         this.second = second;
     }
 
     @Override
-    public Integer getKey() {
+    public T getKey() {
         return first;
     }
 
     @Override
-    public Integer getValue() {
+    public U getValue() {
         return second;
     }
 
     @Override
-    public Integer setValue(Integer value) {
+    public U setValue(U value) {
         second = value;
         return second;
     }
@@ -41,7 +41,8 @@ public class Pair implements Map.Entry<Integer, Integer>, Comparable{
         try{
             Pair p = (Pair)o;
 
-            if(p.first == this.first && p.second == this.second)
+            //if(p.first == this.first && p.second == this.second)
+            if(p.first.equals(this.first) && p.second.equals(this.second))
                 return 0;
 
         }catch(ClassCastException e)
@@ -56,4 +57,6 @@ public class Pair implements Map.Entry<Integer, Integer>, Comparable{
     public boolean equals(Object obj) {
         return (compareTo(obj)==0);
     }
+
+    public Pair copy()  { return new Pair(first, second); }
 }

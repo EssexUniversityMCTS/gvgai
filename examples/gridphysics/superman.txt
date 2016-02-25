@@ -30,15 +30,13 @@ BasicGame
             superman > img=alien
 
     InteractionSet
-        avatar wall > stepBack
-        avatar EOS > stepBack
-        avatar portal > stepBack
+        avatar wall EOS portal > stepBack
 
         bandit wall > reverseDirection
         bandit wall > stepBack
         missile EOS > killSprite
-        building missile > transformTo stype=emptyspace
-        missile building > killSprite
+
+        building missile > transformTo stype=emptyspace killSecond=True
 
         standingcivilian building > stepBack
         standingcivilian emptyspace > transformTo stype=fallingcivilian
@@ -46,11 +44,8 @@ BasicGame
 
         fallingcivilian wall > transformTo stype=hurtcivilian
 
-        avatar fallingcivilian > changeResource resource=saved value=1 scoreChange=1
-        fallingcivilian avatar > killSprite
-
-        avatar bandit > changeResource resource=villain value=1
-        bandit avatar > killSprite scoreChange=1
+        avatar fallingcivilian > changeResource resource=saved value=1 scoreChange=1 killResource=True
+        avatar bandit > changeResource resource=villain value=1 killResource=True scoreChange=1
 
         avatar jail > spawnIfHasMore resource=villain stype=villaingang limit=8
         avatar jail > changeResource resource=villain value=-8

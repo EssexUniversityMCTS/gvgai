@@ -26,7 +26,6 @@ BasicGame
         car > Missile orientation=DOWN color=RED speed=0.1 img=bus
 
 
-
     LevelMapping
         A > avatar
         L > lcleft
@@ -41,14 +40,11 @@ BasicGame
 
     InteractionSet
     
-        avatar wall > stepBack
-        avatar line > stepBack
-        laser wall > killSprite
+        avatar wall line > stepBack
+        laser wall EOS > killSprite
 
         box avatar  > bounceForward
-        box wall    > undoAll
-        box box     > undoAll
-        box line > undoAll
+        box wall box line  > undoAll notStype=car
         laser box > killSprite
 
         lcdown boulder > transformTo stype=lcswap
@@ -56,14 +52,12 @@ BasicGame
         lcup boulder > transformTo stype=lcleft
         lcright boulder > transformTo stype=lcup
         lcswap boulder > transformTo stype=lcright
-        boulder line > killSprite
-        boulder wall > killSprite
-        boulder EOS > killSprite
 
-        car laser > attractGaze
-        car wall > killSprite scoreChange=-1
-        car line > killSprite
-        car avatar > attractGaze
+        boulder line wall EOS > killSprite
+
+        car avatar laser > attractGaze align=True
+
+        car wall line > killSprite scoreChange=-1
         car street > killSprite scoreChange=1
         car highway > killSprite scoreChange=4
         car trap > transformTo stype=carcrash

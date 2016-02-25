@@ -1,17 +1,18 @@
 BasicGame square_size=25
   SpriteSet
-    fullMolar >
-        fullMolarInf > Immovable img=shield
-        fullMolarSup > Immovable img=shield
-    deadMolar > img=shovel
-        deadMolarInf > Immovable img=shovel
-        deadMolarSup > Immovable img=shovel
+    fullMolar > Immovable img=shield
+        fullMolarInf >
+        fullMolarSup >
+    deadMolar > Immovable img=shovel
+        deadMolarInf >
+        deadMolarInf >
+        deadMolarSup >
 
     movable >
         avatar  > ShootAvatar stype=fluor
-        food >
-            hotdog > Chaser stype=fullMolarInf img=mushroom speed=0.1
-            burger > Chaser stype=fullMolarSup img=flower speed=0.1
+        food > Chaser speed=0.1
+            hotdog >  stype=fullMolarInf img=mushroom
+            burger >  stype=fullMolarSup img=flower
 
     holes > SpawnPoint color=LIGHTGRAY img=portal portal=True
         hotdoghole  >  stype=hotdog  prob=0.15 cooldown=8 total=5
@@ -29,17 +30,14 @@ BasicGame square_size=25
     m > fullMolarInf
 
   InteractionSet
-    movable wall > stepBack
-    food fluor   > killSprite scoreChange=2
-    fluor food   > killSprite
+    movable wall > stepBack pixelPerfect=True
+    food fluor   > killBoth scoreChange=2
     fluor wall   > killSprite
 
-    fullMolarInf food > transformTo stype=deadMolarInf scoreChange=-3
-    food fullMolarInf > killSprite
+    fullMolarInf food > transformTo stype=deadMolarInf scoreChange=-3 killSecond=True
     deadMolarInf avatar > transformTo stype=fullMolarInf scoreChange=1
 
-    fullMolarSup food > transformTo stype=deadMolarSup scoreChange=-3
-    food fullMolarSup > killSprite
+    fullMolarSup food > transformTo stype=deadMolarSup scoreChange=-3 killSecond=True
     deadMolarSup avatar > transformTo stype=fullMolarSup scoreChange=1
 
   TerminationSet

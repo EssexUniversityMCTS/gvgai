@@ -1,42 +1,74 @@
-BasicGame square_size=32
+BasicGame square_size=20
     SpriteSet
         food > Immovable
             fruit > color=PINK img=mushroom
             pellet > color=LIGHTYELLOW shrinkfactor=0.5 img=pellet
             power  > Resource color=LIGHTGREEN shrinkfactor=0.8 img=powerpill
-        nest > SpawnPoint img=portal portal=True
-            redspawn > stype=red
-            orangespawn > stype=orange
-            bluespawn > stype=blue
-            pinkspawn > stype=pink
+        nest > SpawnPoint img=portal portal=True invisible=True
+            redspawn > stype=redOk
+            orangespawn > stype=orangeOk
+            bluespawn > stype=blueOk
+            pinkspawn > stype=pinkOk
         moving >
-            ghost > RandomAltChaser stype1=hungry stype2=powered cooldown=3 epsilon=0.25 img=ghost
-                red    > color=LIGHTRED    singleton=True
-                blue   > color=LIGHTBLUE   singleton=True
-                pink   > color=PINK        singleton=True
-                orange > color=LIGHTORANGE singleton=True
-            pacman > OrientedAvatar img=avatar rotateInPlace=false
+
+
+            ghost >
+                red > singleton=True
+                    redOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=ghostRed cons=4
+                    redSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=ghostscared
+                blue > singleton=True
+                    blueOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=ghostBlue cons=4
+                    blueSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=ghostscared
+                pink > singleton=True
+                    pinkOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=ghostPink cons=4
+                    pinkSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=ghostscared
+                orange > singleton=True
+                    orangeOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=ghostOrange cons=4
+                    orangeSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=ghostscared
+
+
+            pacman > OrientedAvatar img=avatar rotateInPlace=false speed=0.5
                 hungry  > color=YELLOW
                 powered > color=ORANGE            
             
     InteractionSet
         moving wall > stepBack
         pacman EOS  > wrapAround
-        ghost EOS  > stepBack
+
+        ghost EOS ghost > stepBack
+
         power hungry  > killSprite
-        ghost powered > killSprite scoreChange=40
         hungry ghost  > killSprite scoreChange=-1
+
         power pacman > killSprite scoreChange=10
         pellet pacman > killSprite scoreChange=1
         fruit pacman > killSprite scoreChange=5
-        hungry  power > transformTo stype=powered
-        powered ghost > transformTo stype=hungry
+
+        hungry power > transformToAll stype=redOk stype2=redSc
+        hungry power > transformToAll stype=pinkOk stype2=pinkSc
+        hungry power > transformToAll stype=blueOk stype2=blueSc
+        hungry power > transformToAll stype=orangeOk stype2=orangeSc
+
+        hungry power > addTimer timer=200 ftype=transformToAll stype=redSc stype2=redOk killSecond=True
+        hungry power > addTimer timer=200 ftype=transformToAll stype=pinkSc stype2=pinkOk killSecond=True
+        hungry power > addTimer timer=200 ftype=transformToAll stype=blueSc stype2=blueOk killSecond=True
+        hungry power > addTimer timer=200 ftype=transformToAll stype=orangeSc stype2=orangeOk killSecond=True
+
+        hungry power > addTimer timer=200 ftype=transformToAll stype=powered stype2=hungry
+        hungry power > transformTo stype=powered
+
+        ghost powered > killSprite scoreChange=40
+
+
         
     LevelMapping
         0 > power
         . > pellet
         A > hungry
-        1 > redspawn bluespawn pinkspawn orangespawn red blue pink orange
+        1 > redspawn
+        2 > orangespawn
+        3 > bluespawn
+        4 > pinkspawn
         F > fruit
         
     TerminationSet

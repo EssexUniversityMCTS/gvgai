@@ -6,7 +6,7 @@ BasicGame frame_rate=30 square_size=30
         sword  > Flicker invisible=True
         moving >
             avatar > ShootAvatar stype=sword
-            dog    > RandomNPC cooldown=5 img=monster
+            dog    > RandomNPC cooldown=5 img=monster cons=15
     LevelMapping
         . > snow
         1 > dog mud
@@ -14,8 +14,7 @@ BasicGame frame_rate=30 square_size=30
     InteractionSet
         avatar dog > killSprite
         avatar mud  > stepBack
-        moving wall > stepBack
-        moving grass > stepBack
+        moving wall grass > stepBack
         snow dog    > transformTo stype=mud
         snow avatar > transformTo stype=grass scoreChange=1
 

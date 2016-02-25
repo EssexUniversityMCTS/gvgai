@@ -27,6 +27,11 @@ public class CompetitionParameters
     public static int INITIALIZATION_TIME = 1000;
 
     /**
+     * Milliseconds allowed for controller tear down.
+     */
+    public static int TEAR_DOWN_TIME = 100;
+
+    /**
      * Milliseconds allowed for the level generator to generate a level
      */
     public static int LEVEL_ACTION_TIME = 18000000;
