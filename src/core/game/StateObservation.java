@@ -223,7 +223,7 @@ public class StateObservation {
 
     /**
      * Returns the maximum amount of health points.
-     * @return the maximum amount of health points the avatar can have.
+     * @return the maximum amount of health points the avatar ever had.
      */
     public int getAvatarMaxHealthPoints() { return model.getAvatarMaxHealthPoints(); }
 
