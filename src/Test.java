@@ -1,3 +1,4 @@
+import java.lang.annotation.Repeatable;
 import java.util.Random;
 
 import core.ArcadeMachine;
@@ -15,21 +16,24 @@ public class Test
     public static void main(String[] args)
     {
         //Available controllers:
-        String sampleRandomController = "controllers.sampleRandom.Agent";
+    	String sampleRandomController = "controllers.sampleRandom.Agent";
         String sampleOneStepController = "controllers.sampleonesteplookahead.Agent";
         String sampleMCTSController = "controllers.sampleMCTS.Agent";
         String sampleFlatMCTSController = "controllers.sampleFlatMCTS.Agent";
         String sampleOLMCTSController = "controllers.sampleOLMCTS.Agent";
         String sampleGAController = "controllers.sampleGA.Agent";
         String tester = "controllers.Tester.Agent";
-        String breadthFirstSearch = "controllers.breadthFirstSearch.Agent";
+        String repeatAdrienctx = "controllers.repeatAdrienctx.Agent";
 
         //Available Generators
         String randomLevelGenerator = "levelGenerators.randomLevelGenerator.LevelGenerator";
+        String geneticGenerator = "levelGenerators.geneticLevelGenerator.LevelGenerator";
+        String constructiveLevelGenerator = "levelGenerators.constructiveLevelGenerator.LevelGenerator";
         
         //Available games:
         String gamesPath = "examples/gridphysics/";
         String games[] = new String[]{};
+        String generateLevelPath = "examples/";
 
         //Training Set 1 (2015; CIG 2014)
         //games = new String[]{"aliens", "boulderdash", "butterflies", "chase", "frogs",
@@ -56,6 +60,7 @@ public class Test
                 "intersection", "blacksmoke", "iceandfire", "gymkhana", "tercio"};
 
 
+
         //Other settings
         boolean visuals = true;
         String recordActionsFile = null; //where to record the actions executed. null if not to save.
@@ -66,12 +71,14 @@ public class Test
         int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
+        
+        String recordLevelFile = generateLevelPath + games[gameIdx] + ".txt";
 
         // 1. This starts a game, in a level, played by a human.
         //ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
         
         // 2. This plays a game in a level by the controller.
-        //ArcadeMachine.runOneGame(game, level1, visuals, breadthFirstSearch, recordActionsFile, seed);
+        //ArcadeMachine.runOneGame(game, level1, visuals, repeatAdrienctx, recordActionsFile, seed);
         //ArcadeMachine.runOneGame(game, level1, visuals, tester, recordActionsFile, seed);
 
         // 3. This replays a game from an action file previously recorded
@@ -81,13 +88,19 @@ public class Test
         // 4. This plays a single game, in N levels, M times :
         //String level2 = gamesPath + games[gameIdx] + "_lvl" + 1 +".txt";
         //int M = 3;
-        //ArcadeMachine.runGames(game, new String[]{level1, level2}, M, sampleMCTSController, null);
+        //for(int i=0; i<games.length; i++){
+        //	game = gamesPath + games[i] + ".txt";
+        //	level1 = gamesPath + games[i] + "_lvl" + levelIdx +".txt";
+        //	ArcadeMachine.runGames(game, new String[]{level1}, 5, evolutionStrategies, null);
+        //}
         
         //5. This starts a game, in a generated level created by a specific level generator
-        ArcadeMachine.playGeneratedLevel(game, randomLevelGenerator, recordActionsFile, seed);
+        if(ArcadeMachine.generateOneLevel(game, randomLevelGenerator, recordLevelFile)){
+        	ArcadeMachine.playOneGeneratedLevel(game, recordActionsFile, recordLevelFile, seed);
+        }
         
         //6. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
-        /*int N = 10, L = 5, M = 2;
+        /*int N = 10, L = 1, M = 5;
         boolean saveActions = false;
         String[] levels = new String[L];
         String[] actionFiles = new String[L*M];
@@ -100,7 +113,7 @@ public class Test
                 if(saveActions) for(int k = 0; k < M; ++k)
                     actionFiles[actionIdx++] = "actions_game_" + i + "_level_" + j + "_" + k + ".txt";
             }
-            ArcadeMachine.runGames(game, levels, M, sampleMCTSController, saveActions? actionFiles:null);
+            ArcadeMachine.runGames(game, levels, M, kNearestNeighbour, saveActions? actionFiles:null);
         }*/
     }
 }

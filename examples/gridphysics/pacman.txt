@@ -1,4 +1,4 @@
-BasicGame
+BasicGame square_size=32
     SpriteSet
         food > Immovable
             fruit > color=PINK img=mushroom

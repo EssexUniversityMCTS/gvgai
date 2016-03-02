@@ -14,6 +14,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.swing.JOptionPane;
+
 import core.SpriteGroup;
 import core.VGDLFactory;
 import core.VGDLRegistry;
@@ -34,9 +36,12 @@ import ontology.effects.Effect;
 import ontology.sprites.Resource;
 import tools.IO;
 import tools.JEasyFrame;
+import tools.KeyHandler;
 import tools.KeyInput;
+import tools.KeyPulse;
 import tools.Pair;
 import tools.Vector2d;
+import tools.WindowInput;
 
 /**
  * Created with IntelliJ IDEA.
@@ -171,8 +176,14 @@ public abstract class Game
     /**
      * Key input
      */
-    public static KeyInput ki = new KeyInput();
+    public static KeyHandler ki = CompetitionParameters.KEY_HANDLER == CompetitionParameters.KEY_INPUT ? 
+    		new KeyInput() : new KeyPulse();
 
+    /**
+     * Handling when the window is closed
+     */
+    public static WindowInput wi = new WindowInput();
+    
     /**
      * Size of the block in pixels.
      */
@@ -395,6 +406,21 @@ public abstract class Game
     }
     
     /**
+     * Get all parent sprites for a certain sprite
+     * @param itype id for the current node
+     * @return a list of all parent nodes' ids
+     */
+    private ArrayList<Integer> parentNodes(int itype){
+    	SpriteContent sc = (SpriteContent)classConst[itype];
+    	
+    	ArrayList<Integer> parents = new ArrayList<Integer>();
+    	parents.addAll(sc.itypes);
+    	parents.remove(parents.size() - 1);
+    	
+    	return parents;
+    }
+    
+    /**
      * Expand a non leaf node using its children
      * @param itype	sprite index
      * @return		a list of all leaf children under the hierarchy of itype sprite
@@ -516,17 +542,15 @@ public abstract class Game
      * Construct and return a temporary avatar sprite
      * @return a temproary avatar sprite
      */
-    public VGDLSprite getTempAvatar(ArrayList<SpriteData> spriteData){
-    	for(SpriteData sprite:spriteData){
-        	avatarId = VGDLRegistry.GetInstance().getRegisteredSpriteValue(sprite.name);
-    		if(((SpriteContent)classConst[avatarId]).referenceClass != null){
-    			VGDLSprite result = VGDLFactory.GetInstance().createSprite((SpriteContent) classConst[avatarId], 
-    					new Vector2d(), new Dimension(1, 1));
-    			if(result != null){
-    				return result;
-    			}
+    public VGDLSprite getTempAvatar(SpriteData sprite){
+    	avatarId = VGDLRegistry.GetInstance().getRegisteredSpriteValue(sprite.name);
+    	if(((SpriteContent)classConst[avatarId]).referenceClass != null){
+    		VGDLSprite result = VGDLFactory.GetInstance().createSprite((SpriteContent) classConst[avatarId], 
+    				new Vector2d(), new Dimension(1, 1));
+    		if(result != null){
+    			return result;
     		}
-        }
+    	}
     	
     	return null;
     }
@@ -574,27 +598,48 @@ public abstract class Game
     public ArrayList<InteractionData> getInteractionData(int itype1, int itype2){
     	ArrayList<InteractionData> results = new ArrayList<InteractionData>();
     	
-    	ArrayList<Effect> effects = null;
-    	if(itype1 != -1 && itype2 != -1){
-    		effects = getCollisionEffects(itype1, itype2);
-    	}
-    	else if(itype1 != -1){
-    		effects = getEosEffects(itype1);
-    	}
-    	else if(itype2 != -1){
-    		effects = getEosEffects(itype2);
+    	ArrayList<Integer> parent1 = new ArrayList<Integer>();
+    	ArrayList<Integer> parent2 = new ArrayList<Integer>();
+    	
+    	if(itype1 != -1){
+    		parent1.addAll(parentNodes(itype1));
+    		parent1.add(itype1);
     	}
     	
-    	if(effects != null){
-    		InteractionData temp;
-    		for(Effect e:effects){
-    			temp = new InteractionData();
-    			temp.type = e.getClass().getName();
-    			temp.scoreChange = e.scoreChange;
-    			
-    			results.add(temp);
+    	if(itype2 != -1){
+    		parent2.addAll(parentNodes(itype2));
+    		parent2.add(itype2);
+    	}
+    	
+    	ArrayList<Effect> effects = new ArrayList<Effect>();
+    	if(parent1.size() > 0 && parent2.size() > 0){
+    		for(int p1:parent1){
+    			for(int p2:parent2){
+    				effects.addAll(getCollisionEffects(p1, p2));
+    			}
     		}
     	}
+    	else if(parent1.size() > 0){
+    		for(int p1:parent1){
+    			effects.addAll(getEosEffects(p1));
+    		}
+    	}
+    	else if(parent2.size() > 0){
+    		for(int p2:parent2){
+    			effects.addAll(getEosEffects(p2));
+    		}
+    	}
+    	
+    	InteractionData temp;
+    	for(Effect e:effects){
+    		temp = new InteractionData();
+    		temp.type = e.getClass().getName();
+    		temp.type = temp.type.substring(temp.type.lastIndexOf('.') + 1);
+    		temp.scoreChange = e.scoreChange;
+    		temp.sprites.addAll(e.getEffectSprites());
+    			
+    		results.add(temp);
+     	}
     	
     	return results;
     }
@@ -618,8 +663,10 @@ public abstract class Game
             //Create the space for the sprites and effects of this type.
             spriteGroups[i].clear();
         }
-
-        kill_list.clear();
+        
+        if(kill_list != null){
+        	kill_list.clear();
+        }
         for(int j = 0; j < spriteGroups.length; ++j)
         {
             bucketList[j].clear();
@@ -730,16 +777,19 @@ public abstract class Game
         JEasyFrame frame;
         frame = new JEasyFrame(view, "Java-VGDL");
         frame.addKeyListener(ki);
+        frame.addWindowListener(wi);
+        wi.windowClosed = false;
 
         //Determine the delay for playing with a good fps.
         double delay = CompetitionParameters.LONG_DELAY;
         if(player instanceof controllers.human.Agent)
             delay = 1000.0/CompetitionParameters.DELAY; //in milliseconds
 
+        boolean firstRun = true;
 
         //Play until the game is ended
-        while(!isEnded)
-        {
+        while(!isEnded && !wi.windowClosed)
+        {	
             //Determine the time to adjust framerate.
             long then = System.currentTimeMillis();
 
@@ -757,7 +807,23 @@ public abstract class Game
 
             //Update the frame title to reflect current score and tick.
             this.setTitle(frame);
-
+            
+            if(firstRun){
+            	if(CompetitionParameters.dialogBoxOnStartAndEnd){
+            		JOptionPane.showMessageDialog(frame, 
+            				"Click OK to start.");
+            	}
+            	
+            	firstRun = false;
+            }
+        }
+        
+        if(!wi.windowClosed && CompetitionParameters.killWindowOnEnd){
+        	if(CompetitionParameters.dialogBoxOnStartAndEnd){
+        		JOptionPane.showMessageDialog(frame,
+        				"GAMEOVER: YOU " + (winner == Types.WINNER.PLAYER_WINS? "WIN.": "LOSE."));
+        	}
+        	frame.dispose();
         }
 
         return handleResult();

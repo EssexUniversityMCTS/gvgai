@@ -1,6 +1,7 @@
 package ontology.effects.unary;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -73,5 +74,13 @@ public class TransformTo extends Effect {
 
             game.killSprite(sprite1);
         }
+    }
+    
+    @Override
+    public ArrayList<String> getEffectSprites(){
+    	ArrayList<String> result = new ArrayList<String>();
+    	if(stype!=null) result.add(stype);
+    	
+    	return result;
     }
 }

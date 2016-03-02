@@ -1,5 +1,7 @@
 package ontology.effects;
 
+import java.util.ArrayList;
+
 import core.VGDLFactory;
 import core.VGDLSprite;
 import core.content.InteractionContent;
@@ -35,5 +37,9 @@ public abstract class Effect
     public void parseParameters(InteractionContent content) {
         //parameters from the object.
         VGDLFactory.GetInstance().parseParameters(content,this);
+    }
+    
+    public ArrayList<String> getEffectSprites(){
+    	return new ArrayList<String>();
     }
 }
