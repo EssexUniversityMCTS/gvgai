@@ -38,6 +38,7 @@ import tools.WindowInput;
 import tools.pathfinder.Node;
 import tools.pathfinder.PathFinder;
 
+
 /**
  * Created with IntelliJ IDEA.
  * User: Diego
@@ -651,6 +652,7 @@ public abstract class Game
     	else if(parent1.size() > 0){
     		for(int p1:parent1){
     			effects.addAll(getEosEffects(p1));
+
     		}
     	}
     	else if(parent2.size() > 0){
@@ -669,7 +671,7 @@ public abstract class Game
     			
     		results.add(temp);
      	}
-    	
+
     	return results;
     }
 

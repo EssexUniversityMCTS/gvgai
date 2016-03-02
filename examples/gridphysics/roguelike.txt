@@ -26,6 +26,7 @@ BasicGame square_size=25
 
         lock avatar > killIfOtherHasMore resource=key limit=1
         moving wall lock > stepBack
+
         exit avatar > killSprite scoreChange=10
 
         avatar spider > subtractHealthPoints value=2

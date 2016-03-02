@@ -7,9 +7,21 @@ import core.game.GameDescription.TerminationData;
 
 public class GoalConstraint extends AbstractConstraint{
 
+
+	/**
+	 * hashmap for number of objects in the level
+	 */
 	public HashMap<String, Integer> numOfObjects;
+	/**
+	 * Game description object send by the system
+	 */
 	public GameDescription gameDescription;
 	
+	/**
+	 * Check if all terminate conditions are unsatisfiable
+	 * @return	return 1 if all conditions are unsatisfiable and percentage
+	 * 			of unsatisfied conditions otherwise
+	 */
 	@Override
 	public double checkConstraint() {
 		double result = 0;

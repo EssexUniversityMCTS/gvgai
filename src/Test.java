@@ -1,3 +1,4 @@
+import java.lang.annotation.Repeatable;
 import java.util.Random;
 
 import core.ArcadeMachine;
@@ -23,6 +24,8 @@ public class Test
         String sampleGAController = "controllers.sampleGA.Agent";
         String tester = "controllers.Tester.Agent";
 
+        String repeatAdrienctx = "controllers.repeatAdrienctx.Agent";
+
         //Available Generators
         String randomLevelGenerator = "levelGenerators.randomLevelGenerator.LevelGenerator";
         String geneticGenerator = "levelGenerators.geneticLevelGenerator.LevelGenerator";
@@ -31,7 +34,7 @@ public class Test
         //Available games:
         String gamesPath = "examples/gridphysics/";
         String games[] = new String[]{};
-        String generateLevelPath = "examples/generatedLevels/";
+        String generateLevelPath = "examples/";
 
         //All public games
         games = new String[]{"aliens", "bait", "blacksmoke", "boloadventures", "boulderchase",              //0-4
@@ -50,6 +53,7 @@ public class Test
 
 
 
+
         //Other settings
         boolean visuals = true;
         String recordActionsFile = null; //where to record the actions executed. null if not to save.
@@ -60,15 +64,18 @@ public class Test
         int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
-        
-        String recordLevelFile = generateLevelPath +"geneticLevelGenerator/" + games[gameIdx] + "_lvl0.txt";
+
+        String recordLevelFile = generateLevelPath + games[gameIdx] + ".txt";
+
 
         // 1. This starts a game, in a level, played by a human.
         ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
         
         // 2. This plays a game in a level by the controller.
+
         //ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed);
         //ArcadeMachine.runOneGame(game, level1, visuals, sampleOneStepController, recordActionsFile, seed);
+
 
         // 3. This replays a game from an action file previously recorded
         //String readActionsFile = "actionsFile_aliens_lvl0.txt";  //This example is for
@@ -102,7 +109,7 @@ public class Test
                 if(saveActions) for(int k = 0; k < M; ++k)
                     actionFiles[actionIdx++] = "actions_game_" + i + "_level_" + j + "_" + k + ".txt";
             }
-            ArcadeMachine.runGames(game, levels, M, sampleMCTSController, saveActions? actionFiles:null);
+            ArcadeMachine.runGames(game, levels, M, kNearestNeighbour, saveActions? actionFiles:null);
         }*/
     }
 }

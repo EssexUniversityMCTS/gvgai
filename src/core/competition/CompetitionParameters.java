@@ -24,7 +24,7 @@ public class CompetitionParameters
     /**
      * Milliseconds allowed for controller initialization.
      */
-    public static int INITIALIZATION_TIME = 1000;
+    public static int INITIALIZATION_TIME = 60000;
 
     /**
      * Milliseconds allowed for controller tear down.
@@ -34,7 +34,7 @@ public class CompetitionParameters
     /**
      * Milliseconds allowed for the level generator to generate a level
      */
-    public static int LEVEL_ACTION_TIME = 18000000;
+    public static int LEVEL_ACTION_TIME = 1800000*10;
     
     /**
      * Milliseconds allowed for the level generator disqualification, if it returns a level after this time.
@@ -60,27 +60,28 @@ public class CompetitionParameters
     /**
      * Longer delay for human play.
      */
-    public static int LONG_DELAY = 50;
+    public static int LONG_DELAY = 20;
+
 
     /**
      * Max time a game can run
      */
-    public static int MAX_TIMESTEPS = 2000;
+    public static int MAX_TIMESTEPS = 1000;
 
     /**
      * Terminates the program when the playing window is closed
      */
-    public static boolean closeAppOnClosingWindow = true;
+    public static boolean closeAppOnClosingWindow = false;
     
     /**
      * Pause the game at the beginning and at the end
      */
-    public static boolean dialogBoxOnStartAndEnd = false;
+    public static boolean dialogBoxOnStartAndEnd = true;
     
     /**
      * Close the open window when you die or win
      */
-    public static boolean killWindowOnEnd = false;
+    public static boolean killWindowOnEnd = true;
     
     /**
      * Java Warm-up time before starting the game.
@@ -99,6 +100,5 @@ public class CompetitionParameters
      */
     public static final int KEY_INPUT = 0;
     public static final int KEY_PULSE = 1;
-
     public static int KEY_HANDLER = KEY_INPUT;
 }

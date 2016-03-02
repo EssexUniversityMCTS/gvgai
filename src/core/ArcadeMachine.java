@@ -53,7 +53,11 @@ public class ArcadeMachine
      * Reads game description then generate level using the supplied generator.
      * It also launches the game for a human to be played. Graphics always on. 
      * @param gameFile			the game description file
+<<<<<<< HEAD
      * @param actionFile       	the action file name
+=======
+     * @param levelGenerator	the level generator name
+>>>>>>> LevelGenerator
      * @param levelFile			a file to save the generated level
      */
     public static double playOneGeneratedLevel(String gameFile, String actionFile, String levelFile, int randomSeed){
@@ -419,6 +423,7 @@ public class ArcadeMachine
      * @param gameFile
      * @param actionFile
      * @param levelFile
+     * @param randomSeed
      */
     public static void playGeneratedLevels(String gameFile, String[] actionFile, String[] levelFile){
     	String agentName = "controllers.human.Agent";
@@ -475,7 +480,8 @@ public class ArcadeMachine
 
             //Finally, when the game is over, we need to tear the player down.
             if(player != null) ArcadeMachine.tearPlayerDown(toPlay, player);
-            
+
+
             //reset the game.
             toPlay.reset();
                 

@@ -5,14 +5,31 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 public class LevelData {
+
+	/**
+	 * a 2D matrix hold data about the level
+	 */
 	private String[][] level;
+	/**
+	 * hashmap to hold the current level mapping
+	 */
 	private HashMap<String, Character> levelMapping;
 	
+	/**
+	 * construct data for a level
+	 * @param width		level width
+	 * @param length	level height
+	 */
 	public LevelData(int width, int length){
 		level = new String[width][length];
 		levelMapping = new HashMap<String, Character>();
 	}
 	
+
+	/**
+	 * get the 2D level in form of string
+	 * @return	string describe the level
+	 */
 	public String getLevel(){
 		String result = "";
 		char mapChar = 'a';
@@ -37,22 +54,55 @@ public class LevelData {
 		return result;
 	}
 	
+
+	/**
+	 * set a position in the map to a certain type
+	 * @param x		x position on the map
+	 * @param y		y position on the map
+	 * @param stype	the sprite to added
+	 */
 	public void set(int x, int y, String stype){
 		level[x][y] = stype;
 	}
 	
+
+	/**
+	 * get the sprite at a certain position
+	 * @param x	x position on the map
+	 * @param y	y position on the map
+	 * @return	sprite at a certain position on the map
+	 */
 	public String get(int x, int y){
 		return level[x][y];
 	}
 	
+
+	/**
+	 * get the width of the level
+	 * @return	return the width of the level
+	 */
 	public int getWidth(){
 		return level.length;
 	}
 	
+
+	/**
+	 * get the height of the level
+	 * @return	return the height of the level
+	 */
 	public int getHeight(){
 		return level[0].length;
 	}
 	
+
+	/**
+	 * check if the two positions are connected
+	 * @param x1	x position of the first point
+	 * @param y1	y position of the first point
+	 * @param x2	x position of the second point
+	 * @param y2	y position of the second point
+	 * @return	true if they are connected and false otherwise
+	 */
 	public boolean checkConnectivity(int x1, int y1, int x2, int y2){
 		if(level[x1][y1] != null || level[x2][y2] != null){
 			return false;
@@ -80,6 +130,13 @@ public class LevelData {
 		return false;
 	}
 	
+
+	/**
+	 * check if this wall will case the world not to be connected any more
+	 * @param x x position for the point
+	 * @param y	y position for the point
+	 * @return	true if the wall didn't split the world into two halves and false otherwise
+	 */
 	public boolean checkConnectivity(int x, int y){
 		boolean result = false;
 		set(x, y, "wall");
@@ -93,10 +150,22 @@ public class LevelData {
 		return result;
 	}
 	
+
+	/**
+	 * check if the point is inside the borders of the level
+	 * @param x	x position for the point
+	 * @param y	y position for the point
+	 * @return	true if the point in the level and false otherwise
+	 */
 	public boolean checkInLevel(int x, int y){
 		return (x >= 0 && y >=0 && x < getWidth() && y < getHeight());
 	}
 	
+
+	/**
+	 * get all empty locations in the level
+	 * @return	array of points contains all empty locations
+	 */
 	public ArrayList<Point> getAllFreeSpots(){
 		ArrayList<Point> result = new ArrayList<Point>();
 		for(int x=0; x<level.length; x++){
@@ -110,6 +179,11 @@ public class LevelData {
 		return result;
 	}
 	
+
+	/**
+	 * get the level mapping hashmap
+	 * @return	the used hashmap for constructing the level
+	 */
 	public HashMap<Character, ArrayList<String>> getLevelMapping(){
 		HashMap<Character, ArrayList<String>> result = new HashMap<Character, ArrayList<String>>();
 		for(Entry<String,Character> entry:levelMapping.entrySet()){
@@ -120,6 +194,12 @@ public class LevelData {
 		return result;
 	}
 	
+
+	/**
+	 * Special point class that is used to get neighbors and handle
+	 * other useful functions
+	 * @author AhmedKhalifa
+	 */
 	public static class Point{
 		public int x;
 		public int y;
@@ -134,6 +214,11 @@ public class LevelData {
 			this.y = y;
 		}
 		
+
+		/**
+		 * get a list of all 4 neighbor points
+		 * @return	array of the 4 neighboring points
+		 */
 		public ArrayList<Point> getSurroundingPoints(){
 			ArrayList<Point> result = new ArrayList<Point>();
 			result.add(new Point(this.x + 1, this.y));
@@ -144,6 +229,12 @@ public class LevelData {
 			return result;
 		}
 		
+
+		/**
+		 * get distance between this point and the input point
+		 * @param p	an input point
+		 * @return	distance between this point and the input point
+		 */
 		public double getDistance(Point p){
 			return Math.sqrt(Math.pow(this.x - p.x, 2) + Math.pow(this.y - p.y, 2));
 		}

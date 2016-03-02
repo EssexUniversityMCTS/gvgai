@@ -29,5 +29,4 @@ public class KeyInput extends KeyHandler {
         key_mask[key] = false;
 
     }
-
 }

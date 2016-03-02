@@ -339,6 +339,77 @@ public class GameAnalyzer {
 	}
 	
 	/**
+<<<<<<< HEAD
+=======
+	 * Remove all sprites that are not appearing in the level mapping
+	 * @param game	game description object for the current game
+	 */
+	private void removeUselessObjects(GameDescription game){
+		HashMap<Character, ArrayList<String>> levelMapping = game.getLevelMapping();
+		ArrayList<String> allowedObjs = new ArrayList<String>();
+		for(ArrayList<String> data:levelMapping.values()){
+			allowedObjs.addAll(data);
+		}
+		
+		ArrayList<String> removeObjs = new ArrayList<String>();
+		for(String s:avatarSprites){
+			if(!allowedObjs.contains(s)){
+				removeObjs.add(s);
+			}
+		}
+		avatarSprites.removeAll(removeObjs);
+		if(avatarSprites.size() <= 0){
+			avatarSprites.add("avatar");
+		}
+		
+		if(solidSprites.size() > 0){
+			removeObjs.clear();
+			for(String s:solidSprites){
+				if(!allowedObjs.contains(s)){
+					removeObjs.add(s);
+				}
+			}
+			solidSprites.removeAll(removeObjs);
+			if(solidSprites.size() <= 0){
+				solidSprites.add("wall");
+			}
+		}
+		
+		removeObjs.clear();
+		for(String s:goalSprites){
+			if(!allowedObjs.contains(s)){
+				removeObjs.add(s);
+			}
+		}
+		goalSprites.removeAll(removeObjs);
+		
+		removeObjs.clear();
+		for(String s:harmfulSprites){
+			if(!allowedObjs.contains(s)){
+				removeObjs.add(s);
+			}
+		}
+		harmfulSprites.removeAll(removeObjs);
+		
+		removeObjs.clear();
+		for(String s:collectableSprites){
+			if(!allowedObjs.contains(s)){
+				removeObjs.add(s);
+			}
+		}
+		collectableSprites.removeAll(removeObjs);
+		
+		removeObjs.clear();
+		for(String s:otherSprites){
+			if(!allowedObjs.contains(s)){
+				removeObjs.add(s);
+			}
+		}
+		otherSprites.removeAll(removeObjs);
+	}
+	
+	/**
+>>>>>>> LevelGenerator
 	 * Initialize GameAnalyzer
 	 * @param game	game description object for the current game
 	 */
@@ -362,6 +433,8 @@ public class GameAnalyzer {
 		findHarmfulSprites(game);
 		findCollectableSprites(game);
 		findOtherSprites(game);
+
+		removeUselessObjects(game);
 		calculateMinMaxScoreUnit(game);
 	}
 	
@@ -453,7 +526,10 @@ public class GameAnalyzer {
 	
 	/**
 	 * Internal Enum for getAllInteractions function
+<<<<<<< HEAD
 	 *
+=======
+>>>>>>> LevelGenerator
 	 */
 	private enum InteractionType{
 		ALL,

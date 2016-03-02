@@ -28,6 +28,7 @@ public abstract class Termination {
 
     public boolean isFinished(Game game)
     {
+        //It's finished if the player pressed ESCAPE or the game is over..
         return game.isGameOver();
     }
 
