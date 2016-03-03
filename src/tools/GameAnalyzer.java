@@ -339,8 +339,6 @@ public class GameAnalyzer {
 	}
 	
 	/**
-<<<<<<< HEAD
-=======
 	 * Remove all sprites that are not appearing in the level mapping
 	 * @param game	game description object for the current game
 	 */
@@ -409,7 +407,6 @@ public class GameAnalyzer {
 	}
 	
 	/**
->>>>>>> LevelGenerator
 	 * Initialize GameAnalyzer
 	 * @param game	game description object for the current game
 	 */
@@ -526,10 +523,6 @@ public class GameAnalyzer {
 	
 	/**
 	 * Internal Enum for getAllInteractions function
-<<<<<<< HEAD
-	 *
-=======
->>>>>>> LevelGenerator
 	 */
 	private enum InteractionType{
 		ALL,

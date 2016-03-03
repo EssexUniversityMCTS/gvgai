@@ -46,24 +46,20 @@ public class ArcadeMachine
         //String agentName = "tools.pathfinder.Agent";
         String agentName = "controllers.human.Agent";
         boolean visuals = true;
-        return runOneGame(game_file, level_file, visuals, agentName, actionFile, randomSeed);
+        return runOneGame(game_file, level_file, visuals, agentName, actionFile, randomSeed, true);
     }
     
     /**
      * Reads game description then generate level using the supplied generator.
      * It also launches the game for a human to be played. Graphics always on. 
      * @param gameFile			the game description file
-<<<<<<< HEAD
      * @param actionFile       	the action file name
-=======
-     * @param levelGenerator	the level generator name
->>>>>>> LevelGenerator
      * @param levelFile			a file to save the generated level
      */
     public static double playOneGeneratedLevel(String gameFile, String actionFile, String levelFile, int randomSeed){
     	String agentName = "controllers.human.Agent";
         boolean visuals = true;
-    	return runOneGeneratedLevel(gameFile, visuals, agentName, actionFile, levelFile, randomSeed);
+    	return runOneGeneratedLevel(gameFile, visuals, agentName, actionFile, levelFile, randomSeed, true);
     }
     
     /**
@@ -74,9 +70,10 @@ public class ArcadeMachine
      * @param agentName name (inc. package) where the controller is otherwise.
      * @param actionFile filename of the file where the actions of this player, for this game, should be recorded.
      * @param randomSeed sampleRandom seed for the sampleRandom generator.
+     * @param isHuman indicates if a human is playing the game.
      */
     public static double runOneGame(String game_file, String level_file, boolean visuals,
-                                    String agentName, String actionFile, int randomSeed)
+                                    String agentName, String actionFile, int randomSeed, boolean isHuman)
     {
         VGDLFactory.GetInstance().init(); //This always first thing to do.
         VGDLRegistry.GetInstance().init();
@@ -106,7 +103,7 @@ public class ArcadeMachine
         //Then, play the game.
         double score = 0.0;
         if(visuals)
-            score = toPlay.playGame(player, randomSeed);
+            score = toPlay.playGame(player, randomSeed, isHuman);
         else
             score = toPlay.runGame(player, randomSeed);
 
@@ -166,9 +163,21 @@ public class ArcadeMachine
         
         return true;
     }
-    
+
+    /**
+     * A player (human or bot) plays a generated level, which is passed by parameter, in a determined
+     * game.
+     * @param gameFile game description file.
+     * @param visuals true to show the graphics, false otherwise.
+     * @param agentName name (inc. package) where the controller is otherwise.
+     * @param actionFile filename of the file where the actions of this player, for this game, should be recorded.
+     * @param levelFile level file to play in
+     * @param randomSeed random seed for the game to be played
+     * @param isHuman indicates if the game is played by a human or a bot
+     * @return score of the game plaayed
+     */
     public static double runOneGeneratedLevel(String gameFile, boolean visuals,
-            String agentName, String actionFile, String levelFile, int randomSeed){
+            String agentName, String actionFile, String levelFile, int randomSeed, boolean isHuman){
     	VGDLFactory.GetInstance().init(); //This always first thing to do.
         VGDLRegistry.GetInstance().init();
 
@@ -200,7 +209,7 @@ public class ArcadeMachine
         //Then, play the game.
         double score = 0.0;
         if(visuals)
-            score = toPlay.playGame(player, randomSeed);
+            score = toPlay.playGame(player, randomSeed, isHuman);
         else
             score = toPlay.runGame(player, randomSeed);
 
@@ -275,7 +284,7 @@ public class ArcadeMachine
         //Then, (re-)play the game.
         double score = 0.0;
         if(visuals)
-            score = toPlay.playGame(player, seed);
+            score = toPlay.playGame(player, seed, false); //not a human.
         else
             score = toPlay.runGame(player, seed);
 
@@ -420,12 +429,12 @@ public class ArcadeMachine
     
     /**
      * play a couple of generated levels for a certain game
-     * @param gameFile
-     * @param actionFile
-     * @param levelFile
-     * @param randomSeed
+     * @param gameFile The game description file path
+     * @param actionFile array of files to save the actions in
+     * @param levelFile array of level files to save the generated levels
+     * @param isHuman indicates if the level will be played by a human or a bot.
      */
-    public static void playGeneratedLevels(String gameFile, String[] actionFile, String[] levelFile){
+    public static void playGeneratedLevels(String gameFile, String[] actionFile, String[] levelFile, boolean isHuman){
     	String agentName = "controllers.human.Agent";
     	
     	VGDLFactory.GetInstance().init(); //This always first thing to do.
@@ -473,7 +482,7 @@ public class ArcadeMachine
             }else{
 
             	//Then, play the game.
-                score = toPlay.playGame(player, randomSeed);
+                score = toPlay.playGame(player, randomSeed, isHuman);
             }
 
             scores.add(score);

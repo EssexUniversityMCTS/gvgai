@@ -807,9 +807,10 @@ public abstract class Game
      * Plays the game, graphics enabled.
      * @param player Player that plays this game.
      * @param randomSeed sampleRandom seed for the whole game.
+     * @param isHuman indicates if a human is playing the game.
      * @return the score of the game played.
      */
-    public double playGame(AbstractPlayer player, int randomSeed)
+    public double playGame(AbstractPlayer player, int randomSeed, boolean isHuman)
     {
         //Prepare some structures and references for this game.
         prepareGame(player, randomSeed);
@@ -850,7 +851,7 @@ public abstract class Game
             //Update the frame title to reflect current score and tick.
             this.setTitle(frame);
             
-            if(firstRun){
+            if(firstRun && isHuman){
             	if(CompetitionParameters.dialogBoxOnStartAndEnd){
             		JOptionPane.showMessageDialog(frame, 
             				"Click OK to start.");
@@ -860,7 +861,7 @@ public abstract class Game
             }
         }
         
-        if(!wi.windowClosed && CompetitionParameters.killWindowOnEnd){
+        if(isHuman && !wi.windowClosed && CompetitionParameters.killWindowOnEnd){
         	if(CompetitionParameters.dialogBoxOnStartAndEnd){
         		JOptionPane.showMessageDialog(frame,
         				"GAMEOVER: YOU " + (winner == Types.WINNER.PLAYER_WINS? "WIN.": "LOSE."));

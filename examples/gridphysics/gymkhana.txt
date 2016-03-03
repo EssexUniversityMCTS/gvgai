@@ -20,7 +20,7 @@ BasicGame square_size=30 key_handler=Pulse
             westfacing  > orientation=LEFT color=YELLOW img=honeyLeft
 
         avatar >
-            moving > MovingAvatar img=avatar
+            moving > OrientedAvatar img=avatar
                 onground >
                 onlog >
             bullet > MissileAvatar img=alien
