@@ -101,7 +101,7 @@ public class SharedData {
 	/**
 	 * The name of a the best agent with some human error
 	 */
-	public static final String AGENT_NAME = "controllers.repeatAdrienctx.Agent";
+	public static final String AGENT_NAME = "controllers.repeatOLETS.Agent";
 	/**
 	 * The name of a naive agent
 	 */
