@@ -71,7 +71,7 @@ public class Agent extends AbstractPlayer{
 		nilMoves = 0;
 		pastAction = ACTIONS.ACTION_NIL;
 		currentState = DECIDE_ACTION;
-		automatedPlayer = new controllers.adrienctx.Agent(stateObs, elapsedTimer);
+		automatedPlayer = new controllers.olets.Agent(stateObs, elapsedTimer);
 		random = new Random();
 		
 		actDist = new ArrayList<Double>();
