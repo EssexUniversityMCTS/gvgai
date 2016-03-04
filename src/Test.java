@@ -17,6 +17,7 @@ public class Test
     {
         //Available controllers:
     	String sampleRandomController = "controllers.sampleRandom.Agent";
+    	String doNothingController = "controllers.doNothing.Agent";
         String sampleOneStepController = "controllers.sampleonesteplookahead.Agent";
         String sampleMCTSController = "controllers.sampleMCTS.Agent";
         String sampleFlatMCTSController = "controllers.sampleFlatMCTS.Agent";
@@ -35,31 +36,20 @@ public class Test
         String games[] = new String[]{};
         String generateLevelPath = "examples/";
 
-        //Training Set 1 (2015; CIG 2014)
-        //games = new String[]{"aliens", "boulderdash", "butterflies", "chase", "frogs",
-        //        "missilecommand", "portals", "sokoban", "survivezombies", "zelda"};
-
-        //Training Set 2 (2015; Validation CIG 2014)
-        //games = new String[]{"camelRace", "digdug", "firestorms", "infection", "firecaster",
-        //      "overload", "pacman", "seaquest", "whackamole", "eggomania"};
-
-        //Training Set 3 (2015)
-        //games = new String[]{"bait", "boloadventures", "brainman", "chipschallenge",  "modality",
-        //                              "painter", "realportals", "realsokoban", "thecitadel", "zenpuzzle"};
-
-        //Training Set 4 (Validation GECCO 2015, Test CIG 2014)
-        //games = new String[]{"roguelike", "surround", "catapults", "plants", "plaqueattack",
-        //        "jaws", "labyrinth", "boulderchase", "escape", "lemmings"};
-
-        //Training Set 5 (Validation CIG 2015, Test GECCO 2015)
-        //String games[] = new String[]{ "solarfox", "defender", "enemycitadel", "crossfire", "lasers",
-        //                               "sheriff", "chopper", "superman", "waitforbreakfast", "cakybaky"};
-
-        //Training Set 6 (Validation CEEC 2015)
-        games = new String[]{"lasers2", "hungrybirds" ,"cookmepasta", "factorymanager", "raceBet2",
-                "intersection", "blacksmoke", "iceandfire", "gymkhana", "tercio"};
-
-
+        //All public games
+        games = new String[]{"aliens", "bait", "blacksmoke", "boloadventures", "boulderchase",              //0-4
+                             "boulderdash", "brainman", "butterflies", "cakybaky", "camelRace",     //5-9
+                             "catapults", "chase", "chipschallenge", "chopper", "cookmepasta",        //10-14
+                             "crossfire", "defem", "defender", "digdug", "eggomania",           //15-19
+                             "enemycitadel", "escape", "factorymanager", "firecaster",  "firestorms",   //20-24
+                             "frogs", "gymkhana", "hungrybirds", "iceandfire", "infection",    //25-29
+                             "intersection", "jaws", "labyrinth", "lasers", "lasers2",        //30-34
+                             "lemmings", "missilecommand", "modality", "overload", "pacman",             //35-39
+                             "painter", "plants", "plaqueattack", "portals", "raceBet2",         //40-44
+                             "realportals", "realsokoban", "roguelike", "seaquest", "sheriff",      //45-49
+                             "sokoban", "solarfox" ,"superman", "surround", "survivezombies", //50-54
+                             "tercio", "thecitadel", "waitforbreakfast", "watergame", "whackamole", //55-59
+                             "zelda", "zenpuzzle" }; //60, 61 ...
 
         //Other settings
         boolean visuals = true;
@@ -71,15 +61,16 @@ public class Test
         int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
-        
+
         String recordLevelFile = generateLevelPath + games[gameIdx] + ".txt";
 
         // 1. This starts a game, in a level, played by a human.
         //ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
         
         // 2. This plays a game in a level by the controller.
-        //ArcadeMachine.runOneGame(game, level1, visuals, repeatAdrienctx, recordActionsFile, seed);
-        //ArcadeMachine.runOneGame(game, level1, visuals, tester, recordActionsFile, seed);
+        //ArcadeMachine.runOneGame(game, level1, visuals, repeatAdrienctx, recordActionsFile, seed, false);
+        //ArcadeMachine.runOneGame(game, level1, visuals, sampleOneStepController, recordActionsFile, seed, false);
+
 
         // 3. This replays a game from an action file previously recorded
         //String readActionsFile = "actionsFile_aliens_lvl0.txt";  //This example is for
@@ -95,12 +86,12 @@ public class Test
         //}
         
         //5. This starts a game, in a generated level created by a specific level generator
-        if(ArcadeMachine.generateOneLevel(game, randomLevelGenerator, recordLevelFile)){
+        if(ArcadeMachine.generateOneLevel(game, geneticGenerator, recordLevelFile)){
         	ArcadeMachine.playOneGeneratedLevel(game, recordActionsFile, recordLevelFile, seed);
         }
         
         //6. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
-        /*int N = 10, L = 1, M = 5;
+        /*int N = 60, L = 5, M = 1;
         boolean saveActions = false;
         String[] levels = new String[L];
         String[] actionFiles = new String[L*M];

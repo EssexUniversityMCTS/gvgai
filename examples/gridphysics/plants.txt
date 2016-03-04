@@ -18,14 +18,14 @@ BasicGame
         avatar  > ShootAvatar stype=shovel
 
     InteractionSet
-        shovel marsh > transformTo stype=plant
-        marsh shovel > killSprite
+
+        shovel marsh > transformTo stype=plant killSecond=True
         zombie goal  > transformTo stype=eatenBrains scoreChange=-1
-        axe plant > killSprite
-        plant axe > transformTo stype=marsh
-        zombie pea > killSprite scoreChange=1
-        pea zombie > killSprite
+
+        plant axe > transformTo stype=marsh killSecond=True
+        zombie pea > killBoth scoreChange=1
         pea tomb > killSprite
+
         avatar wall > stepBack
         zombie wall  > stepBack
 

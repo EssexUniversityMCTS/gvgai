@@ -1,6 +1,7 @@
 package levelGenerators.constraints;
 
 public class CoverPercentageConstraint extends AbstractConstraint{
+
 	/**
 	 * the current cover percentage
 	 */

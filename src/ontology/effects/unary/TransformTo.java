@@ -25,6 +25,8 @@ public class TransformTo extends Effect {
     //TODO: Theoretically, we could have an array of types here... to be done.
     public String stype;
     public int itype;
+    //Indicates if the second sprite should be killed.
+    public boolean killSecond = false;
 
     public TransformTo(InteractionContent cnt)
     {
@@ -37,8 +39,14 @@ public class TransformTo extends Effect {
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
         VGDLSprite newSprite = game.addSprite(itype, sprite1.getPosition());
+        transformTo(newSprite, sprite1,  sprite2,  game);
+    }
+
+    protected void transformTo(VGDLSprite newSprite, VGDLSprite sprite1, VGDLSprite sprite2, Game game)
+    {
         if(newSprite != null)
         {
+            //System.out.println(game.getGameTick() + " " + sprite1 + " --> " + newSprite) ;
             //Orientation
             if(newSprite.is_oriented && sprite1.is_oriented && newSprite.orientation == Types.NONE)
             {
@@ -47,7 +55,7 @@ public class TransformTo extends Effect {
 
             //Last position of the avatar.
             newSprite.lastrect =  new Rectangle(sprite1.lastrect.x, sprite1.lastrect.y,
-                                                sprite1.lastrect.width, sprite1.lastrect.height);
+                    sprite1.lastrect.width, sprite1.lastrect.height);
 
             //Copy resources
             if(sprite1.resources.size() > 0)
@@ -72,10 +80,16 @@ public class TransformTo extends Effect {
                 }catch (ClassCastException e) {}
             }
 
+            //Health points should be copied too.
+            newSprite.healthPoints = sprite1.healthPoints;
+
             game.killSprite(sprite1);
+
+            if(killSecond && sprite2 != null)
+                game.killSprite(sprite2);
         }
     }
-    
+
     @Override
     public ArrayList<String> getEffectSprites(){
     	ArrayList<String> result = new ArrayList<String>();

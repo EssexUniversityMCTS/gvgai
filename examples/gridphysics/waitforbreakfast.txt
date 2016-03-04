@@ -1,0 +1,52 @@
+BasicGame
+  SpriteSet
+    exit > Immovable color=DARKBLUE img=portal portal=True
+    wall > Immovable color=BLACK img=wall
+    othertable > color=DARKBLUE img=tableempty
+    table > color=DARKBLUE
+      emptytable > img=tableempty
+      tablewb > img=tablebacon
+      endtable > img=tableused
+    kitchen > SpawnPoint color=LIGHTGRAY img=portal stype=waiterwb prob=0.05 portal=True
+    ground > Immovable color=LIGHTBLUE
+    chair > Immovable color=GRAY img=chair
+    singlechair > Immovable color=GRAY img=chair
+    avatar > MovingAvatar speed=0.25
+      standingavatar > img=avatar
+      leavingavatar > img=avatar
+      satavatar > img=alien
+    waiter >  Chaser stype=table speed=0.5 img=waitor singleton=True
+      waiterwb > 
+      waiternb >
+
+  LevelMapping
+    . > ground
+    T > emptytable
+    K > kitchen
+    C > chair
+    c > singlechair
+    E > exit
+    O > othertable
+    A > standingavatar ground
+
+  InteractionSet
+
+    tablewb satavatar > transformTo stype=endtable  scoreChange=1
+    emptytable waiterwb > transformTo stype=tablewb
+    exit avatar > killSprite
+
+    satavatar ground > transformTo stype=leavingavatar
+    leavingavatar singlechair > transformTo stype=satavatar
+    standingavatar singlechair > transformTo stype=satavatar
+
+    waiter table othertable wall EOS > stepBack
+    avatar othertable wall EOS table > stepBack
+
+
+
+  TerminationSet
+    MultiSpriteCounter stype1=emptytable stype2=tablewb limit=0 win=True
+    MultiSpriteCounter stype1=leavingavatar limit=1 win=False
+    SpriteCounter stype=exit limit=0 win=False
+    Timeout limit=1500 win=False
+    

@@ -1,5 +1,6 @@
 package tools;
 
+
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
@@ -55,4 +56,5 @@ public class KeyPulse extends KeyHandler {
         public Pulse(int key)  { this.key = key; }
 
     }
+
 }

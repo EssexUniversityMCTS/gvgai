@@ -430,6 +430,7 @@ public class GameAnalyzer {
 		findHarmfulSprites(game);
 		findCollectableSprites(game);
 		findOtherSprites(game);
+
 		removeUselessObjects(game);
 		calculateMinMaxScoreUnit(game);
 	}

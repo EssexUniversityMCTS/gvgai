@@ -1,6 +1,6 @@
 #Modality: #http://www.puzzlescript.net/play.html?p=6888061
 
-BasicGame
+BasicGame key_handler=Pulse  square_size=50
     SpriteSet
         black > Immovable color=BLACK
         white > Immovable color=WHITE
@@ -41,22 +41,18 @@ BasicGame
         
     InteractionSet
         avatar EOS > stepBack
-        inBlack white > stepBack
-        inBlack blue > stepBack
-        inWhite black > stepBack
-        inWhite blue > stepBack
-        inBlue black > stepBack
-        inBlue white > stepBack
+
+        inBlack white blue > stepBack
+        inWhite black blue > stepBack
+        inBlue black white > stepBack
 
         avatar black > transformTo stype=inBlack
         avatar white > transformTo stype=inWhite
         avatar blue > transformTo stype=inBlue
         avatar grey > transformTo stype=inGrey
 
-
         crate avatar > bounceForward
         crate wall > undoAll
         target wall > undoAll
         avatar wall > stepBack
         target crate > transformTo stype=winTarget scoreChange=1
-

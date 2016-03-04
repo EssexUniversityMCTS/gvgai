@@ -6,8 +6,8 @@ BasicGame square_size=25
         weapon > Resource color=BLUE value=10000 limit=10000 img=sword
         health > Resource img=mana limit=10
 
+
         lock > Immovable img=lock
-        exit > Door color=GREEN img=goal
         gold > Resource color=GOLD limit=11 img=gold
         key > Resource img=key limit=1
 
@@ -15,37 +15,28 @@ BasicGame square_size=25
         transaction > Immovable invisible=True
 
         moving >
-            avatar > ShootAvatar ammo=weapon stype=sword img=avatar
-            spider > RandomNPC speed=1 cooldown=4 img=monster
+            avatar > ShootAvatar ammo=weapon stype=sword img=avatar healthPoints=1 limitHealthPoints=10
+            spider > RandomNPC speed=1 cooldown=4 img=monster cons=3
             phantom > Chaser stype=avatar cooldown=6 speed=0.5 color=BROWN  img=ghost
 
     InteractionSet
         weapon avatar   > collectResource scoreChange=2
-        weapon avatar   > killSprite
         gold avatar     > collectResource scoreChange=1
-        gold avatar     > killSprite
-        health avatar   > collectResource scoreChange=1
-        health avatar   > killSprite
         key avatar      > collectResource scoreChange=1
-        key avatar      > killSprite
 
-        moving wall > stepBack
         lock avatar > killIfOtherHasMore resource=key limit=1
-        moving lock > stepBack
+        moving wall lock > stepBack
+
         exit avatar > killSprite scoreChange=10
 
-        avatar spider > killIfHasLess resource=health limit=2
-        avatar spider > changeResource resource=health value=-2
+        avatar spider > subtractHealthPoints value=2
         spider sword > killSprite scoreChange=2
 
-        avatar phantom > killIfHasLess resource=health limit=1
-        avatar phantom > changeResource resource=health value=-1
+        avatar phantom > subtractHealthPoints value=1
         phantom sword > killSprite scoreChange=1
 
-        avatar market > spawnIfHasMore resource=gold limit=1 stype=transaction
-        avatar transaction > changeResource resource=gold value=-1
-        avatar transaction > changeResource resource=health value=1
-        transaction avatar > killSprite scoreChange=2
+        avatar market > spawnIfHasMore resource=gold limit=1 stype=health spend=1
+        avatar health  > addHealthPoints value=1 killSecond=True
 
     TerminationSet
         SpriteCounter stype=avatar limit=0 win=False

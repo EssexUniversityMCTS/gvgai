@@ -27,6 +27,11 @@ public class CompetitionParameters
     public static int INITIALIZATION_TIME = 60000;
 
     /**
+     * Milliseconds allowed for controller tear down.
+     */
+    public static int TEAR_DOWN_TIME = 100;
+
+    /**
      * Milliseconds allowed for the level generator to generate a level
      */
     public static int LEVEL_ACTION_TIME = 1800000*10;
@@ -50,12 +55,13 @@ public class CompetitionParameters
     /**
      * Delay for human play.
      */
-    public static int DELAY = 20;
+    public static int DELAY = 30;
 
     /**
      * Longer delay for human play.
      */
     public static int LONG_DELAY = 20;
+
 
     /**
      * Max time a game can run
@@ -94,6 +100,5 @@ public class CompetitionParameters
      */
     public static final int KEY_INPUT = 0;
     public static final int KEY_PULSE = 1;
-    
     public static int KEY_HANDLER = KEY_INPUT;
 }

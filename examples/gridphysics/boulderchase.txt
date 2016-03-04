@@ -10,6 +10,7 @@ BasicGame
 			enemy > Chaser stype=avatar speed=0.1
 				crab > color=RED img=camel.png
 				butterfly > color=PINK img=butterfly.png
+
 	LevelMapping
 		. > dirt
 		E > exitdoor
@@ -17,21 +18,19 @@ BasicGame
 		x > diamond
 		c > crab
 		b > butterfly
+
 	InteractionSet
-		dirt avatar > killSprite
-		dirt sword  > killSprite
-		diamond avatar > collectResource
-		diamond avatar > killSprite scoreChange=2
-		moving wall > stepBack
-		moving boulder > stepBack
+		dirt avatar sword > killSprite
+		diamond avatar > collectResource scoreChange=2
+		moving wall boulder > stepBack
+
 		avatar boulder > killIfFromAbove scoreChange=-1
-		avatar butterfly > killSprite scoreChange=-1
-		avatar crab > killSprite scoreChange=-1
+		avatar butterfly crab > killSprite scoreChange=-1
+
 		enemy boulder > killSprite scoreChange=5
-		boulder dirt > stepBack
-		boulder wall > stepBack
-		boulder diamond > stepBack
-		boulder boulder > stepBack
+
+		boulder dirt wall diamond boulder > stepBack
+
 		dirt butterfly > killSprite
 		dirt crab > transformTo stype=diamond
 		crab butterfly > killSprite

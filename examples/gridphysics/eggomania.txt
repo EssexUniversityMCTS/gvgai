@@ -18,8 +18,7 @@ BasicGame
         chicken wall  > stepBack
         avatar wall  > stepBack
         egg wall  > transformTo stype=brokenegg
-        avatar egg > changeResource resource=explosiveegg value=1
-        egg avatar > killSprite scoreChange=1
+        avatar egg > changeResource resource=explosiveegg value=1 scoreChange=1 killResource=True
         chicken sam > killSprite scoreChange=100
         sam EOS > killSprite
 

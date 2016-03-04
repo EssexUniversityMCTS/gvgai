@@ -1,0 +1,55 @@
+BasicGame key_handler=Pulse
+    SpriteSet
+        goal > Immovable img=door portal=true
+        avatar > ShootAvatar stype=boulder rotateInPlace=true
+        box    > Passive img=box
+        lasercannon > SpawnPoint 
+            lcup > img=spaceship stype=lup
+            lcdown > img=spaceship stype=ldown
+            lcright > img=spaceship stype=lright
+            lcleft > img=spaceship stype=lleft
+            lcswap > img=spaceship stype=lleft
+        laser > Missile color=YELLOW  shrinkfactor=0.5 speed=0.5
+            lup > orientation=UP
+            ldown > orientation=DOWN
+            lright > orientation=RIGHT
+            lleft > orientation=LEFT
+
+        boulder > Missile color=BLUE singleton=True img=bullet
+
+    LevelMapping
+        A > avatar
+        B > box
+        L > lcleft
+        R > lcright
+        U > lcup
+        D > lcdown
+        G > goal
+
+    InteractionSet
+
+        avatar wall lasercannon > stepBack
+
+        avatar box > shieldFrom ftype=killIfFrontal stype=laser
+        box avatar  > bounceForward
+        box wall box lasercannon > undoAll
+
+        avatar laser > killIfFrontal
+        avatar laser > killIfNotFrontal
+
+
+        avatar wall > stepBack
+        laser wall box > killSprite
+        boulder wall lasercannon EOS > killSprite
+        goal avatar > killSprite scoreChange=5
+
+        lcdown boulder > transformTo stype=lcswap
+        lcleft boulder > transformTo stype=lcdown
+        lcup boulder > transformTo stype=lcleft
+        lcright boulder > transformTo stype=lcup
+        lcswap boulder > transformTo stype=lcright
+
+
+    TerminationSet
+        SpriteCounter stype=avatar    limit=0 win=False
+        SpriteCounter stype=goal    limit=0 win=True

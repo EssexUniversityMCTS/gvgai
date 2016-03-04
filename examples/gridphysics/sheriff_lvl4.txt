@@ -1,0 +1,14 @@
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+w3sssssLssssssLsssssLsssssssss2w
+ws       0000000        00000 sw
+ws0                          0Uw
+ws0    0   0   0  0  0       0sw
+wD0                     0     sw
+ws0    0       A              Uw
+ws                      0     sw
+ws     0                     0sw
+wD0      0   0   0   0  0    0Uw
+ws0                          0sw
+ws 00     00 00 00 00    0000 sw
+w4sssssRsssssssRsssssssRssssss1w
+wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww

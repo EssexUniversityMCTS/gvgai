@@ -3,52 +3,43 @@ BasicGame
 
         goal  > Portal color=GREEN img=goal singleton=True portal=True stype=start
         deadPortal  > Portal invisible=True singleton=True portal=True stype=start
-        truck  > img=bus
-            rightTruck  > Missile   orientation=RIGHT 
-                fastRtruck  > speed=0.9  color=ORANGE
-                slowRtruck  > speed=0.7  color=RED
-            downTruck  > Missile   orientation=DOWN
-                fastDtruck  > speed=0.9  color=ORANGE
-                slowDtruck  > speed=0.7  color=RED
+        car  > img=bus
+            rightcar  > Missile   orientation=RIGHT 
+                fastRcar  > speed=0.9  color=ORANGE
+                slowRcar  > speed=0.7  color=RED
+            downcar  > Missile   orientation=DOWN
+                fastDcar  > speed=0.9  color=ORANGE
+                slowDcar  > speed=0.7  color=RED
 
         start > Immovable invisible=True
         wall > Immovable color=BLACK img=wall
         tree > Immovable color=GREEN img=forest
-        input > SpawnPoint stype=goal cooldown=16 prob=0.05 total=1 invisible=True
-        lifes > Resource color=GOLD limit=5 img=shield
+        input > SpawnPoint stype=goal cooldown=16 prob=0.05 total=1 invisible=True hidden=True
 
-        avatar >
-            moving > MovingAvatar img=avatar
+        avatar > MovingAvatar img=avatar healthPoints=5
 
     LevelMapping
         t > tree
-        - > slowRtruck
-        x > fastDtruck
-        _ > slowRtruck
-        X > fastDtruck
+        - > slowRcar
+        x > fastDcar
+        _ > slowRcar
+        X > fastDcar
 
         I > input
-        S > start moving lifes
+        S > start avatar
 
     InteractionSet
 
-        moving lifes > changeResource resource=lifes value=5
-        lifes moving > killSprite
+        goal avatar  > killSprite scoreChange=10
+        avatar goal > teleportToExit
 
-        goal moving  > killSprite scoreChange=10
-        moving goal > teleportToExit
-        moving tree > stepBack
+        avatar car > subtractHealthPoints scoreChange=-5
+        avatar car > spawn stype=deadPortal
+        deadPortal avatar > killSprite
+        avatar deadPortal > teleportToExit
 
-        moving truck > changeResource resource=lifes value=-1 scoreChange=-5
-        moving truck > killIfHasLess resource=lifes limit=0
-
-        moving truck > spawnIfHasMore resource=lifes limit=0 stype=deadPortal
-        deadPortal moving > killSprite
-        moving deadPortal > teleportToExit
-
-        moving wall  > stepBack
-
-        truck  EOS   > wrapAround
+        avatar tree wall  > stepBack
+        car  EOS   > wrapAround
     
     TerminationSet
         Timeout limit=1000 win=True

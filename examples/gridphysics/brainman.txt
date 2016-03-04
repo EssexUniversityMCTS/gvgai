@@ -22,37 +22,27 @@ BasicGame
         b > blue 
         O > boulder
     InteractionSet
-        keym key > transformTo stype=key
-        keym wall > transformTo stype=key
-        keym gem > transformTo stype=key
-        keym boulder > transformTo stype=key
-        
-        avatar wall > stepBack
-        avatar door > stepBack
+
+        keym key wall gem boulder > transformTo stype=key
+
+        avatar wall door > stepBack
         
         boulder avatar > bounceForward
         
         key avatar > transformTo stype=keym
         keym avatar > attractGaze
-        avatar key > stepBack
-        avatar keym > stepBack
+        avatar key keym > stepBack
         
-        door keym > killSprite scoreChange=4
-        keym door > killSprite
-        
+        door keym > killBoth scoreChange=4
+
         green avatar > killSprite scoreChange=1
         blue avatar > killSprite scoreChange=2
         red avatar > killSprite scoreChange=5
         
-        boulder wall > undoAll
-        boulder key > undoAll
-        boulder gem > undoAll
-        boulder boulder > undoAll
+        boulder wall key gem boulder > undoAll
         
-        key wall > undoAll
-        key gem > undoAll
-        key key > undoAll
-        
+        key wall gem key > undoAll
+
         exit avatar > killSprite scoreChange=10
         
     TerminationSet

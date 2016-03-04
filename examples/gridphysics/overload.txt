@@ -5,18 +5,16 @@ BasicGame
             goal  > Door color=GREEN img=goal
         moving >
             avatar > ShootAvatar ammo=weapon stype=sword img=avatar
-            random > RandomNPC speed=1 cooldown=4 img=monster
+            random > RandomNPC speed=1 cooldown=4 img=monster cons=8
         sword > Flicker limit=5 singleton=True img=sword
         weapon > Resource color=BLUE value=10000 limit=10000 img=sword
         gold  > Resource color=GOLD limit=11 img=gold # this limit is only used for visualizing progress
 
     InteractionSet
         weapon avatar   > collectResource scoreChange=2
-        weapon avatar   > killSprite
         marsh sword     > killSprite scoreChange=1
         gold avatar     > collectResource scoreChange=1
         gold random     > collectResource
-        gold moving     > killSprite
         moving wall     > stepBack
         avatar marsh    > killIfHasMore      resource=gold limit=11
         random marsh    > killIfHasMore      resource=gold limit=11

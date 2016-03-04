@@ -1,6 +1,7 @@
 package core.game;
 
 import java.awt.Dimension;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,6 +16,8 @@ import core.SpriteGroup;
 import core.VGDLSprite;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
+import ontology.effects.TimeEffect;
+import tools.Pair;
 import tools.Vector2d;
 
 /**
@@ -110,6 +113,7 @@ public class ForwardModel extends Game
         kill_list = new ArrayList<VGDLSprite>();
         bucketList = new Bucket[numSpriteTypes];
         historicEvents = new TreeSet<Event>();
+        shieldedEffects = new ArrayList[numSpriteTypes];
 
         //Copy of sprites from the game.
         spriteGroups = new SpriteGroup[numSpriteTypes];
@@ -126,12 +130,20 @@ public class ForwardModel extends Game
                 VGDLSprite sp = spriteIt.next();
                 VGDLSprite spCopy = sp.copy();
                 spriteGroups[i].addSprite(spCopy.spriteID, spCopy);
-                checkSpriteFeatures(spCopy, i);
-                updateObservation(spCopy);
+
+                if(!spCopy.hidden) {
+                    checkSpriteFeatures(spCopy, i);
+                    updateObservation(spCopy);
+                }
             }
 
             int nSprites = spriteGroups[i].numSprites();
             num_sprites += nSprites;
+
+            //copy the shields
+            shieldedEffects[i] = new ArrayList<>();
+            for(Pair p : a_gameState.shieldedEffects[i])
+                shieldedEffects[i].add(p.copy());
         }
 
         //events:
@@ -141,11 +153,22 @@ public class ForwardModel extends Game
             historicEvents.add(itEvent.next().copy());
         }
 
+        //copy the time effects:
+        this.timeEffects = new TreeSet<TimeEffect>();
+        Iterator<TimeEffect> timeEffects = a_gameState.timeEffects.descendingIterator();
+        while(timeEffects.hasNext())
+        {
+            TimeEffect tef = timeEffects.next().copy();
+            this.timeEffects.add(tef);
+        }
+        //System.out.println("Tef size: " + this.timeEffects.size());
+
         //Game state variables:
         this.gameTick = a_gameState.gameTick;
         this.isEnded = a_gameState.isEnded;
         this.winner = a_gameState.winner;
         this.score = a_gameState.score;
+        this.avatarLastAction = a_gameState.avatarLastAction;
         this.nextSpriteID = a_gameState.nextSpriteID;
     }
 
@@ -415,6 +438,7 @@ public class ForwardModel extends Game
         this.score = a_gameState.score;
         this.frame_rate = a_gameState.frame_rate; //is this needed?
         this.MAX_SPRITES = a_gameState.MAX_SPRITES;
+        this.avatarLastAction = a_gameState.avatarLastAction;
 
         //create the boolean maps of sprite types.
         npcList = new boolean[a_gameState.spriteGroups.length];
@@ -430,6 +454,8 @@ public class ForwardModel extends Game
         for(int i = 0; i < observationGrid.length; ++i)
             for(int j = 0; j < observationGrid[i].length; ++j)
                 observationGrid[i][j] = new ArrayList<Observation>();
+
+        this.pathf = a_gameState.pathf;
     }
 
 
@@ -573,14 +599,6 @@ public class ForwardModel extends Game
         return screenSize;
     }
 
-    /**
-     * Indicates how many pixels form a block in the game.
-     * @return how many pixels form a block in the game.
-     */
-    public int getBlockSize()
-    {
-        return block_size;
-    }
 
     /** avatar-dependent functions **/
 
@@ -676,7 +694,9 @@ public class ForwardModel extends Game
      */
     public Types.ACTIONS getAvatarLastAction()
     {
-        return avatar.lastAction;
+        if(avatarLastAction != null)
+            return avatarLastAction;
+        else return Types.ACTIONS.ACTION_NIL;
     }
 
 
@@ -689,6 +709,25 @@ public class ForwardModel extends Game
         return avatar.getType();
     }
 
+
+    /**
+     * Returns the health points of the avatar. A value of 0 doesn't necessarily
+     * mean that the avatar is dead (could be that no health points are in use in that game).
+     * @return a numeric value, the amount of remaining health points.
+     */
+    public int getAvatarHealthPoints() { return avatar.healthPoints; }
+
+    /**
+     * Returns the maximum amount of health points.
+     * @return the maximum amount of health points the avatar can have.
+     */
+    public int getAvatarMaxHealthPoints() { return avatar.maxHealthPoints; }
+
+    /**
+     * Returns the limit of health points this avatar can have.
+     * @return the limit of health points the avatar can have.
+     */
+    public int getAvatarLimitHealthPoints() {return avatar.limitHealthPoints;}
 
 
     /** Methods that return positions of things **/
@@ -729,6 +768,13 @@ public class ForwardModel extends Game
                 if(spriteIt != null) while(spriteIt.hasNext())
                 {
                     VGDLSprite sp = spriteIt.next();
+
+                    if(sp.hidden)
+                    {
+                        observations[idx] = null;
+                        break;
+                    }
+
                     Observation observation = getSpriteObservation(sp);
                     observation.update(i, sp.spriteID, sp.getPosition(), reference, getSpriteCategory(sp));
 

@@ -1,4 +1,4 @@
-BasicGame
+BasicGame key_handler=Pulse
     SpriteSet
         water > Immovable color=BLUE img=water
         weaponToggle1 > Immovable color=RED img=city
@@ -43,20 +43,18 @@ BasicGame
 
         boulderm boulder > transformTo stype=boulder
         boulder boulder > stepBack
-        moving wall      > stepBack
-        moving  EOS  > stepBack
+
         goal   avatar    > killSprite scoreChange=5
         avatar portalexit > stepBack
         avatar portalentry > teleportToExit scoreChange=1
         avatar water       > killSprite
         weapon avatar   > collectResource
-        weapon avatar   > killSprite
 
         avatar key > changeResource resource=key value=1
         key avatar > killSprite
         lock avatar > killIfOtherHasMore resource=key limit=1
         avatar lock > stepBack
-        moving lock > stepBack
+        moving lock wall > stepBack
 
         avatarIn weaponToggle1 > transformTo stype=avatarOut
         avatarOut weaponToggle2 > transformTo stype=avatarIn
@@ -64,8 +62,7 @@ BasicGame
         #Avatar and Boulder
         boulder avatar > transformTo stype=boulderm
         boulderm avatar > attractGaze
-        avatar boulder > stepBack
-        avatar boulderm > stepBack
+        avatar boulder boulderm > stepBack
 
         #moving boulder stops after hitting:
         boulderm wall > transformTo stype=boulder
@@ -79,20 +76,17 @@ BasicGame
         boulderm weaponToggle2 > transformTo stype=boulder
         boulder weaponToggle2 > undoAll
 
-        water boulderm > killSprite
-        boulderm water > killSprite
+        water boulderm > killBoth
 
         boulderm portalentry > teleportToExit
-        boulderm EOS > stepBack
 
 
         #Missiles - order is important.
         missile portalentry > teleportToExit
         missile portalexit > attractGaze
-        missile EOS > stepBack
+        EOS missile boulderm moving  > stepBack
 
         wall missileIn > transformToSingleton stype=portalentry stype_other=wall
         wall missileOut > transformToSingleton stype=portalexit stype_other=wall takeOrientation=True
 
-        missile goal > killSprite
-        missile wall > killSprite
+        missile goal wall > killSprite

@@ -3,6 +3,7 @@ package levelGenerators.constraints;
 
 public class SolutionLengthConstraint extends AbstractConstraint{
 
+
 	/**
 	 * the number of steps that the agent did when plays the game
 	 */

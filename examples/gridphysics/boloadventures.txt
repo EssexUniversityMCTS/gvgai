@@ -1,25 +1,23 @@
 #Bolo Adventures III: http://www.mobygames.com/game/dos/bolo-adventures-iii
-
-BasicGame
+BasicGame key_handler=Pulse
     SpriteSet
         hole   > Immovable color=DARKBLUE img=hole
         goal > Immovable img=door
         avatar > OrientedAvatar rotateInPlace=false
         box    > Passive img=box
-        boulderinhole > Flicker img=boulder limit=1
-        boulder    > Passive img=boulder
+        boulder  > Passive img=boulder
         boulderm > Missile img=boulder
         lasercannon > SpawnPoint 
             lcup > img=spaceship stype=lup
             lcdown > img=spaceship stype=ldown
             lcright > img=spaceship stype=lright
             lcleft > img=spaceship stype=lleft
-        laser > Missile color=YELLOW  shrinkfactor=0.5 speed=0.5
+        laser > Missile color=YELLOW  shrinkfactor=0.5 speed=0.1
             lup > orientation=UP
             ldown > orientation=DOWN
             lright > orientation=RIGHT
             lleft > orientation=LEFT
-        pushingbox > Resource limit=2 value=0
+
     LevelMapping
         A > avatar
         B > box
@@ -30,50 +28,33 @@ BasicGame
         D > lcdown
         0 > hole
         G > goal
+
     InteractionSet
-        boulderm boulder > transformTo stype=boulder
-    
-        avatar wall > stepBack
-        avatar lasercannon > stepBack
-        avatar box > changeResource resource=pushingbox value=1
+
+        boulderm wall box boulder lasercannon > transformTo stype=boulder
+        boulderm hole > killBoth scoreChange=1
+
+        avatar wall lasercannon > stepBack
+        avatar box > shieldFrom ftype=killIfFrontal stype=laser
+
         box avatar  > bounceForward
-        box wall    > undoAll
-        box box     > undoAll
-        box hole > undoAll
-        box lasercannon > undoAll
+        box wall box hole lasercannon   > undoAll
         
         avatar wall > stepBack
         boulder avatar  > transformTo stype=boulderm
         boulderm avatar > attractGaze
-        avatar boulder > stepBack
-        avatar boulderm > stepBack
-        boulderm wall > transformTo stype=boulder
-        boulderm box > transformTo stype=boulder
-        boulderm boulder > transformTo stype=boulder
-        boulderm lasercannon > transformTo stype=boulder
-        
-        boulderm hole > spawnIfHasMore resource=null limit=0 stype=boulderinhole
-        boulderm hole > killSprite
-        hole boulderinhole > killSprite  scoreChange=1
-        
-        
-        
-        boulder box > undoAll
-        boulder wall > undoAll
-        boulder boulder > undoAll
-        boulder lasercannon > undoAll
-        
-        
-        laser wall > killSprite
-        laser boulder > killSprite
-        laser boulderm > killSprite
-        laser box > killSprite
-        laser hole > killSprite
-        avatar laser > changeResource resource=pushingbox value=-1
-        avatar laser > killIfHasLess resource=pushingbox limit=0
+        avatar boulder boulderm > stepBack
+
+        boulder box wall boulder lasercannon > undoAll
+        laser wall boulder boulderm box hole > killSprite
         avatar hole > stepBack
+
+        avatar laser > killIfFrontal
+        avatar laser > killIfNotFrontal
+
         
         goal avatar > killSprite scoreChange=5
+
     TerminationSet
         SpriteCounter stype=avatar    limit=0 win=False
         SpriteCounter stype=goal    limit=0 win=True
