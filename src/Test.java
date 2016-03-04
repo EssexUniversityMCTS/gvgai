@@ -17,14 +17,13 @@ public class Test
     {
         //Available controllers:
     	String sampleRandomController = "controllers.sampleRandom.Agent";
+    	String doNothingController = "controllers.doNothing.Agent";
         String sampleOneStepController = "controllers.sampleonesteplookahead.Agent";
         String sampleMCTSController = "controllers.sampleMCTS.Agent";
         String sampleFlatMCTSController = "controllers.sampleFlatMCTS.Agent";
         String sampleOLMCTSController = "controllers.sampleOLMCTS.Agent";
         String sampleGAController = "controllers.sampleGA.Agent";
         String tester = "controllers.Tester.Agent";
-        String repeatAdrienctx = "controllers.repeatAdrienctx.Agent";
-
         String repeatAdrienctx = "controllers.repeatAdrienctx.Agent";
 
         //Available Generators
@@ -52,9 +51,6 @@ public class Test
                              "tercio", "thecitadel", "waitforbreakfast", "watergame", "whackamole", //55-59
                              "zelda", "zenpuzzle" }; //60, 61 ...
 
-
-
-
         //Other settings
         boolean visuals = true;
         String recordActionsFile = null; //where to record the actions executed. null if not to save.
@@ -68,12 +64,11 @@ public class Test
 
         String recordLevelFile = generateLevelPath + games[gameIdx] + ".txt";
 
-
         // 1. This starts a game, in a level, played by a human.
         //ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
         
         // 2. This plays a game in a level by the controller.
-        //ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed, false);
+        //ArcadeMachine.runOneGame(game, level1, visuals, repeatAdrienctx, recordActionsFile, seed, false);
         //ArcadeMachine.runOneGame(game, level1, visuals, sampleOneStepController, recordActionsFile, seed, false);
 
 
@@ -91,7 +86,7 @@ public class Test
         //}
         
         //5. This starts a game, in a generated level created by a specific level generator
-        if(ArcadeMachine.generateOneLevel(game, randomLevelGenerator, recordLevelFile)){
+        if(ArcadeMachine.generateOneLevel(game, geneticGenerator, recordLevelFile)){
         	ArcadeMachine.playOneGeneratedLevel(game, recordActionsFile, recordLevelFile, seed);
         }
         
