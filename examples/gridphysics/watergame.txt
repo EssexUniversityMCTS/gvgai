@@ -1,4 +1,4 @@
-BasicGame square_size=80
+BasicGame square_size=80 key_handler=Pulse
     SpriteSet
         door > Door img=exit
         wall > Immovable img=wall
@@ -11,13 +11,12 @@ BasicGame square_size=80
     InteractionSet
         avatar wall > stepBack
         box avatar > bounceForward
-        box wall > undoAll
+        box wall box > undoAll
         wall box > undoAll
-        box box > undoAll
-        water box > killSprite
-        box water > killSprite
+        water box > killBoth
         avatar water > killSprite
         door avatar > killSprite
+
     LevelMapping
         p > avatar
         w > wall

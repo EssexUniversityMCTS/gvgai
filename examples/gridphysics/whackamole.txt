@@ -5,7 +5,7 @@ BasicGame
             tight > stype=slow color=WHITE prob=0.002 img=portal
             wide  > stype=quick color=GRAY prob=0.01 img=door
         moving >
-            cat > RandomNPC color=RED img=camel
+            cat > RandomNPC color=RED img=camel cons=2
             avatar  > MovingAvatar
         mole > Flicker shrinkfactor=0.7
             quick > color=BLUE limit=20 img=mushroom
@@ -22,6 +22,5 @@ BasicGame
 
     InteractionSet
         moving  EOS  > stepBack
-        mole avatar > killSprite scoreChange=1
-        mole cat > killSprite scoreChange=-1
+        mole avatar cat > killSprite scoreChange=1
         avatar cat > killSprite scoreChange=-5

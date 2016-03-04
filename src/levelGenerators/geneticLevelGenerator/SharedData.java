@@ -6,6 +6,7 @@ import core.game.GameDescription;
 import tools.GameAnalyzer;
 
 public class SharedData {
+
 	/**
 	 * The size of the Genetic Algorithm Population
 	 */

@@ -1,0 +1,69 @@
+BasicGame
+    SpriteSet
+        layers > Immovable hidden=True
+            stratosphere > color=LIGHTBLUE
+            thermosphere > color=BLUE
+            troposphere >
+
+        satellite   > RandomNPC    color=WHITE img=satellite cons=1
+        avatar   > ShootAvatar orientation=DOWN color=YELLOW ammo=bullet stype=bomb img=spaceship rotateInPlace=False
+        missile > Missile
+            sam  > orientation=UP color=BLUE speed=0.25 img=spaceship
+            bomb > orientation=DOWN color=RED speed=0.75 img=bomb singleton=True
+
+        cloud  > Missile img=ghost
+            leftCloud  > orientation=LEFT speed=0.05  color=WHITE
+            fastLeftCloud  > orientation=LEFT speed=0.2  color=WHITE
+            rightCloud  > orientation=RIGHT speed=0.05  color=WHITE
+            fastRightCloud  > orientation=RIGHT speed=0.2  color=WHITE
+
+        tank   > Bomber stype=sam  prob=0.03  cooldown=5 speed=0.6 img=alien
+        portal  > SpawnPoint img=portal portal=True
+            portalBase  > stype=tank  cooldown=40   total=20
+            portalAmmo  > stype=supply cooldown=10 prob=0.15
+
+        supply > Missile orientation=LEFT speed=0.25 img=coin
+        bullet > Resource limit=20
+    
+    LevelMapping
+        S > satellite thermosphere
+        b > portalBase troposphere
+        a > portalAmmo
+        t > thermosphere
+        s > stratosphere
+        p > troposphere
+        A > avatar stratosphere
+        l > leftCloud stratosphere
+        L > fastLeftCloud stratosphere
+        r > rightCloud stratosphere
+        R > fastRightCloud stratosphere
+
+    TerminationSet
+        SpriteCounter      stype=avatar               limit=0 win=False
+        SpriteCounter      stype=satellite               limit=0 win=False
+        MultiSpriteCounter stype1=portalBase stype2=tank limit=0 win=True
+        
+    InteractionSet
+        avatar wall EOS > stepBack
+        avatar sam > killSprite
+        sam avatar wall > killSprite
+
+        tank bomb > killSprite scoreChange=1
+        bomb tank wall EOS > killSprite
+
+        bomb sam > killBoth
+
+        tank wall  > reverseDirection
+        tank wall  > stepBack
+
+        satellite sam > killBoth scoreChange=-1
+        satellite wall > stepBack
+
+        avatar supply > changeResource resource=bullet value=5  killResource=True
+        supply wall > killSprite
+
+        avatar portal thermosphere troposphere > stepBack
+        satellite stratosphere > stepBack
+
+        cloud sam > killBoth
+        cloud EOS > wrapAround

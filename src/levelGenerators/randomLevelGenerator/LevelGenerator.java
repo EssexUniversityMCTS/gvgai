@@ -47,6 +47,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		random = new Random();
 		minSize = 4;
 		maxSize = 18;
+
 		emptyPercentage = 0.9;
 	}
 	
@@ -118,6 +119,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		return null;
 	}
 	
+
 	/**
 	 * Add random unique x and y value that is not found in the 
 	 * list of points associated with a certain character c
@@ -130,6 +132,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		int x =0;
 		int y = 0;
 		do{
+
 			int border = 0;
 			if(includeBorders){
 				border = 1;
@@ -178,6 +181,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		}
 		
 		ArrayList<DataPoint> dataPoints = new ArrayList<DataPoint>();
+
 		if(includeBorders){
 			includeBorders = buildLayout(game, dataPoints, width, length);
 		}
@@ -196,6 +200,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 				DataPoint p = isUnique(dataPoints, x, y);
 				if(p != null){
 					result += p.c;
+
 				}
 				else if(random.nextDouble() < emptyPercentage){
 					result += " ";
@@ -209,6 +214,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		
 		return result;
 	}
+
 
 	/**
 	 * Helper class to store some data points with a 

@@ -1,0 +1,67 @@
+BasicGame
+    SpriteSet
+
+        avatar > ShootAvatar stype=boulder rotateInPlace=true
+        boulder > Missile color=BLUE singleton=True img=bullet
+        line > SpawnPoint
+            lcup > img=spaceship stype=lup
+            lcdown > img=spaceship stype=ldown
+            lcright > img=spaceship stype=lright
+            lcleft > img=spaceship stype=lleft
+            lcswap > img=spaceship stype=lleft
+        laser > Missile shrinkfactor=0.5 speed=0.5 color=YELLOW
+            lup > orientation=UP
+            ldown > orientation=DOWN
+            lright > orientation=RIGHT
+            lleft > orientation=LEFT
+
+        goal > Immovable portal=true
+            highway > img=hole
+            street > img=door
+        box    > Passive img=box
+        trap > Immovable img=hell
+        carcrash > Immovable img=explosion
+
+        portal  > SpawnPoint   stype=car  cooldown=20 img=portal portal=True
+        car > Missile orientation=DOWN color=RED speed=0.1 img=bus
+
+
+    LevelMapping
+        A > avatar
+        L > lcleft
+        R > lcright
+        U > lcup
+        D > lcdown
+        P > portal
+        B > box
+        H > highway
+        S > street
+        T > trap
+
+    InteractionSet
+    
+        avatar wall line > stepBack
+        laser wall EOS > killSprite
+
+        box avatar  > bounceForward
+        box wall box line  > undoAll notStype=car
+        laser box > killSprite
+
+        lcdown boulder > transformTo stype=lcswap
+        lcleft boulder > transformTo stype=lcdown
+        lcup boulder > transformTo stype=lcleft
+        lcright boulder > transformTo stype=lcup
+        lcswap boulder > transformTo stype=lcright
+
+        boulder line wall EOS > killSprite
+
+        car avatar laser > attractGaze align=True
+
+        car wall line > killSprite scoreChange=-1
+        car street > killSprite scoreChange=1
+        car highway > killSprite scoreChange=4
+        car trap > transformTo stype=carcrash
+
+    TerminationSet
+        MultiSpriteCounter stype1=carcrash limit=1 win=False
+        Timeout limit=1000 win=True

@@ -2,7 +2,7 @@ BasicGame
     SpriteSet
         bullet > color=RED img=bullet
             sitting  > Immovable
-            random   > RandomNPC speed=0.25
+            random   > RandomNPC speed=0.25 cons=1
             straight > Missile   speed=0.5 img=missile
                 vertical   > orientation=UP
                 horizontal > orientation=LEFT
@@ -15,8 +15,7 @@ BasicGame
                 exit1  >
                 exit2  >
     InteractionSet
-        random wall      > stepBack
-        random structure > stepBack
+        random wall structure     > stepBack
         avatar wall      > stepBack
         goal   avatar    > killSprite scoreChange=1
         avatar bullet    > killSprite

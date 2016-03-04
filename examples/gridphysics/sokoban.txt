@@ -1,4 +1,4 @@
-BasicGame
+BasicGame key_handler=Pulse square_size=50
     SpriteSet
         hole   > Immovable color=DARKBLUE img=hole
         avatar > MovingAvatar
@@ -9,8 +9,7 @@ BasicGame
     InteractionSet
         avatar wall > stepBack
         box avatar  > bounceForward
-        box wall    > undoAll
-        box box     > undoAll
+        box wall box  > undoAll
         box hole    > killSprite scoreChange=1
     TerminationSet
         SpriteCounter stype=box    limit=0 win=True

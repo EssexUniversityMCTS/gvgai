@@ -4,21 +4,20 @@ BasicGame
         hell   > 
             fastHell   > SpawnPoint stype=zombie prob=0.05 color=RED img=hell
             slowHell   > SpawnPoint stype=zombie prob=0.03 color=RED img=hell
-        honey  > Resource color=GOLD limit=10 img=honey
+        honey  > Passive color=GOLD img=honey
         moving >
-            avatar > MovingAvatar
+            avatar > MovingAvatar healthPoints=1 limitHealthPoints=10
             bee    > RandomNPC speed=1   cooldown=3  color=YELLOW img=bee
             zombie > Chaser stype=avatar cooldown=6 speed=0.5 color=BROWN img=zombie
 
     InteractionSet
-        honey avatar    > collectResource scoreChange=1
-        honey avatar    > killSprite
+        avatar honey    > addHealthPoints killSecond=True
+
         moving wall     > stepBack
-        avatar zombie   > killIfHasLess resource=honey limit=1 scoreChange=-1
-        avatar zombie   > changeResource resource=honey value=-1
-        zombie avatar   > killSprite scoreChange=1
-        bee zombie      > transformTo stype=honey
-        zombie bee      > killSprite
+
+        avatar zombie   > subtractHealthPoints scoreChange=-1
+
+        bee zombie      > transformTo stype=honey killSecond=True
         avatar hell     > killSprite scoreChange=-1
 
     TerminationSet

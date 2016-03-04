@@ -1,0 +1,44 @@
+BasicGame
+   SpriteSet
+      chef > Chaser img=alien color=ORANGE stype=avatar speed=0.1 maxDistance=200
+
+      table > Immovable img=tableused
+      inc > Resource
+         inc1 > img=base limit=1
+         inc2 > img=water  limit=1
+         inc3 > img=mushroom limit=1
+         inc4 > img=honey limit=1
+         inc5 > img=cocoon limit=1
+         inc6 > img=carcass limit=1
+
+      avatar > OrientedAvatar img=avatar rotateInPlace=false
+    
+   LevelMapping
+      1 > inc1
+      2 > inc2
+      3 > inc3
+      4 > inc4
+      5 > inc5
+      6 > inc6
+      t > table
+      C > avatar inc1 inc2
+      A > avatar
+      c > chef
+           
+   TerminationSet
+      Timeout limit=1500 win=False
+      SpriteCounter stype=avatar win=False
+      SpriteCounter stype=inc6 limit=0 win=True
+        
+   InteractionSet
+      avatar  wall table  > stepBack
+      chef  wall table  > stepBack
+
+      avatar chef > killSprite scoreChange=-1
+
+      inc1 avatar > collectResource scoreChange=1
+      inc2 avatar > collectResourceIfHeld heldResource=inc1 scoreChange=1
+      inc3 avatar > collectResourceIfHeld heldResource=inc2 scoreChange=1
+      inc4 avatar > collectResourceIfHeld heldResource=inc3 scoreChange=1
+      inc5 avatar > collectResourceIfHeld heldResource=inc4 scoreChange=1
+      inc6 avatar > collectResourceIfHeld heldResource=inc5 scoreChange=1

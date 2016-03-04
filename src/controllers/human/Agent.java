@@ -44,4 +44,9 @@ public class Agent extends AbstractPlayer
 
         return action;
     }
+
+    public void result(StateObservation stateObservation, ElapsedCpuTimer elapsedCpuTimer)
+    {
+        //System.out.println("Thanks for playing!");
+    }
 }

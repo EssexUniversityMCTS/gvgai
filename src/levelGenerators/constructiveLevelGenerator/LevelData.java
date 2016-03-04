@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 public class LevelData {
+
 	/**
 	 * a 2D matrix hold data about the level
 	 */
@@ -24,6 +25,7 @@ public class LevelData {
 		levelMapping = new HashMap<String, Character>();
 	}
 	
+
 	/**
 	 * get the 2D level in form of string
 	 * @return	string describe the level
@@ -52,6 +54,7 @@ public class LevelData {
 		return result;
 	}
 	
+
 	/**
 	 * set a position in the map to a certain type
 	 * @param x		x position on the map
@@ -62,6 +65,7 @@ public class LevelData {
 		level[x][y] = stype;
 	}
 	
+
 	/**
 	 * get the sprite at a certain position
 	 * @param x	x position on the map
@@ -72,6 +76,7 @@ public class LevelData {
 		return level[x][y];
 	}
 	
+
 	/**
 	 * get the width of the level
 	 * @return	return the width of the level
@@ -80,6 +85,7 @@ public class LevelData {
 		return level.length;
 	}
 	
+
 	/**
 	 * get the height of the level
 	 * @return	return the height of the level
@@ -88,6 +94,7 @@ public class LevelData {
 		return level[0].length;
 	}
 	
+
 	/**
 	 * check if the two positions are connected
 	 * @param x1	x position of the first point
@@ -123,6 +130,7 @@ public class LevelData {
 		return false;
 	}
 	
+
 	/**
 	 * check if this wall will case the world not to be connected any more
 	 * @param x x position for the point
@@ -142,6 +150,7 @@ public class LevelData {
 		return result;
 	}
 	
+
 	/**
 	 * check if the point is inside the borders of the level
 	 * @param x	x position for the point
@@ -152,6 +161,7 @@ public class LevelData {
 		return (x >= 0 && y >=0 && x < getWidth() && y < getHeight());
 	}
 	
+
 	/**
 	 * get all empty locations in the level
 	 * @return	array of points contains all empty locations
@@ -169,6 +179,7 @@ public class LevelData {
 		return result;
 	}
 	
+
 	/**
 	 * get the level mapping hashmap
 	 * @return	the used hashmap for constructing the level
@@ -183,6 +194,7 @@ public class LevelData {
 		return result;
 	}
 	
+
 	/**
 	 * Special point class that is used to get neighbors and handle
 	 * other useful functions
@@ -202,6 +214,7 @@ public class LevelData {
 			this.y = y;
 		}
 		
+
 		/**
 		 * get a list of all 4 neighbor points
 		 * @return	array of the 4 neighboring points
@@ -216,6 +229,7 @@ public class LevelData {
 			return result;
 		}
 		
+
 		/**
 		 * get distance between this point and the input point
 		 * @param p	an input point

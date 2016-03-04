@@ -7,6 +7,7 @@ import core.game.GameDescription.TerminationData;
 
 public class GoalConstraint extends AbstractConstraint{
 
+
 	/**
 	 * hashmap for number of objects in the level
 	 */

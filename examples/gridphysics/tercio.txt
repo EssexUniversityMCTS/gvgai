@@ -1,0 +1,58 @@
+#Modality: #http://www.puzzlescript.net/play.html?p=6888061
+
+BasicGame key_handler=Pulse  square_size=50
+    SpriteSet
+        black > Immovable color=BLACK
+        white > Immovable color=WHITE
+        blue > Immovable color=LIGHTBLUE
+
+        grey > Immovable
+
+        target > Immovable img=portal shrinkfactor=0.9
+        winTarget > Immovable img=portal shrinkfactor=0.9
+        crate > Passive img=box shrinkfactor=0.8
+        avatar > MovingAvatar
+            inGrey > img=ghost
+            inBlack > img=avatar
+            inWhite > img=alien
+            inBlue > img=waitor
+    
+    LevelMapping
+        . > black
+        + > white
+        - > blue
+        g > grey
+
+        B > avatar black
+        A > avatar white
+        L > avatar blue
+
+        * > crate black
+        @ > crate white
+        $ > crate blue
+
+        t > target black
+        U > target white
+        R > target blue
+
+    TerminationSet
+        SpriteCounter      stype=target               limit=0 win=True
+        Timeout limit=1000 win=False
+        
+    InteractionSet
+        avatar EOS > stepBack
+
+        inBlack white blue > stepBack
+        inWhite black blue > stepBack
+        inBlue black white > stepBack
+
+        avatar black > transformTo stype=inBlack
+        avatar white > transformTo stype=inWhite
+        avatar blue > transformTo stype=inBlue
+        avatar grey > transformTo stype=inGrey
+
+        crate avatar > bounceForward
+        crate wall > undoAll
+        target wall > undoAll
+        avatar wall > stepBack
+        target crate > transformTo stype=winTarget scoreChange=1

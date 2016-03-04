@@ -16,6 +16,8 @@ import tools.GameAnalyzer;
 import tools.Utils;
 
 public class LevelGenerator extends AbstractLevelGenerator{
+
+
 	/**
 	 * object for game analyzer
 	 */
@@ -64,6 +66,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 	 * @param game			game description object that define the current game
 	 * @param elpasedTimer	the amount of time that the constructor have
 	 */
+
 	public LevelGenerator(GameDescription game, ElapsedCpuTimer elpasedTimer){
 		gameAnalyzer = new GameAnalyzer(game);
 		random = new Random();
@@ -74,7 +77,6 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		maxSize = 18;
 		levelSizeRandomPercentage = 0.75;
 		levelSizeMaxPercentage = 1.5;
-		
 		maxCoverPercentage = 0.1;
 		randomnessPercentage = 0.05;
 		coverTradeOffPercentage = 0.8;
@@ -105,6 +107,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		for(SpriteData sprite:game.getAllSpriteData()){
 			double value = gameAnalyzer.checkIfSpawned(sprite.name) * 
 					(gameAnalyzer.getPriorityNumber(sprite.name) + 1);
+
 			//number of solid objects (priority value, if not spawned and 0 otherwise)
 			if(gameAnalyzer.getSolidSprites().contains(sprite.name)){
 				solidValue += value;
@@ -130,7 +133,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		data.levelPercentage = (coverTradeOffPercentage + (1 - coverTradeOffPercentage) / (numberOfCreationalObjects + 1)) * 
 				((collectableValue + 1) / (harmfulValue + collectableValue + 1)) * maxCoverPercentage;
 		data.levelPercentage = Utils.noise(data.levelPercentage, randomnessPercentage, random.nextDouble());
-		
+
 		//calculate different percentage based on the previous data
 		if(solidValue > 0){
 			data.solidPercentage = Math.max(Utils.noise(solidValue / totalValue, randomnessPercentage, random.nextDouble()), 0);
@@ -154,6 +157,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		return data;
 	}
 	
+
 	/**
 	 * Add a solid to the level space without disconnecting the level
 	 * @param level	the current level to test
@@ -169,7 +173,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		level.set(x, y, solid);
 		return true;
 	}
-	
+
 	/**
 	 * build level layout using the solid objects
 	 * @param level				the current level
@@ -191,8 +195,9 @@ public class LevelGenerator extends AbstractLevelGenerator{
 				level.set(0, y, randomSolid);
 				level.set(level.getWidth() - 1, y, randomSolid);
 			}
-			
+
 			//number of solid to insert in the level
+
 			double solidNumber = coverPercentage.levelPercentage * coverPercentage.solidPercentage * 
 					getArea(level);
 			
@@ -214,6 +219,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 						Collections.shuffle(directions);
 					}
 					int i=0;
+
 					//check each direction and move using them
 					for(i=0; i<directions.size(); i++){
 						Point newPoint = new Point(randomPoint.x + directions.get(i).x, randomPoint.y + directions.get(i).y);
@@ -229,16 +235,17 @@ public class LevelGenerator extends AbstractLevelGenerator{
 							continue;
 						}
 					}
-					
+
 					//if no direction can done just stop this corridor
 					if(i >= directions.size()){
 						break;
 					}
 				}
+
 			}
 		}
 	}
-	
+
 	/**
 	 * Get the area of the level
 	 * @param level	the current level
@@ -251,7 +258,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		
 		return level.getWidth() * level.getHeight();
 	}
-	
+
 	/**
 	 * get all free positions that have the highest and lowest y value 
 	 * @param freePositions	list of all free positions
@@ -278,7 +285,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		
 		return result;
 	}
-	
+
 	/**
 	 * add the avatar to the current level
 	 * @param level	the current level
@@ -310,11 +317,13 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			randomPoint = freePositions.get(random.nextInt(freePositions.size()));
 		}
 		
+
 		level.set(randomPoint.x, randomPoint.y, randomAvatar);
 		
 		return randomPoint;
 	}
 	
+
 	/**
 	 * calculate the number of objects in the level
 	 * @param game	game description object
@@ -324,12 +333,12 @@ public class LevelGenerator extends AbstractLevelGenerator{
 	private HashMap<String, Integer> calculateNumberOfObjects(GameDescription game, LevelData level){
 		HashMap<String, Integer> objects = new HashMap<String, Integer>();
 		ArrayList<SpriteData> allSprites = game.getAllSpriteData();
-		
+
 		//add all sprite names as keys in the hashmap
 		for(SpriteData sprite:allSprites){
 			objects.put(sprite.name, 0);
 		}
-		
+
 		//calculate the numbers
 		for(int y = 0; y < level.getHeight(); y++){
 			for(int x = 0; x < level.getWidth(); x++){
@@ -345,6 +354,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		return objects;
 	}
 	
+
 	/**
 	 * fix the termination conditions by making sure all of them are unstaisfied
 	 * @param game				game description object
@@ -364,11 +374,12 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		ArrayList<String> currentSprites = new ArrayList<String>();
 		ArrayList<String> totalSprites = new ArrayList<String>();
 		ArrayList<Point> positions = level.getAllFreeSpots();
-		
+
 		for(TerminationData ter:termination){
 			currentSprites.clear();
 			totalNum = ter.limit;
 			currentNum = 0;
+
 			//calculate the number of sprites found on the board
 			for(String stype:ter.sprites){
 				if(!gameAnalyzer.getAvatarSprites().contains(stype)){
@@ -377,6 +388,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 					currentNum += numObjects.get(stype);
 				}
 			}
+
 			//difference between the expected number and the current number of objects
 			increase = totalNum + 1 - currentNum;
 			
@@ -408,6 +420,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		return false;
 	}
 	
+
 	/**
 	 * get a free position far from the avatar position
 	 * @param freePosition		list of the free positions
@@ -419,6 +432,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		double totalValue = 0;
 		distProb.add(avatarPosition.getDistance(freePosition.get(0)));
 		totalValue += distProb.get(0);
+
 		//give each position a probability to be picked based on 
 		//how near or far it is from the avatar position
 		for(int i=1; i<freePosition.size(); i++){
@@ -438,6 +452,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		return -1;
 	}
 	
+
 	/**
 	 * Add harmful objects to the level
 	 * @param game				the game description object
@@ -457,6 +472,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			if(gameAnalyzer.checkIfSpawned(randomHarm) == 0){
 				continue;
 			}
+
 			//if the harmful object is moving then get a far position from the player starting point
 			if(isMoving(game, randomHarm)){
 				int index = getFarLocation(freePositions, avatarPosition);
@@ -467,6 +483,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 					numberOfHarmful -= 1;
 				}
 			}
+
 			//pick any random position will be fine
 			else{
 				int index = random.nextInt(freePositions.size());
@@ -478,6 +495,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		}
 	}
 	
+
 	/**
 	 * Add Collectable objects to the current level
 	 * @param game				the game description object
@@ -496,6 +514,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 				continue;
 			}
 			
+
 			//place it at any random free position
 			int index = random.nextInt(freePositions.size());
 			Point randPoint = freePositions.get(index);
@@ -505,6 +524,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		}
 	}
 	
+
 	/**
 	 * Add other kind of objects to the level
 	 * @param game				the current game description
@@ -517,12 +537,14 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		ArrayList<String> otherSprites = gameAnalyzer.getOtherSprites();
 		ArrayList<Point> freePositions = level.getAllFreeSpots();
 		while(numberOfOther > 0){
+
 			//pick a random sprite that is not spawned by other sprites
 			String randomSprite = otherSprites.get(random.nextInt(otherSprites.size()));
 			if(gameAnalyzer.checkIfSpawned(randomSprite) == 0){
 				continue;
 			}
 			
+
 			//place it at any random free position
 			int index = random.nextInt(freePositions.size());
 			Point randPoint = freePositions.get(index);
@@ -532,6 +554,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		}
 	}
 	
+
 	/**
 	 * Generate a level with a fixed width and length
 	 * @param game			the current level description
@@ -549,11 +572,13 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		addHarmfulObjects(game, generatedLevel, coverPercentages, avatarPosition);
 		addCollectableObjects(game, generatedLevel, coverPercentages);
 		addOtherObjects(game, generatedLevel, coverPercentages);
+
 		fixGoals(game, generatedLevel, coverPercentages);
 		
 		return generatedLevel.getLevel();
 	}
 	
+
 	/**
 	 * generate a level without specifying the width and the height of the level
 	 * @param game			the current game description object
@@ -576,6 +601,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		
 		return generateLevel(game, elapsedTimer, width, length);
 	}
+
 
 	/**
 	 * get the current used level mapping to create the level string

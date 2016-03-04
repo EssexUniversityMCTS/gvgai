@@ -8,6 +8,7 @@ import tools.ElapsedCpuTimer;
 
 public class Agent extends AbstractPlayer{
 
+
 	/**
 	 * initialize all variables for the agent
 	 * @param stateObs Observation of the current state.

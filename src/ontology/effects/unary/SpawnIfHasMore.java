@@ -13,6 +13,7 @@ import ontology.effects.Effect;
  */
 public class SpawnIfHasMore  extends Effect {
 
+    public int spend;
     public String resource;
     public int resourceId;
     public int limit;
@@ -22,6 +23,7 @@ public class SpawnIfHasMore  extends Effect {
     public SpawnIfHasMore(InteractionContent cnt)
     {
         resourceId = -1;
+        spend = 0;
         this.parseParameters(cnt);
         resourceId = VGDLRegistry.GetInstance().getRegisteredSpriteValue(resource);
         itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
@@ -38,6 +40,8 @@ public class SpawnIfHasMore  extends Effect {
         {
             game.addSprite(itype, sprite1.getPosition());
             applyScore = true;
+
+            sprite1.modifyResource(resourceId, -spend); //0 by default.
         }
     }
     

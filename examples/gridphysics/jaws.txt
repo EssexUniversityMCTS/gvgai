@@ -15,7 +15,6 @@ BasicGame
 
         shell > Resource color=GOLD limit=20 img=honey
         sharkFang > Resource color=GOLD limit=1 img=mana
-        #shell > Missile orientation=DOWN speed=0.1 color=GOLD img=honey
 
 
     LevelMapping
@@ -28,25 +27,19 @@ BasicGame
         Timeout limit=1000 win=True
 
     InteractionSet
-        avatar  EOS  > stepBack
-        shell EOS > stepBack
-        shark EOS > stepBack
-        torpedo EOS  > killSprite
-        fish EOS  > killSprite
+        EOS avatar shark > stepBack
+        EOS torpedo fish > killSprite
 
         whale torpedo > transformTo stype=shell scoreChange=1
         piranha torpedo > transformTo stype=shell scoreChange=1
         torpedo fish > killSprite
-        shell avatar > killSprite
 
-        avatar sharkFang > changeResource resource=sharkFang value=1 scoreChange=1000
-        sharkFang avatar > killSprite
-        avatar shell > changeResource resource=shell value=1 scoreChange=1
+        sharkFang avatar > collectResource scoreChange=1000
+        shell avatar > collectResource scoreChange=1
 
         avatar shark > spawnIfHasMore resource=shell limit=15 stype=sharkFang
         shark avatar > killIfOtherHasMore resource=shell limit=15
 
         avatar shark  > killIfHasLess resource=shell limit=15
-        avatar whale  > killSprite
-        avatar piranha  > killSprite
+        avatar whale piranha > killSprite
 

@@ -5,6 +5,7 @@ import ontology.Types.WINNER;
 
 public class DeathConstraint extends AbstractConstraint{
 
+
 	/**
 	 * number of steps that do nothing agent did so far
 	 */

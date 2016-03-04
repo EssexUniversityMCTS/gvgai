@@ -7,6 +7,7 @@ import tools.GameAnalyzer;
 
 public class SpriteNumberConstraint extends AbstractConstraint{
 	
+
 	/**
 	 * hashmap contains the number of objects for each type
 	 */

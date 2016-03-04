@@ -1,4 +1,4 @@
-BasicGame
+BasicGame key_handler=Pulse
     SpriteSet
         avatar > MovingAvatar 
         box    > Passive img=box
@@ -13,9 +13,7 @@ BasicGame
     InteractionSet
         avatar wall > stepBack
         box avatar  > bounceForward
-        box wall    > undoAll
-        box exit    > undoAll
-        box box     > undoAll
+        box wall exit box   > undoAll
         avatar hole > killSprite scoreChange=-1
         exit avatar > killSprite scoreChange=1
         box hole    > killSprite

@@ -1,0 +1,48 @@
+BasicGame
+    SpriteSet
+
+        goal  > Portal color=GREEN img=goal singleton=True portal=True stype=start
+        deadPortal  > Portal invisible=True singleton=True portal=True stype=start
+        car  > img=bus
+            rightcar  > Missile   orientation=RIGHT 
+                fastRcar  > speed=0.9  color=ORANGE
+                slowRcar  > speed=0.7  color=RED
+            downcar  > Missile   orientation=DOWN
+                fastDcar  > speed=0.9  color=ORANGE
+                slowDcar  > speed=0.7  color=RED
+
+        start > Immovable invisible=True
+        wall > Immovable color=BLACK img=wall
+        tree > Immovable color=GREEN img=forest
+        input > SpawnPoint stype=goal cooldown=16 prob=0.05 total=1 invisible=True hidden=True
+
+        avatar > MovingAvatar img=avatar healthPoints=5
+
+    LevelMapping
+        t > tree
+        - > slowRcar
+        x > fastDcar
+        _ > slowRcar
+        X > fastDcar
+
+        I > input
+        S > start avatar
+
+    InteractionSet
+
+        goal avatar  > killSprite scoreChange=10
+        avatar goal > teleportToExit
+
+        avatar car > subtractHealthPoints scoreChange=-5
+        avatar car > spawn stype=deadPortal
+        deadPortal avatar > killSprite
+        avatar deadPortal > teleportToExit
+
+        avatar tree wall  > stepBack
+        car  EOS   > wrapAround
+    
+    TerminationSet
+        Timeout limit=1000 win=True
+        SpriteCounter stype=avatar limit=0 win=False
+
+

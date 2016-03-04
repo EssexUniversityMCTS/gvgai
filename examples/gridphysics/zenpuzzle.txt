@@ -1,6 +1,6 @@
 #http://www.puzzlescript.net/editor.html?hack=6847423
 
-BasicGame
+BasicGame key_handler=Pulse
     SpriteSet
         isincenter > Flicker limit=1
         avatar  > MovingAvatar
@@ -18,8 +18,6 @@ BasicGame
         MultiSpriteCounter   stype1=isincenter  stype2=ground   limit=0 win=True
 
     InteractionSet
-        avatar  EOS  > stepBack
-        avatar  rock  > stepBack
-        avatar  walked  > stepBack
+        avatar  EOS rock walked  > stepBack
         ground avatar > transformTo stype=walked scoreChange=1
         walked avatar > spawnIfHasMore resource=null limit=0 stype=isincenter

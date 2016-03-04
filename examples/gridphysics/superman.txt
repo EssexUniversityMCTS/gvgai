@@ -1,0 +1,69 @@
+BasicGame
+    SpriteSet
+
+        building > Immovable img=box
+        street > Immovable invisible=True
+        emptyspace > Immovable invisible=True
+        jail > Immovable img=lock
+
+        portal  > SpawnPoint img=portal portal=True cooldown=50   total=20
+            portalLeft  > stype=bleft
+            portalRight  > stype=bright
+
+        bandit > Bomber prob=0.1 cooldown=6 speed=0.5 img=camel stype=missile orientation=UP
+            bleft > spawnorientation=LEFT
+            bright > spawnorientation=RIGHT
+
+        saved  > Resource color=GREEN value=0 limit=100
+        villain  > Resource color=GREEN limit=8 value=0
+        villaingang > Resource color=GREEN limit=1 value=0
+
+        civilian >
+            standingcivilian > Missile orientation=DOWN color=GRAY speed=0.2 img=prof
+            hurtcivilian > Immovable img=ghost
+            fallingcivilian > Missile orientation=DOWN color=GRAY speed=0.2 img=zombie
+
+
+        missile > Missile img=bullet shrinkfactor=0.6 speed=0.6
+
+        avatar > MovingAvatar
+            superman > img=alien
+
+    InteractionSet
+        avatar wall EOS portal > stepBack
+
+        bandit wall > reverseDirection
+        bandit wall > stepBack
+        missile EOS > killSprite
+
+        building missile > transformTo stype=emptyspace killSecond=True
+
+        standingcivilian building > stepBack
+        standingcivilian emptyspace > transformTo stype=fallingcivilian
+        fallingcivilian building > transformTo stype=standingcivilian
+
+        fallingcivilian wall > transformTo stype=hurtcivilian
+
+        avatar fallingcivilian > changeResource resource=saved value=1 scoreChange=1 killResource=True
+        avatar bandit > changeResource resource=villain value=1 killResource=True scoreChange=1
+
+        avatar jail > spawnIfHasMore resource=villain stype=villaingang limit=8
+        avatar jail > changeResource resource=villain value=-8
+        villaingang jail > killSprite scoreChange=1000
+
+
+    LevelMapping
+        A > superman street
+        b > building
+        s > street
+        l > bleft
+        r > bright
+        c > standingcivilian
+        R > portalRight
+        L > portalLeft
+        J > jail
+
+    TerminationSet
+        MultiSpriteCounter stype1=hurtcivilian limit=1 win=False
+        SpriteCounter stype=avatar win=False
+        MultiSpriteCounter stype1=portal stype2=bandit limit=0 win=True

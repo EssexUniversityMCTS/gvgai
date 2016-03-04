@@ -7,9 +7,10 @@ BasicGame
 		boulder > Missile orientation=DOWN color=GRAY speed=0.2 img=boulder.png
 		moving >
 			avatar  > ShootAvatar   stype=sword img=avatar.png
-			enemy > RandomNPC
+			enemy > RandomNPC cons=1
 				crab > color=RED img=camel.png
 				butterfly > color=PINK img=butterfly.png
+
 	LevelMapping
 		. > dirt
 		E > exitdoor
@@ -17,22 +18,19 @@ BasicGame
 		x > diamond
 		c > crab
 		b > butterfly
+
 	InteractionSet
-		dirt avatar > killSprite
-		dirt sword  > killSprite
-		diamond avatar > collectResource
-		diamond avatar > killSprite scoreChange=2
-		moving wall > stepBack
-		moving boulder > stepBack
+		dirt avatar swrod > killSprite
+		diamond avatar > collectResource  scoreChange=2
+		moving wall boulder > stepBack
+
 		avatar boulder > killIfFromAbove scoreChange=-1
-		avatar butterfly > killSprite scoreChange=-1
-		avatar crab > killSprite scoreChange=-1
-		boulder dirt > stepBack
-		boulder wall > stepBack
-		boulder diamond > stepBack
-		boulder boulder > stepBack
-		enemy dirt > stepBack
-		enemy diamond > stepBack
+		avatar butterfly crab > killSprite scoreChange=-1
+
+		boulder dirt wall diamond boulder > stepBack
+
+		enemy dirt diamond > stepBack
+
 		crab butterfly > killSprite
 		butterfly crab > transformTo stype=diamond scoreChange=1
 		exitdoor avatar > killIfOtherHasMore resource=diamond limit=9

@@ -6,7 +6,6 @@ BasicGame
             water > color=BLUE img=water
             goal  > Door color=GREEN img=goal
         log    > Missile   orientation=LEFT  speed=0.1 color=BROWN img=log
-        safety > Resource  limit=2 color=BROWN img=mana
         truck  > img=truck
             rightTruck  > Missile   orientation=RIGHT 
                 fastRtruck  > speed=0.2  color=ORANGE
@@ -14,17 +13,15 @@ BasicGame
             leftTruck  > Missile   orientation=LEFT
                 fastLtruck  > speed=0.2  color=ORANGE
                 slowLtruck  > speed=0.1  color=RED
-        # defining 'wall' last, makes the walls show on top of all other sprites
+
         wall > Immovable color=BLACK img=wall
         
     InteractionSet
         goal avatar  > killSprite scoreChange=1
-        avatar log   > changeResource resource=safety value=2
-        avatar log   > pullWithIt   # note how one collision can have multiple effects
+        avatar log   > shieldFrom ftype=killSprite stype=water
+        avatar log   > pullWithIt
         avatar wall  > stepBack
-        avatar water > killIfHasLess  resource=safety limit=0
-        avatar water > changeResource resource=safety value=-1
-        avatar truck > killSprite scoreChange=-2
+        avatar truck water > killSprite
         log    EOS   > killSprite
         truck  EOS   > wrapAround
     

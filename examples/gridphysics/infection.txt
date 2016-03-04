@@ -1,34 +1,32 @@
 BasicGame
     SpriteSet
         sword > Flicker limit=5 singleton=True img=sword
-        entrance > SpawnPoint total=5 cooldown=100 stype=guardian img=portal.png portal=True
+        entrance > SpawnPoint total=5 cooldown=100 stype=doctor img=portal portal=True
         virus > Immovable color=RED img=virus
         moving >
             avatar > ShootAvatar stype=sword
                  normal   > color=WHITE img=avatar
                  carrier  > color=RED img=alien
-            npc    > RandomNPC speed=0.25
+            npc    > RandomNPC speed=0.25  cons=1
                  host     > color=GREEN
                  infected > color=ORANGE speed=0.5
-                 guardian > color=BLUE speed=0.2
+                 doctor > color=BLUE speed=0.2
 
     TerminationSet
         SpriteCounter stype=host   win=True
 
     InteractionSet
-        guardian sword    > killSprite scoreChange=2
+        doctor sword    > killSprite scoreChange=2
         moving wall       > stepBack
-        avatar guardian   > transformTo stype=normal  scoreChange=-1
+        carrier doctor  > transformTo stype=normal  scoreChange=-1
         host carrier      > transformTo stype=infected scoreChange=2
-        infected guardian > transformTo stype=host
-        normal infected   > transformTo stype=carrier
-        host infected     > transformTo stype=infected
-        normal virus      > transformTo stype=carrier
-        host virus        > transformTo stype=infected
-        guardian virus    > killSprite
+        infected doctor > transformTo stype=host
+        normal infected virus  > transformTo stype=carrier
+        host infected virus    > transformTo stype=infected
+        doctor virus    > killSprite
 
     LevelMapping
-        1 > guardian
+        1 > doctor
         0 > host
         X > virus
         A > normal

@@ -1,0 +1,60 @@
+BasicGame key_handler=Pulse
+    SpriteSet
+
+        avatar > MovingAvatar img=avatar
+        key > Resource img=key limit=1
+        lock > Immovable img=lock
+
+        food >
+            ingredients > Passive
+                boilingwater > img=water shrinkfactor=0.7
+                rawpasta > img=virus shrinkfactor=0.7
+                tomato > img=powerpill shrinkfactor=0.7
+                tuna > img=carcass shrinkfactor=0.7
+
+            placedIngredients > Passive
+                pastainplace > img=explosion shrinkfactor=0.9
+                sauceinplace > img=bus shrinkfactor=0.9
+
+        placed > Immovable
+            wrongplace  > img=flower
+            plateinplace > img=tablebacon
+
+
+    LevelMapping
+        b > boilingwater
+        p > rawpasta
+        o > tomato
+        t > tuna
+        k > key
+        l > lock
+
+    InteractionSet
+
+        food avatar > bounceForward
+        food wall lock key > undoAll
+
+        rawpasta boilingwater > transformTo stype=pastainplace scoreChange=4
+        rawpasta boilingwater > killBoth
+        rawpasta tuna  > transformTo stype=wrongplace scoreChange=-1
+        rawpasta tomato > transformTo stype=wrongplace scoreChange=-1
+        rawpasta sauceinplace > transformTo stype=wrongplace scoreChange=-1
+
+        tomato tuna > transformTo stype=sauceinplace scoreChange=4
+        tomato tuna > killBoth
+        tomato boilingwater > transformTo stype=wrongplace scoreChange=-1
+        tomato pastainplace > transformTo stype=wrongplace scoreChange=-1
+        boilingwater sauceinplace > transformTo stype=wrongplace scoreChange=-1
+
+        tuna boilingwater > transformTo stype=wrongplace scoreChange=-1
+        tuna pastainplace > transformTo stype=wrongplace scoreChange=-1
+        pastainplace sauceinplace > transformTo stype=plateinplace scoreChange=17
+
+        key avatar > collectResource scoreChange=1
+        lock avatar > killIfOtherHasMore resource=key limit=1
+
+        avatar wall lock > stepBack
+
+    TerminationSet
+        MultiSpriteCounter stype1=wrongplace limit=1 win=False
+        MultiSpriteCounter stype1=plateinplace limit=1 win=True

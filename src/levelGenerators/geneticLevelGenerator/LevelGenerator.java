@@ -12,6 +12,7 @@ import tools.GameAnalyzer;
 import tools.LevelMapping;
 
 public class LevelGenerator extends AbstractLevelGenerator{
+
 	/**
 	 * Level mapping of the best chromosome
 	 */
@@ -59,6 +60,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		for(int i=0;i<fPopulation.size();i++){
 			fitnessArray.add(fPopulation.get(i).getFitness().get(0));
 		}
+
 		Collections.sort(fitnessArray);
 		if(fitnessArray.size() > 0){
 			bestFitness.add(fitnessArray.get(fitnessArray.size() - 1));
@@ -69,6 +71,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		numOfFeasible.add(fPopulation.size());
 		numOfInFeasible.add(iPopulation.size());
 		
+
 		
 		while(newPopulation.size() < SharedData.POPULATION_SIZE){
 			//choosing which population to work on with 50/50 probability 
@@ -84,6 +87,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 				}
 			}
 			
+
 			//select the parents using roulletewheel selection
 			Chromosome parent1 = rouletteWheelSelection(population);
 			Chromosome parent2 = rouletteWheelSelection(population);
@@ -95,6 +99,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 				child1 = children.get(0);
 				child2 = children.get(1);
 				
+
 				//do muation to the children
 				if(SharedData.random.nextDouble() < SharedData.MUTATION_PROB){
 					child1.mutate();
@@ -103,6 +108,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 					child2.mutate();
 				}
 			}
+
 			//mutate the copies of the parents
 			else if(SharedData.random.nextDouble() < SharedData.MUTATION_PROB){
 				child1.mutate();
@@ -111,11 +117,13 @@ public class LevelGenerator extends AbstractLevelGenerator{
 				child2.mutate();
 			}
 			
+
 			//add the new children to the new population
 			newPopulation.add(child1);
 			newPopulation.add(child2);
 		}
 		
+
 		//calculate fitness of the new population chromosomes 
 		for(int i=0;i<newPopulation.size();i++){
 			newPopulation.get(i).calculateFitness(SharedData.EVALUATION_TIME);
@@ -127,11 +135,13 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			}
 		}
 		
+
 		//add the best chromosome(s) from old population to the new population
 		Collections.sort(newPopulation);
 		for(int i=SharedData.POPULATION_SIZE - SharedData.ELITISM_NUMBER;i<newPopulation.size();i++){
 			newPopulation.remove(i);
 		}
+
 		if(fPopulation.isEmpty()){
 			Collections.sort(iPopulation);
 			for(int i=0;i<SharedData.ELITISM_NUMBER;i++){
@@ -147,7 +157,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		
 		return newPopulation;
 	}
-	
+
 	/**
 	 * Roullete wheel selection for the infeasible population
 	 * @param population	array of chromosomes surviving in this population
@@ -165,6 +175,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			probabilities[i] = probabilities[i] / probabilities[probabilities.length - 1];
 		}
 		
+
 		//choose a chromosome based on its probability
 		double prob = SharedData.random.nextDouble();
 		for(int i=0; i<probabilities.length; i++){
@@ -176,6 +187,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		return population.get(0);
 	}
 	
+
 	/**
 	 * Get the fitness for any population
 	 * @param population	array of chromosomes surviving in this population
@@ -187,6 +199,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			return constraintRouletteWheelSelection(population);
 		}
 		
+
 		//calculate the probabilities for the current population
 		double[] probabilities = new double[population.size()];
 		probabilities[0] = population.get(0).getCombinedFitness();
@@ -197,7 +210,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		for(int i=0; i<probabilities.length; i++){
 			probabilities[i] = probabilities[i] / probabilities[probabilities.length - 1];
 		}
-		
+
 		//choose random chromosome based on its fitness
 		double prob = SharedData.random.nextDouble();
 		for(int i=0; i<probabilities.length; i++){
@@ -213,7 +226,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 	 * Generate a level using GA in a fixed amount of time and 
 	 * return the level in form of a string
 	 * @param game			the current game description object
-	 * @param elpasedTimer	the amount of time allowed for generation
+	 * @param elapsedTimer	the amount of time allowed for generation
 	 * @return				string for the generated level
 	 */
 	@Override
@@ -230,6 +243,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			size = 2;
 		}
 		
+
 		//get the level size
 		int width = (int)Math.max(SharedData.MIN_SIZE + size, game.getAllSpriteData().size() * (1 + 0.25 * SharedData.random.nextDouble()) + size);
 		int height = (int)Math.max(SharedData.MIN_SIZE + size, game.getAllSpriteData().size() * (1 + 0.25 * SharedData.random.nextDouble()) + size);
@@ -240,6 +254,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		ArrayList<Chromosome> fChromosomes = new ArrayList<Chromosome>();
 		ArrayList<Chromosome> iChromosomes = new ArrayList<Chromosome>();
 		for(int i =0; i < SharedData.POPULATION_SIZE; i++){
+
 			//initialize the population using either randomly or using contructive level generator
 			Chromosome chromosome = new Chromosome(width, height);
 			if(SharedData.CONSTRUCTIVE_INITIALIZATION){
@@ -248,6 +263,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			else{
 				chromosome.InitializeRandom();
 			}
+
 			//calculate the fitness for all the chromosomes and add them to the correct population
 			//either the feasible or the infeasible one
 			chromosome.calculateFitness(SharedData.EVALUATION_TIME);
@@ -261,19 +277,21 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			}
 		}
 		
+
 		//some variables to make sure not getting out of time
 		double worstTime = SharedData.EVALUATION_TIME * SharedData.POPULATION_SIZE;
 		double avgTime = worstTime;
 		double totalTime = 0;
 		int numberOfIterations = 0;
-		
+
 		System.out.println(elapsedTimer.remainingTimeMillis() + " " + avgTime + " " + worstTime);
-		while(elapsedTimer.remainingTimeMillis() > 2 * avgTime && 
+		while(elapsedTimer.remainingTimeMillis() > 2 * avgTime &&
 				elapsedTimer.remainingTimeMillis() > worstTime){
 			ElapsedCpuTimer timer = new ElapsedCpuTimer();
 			
 			System.out.println("Generation #" + (numberOfIterations + 2) + ": ");
 			
+
 			//get the new population and split it to a the feasible and infeasible populations
 			ArrayList<Chromosome> chromosomes = getNextPopulation(fChromosomes, iChromosomes);
 			fChromosomes.clear();
@@ -292,11 +310,13 @@ public class LevelGenerator extends AbstractLevelGenerator{
 			avgTime = totalTime / numberOfIterations;
 		}
 		
+
 		//return the best infeasible chromosome
 		if(fChromosomes.isEmpty()){
 			for(int i=0;i<iChromosomes.size();i++){
 				iChromosomes.get(i).calculateFitness(SharedData.EVALUATION_TIME);
 			}
+
 			Collections.sort(iChromosomes);
 			bestChromosomeLevelMapping = iChromosomes.get(0).getLevelMapping();
 			System.out.println("Best Fitness: " + iChromosomes.get(0).getConstrainFitness());
@@ -315,6 +335,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		System.out.println(numOfInFeasible);
 		return fChromosomes.get(0).getLevelString(bestChromosomeLevelMapping);
 	}
+
 
 	/**
 	 * get the current used level mapping to create the level string

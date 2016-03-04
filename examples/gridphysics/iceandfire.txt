@@ -1,0 +1,38 @@
+BasicGame
+    SpriteSet
+        exit > Door color=GREEN img=goal
+        avatar > MovingAvatar img=avatar
+        trap > Immovable img=hell
+        ice > Immovable img=ice
+        fire > Immovable img=fire
+
+        feetwear > Resource limit=1 value=1
+            iceshoes > img=diamond
+            fireboots > img=powerpill
+
+        chip > Immovable img=gold
+
+    InteractionSet
+
+        avatar wall > stepBack
+        exit avatar > killSprite scoreChange=1
+        avatar trap > killSprite scoreChange=-1
+        chip avatar > killSprite scoreChange=1
+
+        feetwear avatar > collectResource scoreChange=3
+        avatar ice > killIfHasLess resource=iceshoes limit=0
+        avatar fire > killIfHasLess resource=fireboots limit=0
+
+    TerminationSet
+        Timeout limit=500 win=False
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=exit limit=0 win=True
+
+    LevelMapping
+        X > exit
+        t > trap
+        c > chip
+        i > iceshoes
+        f > fireboots
+        _ > ice
+        x > fire
