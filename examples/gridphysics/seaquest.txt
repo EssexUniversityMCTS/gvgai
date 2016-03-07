@@ -19,7 +19,7 @@ BasicGame
                 pirana > Missile orientation=RIGHT speed=0.25 color=RED shrinkfactor=0.5 img=camel
             diver > RandomNPC color=GREEN speed=0.5 img=ghost cons=2
 
-        crew  > Resource color=GREEN limit=4 value=0 img=alien
+        crew  > Resource color=GREEN limit=4 img=alien
 
     InteractionSet
 
@@ -30,7 +30,6 @@ BasicGame
 
         fish torpedo > killBoth scoreChange=1
         avatar fish  > killSprite
-        crew avatar > collectResource
 
         avatar sky > addHealthPoints value=1
         avatar sky > spawnIfHasMore resource=crew stype=saved limit=4 spend=4
@@ -41,7 +40,7 @@ BasicGame
 
     LevelMapping
         a > sky
-        A > avatar crew
+        A > avatar
         w > water
         1 > sharkhole
         2 > whalehole
