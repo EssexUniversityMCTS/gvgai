@@ -23,7 +23,7 @@ BasicGame
 
     InteractionSet
 
-        avatar TIME > subtractHealthPoints timer=24 repeating=True
+        avatar TIME > subtractHealthPoints timer=26 repeating=True
 
         EOS avatar diver sky   > stepBack
         fish EOS  > killSprite #Note that from vgdl 2.0, EOS can be the first or the second sprite.
@@ -33,8 +33,7 @@ BasicGame
         crew avatar > collectResource
 
         avatar sky > addHealthPoints value=1
-        avatar sky > spawnIfHasMore resource=crew stype=saved limit=4
-        avatar sky > changeResource resource=crew value=-4
+        avatar sky > spawnIfHasMore resource=crew stype=saved limit=4 spend=4
         saved  sky > killSprite scoreChange=1000
 
         avatar diver > changeResource resource=crew
