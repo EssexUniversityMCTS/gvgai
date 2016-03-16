@@ -761,6 +761,7 @@ public class ForwardModel extends Game
         int idx = 0;
         for(int i = 0; i < groupArray.length; ++i)
         {
+            //For each one of the sprite types that belong to the specified category
             if(groupArray[i])
             {
                 observations[idx] = new ArrayList<Observation>();
@@ -769,6 +770,7 @@ public class ForwardModel extends Game
                 {
                     VGDLSprite sp = spriteIt.next();
 
+                    //If this type of sprite is hidden, no observations should be retrieved
                     if(sp.hidden)
                     {
                         observations[idx] = null;
@@ -781,9 +783,12 @@ public class ForwardModel extends Game
                     observation.reference = reference;
                     observations[idx].add(observation);
                 }
-                if(reference != Types.NIL){
+
+                if(reference != Types.NIL && observations[idx] != null)
+                {
                     Collections.sort(observations[idx]);
                 }
+
                 idx++;
             }
         }
