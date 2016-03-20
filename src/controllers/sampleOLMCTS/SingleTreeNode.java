@@ -65,6 +65,8 @@ public class SingleTreeNode
             avgTimeTaken  = acumTimeTaken/numIters;
             remaining = elapsedTimer.remainingTimeMillis();
         }
+        
+        Agent.TOTAL_NUM_ITERATIONS += numIters;
     }
 
     public SingleTreeNode treePolicy(StateObservation state) {

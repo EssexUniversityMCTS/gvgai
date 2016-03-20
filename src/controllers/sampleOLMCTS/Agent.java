@@ -3,10 +3,10 @@ package controllers.sampleOLMCTS;
 import java.util.ArrayList;
 import java.util.Random;
 
-import core.game.StateObservation;
-import core.player.AbstractPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
+import core.game.StateObservation;
+import core.player.AbstractPlayer;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,6 +25,9 @@ public class Agent extends AbstractPlayer {
     public static Types.ACTIONS[] actions;
 
     protected SingleMCTSPlayer mctsPlayer;
+    
+    public static int TOTAL_NUM_ITERATIONS = 0;
+    public static int TOTAL_NUM_TICKS = 0;
 
     /**
      * Public constructor with state observation and time due.
@@ -60,6 +63,8 @@ public class Agent extends AbstractPlayer {
      * @return An action for the current state
      */
     public Types.ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
+    	
+    	++TOTAL_NUM_TICKS;
 
         //Set the state observation object as the new root of the tree.
         mctsPlayer.init(stateObs);
@@ -69,6 +74,11 @@ public class Agent extends AbstractPlayer {
 
         //... and return it.
         return actions[action];
+    }
+    
+    @Override
+    public void result(StateObservation stateObservation, ElapsedCpuTimer elapsedCpuTimer){
+    	System.out.println("Average number of MCTS iterations per tick = " + ((double)TOTAL_NUM_ITERATIONS / TOTAL_NUM_TICKS));
     }
 
 }
