@@ -21,12 +21,12 @@ BasicGame
 
   LevelMapping
     . > ground
-    T > emptytable
-    K > kitchen
-    C > chair
+    t > emptytable
+    k > kitchen
+    r > chair
     c > singlechair
-    E > exit
-    O > othertable
+    e > exit
+    o > othertable
     A > standingavatar ground
 
   InteractionSet

@@ -1,12 +1,12 @@
 wwwwwwwwwwwwwwww
 w..............w
-w...O    O  ...w
-w. t   A    T .w
-w...O    O  ...w
+w...o    o  ...w
+w. t   A    p .w
+w...o    o  ...w
 w...        ...w
 w..............w
 w..............w
-w      G       w
+w      g       w
 w..............w
 w... .... .....w
 w... .... .....w

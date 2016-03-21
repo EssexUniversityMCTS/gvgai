@@ -14,9 +14,9 @@ BasicGame square_size=40 key_handler=Pulse
     LevelMapping
         0 > roundhole
         1 > squarehole
-        B > boulder
-        C > crate
-        G > goal
+        b > boulder
+        c > crate
+        g > goal
     InteractionSet
 
 

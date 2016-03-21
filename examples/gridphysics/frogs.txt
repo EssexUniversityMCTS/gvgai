@@ -30,7 +30,7 @@ BasicGame
         SpriteCounter stype=avatar limit=0 win=False
     
     LevelMapping
-        G > goal
+        g > goal
         0 > water
         1 > forestDense water       # note how a single character can spawn multiple sprites
         2 > forestDense wall log
@@ -39,6 +39,6 @@ BasicGame
         - > slowRtruck
         x > fastRtruck
         _ > slowLtruck
-        X > fastLtruck
+        l > fastLtruck
         = > log water
         B > avatar log

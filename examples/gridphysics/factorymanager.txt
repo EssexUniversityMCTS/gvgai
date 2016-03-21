@@ -28,15 +28,15 @@ BasicGame
 
     LevelMapping
         A > avatar
-        L > lcleft
-        R > lcright
-        U > lcup
-        D > lcdown
-        P > portal
-        B > box
-        H > highway
-        S > street
-        T > trap
+        l > lcleft
+        r > lcright
+        u > lcup
+        d > lcdown
+        p > portal
+        b > box
+        h > highway
+        s > street
+        t > trap
 
     InteractionSet
     

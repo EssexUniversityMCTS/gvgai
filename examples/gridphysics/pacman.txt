@@ -69,7 +69,7 @@ BasicGame square_size=20
         2 > orangespawn
         3 > bluespawn
         4 > pinkspawn
-        F > fruit
+        f > fruit
         
     TerminationSet
         SpriteCounter stype=food   win=True     

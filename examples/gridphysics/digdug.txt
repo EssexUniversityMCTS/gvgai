@@ -16,8 +16,8 @@ BasicGame square_size=30
     LevelMapping
         0 > gem
         1 > gold
-        E > entrance
-        M > monster
+        e > entrance
+        m > monster
 
     TerminationSet
         SpriteCounter  stype=avatar  limit=0 win=False

@@ -23,4 +23,4 @@ BasicGame
     LevelMapping
         1 > escape
         0 > seed
-        H > water
+        h > water

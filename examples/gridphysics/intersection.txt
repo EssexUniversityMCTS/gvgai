@@ -23,10 +23,10 @@ BasicGame
         - > slowRcar
         x > fastDcar
         _ > slowRcar
-        X > fastDcar
+        l > fastDcar
 
-        I > input
-        S > start avatar
+        i > input
+        s > start avatar
 
     InteractionSet
 

@@ -1,5 +1,5 @@
 wwwwwwwwwwwwwwwwwwwww
-w E        w  wh    w
+w e        w  wh    w
 w   wwwwwwww  wwww  w
 w   whhhhhhh    w   w
 w   w               w
@@ -7,5 +7,5 @@ wwwww      wwwwwwwwww
 w          whwwhw   w
 w    w w   whwwhw   w
 w  A   w   whwwhw   w
-w      w   wwwwwX   w
+w      w   wwwwwx   w
 wwwwwwwwwwwwwwwwwwwww

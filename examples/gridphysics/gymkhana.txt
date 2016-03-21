@@ -38,9 +38,9 @@ BasicGame square_size=30 key_handler=Pulse
         2 > northfacing
         3 > westfacing
 
-        R > forestR log
-        L > forestL log
-        G > goal
+        r > forestR log
+        l > forestL log
+        g > goal
         A > onground
 
     InteractionSet

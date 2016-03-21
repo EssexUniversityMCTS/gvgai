@@ -15,8 +15,8 @@ BasicGame
 
 
     LevelMapping
-        G > goal
-        T > turret
+        g > goal
+        t > turret
 
     TerminationSet
         SpriteCounter stype=goal limit=0 win=True

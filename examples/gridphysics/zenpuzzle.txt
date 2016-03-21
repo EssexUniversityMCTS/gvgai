@@ -10,7 +10,7 @@ BasicGame key_handler=Pulse
         
     
     LevelMapping
-        R > rock
+        r > rock
         . > ground
         
     TerminationSet

@@ -11,8 +11,8 @@ BasicGame
             lemming > Chaser stype=exit cooldown=5 color=RED img=alien.png shrinkfactor=0.75
 
     LevelMapping
-        X > exit
-        E > entrance
+        x > exit
+        e > entrance
         h > hole
 
     TerminationSet

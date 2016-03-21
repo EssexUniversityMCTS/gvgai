@@ -31,8 +31,8 @@ BasicGame
         v > vertical
         x > sitting
         r > random
-        G > goal
+        g > goal
         i > entry1
-        I > entry2
+        2 > entry2
         o > exit1
-        O > exit2
+        3 > exit2

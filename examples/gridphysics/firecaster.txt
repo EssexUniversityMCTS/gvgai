@@ -27,7 +27,7 @@ BasicGame
         SpriteCounter stype=goal   limit=0 win=True
 
     LevelMapping
-        G > goal
+        g > goal
         b > box
         . > mana
         A > avatar

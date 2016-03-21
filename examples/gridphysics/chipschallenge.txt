@@ -41,16 +41,18 @@ BasicGame square_size=45 key_handler=Pulse
         g > greenkey
         b > bluekey
         y > yellowkey
-        R > reddoor
-        G > greendoor
-        B > bluedoor
-        Y > yellowdoor
+
+        1 > reddoor
+        2 > greendoor
+        3 > bluedoor
+        4 > yellowdoor
+
         - > gate
         c > chip
-        E > exit
+        e > exit
         f > flippers
         i > fireboots
-        C > crate
+        d > crate
 
 
     TerminationSet
