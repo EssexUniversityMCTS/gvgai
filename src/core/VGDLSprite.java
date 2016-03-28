@@ -241,6 +241,12 @@ public abstract class VGDLSprite {
      * If not set specifically in VGDL, the default value is set to a very high value (1000)
      */
     public int limitHealthPoints;
+    
+    /**
+     * If true, images are loaded (for instance for visualizing a game)
+     * <br> If false, images are not loaded (for instance for simulating the effects of actions in decision-making AI)
+     */
+    public static boolean loadImages = true;
 
     /**
      * Initializes the sprite, giving its position and dimensions.
@@ -662,7 +668,10 @@ public abstract class VGDLSprite {
      */
     public void postProcess()
     {
-        loadImage(img);
+    	if(loadImages)
+    	{
+    		loadImage(img);
+    	}
 
         if(this.orientation != Types.NONE)
         {

@@ -19,22 +19,20 @@ BasicGame
                 pirana > Missile orientation=RIGHT speed=0.25 color=RED shrinkfactor=0.5 img=camel
             diver > RandomNPC color=GREEN speed=0.5 img=ghost cons=2
 
-        crew  > Resource color=GREEN limit=4 value=0 img=alien
+        crew  > Resource color=GREEN limit=4 img=alien
 
     InteractionSet
 
-        avatar TIME > subtractHealthPoints timer=24 repeating=True
+        avatar TIME > subtractHealthPoints timer=26 repeating=True
 
         EOS avatar diver sky   > stepBack
         fish EOS  > killSprite #Note that from vgdl 2.0, EOS can be the first or the second sprite.
 
         fish torpedo > killBoth scoreChange=1
         avatar fish  > killSprite
-        crew avatar > collectResource
 
         avatar sky > addHealthPoints value=1
-        avatar sky > spawnIfHasMore resource=crew stype=saved limit=4
-        avatar sky > changeResource resource=crew value=-4
+        avatar sky > spawnIfHasMore resource=crew stype=saved limit=4 spend=4
         saved  sky > killSprite scoreChange=1000
 
         avatar diver > changeResource resource=crew
@@ -42,7 +40,7 @@ BasicGame
 
     LevelMapping
         a > sky
-        A > avatar crew
+        A > avatar
         w > water
         1 > sharkhole
         2 > whalehole

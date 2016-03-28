@@ -17,12 +17,12 @@ BasicGame key_handler=Pulse  square_size=50
         . > black
         + > white
         g > grey
-        B > avatar black
+        b > avatar black
         A > avatar white
         * > crate black
         @ > crate white
         t > target black
-        U > target white
+        u > target white
 
     TerminationSet
         SpriteCounter      stype=target               limit=0 win=True

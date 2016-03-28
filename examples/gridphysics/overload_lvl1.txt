@@ -6,6 +6,6 @@ w     w  0    0   w
 wwww        w    0w
 w    00   1 www..ww
 w..w    wwwwwww..ww
-w00w  000Sw00     w
-w00w      w      Gw
+w00w  000sw00     w
+w00w      w      gw
 wwwwwwwwwwwwwwwwwww

@@ -15,9 +15,9 @@ BasicGame  key_handler=Pulse square_size=50
     LevelMapping
         0 > hole
         1 > box
-        K > key
-        G > goal
-        M > mushroom
+        k > key
+        g > goal
+        m > mushroom
 
     InteractionSet
         avatar wall > stepBack

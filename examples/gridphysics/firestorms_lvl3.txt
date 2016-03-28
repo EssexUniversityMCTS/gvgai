@@ -3,9 +3,9 @@ w  0            0         1w
 w        w   w      w      w
 w                w     w   w
 w         0                w
-w     0              H    0w
+w     0              h    0w
 wA  w  w   w   w  w   w    w
 w     w  w   w  w   w      w
 w            0             w
-w 0                    H   w
+w 0                    h   w
 wwwwwwwwwwwwwwwwwwwwwwwwwwww

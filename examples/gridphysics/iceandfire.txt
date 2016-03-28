@@ -29,7 +29,7 @@ BasicGame
         SpriteCounter stype=exit limit=0 win=True
 
     LevelMapping
-        X > exit
+        e > exit
         t > trap
         c > chip
         i > iceshoes

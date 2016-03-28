@@ -43,7 +43,7 @@ BasicGame
         A > avatar ground death
         k > key ground death
         l > lock ground death
-        B > box ground death
+        b > box ground death
 
     TerminationSet
         SpriteCounter stype=exit win=True

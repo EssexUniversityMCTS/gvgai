@@ -1,13 +1,13 @@
 wwwwwwwwwwwwwwwwwwwww
-w~~~~wCcrCwxxxxwccc w
-wi~~~wC gCwxExxw C  w
-w~~~~wC  Cwxxxxw C  w
-wwRwwwwwBwww-wwwwwGGw
-w    ~    ~    ~  crw
-wgC  A C  c  C      w
-w    ~    ~    ~  cbw
-wwGGwwwwBwwwGwwwwwRww
-wr   w C  wx CxwcC  w
-w~~~~w   rwxxxxw C  w
-w cc w cc wbxxxwgc bw
+w~~~~wdd1dwxxxxwddd w
+wi~~~wd 2dwxexxw d  w
+w~~~~wd  dwxxxxw d  w
+ww1wwwww3www-wwwww22w
+w    ~    ~    ~  d1w
+w2d  A d  d  d      w
+w    ~    ~    ~  d3w
+ww22wwww3www2wwwww1ww
+w1   w d  wx dxwdd  w
+w~~~~w   1wxxxxw d  w
+w dd w dd w3xxxw2d 3w
 wwwwwwwwwwwwwwwwwwwww

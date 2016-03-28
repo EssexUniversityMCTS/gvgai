@@ -6,7 +6,7 @@ BasicGame key_handler=Pulse
         hole   > Immovable color=DARKBLUE img=hole portal=True
 
     LevelMapping
-        X > exit
+        x > exit
         h > hole
         1 > box
 

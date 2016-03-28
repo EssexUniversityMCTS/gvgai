@@ -85,6 +85,7 @@ public class Test
         //}
         
         //5. This starts a game, in a generated level created by a specific level generator
+
         //if(ArcadeMachine.generateOneLevel(game, randomLevelGenerator, recordLevelFile)){
         //	ArcadeMachine.playOneGeneratedLevel(game, recordActionsFile, recordLevelFile, seed);
         //}

@@ -131,7 +131,9 @@ public class MovingAvatar extends VGDLSprite {
         ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
         ect.setMaxTimeMillis(CompetitionParameters.ACTION_TIME);
 
+        VGDLSprite.loadImages = false;	// don't need to load images whilst the agent is thinking
         Types.ACTIONS action = this.player.act(game.getObservation(), ect.copy());
+        VGDLSprite.loadImages = true;	// need to load images again for the real game
 
         if(ect.exceededMaxTime())
         {

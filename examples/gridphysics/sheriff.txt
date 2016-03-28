@@ -23,10 +23,10 @@ BasicGame
 
     LevelMapping
         0 > base
-        U > surround bup
-        D > surround bdown
-        L > surround bleft
-        R > surround bright
+        u > surround bup
+        d > surround bdown
+        l > surround bleft
+        r > surround bright
         s > surround
         A > avatar
         1 > turnup
