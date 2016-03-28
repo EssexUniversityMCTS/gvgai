@@ -34,7 +34,7 @@ public class Test
         //Available games:
         String gamesPath = "examples/gridphysics/";
         String games[] = new String[]{};
-        String generateLevelPath = "examples/";
+        String generateLevelPath = "examples/gridphysics/";
 
         //All public games
         games = new String[]{"aliens", "bait", "blacksmoke", "boloadventures", "boulderchase",              //0-4
@@ -62,7 +62,7 @@ public class Test
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
 
-        String recordLevelFile = generateLevelPath + games[gameIdx] + ".txt";
+        String recordLevelFile = generateLevelPath + games[gameIdx] + "_glvl.txt";
 
         // 1. This starts a game, in a level, played by a human.
         ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
@@ -85,10 +85,11 @@ public class Test
         //}
         
         //5. This starts a game, in a generated level created by a specific level generator
-//        if(ArcadeMachine.generateOneLevel(game, geneticGenerator, recordLevelFile)){
-//        	ArcadeMachine.playOneGeneratedLevel(game, recordActionsFile, recordLevelFile, seed);
-//        }
 
+        //if(ArcadeMachine.generateOneLevel(game, randomLevelGenerator, recordLevelFile)){
+        //	ArcadeMachine.playOneGeneratedLevel(game, recordActionsFile, recordLevelFile, seed);
+        //}
+        
         //6. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
         /*int N = 60, L = 5, M = 1;
         boolean saveActions = false;
