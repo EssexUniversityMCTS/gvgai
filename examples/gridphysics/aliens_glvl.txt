@@ -1,0 +1,17 @@
+LevelMapping
+    0 > base 
+    A > avatar 
+    1 > portalSlow 
+    2 > portalFast 
+    w > wall 
+
+LevelDescription
+wwwwwwww
+w  2   w
+w  10  w
+w2    1w
+w  A   w
+w w  2 w
+w  2  2w
+w  0   w
+wwwwwwww
