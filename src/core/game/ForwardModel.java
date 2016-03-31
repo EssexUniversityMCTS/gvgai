@@ -502,6 +502,7 @@ public class ForwardModel extends Game
         this.ki.setAction(action);
         avatar.preMovement();
         avatar.move(this, this.ki.getMask());
+        setAvatarLastAction(action);
 
         for(int i = spriteOrder.length-1; i >= 0; --i)
         {
