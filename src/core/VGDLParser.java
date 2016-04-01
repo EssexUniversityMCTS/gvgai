@@ -216,9 +216,7 @@ public class VGDLParser
             //Get the class of the object
             String spriteClassName =sc.referenceClass;
 
-            //This is the class of the object, and parent of the next.
-            if(spriteClassName != null)
-                parentclass = spriteClassName;
+            //This is the class of this object
             if(parentclass != null)
                 sc.referenceClass = parentclass;
 
@@ -260,6 +258,10 @@ public class VGDLParser
                 types = (ArrayList<String>) parenttypes.clone();
 
             }else{
+                //This is the parent class of the next.
+                if(spriteClassName != null)
+                    parentclass = spriteClassName;
+
                 _parseSprites(el.children, parentclass, args, types);
                 args = (HashMap<String, String>) parentargs.clone();
                 types = (ArrayList<String>) parenttypes.clone();
