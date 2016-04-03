@@ -41,7 +41,6 @@ BasicGame
     LevelMapping
         a > sky
         A > avatar
-        w > water
         1 > sharkhole
         2 > whalehole
         3 > normaldiverhole

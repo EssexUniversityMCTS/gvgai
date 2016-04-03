@@ -28,8 +28,6 @@ BasicGame square_size=45 key_handler=Pulse
         exit > Immovable img=goal
         chip > Resource img=gold limit=11
         avatar > MovingAvatar img=alien
-            normal > OrientedAvatar img=alien
-            gliding > InertialAvatar img=ghost
             
     
     LevelMapping
