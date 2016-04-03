@@ -20,7 +20,7 @@ BasicGame
 		b > butterfly
 
 	InteractionSet
-		dirt avatar swrod > killSprite
+		dirt avatar sword > killSprite
 		diamond avatar > collectResource  scoreChange=2
 		moving wall boulder > stepBack
 
