@@ -336,8 +336,8 @@ public class VGDLParser
                             game.addTimeEffect((TimeEffect) ef);
    		        //unknown sprite other than an EOS or TIME effect is an error
                         }else {
-			    System.out.println("[PARSE ERROR] interaction entry references unknown sprite: " + ic.line);
-			}
+                            System.out.println("[PARSE ERROR] interaction entry references unknown sprite: " + ic.line);
+                        }
                     }
 
                     if(VERBOSE_PARSER)

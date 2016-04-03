@@ -85,8 +85,6 @@ BasicGame square_size=45 key_handler=Pulse
 
         yellowdoor avatar > killIfOtherHasMore resource=yellowkey limit=1  scoreChange=2
         avatar yellowdoor > changeResource resource=yellowkey value=-1
-
-        keyused avatar > killSprite
         
         avatar wall door > undoAll
         avatar water > killIfHasLess resource=flippers limit=0
