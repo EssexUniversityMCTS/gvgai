@@ -23,10 +23,10 @@ BasicGame square_size=25
 
   LevelMapping
     h > hotdog
-    H > hotdoghole
+    d > hotdoghole
     b > burger
-    B > burgerhole
-    M > fullMolarSup
+    v > burgerhole
+    n > fullMolarSup
     m > fullMolarInf
 
   InteractionSet

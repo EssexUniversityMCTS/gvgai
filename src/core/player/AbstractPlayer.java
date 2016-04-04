@@ -5,7 +5,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
+import core.game.Game;
 import core.game.StateObservation;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
@@ -39,6 +42,15 @@ public abstract class AbstractPlayer {
      */
     private Types.ACTIONS lasAction = null;
 
+    /**
+     * List of actions to be dumped.
+     */
+    private ArrayList<Types.ACTIONS> allActions;
+
+    /**
+     * Random seed of the game.
+     */
+    private int randomSeed;
 
     /**
      * Picks an action. This function is called every game step to request an
@@ -59,7 +71,6 @@ public abstract class AbstractPlayer {
      */
     public void result(StateObservation stateObservation, ElapsedCpuTimer elapsedCpuTimer)
     {
-
     }
 
 
@@ -70,24 +81,28 @@ public abstract class AbstractPlayer {
      */
     final public void setup(String actionFile, int randomSeed) {
         this.actionFile = actionFile;
-
-        try {
-            if(this.actionFile!=null && SHOULD_LOG)
-            {
-                writer = new BufferedWriter(new FileWriter(new File(this.actionFile)));
-                writer.write(randomSeed + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        this.randomSeed = randomSeed;
+        if(this.actionFile!=null && SHOULD_LOG)
+        {
+            allActions = new ArrayList<>();
         }
     }
 
     /**
      * Closes the agent, writing actions to file.
      */
-    final public void teardown() {
+    final public void teardown(Game played) {
         try {
-            if(writer!=null) {
+            if(this.actionFile!=null && SHOULD_LOG) {
+
+                writer = new BufferedWriter(new FileWriter(new File(this.actionFile)));
+                writer.write(randomSeed +
+                            " " + (played.getWinner() == Types.WINNER.PLAYER_WINS ? 1 : 0) +
+                            " " + played.getScore() + " " + played.getGameTick() + "\n");
+
+                for(Types.ACTIONS act : allActions)
+                    writer.write(act.toString() + "\n");
+
                 writer.close();
             }
         } catch (IOException e) {
@@ -102,12 +117,9 @@ public abstract class AbstractPlayer {
     final public void logAction(Types.ACTIONS action) {
 
         lasAction = action;
-        if(writer!=null && SHOULD_LOG) {
-            try {
-                writer.write(action.toString() + "\n");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if(this.actionFile!=null && SHOULD_LOG)
+        {
+            allActions.add(action);
         }
 
     }

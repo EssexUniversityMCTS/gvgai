@@ -7,5 +7,5 @@ w  b  ..   b b b  w
 w      .  bb b    w
 w  .  b.   b bbbbbw
 w    . .   b bbbbbw
-w    ..    b bbbbGw
+w    ..    b bbbbgw
 wwwwwwwwwwwwwwwwwww

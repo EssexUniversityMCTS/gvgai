@@ -26,17 +26,17 @@ BasicGame key_handler=Pulse
 
     LevelMapping
         A > avatar
-        B > box
-        L > lcleft
-        R > lcright
-        U > lcup
-        D > lcdown
-        G > goal
+        b > box
+        m > lcleft
+        s > lcright
+        t > lcup
+        e > lcdown
+        g > goal
         u > mup
         d > mdown
         r > mright
         l > mleft
-        O > obstacle
+        o > obstacle
 
     InteractionSet
 

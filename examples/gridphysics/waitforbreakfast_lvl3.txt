@@ -1,8 +1,8 @@
-wKwwwwwwwww
-w.......Tcw
-w.CCCCC...w
-wCOOOOOC..w
-w.CCCCC.C.w
-w......COCw
-wA......C.w
-wEwwwwwwwww
+wkwwwwwwwww
+w.......tcw
+w.rrrrr...w
+wrooooor..w
+w.rrrrr.r.w
+w......rorw
+wA......r.w
+wewwwwwwwww

@@ -1,5 +1,5 @@
 wwwwwwwwwwwwwwwwwww
-wS    1       .   w
+ws    1       .   w
 w      .....   .  w
 w            .    w
 w  1   0 0     0  w
@@ -7,5 +7,5 @@ w    0 A .0   0   w
 w   0  .  0  0    w
 w 0    .  0 0   . w
 w    .      ..... w
-w      w         Gw
+w      w         gw
 wwwwwwwwwwwwwwwwwww

@@ -28,6 +28,6 @@ BasicGame
     LevelMapping
         1 > doctor
         0 > host
-        X > virus
+        x > virus
         A > normal
-        E > entrance
+        e > entrance

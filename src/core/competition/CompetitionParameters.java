@@ -66,7 +66,7 @@ public class CompetitionParameters
     /**
      * Max time a game can run
      */
-    public static int MAX_TIMESTEPS = 1000;
+    public static int MAX_TIMESTEPS = 2000;
 
     /**
      * Terminates the program when the playing window is closed

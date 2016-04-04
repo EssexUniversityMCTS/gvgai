@@ -74,9 +74,15 @@ public class ForwardModel extends Game
 
     /**
      * Boolean map of sprite types that are unknown.
-     * unknownList[spriteType]==true : spriteType is unknown.
+     * knownList[spriteType]==false : spriteType is unknown.
      */
     private boolean knownList[];
+
+    /**
+     * Boolean map of sprite types that are not hidden.
+     * visibleList[spriteType]==true : sprite.hidden = false;
+     */
+    private boolean visibleList[];
 
     /**
      * List of (persistent) observations for all sprites, indexed by sprite ID.
@@ -369,6 +375,7 @@ public class ForwardModel extends Game
                 movList[itype] = true;
         }
         knownList[itype] = true;
+        visibleList[itype] = !sp.hidden;
     }
 
     private int getSpriteCategory(VGDLSprite sp)
@@ -448,6 +455,7 @@ public class ForwardModel extends Game
         portalList  = new boolean[a_gameState.spriteGroups.length];
         fromAvatar  = new boolean[a_gameState.spriteGroups.length];
         knownList = new boolean[a_gameState.spriteGroups.length];
+        visibleList = new boolean[a_gameState.spriteGroups.length];
 
         observations = new HashMap<Integer, Observation>();
         observationGrid = new ArrayList[screenSize.width/block_size][screenSize.height/block_size];
@@ -494,6 +502,7 @@ public class ForwardModel extends Game
         this.ki.setAction(action);
         avatar.preMovement();
         avatar.move(this, this.ki.getMask());
+        setAvatarLastAction(action);
 
         for(int i = spriteOrder.length-1; i >= 0; --i)
         {
@@ -740,14 +749,15 @@ public class ForwardModel extends Game
      */
     private ArrayList<Observation>[] getPositionsFrom(boolean[] groupArray, Vector2d refPosition)
     {
-        //First, get how many types we have.
+        //First, get how many types we have. Need to consider hidden sprites out.
         int numDiffTypes = 0;
         for(int i = 0; i < groupArray.length; ++i)
         {
             //There is a sprite type we don't know anything about. Need to check.
             if(!knownList[i] && spriteGroups[i].getFirstSprite() != null)
                 checkSpriteFeatures(spriteGroups[i].getFirstSprite(), i);
-            if(groupArray[i]) numDiffTypes++;
+
+            if(groupArray[i] && visibleList[i]) numDiffTypes++;
         }
 
         if(numDiffTypes == 0)
@@ -762,20 +772,13 @@ public class ForwardModel extends Game
         for(int i = 0; i < groupArray.length; ++i)
         {
             //For each one of the sprite types that belong to the specified category
-            if(groupArray[i])
+            if(groupArray[i] && visibleList[i])
             {
                 observations[idx] = new ArrayList<Observation>();
                 Iterator<VGDLSprite> spriteIt = spriteGroups[i].getSpriteIterator();
                 if(spriteIt != null) while(spriteIt.hasNext())
                 {
                     VGDLSprite sp = spriteIt.next();
-
-                    //If this type of sprite is hidden, no observations should be retrieved
-                    if(sp.hidden)
-                    {
-                        observations[idx] = null;
-                        break;
-                    }
 
                     Observation observation = getSpriteObservation(sp);
                     observation.update(i, sp.spriteID, sp.getPosition(), reference, getSpriteCategory(sp));
@@ -784,7 +787,7 @@ public class ForwardModel extends Game
                     observations[idx].add(observation);
                 }
 
-                if(reference != Types.NIL && observations[idx] != null)
+                if(reference != Types.NIL)
                 {
                     Collections.sort(observations[idx]);
                 }

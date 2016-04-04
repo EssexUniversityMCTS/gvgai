@@ -59,9 +59,9 @@ BasicGame
         l > bleft
         r > bright
         c > standingcivilian
-        R > portalRight
-        L > portalLeft
-        J > jail
+        p > portalRight
+        q > portalLeft
+        j > jail
 
     TerminationSet
         MultiSpriteCounter stype1=hurtcivilian limit=1 win=False

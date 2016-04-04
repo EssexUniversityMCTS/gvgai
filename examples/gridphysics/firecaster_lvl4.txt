@@ -3,7 +3,7 @@ w    b      .    Aw
 w  bbbbbbbbb      w
 w  bb     bb      w
 w  bb  bbbbb      w
-w  bb. bGbbb.     w
+w  bb. bgbbb.     w
 w  bb  bbbbb      w
 w  bb    .bb      w
 w  bbbbbbbbb      w

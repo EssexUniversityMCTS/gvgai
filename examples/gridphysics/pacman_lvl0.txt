@@ -1,6 +1,6 @@
 wwwwwwwwwwwwwwwwwwwwwwwwwwww
 w............ww............w
-w.wwww.wwwwwFww.wwwww.wwww.w
+w.wwww.wwwwwfww.wwwww.wwww.w
 w0wwww.wwwww.ww.wwwww.wwww0w
 w.wwww.wwwww.ww.wwwww.wwww.w
 w..........................w
@@ -12,7 +12,7 @@ wwwwww.wwwww ww wwwww.wwwwww
 wwwwww.ww          ww.wwwwww
 wwwwww.ww          ww.wwwwww
 wwwwww.ww www  www ww.wwwwww
-      F   ww1234ww   F
+      f   ww1234ww   f
 wwwwww.ww wwwwwwww ww.wwwwww
 wwwwww.ww          ww.wwwwww
 wwwwww.ww          ww.wwwwww
@@ -26,6 +26,6 @@ www.ww.ww.wwwwwwww.ww.ww.www
 www.ww.ww.wwwwwwww.ww.ww.www
 w......ww....ww....ww......w
 w.wwwwwwwwww.ww.wwwwwwwwww.w
-w.wwwwwwwwww.wwFwwwwwwwwww.w
+w.wwwwwwwwww.wwfwwwwwwwwww.w
 w..........................w
 wwwwwwwwwwwwwwwwwwwwwwwwwwww

@@ -13,7 +13,7 @@ BasicGame
 
 	LevelMapping
 		. > dirt
-		E > exitdoor
+		e > exitdoor
 		o > boulder
 		x > diamond
 		c > crab

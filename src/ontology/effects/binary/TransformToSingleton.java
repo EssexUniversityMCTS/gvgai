@@ -104,7 +104,6 @@ public class TransformToSingleton extends Effect {
             try{
                 game.setAvatar((MovingAvatar) newSprite);
                 game.getAvatar().player = ((MovingAvatar) oldSprite).player;
-                game.getAvatar().lastAction = ((MovingAvatar) oldSprite).lastAction;
             }catch (ClassCastException e) {}
         }
 
