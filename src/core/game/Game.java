@@ -1468,6 +1468,14 @@ public abstract class Game
     public void _updateCollisionDict(VGDLSprite sprite) {}
 
     /**
+     * Returns the game score.
+     */
+    public double getScore()
+    {
+        return score;
+    }
+
+    /**
      * Reverses the direction of a given sprite.
      * @param sprite sprite to reverse.
      */
