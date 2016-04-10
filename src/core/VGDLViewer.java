@@ -11,6 +11,7 @@ import javax.swing.JComponent;
 
 import core.game.Game;
 import core.player.AbstractPlayer;
+import core.player.Player;
 import ontology.Types;
 
 /**
@@ -40,14 +41,14 @@ public class VGDLViewer extends JComponent
     /**
      * Player of the game
      */
-    public AbstractPlayer player;
+    public Player player;
 
 
     /**
      * Creates the viewer for the game.
      * @param game game to be displayed
      */
-    public VGDLViewer(Game game, AbstractPlayer player)
+    public VGDLViewer(Game game, Player player)
     {
         this.game = game;
         this.size = game.getScreenSize();
@@ -79,7 +80,7 @@ public class VGDLViewer extends JComponent
         if(this.spriteGroups != null) for(Integer spriteTypeInt : gameSpriteOrder)
         {
             if(spriteGroups[spriteTypeInt] != null) {
-                ConcurrentHashMap<Integer, VGDLSprite> cMap =spriteGroups[spriteTypeInt].getSprites();
+                ConcurrentHashMap<Integer, VGDLSprite> cMap = spriteGroups[spriteTypeInt].getSprites();
                 Set<Integer> s = cMap.keySet();
                 for (Integer key : s) {
                     VGDLSprite sp = cMap.get(key);

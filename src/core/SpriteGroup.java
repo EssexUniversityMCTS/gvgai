@@ -130,6 +130,12 @@ public class SpriteGroup
         return sprites.get(spriteId);
     }
 
+    public VGDLSprite getSpriteByIdx(int idx) {
+        if(numSprites() == 0)
+            return null;
+        return (VGDLSprite) sprites.values().toArray()[idx];
+    }
+
     /**
      * Clears the collection of sprites.
      */

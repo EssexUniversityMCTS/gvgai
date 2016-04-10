@@ -33,8 +33,8 @@ public class Agent extends AbstractPlayer
      */
     public Types.ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer)
     {
-        Vector2d move = Utils.processMovementActionKeys(Game.ki.getMask());
-        boolean useOn = Utils.processUseKey(Game.ki.getMask());
+        Vector2d move = Utils.processMovementActionKeys(stateObs.getKeyHandler(getPlayerID()).getMask());
+        boolean useOn = Utils.processUseKey(stateObs.getKeyHandler(getPlayerID()).getMask());
 
         //In the keycontroller, move has preference.
         Types.ACTIONS action = Types.ACTIONS.fromVector(move);

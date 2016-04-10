@@ -94,8 +94,7 @@ public class Utils
         } else if (vertical == 0) {
             if (horizontal == 1)
                 return Types.RIGHT;
-            else if (horizontal == -1)
-                return Types.LEFT;
+            else return Types.LEFT; //horizontal = -1
         }
         return Types.NONE;
     }

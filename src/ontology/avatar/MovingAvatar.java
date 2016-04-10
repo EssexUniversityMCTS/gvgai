@@ -8,10 +8,9 @@ import core.competition.CompetitionParameters;
 import core.content.SpriteContent;
 import core.game.Game;
 import core.player.AbstractPlayer;
+import core.player.Player;
 import ontology.Types;
-import tools.ElapsedCpuTimer;
-import tools.Utils;
-import tools.Vector2d;
+import tools.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,14 +24,15 @@ public class MovingAvatar extends VGDLSprite {
     public boolean alternate_keys;
     public ArrayList<Types.ACTIONS> actions;
     public ArrayList<Types.ACTIONS> actionsNIL;
-    public AbstractPlayer player;
+    public Player player;
+
+    private KeyHandler ki = CompetitionParameters.KEY_HANDLER == CompetitionParameters.KEY_INPUT ?
+            new KeyInput() : new KeyPulse();
 
     public Types.MOVEMENT lastMovementType = Types.MOVEMENT.STILL;
 
     public MovingAvatar() {
     }
-
-
 
     public MovingAvatar(Vector2d position, Dimension size, SpriteContent cnt) {
         //Init the sprite
@@ -44,7 +44,6 @@ public class MovingAvatar extends VGDLSprite {
         //Parse the arguments.
         this.parseParameters(cnt);
     }
-
 
     protected void loadDefaults() {
         super.loadDefaults();
@@ -83,17 +82,16 @@ public class MovingAvatar extends VGDLSprite {
      * @param game current state of the game.
      */
     public void update(Game game) {
-
         lastMovementType = Types.MOVEMENT.STILL;
 
         //Sets the input mask for this cycle.
-        game.ki.setMask();
+        ki.setMask();
 
         //Get the input from the player.
         requestPlayerInput(game);
 
         //Map from the action mask to a Vector2D action.
-        Vector2d action2D = Utils.processMovementActionKeys(game.ki.getMask());
+        Vector2d action2D = Utils.processMovementActionKeys(ki.getMask());
 
         //Apply the physical movement.
         applyMovement(game, action2D);
@@ -152,8 +150,8 @@ public class MovingAvatar extends VGDLSprite {
 
         this.player.logAction(action);
         game.setAvatarLastAction(action);
-        game.ki.reset();
-        game.ki.setAction(action);
+        ki.reset();
+        ki.setAction(action);
     }
 
 
@@ -162,10 +160,31 @@ public class MovingAvatar extends VGDLSprite {
         //Nothing to do by default.
     }
 
+    /**
+     * Gets the key handler of this avatar.
+     * @return - KeyHandler object.
+     */
+    public KeyHandler getKeyHandler() { return ki; }
+
+    /**
+     * Sets the key handler of this avatar.
+     * @param k - new KeyHandler object.
+     */
+    public void setKeyHandler(KeyHandler k) { ki = k; }
+
 
     public VGDLSprite copy() {
         MovingAvatar newSprite = new MovingAvatar();
         this.copyTo(newSprite);
+
+        //copy player
+        try {
+            newSprite.player = player.copy();
+        } catch (Exception e) {e.printStackTrace();}
+
+        //copy key handler
+        newSprite.setKeyHandler(this.getKeyHandler());
+
         return newSprite;
     }
 

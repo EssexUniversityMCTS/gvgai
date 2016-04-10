@@ -139,6 +139,7 @@ public class BasicGame extends Game {
         kill_list = new ArrayList<VGDLSprite>();
 
         //Generate the initial state observation.
+        this.createAvatars();
         this.initForwardModel();
     }
 
@@ -161,6 +162,11 @@ public class BasicGame extends Game {
         }
 
         factory.parseParameters(content,this);
+    }
+
+    @Override
+    public boolean isGameOver() {
+        return false;
     }
 
     /**

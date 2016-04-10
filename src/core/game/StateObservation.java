@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import ontology.Types;
+import tools.KeyHandler;
 import tools.Vector2d;
 
 /**
@@ -20,9 +21,9 @@ import tools.Vector2d;
 public class StateObservation {
     /**
      * This is the model of the game, used to apply an action and
-     * get to the next state. This model MUST be private.
+     * get to the next state. This model MUST NOT be public.
      */
-    private ForwardModel model;
+    protected ForwardModel model;
 
     /**
      * Constructor for StateObservation. Requires a forward model
@@ -91,6 +92,11 @@ public class StateObservation {
 
 
     /**
+     * Returns the number of players in the game.
+     */
+    public int getNoPlayers() { return model.getNoPlayers(); }
+
+    /**
      * Gets the score of the game at this observation.
      * @return score of the game.
      */
@@ -147,7 +153,6 @@ public class StateObservation {
     }
 
     //Methods to retrieve the state of the avatar, in the game...
-
 
     /**
      * Returns the position of the avatar. If the game is finished, we cannot guarantee that
@@ -403,8 +408,6 @@ public class StateObservation {
         return model.getPortalsPositions(reference);
     }
 
-
-
     /**
      * Returns a list of observations of sprites created by the avatar (usually, by applying the
      * action Types.ACTIONS.ACTION_USE). As there can be sprites of different type, each entry in
@@ -434,6 +437,12 @@ public class StateObservation {
     }
 
     /**
+     * Returns key handler available to the player.
+     * @param playerID ID of the player to query.
+     * @return KeyHandler object.
+     */
+    public KeyHandler getKeyHandler(int playerID) { return model.avatars[playerID].getKeyHandler(); }
+    /**
      * Compares if this and the received StateObservation state are equivalent.
      * DEBUG ONLY METHOD.
      * @param o Object to compare this to.
@@ -447,6 +456,7 @@ public class StateObservation {
         StateObservation other = (StateObservation)o;
 
         //Game state checks.
+        //TODO multi player
         if(this.getGameScore() != other.getGameScore()) return false;
         if(this.getGameTick() != other.getGameTick()) return false;
         if(this.getGameWinner() != other.getGameWinner()) return false;
