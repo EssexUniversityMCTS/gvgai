@@ -136,16 +136,25 @@ public class ForwardModel extends Game
             spriteGroups[i] = new SpriteGroup(i);
 
             /**
-             * Iteration changed as index in the sprite group is needed to
+             * Index in the sprite group passed to the checkSpriteFeatures method to
              * identify player in case of avatar sprites (index used as
              * playerID in the avatars array).
              */
-            for (int j = 0; j < spriteGroups[i].numSprites(); j++) {
-                VGDLSprite spCopy = spriteGroups[i].getSpriteByIdx(j).copy();
+            Iterator<VGDLSprite> spriteIt = a_gameState.spriteGroups[i].getSpriteIterator();
+            if(spriteIt != null) while(spriteIt.hasNext())
+            {
+                VGDLSprite sp = spriteIt.next();
+                VGDLSprite spCopy = sp.copy();
+
+                if (sp.is_avatar && ((MovingAvatar)sp).player != null) {
+                    ((MovingAvatar)spCopy).player = ((MovingAvatar)sp).player.copy();
+                    ((MovingAvatar)spCopy).setKeyHandler(((MovingAvatar)sp).getKeyHandler());
+                }
+
                 spriteGroups[i].addSprite(spCopy.spriteID, spCopy);
 
                 if(!spCopy.hidden) {
-                    checkSpriteFeatures(spCopy, i, j);
+                    checkSpriteFeatures(spCopy, i, spriteGroups[i].numSprites() - 1);
                     updateObservation(spCopy);
                 }
             }

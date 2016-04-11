@@ -17,7 +17,7 @@ import java.util.ArrayList;
 /**
  * Created by Raluca on 07-Apr-16.
  */
-public abstract class Player {
+public abstract class Player implements Cloneable {
 
     /**
      * Variable to store player id.
@@ -216,10 +216,14 @@ public abstract class Player {
     /**
      * Method to copy the player object into a new one.
      * @return new Player object with the same attribute values.
-     * @throws CloneNotSupportedException
      */
-    public Player copy() throws CloneNotSupportedException {
-       return (Player) this.clone();
+    public Player copy() {
+        try {
+            return (Player) this.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
