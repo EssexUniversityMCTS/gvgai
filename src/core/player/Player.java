@@ -5,7 +5,6 @@ import core.game.StateObservation;
 import core.game.StateObservationMulti;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
-import tools.KeyHandler;
 
 import java.awt.*;
 import java.io.BufferedWriter;
@@ -17,24 +16,13 @@ import java.util.ArrayList;
 /**
  * Created by Raluca on 07-Apr-16.
  */
-public abstract class Player implements Cloneable {
+public abstract class Player implements Cloneable{
 
     /**
      * Variable to store player id.
      * Default 0 for single player games.
      */
     private int playerID = 0;
-
-    private double score = 0.0;
-
-    private Types.WINNER winState = Types.WINNER.NO_WINNER;
-
-    /**
-     * Disqualified flag, moved from Game class to individual players,
-     * as there may be more than 1 in a game; variable still in Game
-     * class for single player games to keep back-compatibility
-     */
-    protected boolean is_disqualified;
 
     /**
      * File where the actions played in a given game are stored.
@@ -167,63 +155,6 @@ public abstract class Player implements Cloneable {
      */
     public int getPlayerID() {
         return playerID;
-    }
-
-
-    /**
-     * Checks whether this player is disqualified.
-     * @return true if disqualified, false otherwise.
-     */
-    public boolean is_disqualified() {
-        return is_disqualified;
-    }
-
-    /**
-     * Sets the disqualified flag.
-     */
-    public void disqualify(boolean is_disqualified) { this.is_disqualified = is_disqualified; }
-
-    /**
-     * Gets the score of this player.
-     * @return score.
-     */
-    public double getScore() { return score; }
-
-    /**
-     * Sets the score of this player to a new value.
-     * @param s - new score.
-     */
-    public void setScore(double s) { score = s; }
-
-    /**
-     * Adds a value to the current score of this player.
-     * @param s - value to add to the score.
-     */
-    public void addScore (double s) { score += s; }
-
-    /**
-     * Gets the win state of this player.
-     * @return - win state, value of Types.WINNER
-     */
-    public Types.WINNER getWinState() { return winState; }
-
-    /**
-     * Sets the win state of this player.
-     * @param w - new win state.
-     */
-    public void setWinState(Types.WINNER w) { winState = w; }
-
-    /**
-     * Method to copy the player object into a new one.
-     * @return new Player object with the same attribute values.
-     */
-    public Player copy() {
-        try {
-            return (Player) this.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     /**

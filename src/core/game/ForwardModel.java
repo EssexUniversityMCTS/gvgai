@@ -147,7 +147,7 @@ public class ForwardModel extends Game
                 VGDLSprite spCopy = sp.copy();
 
                 if (sp.is_avatar && ((MovingAvatar)sp).player != null) {
-                    ((MovingAvatar)spCopy).player = ((MovingAvatar)sp).player.copy();
+                    ((MovingAvatar)spCopy).player = ((MovingAvatar)sp).player;
                     ((MovingAvatar)spCopy).setKeyHandler(((MovingAvatar)sp).getKeyHandler());
                 }
 
@@ -514,22 +514,31 @@ public class ForwardModel extends Game
     public int getNoPlayers() { return no_players; }
 
     /**
-     * Performs one tick for the game: calling update(this) in all sprites. It follows the
-     * same order of update calls as in the real game (inverse spriteOrder[]). Avatar moves
-     * the first one. It uses the action received as the action of the avatar.
+     * Calls update(this) in avatar sprites. It uses the action received as the action of the avatar.
+     * Doesn't update disabled avatars.
      * @param action Action to be performed by the avatar for this game tick.
      */
-    protected void tick(Types.ACTIONS action, int playerID)
+    protected void updateAvatars(Types.ACTIONS action, int playerID)
     {
-        KeyHandler ki = avatars[playerID].getKeyHandler();
-        ki.reset();
-        ki.setAction(action);
+        MovingAvatar a = avatars[playerID];
+        if (!a.is_disabled()) {
+            KeyHandler ki = a.getKeyHandler();
+            ki.reset();
+            ki.setAction(action);
 
-        //apply action to correct avatar
-        avatars[playerID].preMovement();
-        avatars[playerID].move(this, ki.getMask());
-        setAvatarLastAction(action);
+            //apply action to correct avatar
+            a.preMovement();
+            a.move(this, ki.getMask());
+            setAvatarLastAction(action);
+        }
+    }
 
+    /**
+     * Performs one tick for the game, calling update(this) in all sprites.
+     * It follows the same order of update calls as in the real game (inverse spriteOrder[]).
+     * Doesn't update disabled sprites.
+     */
+    protected void tick() {
         for(int i = spriteOrder.length-1; i >= 0; --i)
         {
             int spriteTypeInt = spriteOrder[i];
@@ -539,14 +548,13 @@ public class ForwardModel extends Game
             {
                 VGDLSprite sp = spriteIt.next();
 
-                if(!(sp instanceof MovingAvatar))
+                if(!(sp instanceof MovingAvatar) && ! sp.is_disabled())
                 {
                     sp.preMovement();
                     sp.update(this);
                 }
             }
         }
-
     }
 
 
@@ -557,13 +565,16 @@ public class ForwardModel extends Game
     final public void advance(Types.ACTIONS action) {
         if(!isEnded) {
             //apply player action
-            tick(action, 0);
+            updateAvatars(action, 0);
+            //update all the other sprites
+            tick();
+            //update game state
             advance_aux();
         }
     }
 
     /**
-     * Advances the forward model using the action supplied.
+     * Advances the forward model using the actions supplied.
      * @param actions array of actions of all players (index in array corresponds
      *                to playerID).
      */
@@ -578,8 +589,11 @@ public class ForwardModel extends Game
             //apply actions of all players
             for (int i = 0; i < actions.length; i++) {
                 Types.ACTIONS a = actions_shuffled.get(i); // action
-                tick(a, actionsList.indexOf(a)); // index in array actions is the playerID
+                updateAvatars(a, actionsList.indexOf(a)); // index in array actions is the playerID
             }
+            //update all other sprites in the game
+            tick();
+            //update game state
             advance_aux();
         }
     }
@@ -629,7 +643,7 @@ public class ForwardModel extends Game
      * Gets the game score of this state.
      * @return the game score.
      */
-    public double getGameScore() { return this.avatars[0].player.getScore(); }
+    public double getGameScore() { return this.avatars[0].getScore(); }
 
     /**
      * Method overloaded for multi player games.
@@ -637,7 +651,7 @@ public class ForwardModel extends Game
      * @param playerID ID of the player to query.
      * @return the game score.
      */
-    public double getGameScore(int playerID) { return this.avatars[playerID].player.getScore(); }
+    public double getGameScore(int playerID) { return this.avatars[playerID].getScore(); }
 
     /**
      * Gets the current game tick of this particular state.
@@ -651,7 +665,7 @@ public class ForwardModel extends Game
      * Types.WINNER.NO_WINNER.
      * @return the winner of the game.
      */
-    public Types.WINNER getGameWinner() { return this.avatars[0].player.getWinState(); }
+    public Types.WINNER getGameWinner() { return this.avatars[0].getWinState(); }
 
     /**
      * Method overloaded for multi player games.
@@ -663,7 +677,7 @@ public class ForwardModel extends Game
     public Types.WINNER[] getMultiGameWinner() {
         Types.WINNER[] winners = new Types.WINNER[no_players];
         for (int i = 0; i < no_players; i++) {
-            winners[i] = avatars[i].player.getWinState();
+            winners[i] = avatars[i].getWinState();
         }
         return winners; }
 

@@ -164,6 +164,13 @@ public abstract class VGDLSprite {
     public boolean hidden;
 
     /**
+     * If true, this sprite's functionality is disabled.
+     * Disabled sprites are not drawn.
+     * Information about disabled sprites can still be accessed.
+     */
+    private boolean disabled;
+
+    /**
      * List of types this sprite belongs to. It contains the ids, including itself's, from this sprite up
      * in the hierarchy of sprites defined in SpriteSet in the game definition.
      */
@@ -277,6 +284,7 @@ public abstract class VGDLSprite {
         invisible = false;
         rotateInPlace = false;
         isFirstTick = true;
+        disabled = false;
         limitHealthPoints = 1000;
         resources = new TreeMap<Integer, Integer>();
         itypes = new ArrayList<Integer>();
@@ -364,6 +372,19 @@ public abstract class VGDLSprite {
     {
         updatePassive();
     }
+
+    /**
+     * Set the disabled flag of this sprite.
+     * @param is_disabled - disabled state
+     */
+    public void setDisabled(boolean is_disabled) {
+        System.out.println("disabled"); disabled = is_disabled; }
+
+    /**
+     * Check if this sprite is disabled.
+     * @return true if disabled, false otherwise.
+     */
+    public boolean is_disabled() { return disabled; }
 
     /**
      * Prepares the sprite for movement.
@@ -485,7 +506,7 @@ public abstract class VGDLSprite {
      */
     public void draw(Graphics2D gphx, Game game) {
 
-        if(!invisible)
+        if(!invisible && !disabled)
         {
             Rectangle r = new Rectangle(rect);
 
@@ -747,6 +768,7 @@ public abstract class VGDLSprite {
         toSprite.name = this.name;
         toSprite.is_static = this.is_static;
         toSprite.only_active = this.only_active;
+        toSprite.disabled = this.disabled;
         toSprite.is_avatar = this.is_avatar;
         toSprite.is_stochastic = this.is_stochastic;
         toSprite.cooldown = this.cooldown;
@@ -807,6 +829,7 @@ public abstract class VGDLSprite {
         if(other.name != this.name) return false;
         if(other.is_static != this.is_static) return false;
         if(other.only_active != this.only_active) return false;
+        if(other.disabled != this.disabled) return false;
         if(other.is_avatar != this.is_avatar) return false;
         if(other.is_stochastic != this.is_stochastic) return false;
         if(other.cooldown != this.cooldown) return false;
