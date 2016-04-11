@@ -153,14 +153,6 @@ public class SpriteGroup
         return sprites.size();
     }
 
-    public int numDisabledSprites() {
-        int acum = 0;
-        for (VGDLSprite sp: sprites.values()) {
-            if (sp.is_disabled()) acum++;
-        }
-        return acum;
-    }
-
     /**
      * Gets the first sprite of this collection, or null if it is empty
      * @return the first sprite in this collection.

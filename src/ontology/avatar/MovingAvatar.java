@@ -25,15 +25,6 @@ public class MovingAvatar extends VGDLSprite {
     public ArrayList<Types.ACTIONS> actions;
     public ArrayList<Types.ACTIONS> actionsNIL;
     public Player player;
-    private double score = 0.0;
-    private Types.WINNER winState = Types.WINNER.NO_WINNER;
-
-    /**
-     * Disqualified flag, moved from Game class to individual players,
-     * as there may be more than 1 in a game; variable still in Game
-     * class for single player games to keep back-compatibility
-     */
-    protected boolean is_disqualified;
 
     private KeyHandler ki = CompetitionParameters.KEY_HANDLER == CompetitionParameters.KEY_INPUT ?
             new KeyInput() : new KeyPulse();
@@ -63,7 +54,6 @@ public class MovingAvatar extends VGDLSprite {
         speed = 1;
         is_avatar = true;
         alternate_keys = false;
-        is_disqualified = false;
     }
 
     public void postProcess() {
@@ -182,49 +172,6 @@ public class MovingAvatar extends VGDLSprite {
      */
     public void setKeyHandler(KeyHandler k) { ki = k; }
 
-    /**
-     * Checks whether this player is disqualified.
-     * @return true if disqualified, false otherwise.
-     */
-    public boolean is_disqualified() {
-        return is_disqualified;
-    }
-
-    /**
-     * Sets the disqualified flag.
-     */
-    public void disqualify(boolean is_disqualified) { this.is_disqualified = is_disqualified; }
-
-    /**
-     * Gets the score of this player.
-     * @return score.
-     */
-    public double getScore() { return score; }
-
-    /**
-     * Sets the score of this player to a new value.
-     * @param s - new score.
-     */
-    public void setScore(double s) { score = s; }
-
-    /**
-     * Adds a value to the current score of this player.
-     * @param s - value to add to the score.
-     */
-    public void addScore (double s) { score += s; }
-
-    /**
-     * Gets the win state of this player.
-     * @return - win state, value of Types.WINNER
-     */
-    public Types.WINNER getWinState() { return winState; }
-
-    /**
-     * Sets the win state of this player.
-     * @param w - new win state.
-     */
-    public void setWinState(Types.WINNER w) { winState = w; }
-
 
     public VGDLSprite copy() {
         MovingAvatar newSprite = new MovingAvatar();
@@ -232,7 +179,7 @@ public class MovingAvatar extends VGDLSprite {
 
         //copy player
         try {
-            newSprite.player = player;
+            newSprite.player = player.copy();
         } catch (Exception e) {e.printStackTrace();}
 
         //copy key handler
@@ -246,9 +193,6 @@ public class MovingAvatar extends VGDLSprite {
         targetSprite.alternate_keys = this.alternate_keys;
         targetSprite.actions = new ArrayList<Types.ACTIONS>();
         targetSprite.actionsNIL = new ArrayList<Types.ACTIONS>();
-        targetSprite.winState = winState;
-        targetSprite.score = score;
-        targetSprite.is_disqualified = is_disqualified;
         targetSprite.postProcess();
         super.copyTo(targetSprite);
     }

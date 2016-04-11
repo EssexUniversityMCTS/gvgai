@@ -312,7 +312,7 @@ public class VGDLParser
 
                         ArrayList<Effect> collEffects = game.getCollisionEffects(obj1, obj2);
 
-                        //Add the effects as many times as indicated in its 'repeat' field (1 by default).
+                        //Add the effects as many times as indicated in its 'repeat' field (1 by defualt).
                         for(int r = 0; r < ef.repeat; ++r)
                             collEffects.add(ef);
 

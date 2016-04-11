@@ -48,6 +48,7 @@ public abstract class AbstractMultiPlayer extends Player {
      */
     final public void setup(String actionFile, int randomSeed) {
         super.setup(actionFile, randomSeed);
+        is_disqualified = false;
     }
 
 }

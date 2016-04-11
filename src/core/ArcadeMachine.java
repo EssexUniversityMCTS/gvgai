@@ -121,7 +121,7 @@ public class ArcadeMachine
                 //Something went wrong in the constructor, controller disqualified
                 if (no_players > 1) {
                     //multi player
-                    toPlay.getAvatars()[i].disqualify(true);
+                    players[i].disqualify(true);
                 } else {
                     //single player
                     toPlay.disqualify();
@@ -308,7 +308,7 @@ public class ArcadeMachine
                 //Something went wrong in the constructor, controller disqualified
                 if (no_players > 1) {
                     //multi player
-                    toPlay.getAvatars()[i].disqualify(true);
+                    players[i].disqualify(true);
                 } else {
                     //single player
                     toPlay.disqualify();
