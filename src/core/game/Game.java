@@ -215,11 +215,6 @@ public abstract class Game
     protected Types.WINNER winner = Types.WINNER.NO_WINNER;
 
     /**
-     * Default frame rate of the basic game.
-     */
-    protected int frame_rate;
-
-    /**
      * State observation for this game.
      */
     protected ForwardModel fwdModel;
