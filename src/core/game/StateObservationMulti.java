@@ -3,8 +3,7 @@ package core.game;
 import ontology.Types;
 import tools.Vector2d;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Created by Raluca on 07-Apr-16.
@@ -176,4 +175,50 @@ public class StateObservationMulti extends StateObservation {
      * @return the limit of health points the avatar can have.
      */
     public int getAvatarLimitHealthPoints(int playerID) {return model.getAvatarLimitHealthPoints(playerID);}
+
+    /**
+     * Method overwritten with multi player optimisations.
+     * @param o Object to compare this to.
+     * @return true if o has the same components as this.
+     */
+    @Override
+    public boolean equiv(Object o) {
+        //First simple object-level checks.
+        if(this == o) return true;
+        if(!(o instanceof StateObservation)) return false;
+        StateObservationMulti other = (StateObservationMulti)o;
+
+        //Game state checks.
+        if(this.getGameTick() != other.getGameTick()) return false;
+        if(this.getGameWinner() != other.getGameWinner()) return false;
+        if(this.isGameOver() != other.isGameOver()) return false;
+
+        //Avatar checks
+        for (int i = 0; i < getNoPlayers(); i++) {
+            if (this.getGameScore(i) != other.getGameScore(i)) return false;
+            if (this.getAvatarSpeed(i) != other.getAvatarSpeed(i)) return false;
+            if (!this.getAvatarPosition(i).equals(other.getAvatarPosition(i))) return false;
+            if (!this.getAvatarOrientation(i).equals(other.getAvatarOrientation(i))) return false;
+
+            //Check resources
+            HashMap<Integer, Integer> thisResources = this.getAvatarResources(i);
+            HashMap<Integer, Integer> otherResources = other.getAvatarResources(i);
+            if(thisResources.size() != otherResources.size()) return false;
+            try
+            {
+                Set<Integer> resKeys = otherResources.keySet();
+                for (Integer k : resKeys) {
+                    if (!(otherResources.get(k).equals(thisResources.get(k))))
+                        return false;
+                }
+            }catch(Exception e)
+            {
+                System.out.println(e.toString());
+                return false;
+            }
+        }
+
+        //Check observations:
+        return this.model.equalObservations(other.model);
+    }
 }

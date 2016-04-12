@@ -345,15 +345,19 @@ public class GameDescription {
 		/**
 		 * Boolean to differentiate between Winning or Losing Condition
 		 */
-		public boolean win;
+		public boolean[] win;
 		
 		public TerminationData(){
 			sprites = new ArrayList<String>();
 		}
-		
+
+		/**
+		 * Player ID for win state used is 0, default for single player games.
+		 * @return
+		 */
 		@Override
 		public String toString(){
-			String result = win?"Win":"Lose";
+			String result = win[0]?"Win":"Lose";
 			result += ":" + type + " " + sprites.toString();
 			return result;
 		}

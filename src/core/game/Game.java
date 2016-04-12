@@ -902,15 +902,21 @@ public abstract class Game
      * Sets the title of the game screen, depending on the game ending state.
      * @param frame The frame whose title needs to be set.
      */
-    //TODO: MUlTIPLAYER optimisation, currently player ID used 0, default in single player games.
     private void setTitle (JEasyFrame frame)
     {
+        String sb = "";
+        sb += "Java-VGDL: ";
+        for (int i = 0; i < no_players; i++) {
+            sb += "Player" + i + "-Score:" + avatars[i].getScore() + ". ";
+        }
+        sb += "Tick:" + this.getGameTick();
+
         if(!isEnded)
-            frame.setTitle("Java-VGDL: Score:" + avatars[0].getScore() + ". Tick:" + this.getGameTick());
+            frame.setTitle(sb);
         else if(avatars[0].getWinState() == Types.WINNER.PLAYER_WINS)
-            frame.setTitle("Java-VGDL: Score:" + avatars[0].getScore() + ". Tick:" + this.getGameTick() + " [Player WINS!]");
+            frame.setTitle(sb + " [Player WINS!]");
         else
-            frame.setTitle("Java-VGDL: Score:" + avatars[0].getScore() + ". Tick:" + this.getGameTick() + " [Player LOSES!]");
+            frame.setTitle(sb + " [Player LOSES!]");
 
     }
 
@@ -1012,14 +1018,15 @@ public abstract class Game
      * a value stored in CompetitionParameters.MAX_TIMESTEPS. If the game is due to
      * end, the winner is determined and the flag isEnded is set to true.
      */
-    //TODO: MULTIPLAYER OPTIMISATION; current playerID used is 0, default in single player games.
     protected void checkTimeOut()
     {
         if(gameTick >= CompetitionParameters.MAX_TIMESTEPS)
         {
             isEnded = true;
-            if(avatars[0].getWinState() != Types.WINNER.PLAYER_WINS)
-                avatars[0].setWinState(Types.WINNER.PLAYER_LOSES);
+            for (int i = 0; i < no_players; i++) {
+                if (avatars[i].getWinState() != Types.WINNER.PLAYER_WINS)
+                    avatars[i].setWinState(Types.WINNER.PLAYER_LOSES);
+            }
         }
     }
 
@@ -1027,11 +1034,16 @@ public abstract class Game
      * Prints the result of the game, indicating the winner, the score and the
      * number of game ticks played, in this order.
      */
-    //TODO: MULTIPLAYER OPTIMISATION; current playerID used is 0, default in single player games.
     private void printResult()
     {
-        System.out.println("Result (1->win; 0->lose):"+ avatars[0].getWinState().key() + ", Score:" +
-                avatars[0].getScore() + ", timesteps:" + this.getGameTick());
+        String sb1 = "";
+        String sb2 = "";
+        for (int i = 0; i < no_players; i++) {
+            sb1 += "Player" + i + "-" + avatars[i].getWinState().key() + ", ";
+            sb2 += "Player" + i + "-" + "Score:" + avatars[i].getScore() + ", ";
+        }
+
+        System.out.println("Result (1->win; 0->lose):" + sb1 + sb2 + "timesteps:" + this.getGameTick());
     }
 
     /**
@@ -1150,7 +1162,6 @@ public abstract class Game
     /**
      * Handles collisions and triggers events.
      */
-    //TODO: update to multiplayer games; currently 0 used for score ID, default for single player games
     protected void eventHandling()
     {
         //Array to indicate that the sprite type has no representative in collisions.
@@ -1168,9 +1179,12 @@ public abstract class Game
                 //With no sprite, the effect is independent from particular sprites.
                 ef.execute(null,null,this);
 
-                //Affect score:
-                if(ef.applyScore)
-                    avatars[0].addScore(ef.scoreChange);
+                //Affect score for all players:
+                if(ef.applyScore) {
+                    for (int i = 0; i < no_players; i++) {
+                        avatars[i].addScore(ef.scoreChange);
+                    }
+                }
 
             }else {
 
@@ -1365,15 +1379,30 @@ public abstract class Game
 
     }
 
-    //TODO: update to multiplayer; currently ID for score used is 0, default for single player games
     private void executeEffect(Effect ef, VGDLSprite s1, VGDLSprite s2)
     {
         //There is a collision. Apply the effect.
         ef.execute(s1,s2,this);
 
         //Affect score:
-        if(ef.applyScore)
-            avatars[0].addScore(ef.scoreChange);
+        if(ef.applyScore) {
+            //get player id if one of the sprites is avatar
+            int id;
+            if (s1 != null && s1 instanceof MovingAvatar) id = ((MovingAvatar)s1).player.getPlayerID();
+            else if (s2 != null && s2 instanceof MovingAvatar) id = ((MovingAvatar)s2).player.getPlayerID();
+            else {
+                //none of the sprites were avatar, affect score for all avatars
+                id = -1;
+            }
+
+            if (id == -1) {
+                for (int i = 0; i < no_players; i++) {
+                    avatars[i].addScore(ef.scoreChange);
+                }
+            } else {
+                avatars[id].addScore(ef.scoreChange);
+            }
+        }
 
         //Add to events history.
         if(s1 != null && s2 != null)
@@ -1417,7 +1446,6 @@ public abstract class Game
     /**
      * Handles termination conditions, for every termination defined in 'terminations' array.
      */
-    //TODO: set winner for multiplayer games; currently 0 used for playerID (default in single player)
     protected void terminationHandling()
     {
         int numTerminations = terminations.size();
@@ -1427,7 +1455,9 @@ public abstract class Game
             if(t.isDone(this))
             {
                 isEnded = true;
-                avatars[0].setWinState(t.win ? Types.WINNER.PLAYER_WINS : Types.WINNER.PLAYER_LOSES);
+                for (int j = 0; j < no_players; j++) {
+                    avatars[0].setWinState(t.win(i) ? Types.WINNER.PLAYER_WINS : Types.WINNER.PLAYER_LOSES);
+                }
             }
         }
     }

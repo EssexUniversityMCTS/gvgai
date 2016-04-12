@@ -321,7 +321,7 @@ public class ArcadeMachine
         }
 
         int seed = 0;
-        int winner = 0;
+        int[] win = new int[no_players];
         double loggedScore = 0.0;
         int timesteps = 0;
         ArrayList<Types.ACTIONS> actions = new ArrayList<Types.ACTIONS> ();
@@ -335,12 +335,12 @@ public class ArcadeMachine
                 //Single player file
                 String[] firstLine = br.readLine().split(" ");
                 seed = Integer.parseInt(firstLine[0]);
-                winner = Integer.parseInt(firstLine[1]);
+                win[0] = Integer.parseInt(firstLine[1]);
                 loggedScore = Double.parseDouble(firstLine[2]);
                 timesteps = Integer.parseInt(firstLine[3]);
 
                 System.out.println("Replaying game in " + game_file + ", " + level_file + " with seed " + seed +
-                        " expecting player to win = " + (winner == 1) + "; score: " + loggedScore +
+                        " expecting player to win = " + (win[0] == 1) + "; score: " + loggedScore +
                         "; timesteps: " + timesteps);
 
                 //The rest are the actions:
@@ -358,28 +358,29 @@ public class ArcadeMachine
 
             } else {
                 //Multi player file
-                String[] firstLine = br.readLine().split(" ");
+
                 // first line contains the sampleRandom seed and the timesteps.
+                String[] firstLine = br.readLine().split(" ");
                 seed = Integer.parseInt(firstLine[0]);
                 timesteps = Integer.parseInt(firstLine[3]);
+
                 //next line contain scores for all players, in order.
-                String[] secondLine = br.readLine().split(" ");
-                double[] score = new double[no_players];
-                for (int i = 0; i < no_players; i++) {
-                    if (secondLine.length > i)
-                        score[i] = Integer.parseInt(secondLine[i]);
-                    else score[i] = 0;
-                }
+                String secondLine = br.readLine();
+
                 //next line contains win state for all players, in order.
                 String[] thirdLine = br.readLine().split(" ");
-                int[] win = new int[no_players];
+                String w = "";
                 for (int i = 0; i < no_players; i++) {
                     if (thirdLine.length > i)
                         win[i] = Integer.parseInt(thirdLine[i]);
                     else win[i] = 0;
+                    w += (win[i] == 1) + " ";
                 }
 
-                //TODO: display information
+                //display information
+                System.out.println("Replaying game in " + game_file + ", " + level_file + " with seed " + seed +
+                        " expecting players' win states = " + w + "; scores: " + secondLine +
+                        "; timesteps: " + timesteps);
 
                 //next lines contain players actions, one line per game tick, actions for players in order,
                 //separated by spaces.
@@ -422,10 +423,11 @@ public class ArcadeMachine
                 return toPlay.handleResult();
         }
 
-        //TODO: multi player optimisation
-        int actualWinner = (toPlay.getWinner() == Types.WINNER.PLAYER_WINS ? 1 : 0);
-        if(actualWinner != winner || score[0] != loggedScore || timesteps != toPlay.getGameTick())
-            throw new RuntimeException("ERROR: Game Replay Failed.");
+        for (int i = 0; i < toPlay.getNoPlayers(); i++) {
+            int actualWinner = (toPlay.getWinner(i) == Types.WINNER.PLAYER_WINS ? 1 : 0);
+            if (actualWinner != win[i] || score[i] != loggedScore || timesteps != toPlay.getGameTick())
+                throw new RuntimeException("ERROR: Game Replay Failed.");
+        }
 
         return score;
     }
@@ -516,7 +518,6 @@ public class ArcadeMachine
             levelIdx++;
         }
 
-        //TODO: change output for multiplayer games
         System.out.println(" *** Results in game " + game_file + " *** ");
         System.out.println(scores);
         System.out.println(" *********");
@@ -734,8 +735,6 @@ public class ArcadeMachine
      * @return the player if it could be created, null otherwise.
      */
 
-    //TODO: set playerID
-
     protected static Player createController(String playerName, int playerID, StateObservation so) throws RuntimeException
     {
         Player player = null;
@@ -756,6 +755,7 @@ public class ArcadeMachine
                 Object[] constructorArgs = new Object[]{so, ect.copy()};
 
                 player = (AbstractPlayer) controllerArgsConstructor.newInstance(constructorArgs);
+                player.setPlayerID(playerID);
 
             } else { //multi player
                 //Get the class and the constructor with arguments (StateObservation, long).
@@ -767,6 +767,7 @@ public class ArcadeMachine
                 Object[] constructorArgs = new Object[]{so, ect.copy()};
 
                 player = (AbstractMultiPlayer) controllerArgsConstructor.newInstance(constructorArgs);
+                player.setPlayerID(playerID);
 
             }
             //Check if we returned on time, and act in consequence.

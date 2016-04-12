@@ -442,6 +442,7 @@ public class StateObservation {
      * @return KeyHandler object.
      */
     public KeyHandler getKeyHandler(int playerID) { return model.avatars[playerID].getKeyHandler(); }
+
     /**
      * Compares if this and the received StateObservation state are equivalent.
      * DEBUG ONLY METHOD.
@@ -456,7 +457,6 @@ public class StateObservation {
         StateObservation other = (StateObservation)o;
 
         //Game state checks.
-        //TODO multi player
         if(this.getGameScore() != other.getGameScore()) return false;
         if(this.getGameTick() != other.getGameTick()) return false;
         if(this.getGameWinner() != other.getGameWinner()) return false;

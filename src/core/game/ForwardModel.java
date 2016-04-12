@@ -147,7 +147,6 @@ public class ForwardModel extends Game
                 VGDLSprite spCopy = sp.copy();
 
                 if (sp.is_avatar && ((MovingAvatar)sp).player != null) {
-                    ((MovingAvatar)spCopy).player = ((MovingAvatar)sp).player;
                     ((MovingAvatar)spCopy).setKeyHandler(((MovingAvatar)sp).getKeyHandler());
                 }
 
@@ -909,7 +908,7 @@ public class ForwardModel extends Game
         {
             //There is a sprite type we don't know anything about. Need to check.
             if(!unknownList[i] && spriteGroups[i].getFirstSprite() != null)
-                //TODO: playerID passed is 0, need multiplayer
+                //TODO: playerID passed as 0, potentially problematic if the sprite is avatar
                 checkSpriteFeatures(spriteGroups[i].getFirstSprite(), i, 0);
 
             if(groupArray[i] && visibleList[i]) numDiffTypes++;

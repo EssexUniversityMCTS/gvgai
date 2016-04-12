@@ -158,6 +158,14 @@ public abstract class Player implements Cloneable{
     }
 
     /**
+     * Set this player's ID to a new value.
+     * @param id - new player ID.
+     */
+    public void setPlayerID(int id) {
+        playerID = id;
+    }
+
+    /**
      * Gets the player the control to draw something on the screen.
      * It can be used for debug purposes.
      * @param g Graphics device to draw to.

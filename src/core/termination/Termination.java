@@ -16,7 +16,7 @@ import ontology.Types;
  */
 public abstract class Termination {
 
-    public boolean win;
+    public boolean[] win;
     public int limit;
 
     public void parseParameters(TerminationContent content)
@@ -31,6 +31,13 @@ public abstract class Termination {
         //It's finished if the player pressed ESCAPE or the game is over..
         return game.isGameOver();
     }
+
+    /**
+     * Determine win state of a specific player.
+     * @param playerID - ID of the player to query.
+     * @return - true if player won, false otherwise.
+     */
+    public boolean win (int playerID) { return win[playerID]; }
 
     /**
      * Get all sprites that are used to check the termination condition
