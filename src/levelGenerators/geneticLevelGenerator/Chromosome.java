@@ -473,9 +473,13 @@ public class Chromosome implements Comparable<Chromosome>{
 	 * @return	true if the player death terminates the game and false otherwise
 	 */
 	private boolean isPlayerCauseDeath(){
+
 		for(TerminationData t:SharedData.gameDescription.getTerminationConditions()){
+			String[] winners = t.win.split(",");
+			Boolean win = Boolean.parseBoolean(winners[0]);
+
 			for(String s:t.sprites){
-				if(!t.win[0] & SharedData.gameDescription.getAvatar().contains(s)){
+				if(!win & SharedData.gameDescription.getAvatar().contains(s)){
 					return true;
 				}
 			}

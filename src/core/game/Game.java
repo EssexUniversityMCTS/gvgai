@@ -1102,6 +1102,7 @@ public abstract class Game
         for (int i = 0; i < no_players; i++) {
             if (players[i] != null) {
                 avatars[i].player = players[i];
+                avatars[i].setPlayerID(players[i].getPlayerID());
             }
         }
     }
@@ -1388,8 +1389,8 @@ public abstract class Game
         if(ef.applyScore) {
             //get player id if one of the sprites is avatar
             int id;
-            if (s1 != null && s1 instanceof MovingAvatar) id = ((MovingAvatar)s1).player.getPlayerID();
-            else if (s2 != null && s2 instanceof MovingAvatar) id = ((MovingAvatar)s2).player.getPlayerID();
+            if (s1 != null && s1 instanceof MovingAvatar) id = ((MovingAvatar)s1).getPlayerID();
+            else if (s2 != null && s2 instanceof MovingAvatar) id = ((MovingAvatar)s2).getPlayerID();
             else {
                 //none of the sprites were avatar, affect score for all avatars
                 id = -1;
@@ -1456,7 +1457,7 @@ public abstract class Game
             {
                 isEnded = true;
                 for (int j = 0; j < no_players; j++) {
-                    avatars[0].setWinState(t.win(i) ? Types.WINNER.PLAYER_WINS : Types.WINNER.PLAYER_LOSES);
+                    avatars[j].setWinState(t.win(j) ? Types.WINNER.PLAYER_WINS : Types.WINNER.PLAYER_LOSES);
                 }
             }
         }

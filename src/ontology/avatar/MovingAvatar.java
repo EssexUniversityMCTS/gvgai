@@ -24,6 +24,7 @@ public class MovingAvatar extends VGDLSprite {
     public ArrayList<Types.ACTIONS> actions;
     public ArrayList<Types.ACTIONS> actionsNIL;
     public Player player;
+    private int playerID;
     private double score = 0.0;
     private Types.WINNER winState = Types.WINNER.NO_WINNER;
 
@@ -224,6 +225,22 @@ public class MovingAvatar extends VGDLSprite {
      */
     public void setWinState(Types.WINNER w) { winState = w; }
 
+
+    /**
+     * Get this player's ID.
+     * @return player ID.
+     */
+    public int getPlayerID() {
+        return playerID;
+    }
+
+    /**
+     * Set this player's ID to a new value.
+     * @param id - new player ID.
+     */
+    public void setPlayerID(int id) {
+        playerID = id;
+    }
 
     public VGDLSprite copy() {
         MovingAvatar newSprite = new MovingAvatar();

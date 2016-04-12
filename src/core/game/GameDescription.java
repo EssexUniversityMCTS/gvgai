@@ -343,9 +343,9 @@ public class GameDescription {
 		public int limit;
 		
 		/**
-		 * Boolean to differentiate between Winning or Losing Condition
+		 * String containing booleans to differentiate between Winning or Losing Condition
 		 */
-		public boolean[] win;
+		public String win;
 		
 		public TerminationData(){
 			sprites = new ArrayList<String>();
@@ -357,7 +357,8 @@ public class GameDescription {
 		 */
 		@Override
 		public String toString(){
-			String result = win[0]?"Win":"Lose";
+			String[] winners = win.split(",");
+			String result = Boolean.parseBoolean(winners[0])?"Win":"Lose";
 			result += ":" + type + " " + sprites.toString();
 			return result;
 		}

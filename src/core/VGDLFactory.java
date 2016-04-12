@@ -353,8 +353,8 @@ public class VGDLFactory
                             objVal = Double.parseDouble(value);
                         } catch (NumberFormatException e2) {
                             try {
-                                if(value.equalsIgnoreCase("true") ||
-                                   value.equalsIgnoreCase("false")  )
+                                if((value.equalsIgnoreCase("true") ||
+                                   value.equalsIgnoreCase("false") ) && !parameter.equalsIgnoreCase("win"))
                                     objVal = Boolean.parseBoolean(value);
                                 else
                                     objVal = value;
