@@ -253,7 +253,7 @@ public abstract class VGDLSprite {
      * If true, images are loaded (for instance for visualizing a game)
      * <br> If false, images are not loaded (for instance for simulating the effects of actions in decision-making AI)
      */
-    public static boolean loadImages = true;
+    public static boolean thinkingTime = true;
 
     /**
      * Initializes the sprite, giving its position and dimensions.
@@ -378,7 +378,9 @@ public abstract class VGDLSprite {
      * @param is_disabled - disabled state
      */
     public void setDisabled(boolean is_disabled) {
-        System.out.println("disabled"); disabled = is_disabled; }
+        System.out.println("disabled (real game? " + thinkingTime + ")");
+        disabled = is_disabled;
+    }
 
     /**
      * Check if this sprite is disabled.
@@ -689,7 +691,7 @@ public abstract class VGDLSprite {
      */
     public void postProcess()
     {
-    	if(loadImages)
+    	if(thinkingTime)
     	{
     		loadImage(img);
     	}

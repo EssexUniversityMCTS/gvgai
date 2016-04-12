@@ -7,7 +7,6 @@ import core.VGDLSprite;
 import core.competition.CompetitionParameters;
 import core.content.SpriteContent;
 import core.game.Game;
-import core.player.AbstractPlayer;
 import core.player.Player;
 import ontology.Types;
 import tools.*;
@@ -134,9 +133,9 @@ public class MovingAvatar extends VGDLSprite {
         ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
         ect.setMaxTimeMillis(CompetitionParameters.ACTION_TIME);
 
-        VGDLSprite.loadImages = false;	// don't need to load images whilst the agent is thinking
+        VGDLSprite.thinkingTime = false;	// don't need to load images whilst the agent is thinking
         Types.ACTIONS action = this.player.act(game.getObservation(), ect.copy());
-        VGDLSprite.loadImages = true;	// need to load images again for the real game
+        VGDLSprite.thinkingTime = true;	// need to load images again for the real game
 
         if(ect.exceededMaxTime())
         {
