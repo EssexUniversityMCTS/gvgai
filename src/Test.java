@@ -14,6 +14,21 @@ public class Test
 
     public static void main(String[] args)
     {
+    	// useful to wait a little bit so that VisualVM has time to boot up for profiling
+    	boolean delayedStart = true;
+    	if(delayedStart){
+    		long startTime = System.currentTimeMillis();
+    		long timeWaited = System.currentTimeMillis() - startTime;
+    		System.out.println("Waiting to start games...");
+    				
+    		while(timeWaited < 10000){
+    			timeWaited = System.currentTimeMillis() - startTime;
+    		}
+    				
+    		System.out.println("Ready to start games!");
+    		System.out.println();
+    	}
+    	
         //Available controllers:
     	String sampleRandomController = "controllers.sampleRandom.Agent";
     	String doNothingController = "controllers.doNothing.Agent";
