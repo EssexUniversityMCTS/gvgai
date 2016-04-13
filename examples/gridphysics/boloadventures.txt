@@ -20,14 +20,14 @@ BasicGame key_handler=Pulse
 
     LevelMapping
         A > avatar
-        B > box
-        C > boulder
-        L > lcleft
-        R > lcright
-        U > lcup
-        D > lcdown
+        b > box
+        c > boulder
+        l > lcleft
+        r > lcright
+        u > lcup
+        d > lcdown
         0 > hole
-        G > goal
+        g > goal
 
     InteractionSet
 

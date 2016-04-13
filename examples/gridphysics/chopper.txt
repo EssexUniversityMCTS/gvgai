@@ -26,17 +26,17 @@ BasicGame
         bullet > Resource limit=20
     
     LevelMapping
-        S > satellite thermosphere
+        A > avatar stratosphere
+        c > satellite thermosphere
         b > portalBase troposphere
         a > portalAmmo
         t > thermosphere
         s > stratosphere
         p > troposphere
-        A > avatar stratosphere
         l > leftCloud stratosphere
-        L > fastLeftCloud stratosphere
+        d > fastLeftCloud stratosphere
         r > rightCloud stratosphere
-        R > fastRightCloud stratosphere
+        e > fastRightCloud stratosphere
 
     TerminationSet
         SpriteCounter      stype=avatar               limit=0 win=False

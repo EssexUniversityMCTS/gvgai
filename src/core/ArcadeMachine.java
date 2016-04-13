@@ -251,6 +251,9 @@ public class ArcadeMachine
         }
 
         int seed = 0;
+        int winner = 0;
+        double loggedScore = 0.0;
+        int timesteps = 0;
         ArrayList<Types.ACTIONS> actions = new ArrayList<Types.ACTIONS> ();
 
         try
@@ -258,8 +261,14 @@ public class ArcadeMachine
             BufferedReader br = new BufferedReader(new FileReader(actionFile));
 
             //First line should be the sampleRandom seed.
-            seed = Integer.parseInt(br.readLine());
-            System.out.println("Replaying game in " + game_file + ", " + level_file + " with seed " + seed);
+            String[] firstLine = br.readLine().split(" ");
+            seed = Integer.parseInt(firstLine[0]);
+            winner = Integer.parseInt(firstLine[1]);
+            loggedScore = Double.parseDouble(firstLine[2]);
+            timesteps = Integer.parseInt(firstLine[3]);
+            System.out.println("Replaying game in " + game_file + ", " + level_file + " with seed " + seed +
+                               " expecting player to win = " + (winner==1) + "; score: " + loggedScore +
+                               "; timesteps: " + timesteps);
 
             //The rest are the actions:
             String line = br.readLine();
@@ -291,6 +300,10 @@ public class ArcadeMachine
         //Finally, when the game is over, we need to tear the player down. Actually in this case this might never do anything.
         if(! ArcadeMachine.tearPlayerDown(toPlay, player) )
             return toPlay.handleResult();
+
+        int actualWinner = (toPlay.getWinner() == Types.WINNER.PLAYER_WINS ? 1 : 0);
+        if(actualWinner != winner || score != loggedScore || timesteps != toPlay.getGameTick())
+            throw new RuntimeException("ERROR: Game Replay Failed.");
 
         return score;
     }
@@ -871,7 +884,7 @@ public class ArcadeMachine
     private static boolean tearPlayerDown(Game toPlay, AbstractPlayer player)
     {
         //This is finished, no more actions, close the writer.
-        player.teardown();
+        player.teardown(toPlay);
 
         //Determine the time due for the controller close up.
         ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);

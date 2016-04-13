@@ -13,7 +13,7 @@ BasicGame
         monsterSlow > RandomNPC cooldown=8
 
   LevelMapping
-    G > goal
+    g > goal
     + > key        
     A > nokey
     1 > monsterQuick

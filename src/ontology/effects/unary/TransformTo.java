@@ -76,7 +76,6 @@ public class TransformTo extends Effect {
                 try{
                     game.setAvatar((MovingAvatar) newSprite);
                     game.getAvatar().player = ((MovingAvatar) sprite1).player;
-                    game.getAvatar().lastAction = ((MovingAvatar) sprite1).lastAction;
                 }catch (ClassCastException e) {}
             }
 

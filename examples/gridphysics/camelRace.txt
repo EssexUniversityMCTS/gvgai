@@ -23,11 +23,11 @@ BasicGame
         camel wall  > stepBack
 
     LevelMapping
-        G > goal
-        R > randomCamel
-        F > fastR
-        M > mediumR
-        S > slowR
+        g > goal
+        r > randomCamel
+        h > fastR
+        n > mediumR
+        t > slowR
         f > fastL
         m > mediumL
         s > slowL

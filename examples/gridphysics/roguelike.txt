@@ -43,11 +43,11 @@ BasicGame square_size=25
         SpriteCounter stype=exit limit=0 win=True
 
     LevelMapping
-        X > exit
+        x > exit
         s > weapon
         g > gold
-        S > spider
-        P > phantom
+        r > spider
+        p > phantom
         h > health
         k > key
         l > lock

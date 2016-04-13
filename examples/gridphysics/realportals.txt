@@ -26,14 +26,14 @@ BasicGame key_handler=Pulse
 
 
     LevelMapping
-        G > goal
+        g > goal
         . > water
         A > avatarIn weapon
         t > weaponToggle1
-        T > weaponToggle2
+        p > weaponToggle2
         k > key
         l > lock
-        O > boulder
+        o > boulder
 
     TerminationSet
         SpriteCounter stype=goal   limit=0 win=True

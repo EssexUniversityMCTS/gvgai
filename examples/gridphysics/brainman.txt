@@ -14,9 +14,9 @@ BasicGame
         boulder > Passive img=boulder 
     LevelMapping
         A > avatar
-        K > key
-        D > door
-        E > exit
+        k > key
+        d > door
+        e > exit
         g > green
         r > red
         b > blue 

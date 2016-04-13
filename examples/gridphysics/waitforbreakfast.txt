@@ -2,8 +2,8 @@ BasicGame
   SpriteSet
     exit > Immovable color=DARKBLUE img=portal portal=True
     wall > Immovable color=BLACK img=wall
-    othertable > color=DARKBLUE img=tableempty
-    table > color=DARKBLUE
+    othertable > Immovable color=DARKBLUE img=tableempty
+    table > Immovable color=DARKBLUE
       emptytable > img=tableempty
       tablewb > img=tablebacon
       endtable > img=tableused
@@ -21,12 +21,12 @@ BasicGame
 
   LevelMapping
     . > ground
-    T > emptytable
-    K > kitchen
-    C > chair
+    t > emptytable
+    k > kitchen
+    r > chair
     c > singlechair
-    E > exit
-    O > othertable
+    e > exit
+    o > othertable
     A > standingavatar ground
 
   InteractionSet

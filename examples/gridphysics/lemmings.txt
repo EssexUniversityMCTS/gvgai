@@ -11,8 +11,8 @@ BasicGame
             lemming > Chaser stype=exit cooldown=5 color=RED img=alien.png shrinkfactor=0.75
 
     LevelMapping
-        X > exit
-        E > entrance
+        x > exit
+        e > entrance
         h > hole
 
     TerminationSet
@@ -20,7 +20,6 @@ BasicGame
         MultiSpriteCounter stype1=entrance stype2=lemming limit=0 win=True
 
     InteractionSet
-        boulder wall > stepBack
         avatar hole  > killSprite scoreChange=-5
         lemming hole  > killSprite scoreChange=-2
         moving wall EOS > stepBack

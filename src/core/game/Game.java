@@ -215,11 +215,6 @@ public abstract class Game
     protected Types.WINNER winner = Types.WINNER.NO_WINNER;
 
     /**
-     * Default frame rate of the basic game.
-     */
-    protected int frame_rate;
-
-    /**
      * State observation for this game.
      */
     protected ForwardModel fwdModel;
@@ -1466,6 +1461,14 @@ public abstract class Game
 
 
     public void _updateCollisionDict(VGDLSprite sprite) {}
+
+    /**
+     * Returns the game score.
+     */
+    public double getScore()
+    {
+        return score;
+    }
 
     /**
      * Reverses the direction of a given sprite.

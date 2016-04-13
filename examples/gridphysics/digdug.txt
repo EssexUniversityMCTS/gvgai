@@ -16,8 +16,8 @@ BasicGame square_size=30
     LevelMapping
         0 > gem
         1 > gold
-        E > entrance
-        M > monster
+        e > entrance
+        m > monster
 
     TerminationSet
         SpriteCounter  stype=avatar  limit=0 win=False
@@ -28,7 +28,7 @@ BasicGame square_size=30
         gold shovel boulder > transformTo stype=falling
         gem  avatar  > killSprite scoreChange=1
 
-        boulder wall > transformToAll stype=boulder stype2=resting
+        boulder wall > transformToAll stype=boulder stypeTo=resting
         resting wall > stepBack
         avatar gold  > stepBack
         avatar monster  > killSprite scoreChange=-1
