@@ -204,11 +204,6 @@ public abstract class Game
     protected boolean isEnded;
 
     /**
-     * Default frame rate of the basic game.
-     */
-    protected int frame_rate;
-
-    /**
      * State observation for this game.
      */
     protected ForwardModel fwdModel;

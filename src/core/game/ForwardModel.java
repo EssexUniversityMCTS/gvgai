@@ -453,7 +453,6 @@ public class ForwardModel extends Game
         this.screenSize = a_gameState.screenSize;
         this.size = a_gameState.size;
         this.block_size = a_gameState.block_size;
-        this.frame_rate = a_gameState.frame_rate; //is this needed?
         this.MAX_SPRITES = a_gameState.MAX_SPRITES;
         this.avatarLastAction = a_gameState.avatarLastAction;
         this.no_players = a_gameState.no_players;
