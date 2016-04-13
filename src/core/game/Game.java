@@ -969,32 +969,16 @@ public abstract class Game
      */
     public double[] handleResult()
     {
-        /**
-         * Single player
-         */
-
-        //If the player got disqualified, set it here.
-        if(disqualified){
-            avatars[0].setWinState(Types.WINNER.PLAYER_DISQ);
-            avatars[0].setScore(Types.SCORE_DISQ);
-        }
-
-        //For sanity: winning a game always gives a positive score
-        if(avatars[0].getWinState() == Types.WINNER.PLAYER_WINS)
-            if(avatars[0].getScore() <= 0) avatars[0].setScore(1);
-
-        /**
-         * Multi player
-         */
-
         // check all players disqualified and set scores
-        for (int i=0; i< avatars.length; i++) {
+        for (int i=0; i < avatars.length; i++) {
             if (avatars[i].is_disqualified()) {
                 avatars[i].setWinState(Types.WINNER.PLAYER_DISQ);
                 avatars[i].setScore(Types.SCORE_DISQ);
             }
-            else if(avatars[0].getWinState() == Types.WINNER.PLAYER_WINS)
-                if(avatars[0].getScore() <= 0) avatars[0].setScore(1);
+
+            //For sanity: winning a game always gives a positive score
+            else if(avatars[i].getWinState() == Types.WINNER.PLAYER_WINS)
+                if(avatars[i].getScore() <= 0) avatars[i].setScore(1);
         }
 
         //Prints the result: score, time and winner.
