@@ -1,0 +1,10 @@
+BEFORE OPTIMIZING
+-------------------------------------------------
+
+5 runs on first level of Missile Command:
+
+Average num MCTS iterations = 46.779661016949156
+Average num MCTS iterations = 74.71904761904761
+Average num MCTS iterations = 62.306306306306304
+Average num MCTS iterations = 82.73333333333333
+Average num MCTS iterations = 67.21621621621621
