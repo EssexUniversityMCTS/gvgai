@@ -264,7 +264,7 @@ public abstract class Game
      */
     protected Types.ACTIONS[] avatarLastAction;
 
-    protected int no_players = 1; //default to single player
+    public int no_players = 1; //default to single player
 
     /**
      * Default constructor.
