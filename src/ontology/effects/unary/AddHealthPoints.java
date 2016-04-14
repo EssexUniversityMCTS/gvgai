@@ -33,7 +33,8 @@ public class AddHealthPoints extends Effect
                 sprite1.maxHealthPoints = sprite1.healthPoints;
 
             if(killSecond && sprite2 != null)
-                game.killSprite(sprite2);
+                //boolean variable set to false to indicate the sprite was not transformed
+                game.killSprite(sprite2, false);
         }
     }
 }

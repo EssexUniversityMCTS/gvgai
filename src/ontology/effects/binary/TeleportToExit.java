@@ -43,7 +43,8 @@ public class TeleportToExit extends Effect
             }
         }else{
             //If there is no exit... kill the sprite
-            game.killSprite(sprite1);
+            //boolean variable set to false to indicate the sprite was not transformed
+            game.killSprite(sprite1, false);
         }
     }
 }

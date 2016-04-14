@@ -48,7 +48,8 @@ public class Flicker extends VGDLSprite
         super.update(game);
 
         if(age > limit)
-            game.killSprite(this);
+            //boolean variable set to false to indicate the sprite was not transformed
+            game.killSprite(this, false);
         age++;
 
     }

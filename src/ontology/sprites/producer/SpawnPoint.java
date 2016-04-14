@@ -81,7 +81,8 @@ public class SpawnPoint extends SpriteProducer
 
         if(total > 0 && counter >= total)
         {
-            game.killSprite(this);
+            //boolean variable set to false to indicate the sprite was not transformed
+            game.killSprite(this, false);
         }
     }
 

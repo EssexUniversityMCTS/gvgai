@@ -12,6 +12,7 @@ import core.game.Game;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.Effect;
+import tools.KeyHandler;
 
 /**
  * Created with IntelliJ IDEA.
@@ -74,18 +75,23 @@ public class TransformTo extends Effect {
             if(sprite1.is_avatar)
             {
                 try{
+                    KeyHandler k = game.getAvatar().getKeyHandler();
                     game.setAvatar((MovingAvatar) newSprite);
                     game.getAvatar().player = ((MovingAvatar) sprite1).player;
+                    game.getAvatar().setKeyHandler(k);
+                    System.out.println(game.getAvatar().getPlayerID());
                 }catch (ClassCastException e) {}
             }
 
             //Health points should be copied too.
             newSprite.healthPoints = sprite1.healthPoints;
 
-            game.killSprite(sprite1);
+            //boolean variable in method call set to true
+            //to indicate the sprite was transformed
+            game.killSprite(sprite1, true);
 
             if(killSecond && sprite2 != null)
-                game.killSprite(sprite2);
+                game.killSprite(sprite2, true);
         }
     }
 

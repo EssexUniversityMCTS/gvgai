@@ -12,6 +12,7 @@ import core.content.InteractionContent;
 import core.game.Game;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.Effect;
+import tools.KeyHandler;
 import tools.Vector2d;
 
 /**
@@ -102,12 +103,15 @@ public class TransformToSingleton extends Effect {
         if(oldSprite.is_avatar)
         {
             try{
+                KeyHandler k = game.getAvatar().getKeyHandler();
                 game.setAvatar((MovingAvatar) newSprite);
                 game.getAvatar().player = ((MovingAvatar) oldSprite).player;
+                game.getAvatar().setKeyHandler(k);
             }catch (ClassCastException e) {}
         }
 
-        game.killSprite(oldSprite);
+        //boolean variable set to true to indicate the sprite was transformed
+        game.killSprite(oldSprite, true);
     }
     
     @Override

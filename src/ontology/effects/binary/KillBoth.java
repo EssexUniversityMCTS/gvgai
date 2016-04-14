@@ -22,7 +22,9 @@ public class KillBoth extends Effect {
 
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game) {
-        game.killSprite(sprite1);
-        game.killSprite(sprite2);
+
+        //boolean variable set to false to indicate the sprite was not transformed
+        game.killSprite(sprite1, false);
+        game.killSprite(sprite2, false);
     }
 }

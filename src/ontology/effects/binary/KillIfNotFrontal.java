@@ -38,7 +38,8 @@ public class KillIfNotFrontal extends Effect
 
         if( firstDir.equals(Types.NONE) || !(sumDir.equals(Types.NONE)))
         {
-            game.killSprite(sprite1);
+            //boolean variable set to false to indicate the sprite was not transformed
+            game.killSprite(sprite1, false);
         }
 
     }

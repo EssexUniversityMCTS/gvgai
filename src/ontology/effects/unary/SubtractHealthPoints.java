@@ -32,7 +32,8 @@ public class SubtractHealthPoints extends Effect
         sprite1.healthPoints -= value;
         if(sprite1.healthPoints <= limit)
         {
-            game.killSprite(sprite1);
+            //boolean variable set to false to indicate the sprite was not transformed
+            game.killSprite(sprite1, false);
         }
     }
 }

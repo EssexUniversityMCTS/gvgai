@@ -33,8 +33,9 @@ public class KillIfHasMore extends Effect
         applyScore = false;
         if(sprite1.getAmountResource(resourceId) >= limit)
         {
+            //boolean variable set to false to indicate the sprite was not transformed
             applyScore = true;
-            game.killSprite(sprite1);
+            game.killSprite(sprite1, false);
         }
     }
 }

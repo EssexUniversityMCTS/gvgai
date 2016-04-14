@@ -1594,10 +1594,12 @@ public abstract class Game
     /**
      * Kills a given sprite, adding it to the list of sprites killed at this step.
      * @param sprite the sprite to kill.
+     * @param transformed - indicates if the sprite was transformed (necessary to kill
+     *                    sprite even if avatar, instead of disabling it).
      */
-    public void killSprite(VGDLSprite sprite)
+    public void killSprite(VGDLSprite sprite, boolean transformed)
     {
-        if (sprite instanceof MovingAvatar) { //if avatar, just disable
+        if (sprite instanceof MovingAvatar && !transformed) { //if avatar, just disable
             sprite.setDisabled(true);
         } else {
             kill_list.add(sprite);
