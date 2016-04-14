@@ -1,5 +1,7 @@
 package tools;
 
+import ontology.Types;
+
 /**
  * This class represents a vector, or a position, in the map.
  * PTSP-Competition
@@ -65,6 +67,19 @@ public class Vector2d
      * @return a copy of this vector
      */
     public Vector2d copy() {
+    	if(this == Types.NIL 	||
+    		this == Types.NONE 	||
+    		this == Types.RIGHT	||
+    		this == Types.LEFT	||
+    		this == Types.UP	||
+    		this == Types.DOWN		)
+    	{
+    		// there are some == comparisons (as opposed to .equals() comparisons) throughout
+    		// the framework, so to make sure such comparisons remain valid when copying vectors
+    		// we have this case here
+    		return this;
+    	}
+        
         return new Vector2d(x,y);
     }
 

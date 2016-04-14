@@ -65,6 +65,12 @@ public abstract class Game
      * Content encloses information about the class of the object and its parameters.
      */
     protected Content[] classConst;
+    
+    /**
+     * List of sprite templates, one for each object in the above
+     * ''classConst'' array. 
+     */
+    protected VGDLSprite[] templateSprites;
 
     /**
      * Groups of sprites in the level. Each element of the array is a
@@ -345,6 +351,7 @@ public abstract class Game
 
         //Constructors, as many as number of sprite types, so they are accessed by its id:
         classConst = new Content[VGDLRegistry.GetInstance().numSpriteTypes()];
+        templateSprites = new VGDLSprite[classConst.length];
 
         //By default, we have 2 constructors:
         Content wallConst = new SpriteContent("wall", "Immovable");
@@ -1447,11 +1454,23 @@ public abstract class Game
         //Only create the sprite if there is not any other sprite that blocks it.
         if(!anyother)
         {
-            VGDLSprite newSprite = VGDLFactory.GetInstance().createSprite(
-                    content , position, new Dimension(block_size, block_size));
+        	VGDLSprite newSprite;
+        	
+        	if(templateSprites[itype] == null)	// don't have a template yet, so need to create one
+        	{
+        		newSprite = VGDLFactory.GetInstance().createSprite(
+                        content , position, new Dimension(block_size, block_size));
+        		
+        		//Assign its types and add it to the collection of sprites.
+                newSprite.itypes = (ArrayList<Integer>) content.itypes.clone();
+                templateSprites[itype] = newSprite.copy();
+        	}
+        	else	// simply copy the previously created template sprite
+        	{
+        		newSprite = templateSprites[itype].copy();
+        		newSprite.setRect(position, new Dimension(block_size, block_size));
+        	}
 
-            //Assign its types and add it to the collection of sprites.
-            newSprite.itypes = (ArrayList<Integer>) content.itypes.clone();
             this.addSprite(newSprite, itype);
             return newSprite;
         }
