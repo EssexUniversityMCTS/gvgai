@@ -15,7 +15,7 @@ public class Test
     public static void main(String[] args)
     {
     	// useful to wait a little bit so that VisualVM has time to boot up for profiling
-    	boolean delayedStart = true;
+    	boolean delayedStart = false;
     	if(delayedStart){
     		long startTime = System.currentTimeMillis();
     		long timeWaited = System.currentTimeMillis() - startTime;
@@ -70,7 +70,7 @@ public class Test
         int seed = new Random().nextInt();
 
         //Game and level to play
-        int gameIdx = 36;
+        int gameIdx = 0;
         int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
