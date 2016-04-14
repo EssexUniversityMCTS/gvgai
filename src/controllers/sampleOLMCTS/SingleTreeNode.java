@@ -2,10 +2,10 @@ package controllers.sampleOLMCTS;
 
 import java.util.Random;
 
+import core.game.StateObservation;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
 import tools.Utils;
-import core.game.StateObservation;
 
 public class SingleTreeNode
 {
@@ -48,7 +48,7 @@ public class SingleTreeNode
         long remaining = elapsedTimer.remainingTimeMillis();
         int numIters = 0;
 
-        int remainingLimit = 10;
+        int remainingLimit = 5;
         while(remaining > 2*avgTimeTaken && remaining > remainingLimit){
         //while(numIters < Agent.MCTS_ITERATIONS){
 
@@ -58,8 +58,6 @@ public class SingleTreeNode
             SingleTreeNode selected = treePolicy(state);
             double delta = selected.rollOut(state);
             backUp(selected, delta);
-            
-            ++Agent.NUM_ITERATIONS;
 
             numIters++;
             acumTimeTaken += (elapsedTimerIteration.elapsedMillis()) ;

@@ -14,21 +14,6 @@ public class Test
 
     public static void main(String[] args)
     {
-    	// useful to wait a little bit so that VisualVM has time to boot up for profiling
-    	boolean delayedStart = false;
-    	if(delayedStart){
-    		long startTime = System.currentTimeMillis();
-    		long timeWaited = System.currentTimeMillis() - startTime;
-    		System.out.println("Waiting to start games...");
-    				
-    		while(timeWaited < 10000){
-    			timeWaited = System.currentTimeMillis() - startTime;
-    		}
-    				
-    		System.out.println("Ready to start games!");
-    		System.out.println();
-    	}
-    	
         //Available controllers:
     	String sampleRandomController = "controllers.sampleRandom.Agent";
     	String doNothingController = "controllers.doNothing.Agent";
@@ -79,10 +64,10 @@ public class Test
         String recordActionsFile = null;//"actions_" + games[gameIdx] + "_lvl" + levelIdx + "_" + seed + ".txt"; //where to record the actions executed. null if not to save.
 
         // 1. This starts a game, in a level, played by a human.
-        //ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
+        ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
         
         // 2. This plays a game in a level by the controller.
-        ArcadeMachine.runOneGame(game, level1, visuals, sampleOLMCTSController, recordActionsFile, seed, false);
+        //ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed, false);
 
         // 3. This replays a game from an action file previously recorded
         //String readActionsFile = recordActionsFile;
