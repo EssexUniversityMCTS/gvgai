@@ -1,10 +1,6 @@
 package core;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -12,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import com.sun.deploy.panel.AbstractRadioPropertyGroup;
 import core.competition.CompetitionParameters;
 import core.game.Game;
 import core.game.GameDescription;
@@ -461,9 +456,9 @@ public class ArcadeMachine
 
         Game toPlay = new VGDLParser().parseGame(game_file);
         int levelIdx = 0;
+
         for(String level_file : level_files)
         {
-
             for(int i = 0; i < level_times; ++i)
             {
                 System.out.println(" ** Playing game " + game_file + ", level " + level_file + " ("+(i+1)+"/"+level_times+") **");

@@ -72,6 +72,7 @@ public class TransformTo extends Effect {
 
 
             //Avatar handling.
+            boolean transformed = true;
             if(sprite1.is_avatar)
             {
                 try{
@@ -79,8 +80,10 @@ public class TransformTo extends Effect {
                     game.setAvatar((MovingAvatar) newSprite);
                     game.getAvatar().player = ((MovingAvatar) sprite1).player;
                     game.getAvatar().setKeyHandler(k);
-                    System.out.println(game.getAvatar().getPlayerID());
-                }catch (ClassCastException e) {}
+                    transformed = true;
+                }catch (ClassCastException e) {
+                    transformed = false; // new sprite is not an avatar, don't kill the current one
+                }
             }
 
             //Health points should be copied too.
@@ -88,7 +91,7 @@ public class TransformTo extends Effect {
 
             //boolean variable in method call set to true
             //to indicate the sprite was transformed
-            game.killSprite(sprite1, true);
+            game.killSprite(sprite1, transformed);
 
             if(killSecond && sprite2 != null)
                 game.killSprite(sprite2, true);

@@ -40,8 +40,8 @@ public class MultiSpriteCounter extends Termination
 
          int countAcum = 0;
 
-        if(itype1 != -1) countAcum += game.getNumSprites(itype1);
-        if(itype2 != -1) countAcum += game.getNumSprites(itype2);
+        if(itype1 != -1) countAcum += game.getNumSprites(itype1) - game.getNumDisabledSprites(itype1);
+        if(itype2 != -1) countAcum += game.getNumSprites(itype2) - game.getNumDisabledSprites(itype2);
 
         if(countAcum == limit)
             return true;

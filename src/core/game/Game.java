@@ -1115,7 +1115,7 @@ public abstract class Game
             if (avatars[i] != null && !avatars[i].is_disabled()) {
                 avatars[i].preMovement();
                 avatars[i].update(this);
-            } else {
+            } else if (avatars[i] == null) {
                 System.out.println(gameTick + ": Something went wrong, no avatar, ID = " + i);
             }
         }

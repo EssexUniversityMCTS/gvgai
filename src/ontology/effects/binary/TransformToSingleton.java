@@ -100,6 +100,7 @@ public class TransformToSingleton extends Effect {
 
 
         //Avatar handling (I think considering avatars here is weird...)
+        boolean transformed = true;
         if(oldSprite.is_avatar)
         {
             try{
@@ -107,11 +108,14 @@ public class TransformToSingleton extends Effect {
                 game.setAvatar((MovingAvatar) newSprite);
                 game.getAvatar().player = ((MovingAvatar) oldSprite).player;
                 game.getAvatar().setKeyHandler(k);
-            }catch (ClassCastException e) {}
+                transformed = true;
+            } catch (ClassCastException e) {
+                transformed = false; // new sprite is not an avatar, don't kill the current one}
+            }
         }
 
         //boolean variable set to true to indicate the sprite was transformed
-        game.killSprite(oldSprite, true);
+        game.killSprite(oldSprite, transformed);
     }
     
     @Override

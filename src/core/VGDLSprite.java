@@ -378,7 +378,7 @@ public abstract class VGDLSprite {
      * @param is_disabled - disabled state
      */
     public void setDisabled(boolean is_disabled) {
-        System.out.println("disabled (real game? " + thinkingTime + ")");
+        //System.out.println("disabled (real game? " + thinkingTime + ")"); //use for debugging
         disabled = is_disabled;
     }
 
