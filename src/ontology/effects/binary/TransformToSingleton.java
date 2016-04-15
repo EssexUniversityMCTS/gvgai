@@ -10,6 +10,7 @@ import core.VGDLRegistry;
 import core.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.player.Player;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.Effect;
 import tools.KeyHandler;
@@ -105,8 +106,9 @@ public class TransformToSingleton extends Effect {
         {
             try{
                 KeyHandler k = game.getAvatar().getKeyHandler();
+                Player p = game.getAvatar().player;
                 game.setAvatar((MovingAvatar) newSprite);
-                game.getAvatar().player = ((MovingAvatar) oldSprite).player;
+                game.getAvatar().player = p;
                 game.getAvatar().setKeyHandler(k);
                 transformed = true;
             } catch (ClassCastException e) {

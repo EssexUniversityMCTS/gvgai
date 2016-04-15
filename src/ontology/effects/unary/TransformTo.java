@@ -9,6 +9,7 @@ import core.VGDLRegistry;
 import core.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.player.Player;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.Effect;
@@ -77,8 +78,9 @@ public class TransformTo extends Effect {
             {
                 try{
                     KeyHandler k = game.getAvatar().getKeyHandler();
+                    Player p = game.getAvatar().player;
                     game.setAvatar((MovingAvatar) newSprite);
-                    game.getAvatar().player = ((MovingAvatar) sprite1).player;
+                    game.getAvatar().player = p;
                     game.getAvatar().setKeyHandler(k);
                     transformed = true;
                 }catch (ClassCastException e) {
