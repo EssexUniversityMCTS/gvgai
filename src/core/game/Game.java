@@ -1219,8 +1219,8 @@ public abstract class Game
                 }
 
                 //Take the collections of sprites, one for each type, of the two sprite types of this effect.
-                TreeMap<Integer, ArrayList<VGDLSprite>> first = bucketList[p.first].getSpriteList();
-                TreeMap<Integer, ArrayList<VGDLSprite>> second = bucketList[p.second].getSpriteList();
+                HashMap<Integer, ArrayList<VGDLSprite>> first = bucketList[p.first].getSpriteList();
+                HashMap<Integer, ArrayList<VGDLSprite>> second = bucketList[p.second].getSpriteList();
 
                 if(first.size() == 0 || second.size() == 0)
                     break;
@@ -1740,13 +1740,13 @@ public abstract class Game
     protected class Bucket
     {
         ArrayList<VGDLSprite> allSprites;
-        TreeMap<Integer, ArrayList<VGDLSprite>> spriteLists;
+        HashMap<Integer, ArrayList<VGDLSprite>> spriteLists;
         int totalNumSprites;
 
         public Bucket()
         {
             allSprites = new ArrayList<VGDLSprite>();
-            spriteLists = new TreeMap<Integer, ArrayList<VGDLSprite>>();
+            spriteLists = new HashMap<Integer, ArrayList<VGDLSprite>>();
             totalNumSprites = 0;
         }
 
@@ -1789,7 +1789,7 @@ public abstract class Game
             return allSprites;
         }
 
-        public TreeMap<Integer, ArrayList<VGDLSprite>> getSpriteList()
+        public HashMap<Integer, ArrayList<VGDLSprite>> getSpriteList()
         {
             return spriteLists;
         }
