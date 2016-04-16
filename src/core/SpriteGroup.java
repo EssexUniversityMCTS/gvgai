@@ -1,5 +1,6 @@
 package core;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,7 +22,8 @@ public class SpriteGroup
      * Collection of sprites. They are maintained in a ConcurrentHashMap, where the key is the
      * unique identifier for the given sprite (in the whole game).
      */
-    private ConcurrentHashMap<Integer, VGDLSprite> sprites;
+    //private ConcurrentHashMap<Integer, VGDLSprite> sprites;
+    private ArrayList<VGDLSprite> sprites;
 
     /**
      * Creates a new SpriteGroup, specifying the type of sprites this will hold.
@@ -30,7 +32,7 @@ public class SpriteGroup
     public SpriteGroup(int itype)
     {
         this.itype = itype;
-        sprites = new ConcurrentHashMap<Integer, VGDLSprite>(100);
+        sprites = new ArrayList<VGDLSprite>(100);
     }
 
     /**
@@ -40,7 +42,7 @@ public class SpriteGroup
      */
     public void addSprite(int spriteId, VGDLSprite sprite)
     {
-        sprites.put(spriteId, sprite);
+        sprites.add(sprite);
     }
 
 
@@ -51,7 +53,7 @@ public class SpriteGroup
     public void addAllSprites(Collection<VGDLSprite> spritesToAdd)
     {
         for(VGDLSprite sp : spritesToAdd)
-            sprites.put(sp.spriteID, sp);
+            sprites.add(sp);
     }
 
 
@@ -63,14 +65,14 @@ public class SpriteGroup
     public void copyAllSprites(Collection<VGDLSprite> spritesToCopy)
     {
         for(VGDLSprite sp : spritesToCopy)
-            sprites.put(sp.spriteID, sp.copy());
+            sprites.add(sp.copy());
     }
 
      /**
      * Gets the collection of sprites, as a ConcurrentHashMap [KEY => VALUE].
      * @return the TreeMap with the Sprites.
      */
-    public ConcurrentHashMap<Integer, VGDLSprite> getSprites()
+    public ArrayList<VGDLSprite> getSprites()
     {
         return sprites;
     }
@@ -80,14 +82,14 @@ public class SpriteGroup
      * the collection of sprites is empty.
      * @return the list of the sprite keys in this collection in an array.
      */
-    public Integer[] getKeys()
-    {
-        int nSprites = sprites.size();
-        if(nSprites == 0)
-            return null;
-        Integer[] keys = new Integer[nSprites];
-        return sprites.keySet().toArray(keys);
-    }
+//    public Integer[] getKeys()
+//    {
+//        int nSprites = sprites.size();
+//        if(nSprites == 0)
+//            return null;
+//        Integer[] keys = new Integer[nSprites];
+//        return sprites.keySet().toArray(keys);
+//    }
 
     /**
      * Gets an ordered iterator through all sprites. It will return null if
@@ -98,16 +100,16 @@ public class SpriteGroup
     {
         if(numSprites() == 0)
             return null;
-        return sprites.values().iterator();
+        return sprites.iterator();
     }
 
     /**
-     * Removes an sprite indicated with its ID.
-     * @param spriteId the id of the sprite to remove.
+     * Removes an sprite.
+     * @param sprite the sprite to remove.
      */
-    public void removeSprite(int spriteId)
+    public void removeSprite(VGDLSprite sprite)
     {
-        sprites.remove(spriteId);
+        sprites.remove(sprite);
     }
 
     /**
@@ -155,6 +157,6 @@ public class SpriteGroup
     {
         if(numSprites() == 0)
             return null;
-        return (VGDLSprite) sprites.values().toArray()[0]; //  firstEntry().getValue();
+        return sprites.get(0); //sprites.values().toArray()[0]; //  firstEntry().getValue();
     }
 }

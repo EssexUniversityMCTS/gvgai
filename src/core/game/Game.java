@@ -1045,11 +1045,10 @@ public abstract class Game
         for(int i = spriteOrderCount-1; i >= 0 ; --i)
         {
             int spriteTypeInt = spriteOrder[i];
-            Integer[] keys = spriteGroups[spriteTypeInt].getKeys();
-
-            if(keys!=null) for(Integer spriteKey : keys)
+            ArrayList<VGDLSprite> spritesList = spriteGroups[spriteTypeInt].getSprites();
+            if(spritesList != null) for(VGDLSprite sp : spritesList)
             {
-                VGDLSprite sp = spriteGroups[spriteTypeInt].getSprite(spriteKey);
+                // if(!(sp instanceof MovingAvatar) && !sp.is_disabled()) [CORRECT LINE FOR MERGING WITH 2-PLAYERS]
                 if(sp != avatar)
                 {
                     sp.preMovement();
@@ -1057,6 +1056,7 @@ public abstract class Game
                 }
 
             }
+
         }
 
     }
@@ -1093,7 +1093,7 @@ public abstract class Game
                     for (Integer itype : allTypes) {
                         //Add all sprites of this subtype to the list of sprites.
                         //This are sprites that could potentially collide with EOS
-                        Collection<VGDLSprite> sprites = this.getSprites(itype).values();
+                        Collection<VGDLSprite> sprites = this.getSprites(itype);
                         for (VGDLSprite sp : sprites) {
                             //bucketList[intId].insert(sp);
                             bucketList[intId].add(sp);
@@ -1142,7 +1142,7 @@ public abstract class Game
                     {
                         //Add all sprites of this subtype to the list of sprites.
                         //This are sprites that could potentially collide with EOS
-                        Collection<VGDLSprite> sprites = this.getSprites(itype).values();
+                        Collection<VGDLSprite> sprites = this.getSprites(itype);
                         for(VGDLSprite sp : sprites)
                         {
                             //bucketList[intId].insert(sp);
@@ -1205,7 +1205,7 @@ public abstract class Game
                         for(Integer itype : allTypes)
                         {
                             //Add all sprites of this subtype to the list of sprites
-                            Collection<VGDLSprite> sprites = this.getSprites(itype).values();
+                            Collection<VGDLSprite> sprites = this.getSprites(itype);
                             for(VGDLSprite sp : sprites)
                             {
                                 bucketList[intId].add(sp);
@@ -1351,7 +1351,7 @@ public abstract class Game
         for(VGDLSprite sprite : kill_list)
         {
             int spriteType = sprite.getType();
-            this.spriteGroups[spriteType].removeSprite(sprite.spriteID);
+            this.spriteGroups[spriteType].removeSprite(sprite);
             if(fm != null) {
                 fm.removeSpriteObservation(sprite);
             }
@@ -1511,10 +1511,10 @@ public abstract class Game
         ArrayList<Integer> allTypes = iSubTypes[spriteItype];
 
         //Add sprites of this type, and all subtypes.
-        allSprites.addAllSprites(this.getSprites(spriteItype).values());
+        allSprites.addAllSprites(this.getSprites(spriteItype));
         for(Integer itype : allTypes)
         {
-            allSprites.addAllSprites(this.getSprites(itype).values());
+            allSprites.addAllSprites(this.getSprites(itype));
         }
 
         //Return the iterator.
@@ -1526,7 +1526,7 @@ public abstract class Game
      * @param spriteItype type of the sprite to retrieve.
      * @return sprite collection of the specified type.
      */
-    public ConcurrentHashMap<Integer, VGDLSprite> getSprites(int spriteItype)
+    public ArrayList<VGDLSprite> getSprites(int spriteItype)
     {
         return spriteGroups[spriteItype].getSprites();
     }

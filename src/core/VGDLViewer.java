@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -79,13 +80,20 @@ public class VGDLViewer extends JComponent
         if(this.spriteGroups != null) for(Integer spriteTypeInt : gameSpriteOrder)
         {
             if(spriteGroups[spriteTypeInt] != null) {
-                ConcurrentHashMap<Integer, VGDLSprite> cMap =spriteGroups[spriteTypeInt].getSprites();
-                Set<Integer> s = cMap.keySet();
-                for (Integer key : s) {
-                    VGDLSprite sp = cMap.get(key);
-                    if (sp != null)
-                        sp.draw(g, game);
+//                ConcurrentHashMap<Integer, VGDLSprite> cMap =spriteGroups[spriteTypeInt].getSprites();
+//                Set<Integer> s = cMap.keySet();
+//                for (Integer key : s) {
+//                    VGDLSprite sp = cMap.get(key);
+//                    if (sp != null)
+//                        sp.draw(g, game);
+//                }
+
+                ArrayList<VGDLSprite> spritesList = spriteGroups[spriteTypeInt].getSprites();
+                for(VGDLSprite sp : spritesList)
+                {
+                    if(sp != null) sp.draw(g,game);
                 }
+
             }
         }
 
@@ -106,7 +114,7 @@ public class VGDLViewer extends JComponent
         for(int i = 0; i < this.spriteGroups.length; ++i)
         {
             this.spriteGroups[i] = new SpriteGroup(spriteGroupsGame[i].getItype());
-            this.spriteGroups[i].copyAllSprites(spriteGroupsGame[i].getSprites().values());
+            this.spriteGroups[i].copyAllSprites(spriteGroupsGame[i].getSprites());
         }
 
         this.repaint();

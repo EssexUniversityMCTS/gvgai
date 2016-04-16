@@ -883,41 +883,6 @@ public class ForwardModel extends Game
         return getPositionsFrom(fromAvatar, refPosition);
     }
 
-    /**
-     * Checks if the observations of both models are the same.
-     * DEBUG ONLY METHOD.
-     * @param other the forward model to compare to.
-     * @return true if everything is the same.
-     */
-    public boolean equalObservations(ForwardModel other)
-    {
-        for(int i = 0; i < spriteGroups.length; ++i)
-        {
-            ConcurrentHashMap<Integer, VGDLSprite> thisSpriteMap = this.spriteGroups[i].getSprites();
-            ConcurrentHashMap<Integer, VGDLSprite> otherSpriteMap = other.spriteGroups[i].getSprites();
-            if(thisSpriteMap.size() != otherSpriteMap.size())
-            {
-                if(thisSpriteMap.size() > 25 && otherSpriteMap.size() > 25)
-                {
-                    //For reasons I don't fully understand (balancing?), ConcurrentHashMap returns the keySet
-                    // in different order some times when there are many elements. This makes the update happen
-                    // in a different order and therefore (in stochastic environments) things change. If this
-                    // happens, we ignore this case (this scenario has only been seen in Firestorms so far).
-                    return true;
-                }
-                return false;
-            }
-
-            Set<Integer> allOtherSpriteKeys = otherSpriteMap.keySet();
-            for(Integer key : allOtherSpriteKeys)
-            {
-                VGDLSprite sp = thisSpriteMap.get(key);
-                if(!otherSpriteMap.get(key).equiv(sp))
-                    return false;
-            }
-        }
-        return true;
-    }
 
     //Must override this:
 	@Override

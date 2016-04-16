@@ -23,7 +23,6 @@ public class Test
         String sampleFlatMCTSController = "controllers.sampleFlatMCTS.Agent";
         String sampleOLMCTSController = "controllers.sampleOLMCTS.Agent";
         String sampleGAController = "controllers.sampleGA.Agent";
-        String tester = "controllers.Tester.Agent";
         String repeatOLETS = "controllers.repeatOLETS.Agent";
 
         //Available Generators
@@ -56,7 +55,7 @@ public class Test
         int seed = new Random().nextInt();
 
         //Game and level to play
-        int gameIdx = 0;
+        int gameIdx = 52;
         int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
@@ -90,20 +89,20 @@ public class Test
         //}
         
         //6. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
-        /*int N = 60, L = 5, M = 1;
-        boolean saveActions = false;
-        String[] levels = new String[L];
-        String[] actionFiles = new String[L*M];
-        for(int i = 0; i < N; ++i)
-        {
-            int actionIdx = 0;
-            game = gamesPath + games[i] + ".txt";
-            for(int j = 0; j < L; ++j){
-                levels[j] = gamesPath + games[i] + "_lvl" + j +".txt";
-                if(saveActions) for(int k = 0; k < M; ++k)
-                    actionFiles[actionIdx++] = "actions_game_" + i + "_level_" + j + "_" + k + ".txt";
-            }
-            ArcadeMachine.runGames(game, levels, M, kNearestNeighbour, saveActions? actionFiles:null);
-        }*/
+//        int N = 60, L = 5, M = 1;
+//        boolean saveActions = false;
+//        String[] levels = new String[L];
+//        String[] actionFiles = new String[L*M];
+//        for(int i = 0; i < N; ++i)
+//        {
+//            int actionIdx = 0;
+//            game = gamesPath + games[i] + ".txt";
+//            for(int j = 0; j < L; ++j){
+//                levels[j] = gamesPath + games[i] + "_lvl" + j +".txt";
+//                if(saveActions) for(int k = 0; k < M; ++k)
+//                    actionFiles[actionIdx++] = "actions_game_" + i + "_level_" + j + "_" + k + ".txt";
+//            }
+//            ArcadeMachine.runGames(game, levels, M, sampleMCTSController, saveActions? actionFiles:null);
+//        }
     }
 }
