@@ -6,6 +6,7 @@ import core.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
 import ontology.effects.Effect;
+import tools.Direction;
 import tools.Vector2d;
 
 /**
@@ -51,10 +52,10 @@ public class WallStop extends Effect
 
         if(centerXDiff > centerYDiff)
         {
-            sprite1.orientation = new Vector2d(0, sprite1.orientation.y * (1.0 - friction));
+            sprite1.orientation = new Direction(0, sprite1.orientation.y() * (1.0 - friction));
         }else
         {
-            sprite1.orientation = new Vector2d(sprite1.orientation.x * (1.0 - friction), 0);
+            sprite1.orientation = new Direction(sprite1.orientation.x() * (1.0 - friction), 0);
         }
 
         sprite1.speed = sprite1.orientation.mag() * sprite1.speed;

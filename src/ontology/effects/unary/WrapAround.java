@@ -24,19 +24,19 @@ public class WrapAround extends Effect {
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game) {
 
-        if(sprite1.orientation.x > 0)
+        if(sprite1.orientation.x() > 0)
         {
             sprite1.rect.x = (int) (offset * sprite1.rect.width);
         }
-        else if(sprite1.orientation.x < 0)
+        else if(sprite1.orientation.x() < 0)
         {
             sprite1.rect.x = (int) (game.getScreenSize().width - sprite1.rect.width * (1+offset));
         }
-        else if(sprite1.orientation.y > 0)
+        else if(sprite1.orientation.y() > 0)
         {
             sprite1.rect.y = (int) (offset * sprite1.rect.height);
         }
-        else if(sprite1.orientation.y < 0)
+        else if(sprite1.orientation.y() < 0)
         {
             sprite1.rect.y = (int) (game.getScreenSize().height- sprite1.rect.height * (1+offset));
         }

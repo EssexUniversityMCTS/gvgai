@@ -4,6 +4,7 @@ import core.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
+import tools.Direction;
 import tools.Utils;
 import tools.Vector2d;
 import tools.pathfinder.Node;
@@ -41,7 +42,7 @@ public class PathAltChaser extends AlternateChaser
         super.loadDefaults();
         fleeing = false;
         targets = new ArrayList<VGDLSprite>();
-        actions = new ArrayList<Vector2d>();
+        actions = new ArrayList<Direction>();
         lastKnownTargetPosition = null;
     }
 
@@ -61,7 +62,7 @@ public class PathAltChaser extends AlternateChaser
         //Get the closest targets
         closestTargets(game);
 
-        Vector2d act = Types.NONE;
+        Direction act = Types.DNONE;
         if(!fleeing && targets.size() > 0)
         {
             //If there's a target, get the path to it and take the first action.
@@ -79,7 +80,7 @@ public class PathAltChaser extends AlternateChaser
             if(path!=null && path.size()>0)
             {
                 //lastKnownTargetPosition = target.getPosition().copy();
-                act = path.get(0).comingFrom;
+                act = new Direction(path.get(0).comingFrom);
             }
 
         }else
@@ -95,9 +96,9 @@ public class PathAltChaser extends AlternateChaser
             if(actions.size() == 0)
             {
                 //unless, no actions really take me closer to anybody!
-                act = (Vector2d) Utils.choice(Types.BASEDIRS,game.getRandomGenerator());
+                act = (Direction) Utils.choice(Types.DBASEDIRS,game.getRandomGenerator());
             }else{
-                act = Utils.choice(actions,game.getRandomGenerator());
+                act = Utils.choiceDir(actions, game.getRandomGenerator());
             }
         }
 
@@ -121,7 +122,7 @@ public class PathAltChaser extends AlternateChaser
         PathAltChaser targetSprite = (PathAltChaser) target;
         targetSprite.fleeing = this.fleeing;
         targetSprite.targets = new ArrayList<VGDLSprite>();
-        targetSprite.actions = new ArrayList<Vector2d>();
+        targetSprite.actions = new ArrayList<Direction>();
         targetSprite.lastKnownTargetPosition = lastKnownTargetPosition != null ?
                         lastKnownTargetPosition.copy() : null;
         super.copyTo(targetSprite);

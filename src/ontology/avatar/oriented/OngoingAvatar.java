@@ -6,6 +6,7 @@ import core.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
+import tools.Direction;
 import tools.Utils;
 import tools.Vector2d;
 
@@ -51,7 +52,7 @@ public class OngoingAvatar extends OrientedAvatar
         requestPlayerInput(game);
 
         //Map from the action mask to a Vector2D action.
-        Vector2d action2D = Utils.processMovementActionKeys(game.ki.getMask());
+        Direction action2D = Utils.processMovementActionKeys(game.ki.getMask());
 
         //Update the orientation for this cycle's movement,
         // but only if there was a direction indicated.
@@ -73,11 +74,11 @@ public class OngoingAvatar extends OrientedAvatar
         lastMovementType = Types.MOVEMENT.MOVE;
 
         //Map from the action mask to a Vector2D action.
-        Vector2d action2D = Utils.processMovementActionKeys(actionMask);
+        Direction action2D = Utils.processMovementActionKeys(actionMask);
 
         //Update the orientation for this cycle's movement,
         // but only if there was a direction indicated.
-        if(action2D != Types.NONE)
+        if(action2D != Types.DNONE)
             this._updateOrientation(action2D);
 
         //Update movement.

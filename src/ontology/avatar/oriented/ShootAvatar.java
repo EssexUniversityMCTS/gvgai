@@ -8,6 +8,7 @@ import core.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
+import tools.Direction;
 import tools.Utils;
 import tools.Vector2d;
 
@@ -96,7 +97,7 @@ public class ShootAvatar extends OrientedAvatar
         if(newOne != null)
         {
             if(newOne.is_oriented)
-                newOne.orientation = dir;
+                newOne.orientation = new Direction(dir);
             reduceAmmo();
             newOne.setFromAvatar(true);
         }

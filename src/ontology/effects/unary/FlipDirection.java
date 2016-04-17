@@ -5,6 +5,7 @@ import core.content.InteractionContent;
 import core.game.Game;
 import ontology.Types;
 import ontology.effects.Effect;
+import tools.Direction;
 import tools.Utils;
 import tools.Vector2d;
 
@@ -26,6 +27,6 @@ public class FlipDirection extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
-        sprite1.orientation = (Vector2d) Utils.choice(Types.BASEDIRS, game.getRandomGenerator());
+        sprite1.orientation = (Direction) Utils.choice(Types.DBASEDIRS, game.getRandomGenerator());
     }
 }
