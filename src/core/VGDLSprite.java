@@ -757,7 +757,7 @@ public abstract class VGDLSprite {
         toSprite.physics = this.physics; //Object reference, but should be ok.
         toSprite.shrinkfactor = this.shrinkfactor;
         toSprite.is_oriented = this.is_oriented;
-        toSprite.orientation = new Direction(orientation);
+        toSprite.orientation = new Direction(orientation.x(), orientation.y());
         toSprite.rect = new Rectangle(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
         toSprite.lastrect =  new Rectangle(this.lastrect.x, this.lastrect.y, this.lastrect.width, this.lastrect.height);
         toSprite.lastmove = this.lastmove;

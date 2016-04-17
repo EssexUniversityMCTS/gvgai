@@ -88,7 +88,7 @@ public class ShootAvatar extends OrientedAvatar
     private void shoot(Game game)
     {
         //TODO: Theoretically, we should be able to shoot many things here... to be done.
-        Vector2d dir = this.orientation.copy();
+        Vector2d dir = this.orientation.getVector();
         dir.normalise();
 
         VGDLSprite newOne = game.addSprite(itype, new Vector2d(this.rect.x + dir.x*this.lastrect.width,
@@ -97,7 +97,7 @@ public class ShootAvatar extends OrientedAvatar
         if(newOne != null)
         {
             if(newOne.is_oriented)
-                newOne.orientation = new Direction(dir);
+                newOne.orientation = new Direction(dir.x, dir.y);
             reduceAmmo();
             newOne.setFromAvatar(true);
         }

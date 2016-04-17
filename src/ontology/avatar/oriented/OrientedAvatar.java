@@ -58,7 +58,7 @@ public class OrientedAvatar extends MovingAvatar
         {
             Vector2d dir = lastDirection();
             dir.normalise();
-            orientation = new Direction(dir);
+            orientation = new Direction(dir.x, dir.y);
         }
         //Otherwise, orientation is already updated, no need to change anything.
     }
@@ -78,7 +78,7 @@ public class OrientedAvatar extends MovingAvatar
         {
             Vector2d dir = lastDirection();
             dir.normalise();
-            orientation = new Direction(dir);
+            orientation = new Direction(dir.x, dir.y);
         }
         //Otherwise, orientation is already updated, no need to change anything.
     }

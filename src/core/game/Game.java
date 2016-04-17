@@ -967,7 +967,7 @@ public abstract class Game
      */
     private void printResult()
     {
-        System.out.println("Result (1->win; 0->lose):"+ winner.key() + ", Score:" + score + ", timesteps:" + this.getGameTick());
+        //System.out.println("Result (1->win; 0->lose):"+ winner.key() + ", Score:" + score + ", timesteps:" + this.getGameTick());
     }
 
     /**

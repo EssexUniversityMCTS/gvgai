@@ -318,7 +318,7 @@ public class ArcadeMachine
      *                    null if no recording is desired. If not null, this array must contain as much String objects as
      *                    level_files.length*level_times.
      */
-    //public static StatSummary performance;
+    public static StatSummary performance;
     public static void runGames(String game_file, String[] level_files, int level_times,
                                 String agentName, String[] actionFiles)
     {
@@ -336,7 +336,7 @@ public class ArcadeMachine
 
         StatSummary victories = new StatSummary();
         StatSummary scores = new StatSummary();
-        //performance = new StatSummary();
+        performance = new StatSummary();
 
         Game toPlay = new VGDLParser().parseGame(game_file);
         int levelIdx = 0;
@@ -392,8 +392,8 @@ public class ArcadeMachine
 
 
         System.out.println("Results in game " + game_file + "," +
-                        victories.mean() + "," + scores.mean() + ",");
-                        //+ "," + performance.mean());
+                        victories.mean() + "," + scores.mean() + ","//);
+                        + "," + performance.mean());
     }
 
     /**
