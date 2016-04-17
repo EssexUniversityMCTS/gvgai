@@ -6,6 +6,7 @@ import core.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
+import tools.Direction;
 import tools.Utils;
 import tools.Vector2d;
 
@@ -22,7 +23,8 @@ public class RandomNPC extends VGDLSprite
     public int cons;
 
     protected int counter;
-    protected Vector2d prevAction;
+
+    protected Direction prevAction;
 
     public RandomNPC(){}
 
@@ -46,10 +48,10 @@ public class RandomNPC extends VGDLSprite
         is_npc = true;
         is_stochastic = true;
         counter = cons;
-        prevAction = Types.NONE;
+        prevAction = Types.DNONE;
     }
 
-    protected Vector2d getRandomMove(Game game)
+    protected Direction getRandomMove(Game game)
     {
         if(counter < cons)
         {
@@ -58,7 +60,7 @@ public class RandomNPC extends VGDLSprite
             return prevAction.copy();
         }else{
             //Determine a new action
-            Vector2d act = (Vector2d) Utils.choice(Types.BASEDIRS, game.getRandomGenerator());
+            Direction act = (Direction) Utils.choice(Types.DBASEDIRS, game.getRandomGenerator());
             prevAction = act.copy();
             counter=0;
             return act;
@@ -68,7 +70,7 @@ public class RandomNPC extends VGDLSprite
     public void update(Game game)
     {
         super.updatePassive();
-        Vector2d act = getRandomMove(game);
+        Direction act = getRandomMove(game);
         this.physics.activeMovement(this, act, this.speed);
     }
 

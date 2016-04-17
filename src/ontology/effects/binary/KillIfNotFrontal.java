@@ -36,8 +36,10 @@ public class KillIfNotFrontal extends Effect
         //If the sum of the two vectors (normalized) is (0.0), directions are opposite.
         Vector2d sumDir = new Vector2d(firstDir.x + otherDir.x, firstDir.y + otherDir.y);
 
+        applyScore=false;
         if( firstDir.equals(Types.NONE) || !(sumDir.equals(Types.NONE)))
         {
+            applyScore=true;
             game.killSprite(sprite1);
         }
 

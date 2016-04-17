@@ -2,7 +2,9 @@ package ontology;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.Field;
 
+import tools.Direction;
 import tools.Vector2d;
 
 /**
@@ -26,14 +28,47 @@ public class Types {
     public static final int VGDL_TERMINATION_SET = 4;
 
     public static final Vector2d NIL = new Vector2d(-1, -1);
-
     public static final Vector2d NONE = new Vector2d(0, 0);
     public static final Vector2d RIGHT = new Vector2d(1, 0);
     public static final Vector2d LEFT = new Vector2d(-1, 0);
     public static final Vector2d UP = new Vector2d(0, -1);
     public static final Vector2d DOWN = new Vector2d(0, 1);
-
     public static final Vector2d[] BASEDIRS = new Vector2d[]{UP, LEFT, DOWN, RIGHT};
+
+    public static final Direction DNIL = new Direction(-1, -1);
+    public static final Direction DNONE = new Direction(0, 0);
+    public static final Direction DRIGHT = new Direction(1, 0);
+    public static final Direction DLEFT = new Direction(-1, 0);
+    public static final Direction DUP = new Direction(0, -1);
+    public static final Direction DDOWN = new Direction(0, 1);
+    public static final Direction[] DBASEDIRS = new Direction[]{DUP, DLEFT, DDOWN, DRIGHT};
+
+    //This is a small method to automatically link and parse vectors to directions.
+    public static Field processField(String value)
+    {
+        Field cfield = null;
+        try{
+            cfield = Types.class.getField(value);
+            Object objVal = cfield.get(null);
+
+            if(objVal instanceof Vector2d) {
+                value = _v2DirStr((Vector2d)objVal);
+                cfield = Types.class.getField(value);
+            }
+        }catch(Exception e) { }
+        return cfield;
+    }
+
+    private static String _v2DirStr(Vector2d v)
+    {
+        if (v.equals(NIL)) return "DNIL";
+        if (v.equals(NONE)) return "DNONE";
+        if (v.equals(UP)) return "DUP";
+        if (v.equals(DOWN)) return "DDOWN";
+        if (v.equals(LEFT)) return "DLEFT";
+        if (v.equals(RIGHT)) return "DRIGHT";
+        return null;
+    }
 
     public static int[] ALL_ACTIONS = new int[]{KeyEvent.VK_UP, KeyEvent.VK_LEFT, KeyEvent.VK_DOWN,
                                                 KeyEvent.VK_RIGHT, KeyEvent.VK_SPACE, KeyEvent.VK_ESCAPE};
@@ -71,6 +106,15 @@ public class Types {
             else if (move == DOWN) return ACTION_DOWN;
             else if (move == LEFT) return ACTION_LEFT;
             else if (move == RIGHT) return ACTION_RIGHT;
+            else return ACTION_NIL;
+        }
+
+
+        public static ACTIONS fromVector(Direction move) {
+            if (move == DUP) return ACTION_UP;
+            else if (move == DDOWN) return ACTION_DOWN;
+            else if (move == DLEFT) return ACTION_LEFT;
+            else if (move == DRIGHT) return ACTION_RIGHT;
             else return ACTION_NIL;
         }
 

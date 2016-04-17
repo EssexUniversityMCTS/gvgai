@@ -21,6 +21,11 @@ public class Utils
         return elements[rnd.nextInt(elements.length)];
     }
 
+    public static Direction choiceDir(ArrayList<Direction> elements, Random rnd)
+    {
+        return elements.get(rnd.nextInt(elements.size()));
+    }
+
     public static Vector2d choice(ArrayList<Vector2d> elements, Random rnd)
     {
         return elements.get(rnd.nextInt(elements.size()));
@@ -65,7 +70,7 @@ public class Utils
         return null;
     }
 
-    public static Vector2d processMovementActionKeys(boolean[] key_pressed) {
+    public static Direction processMovementActionKeys(boolean[] key_pressed) {
 
         int vertical = 0;
         int horizontal = 0;
@@ -88,16 +93,16 @@ public class Utils
 
         if (horizontal == 0) {
             if (vertical == 1)
-                return Types.DOWN;
+                return Types.DDOWN;
             else if (vertical == -1)
-                return Types.UP;
+                return Types.DUP;
         } else if (vertical == 0) {
             if (horizontal == 1)
-                return Types.RIGHT;
+                return Types.DRIGHT;
             else if (horizontal == -1)
-                return Types.LEFT;
+                return Types.DLEFT;
         }
-        return Types.NONE;
+        return Types.DNONE;
     }
 
     //Normalizes a value between its MIN and MAX.

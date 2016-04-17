@@ -342,7 +342,7 @@ public class VGDLFactory
             {
 
                 try {
-                    cfield = Types.class.getField(value);
+                    cfield = Types.processField(value);
                     objVal = cfield.get(null);
                 } catch (Exception e) {
                     try {

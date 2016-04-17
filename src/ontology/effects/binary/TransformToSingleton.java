@@ -12,6 +12,7 @@ import core.content.InteractionContent;
 import core.game.Game;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.Effect;
+import tools.Direction;
 import tools.Vector2d;
 
 /**
@@ -65,8 +66,7 @@ public class TransformToSingleton extends Effect {
             setSpriteFields(game, newSprite, sprite1);
 
             if(takeOrientation) {
-                Vector2d orientation = sprite2.orientation.copy();
-                orientation.mul(-1);
+                Direction orientation = new Direction(-sprite2.orientation.x(), -sprite2.orientation.y());
                 newSprite.is_oriented = true;
                 newSprite.orientation = orientation;
             }
