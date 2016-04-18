@@ -25,7 +25,6 @@ public class Test
         String sampleGAController = "controllers.sampleGA.Agent";
         String tester = "controllers.Tester.Agent";
         String repeatOLETS = "controllers.repeatOLETS.Agent";
-        String yolobot = "YOLOBOT.Agent";
 
         //Available Generators
         String randomLevelGenerator = "levelGenerators.randomLevelGenerator.LevelGenerator";
@@ -104,7 +103,7 @@ public class Test
 //                if(saveActions) for(int k = 0; k < M; ++k)
 //                    actionFiles[actionIdx++] = "actions_game_" + i + "_level_" + j + "_" + k + ".txt";
 //            }
-//            ArcadeMachine.runGames(game, levels, M, yolobot, saveActions? actionFiles:null);
+//            ArcadeMachine.runGames(game, levels, M, sampleMCTSController, saveActions? actionFiles:null);
 //        }
     }
 }
