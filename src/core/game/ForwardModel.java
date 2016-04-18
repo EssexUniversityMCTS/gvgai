@@ -766,7 +766,7 @@ public class ForwardModel extends Game
     public Vector2d getAvatarOrientation(int playerID) {
         if(isEnded)
             return Types.NIL;
-        return avatars[playerID].orientation;
+        return new Vector2d(avatars[playerID].orientation.x(), avatars[playerID].orientation.y());
     }
 
     /**

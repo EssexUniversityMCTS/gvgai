@@ -8,6 +8,7 @@ import core.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
+import tools.Direction;
 import tools.Vector2d;
 
 /**
@@ -24,7 +25,7 @@ public class SpawnPoint extends SpriteProducer
     public int counter;
     public String stype;
     public int itype;
-    public Vector2d spawnorientation;
+    public Direction spawnorientation;
 
     public SpawnPoint(){}
 
@@ -48,7 +49,7 @@ public class SpawnPoint extends SpriteProducer
         color = Types.BLACK;
         cooldown = 1;
         is_static = true;
-        spawnorientation = Types.NONE;
+        spawnorientation = Types.DNONE;
     }
 
     public void postProcess()
@@ -69,11 +70,11 @@ public class SpawnPoint extends SpriteProducer
                 counter++;
 
                 //We set the orientation given by default it this was passed.
-                if(spawnorientation != Types.NONE)
-                    newSprite.orientation = spawnorientation;
+                if(spawnorientation != Types.DNONE)
+                    newSprite.orientation = spawnorientation.copy();
                 //If no orientation given, we set the one from the spawner.
-                else if (newSprite.orientation == Types.NONE)
-                    newSprite.orientation = this.orientation;
+                else if (newSprite.orientation == Types.DNONE)
+                    newSprite.orientation = this.orientation.copy();
             }
         }
 

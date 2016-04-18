@@ -21,6 +21,11 @@ public class Utils
         return elements[rnd.nextInt(elements.length)];
     }
 
+    public static Direction choiceDir(ArrayList<Direction> elements, Random rnd)
+    {
+        return elements.get(rnd.nextInt(elements.size()));
+    }
+
     public static Vector2d choice(ArrayList<Vector2d> elements, Random rnd)
     {
         return elements.get(rnd.nextInt(elements.size()));
@@ -41,13 +46,13 @@ public class Utils
      * @param orientation orientation of the sprite.
      * @return a polygon (triangle) with the specified orientation.
      */
-    public static Polygon triPoints(Rectangle rect, Vector2d orientation)
+    public static Polygon triPoints(Rectangle rect, Direction orientation)
     {
-        Vector2d p1 = new Vector2d(rect.getCenterX()+orientation.x*rect.getWidth()/3.0,
-                                   rect.getCenterY()+orientation.y*rect.getHeight()/3.0);
-        Vector2d p2 = new Vector2d(rect.getCenterX()+orientation.x*rect.getWidth()/4.0,
-                                   rect.getCenterY()+orientation.y*rect.getHeight()/4.0);
-        Vector2d orthdir = new Vector2d(orientation.y, -orientation.x);
+        Vector2d p1 = new Vector2d(rect.getCenterX()+orientation.x()*rect.getWidth()/3.0,
+                                   rect.getCenterY()+orientation.y()*rect.getHeight()/3.0);
+        Vector2d p2 = new Vector2d(rect.getCenterX()+orientation.x()*rect.getWidth()/4.0,
+                                   rect.getCenterY()+orientation.y()*rect.getHeight()/4.0);
+        Vector2d orthdir = new Vector2d(orientation.y(), -orientation.x());
 
         Vector2d p2a = new Vector2d(p2.x-orthdir.x*rect.getWidth()/6.0,
                                     p2.y-orthdir.y*rect.getHeight()/6.0);
@@ -65,7 +70,7 @@ public class Utils
         return null;
     }
 
-    public static Vector2d processMovementActionKeys(boolean[] key_pressed) {
+    public static Direction processMovementActionKeys(boolean[] key_pressed) {
 
         int vertical = 0;
         int horizontal = 0;
@@ -88,15 +93,16 @@ public class Utils
 
         if (horizontal == 0) {
             if (vertical == 1)
-                return Types.DOWN;
+                return Types.DDOWN;
             else if (vertical == -1)
-                return Types.UP;
+                return Types.DUP;
         } else if (vertical == 0) {
             if (horizontal == 1)
-                return Types.RIGHT;
-            else return Types.LEFT; //horizontal = -1
+                return Types.DRIGHT;
+            else if (horizontal == -1)
+                return Types.DLEFT;
         }
-        return Types.NONE;
+        return Types.DNONE;
     }
 
     //Normalizes a value between its MIN and MAX.

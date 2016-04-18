@@ -10,6 +10,7 @@ import core.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
+import tools.Direction;
 import tools.Utils;
 import tools.Vector2d;
 
@@ -28,7 +29,7 @@ public class Chaser extends RandomNPC
     public float maxDistance;
 
     ArrayList<VGDLSprite> targets;
-    ArrayList<Vector2d> actions;
+    ArrayList<Direction> actions;
 
     public Chaser(){}
 
@@ -50,7 +51,7 @@ public class Chaser extends RandomNPC
         fleeing = false;
         maxDistance = -1;
         targets = new ArrayList<VGDLSprite>();
-        actions = new ArrayList<Vector2d>();
+        actions = new ArrayList<Direction>();
     }
 
     public void postProcess()
@@ -76,13 +77,13 @@ public class Chaser extends RandomNPC
         }
 
         //Choose randomly an action among the ones that allows me to chase.
-        Vector2d act;
+        Direction act;
         if(actions.size() == 0)
         {
             //unless, no actions really take me closer to anybody!
-            act = (Vector2d) Utils.choice(Types.BASEDIRS,game.getRandomGenerator());
+            act = (Direction) Utils.choice(Types.DBASEDIRS,game.getRandomGenerator());
         }else{
-            act = Utils.choice(actions,game.getRandomGenerator());
+            act = Utils.choiceDir(actions, game.getRandomGenerator());
         }
 
         //Apply the action to move.
@@ -100,11 +101,11 @@ public class Chaser extends RandomNPC
             return;
         }
 
-        for(Vector2d act : Types.BASEDIRS)
+        for(Direction act : Types.DBASEDIRS)
         {
             //Calculate the distance if I'd apply this move.
             Rectangle r = new Rectangle(this.rect);
-            r.translate((int)act.x, (int)act.y);
+            r.translate((int)act.x(), (int)act.y());
             double newDist = this.physics.distance(r, target.rect);
 
             //depending on getting me closer/farther, if I'm fleeing/chasing, add move:
@@ -158,7 +159,7 @@ public class Chaser extends RandomNPC
         targetSprite.itype = this.itype;
         targetSprite.maxDistance = this.maxDistance;
         targetSprite.targets = new ArrayList<VGDLSprite>();
-        targetSprite.actions = new ArrayList<Vector2d>();
+        targetSprite.actions = new ArrayList<Direction>();
         super.copyTo(targetSprite);
     }
     

@@ -37,6 +37,7 @@ public class CollectResourceIfHeld extends Effect
         if(sprite1.is_resource)
         {
             Resource r = (Resource) sprite1;
+            applyScore=false;
 
             //Check if we have the secondary resource first
             int numResourcesHeld = sprite2.getAmountResource(heldResourceId);
@@ -46,6 +47,7 @@ public class CollectResourceIfHeld extends Effect
             int numResources = sprite2.getAmountResource(r.resource_type);
             if(numResources + r.value <= game.getResourceLimit(r.resource_type))
             {
+                applyScore=true;
                 sprite2.modifyResource(r.resource_type, r.value);
             }
 

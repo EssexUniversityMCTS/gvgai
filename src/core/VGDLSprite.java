@@ -25,6 +25,7 @@ import ontology.physics.GravityPhysics;
 import ontology.physics.GridPhysics;
 import ontology.physics.NoFrictionPhysics;
 import ontology.physics.Physics;
+import tools.Direction;
 import tools.Utils;
 import tools.Vector2d;
 
@@ -115,7 +116,7 @@ public abstract class VGDLSprite {
     /**
      * Orientation of the sprite.
      */
-    public Vector2d orientation;
+    public Direction orientation;
 
     /**
      * Rectangle that this sprite occupies on the screen.
@@ -279,7 +280,7 @@ public abstract class VGDLSprite {
         shrinkfactor = 1.0;
         is_oriented = false;
         draw_arrow = false;
-        orientation = Types.NONE;
+        orientation = Types.DNONE;
         lastmove = 0;
         invisible = false;
         rotateInPlace = false;
@@ -415,7 +416,7 @@ public abstract class VGDLSprite {
      * the avatar is not oriented (is_oriented == false) or the previous orientation is the
      * same as the one received by parameter.
      */
-    public boolean _updateOrientation(Vector2d orientation)
+    public boolean _updateOrientation(Direction orientation)
     {
         if(!this.is_oriented) return false;
         if(this.orientation.equals(orientation)) return false;
@@ -429,14 +430,14 @@ public abstract class VGDLSprite {
      * @param speed the speed of the sprite.
      * @return true if the position changed.
      */
-    public boolean _updatePos(Vector2d orientation, int speed) {
+    public boolean _updatePos(Direction orientation, int speed) {
         if (speed == 0) {
             speed = (int) this.speed;
             if(speed == 0) return false;
         }
 
-        if (cooldown <= lastmove && (Math.abs(orientation.x) + Math.abs(orientation.y) != 0)) {
-            rect.translate((int) orientation.x * speed, (int) orientation.y * speed);
+        if (cooldown <= lastmove && (Math.abs(orientation.x()) + Math.abs(orientation.y()) != 0)) {
+            rect.translate((int) orientation.x() * speed, (int) orientation.y() * speed);
             bucket = rect.y / rect.height;
             bucketSharp = (rect.y % rect.height) == 0;
             lastmove = 0;
@@ -453,7 +454,7 @@ public abstract class VGDLSprite {
         if (speed == 0 || !is_oriented) {
             return new Vector2d(0, 0);
         } else {
-            return new Vector2d(orientation.x * speed, orientation.y * speed);
+            return new Vector2d(orientation.x() * speed, orientation.y() * speed);
         }
     }
 
@@ -696,7 +697,7 @@ public abstract class VGDLSprite {
     		loadImage(img);
     	}
 
-        if(this.orientation != Types.NONE)
+        if(this.orientation != Types.DNONE)
         {
             //Any sprite that receives an orientation, is oriented.
             this.is_oriented = true;
@@ -780,7 +781,7 @@ public abstract class VGDLSprite {
         toSprite.physics = this.physics; //Object reference, but should be ok.
         toSprite.shrinkfactor = this.shrinkfactor;
         toSprite.is_oriented = this.is_oriented;
-        toSprite.orientation = this.orientation.copy();
+        toSprite.orientation = new Direction(orientation.x(), orientation.y());
         toSprite.rect = new Rectangle(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
         toSprite.lastrect =  new Rectangle(this.lastrect.x, this.lastrect.y, this.lastrect.width, this.lastrect.height);
         toSprite.lastmove = this.lastmove;

@@ -1,6 +1,7 @@
 package tools.pathfinder;
 
 import ontology.Types;
+import tools.Direction;
 import tools.Vector2d;
 
 import java.util.ArrayList;
@@ -46,17 +47,18 @@ public class Node implements Comparable<Node> {
     public void setMoveDir(Node pre) {
 
         //TODO: New types of actions imply a change in this method.
-        Vector2d action = Types.NONE;
+        Direction action = Types.DNONE;
+
         if(pre.position.x < this.position.x)
-            action = Types.RIGHT;
+            action = Types.DRIGHT;
         if(pre.position.x > this.position.x)
-            action = Types.LEFT;
+            action = Types.DLEFT;
 
         if(pre.position.y < this.position.y)
-            action = Types.DOWN;
+            action = Types.DDOWN;
         if(pre.position.y > this.position.y)
-            action = Types.UP;
+            action = Types.DUP;
 
-        this.comingFrom = action;
+        this.comingFrom = new Vector2d(action.x(), action.y());
     }
 }

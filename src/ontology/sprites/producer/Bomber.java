@@ -36,7 +36,7 @@ public class Bomber extends SpawnPoint
         color = Types.ORANGE;
         is_static = false;
         is_oriented = true;
-        orientation = Types.RIGHT.copy();
+        orientation = Types.DRIGHT.copy();
         is_npc = true;
     }
 

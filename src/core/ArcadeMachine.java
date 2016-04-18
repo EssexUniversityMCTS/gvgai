@@ -437,6 +437,7 @@ public class ArcadeMachine
      *                    null if no recording is desired. If not null, this array must contain as much String objects as
      *                    level_files.length*level_times.
      */
+    public static StatSummary performance;
     public static void runGames(String game_file, String[] level_files, int level_times,
                                 String agentName, String[] actionFiles)
     {
@@ -452,7 +453,9 @@ public class ArcadeMachine
                     "you must supply an action file for each game instance to be played, or null.";
         }
 
+        StatSummary victories = new StatSummary();
         StatSummary scores = new StatSummary();
+        performance = new StatSummary();
 
         Game toPlay = new VGDLParser().parseGame(game_file);
         int levelIdx = 0;
@@ -461,7 +464,8 @@ public class ArcadeMachine
         {
             for(int i = 0; i < level_times; ++i)
             {
-                System.out.println(" ** Playing game " + game_file + ", level " + level_file + " ("+(i+1)+"/"+level_times+") **");
+                if(VERBOSE)
+                    System.out.println(" ** Playing game " + game_file + ", level " + level_file + " ("+(i+1)+"/"+level_times+") **");
 
                 //build the level in the game.
                 toPlay.buildLevel(level_file);
@@ -523,6 +527,8 @@ public class ArcadeMachine
                     if(player != null)
                         if(!ArcadeMachine.tearPlayerDown(toPlay, player))
                             score = toPlay.handleResult();
+                scores.add(score);
+                victories.add(toPlay.getWinner()== Types.WINNER.PLAYER_WINS ? 1 : 0);
 
                 scores.add(score);
                 for (MovingAvatar a : toPlay.getAvatars()) {
@@ -537,9 +543,10 @@ public class ArcadeMachine
             levelIdx++;
         }
 
-        System.out.println(" *** Results in game " + game_file + " *** ");
-        System.out.println(scores);
-        System.out.println(" *********");
+
+        System.out.println("Results in game " + game_file + ", " +
+                        victories.mean() + ", " + scores.mean() );
+                        //+ "," + performance.mean());
     }
 
     /**
@@ -779,8 +786,11 @@ public class ArcadeMachine
                 System.out.println("Controller initialization time out (" + exceeded + ").");
 
                 return null;
-            } else {
-                System.out.println("Controller initialization time: " + timeTaken + " ms.");
+            }
+            else
+            {
+                if(VERBOSE)
+                    System.out.println("Controller initialization time: " + timeTaken + " ms.");
             }
 
         //This code can throw many exceptions (no time related):
@@ -1108,7 +1118,8 @@ public class ArcadeMachine
             return false;
         }
 
-        System.out.println("Controller tear down time: " + timeTaken + " ms.");
+        if(VERBOSE)
+            System.out.println("Controller tear down time: " + timeTaken + " ms.");
         return true;
     }
 
