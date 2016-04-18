@@ -46,13 +46,13 @@ public class Utils
      * @param orientation orientation of the sprite.
      * @return a polygon (triangle) with the specified orientation.
      */
-    public static Polygon triPoints(Rectangle rect, Vector2d orientation)
+    public static Polygon triPoints(Rectangle rect, Direction orientation)
     {
-        Vector2d p1 = new Vector2d(rect.getCenterX()+orientation.x*rect.getWidth()/3.0,
-                                   rect.getCenterY()+orientation.y*rect.getHeight()/3.0);
-        Vector2d p2 = new Vector2d(rect.getCenterX()+orientation.x*rect.getWidth()/4.0,
-                                   rect.getCenterY()+orientation.y*rect.getHeight()/4.0);
-        Vector2d orthdir = new Vector2d(orientation.y, -orientation.x);
+        Vector2d p1 = new Vector2d(rect.getCenterX()+orientation.x()*rect.getWidth()/3.0,
+                                   rect.getCenterY()+orientation.y()*rect.getHeight()/3.0);
+        Vector2d p2 = new Vector2d(rect.getCenterX()+orientation.x()*rect.getWidth()/4.0,
+                                   rect.getCenterY()+orientation.y()*rect.getHeight()/4.0);
+        Vector2d orthdir = new Vector2d(orientation.y(), -orientation.x());
 
         Vector2d p2a = new Vector2d(p2.x-orthdir.x*rect.getWidth()/6.0,
                                     p2.y-orthdir.y*rect.getHeight()/6.0);

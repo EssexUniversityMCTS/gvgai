@@ -48,7 +48,7 @@ public class TransformTo extends Effect {
         {
             //System.out.println(game.getGameTick() + " " + sprite1 + " --> " + newSprite) ;
             //Orientation
-            if(newSprite.is_oriented && sprite1.is_oriented && newSprite.orientation == Types.NONE)
+            if(newSprite.is_oriented && sprite1.is_oriented && newSprite.orientation == Types.DNONE)
             {
                 newSprite.orientation = sprite1.orientation;
             }

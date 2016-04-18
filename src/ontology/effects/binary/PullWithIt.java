@@ -69,7 +69,7 @@ public class PullWithIt extends Effect
             gridsize = gp.gridsize.width;
         }
 
-        sprite1._updatePos(new Direction(v), (int) (sprite2.speed*gridsize));
+        sprite1._updatePos(new Direction(v.x, v.y), (int) (sprite2.speed*gridsize));
         if(sprite1.physicstype_id == Types.PHYSICS_CONT)
         {
             sprite1.speed = sprite2.speed;

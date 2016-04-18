@@ -11,11 +11,12 @@ BasicGame
             zombie > Chaser stype=avatar cooldown=6 speed=0.5 color=BROWN img=zombie
 
     InteractionSet
-        avatar honey    > addHealthPoints killSecond=True
+        avatar honey    > addHealthPoints killSecond=True scoreChange=1
 
         moving wall     > stepBack
 
         avatar zombie   > subtractHealthPoints scoreChange=-1
+        zombie avatar   > killSprite
 
         bee zombie      > transformTo stype=honey killSecond=True
         avatar hell     > killSprite scoreChange=-1

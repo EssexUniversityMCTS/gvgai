@@ -79,7 +79,10 @@ public class PathChaser extends RandomNPC
             ArrayList<Node> path = game.getPath(this.getPosition(), target.getPosition());
 
             if(path!=null && path.size()>0)
-                act = new Direction(path.get(0).comingFrom);
+            {
+                Vector2d v = path.get(0).comingFrom;
+                act = new Direction(v.x, v.y);
+            }
 
             this.counter = this.cons; //Reset the counter of consecutive moves.
 

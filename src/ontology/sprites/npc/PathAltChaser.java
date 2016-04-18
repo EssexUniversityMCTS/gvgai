@@ -80,7 +80,8 @@ public class PathAltChaser extends AlternateChaser
             if(path!=null && path.size()>0)
             {
                 //lastKnownTargetPosition = target.getPosition().copy();
-                act = new Direction(path.get(0).comingFrom);
+                Vector2d v = path.get(0).comingFrom;
+                act = new Direction(v.x, v.y);
             }
 
         }else

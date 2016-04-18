@@ -69,15 +69,18 @@ public class ContinuousPhysics extends GridPhysics
 
         double v1 = (action.x() / (float)sprite.mass) + (sprite.orientation.x() * speed);
         double v2 = (action.y() / (float)sprite.mass) + (sprite.orientation.y() * speed);
-        Direction dir  = new Direction(v1,v2);
+
+        Vector2d dir = new Vector2d(v1, v2);
+        double speedD = dir.mag();
+        dir.normalise();
+        Direction d = new Direction(dir.x, dir.y);
 
         /*Vector2d unitDir = dir.unitVector();
         sprite.orientation = unitDir;
         sprite.speed = dir.mag() / sprite.orientation.mag(); */
 
-        sprite.orientation = dir.copy();
-        sprite.orientation.normalise();
-        sprite.speed = dir.mag();
+        sprite.orientation = d;
+        sprite.speed = speedD;
 
         return Types.MOVEMENT.MOVE;
     }

@@ -25,7 +25,7 @@ BasicGame square_size=25
         key avatar      > collectResource scoreChange=1
 
         lock avatar > killIfOtherHasMore resource=key limit=1
-        moving wall lock > stepBack
+        moving wall lock > stepBack pixelPerfect=True
 
         exit avatar > killSprite scoreChange=10
 
