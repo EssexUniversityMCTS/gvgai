@@ -5,6 +5,7 @@ import core.content.InteractionContent;
 import core.game.Game;
 import ontology.Types;
 import ontology.effects.Effect;
+import tools.Direction;
 import tools.Vector2d;
 
 import java.awt.*;
@@ -37,29 +38,30 @@ public class StepBack extends Effect
 
     private Rectangle calculatePixelPerfect(VGDLSprite sprite1, VGDLSprite sprite2)
     {
-        Vector2d sprite1Dir = new Vector2d(sprite1.rect.getCenterX() - sprite1.lastrect.getCenterX(),
-                                           sprite1.rect.getCenterY() - sprite1.lastrect.getCenterY());
+        Vector2d sprite1v = new Vector2d(sprite1.rect.getCenterX() - sprite1.lastrect.getCenterX(),
+                sprite1.rect.getCenterY() - sprite1.lastrect.getCenterY());
 
-        sprite1Dir.normalise();
+        sprite1v.normalise();
+        Direction sprite1Dir = new Direction(sprite1v.x, sprite1v.y);
 
-        if(sprite1Dir.equals(Types.DOWN))
+        if(sprite1Dir.equals(Types.DDOWN))
         {
             int overlay = (sprite1.rect.y + sprite1.rect.height) - sprite2.rect.y;
             return new Rectangle(sprite1.rect.x, sprite1.rect.y - overlay,
                     sprite1.rect.width, sprite1.rect.height);
         }
-        else if(sprite1Dir.equals(Types.RIGHT))
+        else if(sprite1Dir.equals(Types.DRIGHT))
         {
             int overlay = (sprite1.rect.x + sprite1.rect.width) - sprite2.rect.x;
             return new Rectangle(sprite1.rect.x - overlay, sprite1.rect.y,
                     sprite1.rect.width, sprite1.rect.height);
         }
-        else if(sprite1Dir.equals(Types.UP))
+        else if(sprite1Dir.equals(Types.DUP))
         {
             return new Rectangle(sprite1.rect.x, sprite2.rect.y + sprite2.rect.height,
                     sprite1.rect.width, sprite1.rect.height);
         }
-        else if(sprite1Dir.equals(Types.LEFT))
+        else if(sprite1Dir.equals(Types.DLEFT))
         {
             return new Rectangle(sprite2.rect.x + sprite2.rect.width, sprite1.rect.y,
                     sprite1.rect.width, sprite1.rect.height);
