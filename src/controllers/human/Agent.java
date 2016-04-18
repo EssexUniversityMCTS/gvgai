@@ -37,8 +37,6 @@ public class Agent extends AbstractPlayer
         Direction move = Utils.processMovementActionKeys(Game.ki.getMask());
         boolean useOn = Utils.processUseKey(Game.ki.getMask());
 
-        //Types.DRIGHT.add(1,2);
-
         //In the keycontroller, move has preference.
         Types.ACTIONS action = Types.ACTIONS.fromVector(move);
 

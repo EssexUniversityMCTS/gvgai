@@ -3,7 +3,7 @@ package tools;
 /**
  * Created by dperez on 17/04/16.
  */
-public class Direction extends Vector2d
+public class Direction
 {
     private double xDir;
     private double yDir;
@@ -29,13 +29,19 @@ public class Direction extends Vector2d
         return "D " + xDir + " : " + yDir;
     }
 
-    public Vector2d add(Vector2d v) { error_immutable(); return null; }
-    public Vector2d add(double x, double y) { error_immutable(); return null; }
-    public Vector2d add(Vector2d v, double w) { error_immutable(); return null; }
-    public Vector2d subtract(Vector2d v) { error_immutable(); return null; }
-    public Vector2d subtract(double x, double y) { error_immutable(); return null; }
-    public Vector2d mul(double fac) { error_immutable(); return null; }
-    public void normalise() { error_immutable(); }
+    /**
+     * Checks if a direction and this are the same.
+     * @param d the other direction to check
+     * @return true if their coordinates are the same.
+     */
+    @Override
+    public boolean equals(Object d) {
+        if (d instanceof Direction) {
+            Direction dir = (Direction) d;
+            return xDir == dir.x() && yDir == dir.y();
+        } else {
+            return false;
+        }
+    }
 
-    public void error_immutable() { throw new RuntimeException("Direction Vector2d is immutable."); }
 }

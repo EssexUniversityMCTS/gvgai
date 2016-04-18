@@ -674,7 +674,7 @@ public abstract class VGDLSprite {
     		loadImage(img);
     	}
 
-        if(this.orientation != Types.NONE)
+        if(this.orientation != Types.DNONE)
         {
             //Any sprite that receives an orientation, is oriented.
             this.is_oriented = true;
