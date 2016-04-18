@@ -25,6 +25,8 @@ public class SingleTreeNode
         this(null, null, rnd);
     }
 
+    public static int totalIters = 0;
+
     public SingleTreeNode(StateObservation state, SingleTreeNode parent, Random rnd) {
         this.state = state;
         this.parent = parent;
@@ -59,7 +61,8 @@ public class SingleTreeNode
             remaining = elapsedTimer.remainingTimeMillis();
             //System.out.println(elapsedTimerIteration.elapsedMillis() + " --> " + acumTimeTaken + " (" + remaining + ")");
         }
-        System.out.println("-- " + numIters + " -- ( " + avgTimeTaken + ")");
+        //System.out.println("-- " + numIters + " -- ( " + avgTimeTaken + ")");
+        totalIters = numIters;
     }
 
     public SingleTreeNode treePolicy() {

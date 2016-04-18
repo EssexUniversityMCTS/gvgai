@@ -23,6 +23,8 @@ public class SingleMCTSPlayer
      */
     public Random m_rnd;
 
+    public static int iters = 0, num = 0;
+
     /**
      * Creates the MCTS player with a sampleRandom generator object.
      * @param a_rnd sampleRandom generator object.
@@ -54,6 +56,9 @@ public class SingleMCTSPlayer
     {
         //Do the search within the available time.
         m_root.mctsSearch(elapsedTimer);
+
+        iters += SingleTreeNode.totalIters;
+        num ++;
 
         //Determine the best action to take and return it.
         int action = m_root.mostVisitedAction();
