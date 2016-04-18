@@ -109,6 +109,8 @@ public class VGDLParser
             }
         }
 
+        game.initMulti();
+
         return game;
     }
     

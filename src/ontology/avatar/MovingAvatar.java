@@ -135,7 +135,13 @@ public class MovingAvatar extends VGDLSprite {
         ect.setMaxTimeMillis(CompetitionParameters.ACTION_TIME);
 
         VGDLSprite.thinkingTime = false;	// don't need to load images whilst the agent is thinking
-        Types.ACTIONS action = this.player.act(game.getObservation(), ect.copy());
+        Types.ACTIONS action;
+        if (game.no_players > 1) {
+            action = this.player.act(game.getObservationMulti(), ect.copy());
+        } else {
+            action = this.player.act(game.getObservation(), ect.copy());
+        }
+        System.out.println(action);
         VGDLSprite.thinkingTime = true;	// need to load images again for the real game
 
         if(ect.exceededMaxTime())
@@ -153,7 +159,6 @@ public class MovingAvatar extends VGDLSprite {
 
             action = Types.ACTIONS.ACTION_NIL;
         }
-
 
         if(!actions.contains(action))
             action = Types.ACTIONS.ACTION_NIL;

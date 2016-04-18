@@ -106,7 +106,7 @@ public class ArcadeMachine
         for (int i = 0; i < no_players; i++) {
             if (no_players > 1) {
                 //multi player
-                players[i] = ArcadeMachine.createMultiPlayer(names[i], actionFile, toPlay.getObservation(), randomSeed);
+                players[i] = ArcadeMachine.createMultiPlayer(names[i], actionFile, toPlay.getObservationMulti(), randomSeed, i);
             } else {
                 //single player
                 players[i] = ArcadeMachine.createPlayer(names[i], actionFile, toPlay.getObservation(), randomSeed);
@@ -293,7 +293,7 @@ public class ArcadeMachine
         for (int i = 0; i < no_players; i++) {
             if (no_players > 1) {
                 //multi player
-                players[i] = ArcadeMachine.createMultiPlayer(agentName, null, toPlay.getObservation(), -1);
+                players[i] = ArcadeMachine.createMultiPlayer(agentName, null, toPlay.getObservationMulti(), -1, i);
             } else {
                 //single player
                 players[i] = ArcadeMachine.createPlayer(agentName, null, toPlay.getObservation(), -1);
@@ -493,7 +493,7 @@ public class ArcadeMachine
                 for (int j = 0; j < no_players; j++) {
                     if (no_players > 1) {
                         //multi player
-                        players[j] = ArcadeMachine.createMultiPlayer(agentNames[j], filename, toPlay.getObservation(), randomSeed);
+                        players[j] = ArcadeMachine.createMultiPlayer(agentNames[j], filename, toPlay.getObservationMulti(), randomSeed, j);
                     } else {
                         //single player
                         players[j] = ArcadeMachine.createPlayer(agentNames[j], filename, toPlay.getObservation(), randomSeed);
@@ -525,6 +525,10 @@ public class ArcadeMachine
                             score = toPlay.handleResult();
 
                 scores.add(score);
+                for (MovingAvatar a : toPlay.getAvatars()) {
+                    if (a.getWinState() == Types.WINNER.PLAYER_WINS)
+                        scores.addWin();
+                }
 
                 //reset the game.
                 toPlay.reset();
@@ -704,15 +708,16 @@ public class ArcadeMachine
         return player;
     }
 
-    private static AbstractMultiPlayer createMultiPlayer(String playerName, String actionFile, StateObservation so, int randomSeed)
+    private static AbstractMultiPlayer createMultiPlayer(String playerName, String actionFile, StateObservationMulti so, int randomSeed, int id)
     {
         AbstractMultiPlayer player = null;
 
         try{
             //create the controller.
-            player = (AbstractMultiPlayer) createController(playerName, 0, so);
-            if(player != null)
+            player = (AbstractMultiPlayer) createController(playerName, id, so);
+            if(player != null) {
                 player.setup(actionFile, randomSeed);
+            }
 
         }catch (Exception e)
         {
@@ -761,7 +766,7 @@ public class ArcadeMachine
                 Constructor controllerArgsConstructor = controllerClass.getConstructor(gameArgClass);
 
                 //Call the constructor with the appropriate parameters.
-                Object[] constructorArgs = new Object[]{so, ect.copy()};
+                Object[] constructorArgs = new Object[]{(StateObservationMulti)so, ect.copy()};
 
                 player = (AbstractMultiPlayer) controllerArgsConstructor.newInstance(constructorArgs);
                 player.setPlayerID(playerID);

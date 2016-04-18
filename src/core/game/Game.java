@@ -273,7 +273,6 @@ public abstract class Game
         terminations = new ArrayList<Termination>();
         historicEvents = new TreeSet<Event>();
         timeEffects = new TreeSet<TimeEffect>();
-        avatars = new MovingAvatar[no_players];
 
         //Game attributes:
         size = new Dimension();
@@ -281,9 +280,6 @@ public abstract class Game
         disqualified = false;
         num_sprites = 0;
         nextSpriteID = 0;
-        avatarLastAction = new Types.ACTIONS[no_players];
-        for (int i = 0; i < no_players; i++)
-            avatarLastAction[i] = Types.ACTIONS.ACTION_NIL;
 
         loadDefaultConstr();
     }
@@ -298,6 +294,15 @@ public abstract class Game
         VGDLRegistry.GetInstance().registerSprite("avatar");
     }
 
+    /**
+     * Initialisation after the game is parsed.
+     */
+    public void initMulti() {
+        avatars = new MovingAvatar[no_players];
+        avatarLastAction = new Types.ACTIONS[no_players];
+        for (int i = 0; i < no_players; i++)
+            avatarLastAction[i] = Types.ACTIONS.ACTION_NIL;
+    }
 
     /**
      * Initializes the sprite structures that hold the game.
@@ -1060,17 +1065,22 @@ public abstract class Game
         //Avatars will usually be the first elements, starting from the end.
 
         for (int i = 0; i < no_players; i++) {
-            int idx = spriteOrder.length - 1 - i;
+            int idx = spriteOrder.length - 1;
             while (avatars[i] == null) {
-                int spriteTypeId = spriteOrder[idx];
-                if (spriteGroups[spriteTypeId].numSprites() > 0) {
-                    //There should be just one sprite in the avatar's group in single player games.
-                    //More than one avatar in multiplayer games
-                    VGDLSprite thisSprite = spriteGroups[spriteTypeId].getSpriteByIdx(i);
-                    if (thisSprite.is_avatar)
-                        avatars[i] = (MovingAvatar) thisSprite;
-                    else idx--;
-                } else idx--;
+                if (idx > 0) {
+                    int spriteTypeId = spriteOrder[idx];
+                    if (spriteGroups[spriteTypeId].numSprites() > 0) {
+                        //There should be just one sprite in the avatar's group in single player games.
+                        //More than one avatar in multiplayer games
+                        VGDLSprite thisSprite = spriteGroups[spriteTypeId].getSpriteByIdx(i);
+                        if (thisSprite.is_avatar)
+                            avatars[i] = (MovingAvatar) thisSprite;
+                        else idx--;
+                    } else idx--;
+                } else {
+                    System.out.println("Not enough avatars found.");
+                    break;
+                }
             }
         }
     }
@@ -1085,7 +1095,8 @@ public abstract class Game
         for (int i = 0; i < no_players; i++) {
             if (players[i] != null) {
                 avatars[i].player = players[i];
-                avatars[i].setPlayerID(players[i].getPlayerID());
+                avatars[i].setPlayerID(i);
+                avatars[i].player.setPlayerID(i);
             }
         }
     }
@@ -1823,6 +1834,10 @@ public abstract class Game
     public StateObservation getObservation()
     {
         return new StateObservation(fwdModel);
+    }
+
+    public StateObservationMulti getObservationMulti() {
+        return new StateObservationMulti(fwdModel);
     }
 
     /**

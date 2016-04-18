@@ -1,18 +1,17 @@
 BasicGame key_handler=Pulse square_size=50 no_players=2
     SpriteSet
         hole   > Immovable color=DARKBLUE img=hole
-        avatar1 > MovingAvatar
-        avatar2 > MovingAvatar
+        avatar1 > MovingAvatar img=avatar
         box    > Passive img=box
     LevelMapping
         0 > hole
         1 > box
+        A > avatar1
+        B > avatar1
     InteractionSet
         avatar1 wall > stepBack
-        avatar2 wall > stepBack
-        avatar1 avatar2 > stepBack
+        avatar1 avatar1 > stepBack
         box avatar1  > bounceForward
-        box avatar2  > bounceForward
         box wall box  > undoAll
         box hole    > killSprite scoreChange=1
     TerminationSet

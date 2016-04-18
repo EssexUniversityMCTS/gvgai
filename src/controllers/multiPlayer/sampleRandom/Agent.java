@@ -1,10 +1,7 @@
-package controllers.multiPlayer.doNothing;
+package controllers.multiPlayer.sampleRandom;
 
-import core.game.StateObservation;
 import core.game.StateObservationMulti;
 import core.player.AbstractMultiPlayer;
-import core.player.AbstractPlayer;
-import ontology.Types;
 import ontology.Types.ACTIONS;
 import tools.ElapsedCpuTimer;
 
@@ -30,6 +27,7 @@ public class Agent extends AbstractMultiPlayer {
 	 */
 	@Override
 	public ACTIONS act(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer) {
-		return ACTIONS.ACTION_NIL;
+		ArrayList<ACTIONS> a = stateObs.getAvailableActions(getPlayerID());
+		return ACTIONS.values()[new Random().nextInt(a.size())];
 	}
 }
