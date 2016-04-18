@@ -476,35 +476,55 @@ public class ArcadeMachine
 
                 //Create the player.
                 String[] agentNames = agentName.split(" ");
+                int no_players = agentNames.length;
+
                 int disqCount = 0; //count how many players disqualified
-                double[] score = new double[agentNames.length]; //store scores for all the players
-                AbstractPlayer[] players = new AbstractPlayer[agentNames.length]; //store all players
+                double[] score = new double[no_players]; //store scores for all the players
 
-                if (agentNames.length == 1) {
-                    //single player game
-
-                    players[0] = ArcadeMachine.createPlayer(agentName, filename, toPlay.getObservation(), randomSeed);
-                    if (setScores(players, players[0], 0, score, toPlay)) disqCount++;
-
+                Player[] players;
+                if (no_players > 1) {
+                    //multi player games
+                    players = new AbstractMultiPlayer[no_players];
                 } else {
-                    //multiplayer game
+                    //single player games
+                    players = new AbstractPlayer[no_players];
+                }
 
-                    for (int j = 0; j < agentNames.length; i++) {
+                for (int j = 0; j < no_players; j++) {
+                    if (no_players > 1) {
+                        //multi player
+                        players[j] = ArcadeMachine.createMultiPlayer(agentNames[j], filename, toPlay.getObservation(), randomSeed);
+                    } else {
+                        //single player
                         players[j] = ArcadeMachine.createPlayer(agentNames[j], filename, toPlay.getObservation(), randomSeed);
-                        if (setScores(players, players[j], j, score, toPlay)) disqCount++;
+                    }
+                    score[j] = -1;
+                    if (players[j] == null) {
+                        //Something went wrong in the constructor, controller disqualified
+                        //toPlay.disqualify(j);
+                        toPlay.getAvatars()[j].disqualify(true);
+
+                        disqCount++;
                     }
                 }
 
                 //Play the game if at least 2 players in multiplayer games or at least 1 in single player.
                 //Get array of scores back.
-                if ((agentNames.length == 1 && disqCount < 1) || ((agentNames.length - disqCount) > 1))
-                    score = toPlay.runGame(players, randomSeed);
-
-                scores.add(score);
+                if ((no_players - disqCount) >= toPlay.no_players) {
+                    score = toPlay.playGame(players, randomSeed, false);
+                }
+                else {
+                    //Get the score for the result.
+                    score = toPlay.handleResult();
+                }
 
                 //Finally, when the game is over, we need to tear the players down.
-                for (AbstractPlayer player : players)
-                    if(player != null) ArcadeMachine.tearPlayerDown(toPlay, player);
+                for (Player player : players)
+                    if(player != null)
+                        if(!ArcadeMachine.tearPlayerDown(toPlay, player))
+                            score = toPlay.handleResult();
+
+                scores.add(score);
 
                 //reset the game.
                 toPlay.reset();
@@ -516,24 +536,6 @@ public class ArcadeMachine
         System.out.println(" *** Results in game " + game_file + " *** ");
         System.out.println(scores);
         System.out.println(" *********");
-    }
-
-    /**
-     * Auxiliary method for runGames to avoid code duplication.
-     */
-    private static boolean setScores(AbstractPlayer[] players, AbstractPlayer player, int id, double[] score, Game toPlay) {
-        players[id] = player;
-        score[id] = -1;
-        if (player == null) {
-            //Something went wrong in the constructor, controller disqualified
-            toPlay.disqualify(id);
-
-            //Get the score for the result.
-            score = toPlay.handleResult();
-
-            return true;
-        }
-        return false;
     }
 
     /**

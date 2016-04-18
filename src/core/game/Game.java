@@ -282,6 +282,8 @@ public abstract class Game
         num_sprites = 0;
         nextSpriteID = 0;
         avatarLastAction = new Types.ACTIONS[no_players];
+        for (int i = 0; i < no_players; i++)
+            avatarLastAction[i] = Types.ACTIONS.ACTION_NIL;
 
         loadDefaultConstr();
     }
@@ -676,18 +678,19 @@ public abstract class Game
     public void reset()
     {
         num_sprites = 0;
+
         for (int i = 0; i < no_players; i++) {
-            avatars[i].setWinState(Types.WINNER.NO_WINNER);
-            avatars[i].setScore(0.0);
-            avatars[i].disqualify(false);
+            avatars[i] = null;
         }
         isEnded = false;
         gameTick = -1;
-        disqualified=false;
+        disqualified = false;
         avatarLastAction = new Types.ACTIONS[no_players];
+        for (int i = 0; i < no_players; i++)
+            avatarLastAction[i] = Types.ACTIONS.ACTION_NIL;
 
         //For each sprite type...
-        for(int i = 0; i < spriteGroups.length; ++i)
+        for (int i = 0; i < spriteGroups.length; ++i)
         {
             //Create the space for the sprites and effects of this type.
             spriteGroups[i].clear();
@@ -949,6 +952,7 @@ public abstract class Game
 
         //Update our state observation (forward model) with the information of the current game state.
         fwdModel.update(this);
+        //System.out.println(avatars[0].rect);
 
         //Execute a game cycle:
         this.tick();                    //update for all entities.

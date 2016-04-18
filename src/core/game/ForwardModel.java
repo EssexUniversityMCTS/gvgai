@@ -6,7 +6,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import core.SpriteGroup;
 import core.VGDLSprite;
-import core.player.Player;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.TimeEffect;
@@ -124,6 +123,9 @@ public class ForwardModel extends Game
 
         //Copy array of avatars from the game.
         this.avatars = new MovingAvatar[no_players];
+        //for (int i = 0; i < no_players; i++) {
+        //    this.avatars[i] = (MovingAvatar) a_gameState.avatars[i].copy();
+        //}
         System.arraycopy(a_gameState.avatars, 0, this.avatars, 0, no_players);
 
         //Copy of sprites from the game.
@@ -146,8 +148,8 @@ public class ForwardModel extends Game
                 VGDLSprite sp = spriteIt.next();
                 VGDLSprite spCopy = sp.copy();
 
-                if (sp.is_avatar && ((MovingAvatar)sp).player != null) {
-                    ((MovingAvatar)spCopy).setKeyHandler(((MovingAvatar)sp).getKeyHandler());
+                if (sp.is_avatar) {
+                    ((MovingAvatar) spCopy).setKeyHandler(((MovingAvatar) sp).getKeyHandler());
                 }
 
                 spriteGroups[i].addSprite(spCopy.spriteID, spCopy);
@@ -185,7 +187,8 @@ public class ForwardModel extends Game
         //Game state variables:
         this.gameTick = a_gameState.gameTick;
         this.isEnded = a_gameState.isEnded;
-        this.avatarLastAction = a_gameState.avatarLastAction;
+        this.avatarLastAction = new Types.ACTIONS[no_players];
+        System.arraycopy(a_gameState.avatarLastAction, 0, avatarLastAction, 0, no_players);
         this.nextSpriteID = a_gameState.nextSpriteID;
     }
 
@@ -454,11 +457,15 @@ public class ForwardModel extends Game
         this.size = a_gameState.size;
         this.block_size = a_gameState.block_size;
         this.MAX_SPRITES = a_gameState.MAX_SPRITES;
-        this.avatarLastAction = a_gameState.avatarLastAction;
         this.no_players = a_gameState.no_players;
+        this.avatarLastAction = new Types.ACTIONS[no_players];
+        System.arraycopy(a_gameState.avatarLastAction, 0, avatarLastAction, 0, no_players);
 
         //Copy array of avatars from the game.
         this.avatars = new MovingAvatar[no_players];
+        //for (int i = 0; i < no_players; i++) {
+        //    this.avatars[i] = (MovingAvatar) a_gameState.avatars[i].copy();
+        //}
         System.arraycopy(a_gameState.avatars, 0, avatars, 0, no_players);
 
         //create the boolean maps of sprite types.
