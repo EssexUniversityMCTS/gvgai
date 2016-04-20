@@ -16,6 +16,7 @@ public class TestMultiPlayer
         //Available controllers:
         String doNothingController = "controllers.multiPlayer.doNothing.Agent";
         String randomController = "controllers.multiPlayer.sampleRandom.Agent";
+        String oneStepController = "controllers.multiPlayer.sampleOneStepLookAhead.Agent";
 
         //Available games:
         String gamesPath = "examples/2player/";
@@ -39,9 +40,10 @@ public class TestMultiPlayer
         // 1. This starts a game, in a level, played by a human.
         //ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
 
-        // 2. This plays a game in a level by the controllers. Separate controllers with a space character. Provide enough as required by the game.
-        String contrs = doNothingController + " " + doNothingController;
-        ArcadeMachine.runOneGame(game, level1, visuals, contrs, recordActionsFile, seed, false);
+        // 2. This plays a game in a level by the controllers. Separate controllers with a space character.
+        // Provide enough players as required by the game.
+        String controllers = oneStepController + " " + randomController;
+        ArcadeMachine.runOneGame(game, level1, visuals, controllers, recordActionsFile, seed, false);
 
         // 3. This replays a game from an action file previously recorded
         //String readActionsFile = recordActionsFile;

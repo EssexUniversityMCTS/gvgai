@@ -22,7 +22,6 @@ import ontology.Types;
 import ontology.avatar.MovingAvatar;
 import tools.ElapsedCpuTimer;
 import tools.IO;
-import tools.KeyHandler;
 import tools.StatSummary;
 
 /**
@@ -530,7 +529,6 @@ public class ArcadeMachine
                 scores.add(score);
                 victories.add(toPlay.getWinner()== Types.WINNER.PLAYER_WINS ? 1 : 0);
 
-                scores.add(score);
                 for (MovingAvatar a : toPlay.getAvatars()) {
                     if (a.getWinState() == Types.WINNER.PLAYER_WINS)
                         scores.addWin();
@@ -777,7 +775,6 @@ public class ArcadeMachine
 
                 player = (AbstractMultiPlayer) controllerArgsConstructor.newInstance(constructorArgs);
                 player.setPlayerID(playerID);
-
             }
             //Check if we returned on time, and act in consequence.
             long timeTaken = ect.elapsedMillis();

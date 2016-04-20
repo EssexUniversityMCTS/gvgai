@@ -176,6 +176,11 @@ public class StateObservationMulti extends StateObservation {
      */
     public int getAvatarLimitHealthPoints(int playerID) {return model.getAvatarLimitHealthPoints(playerID);}
 
+    public StateObservationMulti copy() {
+        StateObservationMulti copyObs = new StateObservationMulti(model.copy());
+        return copyObs;
+    }
+
     /**
      * Method overwritten with multi player optimisations.
      * @param o Object to compare this to.
