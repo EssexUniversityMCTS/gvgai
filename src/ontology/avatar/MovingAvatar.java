@@ -267,8 +267,12 @@ public class MovingAvatar extends VGDLSprite {
         targetSprite.alternate_keys = this.alternate_keys;
         targetSprite.actions = new ArrayList<Types.ACTIONS>();
         targetSprite.actionsNIL = new ArrayList<Types.ACTIONS>();
+        targetSprite.playerID = this.playerID;
+        targetSprite.winState = this.winState;
+        targetSprite.score = this.score;
         targetSprite.postProcess();
         super.copyTo(targetSprite);
     }
+
 
 }
