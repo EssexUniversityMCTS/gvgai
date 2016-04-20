@@ -121,12 +121,6 @@ public class ForwardModel extends Game
         historicEvents = new TreeSet<Event>();
         shieldedEffects = new ArrayList[numSpriteTypes];
 
-        //Copy array of avatars from the game.
-        this.avatars = new MovingAvatar[no_players];
-        for (int i = 0; i < no_players; i++) {
-            this.avatars[i] = (MovingAvatar) a_gameState.avatars[i].copy();
-        }
-
         //Copy of sprites from the game.
         spriteGroups = new SpriteGroup[numSpriteTypes];
         num_sprites = 0;
@@ -459,6 +453,7 @@ public class ForwardModel extends Game
         this.no_players = a_gameState.no_players;
         this.avatarLastAction = new Types.ACTIONS[no_players];
         System.arraycopy(a_gameState.avatarLastAction, 0, avatarLastAction, 0, no_players);
+        this.avatars = new MovingAvatar[no_players];
 
         //create the boolean maps of sprite types.
         npcList = new boolean[a_gameState.spriteGroups.length];
