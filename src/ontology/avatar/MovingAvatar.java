@@ -141,9 +141,10 @@ public class MovingAvatar extends VGDLSprite {
         } else {
             action = this.player.act(game.getObservation(), ect.copy());
         }
-        System.out.println(action);
+        //System.out.println(action);
         VGDLSprite.thinkingTime = true;	// need to load images again for the real game
 
+        /*
         if(ect.exceededMaxTime())
         {
             long exceeded =  - ect.remainingTimeMillis();
@@ -159,6 +160,7 @@ public class MovingAvatar extends VGDLSprite {
 
             action = Types.ACTIONS.ACTION_NIL;
         }
+        */
 
         if(!actions.contains(action))
             action = Types.ACTIONS.ACTION_NIL;

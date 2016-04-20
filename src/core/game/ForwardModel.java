@@ -122,10 +122,10 @@ public class ForwardModel extends Game
         shieldedEffects = new ArrayList[numSpriteTypes];
 
         //Copy array of avatars from the game.
-        /*this.avatars = new MovingAvatar[no_players];
+        this.avatars = new MovingAvatar[no_players];
         for (int i = 0; i < no_players; i++) {
             this.avatars[i] = (MovingAvatar) a_gameState.avatars[i].copy();
-        }*/
+        }
 
         //Copy of sprites from the game.
         spriteGroups = new SpriteGroup[numSpriteTypes];
