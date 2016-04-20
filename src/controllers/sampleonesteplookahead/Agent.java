@@ -6,6 +6,9 @@ import core.game.StateObservation;
 import core.player.AbstractPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
+import tools.Utils;
+
+import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,9 +19,12 @@ import tools.ElapsedCpuTimer;
  */
 public class Agent extends AbstractPlayer {
 
+    public static double epsilon = 1e-6;
+    public static Random m_rnd;
+
     public Agent(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
 
-
+        m_rnd = new Random();
 
 
     }
@@ -41,7 +47,7 @@ public class Agent extends AbstractPlayer {
             StateObservation stCopy = stateObs.copy();
             stCopy.advance(action);
             double Q = heuristic.evaluateState(stCopy);
-
+            Q = Utils.noise(Q, this.epsilon, this.m_rnd.nextDouble());
 
             //System.out.println("Action:" + action + " score:" + Q);
             if (Q > maxQ) {
@@ -52,7 +58,7 @@ public class Agent extends AbstractPlayer {
 
         }
 
-       // System.out.println("====================");
+        //System.out.println("======== "  + maxQ + " " + bestAction + "============");
         return bestAction;
 
 

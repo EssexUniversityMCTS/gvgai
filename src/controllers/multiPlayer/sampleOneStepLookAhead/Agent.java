@@ -6,6 +6,7 @@ import core.game.StateObservationMulti;
 import core.player.AbstractMultiPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
+import tools.Utils;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,8 +16,12 @@ import java.util.Random;
  */
 public class Agent extends AbstractMultiPlayer {
     int oppID; //player ID of the opponent
+    public static double epsilon = 1e-6;
+    public static Random m_rnd;
 
-    public Agent(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer) {}
+    public Agent(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer) {
+        m_rnd = new Random();
+    }
 
     /**
      *
@@ -55,6 +60,7 @@ public class Agent extends AbstractMultiPlayer {
 
             stCopy.advance(acts);
             double Q = heuristic.evaluateState(stCopy, id);
+            Q = Utils.noise(Q, this.epsilon, this.m_rnd.nextDouble());
 
             //System.out.println("Action:" + action + " score:" + Q);
             if (Q > maxQ) {
@@ -63,7 +69,7 @@ public class Agent extends AbstractMultiPlayer {
             }
         }
 
-        //System.out.println("====================");
+        //System.out.println("======== "  + maxQ + " " + bestAction + "============");
         //System.out.println("Action:" + bestAction);
         return bestAction;
     }

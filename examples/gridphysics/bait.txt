@@ -9,7 +9,7 @@ BasicGame  key_handler=Pulse square_size=50
             withkey > img=alien
         mushroom > Immovable img=mushroom
         key > Passive img=key
-        goal > Immovable img=door
+        goal > Immovable img=door portal=True
         box    > Passive img=box shrinkfactor=0.8
 
     LevelMapping
