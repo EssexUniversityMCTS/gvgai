@@ -48,6 +48,6 @@ public class Agent extends AbstractPlayer
 
     public void result(StateObservation stateObservation, ElapsedCpuTimer elapsedCpuTimer)
     {
-        //System.out.println("Thanks for playing!");
+        //System.out.println("Thanks for playing! " + stateObservation.isAvatarAlive());
     }
 }

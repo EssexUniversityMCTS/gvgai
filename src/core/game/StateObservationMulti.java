@@ -176,6 +176,13 @@ public class StateObservationMulti extends StateObservation {
      */
     public int getAvatarLimitHealthPoints(int playerID) {return model.getAvatarLimitHealthPoints(playerID);}
 
+    /**
+     * returns true if the avatar is alive.
+     * @return true if the avatar is alive.
+     */
+    public boolean isAvatarAlive(int playerID) {return model.isAvatarAlive(playerID);}
+
+
     public StateObservationMulti copy() {
         StateObservationMulti copyObs = new StateObservationMulti(model.copy());
         return copyObs;

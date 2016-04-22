@@ -82,10 +82,10 @@ public abstract class Player implements Cloneable{
     /**
      * Function called when the game is over. This method must finish before CompetitionParameters.TEAR_DOWN_TIME,
      *  or the agent will be DISQUALIFIED
-     * @param stateObservation the game state at the end of the game
+     * @param stateObs the game state at the end of the game
      * @param elapsedCpuTimer timer when this method is meant to finish.
      */
-    public void result(StateObservation stateObservation, ElapsedCpuTimer elapsedCpuTimer)
+    public void result(StateObservation stateObs, ElapsedCpuTimer elapsedCpuTimer)
     {
     }
 

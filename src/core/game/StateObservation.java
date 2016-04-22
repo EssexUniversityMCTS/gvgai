@@ -238,6 +238,13 @@ public class StateObservation {
      */
     public int getAvatarLimitHealthPoints() {return model.getAvatarLimitHealthPoints();}
 
+    /**
+     * returns true if the avatar is alive.
+     * @return true if the avatar is alive.
+     */
+    public boolean isAvatarAlive() {return model.isAvatarAlive();}
+
+
     //Methods to retrieve the state external to the avatar, in the game...
 
     /**

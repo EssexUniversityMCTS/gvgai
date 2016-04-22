@@ -884,6 +884,23 @@ public class ForwardModel extends Game
      */
     public int getAvatarLimitHealthPoints(int playerID) {return avatars[playerID].limitHealthPoints;}
 
+    /**
+     * Returns true if the avatar is alive
+     * @return true if the avatar is alive
+     */
+    public boolean isAvatarAlive()
+    {
+        return isAvatarAlive(0);
+    }
+
+    /**
+     * Method overloaded for multi player games, returns true if the avatar is still alive.
+     *
+     * @param playerID ID of the player to query.
+     */
+    public boolean isAvatarAlive(int playerID) {
+        return !avatars[playerID].is_disabled();
+    }
 
     /** Methods that return positions of things **/
 
