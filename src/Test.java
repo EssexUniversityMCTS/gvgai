@@ -22,7 +22,6 @@ public class Test
         String sampleFlatMCTSController = "controllers.sampleFlatMCTS.Agent";
         String sampleOLMCTSController = "controllers.sampleOLMCTS.Agent";
         String sampleGAController = "controllers.sampleGA.Agent";
-        String tester = "controllers.Tester.Agent";
         String repeatOLETS = "controllers.repeatOLETS.Agent";
 
         //Available Generators

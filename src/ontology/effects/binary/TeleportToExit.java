@@ -29,7 +29,7 @@ public class TeleportToExit extends Effect
     {
         int destinationId = VGDLFactory.GetInstance().requestFieldValueInt(sprite2, "itype");
 
-        Collection<VGDLSprite> sprites = game.getSprites(destinationId).values();
+        Collection<VGDLSprite> sprites = game.getSprites(destinationId);
 
         if(sprites.size() > 0)
         {
