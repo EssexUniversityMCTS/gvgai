@@ -1,0 +1,20 @@
+BasicGame
+    SpriteSet
+        exit > Door color=GREEN img=goal
+        avatar > MovingAvatar img=avatar
+        trap > Immovable img=hell
+
+    InteractionSet
+
+        avatar wall > stepBack
+        exit avatar > killSprite scoreChange=1
+        avatar trap > killSprite scoreChange=-1
+
+    TerminationSet
+        Timeout limit=1000 win=False
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=exit limit=0 win=True
+
+    LevelMapping
+        x > exit
+        t > trap

@@ -82,7 +82,7 @@ public class ArcadeMachine
 
         // First, we create the game to be played..
         Game toPlay = new VGDLParser().parseGame(game_file);
-        toPlay.buildLevel(level_file);
+        toPlay.buildLevel(level_file, randomSeed);
 
         //Warm the game up.
         //ArcadeMachine.warmUp(toPlay, CompetitionParameters.WARMUP_TIME);
@@ -146,7 +146,7 @@ public class ArcadeMachine
         }
         
         try{
-        	toPlay.buildStringLevel(level.split("\n"));
+        	toPlay.buildStringLevel(level.split("\n"), 0);
         }
         catch(Exception e){
         	System.out.println("Undefined symbols or wrong number of avatars Disqualified ");
@@ -189,7 +189,7 @@ public class ArcadeMachine
         String[] levelLines = level.split("\n");
         
         toPlay.reset();
-        toPlay.buildStringLevel(levelLines);
+        toPlay.buildStringLevel(levelLines, 0);
 
         //Warm the game up.
         ArcadeMachine.warmUp(toPlay, CompetitionParameters.WARMUP_TIME);
@@ -235,7 +235,7 @@ public class ArcadeMachine
 
         // First, we create the game to be played..
         Game toPlay = new VGDLParser().parseGame(game_file);
-        toPlay.buildLevel(level_file);
+        toPlay.buildLevel(level_file, 0);
 
         //Second, create the player. Note: null as action_file and -1 as sampleRandom seed
         // (we don't want to record anything from this execution).
@@ -251,6 +251,9 @@ public class ArcadeMachine
         }
 
         int seed = 0;
+        int winner = 0;
+        double loggedScore = 0.0;
+        int timesteps = 0;
         ArrayList<Types.ACTIONS> actions = new ArrayList<Types.ACTIONS> ();
 
         try
@@ -258,8 +261,14 @@ public class ArcadeMachine
             BufferedReader br = new BufferedReader(new FileReader(actionFile));
 
             //First line should be the sampleRandom seed.
-            seed = Integer.parseInt(br.readLine());
-            System.out.println("Replaying game in " + game_file + ", " + level_file + " with seed " + seed);
+            String[] firstLine = br.readLine().split(" ");
+            seed = Integer.parseInt(firstLine[0]);
+            winner = Integer.parseInt(firstLine[1]);
+            loggedScore = Double.parseDouble(firstLine[2]);
+            timesteps = Integer.parseInt(firstLine[3]);
+            System.out.println("Replaying game in " + game_file + ", " + level_file + " with seed " + seed +
+                               " expecting player to win = " + (winner==1) + "; score: " + loggedScore +
+                               "; timesteps: " + timesteps);
 
             //The rest are the actions:
             String line = br.readLine();
@@ -292,6 +301,10 @@ public class ArcadeMachine
         if(! ArcadeMachine.tearPlayerDown(toPlay, player) )
             return toPlay.handleResult();
 
+        int actualWinner = (toPlay.getWinner() == Types.WINNER.PLAYER_WINS ? 1 : 0);
+        if(actualWinner != winner || score != loggedScore || timesteps != toPlay.getGameTick())
+            throw new RuntimeException("ERROR: Game Replay Failed.");
+
         return score;
     }
 
@@ -305,6 +318,7 @@ public class ArcadeMachine
      *                    null if no recording is desired. If not null, this array must contain as much String objects as
      *                    level_files.length*level_times.
      */
+    public static StatSummary performance;
     public static void runGames(String game_file, String[] level_files, int level_times,
                                 String agentName, String[] actionFiles)
     {
@@ -320,7 +334,9 @@ public class ArcadeMachine
                     "you must supply an action file for each game instance to be played, or null.";
         }
 
+        StatSummary victories = new StatSummary();
         StatSummary scores = new StatSummary();
+        performance = new StatSummary();
 
         Game toPlay = new VGDLParser().parseGame(game_file);
         int levelIdx = 0;
@@ -329,18 +345,19 @@ public class ArcadeMachine
 
             for(int i = 0; i < level_times; ++i)
             {
-                System.out.println(" ** Playing game " + game_file + ", level " + level_file + " ("+(i+1)+"/"+level_times+") **");
+                if(VERBOSE)
+                    System.out.println(" ** Playing game " + game_file + ", level " + level_file + " ("+(i+1)+"/"+level_times+") **");
 
+                //Determine the random seed, different for each game to be played.
+                int randomSeed = new Random().nextInt();
+                
                 //build the level in the game.
-                toPlay.buildLevel(level_file);
+                toPlay.buildLevel(level_file, randomSeed);
 
                 String filename = recordActions ? actionFiles[levelIdx*level_times + i] : null;
 
                 //Warm the game up.
                 ArcadeMachine.warmUp(toPlay, CompetitionParameters.WARMUP_TIME);
-
-                //Determine the random seed, different for each game to be played.
-                int randomSeed = new Random().nextInt();
 
                 //Create the player.
                 AbstractPlayer player = ArcadeMachine.createPlayer(agentName, filename, toPlay.getObservation(), randomSeed);
@@ -361,6 +378,7 @@ public class ArcadeMachine
                 }
 
                 scores.add(score);
+                victories.add(toPlay.getWinner()== Types.WINNER.PLAYER_WINS ? 1 : 0);
 
                 //Finally, when the game is over, we need to tear the player down.
                 if(player != null) ArcadeMachine.tearPlayerDown(toPlay, player);
@@ -372,9 +390,10 @@ public class ArcadeMachine
             levelIdx++;
         }
 
-        System.out.println(" *** Results in game " + game_file + " *** ");
-        System.out.println(scores);
-        System.out.println(" *********");
+
+        System.out.println("Results in game " + game_file + ", " +
+                        victories.mean() + ", " + scores.mean() );
+                        //+ "," + performance.mean());
     }
 
     /**
@@ -411,7 +430,7 @@ public class ArcadeMachine
             	toPlay.setCharMapping(charMapping);
             }
             try{
-            	toPlay.buildStringLevel(level.split("\n"));
+            	toPlay.buildStringLevel(level.split("\n"), 0);
             }
             catch(Exception e){
             	System.out.println("Undefined symbols or wrong number of avatars Disqualified ");
@@ -460,12 +479,12 @@ public class ArcadeMachine
         	String level = loadGeneratedFile(toPlay, file);
             String[] levelLines = level.split("\n");
             
-            toPlay.buildStringLevel(levelLines);
-
-            String filename = recordActions ? actionFile[levelIdx] : null;
-
             //Determine the random seed, different for each game to be played.
             int randomSeed = new Random().nextInt();
+            
+            toPlay.buildStringLevel(levelLines, randomSeed);
+
+            String filename = recordActions ? actionFile[levelIdx] : null;
 
             //Create the player.
             AbstractPlayer player = ArcadeMachine.createPlayer(agentName, filename, toPlay.getObservation(), randomSeed);
@@ -567,7 +586,8 @@ public class ArcadeMachine
             }
             else
             {
-                System.out.println("Controller initialization time: " + timeTaken + " ms.");
+                if(VERBOSE)
+                    System.out.println("Controller initialization time: " + timeTaken + " ms.");
             }
 
         //This code can throw many exceptions (no time related):
@@ -871,7 +891,7 @@ public class ArcadeMachine
     private static boolean tearPlayerDown(Game toPlay, AbstractPlayer player)
     {
         //This is finished, no more actions, close the writer.
-        player.teardown();
+        player.teardown(toPlay);
 
         //Determine the time due for the controller close up.
         ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
@@ -891,7 +911,8 @@ public class ArcadeMachine
             return false;
         }
 
-        System.out.println("Controller tear down time: " + timeTaken + " ms.");
+        if(VERBOSE)
+            System.out.println("Controller tear down time: " + timeTaken + " ms.");
         return true;
     }
 

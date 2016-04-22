@@ -9,7 +9,9 @@ import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
@@ -25,6 +27,7 @@ import ontology.physics.GravityPhysics;
 import ontology.physics.GridPhysics;
 import ontology.physics.NoFrictionPhysics;
 import ontology.physics.Physics;
+import tools.Direction;
 import tools.Utils;
 import tools.Vector2d;
 
@@ -115,7 +118,7 @@ public abstract class VGDLSprite {
     /**
      * Orientation of the sprite.
      */
-    public Vector2d orientation;
+    public Direction orientation;
 
     /**
      * Rectangle that this sprite occupies on the screen.
@@ -162,6 +165,16 @@ public abstract class VGDLSprite {
      * If true, this sprite is never present in the observations passed to the controller.
      */
     public boolean hidden;
+    
+    /**
+     * Indicates if the tile support autotiling
+     */
+    public boolean autotiling;
+    
+    /**
+     * Indicates if the tile picking is random
+     */
+    public double randomtiling;
 
     /**
      * List of types this sprite belongs to. It contains the ids, including itself's, from this sprite up
@@ -178,6 +191,11 @@ public abstract class VGDLSprite {
      * Image of this sprite.
      */
     public Image image;
+    
+    /**
+     * Dictionary for autoTiling
+     */
+    public HashMap<Integer, Image> allImages;
 
     /**
      * String that represents the image in VGDL.
@@ -270,9 +288,12 @@ public abstract class VGDLSprite {
         is_from_avatar = false;
         mass = 1;
         shrinkfactor = 1.0;
+        autotiling = false;
+        randomtiling = -1;
+        allImages = new HashMap<Integer, Image>();
         is_oriented = false;
         draw_arrow = false;
-        orientation = Types.NONE;
+        orientation = Types.DNONE;
         lastmove = 0;
         invisible = false;
         rotateInPlace = false;
@@ -392,7 +413,7 @@ public abstract class VGDLSprite {
      * the avatar is not oriented (is_oriented == false) or the previous orientation is the
      * same as the one received by parameter.
      */
-    public boolean _updateOrientation(Vector2d orientation)
+    public boolean _updateOrientation(Direction orientation)
     {
         if(!this.is_oriented) return false;
         if(this.orientation.equals(orientation)) return false;
@@ -406,14 +427,14 @@ public abstract class VGDLSprite {
      * @param speed the speed of the sprite.
      * @return true if the position changed.
      */
-    public boolean _updatePos(Vector2d orientation, int speed) {
+    public boolean _updatePos(Direction orientation, int speed) {
         if (speed == 0) {
             speed = (int) this.speed;
             if(speed == 0) return false;
         }
 
-        if (cooldown <= lastmove && (Math.abs(orientation.x) + Math.abs(orientation.y) != 0)) {
-            rect.translate((int) orientation.x * speed, (int) orientation.y * speed);
+        if (cooldown <= lastmove && (Math.abs(orientation.x()) + Math.abs(orientation.y()) != 0)) {
+            rect.translate((int) orientation.x() * speed, (int) orientation.y() * speed);
             bucket = rect.y / rect.height;
             bucketSharp = (rect.y % rect.height) == 0;
             lastmove = 0;
@@ -430,7 +451,7 @@ public abstract class VGDLSprite {
         if (speed == 0 || !is_oriented) {
             return new Vector2d(0, 0);
         } else {
-            return new Vector2d(orientation.x * speed, orientation.y * speed);
+            return new Vector2d(orientation.x() * speed, orientation.y() * speed);
         }
     }
 
@@ -673,7 +694,7 @@ public abstract class VGDLSprite {
     		loadImage(img);
     	}
 
-        if(this.orientation != Types.NONE)
+        if(this.orientation != Types.DNONE)
         {
             //Any sprite that receives an orientation, is oriented.
             this.is_oriented = true;
@@ -693,15 +714,36 @@ public abstract class VGDLSprite {
         {
             //load image.
             try {
-                if (!(str.contains(".png"))) str = str + ".png";
-                String image_file = CompetitionParameters.IMG_PATH + str;
-                if((new File(image_file).exists())) {
-                    image = ImageIO.read(new File(image_file));
-                }
-                else {
-                    //System.out.println(image_file);
-                    image = ImageIO.read(this.getClass().getResource("/" + image_file));
-                }
+            	if (this.autotiling || this.randomtiling >= 0){
+            		if (str.contains(".png")) str = str.substring(0, str.length() - 3);
+            		String imagePath = CompetitionParameters.IMG_PATH + str + "_";
+            		boolean noMoreFiles = false;
+            		int i = 0;
+            		do{
+            			String currentFile = imagePath + i + ".png";
+            			if((new File(currentFile).exists())) {
+            				allImages.put(i, ImageIO.read(new File(currentFile)));
+    	                }
+    	                else {
+    	                    //System.out.println(currentFile);
+    	                	//tempImage = ImageIO.read(this.getClass().getResource("/" + currentFile));
+    	                	noMoreFiles = true;
+    	                }
+            			i += 1;
+            		}while(!noMoreFiles);
+            		image = allImages.get(0);
+            	}
+            	else{
+	                if (!(str.contains(".png"))) str = str + ".png";
+	                String image_file = CompetitionParameters.IMG_PATH + str;
+	                if((new File(image_file).exists())) {
+	                    image = ImageIO.read(new File(image_file));
+	                }
+	                else {
+	                    //System.out.println(image_file);
+	                    image = ImageIO.read(this.getClass().getResource("/" + image_file));
+	                }
+            	}
 
             } catch (IOException e) {
                 System.out.println("Image " + str + " could not be found.");
@@ -756,7 +798,7 @@ public abstract class VGDLSprite {
         toSprite.physics = this.physics; //Object reference, but should be ok.
         toSprite.shrinkfactor = this.shrinkfactor;
         toSprite.is_oriented = this.is_oriented;
-        toSprite.orientation = this.orientation.copy();
+        toSprite.orientation = new Direction(orientation.x(), orientation.y());
         toSprite.rect = new Rectangle(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
         toSprite.lastrect =  new Rectangle(this.lastrect.x, this.lastrect.y, this.lastrect.width, this.lastrect.height);
         toSprite.lastmove = this.lastmove;
@@ -768,12 +810,18 @@ public abstract class VGDLSprite {
         toSprite.color = this.color;
         toSprite.draw_arrow = this.draw_arrow;
         toSprite.is_npc = this.is_npc;
+        toSprite.allImages = new HashMap<Integer, Image>();
+        for(Entry<Integer, Image> e:this.allImages.entrySet()){
+        	toSprite.allImages.put(e.getKey(), e.getValue());
+        }
         toSprite.image = this.image;
         toSprite.spriteID = this.spriteID;
         toSprite.is_from_avatar = this.is_from_avatar;
         toSprite.bucket = this.bucket;
         toSprite.bucketSharp = this.bucketSharp;
         toSprite.invisible = this.invisible;
+        toSprite.autotiling = this.autotiling;
+        toSprite.randomtiling = this.randomtiling;
         toSprite.rotateInPlace = this.rotateInPlace;
         toSprite.isFirstTick = this.isFirstTick;
         toSprite.hidden = this.hidden;
@@ -825,6 +873,8 @@ public abstract class VGDLSprite {
         if(other.is_npc != this.is_npc) return false;
         if(other.is_from_avatar != this.is_from_avatar) return false;
         if(other.invisible != this.invisible) return false;
+        if(other.autotiling != this.autotiling) return false;
+        if(other.randomtiling != this.randomtiling) return false;
         if(other.spriteID != this.spriteID) return false;
         if(other.isFirstTick != this.isFirstTick) return false;
         if(other.hidden != this.hidden) return false;

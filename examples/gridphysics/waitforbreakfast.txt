@@ -2,8 +2,8 @@ BasicGame
   SpriteSet
     exit > Immovable color=DARKBLUE img=portal portal=True
     wall > Immovable color=BLACK img=wall
-    othertable > color=DARKBLUE img=tableempty
-    table > color=DARKBLUE
+    othertable > Immovable color=DARKBLUE img=tableempty
+    table > Immovable color=DARKBLUE
       emptytable > img=tableempty
       tablewb > img=tablebacon
       endtable > img=tableused

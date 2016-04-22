@@ -27,14 +27,7 @@ import ontology.avatar.MovingAvatar;
 import ontology.effects.Effect;
 import ontology.effects.TimeEffect;
 import ontology.sprites.Resource;
-import tools.IO;
-import tools.JEasyFrame;
-import tools.KeyHandler;
-import tools.KeyInput;
-import tools.KeyPulse;
-import tools.Pair;
-import tools.Vector2d;
-import tools.WindowInput;
+import tools.*;
 import tools.pathfinder.Node;
 import tools.pathfinder.PathFinder;
 
@@ -213,11 +206,6 @@ public abstract class Game
      * See Types.WINNER for the values of this variable.
      */
     protected Types.WINNER winner = Types.WINNER.NO_WINNER;
-
-    /**
-     * Default frame rate of the basic game.
-     */
-    protected int frame_rate;
 
     /**
      * State observation for this game.
@@ -979,7 +967,7 @@ public abstract class Game
      */
     private void printResult()
     {
-        System.out.println("Result (1->win; 0->lose):"+ winner.key() + ", Score:" + score + ", timesteps:" + this.getGameTick());
+        //System.out.println("Result (1->win; 0->lose):"+ winner.key() + ", Score:" + score + ", timesteps:" + this.getGameTick());
     }
 
     /**
@@ -1468,12 +1456,20 @@ public abstract class Game
     public void _updateCollisionDict(VGDLSprite sprite) {}
 
     /**
+     * Returns the game score.
+     */
+    public double getScore()
+    {
+        return score;
+    }
+
+    /**
      * Reverses the direction of a given sprite.
      * @param sprite sprite to reverse.
      */
     public void reverseDirection(VGDLSprite sprite)
     {
-        sprite.orientation = new Vector2d(-sprite.orientation.x, -sprite.orientation.y);
+        sprite.orientation = new Direction(-sprite.orientation.x(), -sprite.orientation.y());
     }
 
     /**
@@ -1711,13 +1707,13 @@ public abstract class Game
         return block_size;
     }
 
-    public abstract void buildStringLevel(String[] levelString);
+    public abstract void buildStringLevel(String[] levelString, int randomSeed);
     
     /**
      * Builds a level, receiving a file name.
      * @param gamelvl file name containing the level.
      */
-    public void buildLevel(String gamelvl){}
+    public void buildLevel(String gamelvl, int randomSeed){}
 
 
     public ArrayList<Node> getPath(Vector2d start, Vector2d end)

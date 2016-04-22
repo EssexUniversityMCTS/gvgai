@@ -2,6 +2,7 @@ package core.game;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Random;
 
 import core.VGDLFactory;
 import core.VGDLRegistry;
@@ -55,7 +56,6 @@ public class BasicGame extends Game {
 
         //Default values for frame rate and maximum number of sprites allowed.
         square_size = -1;
-        frame_rate = 25;
         MAX_SPRITES = 10000;
 
         //Parse the arguments.
@@ -66,7 +66,7 @@ public class BasicGame extends Game {
      * Builds a level, receiving a file name.
      * @param gamelvl file name containing the level.
      */
-    public void buildLevel(String gamelvl){
+    public void buildLevel(String gamelvl, int randomSeed){
         String[] lines = new IO().readFile(gamelvl);
 
         //Pathfinder
@@ -81,7 +81,7 @@ public class BasicGame extends Game {
 
         pathf = new PathFinder(obstacles);
 
-        buildStringLevel(lines);
+        buildStringLevel(lines, randomSeed);
 
         pathf.run(this.getObservation());
     }
@@ -91,7 +91,7 @@ public class BasicGame extends Game {
      * Builds a level from this game, reading it from file.
      * @param gamelvl filename of the level to load.
      */
-    public void buildStringLevel(String[] lines)
+    public void buildStringLevel(String[] lines, int randomSeed)
     {
         //Read the level description
         String[] desc_lines = lines;
@@ -127,11 +127,36 @@ public class BasicGame extends Game {
                 //If this character is defined in the array of mappings.
                 if(charMapping.containsKey(c))
                 {
-                    //Get its position and add it to the game.
-                    Vector2d position = new Vector2d(j*block_size,i*block_size);
-                    addSpritesIn(charMapping.get(c), position);
+                	for(String obj:charMapping.get(c)){
+	                	int similarTiles = 0;
+	                	for(int x=-1; x<= 1; x++){
+	                		for(int y=-1; y<=1; y++){
+	                			if(Math.abs(x) != Math.abs(y) && 
+	                				(j + x >=0 && j + x < size.width && i + y >=0 && i + y < size.height)){
+	                				if(charMapping.containsKey(desc_lines[i + y].charAt(j + x))){
+		                				ArrayList<String> neighborTiles = charMapping.get(desc_lines[i + y].charAt(j + x));
+		                				if(neighborTiles.contains(obj)){
+		                					similarTiles += Math.floor(Math.abs(x) * (x + 3) / 2) + Math.abs(y) * (y + 3) * 2;
+		                				}
+	                				}
+	                			}
+	                		}
+	                	}
+	                	
+	                	//Get its position and add it to the game.
+	                	Vector2d position = new Vector2d(j*block_size,i*block_size);
+	                    VGDLSprite s = addSpriteIn(obj, position);
+	                    if(s.autotiling){
+	                    	s.image = s.allImages.get(similarTiles);
+	                    }
+	                    if(s.randomtiling >= 0){
+	                    	Random random = new Random();
+	                    	if(random.nextDouble() > s.randomtiling){
+	                    		s.image = s.allImages.get(random.nextInt(s.allImages.size()));
+	                    	}
+	                    }
+                	}
                 }
-
             }
         }
 
@@ -164,6 +189,16 @@ public class BasicGame extends Game {
     }
 
     /**
+     * Adds one sprites in the position indicated.
+     * @param key sprite type to add.
+     * @param position position where the sprite will be placed
+     */
+    public VGDLSprite addSpriteIn(String key, Vector2d position){
+    	int itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(key);
+        return addSprite(itype, position);
+    }
+    
+    /**
      * Adds all sprites that 'c' represents in the position indicated.
      * @param keys List of sprite types to add.
      * @param position position where all these sprites will be placed.
@@ -173,8 +208,7 @@ public class BasicGame extends Game {
         //We might have more than one sprite in the same position.
         for(String objectType : keys)
         {
-            int itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(objectType);
-            addSprite(itype, position);
+            addSpriteIn(objectType, position);
         }
     }
 

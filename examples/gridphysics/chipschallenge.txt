@@ -28,8 +28,6 @@ BasicGame square_size=45 key_handler=Pulse
         exit > Immovable img=goal
         chip > Resource img=gold limit=11
         avatar > MovingAvatar img=alien
-            normal > OrientedAvatar img=alien
-            gliding > InertialAvatar img=ghost
             
     
     LevelMapping
@@ -85,8 +83,6 @@ BasicGame square_size=45 key_handler=Pulse
 
         yellowdoor avatar > killIfOtherHasMore resource=yellowkey limit=1  scoreChange=2
         avatar yellowdoor > changeResource resource=yellowkey value=-1
-
-        keyused avatar > killSprite
         
         avatar wall door > undoAll
         avatar water > killIfHasLess resource=flippers limit=0

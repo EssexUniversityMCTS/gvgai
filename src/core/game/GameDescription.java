@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import core.VGDLRegistry;
 import core.termination.Termination;
@@ -176,7 +177,7 @@ public class GameDescription {
 		}
 		String[] lines = level.split("\n");
 		currentGame.reset();
-		currentGame.buildStringLevel(lines);
+		currentGame.buildStringLevel(lines, new Random().nextInt());
 		currentGame.setCharMapping(this.charMapping);
 		
 		return currentGame.getObservation();

@@ -31,9 +31,11 @@ BasicGame key_handler=Pulse  square_size=50
         avatar EOS > stepBack
         inBlack white > stepBack
         inWhite black > stepBack
-        avatar black > transformTo stype=inBlack
-        avatar white > transformTo stype=inWhite
+
+        inGrey black > transformTo stype=inBlack
+        inGrey white > transformTo stype=inWhite
         avatar grey > transformTo stype=inGrey
+
         crate avatar > bounceForward
         crate wall > undoAll
         target wall > undoAll

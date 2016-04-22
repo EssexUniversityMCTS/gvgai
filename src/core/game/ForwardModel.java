@@ -443,7 +443,6 @@ public class ForwardModel extends Game
         this.size = a_gameState.size;
         this.block_size = a_gameState.block_size;
         this.score = a_gameState.score;
-        this.frame_rate = a_gameState.frame_rate; //is this needed?
         this.MAX_SPRITES = a_gameState.MAX_SPRITES;
         this.avatarLastAction = a_gameState.avatarLastAction;
 
@@ -502,6 +501,7 @@ public class ForwardModel extends Game
         this.ki.setAction(action);
         avatar.preMovement();
         avatar.move(this, this.ki.getMask());
+        setAvatarLastAction(action);
 
         for(int i = spriteOrder.length-1; i >= 0; --i)
         {
@@ -646,7 +646,7 @@ public class ForwardModel extends Game
     {
         if(isEnded)
             return Types.NIL;
-        return avatar.orientation;
+        return new Vector2d(avatar.orientation.x(), avatar.orientation.y());
     }
 
     /**
@@ -921,7 +921,7 @@ public class ForwardModel extends Game
 
     //Must override this:
 	@Override
-	public void buildStringLevel(String[] levelString) {
+	public void buildStringLevel(String[] levelString, int randomSeed) {
 		throw new RuntimeException("buildLevel should not be called in this instance.");
 	}
 

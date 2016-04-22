@@ -5,14 +5,15 @@ BasicGame  key_handler=Pulse square_size=50
 
         hole   > Immovable color=DARKBLUE img=hole
         avatar > MovingAvatar
-            nokey > img=alien 
-            withkey > img=alien 
+            nokey > img=avatar
+            withkey > img=alien
         mushroom > Immovable img=mushroom
         key > Passive img=key
         goal > Immovable img=door
         box    > Passive img=box shrinkfactor=0.8
 
     LevelMapping
+        A > nokey
         0 > hole
         1 > box
         k > key

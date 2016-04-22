@@ -24,7 +24,7 @@ public class CompetitionParameters
     /**
      * Milliseconds allowed for controller initialization.
      */
-    public static int INITIALIZATION_TIME = 60000;
+    public static int INITIALIZATION_TIME = 1000;
 
     /**
      * Milliseconds allowed for controller tear down.
@@ -44,7 +44,7 @@ public class CompetitionParameters
     /**
      * Milliseconds allowed for level generator to initialize
      */
-    public static int LEVEL_INITIALIZATION_TIME = 1000;
+    public static int LEVEL_INITIALIZATION_TIME = 60000;
     
     /**
      * Path to sprite images.
@@ -55,12 +55,12 @@ public class CompetitionParameters
     /**
      * Delay for human play.
      */
-    public static int DELAY = 30;
+    public static int DELAY = 15;
 
     /**
      * Longer delay for human play.
      */
-    public static int LONG_DELAY = 20;
+    public static int LONG_DELAY = 25;
 
 
     /**
