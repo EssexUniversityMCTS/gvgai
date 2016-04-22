@@ -150,7 +150,7 @@ public class BasicGame extends Game {
 	                    	s.image = s.allImages.get(similarTiles);
 	                    }
 	                    if(s.randomtiling >= 0){
-	                    	Random random = new Random();
+	                    	Random random = new Random(randomSeed);
 	                    	if(random.nextDouble() > s.randomtiling){
 	                    		s.image = s.allImages.get(random.nextInt(s.allImages.size()));
 	                    	}
