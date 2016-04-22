@@ -646,7 +646,7 @@ public class ForwardModel extends Game
     {
         if(isEnded)
             return Types.NIL;
-        return avatar.orientation;
+        return new Vector2d(avatar.orientation.x(), avatar.orientation.y());
     }
 
     /**

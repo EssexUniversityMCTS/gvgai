@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 
 import core.VGDLSprite;
 import ontology.Types;
+import tools.Direction;
 import tools.Vector2d;
 
 /**
@@ -62,7 +63,7 @@ public class GridPhysics implements Physics {
     }
 
     @Override
-    public Types.MOVEMENT activeMovement(VGDLSprite sprite, Vector2d action, double speed)
+    public Types.MOVEMENT activeMovement(VGDLSprite sprite, Direction action, double speed)
     {
         if(speed == 0)
         {
@@ -72,7 +73,7 @@ public class GridPhysics implements Physics {
                 speed = sprite.speed;
         }
 
-        if(speed != 0 && action != null && action != Types.NONE)
+        if(speed != 0 && action != null && action != Types.DNONE)
         {
             if(sprite.rotateInPlace)
             {

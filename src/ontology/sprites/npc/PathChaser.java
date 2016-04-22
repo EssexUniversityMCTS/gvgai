@@ -5,6 +5,7 @@ import core.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
+import tools.Direction;
 import tools.Utils;
 import tools.Vector2d;
 import tools.pathfinder.Node;
@@ -28,7 +29,7 @@ public class PathChaser extends RandomNPC
     public float maxDistance;
 
     ArrayList<VGDLSprite> targets;
-    ArrayList<Vector2d> actions;
+    ArrayList<Direction> actions;
 
     public PathChaser(){}
 
@@ -50,7 +51,7 @@ public class PathChaser extends RandomNPC
         fleeing = false;
         maxDistance = -1;
         targets = new ArrayList<VGDLSprite>();
-        actions = new ArrayList<Vector2d>();
+        actions = new ArrayList<Direction>();
     }
 
     public void postProcess()
@@ -70,7 +71,7 @@ public class PathChaser extends RandomNPC
         //Get the closest targets
         closestTargets(game);
 
-        Vector2d act = Types.NONE;
+        Direction act = Types.DNONE;
         if(targets.size() > 0)
         {
             //If there's a target, get the path to it and take the first action.
@@ -78,7 +79,10 @@ public class PathChaser extends RandomNPC
             ArrayList<Node> path = game.getPath(this.getPosition(), target.getPosition());
 
             if(path!=null && path.size()>0)
-                act = path.get(0).comingFrom;
+            {
+                Vector2d v = path.get(0).comingFrom;
+                act = new Direction(v.x, v.y);
+            }
 
             this.counter = this.cons; //Reset the counter of consecutive moves.
 
@@ -135,7 +139,7 @@ public class PathChaser extends RandomNPC
         targetSprite.itype = this.itype;
         targetSprite.maxDistance = this.maxDistance;
         targetSprite.targets = new ArrayList<VGDLSprite>();
-        targetSprite.actions = new ArrayList<Vector2d>();
+        targetSprite.actions = new ArrayList<Direction>();
         super.copyTo(targetSprite);
     }
     

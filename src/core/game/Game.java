@@ -27,14 +27,7 @@ import ontology.avatar.MovingAvatar;
 import ontology.effects.Effect;
 import ontology.effects.TimeEffect;
 import ontology.sprites.Resource;
-import tools.IO;
-import tools.JEasyFrame;
-import tools.KeyHandler;
-import tools.KeyInput;
-import tools.KeyPulse;
-import tools.Pair;
-import tools.Vector2d;
-import tools.WindowInput;
+import tools.*;
 import tools.pathfinder.Node;
 import tools.pathfinder.PathFinder;
 
@@ -974,7 +967,7 @@ public abstract class Game
      */
     private void printResult()
     {
-        System.out.println("Result (1->win; 0->lose):"+ winner.key() + ", Score:" + score + ", timesteps:" + this.getGameTick());
+        //System.out.println("Result (1->win; 0->lose):"+ winner.key() + ", Score:" + score + ", timesteps:" + this.getGameTick());
     }
 
     /**
@@ -1476,7 +1469,7 @@ public abstract class Game
      */
     public void reverseDirection(VGDLSprite sprite)
     {
-        sprite.orientation = new Vector2d(-sprite.orientation.x, -sprite.orientation.y);
+        sprite.orientation = new Direction(-sprite.orientation.x(), -sprite.orientation.y());
     }
 
     /**

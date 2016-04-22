@@ -7,6 +7,7 @@ import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
+import tools.Direction;
 import tools.Vector2d;
 
 /**
@@ -36,7 +37,7 @@ public class OrientedAvatar extends MovingAvatar
     protected void loadDefaults()
     {
         super.loadDefaults();
-        orientation = Types.RIGHT.copy();
+        orientation = Types.DRIGHT.copy();
         draw_arrow = true;
         is_oriented = true;
         rotateInPlace = true;
@@ -57,7 +58,7 @@ public class OrientedAvatar extends MovingAvatar
         {
             Vector2d dir = lastDirection();
             dir.normalise();
-            orientation = dir;
+            orientation = new Direction(dir.x, dir.y);
         }
         //Otherwise, orientation is already updated, no need to change anything.
     }
@@ -77,7 +78,7 @@ public class OrientedAvatar extends MovingAvatar
         {
             Vector2d dir = lastDirection();
             dir.normalise();
-            orientation = dir;
+            orientation = new Direction(dir.x, dir.y);
         }
         //Otherwise, orientation is already updated, no need to change anything.
     }
