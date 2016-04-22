@@ -1,6 +1,8 @@
 import java.util.Random;
 
+import tools.StatSummary;
 import core.ArcadeMachine;
+import core.competition.CompetitionParameters;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,6 +35,10 @@ public class Test
         String gamesPath = "examples/gridphysics/";
         String games[] = new String[]{};
         String generateLevelPath = "examples/gridphysics/";
+        
+        // This is where Dennis has his images and game and level files on development machine
+        CompetitionParameters.IMG_PATH = "D:/Apps/gvg-master-thesis/gvgai-master/sprites/";
+        gamesPath = "D:/Apps/gvg-master-thesis/gvgai-master/examples/gridphysics/";
 
         //All public games
         games = new String[]{"aliens", "bait", "blacksmoke", "boloadventures", "boulderchase",              //0-4
@@ -62,11 +68,54 @@ public class Test
         String recordLevelFile = generateLevelPath + games[gameIdx] + "_glvl.txt";
         String recordActionsFile = null;//"actions_" + games[gameIdx] + "_lvl" + levelIdx + "_" + seed + ".txt"; //where to record the actions executed. null if not to save.
 
+        // if two integers X and Y are passed as args, this plays all games starting at index X and ending at index Y - 1,
+        // 10 runs per game, all (5) levels of the played games
+        if(args.length > 0){
+        	int X = Integer.parseInt(args[0]);
+        	int Y = Integer.parseInt(args[1]);
+        	
+        	// this is where Dennis has his game and level files and images on the cluster for experiments
+        	gamesPath = "./examples/gridphysics/";
+        	CompetitionParameters.IMG_PATH = "./sprites/";
+        	
+        	for(int i = X; i < Y; ++i){
+        		game = gamesPath + games[i] + ".txt";
+        		String[] levels = new String[5];
+        		
+        		for(int j = 0; j < 5; ++j){
+        			levels[j] = gamesPath + games[i] + "_lvl" + j +".txt";
+        		}
+        		
+        		ArcadeMachine.runGames(game, levels, 10, sampleMCTSController, null);
+        	}
+        	
+        	return;
+        }
+        
         // 1. This starts a game, in a level, played by a human.
-        ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
+        //ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
+        
+        // useful to wait a little bit so that VisualVM has time to boot up for profiling
+        boolean delayedStart = false;
+	    if(delayedStart){
+	    	long startTime = System.currentTimeMillis();
+	    	long timeWaited = System.currentTimeMillis() - startTime;
+	    	System.out.println("Waiting to start games...");
+	    	
+	    	while(timeWaited < 10000){
+	    		timeWaited = System.currentTimeMillis() - startTime;
+	    	}
+	     			
+	    	System.out.println("Ready to start games!");
+	    	System.out.println();
+	    }
         
         // 2. This plays a game in a level by the controller.
-        //ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed, false);
+        ArcadeMachine.performance = new StatSummary();
+        ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed, false);
+        System.out.println("Results in game " + game + ", " 
+        		+ ", mean MCTS iterations = " + ArcadeMachine.performance.mean()
+                + ", std err = " + ArcadeMachine.performance.stdErr());
 
         // 3. This replays a game from an action file previously recorded
         //String readActionsFile = recordActionsFile;
