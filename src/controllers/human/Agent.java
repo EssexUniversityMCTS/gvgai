@@ -4,6 +4,7 @@ import core.game.Game;
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
 import ontology.Types;
+import tools.Direction;
 import tools.ElapsedCpuTimer;
 import tools.Utils;
 import tools.Vector2d;
@@ -33,7 +34,7 @@ public class Agent extends AbstractPlayer
      */
     public Types.ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer)
     {
-        Vector2d move = Utils.processMovementActionKeys(Game.ki.getMask());
+        Direction move = Utils.processMovementActionKeys(Game.ki.getMask());
         boolean useOn = Utils.processUseKey(Game.ki.getMask());
 
         //In the keycontroller, move has preference.

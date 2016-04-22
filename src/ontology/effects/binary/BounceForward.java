@@ -4,6 +4,7 @@ import core.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
 import ontology.effects.Effect;
+import tools.Direction;
 import tools.Vector2d;
 
 /**
@@ -27,7 +28,7 @@ public class BounceForward extends Effect
         Vector2d dir = new Vector2d(sprite2.lastDirection());
         dir.normalise();
 
-        sprite1.physics.activeMovement(sprite1, dir, sprite2.speed);
+        sprite1.physics.activeMovement(sprite1, new Direction(dir.x, dir.y), sprite2.speed);
         game._updateCollisionDict(sprite1);
     }
 }

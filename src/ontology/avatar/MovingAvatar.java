@@ -9,6 +9,7 @@ import core.content.SpriteContent;
 import core.game.Game;
 import core.player.AbstractPlayer;
 import ontology.Types;
+import tools.Direction;
 import tools.ElapsedCpuTimer;
 import tools.Utils;
 import tools.Vector2d;
@@ -26,9 +27,6 @@ public class MovingAvatar extends VGDLSprite {
     public ArrayList<Types.ACTIONS> actions;
     public ArrayList<Types.ACTIONS> actionsNIL;
     public AbstractPlayer player;
-
-    //This is the last action executed in the game.
-    public Types.ACTIONS lastAction;
 
     public Types.MOVEMENT lastMovementType = Types.MOVEMENT.STILL;
 
@@ -53,7 +51,6 @@ public class MovingAvatar extends VGDLSprite {
         super.loadDefaults();
         actions = new ArrayList<Types.ACTIONS>();
         actionsNIL = new ArrayList<Types.ACTIONS>();
-        lastAction = Types.ACTIONS.ACTION_NIL;
 
         color = Types.WHITE;
         speed = 1;
@@ -97,7 +94,7 @@ public class MovingAvatar extends VGDLSprite {
         requestPlayerInput(game);
 
         //Map from the action mask to a Vector2D action.
-        Vector2d action2D = Utils.processMovementActionKeys(game.ki.getMask());
+        Direction action2D = Utils.processMovementActionKeys(game.ki.getMask());
 
         //Apply the physical movement.
         applyMovement(game, action2D);
@@ -112,14 +109,13 @@ public class MovingAvatar extends VGDLSprite {
     public void move(Game game, boolean[] actionMask) {
 
         //Apply action supplied (active movement). USE is checked up in the hierarchy.
-        Vector2d action = Utils.processMovementActionKeys(actionMask);
+        Direction action = Utils.processMovementActionKeys(actionMask);
         applyMovement(game, action);
     }
 
-    private void applyMovement(Game game, Vector2d action)
+    private void applyMovement(Game game, Direction action)
     {
         lastMovementType = this.physics.activeMovement(this, action, this.speed);
-        game.setAvatarLastAction(Types.ACTIONS.fromVector(action));
     }
 
     /**
@@ -156,7 +152,7 @@ public class MovingAvatar extends VGDLSprite {
             action = Types.ACTIONS.ACTION_NIL;
 
         this.player.logAction(action);
-        lastAction = action;
+        game.setAvatarLastAction(action);
         game.ki.reset();
         game.ki.setAction(action);
     }
@@ -179,7 +175,6 @@ public class MovingAvatar extends VGDLSprite {
         targetSprite.alternate_keys = this.alternate_keys;
         targetSprite.actions = new ArrayList<Types.ACTIONS>();
         targetSprite.actionsNIL = new ArrayList<Types.ACTIONS>();
-        targetSprite.lastAction = this.lastAction;
         targetSprite.postProcess();
         super.copyTo(targetSprite);
     }

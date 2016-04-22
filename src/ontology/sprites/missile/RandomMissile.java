@@ -6,6 +6,7 @@ import core.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
+import tools.Direction;
 import tools.Utils;
 import tools.Vector2d;
 
@@ -35,14 +36,14 @@ public class RandomMissile extends Missile
     protected void loadDefaults()
     {
         super.loadDefaults();
-        orientation = Types.NIL;
+        orientation = Types.DNIL;
     }
 
     public void update(Game game)
     {
-        if(orientation == Types.NIL)
+        if(orientation == Types.DNIL)
         {
-            orientation = (Vector2d) Utils.choice(Types.BASEDIRS, game.getRandomGenerator());
+            orientation = (Direction) Utils.choice(Types.DBASEDIRS, game.getRandomGenerator());
         }
 
         this.updatePassive();

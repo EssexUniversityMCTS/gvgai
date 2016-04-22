@@ -53,7 +53,6 @@ public class Test
 
         //Other settings
         boolean visuals = true;
-        String recordActionsFile = null; //where to record the actions executed. null if not to save.
         int seed = new Random().nextInt();
 
         //Game and level to play
@@ -63,16 +62,16 @@ public class Test
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
 
         String recordLevelFile = generateLevelPath + games[gameIdx] + "_glvl.txt";
+        String recordActionsFile = null;//"actions_" + games[gameIdx] + "_lvl" + levelIdx + "_" + seed + ".txt"; //where to record the actions executed. null if not to save.
 
         // 1. This starts a game, in a level, played by a human.
         ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
         
         // 2. This plays a game in a level by the controller.
-        //ArcadeMachine.runOneGame(game, level1, visuals, sampleOneStepController, recordActionsFile, seed, false);
-
+        //ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed, false);
 
         // 3. This replays a game from an action file previously recorded
-        //String readActionsFile = "actionsFile_aliens_lvl0.txt";  //This example is for
+        //String readActionsFile = recordActionsFile;
         //ArcadeMachine.replayGame(game, level1, visuals, readActionsFile);
 
         // 4. This plays a single game, in N levels, M times :
@@ -91,20 +90,20 @@ public class Test
         //}
         
         //6. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
-        /*int N = 60, L = 5, M = 1;
-        boolean saveActions = false;
-        String[] levels = new String[L];
-        String[] actionFiles = new String[L*M];
-        for(int i = 0; i < N; ++i)
-        {
-            int actionIdx = 0;
-            game = gamesPath + games[i] + ".txt";
-            for(int j = 0; j < L; ++j){
-                levels[j] = gamesPath + games[i] + "_lvl" + j +".txt";
-                if(saveActions) for(int k = 0; k < M; ++k)
-                    actionFiles[actionIdx++] = "actions_game_" + i + "_level_" + j + "_" + k + ".txt";
-            }
-            ArcadeMachine.runGames(game, levels, M, kNearestNeighbour, saveActions? actionFiles:null);
-        }*/
+//        int N = 62, L = 1, M = 1;
+//        boolean saveActions = false;
+//        String[] levels = new String[L];
+//        String[] actionFiles = new String[L*M];
+//        for(int i = 0; i < N; ++i)
+//        {
+//            int actionIdx = 0;
+//            game = gamesPath + games[i] + ".txt";
+//            for(int j = 0; j < L; ++j){
+//                levels[j] = gamesPath + games[i] + "_lvl" + j +".txt";
+//                if(saveActions) for(int k = 0; k < M; ++k)
+//                    actionFiles[actionIdx++] = "actions_game_" + i + "_level_" + j + "_" + k + ".txt";
+//            }
+//            ArcadeMachine.runGames(game, levels, M, sampleMCTSController, saveActions? actionFiles:null);
+//        }
     }
 }

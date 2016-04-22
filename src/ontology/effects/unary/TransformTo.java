@@ -48,7 +48,7 @@ public class TransformTo extends Effect {
         {
             //System.out.println(game.getGameTick() + " " + sprite1 + " --> " + newSprite) ;
             //Orientation
-            if(newSprite.is_oriented && sprite1.is_oriented && newSprite.orientation == Types.NONE)
+            if(newSprite.is_oriented && sprite1.is_oriented && newSprite.orientation == Types.DNONE)
             {
                 newSprite.orientation = sprite1.orientation;
             }
@@ -76,7 +76,6 @@ public class TransformTo extends Effect {
                 try{
                     game.setAvatar((MovingAvatar) newSprite);
                     game.getAvatar().player = ((MovingAvatar) sprite1).player;
-                    game.getAvatar().lastAction = ((MovingAvatar) sprite1).lastAction;
                 }catch (ClassCastException e) {}
             }
 
