@@ -1,7 +1,6 @@
 package core.game;
 
 import java.awt.Dimension;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -10,15 +9,14 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.ConcurrentHashMap;
 
-import core.SpriteGroup;
-import core.VGDLSprite;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.TimeEffect;
 import tools.Pair;
 import tools.Vector2d;
+import core.SpriteGroup;
+import core.VGDLSprite;
 
 /**
  * Created with IntelliJ IDEA.
@@ -431,6 +429,7 @@ public class ForwardModel extends Game
         this.spriteOrder = a_gameState.spriteOrder;
         this.singletons = a_gameState.singletons;
         this.classConst = a_gameState.classConst;
+        this.templateSprites = a_gameState.templateSprites;
         this.collisionEffects = a_gameState.collisionEffects;
         this.definedEffects = a_gameState.definedEffects;
         this.eosEffects = a_gameState.eosEffects;

@@ -3,11 +3,32 @@ package core.game;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.swing.JOptionPane;
 
+import ontology.Types;
+import ontology.avatar.MovingAvatar;
+import ontology.effects.Effect;
+import ontology.effects.TimeEffect;
+import ontology.sprites.Resource;
+import tools.Direction;
+import tools.JEasyFrame;
+import tools.KeyHandler;
+import tools.KeyInput;
+import tools.KeyPulse;
+import tools.Pair;
+import tools.Vector2d;
+import tools.WindowInput;
+import tools.pathfinder.Node;
+import tools.pathfinder.PathFinder;
 import core.SpriteGroup;
 import core.VGDLFactory;
 import core.VGDLRegistry;
@@ -22,14 +43,6 @@ import core.game.GameDescription.SpriteData;
 import core.game.GameDescription.TerminationData;
 import core.player.AbstractPlayer;
 import core.termination.Termination;
-import ontology.Types;
-import ontology.avatar.MovingAvatar;
-import ontology.effects.Effect;
-import ontology.effects.TimeEffect;
-import ontology.sprites.Resource;
-import tools.*;
-import tools.pathfinder.Node;
-import tools.pathfinder.PathFinder;
 
 
 /**
@@ -58,6 +71,12 @@ public abstract class Game
      * Content encloses information about the class of the object and its parameters.
      */
     protected Content[] classConst;
+    
+    /**
+     * List of template sprites, one for each object in the above
+     * "classConst" array.
+     */
+    protected VGDLSprite[] templateSprites;
 
     /**
      * Groups of sprites in the level. Each element of the array is a
@@ -338,6 +357,7 @@ public abstract class Game
 
         //Constructors, as many as number of sprite types, so they are accessed by its id:
         classConst = new Content[VGDLRegistry.GetInstance().numSpriteTypes()];
+        templateSprites = new VGDLSprite[classConst.length];
 
         //By default, we have 2 constructors:
         Content wallConst = new SpriteContent("wall", "Immovable");
@@ -1440,11 +1460,28 @@ public abstract class Game
         //Only create the sprite if there is not any other sprite that blocks it.
         if(!anyother)
         {
-            VGDLSprite newSprite = VGDLFactory.GetInstance().createSprite(
-                    content , position, new Dimension(block_size, block_size));
-
-            //Assign its types and add it to the collection of sprites.
-            newSprite.itypes = (ArrayList<Integer>) content.itypes.clone();
+        	VGDLSprite newSprite;
+        	
+        	if(templateSprites[itype] == null)			// don't have a template yet, so need to create one
+        	{
+        		newSprite = VGDLFactory.GetInstance().createSprite(
+                        content , position, new Dimension(block_size, block_size));
+        		
+        		//Assign its types
+                newSprite.itypes = (ArrayList<Integer>) content.itypes.clone();
+                
+                // save a copy as template object
+                templateSprites[itype] = newSprite.copy();
+        	}
+        	else		// we already have a template, so simply copy that one
+        	{
+        		newSprite = templateSprites[itype].copy();
+        		
+        		// make sure the copy is move to the correct position
+        		newSprite.setRect(position, new Dimension(block_size, block_size));
+        	}
+        	
+            // add the sprite to the collection of sprites in the game
             this.addSprite(newSprite, itype);
             return newSprite;
         }

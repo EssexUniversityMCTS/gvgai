@@ -16,9 +16,6 @@ import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
 
-import core.competition.CompetitionParameters;
-import core.content.SpriteContent;
-import core.game.Game;
 import ontology.Types;
 import ontology.physics.ContinuousPhysics;
 import ontology.physics.GravityPhysics;
@@ -28,6 +25,9 @@ import ontology.physics.Physics;
 import tools.Direction;
 import tools.Utils;
 import tools.Vector2d;
+import core.competition.CompetitionParameters;
+import core.content.SpriteContent;
+import core.game.Game;
 
 /**
  * Created with IntelliJ IDEA.
@@ -242,12 +242,6 @@ public abstract class VGDLSprite {
      * If not set specifically in VGDL, the default value is set to a very high value (1000)
      */
     public int limitHealthPoints;
-    
-    /**
-     * If true, images are loaded (for instance for visualizing a game)
-     * <br> If false, images are not loaded (for instance for simulating the effects of actions in decision-making AI)
-     */
-    public static boolean loadImages = true;
 
     /**
      * Initializes the sprite, giving its position and dimensions.
@@ -669,12 +663,9 @@ public abstract class VGDLSprite {
      */
     public void postProcess()
     {
-    	if(loadImages)
-    	{
-    		loadImage(img);
-    	}
+    	loadImage(img);
 
-        if(this.orientation != Types.DNONE)
+        if(!(this.orientation.equals(Types.DNONE)))
         {
             //Any sprite that receives an orientation, is oriented.
             this.is_oriented = true;

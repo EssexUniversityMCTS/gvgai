@@ -2,13 +2,13 @@ package ontology.sprites.missile;
 
 import java.awt.Dimension;
 
-import core.VGDLSprite;
-import core.content.SpriteContent;
-import core.game.Game;
 import ontology.Types;
 import tools.Direction;
 import tools.Utils;
 import tools.Vector2d;
+import core.VGDLSprite;
+import core.content.SpriteContent;
+import core.game.Game;
 
 /**
  * Created with IntelliJ IDEA.
@@ -41,7 +41,7 @@ public class RandomMissile extends Missile
 
     public void update(Game game)
     {
-        if(orientation == Types.DNIL)
+        if(orientation.equals(Types.DNIL))
         {
             orientation = (Direction) Utils.choice(Types.DBASEDIRS, game.getRandomGenerator());
         }

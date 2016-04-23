@@ -3,16 +3,16 @@ package ontology.avatar;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
-import core.VGDLSprite;
-import core.competition.CompetitionParameters;
-import core.content.SpriteContent;
-import core.game.Game;
-import core.player.AbstractPlayer;
 import ontology.Types;
 import tools.Direction;
 import tools.ElapsedCpuTimer;
 import tools.Utils;
 import tools.Vector2d;
+import core.VGDLSprite;
+import core.competition.CompetitionParameters;
+import core.content.SpriteContent;
+import core.game.Game;
+import core.player.AbstractPlayer;
 
 /**
  * Created with IntelliJ IDEA.
@@ -127,9 +127,7 @@ public class MovingAvatar extends VGDLSprite {
         ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
         ect.setMaxTimeMillis(CompetitionParameters.ACTION_TIME);
 
-        VGDLSprite.loadImages = false;	// don't need to load images whilst the agent is thinking
         Types.ACTIONS action = this.player.act(game.getObservation(), ect.copy());
-        VGDLSprite.loadImages = true;	// need to load images again for the real game
 
         if(ect.exceededMaxTime())
         {
@@ -175,6 +173,10 @@ public class MovingAvatar extends VGDLSprite {
         targetSprite.alternate_keys = this.alternate_keys;
         targetSprite.actions = new ArrayList<Types.ACTIONS>();
         targetSprite.actionsNIL = new ArrayList<Types.ACTIONS>();
+        
+        // need to copy orientation here already because MovingAvatar.postProcess() requires the orientation
+        targetSprite.orientation = this.orientation.copy();	
+        
         targetSprite.postProcess();
         super.copyTo(targetSprite);
     }
