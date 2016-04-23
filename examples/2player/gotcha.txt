@@ -1,0 +1,15 @@
+BasicGame key_handler=Pulse square_size=50 no_players=2
+    SpriteSet
+        avatar > MovingAvatar img=avatar
+            avatar1 >
+            avatar2 >
+        winnerPlayer1 > Immovable color=RED 
+    LevelMapping
+        A > avatar1
+        B > avatar2
+    InteractionSet
+        avatar wall > stepBack
+        avatar1 avatar2 > transformTo stype=winnerPlayer1 scoreChange=1
+    TerminationSet
+        SpriteCounter stype=winnerPlayer1 limit=1 win=True,False
+        Timeout limit=1000 win=False,True
