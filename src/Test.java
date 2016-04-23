@@ -73,6 +73,7 @@ public class Test
         if(args.length > 0){
         	int X = Integer.parseInt(args[0]);
         	int Y = Integer.parseInt(args[1]);
+        	Y = Math.min(Y, games.length);
         	
         	// this is where Dennis has his game and level files and images on the cluster for experiments
         	gamesPath = "./examples/gridphysics/";

@@ -2,11 +2,11 @@ package controllers.sampleMCTS;
 
 import java.util.Random;
 
-import core.ArcadeMachine;
-import core.game.StateObservation;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
 import tools.Utils;
+import core.ArcadeMachine;
+import core.game.StateObservation;
 
 public class SingleTreeNode
 {
@@ -61,7 +61,7 @@ public class SingleTreeNode
             //System.out.println(elapsedTimerIteration.elapsedMillis() + " --> " + acumTimeTaken + " (" + remaining + ")");
         }
         //System.out.println("-- " + numIters + " -- ( " + avgTimeTaken + ")");
-        //ArcadeMachine.performance.add(numIters);
+        ArcadeMachine.performance.add(numIters);
     }
 
     public SingleTreeNode treePolicy() {
