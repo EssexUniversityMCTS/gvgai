@@ -1,0 +1,21 @@
+BasicGame no_players=2
+    SpriteSet
+        sword > Flicker color=LIGHTGRAY limit=1 singleton=True img=sword.png
+        avatar >
+            cop  > ShootAvatar   stype=sword img=avatar.png
+            robber > MovingAvatar img=avatar.png
+        diamond > Resource color=YELLOW limit=10 shrinkfactor=0.75 img=diamond.png
+    LevelMapping
+        A > robber
+        B > cop
+        x > diamond
+    InteractionSet
+        avatar wall > stepBack
+        avatar avatar > stepBack
+        robber cop sword > killSprite
+        diamond robber > collectResource scoreChange=1
+        diamond cop > stepBack
+    TerminationSet
+        SpriteCounter stype=robber limit=0 win=False,True
+        SpriteCounter stype=diamond limit=0 win=True,False
+        Timeout limit=2000 win=False,False

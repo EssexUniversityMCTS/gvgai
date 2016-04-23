@@ -23,7 +23,7 @@ public class TestMultiPlayer
         String games[] = new String[]{};
 
         //All public games
-        games = new String[]{"gotcha", "sokoban"};
+        games = new String[]{"copsNrobbers", "gotcha", "sokoban"};
 
         //Other settings
         boolean visuals = true;

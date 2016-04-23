@@ -89,6 +89,7 @@ public class VGDLParser
 
             //Parse here game and arguments of the first line
             game = VGDLFactory.GetInstance().createGame((GameContent) rootNode.content);
+            game.initMulti();
 
             //Parse here blocks of VGDL.
             for(Node n : rootNode.children)
@@ -109,11 +110,9 @@ public class VGDLParser
             }
         }
 
-        game.initMulti();
-
         return game;
     }
-    
+
     /**
      * Builds the tree structure that defines the game.
      * @param lines array with the lines read from the game description file.

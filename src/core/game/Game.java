@@ -1063,13 +1063,18 @@ public abstract class Game
             while (avatars[i] == null) {
                 if (idx > 0) {
                     int spriteTypeId = spriteOrder[idx];
-                    if (spriteGroups[spriteTypeId].numSprites() > 0) {
+                    int num = spriteGroups[spriteTypeId].numSprites();
+                    if (num > 0) {
                         //There should be just one sprite in the avatar's group in single player games.
-                        //More than one avatar in multiplayer games
-                        VGDLSprite thisSprite = spriteGroups[spriteTypeId].getSpriteByIdx(i);
-                        if (thisSprite.is_avatar)
-                            avatars[i] = (MovingAvatar) thisSprite;
-                        else idx--;
+                        //Could be more than one avatar in multiplayer games
+                        for (int j = 0; j < num; j++) {
+                            VGDLSprite thisSprite = spriteGroups[spriteTypeId].getSpriteByIdx(j);
+                            if (thisSprite.is_avatar) {
+                                avatars[i] = (MovingAvatar) thisSprite;
+                                break;
+                            }
+                            else idx--;
+                        }
                     } else idx--;
                 } else {
                     System.out.println("Not enough avatars found.");
@@ -1402,7 +1407,7 @@ public abstract class Game
     {
         if(s1.is_avatar)
             historicEvents.add(new Event(gameTick, false, s1.getType(), s2.getType(),
-                                         s1.spriteID, s2.spriteID, s1.getPosition()));
+                    s1.spriteID, s2.spriteID, s1.getPosition()));
 
         else if(s1.is_from_avatar)
             historicEvents.add(new Event(gameTick, true, s1.getType(), s2.getType(),
