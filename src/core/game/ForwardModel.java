@@ -148,7 +148,7 @@ public class ForwardModel extends Game
                 spriteGroups[i].addSprite(spCopy.spriteID, spCopy);
 
                 if(!spCopy.hidden) {
-                    checkSpriteFeatures(spCopy, i, spriteGroups[i].numSprites() - 1);
+                    checkSpriteFeatures(spCopy, i);
                     updateObservation(spCopy);
                 }
             }
@@ -354,7 +354,7 @@ public class ForwardModel extends Game
      * @param sp Sprite to categorize.
      * @param itype itype of the sprite.
      */
-    private void checkSpriteFeatures(VGDLSprite sp, int itype, int idx)
+    private void checkSpriteFeatures(VGDLSprite sp, int itype)
     {
         int category = getSpriteCategory(sp);
         switch (category)
@@ -362,7 +362,8 @@ public class ForwardModel extends Game
             case Types.TYPE_AVATAR:
 
                 //update avatar sprite.
-                this.avatars[idx] = (MovingAvatar) sp;
+                MovingAvatar a = (MovingAvatar) sp;
+                this.avatars[a.getPlayerID()] = a;
 
                 playerList[itype] = true; //maybe use this
                 break;
@@ -918,8 +919,7 @@ public class ForwardModel extends Game
         {
             //There is a sprite type we don't know anything about. Need to check.
             if(!unknownList[i] && spriteGroups[i].getFirstSprite() != null)
-                //TODO: playerID passed as 0, potentially problematic if the sprite is avatar
-                checkSpriteFeatures(spriteGroups[i].getFirstSprite(), i, 0);
+                checkSpriteFeatures(spriteGroups[i].getFirstSprite(), i);
 
             if(groupArray[i] && visibleList[i]) numDiffTypes++;
         }

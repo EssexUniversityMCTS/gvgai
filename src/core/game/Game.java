@@ -1059,8 +1059,9 @@ public abstract class Game
         //Avatars will usually be the first elements, starting from the end.
 
         for (int i = 0; i < no_players; i++) {
-            int idx = spriteOrder.length - 1;
+            int idx = spriteOrder.length;
             while (avatars[i] == null) {
+                idx--;
                 if (idx > 0) {
                     int spriteTypeId = spriteOrder[idx];
                     int num = spriteGroups[spriteTypeId].numSprites();
@@ -1073,9 +1074,8 @@ public abstract class Game
                                 avatars[i] = (MovingAvatar) thisSprite;
                                 break;
                             }
-                            else idx--;
                         }
-                    } else idx--;
+                    }
                 } else {
                     System.out.println("Not enough avatars found.");
                     break;
