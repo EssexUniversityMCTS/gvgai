@@ -1058,29 +1058,40 @@ public abstract class Game
 
         //Avatars will usually be the first elements, starting from the end.
 
-        for (int i = 0; i < no_players; i++) {
-            int idx = spriteOrder.length;
-            while (avatars[i] == null) {
-                idx--;
-                if (idx > 0) {
-                    int spriteTypeId = spriteOrder[idx];
-                    int num = spriteGroups[spriteTypeId].numSprites();
-                    if (num > 0) {
-                        //There should be just one sprite in the avatar's group in single player games.
-                        //Could be more than one avatar in multiplayer games
-                        for (int j = 0; j < num; j++) {
-                            VGDLSprite thisSprite = spriteGroups[spriteTypeId].getSpriteByIdx(j);
-                            if (thisSprite.is_avatar) {
-                                avatars[i] = (MovingAvatar) thisSprite;
-                                break;
-                            }
+        //Find avatar sprites
+        ArrayList<MovingAvatar> avSprites = new ArrayList<>();
+        int idx = spriteOrder.length;
+        int numAvatarSprites = 0;
+        while (true) {
+            idx--;
+            if (idx > 0) {
+                int spriteTypeId = spriteOrder[idx];
+                int num = spriteGroups[spriteTypeId].numSprites();
+                if (num > 0) {
+                    //There should be just one sprite in the avatar's group in single player games.
+                    //Could be more than one avatar in multiplayer games
+                    for (int j = 0; j < num; j++) {
+                        VGDLSprite thisSprite = spriteGroups[spriteTypeId].getSpriteByIdx(j);
+                        if (thisSprite.is_avatar) {
+                            avSprites.add((MovingAvatar) thisSprite);
                         }
                     }
-                } else {
-                    System.out.println("Not enough avatars found.");
-                    break;
+                }
+            } else {
+                numAvatarSprites = avSprites.size();
+                System.out.println("Done finding avatars: " + numAvatarSprites);
+                break;
+            }
+        }
+
+        if (!avSprites.isEmpty()) {
+            for (int i = 0; i < no_players; i++) {
+                if (numAvatarSprites > i) { //check if there's enough avatars just in case
+                    avatars[i] = avSprites.get(i);
                 }
             }
+        } else {
+            System.out.println("No avatars found.");
         }
     }
     /**
@@ -1095,7 +1106,9 @@ public abstract class Game
             if (players[i] != null) {
                 avatars[i].player = players[i];
                 avatars[i].setPlayerID(i);
-                avatars[i].player.setPlayerID(i);
+                //avatars[i].player.setPlayerID(i);
+            } else {
+                System.out.println("uh oh null player");
             }
         }
     }

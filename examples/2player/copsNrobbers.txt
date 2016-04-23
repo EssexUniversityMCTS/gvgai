@@ -1,13 +1,13 @@
-BasicGame no_players=2
+BasicGame key_handler=Pulse no_players=2
     SpriteSet
         sword > Flicker color=LIGHTGRAY limit=1 singleton=True img=sword.png
-        avatar >
-            cop  > ShootAvatar   stype=sword img=avatar.png
+        avatar >		
             robber > MovingAvatar img=avatar.png
+            cop  > ShootAvatar   stype=sword img=avatar.png
         diamond > Resource color=YELLOW limit=10 shrinkfactor=0.75 img=diamond.png
     LevelMapping
-        A > robber
         B > cop
+        A > robber
         x > diamond
     InteractionSet
         avatar wall > stepBack

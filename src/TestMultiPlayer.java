@@ -17,6 +17,7 @@ public class TestMultiPlayer
         String doNothingController = "controllers.multiPlayer.doNothing.Agent";
         String randomController = "controllers.multiPlayer.sampleRandom.Agent";
         String oneStepController = "controllers.multiPlayer.sampleOneStepLookAhead.Agent";
+        String humanController = "controllers.multiPlayer.human.Agent";
 
         //Available games:
         String gamesPath = "examples/2player/";
