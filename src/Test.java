@@ -60,7 +60,7 @@ public class Test
         int seed = new Random().nextInt();
 
         //Game and level to play
-        int gameIdx = 50;
+        int gameIdx = 5;
         int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
@@ -103,7 +103,7 @@ public class Test
 	    	long timeWaited = System.currentTimeMillis() - startTime;
 	    	System.out.println("Waiting to start games...");
 	    	
-	    	while(timeWaited < 10000){
+	    	while(timeWaited < 15000){
 	    		timeWaited = System.currentTimeMillis() - startTime;
 	    	}
 	     			

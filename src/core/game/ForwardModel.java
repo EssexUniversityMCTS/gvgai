@@ -191,8 +191,9 @@ public class ForwardModel extends Game
         {
             obs = observations.get(spriteId);
             oldPosition = obs.position;
-            moved = ! obs.position.equals(sprite.getPosition());
-            obs.position = sprite.getPosition();
+            Vector2d position = sprite.getPosition();
+            moved = ! obs.position.equals(position);
+            obs.position = position;
         }else
         {
             obs = createSpriteObservation(sprite);

@@ -773,9 +773,10 @@ public abstract class VGDLSprite {
         toSprite.maxHealthPoints = this.maxHealthPoints;
         toSprite.limitHealthPoints = this.limitHealthPoints;
 
-        toSprite.itypes = new ArrayList<Integer>();
-        for(Integer it : this.itypes)
-            toSprite.itypes.add(it);
+        int numItypes = this.itypes.size();
+        toSprite.itypes = new ArrayList<Integer>(numItypes);
+        for(int it = 0; it < numItypes; ++it)
+            toSprite.itypes.add(this.itypes.get(it));
 
         toSprite.resources = new TreeMap<Integer, Integer>();
         Set<Map.Entry<Integer, Integer>> entries = this.resources.entrySet();
