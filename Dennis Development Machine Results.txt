@@ -1,0 +1,9 @@
+10ms time margin because windows
+
+BEFORE OPTIMIZATIONS
+-----------------------
+Aliens: 		~72-80 iterations
+Boulderdash: 		~23-26 iterations
+Frogs:			~40-52 iterations
+Missile Command:	~78-160 iterations
+Sokoban:		~157-166 iterations
