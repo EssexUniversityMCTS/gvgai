@@ -38,7 +38,7 @@ public class TimeoutMultiScore extends Termination
             //give win to player/s with most number of points, rest lose
             win = "";
             for (int i = 0; i < game.no_players; i++) {
-                if (i == id) {
+                if (game.getAvatar(i).getScore() == maxScore) {
                     win += "True";
                 } else {
                     win += "False";
@@ -47,6 +47,7 @@ public class TimeoutMultiScore extends Termination
                     win += ",";
                 }
             }
+            System.out.println(win);
             return true;
         }
         return false;
