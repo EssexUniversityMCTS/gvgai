@@ -17,10 +17,7 @@ import ontology.Types;
 import ontology.avatar.FlakAvatar;
 import ontology.avatar.HorizontalAvatar;
 import ontology.avatar.MovingAvatar;
-import ontology.avatar.oriented.MissileAvatar;
-import ontology.avatar.oriented.OngoingAvatar;
-import ontology.avatar.oriented.OrientedAvatar;
-import ontology.avatar.oriented.ShootAvatar;
+import ontology.avatar.oriented.*;
 import ontology.effects.Effect;
 import ontology.effects.TimeEffect;
 import ontology.effects.binary.*;
@@ -67,7 +64,7 @@ public class VGDLFactory
              "RandomNPC", "AlternateChaser", "RandomAltChaser","PathAltChaser", "RandomPathAltChaser",
              "Bomber", "RandomBomber", "Portal", "SpawnPoint", "SpriteProducer", "Door",
              "FlakAvatar", "HorizontalAvatar","MovingAvatar","MissileAvatar",
-             "OrientedAvatar","ShootAvatar", "OngoingAvatar"};
+             "OrientedAvatar","ShootAvatar", "OngoingAvatar", "OngoingTurningAvatar"};
 
 
     /**
@@ -80,7 +77,7 @@ public class VGDLFactory
              RandomNPC.class, AlternateChaser.class, RandomAltChaser.class, PathAltChaser.class, RandomPathAltChaser.class,
              Bomber.class, RandomBomber.class, Portal.class, SpawnPoint.class, SpriteProducer.class, Door.class,
              FlakAvatar.class, HorizontalAvatar.class,MovingAvatar.class,MissileAvatar.class,
-             OrientedAvatar.class,ShootAvatar.class, OngoingAvatar.class};
+             OrientedAvatar.class,ShootAvatar.class, OngoingAvatar.class, OngoingTurningAvatar.class};
 
     /**
      * Available effects for VGDL.

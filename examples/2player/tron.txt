@@ -1,11 +1,13 @@
-BasicGame square_size=30 no_players=2
+BasicGame square_size=10 no_players=2
     SpriteSet
-        snow   > Immovable color=WHITE
-        mud    > Immovable img=dirt
-        grass  > Immovable img=forest
-        avatar > OngoingAvatar speed=0.9 img=avatar
-            avatar1 > 
-            avatar2 >
+        snow   > Immovable invisible=True hidden=True
+        anyWall   > Immovable
+            blueWall    > img=wallBlue
+            redWall  > img=wallRed
+
+        avatar > OngoingTurningAvatar speed=1.0
+            avatar1 > img=avatar
+            avatar2 > img=avatarRed
 			
     LevelMapping
         . > snow
@@ -13,10 +15,15 @@ BasicGame square_size=30 no_players=2
         B > avatar2
 		
     InteractionSet
-        avatar1 mud grass wall > killSprite scoreChange=0,1
-        avatar2 mud grass wall > killSprite scoreChange=1,0
-        snow avatar1 > spawnBehind stype=mud
-        snow avatar2 > spawnBehind stype=grass
+
+        avatar1 anyWall  > killSprite scoreChange=0,1
+        avatar2 anyWall  > killSprite scoreChange=1,0
+
+        # avatar1 wall > stepBack
+        # avatar2 wall > stepBack
+
+        snow avatar1 > spawn stype=blueWall
+        snow avatar2 > spawn stype=redWall
 
     TerminationSet
         SpriteCounter stype=avatar1 limit=0 win=False,True

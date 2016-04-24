@@ -1,4 +1,4 @@
-BasicGame square_size=20
+BasicGame square_size=20 obs=wall
     SpriteSet
         food > Immovable
             fruit > color=PINK img=mushroom

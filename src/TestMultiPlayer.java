@@ -24,7 +24,7 @@ public class TestMultiPlayer
         String games[] = new String[]{};
 
         //All public games
-        games = new String[]{"captureflag", "copsNrobbers", "gotcha", "sokoban", "steeplechase"};
+        games = new String[]{"tron", "captureflag", "copsNrobbers", "gotcha", "sokoban", "steeplechase"};
 
         //Other settings
         boolean visuals = true;

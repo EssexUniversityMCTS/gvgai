@@ -70,19 +70,23 @@ public class BasicGame extends Game {
 
         //Pathfinder
         obstacles = new ArrayList<>();
-        obstacles.add(0); //Walls always in.
+        boolean doPathf = false;
+
         if(obs != null)
         {
+            doPathf = true;
             int obsArray[] = VGDLRegistry.GetInstance().explode(obs);
             for(Integer it : obsArray)
                 obstacles.add(it);
         }
 
-        pathf = new PathFinder(obstacles);
+        if(doPathf)
+            pathf = new PathFinder(obstacles);
 
         buildStringLevel(lines);
 
-        pathf.run(this.getObservation());
+        if(doPathf)
+            pathf.run(this.getObservation());
     }
 
     @Override
