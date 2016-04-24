@@ -16,11 +16,8 @@ BasicGame square_size=10 no_players=2
 		
     InteractionSet
 
-        avatar1 anyWall  > killSprite scoreChange=0,1
-        avatar2 anyWall  > killSprite scoreChange=1,0
-
-        # avatar1 wall > stepBack
-        # avatar2 wall > stepBack
+        avatar1 anyWall wall > killSprite scoreChange=0,1
+        avatar2 anyWall wall > killSprite scoreChange=1,0
 
         snow avatar1 > spawn stype=blueWall
         snow avatar2 > spawn stype=redWall
