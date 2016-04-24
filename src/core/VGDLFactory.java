@@ -12,10 +12,7 @@ import core.content.SpriteContent;
 import core.content.TerminationContent;
 import core.game.BasicGame;
 import core.game.Game;
-import core.termination.MultiSpriteCounter;
-import core.termination.SpriteCounter;
-import core.termination.Termination;
-import core.termination.Timeout;
+import core.termination.*;
 import ontology.Types;
 import ontology.avatar.FlakAvatar;
 import ontology.avatar.HorizontalAvatar;
@@ -117,7 +114,7 @@ public class VGDLFactory
      */
     private String[] terminationStrings = new String[]
             {
-                    "MultiSpriteCounter", "SpriteCounter", "Timeout"
+                    "MultiSpriteCounter", "SpriteCounter", "Timeout", "TimeoutMultiScore"
             };
 
     /**
@@ -125,7 +122,7 @@ public class VGDLFactory
      */
     private Class[] terminationClasses = new Class[]
             {
-                    MultiSpriteCounter.class, SpriteCounter.class, Timeout.class
+                    MultiSpriteCounter.class, SpriteCounter.class, Timeout.class, TimeoutMultiScore.class
             };
 
 

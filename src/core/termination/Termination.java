@@ -38,8 +38,13 @@ public abstract class Termination {
      * @return - true if player won, false otherwise.
      */
     public boolean win (int playerID) {
-        String[] winners = win.split(",");
-        return Boolean.parseBoolean(winners[playerID]);
+        try {
+            String[] winners = win.split(",");
+            boolean win = Boolean.parseBoolean(winners[playerID]);
+            return win;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**

@@ -34,7 +34,7 @@ BasicGame key_handler=Pulse no_players=2
         x > box
 
     TerminationSet
-        Timeout limit=1000 win=True,True
+        TimeoutMultiScore limit=1000
         
     InteractionSet
         avatar EOS box wall > stepBack
@@ -52,16 +52,39 @@ BasicGame key_handler=Pulse no_players=2
         gotA black > spawn stype=deadPortalA
         gotA black > spawn stype=flagA
         gotA black > spawn stype=deadPortalFlagA
-        gotA black > transformTo stype=inBlackA scoreChange=0,3
+        gotA black > transformTo stype=inBlackA scoreChange=3,0
 
-        deadPortalA avatar > killSprite
-        deadPortalFlagA flagA > killSprite
-        avatar deadPortalA > teleportToExit
-        flagA deadPortalFlagA > teleportToExit
+        gotB white > spawn stype=deadPortalB
+        gotB white > spawn stype=flagB
+        gotB white > spawn stype=deadPortalFlagB
+        gotB white > transformTo stype=inWhiteB scoreChange=0,3
 		
-        #gotB white > RESPAWN FLAG B AND AVATAR B scoreChange=3
-        #inWhiteB gotA > RESPAWN FLAG A AND AVATARS scoreChange=2
-        #inBlackA gotB > RESPAWN FLAG B AND AVATARS scoreChange=2
-        #inWhiteB inWhiteA > RESPAWN AVATARS scoreChange=1
-        #inBlackA inWhiteB > RESPAWN AVATARS scoreChange=1
-
+        inWhiteB gotA > spawn stype=flagA
+        inWhiteB gotA > spawn stype=deadPortalFlagA
+        inWhiteB gotA > spawn stype=deadPortalA
+        inWhiteB gotA > spawn stype=deadPortalB
+        gotA inWhiteB > transformTo stype=inBlackA scoreChange=-2,2
+        
+        inBlackA gotB > spawn stype=flagB
+        inBlackA gotB > spawn stype=deadPortalFlagB
+        inBlackA gotB > spawn stype=deadPortalA
+        inBlackA gotB > spawn stype=deadPortalB
+        gotB inBlackA > transformTo stype=inWhiteB scoreChange=2,-2
+        
+        inWhiteA inWhiteB > spawn stype=deadPortalA
+        inWhiteA inWhiteB > spawn stype=deadPortalB
+        inWhiteA inWhiteB > transformTo stype=inBlackA scoreChange=-1,1
+		
+        inBlackB inBlackA > spawn stype=deadPortalA
+        inBlackB inBlackA > spawn stype=deadPortalB
+        inBlackB inBlackA > transformTo stype=inWhiteB scoreChange=1,-1
+		
+        deadPortalFlagA flagA > killSprite
+        flagA deadPortalFlagA > teleportToExit
+        deadPortalFlagB flagB > killSprite
+        flagB deadPortalFlagB > teleportToExit
+		
+        deadPortalA inBlackA > killSprite
+        inBlackA deadPortalA > teleportToExit
+        deadPortalB inWhiteB > killSprite
+        inWhiteB deadPortalB > teleportToExit

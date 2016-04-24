@@ -69,7 +69,6 @@ public abstract class Effect{
      */
     public int getScoreChange(int playerID) {
         String[] scores = scoreChange.split(",");
-        System.out.println(scores[0]);
         int s = playerID < scores.length ? Integer.parseInt(scores[playerID]) : Integer.parseInt(scores[0]);
         return s;
     }
