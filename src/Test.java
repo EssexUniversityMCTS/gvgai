@@ -97,7 +97,7 @@ public class Test
         //ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
         
         // useful to wait a little bit so that VisualVM has time to boot up for profiling
-        boolean delayedStart = false;
+        boolean delayedStart = true;
 	    if(delayedStart){
 	    	long startTime = System.currentTimeMillis();
 	    	long timeWaited = System.currentTimeMillis() - startTime;

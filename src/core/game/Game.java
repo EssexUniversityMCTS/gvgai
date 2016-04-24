@@ -1209,9 +1209,60 @@ public abstract class Game
 
                 // Consider the two types to populate the array bucketList, that encloses the sprites
                 // of both types that could take part in any interaction.
-                for(int intId : new int[]{p.first, p.second})
+                int[] types = (getNumSprites(p.first) < getNumSprites(p.second)) ? new int[]{p.first, p.second} : new int[]{p.second, p.first};
+                				
+                // store all sprites of the type that we have the lowest number of sprites of in bucketList
+                int intId = types[0];
+                
+                // we'll mark here the rows of the map that could possibly collide with rows of the map
+                // where we find sprites of the first type. Sprites of the second type will only be added
+                // to buckets that have been marked as important, or are outside of the map bounds
+                boolean[] importantBuckets = new boolean[size.height + 1];
+                if(!noSprites[intId] && bucketList[intId].size() == 0)
                 {
-                    if(!noSprites[intId] && bucketList[intId].size() == 0)
+                    //Take all the subtypes in the hierarchy of this sprite.
+                    ArrayList<Integer> allTypes = iSubTypes[intId];
+                    for(Integer itype : allTypes)
+                    {
+                        //Add all sprites of this subtype to the list of sprites
+                        Collection<VGDLSprite> sprites = this.getSprites(itype);
+                        for(VGDLSprite sp : sprites)
+                        {
+                            bucketList[intId].add(sp);
+                            
+                            int spBucket = sp.bucket;
+                            if(spBucket >= 0 && spBucket < importantBuckets.length)
+                        	{
+                        		importantBuckets[spBucket] = true;
+                        	}
+                            
+                            if(sp.bucketSharp)
+                            {
+                            	if(spBucket - 1 >= 0 && spBucket - 1 < importantBuckets.length)
+                            	{
+                            		importantBuckets[spBucket - 1] = true;
+                            	}
+                            }
+                            else
+                            {
+                            	if(spBucket + 1 >= 0 && spBucket + 1 < importantBuckets.length)
+                            	{
+                            		importantBuckets[spBucket + 1] = true;
+                            	}
+                            }
+                        }
+                    }
+
+                    //If no sprites were added here, mark it in the array.
+                    if(bucketList[intId].size() == 0)
+                        noSprites[intId] = true;
+                }
+                
+                // if we have found sprites for the first type, also search for sprites of the second type
+                if(!noSprites[intId])
+                {
+                	intId = types[1];
+                	if(!noSprites[intId] && bucketList[intId].size() == 0)
                     {
                         //Take all the subtypes in the hierarchy of this sprite.
                         ArrayList<Integer> allTypes = iSubTypes[intId];
@@ -1221,7 +1272,13 @@ public abstract class Game
                             Collection<VGDLSprite> sprites = this.getSprites(itype);
                             for(VGDLSprite sp : sprites)
                             {
-                                bucketList[intId].add(sp);
+                            	// only add this sprite if he's outside the map bounds, or if he is in an important
+                            	// bucket (one that could possibly collide with sprites added of the first type)
+                            	int bucket = sp.bucket;
+                            	if(bucket < 0 || bucket >= importantBuckets.length || importantBuckets[bucket])
+                            	{
+                            		bucketList[intId].add(sp);
+                            	}
                             }
                         }
 

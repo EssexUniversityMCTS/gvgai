@@ -393,6 +393,8 @@ public class ArcadeMachine
                         victories.mean() + ", " + scores.mean() 
                         + ", mean MCTS iterations = " + performance.mean()
                         + ", std err = " + performance.stdErr());
+        System.out.println("n = " + performance.n());
+        System.out.println("sum = " + performance.sum());
     }
 
     /**
