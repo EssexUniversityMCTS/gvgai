@@ -13,7 +13,7 @@ BasicGame key_handler=Pulse no_players=2
             gotA > img=alien
             gotB > img=alien
         box > Immovable img=box
-        deadPortal  > Portal invisible=True singleton=True portal=True 
+        deadPortal  > Portal invisible=True portal=True
             deadPortalA > stype=startA
             deadPortalB > stype=startB
             deadPortalFlagA > stype=startFlagA
@@ -37,9 +37,7 @@ BasicGame key_handler=Pulse no_players=2
         Timeout limit=1000 win=True,True
         
     InteractionSet
-        avatar EOS > stepBack
-        avatar box > stepBack
-        avatar wall > stepBack
+        avatar EOS box wall > stepBack
 
         inBlackA white > transformTo stype=inWhiteA
         inWhiteA black > transformTo stype=inBlackA
@@ -53,11 +51,11 @@ BasicGame key_handler=Pulse no_players=2
 		
         gotA black > spawn stype=deadPortalA
         gotA black > spawn stype=flagA
-        gotA black > transformTo stype=inBlackA scoreChange=0,3
         gotA black > spawn stype=deadPortalFlagA
-        gotA black > spawn stype=deadPortalA
+        gotA black > transformTo stype=inBlackA scoreChange=0,3
+
         deadPortalA avatar > killSprite
-        deadPortalFlagA flagA > killBoth
+        deadPortalFlagA flagA > killSprite
         avatar deadPortalA > teleportToExit
         flagA deadPortalFlagA > teleportToExit
 		
