@@ -47,7 +47,6 @@ public class TimeoutMultiScore extends Termination
                     win += ",";
                 }
             }
-            System.out.println(win);
             return true;
         }
         return false;

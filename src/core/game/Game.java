@@ -1076,7 +1076,7 @@ public abstract class Game
                 }
             } else {
                 numAvatarSprites = avSprites.size();
-                System.out.println("Done finding avatars: " + numAvatarSprites);
+                //System.out.println("Done finding avatars: " + numAvatarSprites);
                 break;
             }
         }
@@ -1099,14 +1099,18 @@ public abstract class Game
     private void assignPlayer(Player[] players)
     {
         //iterate through all avatars and assign their players
-        for (int i = 0; i < no_players; i++) {
-            if (players[i] != null) {
-                avatars[i].player = players[i];
-                avatars[i].setPlayerID(i);
-                //avatars[i].player.setPlayerID(i);
-            } else {
-                System.out.println("uh oh null player");
+        if (players.length == no_players) {
+            for (int i = 0; i < no_players; i++) {
+                if (players[i] != null) {
+                    avatars[i].player = players[i];
+                    avatars[i].setPlayerID(i);
+                    //avatars[i].player.setPlayerID(i);
+                } else {
+                    System.out.println("uh oh null player");
+                }
             }
+        } else {
+            System.out.println("Not enough players.");
         }
     }
 

@@ -477,6 +477,18 @@ public abstract class VGDLSprite {
     }
 
     /**
+     * Gets the last position of this sprite. Returns null if same as current position.
+     * @return the position as a Vector2d.
+     */
+    public Vector2d getLastPosition()
+    {
+        if (!lastrect.intersects(rect)) {
+            return new Vector2d(lastrect.x, lastrect.y);
+        }
+        return null;
+    }
+
+    /**
      * Modifies the amount of resource by a given quantity.
      * @param resourceId id of the resource whose quantity must be changed.
      * @param amount_delta amount of units the resource has to be modified by.

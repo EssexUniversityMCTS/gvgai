@@ -92,7 +92,7 @@ public class VGDLFactory
                     "flipDirection", "reverseDirection", "shieldFrom", "undoAll", "spawn", "spawnIfHasMore", "spawnIfHasLess",
                 "pullWithIt", "wallStop", "collectResource", "collectResourceIfHeld", "killIfOtherHasMore", "killIfFromAbove",
                 "teleportToExit", "bounceForward", "attractGaze", "subtractHealthPoints", "addHealthPoints",
-                    "transformToAll", "addTimer", "killIfFrontal", "killIfNotFrontal"
+                    "transformToAll", "addTimer", "killIfFrontal", "killIfNotFrontal", "spawnBehind"
             };
 
     /**
@@ -105,7 +105,7 @@ public class VGDLFactory
                     FlipDirection.class, ReverseDirection.class, ShieldFrom.class, UndoAll.class, Spawn.class, SpawnIfHasMore.class, SpawnIfHasLess.class,
                 PullWithIt.class, WallStop.class, CollectResource.class, CollectResourceIfHeld.class, KillIfOtherHasMore.class, KillIfFromAbove.class,
                 TeleportToExit.class, BounceForward.class, AttractGaze.class, SubtractHealthPoints.class, AddHealthPoints.class,
-                    TransformToAll.class, AddTimer.class, KillIfFrontal.class, KillIfNotFrontal.class
+                    TransformToAll.class, AddTimer.class, KillIfFrontal.class, KillIfNotFrontal.class, SpawnBehind.class
             };
 
 
