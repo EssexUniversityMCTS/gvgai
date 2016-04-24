@@ -346,8 +346,9 @@ public class VGDLFactory
                     objVal = cfield.get(null);
                 } catch (Exception e) {
                     try {
-                        objVal = Integer.parseInt(value);
-
+                        if (!parameter.equalsIgnoreCase("scoreChange"))
+                            objVal = Integer.parseInt(value);
+                        else objVal = value;
                     } catch (NumberFormatException e1) {
                         try {
                             objVal = Double.parseDouble(value);

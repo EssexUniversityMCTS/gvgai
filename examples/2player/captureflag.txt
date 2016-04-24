@@ -1,0 +1,69 @@
+BasicGame key_handler=Pulse no_players=2
+    SpriteSet
+        black > Immovable color=BLACK
+        white > Immovable color=WHITE
+        flag > Resource shrinkfactor=0.8
+            flagA > img=city
+            flagB > img=cityRed
+        avatar > MovingAvatar 
+            inBlackA > img=avatarYellow
+            inWhiteA > img=avatarYellow
+            inWhiteB > img=avatarRed
+            inBlackB > img=avatarRed
+            gotA > img=alien
+            gotB > img=alien
+        box > Immovable img=box
+        deadPortal  > Portal invisible=True singleton=True portal=True 
+            deadPortalA > stype=startA
+            deadPortalB > stype=startB
+            deadPortalFlagA > stype=startFlagA
+            deadPortalFlagB > stype=startFlagB
+        start > Immovable invisible=True
+            startA > 
+            startB > 
+            startFlagA > 
+            startFlagB > 
+    
+    LevelMapping
+        . > black
+        + > white
+        A > startA inBlackA black
+        B > startB inWhiteB white
+        * > startFlagA flagA white
+        @ > startFlagB flagB black
+        x > box
+
+    TerminationSet
+        Timeout limit=1000 win=True,True
+        
+    InteractionSet
+        avatar EOS > stepBack
+        avatar box > stepBack
+        avatar wall > stepBack
+
+        inBlackA white > transformTo stype=inWhiteA
+        inWhiteA black > transformTo stype=inBlackA
+        inBlackB white > transformTo stype=inWhiteB
+        inWhiteB black > transformTo stype=inBlackB
+
+        inWhiteA flagA > transformTo stype=gotA
+        inBlackB flagB > transformTo stype=gotB
+        flagA inWhiteA > killSprite
+        flagB inBlackB > killSprite
+		
+        gotA black > spawn stype=deadPortalA
+        gotA black > spawn stype=flagA
+        gotA black > transformTo stype=inBlackA scoreChange=0,3
+        gotA black > spawn stype=deadPortalFlagA
+        gotA black > spawn stype=deadPortalA
+        deadPortalA avatar > killSprite
+        deadPortalFlagA flagA > killBoth
+        avatar deadPortalA > teleportToExit
+        flagA deadPortalFlagA > teleportToExit
+		
+        #gotB white > RESPAWN FLAG B AND AVATAR B scoreChange=3
+        #inWhiteB gotA > RESPAWN FLAG A AND AVATARS scoreChange=2
+        #inBlackA gotB > RESPAWN FLAG B AND AVATARS scoreChange=2
+        #inWhiteB inWhiteA > RESPAWN AVATARS scoreChange=1
+        #inBlackA inWhiteB > RESPAWN AVATARS scoreChange=1
+

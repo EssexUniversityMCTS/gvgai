@@ -24,7 +24,7 @@ public class TestMultiPlayer
         String games[] = new String[]{};
 
         //All public games
-        games = new String[]{"copsNrobbers", "gotcha", "sokoban"};
+        games = new String[]{"captureflag", "copsNrobbers", "gotcha", "sokoban", "steeplechase"};
 
         //Other settings
         boolean visuals = true;
@@ -42,9 +42,10 @@ public class TestMultiPlayer
         //ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
 
         // 2. This plays a game in a level by the controllers. Separate controllers with a space character.
-        // Provide enough players as required by the game.
-        String controllers = randomController + " " + randomController;
-        ArcadeMachine.runOneGame(game, level1, visuals, controllers, recordActionsFile, seed, false);
+        // Provide enough players as required by the game. If one of them is human, change the playerID passed
+        // to the runOneGame method to be that of the human player.
+        String controllers = doNothingController + " " + humanController;
+        ArcadeMachine.runOneGame(game, level1, visuals, controllers, recordActionsFile, seed, false, 1);
 
         // 3. This replays a game from an action file previously recorded
         //String readActionsFile = recordActionsFile;

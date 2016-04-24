@@ -376,7 +376,7 @@ public class GameDescription {
 		/**
 		 * The amount of score this interaction changes
 		 */
-		public int scoreChange;
+		public String scoreChange;
 		
 		/**
 		 * All the depending sprites on that

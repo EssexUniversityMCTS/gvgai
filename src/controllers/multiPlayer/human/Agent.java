@@ -34,7 +34,6 @@ public class Agent extends AbstractMultiPlayer
      */
     public Types.ACTIONS act(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer)
     {
-        System.out.println("im getting asked");
         Direction move = Utils.processMovementActionKeys(stateObs.getKeyHandler(getPlayerID()).getMask());
         boolean useOn = Utils.processUseKey(stateObs.getKeyHandler(getPlayerID()).getMask());
 

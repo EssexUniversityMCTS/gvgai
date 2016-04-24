@@ -45,7 +45,7 @@ public class ArcadeMachine
         //String agentName = "tools.pathfinder.Agent";
         String agentName = "controllers.human.Agent";
         boolean visuals = true;
-        return runOneGame(game_file, level_file, visuals, agentName, actionFile, randomSeed, true);
+        return runOneGame(game_file, level_file, visuals, agentName, actionFile, randomSeed, true, 0);
     }
     
     /**
@@ -70,10 +70,11 @@ public class ArcadeMachine
      * @param actionFile filename of the files where the actions of these players, for this game, should be recorded.
      * @param randomSeed sampleRandom seed for the sampleRandom generator.
      * @param isHuman indicates if a human is playing the game.
+     * @param playerID ID of the human player
      */
 
     public static double[] runOneGame(String game_file, String level_file, boolean visuals,
-                                    String agentNames, String actionFile, int randomSeed, boolean isHuman)
+                                    String agentNames, String actionFile, int randomSeed, boolean isHuman, int playerID)
     {
         VGDLFactory.GetInstance().init(); //This always first thing to do.
         VGDLRegistry.GetInstance().init();
@@ -129,7 +130,7 @@ public class ArcadeMachine
         //Then, play the game.
         double[] score;
         if(visuals)
-            score = toPlay.playGame(players, randomSeed, isHuman);
+            score = toPlay.playGame(players, randomSeed, isHuman, playerID);
         else
             score = toPlay.runGame(players, randomSeed);
 
@@ -246,7 +247,7 @@ public class ArcadeMachine
         AbstractPlayer[] p = new AbstractPlayer[0];
         p[0] = player;
         if(visuals)
-            score = toPlay.playGame(p, randomSeed, isHuman)[0];
+            score = toPlay.playGame(p, randomSeed, isHuman, 0)[0];
         else
             score = toPlay.runGame(p, randomSeed)[0];
 
@@ -407,7 +408,7 @@ public class ArcadeMachine
         //Then, (re-)play the game.
         double[] score;
         if(visuals)
-            score = toPlay.playGame(players, seed, false);
+            score = toPlay.playGame(players, seed, false, 0);
         else
             score = toPlay.runGame(players, seed);
 
@@ -661,7 +662,7 @@ public class ArcadeMachine
                  */
                 AbstractPlayer[] p = new AbstractPlayer[1];
                 p[0] = player;
-                score = toPlay.playGame(p, randomSeed, isHuman)[0];
+                score = toPlay.playGame(p, randomSeed, isHuman, 0)[0];
             }
 
             scores.add(score);

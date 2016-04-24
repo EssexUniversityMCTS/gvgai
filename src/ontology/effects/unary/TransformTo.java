@@ -77,11 +77,17 @@ public class TransformTo extends Effect {
             if(sprite1.is_avatar)
             {
                 try{
-                    KeyHandler k = game.getAvatar().getKeyHandler();
-                    Player p = game.getAvatar().player;
-                    game.setAvatar((MovingAvatar) newSprite);
-                    game.getAvatar().player = p;
-                    game.getAvatar().setKeyHandler(k);
+                    int id = ((MovingAvatar)sprite1).getPlayerID();
+                    KeyHandler k = game.getAvatar(id).getKeyHandler();
+                    Player p = game.getAvatar(id).player;
+                    double score = game.getAvatar(id).getScore();
+                    Types.WINNER win = game.getAvatar(id).getWinState();
+                    game.setAvatar((MovingAvatar) newSprite, id);
+                    game.getAvatar(id).player = p;
+                    game.getAvatar(id).setKeyHandler(k);
+                    game.getAvatar(id).setScore(score);
+                    game.getAvatar(id).setWinState(win);
+                    game.getAvatar(id).setPlayerID(id);
                     transformed = true;
                 }catch (ClassCastException e) {
                     transformed = false; // new sprite is not an avatar, don't kill the current one

@@ -11,6 +11,7 @@ import core.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
 import core.player.Player;
+import ontology.Types;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.Effect;
 import tools.KeyHandler;
@@ -103,12 +104,18 @@ public class TransformToSingleton extends Effect {
         boolean transformed = true;
         if(oldSprite.is_avatar)
         {
-            try{
-                KeyHandler k = game.getAvatar().getKeyHandler();
-                Player p = game.getAvatar().player;
-                game.setAvatar((MovingAvatar) newSprite);
-                game.getAvatar().player = p;
-                game.getAvatar().setKeyHandler(k);
+            try {
+                int id = ((MovingAvatar)oldSprite).getPlayerID();
+                KeyHandler k = game.getAvatar(id).getKeyHandler();
+                Player p = game.getAvatar(id).player;
+                double score = game.getAvatar(id).getScore();
+                Types.WINNER win = game.getAvatar(id).getWinState();
+                game.setAvatar((MovingAvatar) newSprite, id);
+                game.getAvatar(id).player = p;
+                game.getAvatar(id).setKeyHandler(k);
+                game.getAvatar(id).setScore(score);
+                game.getAvatar(id).setWinState(win);
+                game.getAvatar(id).setPlayerID(id);
                 transformed = true;
             } catch (ClassCastException e) {
                 transformed = false; // new sprite is not an avatar, don't kill the current one}

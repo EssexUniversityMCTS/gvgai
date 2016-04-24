@@ -818,23 +818,21 @@ public abstract class Game
      * @param players Players that play this game.
      * @param randomSeed sampleRandom seed for the whole game.
      * @param isHuman indicates if a human is playing the game.
+     * @param playerID ID of the human player
      * @return the score of the game played.
      */
 
-    //TODO: multiplayer optimisation
-    public double[] playGame(Player[] players, int randomSeed, boolean isHuman)
+    public double[] playGame(Player[] players, int randomSeed, boolean isHuman, int playerID)
     {
         //Prepare some structures and references for this game.
         prepareGame(players, randomSeed);
 
         //Create and initialize the panel for the graphics.
-        //TODO: which one is the human player?! ID used 0, default for single player games
-        VGDLViewer view = new VGDLViewer(this, players[0]);
+        VGDLViewer view = new VGDLViewer(this, players[playerID]);
         JEasyFrame frame;
         frame = new JEasyFrame(view, "Java-VGDL");
 
-        //TODO: which player is passed as the key listener here?
-        frame.addKeyListener(avatars[0].getKeyHandler());
+        frame.addKeyListener(avatars[playerID].getKeyHandler());
         frame.addWindowListener(wi);
         wi.windowClosed = false;
 
@@ -879,11 +877,10 @@ public abstract class Game
             }
         }
 
-        //TODO: which player is the human player? currently id used 0, default in single player games
         if(isHuman && !wi.windowClosed && CompetitionParameters.killWindowOnEnd){
         	if(CompetitionParameters.dialogBoxOnStartAndEnd){
         		JOptionPane.showMessageDialog(frame,
-        				"GAMEOVER: YOU " + (avatars[0].getWinState() == Types.WINNER.PLAYER_WINS? "WIN.": "LOSE."));
+        				"GAMEOVER: YOU " + (avatars[playerID].getWinState() == Types.WINNER.PLAYER_WINS? "WIN.": "LOSE."));
         	}
         	frame.dispose();
         }
@@ -1189,7 +1186,7 @@ public abstract class Game
                 //Affect score for all players:
                 if(ef.applyScore) {
                     for (int i = 0; i < no_players; i++) {
-                        avatars[i].addScore(ef.scoreChange);
+                        avatars[i].addScore(ef.getScoreChange(i));
                     }
                 }
 
@@ -1393,21 +1390,9 @@ public abstract class Game
 
         //Affect score:
         if(ef.applyScore) {
-            //get player id if one of the sprites is avatar
-            int id;
-            if (s1 != null && s1 instanceof MovingAvatar) id = ((MovingAvatar)s1).getPlayerID();
-            else if (s2 != null && s2 instanceof MovingAvatar) id = ((MovingAvatar)s2).getPlayerID();
-            else {
-                //none of the sprites were avatar, affect score for all avatars
-                id = -1;
-            }
-
-            if (id == -1) {
-                for (int i = 0; i < no_players; i++) {
-                    avatars[i].addScore(ef.scoreChange);
-                }
-            } else {
-                avatars[id].addScore(ef.scoreChange);
+            //apply scores for all avatars
+            for (int i = 0; i < no_players; i++) {
+                avatars[i].addScore(ef.getScoreChange(i));
             }
         }
 

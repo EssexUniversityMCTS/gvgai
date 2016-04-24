@@ -7,7 +7,7 @@ BasicGame key_handler=Pulse square_size=50 no_players=2
         B > avatar
     InteractionSet
         avatar wall > stepBack
-        avatar avatar > transformTo stype=winnerPlayer1 scoreChange=1
+        avatar avatar > transformTo stype=winnerPlayer1 scoreChange=1,0
     TerminationSet
         MultiSpriteCounter stype1=winnerPlayer1 limit=1 win=True,False
         Timeout limit=1000 win=False,True
