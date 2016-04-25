@@ -61,7 +61,7 @@ public class Test
 
         //Game and level to play
         int gameIdx = 5;
-        int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
+        int levelIdx = 3; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
 
@@ -97,7 +97,7 @@ public class Test
         //ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
         
         // useful to wait a little bit so that VisualVM has time to boot up for profiling
-        boolean delayedStart = true;
+        boolean delayedStart = false;
 	    if(delayedStart){
 	    	long startTime = System.currentTimeMillis();
 	    	long timeWaited = System.currentTimeMillis() - startTime;
