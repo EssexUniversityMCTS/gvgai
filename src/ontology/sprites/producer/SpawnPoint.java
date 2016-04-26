@@ -50,6 +50,7 @@ public class SpawnPoint extends SpriteProducer
         cooldown = 1;
         is_static = true;
         spawnorientation = Types.DNONE;
+        itype = -1;
     }
 
     public void postProcess()
@@ -57,7 +58,8 @@ public class SpawnPoint extends SpriteProducer
         super.postProcess();
         is_stochastic = (prob > 0 && prob < 1);
         counter = 0;
-        itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
+        if(stype != null) //Could be, if we're using different stype variants in subclasses.
+            itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
     }
 
     public void update(Game game)
