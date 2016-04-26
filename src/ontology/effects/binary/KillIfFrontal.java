@@ -5,7 +5,6 @@ import core.content.InteractionContent;
 import core.game.Game;
 import ontology.Types;
 import ontology.effects.Effect;
-import tools.Direction;
 import tools.Vector2d;
 
 /**
@@ -28,18 +27,17 @@ public class KillIfFrontal extends Effect
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
         //Kills the sprite, only if they are going in opposite directions or sprite1 is static.
-        Vector2d firstV = sprite1.lastDirection();
-        Vector2d otherV = sprite2.lastDirection();
+        Vector2d firstDir = sprite1.lastDirection();
+        Vector2d otherDir = sprite2.lastDirection();
 
-        firstV.normalise();
-        otherV.normalise();
+        firstDir.normalise();
+        otherDir.normalise();
 
         //If the sum of the two vectors (normalized) is (0.0), directions are opposite.
-        Direction sumDir = new Direction(firstV.x + otherV.x, firstV.y + otherV.y);
-        Direction firstDir = new Direction(firstV.x, firstV.y);
+        Vector2d sumDir = new Vector2d(firstDir.x + otherDir.x, firstDir.y + otherDir.y);
 
         applyScore=false;
-        if( firstDir.equals(Types.DNONE) || (sumDir.equals(Types.DNONE)))
+        if( firstDir.equals(Types.NONE) || (sumDir.equals(Types.NONE)))
         {
             applyScore=true;
             game.killSprite(sprite1);

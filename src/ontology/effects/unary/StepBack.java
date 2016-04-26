@@ -37,10 +37,10 @@ public class StepBack extends Effect
 
     private Rectangle calculatePixelPerfect(VGDLSprite sprite1, VGDLSprite sprite2)
     {
-    	Vector2d sprite1Dir = new Vector2d(sprite1.rect.getCenterX() - sprite1.lastrect.getCenterX(),
+        Vector2d sprite1Dir = new Vector2d(sprite1.rect.getCenterX() - sprite1.lastrect.getCenterX(),
                 sprite1.rect.getCenterY() - sprite1.lastrect.getCenterY());
 
-    	sprite1Dir.normalise();
+        sprite1Dir.normalise();
 
         if(sprite1Dir.equals(Types.DOWN))
         {

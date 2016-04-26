@@ -393,7 +393,7 @@ public class ArcadeMachine
 
         System.out.println("Results in game " + game_file + ", " +
                         victories.mean() + ", " + scores.mean() );
-                        //+ ", " + performance.mean());
+                        //+ "," + performance.mean());
     }
 
     /**

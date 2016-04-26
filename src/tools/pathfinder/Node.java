@@ -47,7 +47,6 @@ public class Node implements Comparable<Node> {
 
         //TODO: New types of actions imply a change in this method.
         Vector2d action = Types.NONE;
-
         if(pre.position.x < this.position.x)
             action = Types.RIGHT;
         if(pre.position.x > this.position.x)
