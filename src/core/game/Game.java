@@ -254,6 +254,9 @@ public abstract class Game
 
     public int no_players = 1; //default to single player
 
+    public static KeyHandler humanki = CompetitionParameters.KEY_HANDLER == CompetitionParameters.KEY_INPUT ?
+            new KeyInput() : new KeyPulse();
+
     /**
      * Default constructor.
      */
@@ -798,7 +801,7 @@ public abstract class Game
     public double[] runGame(Player[] players, int randomSeed)
     {
         //Prepare some structures and references for this game.
-        prepareGame(players, randomSeed);
+        prepareGame(players, randomSeed, -1);
 
         //Play until the game is ended
         while(!isEnded)
@@ -818,21 +821,21 @@ public abstract class Game
      * @param players Players that play this game.
      * @param randomSeed sampleRandom seed for the whole game.
      * @param isHuman indicates if a human is playing the game.
-     * @param playerID ID of the human player
+     * @param humanID ID of the human player
      * @return the score of the game played.
      */
 
-    public double[] playGame(Player[] players, int randomSeed, boolean isHuman, int playerID)
+    public double[] playGame(Player[] players, int randomSeed, boolean isHuman, int humanID)
     {
         //Prepare some structures and references for this game.
-        prepareGame(players, randomSeed);
+        prepareGame(players, randomSeed, humanID);
 
         //Create and initialize the panel for the graphics.
-        VGDLViewer view = new VGDLViewer(this, players[playerID]);
+        VGDLViewer view = new VGDLViewer(this, players[humanID]);
         JEasyFrame frame;
         frame = new JEasyFrame(view, "Java-VGDL");
 
-        frame.addKeyListener(avatars[playerID].getKeyHandler());
+        frame.addKeyListener(humanki);
         frame.addWindowListener(wi);
         wi.windowClosed = false;
 
@@ -880,7 +883,7 @@ public abstract class Game
         if(isHuman && !wi.windowClosed && CompetitionParameters.killWindowOnEnd){
         	if(CompetitionParameters.dialogBoxOnStartAndEnd){
         		JOptionPane.showMessageDialog(frame,
-        				"GAMEOVER: YOU " + (avatars[playerID].getWinState() == Types.WINNER.PLAYER_WINS? "WIN.": "LOSE."));
+        				"GAMEOVER: YOU " + (avatars[humanID].getWinState() == Types.WINNER.PLAYER_WINS? "WIN.": "LOSE."));
         	}
         	frame.dispose();
         }
@@ -920,7 +923,7 @@ public abstract class Game
      * @param players Players that play this game.
      * @param randomSeed sampleRandom seed for the whole game.
      */
-    private void prepareGame(Player[] players, int randomSeed)
+    private void prepareGame(Player[] players, int randomSeed, int humanID)
     {
         //Start tick counter.
         gameTick = -1;
@@ -929,7 +932,7 @@ public abstract class Game
         random = new Random(randomSeed);
 
         //Assigns the player to the avatar of the game.
-        createAvatars();
+        createAvatars(humanID);
         assignPlayer(players);
 
         //Initialize state observation (sets all non-volatile references).
@@ -1051,7 +1054,7 @@ public abstract class Game
     /**
      * Method to create the array of avatars from the sprites.
      */
-    public void createAvatars() {
+    public void createAvatars(int humanID) {
 
         //Avatars will usually be the first elements, starting from the end.
 
@@ -1082,9 +1085,11 @@ public abstract class Game
         }
 
         if (!avSprites.isEmpty()) {
-            for (int i = 0; i < no_players; i++) {
+            for (int i = no_players - 1; i >=0; i--) {
                 if (numAvatarSprites > i) { //check if there's enough avatars just in case
                     avatars[i] = avSprites.get(i);
+                    if (humanID == i)
+                        avatars[i].setKeyHandler(humanki);
                 }
             }
         } else {

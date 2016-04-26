@@ -6,12 +6,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import core.SpriteGroup;
 import core.VGDLSprite;
+import core.competition.CompetitionParameters;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.TimeEffect;
-import tools.KeyHandler;
-import tools.Pair;
-import tools.Vector2d;
+import tools.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -140,10 +139,6 @@ public class ForwardModel extends Game
             {
                 VGDLSprite sp = spriteIt.next();
                 VGDLSprite spCopy = sp.copy();
-
-                if (sp.is_avatar) {
-                    ((MovingAvatar) spCopy).setKeyHandler(((MovingAvatar) sp).getKeyHandler());
-                }
 
                 spriteGroups[i].addSprite(spCopy.spriteID, spCopy);
 

@@ -1,0 +1,43 @@
+BasicGame no_players=2
+    SpriteSet
+        ship  > Immovable color=GREEN img=spaceship portal=True
+            nokey >
+            withkey >
+        explosion > Flicker limit=5 img=explosion
+
+        movable >
+            avatar  > ShootAvatar stype=explosion img=avatar
+                avatarA >
+                avatarB >
+            incoming >
+                incoming_slow  > Chaser stype=ship color=ORANGE speed=0.05
+                incoming_fast  > Chaser stype=ship color=YELLOW speed=0.15				
+            enemySpawn > BomberRandomMissile stypeMissile=incoming_slow,incoming_fast invisible=True singleton=True cooldown=8 speed=0.8 prob=0.1
+        
+        winner > Immovable img=avatar
+	
+        key > Passive img=key
+
+    LevelMapping
+        s > nokey
+        e > enemySpawn
+        k > key
+        A > avatarA
+        B > avatarB
+
+    InteractionSet
+        movable wall  > stepBack
+        enemySpawn wall > reverseDirection
+        avatar nokey > stepBack
+        incoming ship > killBoth scoreChange=-1,-1
+        incoming explosion avatarA > killSprite scoreChange=2,0
+        incoming explosion avatarB > killSprite scoreChange=0,2
+        avatar key > transformToAll stype=nokey stypeTo=withkey
+        key avatarA > killSprite scoreChange=10,0
+        key avatarB > killSprite scoreChange=0,10
+        avatar withkey > transformTo stype=winner
+
+    TerminationSet
+        SpriteCounter stype=ship   win=False,False
+        SpriteCounter stype=avatar   win=False,False
+        MultiSpriteCounter stype1=winner limit=2 win=True,True

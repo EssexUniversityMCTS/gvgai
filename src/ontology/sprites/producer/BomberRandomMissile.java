@@ -76,6 +76,11 @@ public class BomberRandomMissile extends SpawnPoint
     public void copyTo(VGDLSprite target)
     {
         BomberRandomMissile targetSprite = (BomberRandomMissile) target;
+
+        targetSprite.itypesMissile = new ArrayList<>();
+        for(Integer it : this.itypesMissile)
+            targetSprite.itypesMissile.add(it);
+        
         super.copyTo(targetSprite);
     }
 }

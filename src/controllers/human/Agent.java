@@ -34,8 +34,8 @@ public class Agent extends AbstractPlayer
      */
     public Types.ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer)
     {
-        Direction move = Utils.processMovementActionKeys(stateObs.getKeyHandler(getPlayerID()).getMask());
-        boolean useOn = Utils.processUseKey(stateObs.getKeyHandler(getPlayerID()).getMask());
+        Direction move = Utils.processMovementActionKeys(Game.humanki.getMask());
+        boolean useOn = Utils.processUseKey(Game.humanki.getMask());
 
         //In the keycontroller, move has preference.
         Types.ACTIONS action = Types.ACTIONS.fromVector(move);
