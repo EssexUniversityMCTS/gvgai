@@ -1,0 +1,67 @@
+BasicGame no_players=2
+
+    SpriteSet
+        score > Resource
+        movable >
+            blockSpawn  > BomberRandomMissile stypeMissile=red,green,yellow hidden=True singleton=True
+            avatar  > HorizontalAvatar 
+                none > img=avatar
+                    avatarA > 
+                    avatarB > 
+                claimed > 
+                    avatarAC > img=avatarRed
+                    avatarBC > img=avatarGreen
+        missile > Missile orientation=DOWN speed=0.2
+            unclaimed >
+                red  > color=RED
+                green  > color=GREEN
+                yellow  > color=YELLOW
+            avA >
+                redA > color=RED
+                greenA  > color=GREEN
+                yellowA  > color=YELLOW
+            avB >
+                redB > color=RED
+                greenB  > color=GREEN
+                yellowB  > color=YELLOW
+
+    InteractionSet
+        blockSpawn wall  > reverseDirection
+        movable wall  > stepBack
+        missile wall  > killSprite
+		
+        avatarA red > updateMissile stype=redA bomber=blockSpawn
+        avatarA red > transformToAll stype=red stypeTo=redA
+		
+        avatarA green > updateMissile stype=greenA bomber=blockSpawn
+        avatarA green > transformToAll stype=green stypeTo=greenA
+		
+        avatarA yellow > updateMissile stype=yellowA bomber=blockSpawn
+        avatarA yellow > transformToAll stype=yellow stypeTo=yellowA
+        
+        avatarA avA > transformTo stype=avatarAC
+        avatarAC avA > changeResource resource=score value=1 scoreChange=2,0 killResource=True
+        avatarAC avB > changeResource resource=score value=1 scoreChange=1,0 killResource=True
+        avatarAC unclaimed > removeScore killSecond=True
+				
+        avatarB red > updateMissile stype=redB bomber=blockSpawn
+        red avatarB > transformToAll stype=red stypeTo=redB
+		
+        avatarB green > updateMissile stype=greenB bomber=blockSpawn
+        green avatarB > transformToAll stype=green stypeTo=greenB
+		
+        avatarB yellow > updateMissile stype=yellowB bomber=blockSpawn
+        yellow avatarB > transformToAll stype=yellow stypeTo=yellowB
+        
+        avatarB avB > transformTo stype=avatarAC
+        avatarBC avB > changeResource resource=score value=1 scoreChange=0,2 killResource=True
+        avatarBC avA > changeResource resource=score value=1 scoreChange=0,1 killResource=True
+        avatarBC unclaimed > removeScore killSecond=True
+ 		
+    LevelMapping
+        s > blockSpawn
+        A > avatarA
+        B > avatarB
+
+    TerminationSet
+        TimeoutScoreCount limit=1500

@@ -2,21 +2,12 @@ package core.termination;
 
 import core.content.TerminationContent;
 import core.game.Game;
-import ontology.Types;
-import ontology.avatar.MovingAvatar;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Diego
- * Date: 22/10/13
- * Time: 18:48
- * This is a Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
- */
-public class TimeoutMultiScore extends Termination
+public class TimeoutScoreCount extends Termination
 {
-    public TimeoutMultiScore(){}
+    public TimeoutScoreCount(){}
 
-    public TimeoutMultiScore(TerminationContent cnt)
+    public TimeoutScoreCount(TerminationContent cnt)
     {
         //Parse the arguments.
         this.parseParameters(cnt);

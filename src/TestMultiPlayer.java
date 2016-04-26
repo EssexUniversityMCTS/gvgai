@@ -24,14 +24,14 @@ public class TestMultiPlayer
         String games[] = new String[]{};
 
         //All public games
-        games = new String[]{"tron", "captureflag", "copsNrobbers", "gotcha", "sokoban", "steeplechase"};
+        games = new String[]{"captureflag", "copsNrobbers", "gotcha", "klax", "sokoban", "steeplechase", "tron"};
 
         //Other settings
         boolean visuals = true;
         int seed = new Random().nextInt();
 
         //Game and level to play
-        int gameIdx = 0;
+        int gameIdx = 3;
         int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";

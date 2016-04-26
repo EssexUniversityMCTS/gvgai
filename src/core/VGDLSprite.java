@@ -501,6 +501,14 @@ public abstract class VGDLSprite {
     }
 
     /**
+     * Removes all resources collected of the specified type.
+     * @param resourceId - id of the resource whose quantity must be changed.
+     */
+    public void removeResource(int resourceId) {
+        resources.put(resourceId, 0);
+    }
+
+    /**
      * Returns the amount of resource of a given type this sprite has.
      * @param resourceId id of the resource to check.
      * @return how much of this resource this sprite has.
