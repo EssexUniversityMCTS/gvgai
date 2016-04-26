@@ -1,17 +1,16 @@
 BasicGame no_players=2
 
     SpriteSet
-        score > Resource
         movable >
-            blockSpawn  > BomberRandomMissile stypeMissile=red,green,yellow hidden=True singleton=True
-            avatar  > HorizontalAvatar 
-                none > img=avatar
+            blockSpawn  > BomberRandomMissile stypeMissile=red,green,yellow hidden=True invisible=True singleton=True cooldown=4 speed=0.8 prob=0.1
+            avatar  > HorizontalAvatar img=avatar
+                none > 
                     avatarA > 
                     avatarB > 
                 claimed > 
-                    avatarAC > img=avatarRed
-                    avatarBC > img=avatarGreen
-        missile > Missile orientation=DOWN speed=0.2
+                    avatarAC >
+                    avatarBC >
+        missile > Missile orientation=DOWN speed=0.1
             unclaimed >
                 red  > color=RED
                 green  > color=GREEN
@@ -40,8 +39,8 @@ BasicGame no_players=2
         avatarA yellow > transformToAll stype=yellow stypeTo=yellowA
         
         avatarA avA > transformTo stype=avatarAC
-        avatarAC avA > changeResource resource=score value=1 scoreChange=2,0 killResource=True
-        avatarAC avB > changeResource resource=score value=1 scoreChange=1,0 killResource=True
+        avA avatarAC > killSprite scoreChange=0,2
+        avB avatarAC > killSprite scoreChange=0,1
         avatarAC unclaimed > removeScore killSecond=True
 				
         avatarB red > updateMissile stype=redB bomber=blockSpawn
@@ -53,9 +52,9 @@ BasicGame no_players=2
         avatarB yellow > updateMissile stype=yellowB bomber=blockSpawn
         yellow avatarB > transformToAll stype=yellow stypeTo=yellowB
         
-        avatarB avB > transformTo stype=avatarAC
-        avatarBC avB > changeResource resource=score value=1 scoreChange=0,2 killResource=True
-        avatarBC avA > changeResource resource=score value=1 scoreChange=0,1 killResource=True
+        avatarB avB > transformTo stype=avatarBC
+        avB avatarBC > killSprite scoreChange=2,0
+        avA avatarBC > killSprite scoreChange=1,0
         avatarBC unclaimed > removeScore killSecond=True
  		
     LevelMapping

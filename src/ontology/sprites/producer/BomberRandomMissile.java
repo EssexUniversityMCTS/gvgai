@@ -58,8 +58,12 @@ public class BomberRandomMissile extends SpawnPoint
      * @param newitype - new type of missile to replace the first
      */
     public void updateItype(int itype, int newitype) {
-        int idx = itypes.indexOf(itype);
-        itypes.set(idx, newitype);
+        int idx = itypesMissile.indexOf(itype);
+        try {
+            itypesMissile.set(idx, newitype);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Type of missile unrecognized.");
+        }
     }
 
     public VGDLSprite copy()

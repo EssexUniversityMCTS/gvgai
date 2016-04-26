@@ -28,7 +28,7 @@ public class UpdateMissile extends Effect {
         VGDLSprite bombr = game.getSpriteGroup(ibomber).next();
         try {
             BomberRandomMissile b = (BomberRandomMissile)bombr;
-            b.updateItype(sprite2.itypes.get(0),itype);
+            b.updateItype(sprite2.getType(),itype);
         }
         catch (ClassCastException e) {
             e.printStackTrace();
