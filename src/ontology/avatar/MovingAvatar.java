@@ -3,16 +3,16 @@ package ontology.avatar;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
-import ontology.Types;
-import tools.Direction;
-import tools.ElapsedCpuTimer;
-import tools.Utils;
-import tools.Vector2d;
 import core.VGDLSprite;
 import core.competition.CompetitionParameters;
 import core.content.SpriteContent;
 import core.game.Game;
 import core.player.AbstractPlayer;
+import ontology.Types;
+import tools.Direction;
+import tools.ElapsedCpuTimer;
+import tools.Utils;
+import tools.Vector2d;
 
 /**
  * Created with IntelliJ IDEA.

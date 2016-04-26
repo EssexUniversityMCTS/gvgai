@@ -8,20 +8,22 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import core.competition.CompetitionParameters;
+import core.game.Game;
+import core.game.GameDescription;
+import core.game.GameDescription.SpriteData;
+import core.game.StateObservation;
+import core.generator.AbstractLevelGenerator;
+import core.player.AbstractPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
 import tools.IO;
 import tools.StatSummary;
-import core.competition.CompetitionParameters;
-import core.game.Game;
-import core.game.GameDescription;
-import core.game.StateObservation;
-import core.generator.AbstractLevelGenerator;
-import core.player.AbstractPlayer;
 
 /**
  * Created with IntelliJ IDEA.
@@ -390,11 +392,8 @@ public class ArcadeMachine
 
 
         System.out.println("Results in game " + game_file + ", " +
-                        victories.mean() + ", " + scores.mean() 
-                        + ", mean MCTS iterations = " + performance.mean()
-                        + ", std err = " + performance.stdErr());
-        System.out.println("n = " + performance.n());
-        System.out.println("sum = " + performance.sum());
+                        victories.mean() + ", " + scores.mean() );
+                        //+ ", " + performance.mean());
     }
 
     /**

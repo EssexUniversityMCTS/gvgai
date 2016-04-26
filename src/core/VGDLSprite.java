@@ -16,6 +16,9 @@ import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
 
+import core.competition.CompetitionParameters;
+import core.content.SpriteContent;
+import core.game.Game;
 import ontology.Types;
 import ontology.physics.ContinuousPhysics;
 import ontology.physics.GravityPhysics;
@@ -25,9 +28,6 @@ import ontology.physics.Physics;
 import tools.Direction;
 import tools.Utils;
 import tools.Vector2d;
-import core.competition.CompetitionParameters;
-import core.content.SpriteContent;
-import core.game.Game;
 
 /**
  * Created with IntelliJ IDEA.

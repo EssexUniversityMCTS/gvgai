@@ -3,32 +3,11 @@ package core.game;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.JOptionPane;
 
-import ontology.Types;
-import ontology.avatar.MovingAvatar;
-import ontology.effects.Effect;
-import ontology.effects.TimeEffect;
-import ontology.sprites.Resource;
-import tools.Direction;
-import tools.JEasyFrame;
-import tools.KeyHandler;
-import tools.KeyInput;
-import tools.KeyPulse;
-import tools.Pair;
-import tools.Vector2d;
-import tools.WindowInput;
-import tools.pathfinder.Node;
-import tools.pathfinder.PathFinder;
 import core.SpriteGroup;
 import core.VGDLFactory;
 import core.VGDLRegistry;
@@ -43,6 +22,14 @@ import core.game.GameDescription.SpriteData;
 import core.game.GameDescription.TerminationData;
 import core.player.AbstractPlayer;
 import core.termination.Termination;
+import ontology.Types;
+import ontology.avatar.MovingAvatar;
+import ontology.effects.Effect;
+import ontology.effects.TimeEffect;
+import ontology.sprites.Resource;
+import tools.*;
+import tools.pathfinder.Node;
+import tools.pathfinder.PathFinder;
 
 
 /**

@@ -3,13 +3,13 @@ package ontology.sprites.producer;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
-import ontology.Types;
-import tools.Direction;
-import tools.Vector2d;
 import core.VGDLRegistry;
 import core.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
+import ontology.Types;
+import tools.Direction;
+import tools.Vector2d;
 
 /**
  * Created with IntelliJ IDEA.
