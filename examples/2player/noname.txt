@@ -1,0 +1,26 @@
+BasicGame no_players=2
+    SpriteSet
+        avatar > 
+            avatar1 > MovingAvatar img=avatarRed.png
+            avatar2 > ShootAvatar stype=pull img=avatar.png
+        pull > AttachedTo singleton=True img=sword.png
+        deathSpot > Immovable color=BLACK
+        
+    InteractionSet
+        avatar avatar > bounceForward
+        avatar avatar > stepBack
+        avatar1 pull > pullWithIt
+        avatar2 pull > stepBack
+        avatar wall > stepBack stype=pull
+        pull wall > killSprite
+        avatar deathSpot > killSprite
+    
+    TerminationSet
+        SpriteCounter stype=avatar1   limit=0 win=True,False
+        SpriteCounter stype=avatar2   limit=0 win=False,False
+        Timeout limit=1500 win=False,True
+    
+    LevelMapping
+        A > avatar1
+        B > avatar2
+        x > deathSpot
