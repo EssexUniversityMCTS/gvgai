@@ -786,7 +786,7 @@ public class ForwardModel extends Game
                     observations[idx].add(observation);
                 }
 
-                if(reference != Types.NIL)
+                if(refPosition != null)
                 {
                     Collections.sort(observations[idx]);
                 }
