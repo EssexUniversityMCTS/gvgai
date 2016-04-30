@@ -175,6 +175,21 @@ public abstract class VGDLSprite {
      * Indicates if the tile picking is random
      */
     public double randomtiling;
+    
+    /**
+     * max frameRate for animating sprites
+     */
+    public double frameRate;
+    
+    /**
+     * remaining frame speed
+     */
+    public double frameRemaining;
+    
+    /**
+     * the current frame to be drawn
+     */
+    public int currentFrame;
 
     /**
      * List of types this sprite belongs to. It contains the ids, including itself's, from this sprite up
@@ -290,6 +305,9 @@ public abstract class VGDLSprite {
         shrinkfactor = 1.0;
         autotiling = false;
         randomtiling = -1;
+        frameRate = -1;
+        frameRemaining = 0;
+        currentFrame = -1;
         allImages = new HashMap<Integer, Image>();
         is_oriented = false;
         draw_arrow = false;
@@ -393,6 +411,13 @@ public abstract class VGDLSprite {
     {
         lastrect = new Rectangle(rect);
         lastmove += 1;
+        
+        frameRemaining -= 1;
+        if(frameRate > 0 && frameRemaining <= 0){
+        	currentFrame = (currentFrame + 1) % allImages.size();
+        	frameRemaining = frameRate;
+        	image = allImages.get(currentFrame);
+        }
     }
 
     /**
@@ -592,7 +617,7 @@ public abstract class VGDLSprite {
             r.x += (rect.width-r.width)/2;
             r.y += (rect.height-r.height)/2;
         }
-
+        
         int w = image.getWidth(null);
         int h = image.getHeight(null);
         float scale = (float)r.width/w; //assume all sprites are quadratic.
@@ -714,7 +739,7 @@ public abstract class VGDLSprite {
         {
             //load image.
             try {
-            	if (this.autotiling || this.randomtiling >= 0){
+            	if (this.autotiling || this.randomtiling >= 0 || this.frameRate >= 0){
             		if (str.contains(".png")) str = str.substring(0, str.length() - 3);
             		String imagePath = CompetitionParameters.IMG_PATH + str + "_";
             		boolean noMoreFiles = false;
@@ -822,6 +847,9 @@ public abstract class VGDLSprite {
         toSprite.invisible = this.invisible;
         toSprite.autotiling = this.autotiling;
         toSprite.randomtiling = this.randomtiling;
+        toSprite.frameRate = this.frameRate;
+        toSprite.currentFrame = this.currentFrame;
+        toSprite.frameRemaining = this.frameRemaining;
         toSprite.rotateInPlace = this.rotateInPlace;
         toSprite.isFirstTick = this.isFirstTick;
         toSprite.hidden = this.hidden;
@@ -875,6 +903,7 @@ public abstract class VGDLSprite {
         if(other.invisible != this.invisible) return false;
         if(other.autotiling != this.autotiling) return false;
         if(other.randomtiling != this.randomtiling) return false;
+        if(other.frameRate != this.frameRate) return false;
         if(other.spriteID != this.spriteID) return false;
         if(other.isFirstTick != this.isFirstTick) return false;
         if(other.hidden != this.hidden) return false;
