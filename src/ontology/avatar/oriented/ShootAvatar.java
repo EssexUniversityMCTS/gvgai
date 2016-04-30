@@ -8,7 +8,6 @@ import core.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
-import ontology.sprites.AttachedTo;
 import tools.Direction;
 import tools.Utils;
 import tools.Vector2d;
@@ -30,8 +29,6 @@ public class ShootAvatar extends OrientedAvatar
     //This is the sprite I shoot
     public String stype;
     public int itype;
-
-    private VGDLSprite attached;
 
     public ShootAvatar(){}
 
@@ -103,21 +100,6 @@ public class ShootAvatar extends OrientedAvatar
                 newOne.orientation = new Direction(dir.x, dir.y);
             reduceAmmo();
             newOne.setFromAvatar(true);
-
-            if (newOne instanceof AttachedTo) {
-                //set origin as this sprite
-                attached = newOne;
-                ((AttachedTo)newOne).setOrigin(this);
-            }
-        } else {
-            if (attached != null) {
-                try {
-                    game.killSprite(attached, false);
-                } catch (Exception e) {
-                    System.out.println("Sprite already destroyed.");
-                }
-                attached = null;
-            }
         }
     }
 

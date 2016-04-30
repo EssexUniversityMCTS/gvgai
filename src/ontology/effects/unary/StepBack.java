@@ -1,6 +1,5 @@
 package ontology.effects.unary;
 
-import core.VGDLRegistry;
 import core.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
@@ -10,8 +9,6 @@ import tools.Direction;
 import tools.Vector2d;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,8 +20,6 @@ import java.util.Iterator;
 public class StepBack extends Effect
 {
     public boolean pixelPerfect;
-    public String stype; //other objects affected by the effect
-    private ArrayList<Integer> itypesObj; //itypes of other objects affected by the effect
 
     public StepBack(InteractionContent cnt)
     {
@@ -33,46 +28,12 @@ public class StepBack extends Effect
     }
 
     @Override
-    public void parseParameters(InteractionContent content) {
-        super.parseParameters(content);
-
-        if (stype != null) {
-            int notItypesArray[] = VGDLRegistry.GetInstance().explode(stype);
-            itypesObj = new ArrayList<>();
-            for (Integer it : notItypesArray)
-                itypesObj.add(it);
-        }
-    }
-
-    @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
-        if(pixelPerfect) {
+        if(pixelPerfect)
             sprite1.setRect(calculatePixelPerfect(sprite1, sprite2));
-            //calculate for all the other sprites affected
-            if (itypesObj != null) {
-                for (int itype : itypesObj) {
-                    Iterator<VGDLSprite> spriteIt = game.getSpriteGroup(itype);
-                    if (spriteIt != null) while (spriteIt.hasNext()) {
-                        VGDLSprite sp = spriteIt.next();
-                        sp.setRect(calculatePixelPerfect(sp, sprite2));
-                    }
-                }
-            }
-        }
-        else {
+        else
             sprite1.setRect(sprite1.lastrect);
-            //calculate for all the other sprites affected
-            if (itypesObj != null) {
-                for (int itype : itypesObj) {
-                    Iterator<VGDLSprite> spriteIt = game.getSpriteGroup(itype);
-                    if (spriteIt != null) while (spriteIt.hasNext()) {
-                        VGDLSprite sp = spriteIt.next();
-                        sp.setRect(sp.lastrect);
-                    }
-                }
-            }
-        }
     }
 
     private Rectangle calculatePixelPerfect(VGDLSprite sprite1, VGDLSprite sprite2)

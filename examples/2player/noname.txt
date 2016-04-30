@@ -3,16 +3,17 @@ BasicGame no_players=2
         avatar > 
             avatar1 > MovingAvatar img=avatarRed.png
             avatar2 > ShootAvatar stype=pull img=avatar.png
-        pull > AttachedTo singleton=True img=sword.png
-        deathSpot > Immovable color=BLACK
+        pull > Flicker singleton=True img=sword.png
+        deathSpot > Immovable img=hole color=BLACK
+        safeSpot > Immovable invisible=True
+        deadPortal > Portal invisible=True portal=True stype=safeSpot
         
     InteractionSet
-        avatar avatar > bounceForward
-        avatar avatar > stepBack
-        avatar1 pull > pullWithIt
-        avatar2 pull > stepBack
-        avatar wall > stepBack stype=pull
-        pull wall > killSprite
+        avatar1 avatar2 > bounceForward
+        avatar1 pull > spawn stype=deadPortal
+        deadPortal avatar1 > killSprite
+        avatar1 deadPortal > teleportToExit
+        avatar wall > undoAll
         avatar deathSpot > killSprite
     
     TerminationSet
@@ -21,6 +22,6 @@ BasicGame no_players=2
         Timeout limit=1500 win=False,True
     
     LevelMapping
-        A > avatar1
+        A > avatar1 safeSpot
         B > avatar2
         x > deathSpot

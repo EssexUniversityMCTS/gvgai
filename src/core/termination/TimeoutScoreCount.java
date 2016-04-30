@@ -18,11 +18,9 @@ public class TimeoutScoreCount extends Termination
         boolean ended = super.isFinished(game);
         if (ended || game.getGameTick() >= limit ) {
             double maxScore = game.getAvatar(0).getScore();
-            int id = 0;
             for (int i = 1; i < game.no_players; i++) {
                 double score = game.getAvatar(i).getScore();
                 if (score > maxScore) {
-                    id = i;
                     maxScore = score;
                 }
             }

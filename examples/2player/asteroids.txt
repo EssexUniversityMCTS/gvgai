@@ -1,0 +1,42 @@
+BasicGame no_players=2
+    SpriteSet
+        base > Immovable color=WHITE img=base
+        moving >
+            avatar  > ShootAvatar img=spaceship
+                avatar1 > stype=sam1
+                avatar2 > stype=sam2
+            asteroid > RandomNPC speed=0.2 img=boulder cons=1
+        missile > Missile
+            sam1  > color=BLUE singleton=True img=missile
+            sam2  > color=RED singleton=True img=missile
+        portal  > SpawnPoint stype=asteroid cooldown=12 total=10 invisible=True hidden=True
+    
+    LevelMapping
+        p > portal
+        b > base
+        A > avatar1
+        B > avatar2
+
+    TerminationSet
+        SpriteCounter stype=avatar1 limit=0 win=False,True
+        SpriteCounter stype=avatar2 limit=0 win=True,False
+        SpriteCounter stype=asteroid limit=0 count_score=True
+        
+    InteractionSet
+        avatar EOS > wrapAround
+        asteroid EOS > stepBack
+        missile EOS > killSprite
+        
+        avatar avatar > killBoth
+        avatar1 sam2 > killSprite scoreChange=-2,10
+        avatar2 sam1 > killSprite scoreChange=10,-2
+        
+        sam1 asteroid > killBoth scoreChange=3,0
+        sam2 asteroid > killBoth scoreChange=0,3
+        avatar1 asteroid > killBoth scoreChange=-1,0
+        avatar2 asteroid > killBoth scoreChange=0,-1
+		
+        base asteroid > killSprite
+        base sam1 > killBoth scoreChange=1,0
+        base sam2 > killBoth scoreChange=0,1
+        avatar base > stepBack
