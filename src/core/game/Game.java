@@ -1086,36 +1086,19 @@ public abstract class Game
                     this.score += ef.scoreChange;
 
             }else {
-
-                if (!noSprites[intId] && bucketList[intId].size() == 0) {
-                    //Take all the subtypes in the hierarchy of this sprite.
-                    ArrayList<Integer> allTypes = iSubTypes[intId];
-                    for (Integer itype : allTypes) {
-                        //Add all sprites of this subtype to the list of sprites.
-                        //This are sprites that could potentially collide with EOS
-                        Collection<VGDLSprite> sprites = this.getSprites(itype);
-                        for (VGDLSprite sp : sprites) {
-                            //bucketList[intId].insert(sp);
-                            bucketList[intId].add(sp);
+            	
+            	ArrayList<Integer> allTypes = iSubTypes[intId];
+            	for (Integer itype : allTypes) {
+                    //Find all sprites of this subtype.
+                    //These are sprites that could potentially collide with EOS
+                    Collection<VGDLSprite> sprites = this.getSprites(itype);
+                    for (VGDLSprite sp : sprites) {
+                    	//Check that they are not dead (could happen in this same cycle).
+                        if (!kill_list.contains(sp)) {
+                            executeEffect(ef, sp, null);
                         }
                     }
-
-                    //If no sprites were added here, mark it in the array.
-                    if (bucketList[intId].size() == 0)
-                        noSprites[intId] = true;
                 }
-
-                //For all sprites that can collide.
-                for (VGDLSprite s1 : bucketList[intId].getAllSprites()) {
-                    //Check that they are not dead (could happen in this same cycle).
-                    if (!kill_list.contains(s1)) {
-                        executeEffect(ef, s1, null);
-                    }
-                }
-
-                //Clear the array of sprites for this effect.
-                bucketList[intId].clear();
-                noSprites[intId] = false;
             }
 
             //If the time effect is repetitive, need to reinsert in the list of effects
@@ -1134,40 +1117,22 @@ public abstract class Game
             //For each effect that this sprite has assigned.
             for(Effect ef : eosEffects[intId])
             {
-                if(!noSprites[intId] && bucketList[intId].size() == 0)
+            	//Take all the subtypes in the hierarchy of this sprite.
+                ArrayList<Integer> allTypes = iSubTypes[intId];
+                for(Integer itype : allTypes)
                 {
-                    //Take all the subtypes in the hierarchy of this sprite.
-                    ArrayList<Integer> allTypes = iSubTypes[intId];
-                    for(Integer itype : allTypes)
+                    //Add all sprites of this subtype to the list of sprites.
+                    //This are sprites that could potentially collide with EOS
+                    Collection<VGDLSprite> sprites = this.getSprites(itype);
+                    for(VGDLSprite sp : sprites)
                     {
-                        //Add all sprites of this subtype to the list of sprites.
-                        //This are sprites that could potentially collide with EOS
-                        Collection<VGDLSprite> sprites = this.getSprites(itype);
-                        for(VGDLSprite sp : sprites)
-                        {
-                            //bucketList[intId].insert(sp);
-                            bucketList[intId].add(sp);
+                    	//Check if they are at the edge to trigger the effect. Also check that they
+                        //are not dead (could happen in this same cycle).
+                        if(isAtEdge(sp.rect) && !kill_list.contains(sp)) {
+                            executeEffect(ef, sp, null);
                         }
                     }
-
-                    //If no sprites were added here, mark it in the array.
-                    if(bucketList[intId].size() == 0)
-                        noSprites[intId] = true;
                 }
-
-                //For all sprites that can collide.
-                for(VGDLSprite s1 : bucketList[intId].getAllSprites())
-                {
-                    //Check if they are at the edge to trigger the effect. Also check that they
-                    //are not dead (could happen in this same cycle).
-                    if(isAtEdge(s1.rect) && !kill_list.contains(s1)) {
-                        executeEffect(ef, s1, null);
-                    }
-                }
-
-                //Clear the array of sprites for this effect.
-                bucketList[intId].clear();
-                noSprites[intId] = false;
             }
 
         }
