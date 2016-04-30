@@ -29,13 +29,13 @@ BasicGame no_players=2
         movable wall  > stepBack
         missile wall  > killSprite
 		
-        avatarA red > updateMissile stype=redA bomber=blockSpawn
+        avatarA red > updateSpawnType stype=redA spawnPoint=blockSpawn
         avatarA red > transformToAll stype=red stypeTo=redA
 		
-        avatarA green > updateMissile stype=greenA bomber=blockSpawn
+        avatarA green > updateSpawnType stype=greenA spawnPoint=blockSpawn
         avatarA green > transformToAll stype=green stypeTo=greenA
 		
-        avatarA yellow > updateMissile stype=yellowA bomber=blockSpawn
+        avatarA yellow > updateSpawnType stype=yellowA spawnPoint=blockSpawn
         avatarA yellow > transformToAll stype=yellow stypeTo=yellowA
         
         avatarA avA > transformTo stype=avatarAC
@@ -43,13 +43,13 @@ BasicGame no_players=2
         avB avatarAC > killSprite scoreChange=0,1
         avatarAC unclaimed > removeScore killSecond=True
 				
-        avatarB red > updateMissile stype=redB bomber=blockSpawn
+        avatarB red > updateSpawnType stype=redB spawnPoint=blockSpawn
         red avatarB > transformToAll stype=red stypeTo=redB
 		
-        avatarB green > updateMissile stype=greenB bomber=blockSpawn
+        avatarB green > updateSpawnType stype=greenB spawnPoint=blockSpawn
         green avatarB > transformToAll stype=green stypeTo=greenB
 		
-        avatarB yellow > updateMissile stype=yellowB bomber=blockSpawn
+        avatarB yellow > updateSpawnType stype=yellowB spawnPoint=blockSpawn
         yellow avatarB > transformToAll stype=yellow stypeTo=yellowB
         
         avatarB avB > transformTo stype=avatarBC
