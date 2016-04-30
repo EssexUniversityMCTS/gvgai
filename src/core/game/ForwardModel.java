@@ -187,11 +187,12 @@ public class ForwardModel extends Game
     {
         int spriteId = sprite.spriteID;
         boolean moved = false, newObs = false;
-        Observation obs;
+
         Vector2d oldPosition = null;
-        if(observations.containsKey(spriteId))
+
+        Observation obs = observations.get(spriteId);
+        if(obs != null)
         {
-            obs = observations.get(spriteId);
             oldPosition = obs.position;
             moved = ! obs.position.equals(sprite.getPosition());
             obs.position = sprite.getPosition();
@@ -212,9 +213,9 @@ public class ForwardModel extends Game
     {
         int spriteId = sprite.spriteID;
 
-        if(observations.containsKey(spriteId))
+        Observation obs = observations.get(spriteId);
+        if(obs != null)
         {
-            Observation obs = observations.get(spriteId);
             removeObservationFromGrid(obs, obs.position);
             observations.remove(spriteId);
         }
@@ -334,9 +335,10 @@ public class ForwardModel extends Game
     private Observation getSpriteObservation(VGDLSprite sprite)
     {
         int spriteId = sprite.spriteID;
-        if(observations.containsKey(spriteId))
+        Observation obs = observations.get(spriteId);
+        if(obs != null)
         {
-            return observations.get(spriteId);
+            return obs;
         }else{
             return createSpriteObservation(sprite);
         }
