@@ -835,6 +835,7 @@ public abstract class VGDLSprite {
         toSprite.healthPoints = this.healthPoints;
         toSprite.maxHealthPoints = this.maxHealthPoints;
         toSprite.limitHealthPoints = this.limitHealthPoints;
+        toSprite.timeToLive = this.timeToLive;
 
         toSprite.itypes = new ArrayList<Integer>();
         for(Integer it : this.itypes)
