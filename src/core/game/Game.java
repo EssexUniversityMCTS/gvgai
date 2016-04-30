@@ -1084,8 +1084,9 @@ public abstract class Game
             }
         }
 
+        Collections.reverse(avSprites); //read in reverse order
         if (!avSprites.isEmpty()) {
-            for (int i = no_players - 1; i >=0; i--) {
+            for (int i = 0; i < no_players; i++) {
                 if (numAvatarSprites > i) { //check if there's enough avatars just in case
                     avatars[i] = avSprites.get(i);
                     if (humanID == i)
