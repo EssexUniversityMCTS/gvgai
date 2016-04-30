@@ -257,6 +257,12 @@ public abstract class VGDLSprite {
     public static boolean thinkingTime = true;
 
     /**
+     * Time to live for this sprite. Default set to -1 will not affect the sprite.
+     * If ttl > -1, when it gets to 0, the sprite gets killed.
+     */
+    public int timeToLive = -1;
+
+    /**
      * Initializes the sprite, giving its position and dimensions.
      * @param position position of the sprite
      * @param size dimensions of the sprite on the screen.
@@ -372,6 +378,10 @@ public abstract class VGDLSprite {
     public void update(Game game)
     {
         updatePassive();
+        if (timeToLive > -1) {
+            if (timeToLive > 0) timeToLive--;
+            else game.killSprite(this,false);
+        }
     }
 
     /**

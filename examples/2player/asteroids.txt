@@ -5,13 +5,13 @@ BasicGame no_players=2
             avatar  > ShootAvatar img=spaceship
                 avatar1 > stype=sam1
                 avatar2 > stype=sam2
-            asteroid > RandomNPC img=boulder 
-                big > speed=0.05 cons=1
-                medium > speed=0.10 cons=2 shrinkfactor=0.8
-                small > speed=0.15 cons=3 shrinkfactor=0.5
-        missile > Missile
-            sam1  > color=BLUE singleton=True img=missile
-            sam2  > color=RED singleton=True img=missile
+            missile > Missile timeToLive=20
+                sam1  > color=BLUE singleton=True img=missile
+                sam2  > color=RED singleton=True img=missile
+        asteroid > RandomNPC img=boulder 
+            big > speed=0.05 cons=1
+            medium > speed=0.10 cons=2 shrinkfactor=0.8
+            small > speed=0.15 cons=3 shrinkfactor=0.5
         portal  > SpawnPoint stype=big cooldown=16 total=5 invisible=True hidden=True
     
     LevelMapping
@@ -27,9 +27,8 @@ BasicGame no_players=2
         TimeoutScoreCount limit=2000
         
     InteractionSet
-        avatar EOS > wrapAround
+        moving EOS > wrapAround
         asteroid EOS > stepBack
-        missile EOS > killSprite
         
         avatar avatar > killBoth
         avatar1 sam2 > killSprite scoreChange=-2,10
