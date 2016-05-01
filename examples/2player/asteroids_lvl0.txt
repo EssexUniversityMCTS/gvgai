@@ -1,14 +1,14 @@
                                 
-        bbb            b        
-   bbbb        bb      b   B    
-                       b        
-          b                  bb 
-          b                     
+        bbb            b
+   bbbb   h    bb      b   B
+   h                   b
+       p  b    h             bb
+          b            h
         bb    p    bb           
-                  b            b
-                  b            b
+                  b     p      b
+    h             b       h    b
  bb         b                   
         b   b         bbbb      
-    A   b         bbb           
-        b                       
+        bA        bbb
+        b        h
                                 

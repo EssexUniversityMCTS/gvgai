@@ -8,14 +8,26 @@ BasicGame no_players=2
             missile > Missile timeToLive=20
                 sam1  > color=BLUE singleton=True img=missile
                 sam2  > color=RED singleton=True img=missile
-        asteroid > RandomNPC img=boulder 
-            big > speed=0.05 cons=1
-            medium > speed=0.10 cons=2 shrinkfactor=0.8
-            small > speed=0.15 cons=3 shrinkfactor=0.5
-        portal  > SpawnPoint stype=big cooldown=16 total=5 invisible=True hidden=True
+
+        asteroid >
+
+            static > RandomNPC img=boulder is_npc=False
+                big > speed=0.05 cons=1
+                medium > speed=0.10 cons=2 shrinkfactor=0.8
+                small > speed=0.15 cons=3 shrinkfactor=0.5
+
+            rnd > RandomMissile speed=0.15 img=boulder
+                rndBib > speed=0.05
+                rndMedium > speed=0.10 shrinkfactor=0.8
+                rndSmall > speed=0.15 shrinkfactor=0.5
+
+        portal  > SpawnPoint cooldown=16 invisible=True hidden=True
+            portalR > stype=big total=3
+            portalH > stype=rndBib total=1
     
     LevelMapping
-        p > portal
+        p > portalR
+        h > portalH
         b > base
         A > avatar1
         B > avatar2
@@ -28,6 +40,7 @@ BasicGame no_players=2
         
     InteractionSet
         moving EOS > wrapAround
+        rnd EOS > wrapAround
         asteroid EOS > stepBack
         
         avatar avatar > killBoth
@@ -37,16 +50,25 @@ BasicGame no_players=2
         missile big > spawn stype=medium
         missile big > spawn stype=medium
         missile big > killBoth
-		
         missile medium > spawn stype=small
         missile medium > spawn stype=small
         missile medium > killBoth
-		
-        sam1 small > killBoth scoreChange=3,0
-        sam2 small > killBoth scoreChange=0,3
+
+
+        missile rndBib > spawn stype=rndMedium
+        missile rndBib > spawn stype=rndMedium
+        missile rndBib > killBoth
+        missile rndMedium > spawn stype=rndSmall
+        missile rndMedium > spawn stype=rndSmall
+        missile rndMedium > killBoth
+
+        sam1 rndSmall small > killBoth scoreChange=3,0
+        sam2 rndSmall small > killBoth scoreChange=0,3
+
         avatar1 asteroid > killBoth scoreChange=-1,0
         avatar2 asteroid > killBoth scoreChange=0,-1
-		
+
+
         base asteroid > killSprite
         base sam1 > killBoth scoreChange=1,0
         base sam2 > killBoth scoreChange=0,1
