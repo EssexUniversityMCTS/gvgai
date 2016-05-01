@@ -13,8 +13,8 @@ BasicGame no_players=2
     InteractionSet
         avatar1 goal > transformTo stype=winnerPlayer1 scoreChange=1,0
         avatar2 goal > transformTo stype=winnerPlayer2 scoreChange=0,1
-        horse wall > stepBack
-        box horse sword > killSprite		
+        horse box wall > stepBack
+        box sword > killSprite		
 
     LevelMapping
         g > goal

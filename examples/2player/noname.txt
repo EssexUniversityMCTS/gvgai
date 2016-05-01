@@ -10,6 +10,8 @@ BasicGame no_players=2
         
     InteractionSet
         avatar1 avatar2 > bounceForward
+        avatar1 avatar2 > stepBack
+        avatar2 avatar1 > stepBack
         avatar1 pull > spawn stype=deadPortal
         deadPortal avatar1 > killSprite
         avatar1 deadPortal > teleportToExit

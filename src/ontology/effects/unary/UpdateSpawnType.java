@@ -27,14 +27,17 @@ public class UpdateSpawnType extends Effect {
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
-        Iterator<VGDLSprite> spriteIt = game.getSpriteGroup(ispawn);
-        if(spriteIt != null) while(spriteIt.hasNext()) {
-            try {
-                VGDLSprite sp = spriteIt.next();
-                SpawnPoint s = (SpawnPoint) sp;
-                s.updateItype(sprite2.getType(), itype);
-            } catch (ClassCastException e) {
-                e.printStackTrace();
+        ArrayList<Integer> subtypes = game.getSubTypes(ispawn);
+        for (Integer i: subtypes) {
+            Iterator<VGDLSprite> spriteIt = game.getSpriteGroup(i);
+            if (spriteIt != null) while (spriteIt.hasNext()) {
+                try {
+                    VGDLSprite sp = spriteIt.next();
+                    SpawnPoint s = (SpawnPoint) sp;
+                    s.updateItype(sprite2.getType(), itype);
+                } catch (ClassCastException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

@@ -778,6 +778,10 @@ public abstract class Game
         return acum;
     }
 
+    public ArrayList<Integer> getSubTypes(int itype) {
+        return this.iSubTypes[itype];
+    }
+
     /**
      * Returns the number of sprites disabled of the type given by parameter and all its subtypes
      * @param itype parent itype requested.
