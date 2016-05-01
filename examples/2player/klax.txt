@@ -8,21 +8,21 @@ BasicGame no_players=2
                     avatarA > 
                     avatarB > 
                 claimed > 
-                    avatarAC >
-                    avatarBC >
+                    avatarAC > img=alien
+                    avatarBC > img=avatarBlue
         missile > Missile orientation=DOWN speed=0.1
             unclaimed >
-                red  > color=RED
-                green  > color=GREEN
-                yellow  > color=YELLOW
+                red  > color=LIGHTRED
+                green  > color=LIGHTGREEN
+                yellow  > color=LIGHTYELLOW
             avA >
-                redA > color=RED
-                greenA  > color=GREEN
-                yellowA  > color=YELLOW
+                redA > color=RED shrinkfactor=0.5
+                greenA  > color=GREEN shrinkfactor=0.5
+                yellowA  > color=YELLOW shrinkfactor=0.5
             avB >
-                redB > color=RED
-                greenB  > color=GREEN
-                yellowB  > color=YELLOW
+                redB > color=PINK
+                greenB  > color=DARKGREY
+                yellowB  > color=BROWN
 
     InteractionSet
         blockSpawn wall  > reverseDirection
