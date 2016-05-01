@@ -21,7 +21,7 @@ BasicGame no_players=2
                 yellowA  > color=YELLOW shrinkfactor=0.5
             avB >
                 redB > color=PINK shrinkfactor=0.5
-                greenB  > color=DARKGREY shrinkfactor=0.5
+                greenB  > color=DARKGRAY shrinkfactor=0.5
                 yellowB  > color=BROWN shrinkfactor=0.5
 
     InteractionSet
