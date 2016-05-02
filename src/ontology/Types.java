@@ -71,15 +71,16 @@ public class Types {
     }
 
     public static int[] ALL_ACTIONS = new int[]{KeyEvent.VK_UP, KeyEvent.VK_LEFT, KeyEvent.VK_DOWN,
-                                                KeyEvent.VK_RIGHT, KeyEvent.VK_SPACE, KeyEvent.VK_ESCAPE};
+                                                KeyEvent.VK_RIGHT, KeyEvent.VK_SPACE, KeyEvent.VK_ESCAPE,
+                                                KeyEvent.VK_W, KeyEvent.VK_A, KeyEvent.VK_S, KeyEvent.VK_D, KeyEvent.CTRL_MASK};
     public static enum ACTIONS {
-        ACTION_NIL(new int[]{0}),
-        ACTION_UP(new int[]{KeyEvent.VK_UP}),
-        ACTION_LEFT(new int[]{KeyEvent.VK_LEFT}),
-        ACTION_DOWN(new int[]{KeyEvent.VK_DOWN}),
-        ACTION_RIGHT(new int[]{KeyEvent.VK_RIGHT}),
-        ACTION_USE(new int[]{KeyEvent.VK_SPACE}),
-        ACTION_ESCAPE(new int[]{KeyEvent.VK_ESCAPE});
+        ACTION_NIL(new int[]{0, 0}),
+        ACTION_UP(new int[]{KeyEvent.VK_UP, KeyEvent.VK_W}),
+        ACTION_LEFT(new int[]{KeyEvent.VK_LEFT, KeyEvent.VK_A}),
+        ACTION_DOWN(new int[]{KeyEvent.VK_DOWN, KeyEvent.VK_S}),
+        ACTION_RIGHT(new int[]{KeyEvent.VK_RIGHT, KeyEvent.VK_D}),
+        ACTION_USE(new int[]{KeyEvent.VK_SPACE, KeyEvent.CTRL_MASK}),
+        ACTION_ESCAPE(new int[]{KeyEvent.VK_ESCAPE, KeyEvent.VK_ESCAPE});
 
         private int[] key;
 

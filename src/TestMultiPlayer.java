@@ -33,20 +33,20 @@ public class TestMultiPlayer
 
         //Game and level to play
         int gameIdx = 5;
-        int levelIdx = 4; //level names from 0 to 4 (game_lvlN.txt).
+        int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
 
         String recordActionsFile = null;//"actions_" + games[gameIdx] + "_lvl" + levelIdx + "_" + seed + ".txt"; //where to record the actions executed. null if not to save.
 
         // 1. This starts a game, in a level, played by a human.
-        //ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
+        ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
 
         // 2. This plays a game in a level by the controllers. Separate controllers with a space character.
         // Provide enough players as required by the game. If one of them is human, change the playerID passed
         // to the runOneGame method to be that of the human player.
-        String controllers = humanController + " " + doNothingController;
-        ArcadeMachine.runOneGame(game, level1, visuals, controllers, recordActionsFile, seed, false, 0);
+        //String controllers = humanController + " " + doNothingController;
+        //ArcadeMachine.runOneGame(game, level1, visuals, controllers, recordActionsFile, seed, false, 0);
 
         // 3. This replays a game from an action file previously recorded
         //String readActionsFile = recordActionsFile;

@@ -36,8 +36,8 @@ public class Agent extends AbstractMultiPlayer
     public Types.ACTIONS act(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer)
     {
         //int id = (getPlayerID() + 1) % stateObs.getNoPlayers();
-        Direction move = Utils.processMovementActionKeys(Game.humanki.getMask());
-        boolean useOn = Utils.processUseKey(Game.humanki.getMask());
+        Direction move = Utils.processMovementActionKeys(Game.humanki.getMask(), getPlayerID());
+        boolean useOn = Utils.processUseKey(Game.humanki.getMask(), getPlayerID());
 
         //In the keycontroller, move has preference.
         Types.ACTIONS action = Types.ACTIONS.fromVector(move);
