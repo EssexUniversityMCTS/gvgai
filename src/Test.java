@@ -73,13 +73,13 @@ public class Test
         //ArcadeMachine.replayGame(game, level1, visuals, readActionsFile);
 
         // 4. This plays a single game, in N levels, M times :
-        //String level2 = gamesPath + games[gameIdx] + "_lvl" + 1 +".txt";
-        //int M = 3;
-        //for(int i=0; i<games.length; i++){
-        //	game = gamesPath + games[i] + ".txt";
-        //	level1 = gamesPath + games[i] + "_lvl" + levelIdx +".txt";
-        //	ArcadeMachine.runGames(game, new String[]{level1}, 5, evolutionStrategies, null);
-        //}
+//        String level2 = gamesPath + games[gameIdx] + "_lvl" + 1 +".txt";
+//        int M = 10;
+//        for(int i=51; i<games.length; i++){
+//        	game = gamesPath + games[i] + ".txt";
+//        	level1 = gamesPath + games[i] + "_lvl" + levelIdx +".txt";
+//        	ArcadeMachine.runGames(game, new String[]{level1}, M, sampleMCTSController, null);
+//        }
         
         //5. This starts a game, in a generated level created by a specific level generator
 
