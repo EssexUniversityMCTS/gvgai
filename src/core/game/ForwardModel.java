@@ -512,7 +512,7 @@ public class ForwardModel extends Game
         if (!a.is_disabled()) {
             KeyHandler ki = a.getKeyHandler();
             ki.reset();
-            ki.setAction(action, a.getPlayerID());
+            ki.setAction(action);
 
             //apply action to correct avatar
             a.preMovement();

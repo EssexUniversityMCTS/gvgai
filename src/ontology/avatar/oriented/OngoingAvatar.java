@@ -52,7 +52,7 @@ public class OngoingAvatar extends OrientedAvatar
         requestPlayerInput(game);
 
         //Map from the action mask to a Vector2D action.
-        Direction action2D = Utils.processMovementActionKeys(getKeyHandler().getMask(), 0); //use primary set of keys
+        Direction action2D = Utils.processMovementActionKeys(getKeyHandler().getMask());
 
         //Update the orientation for this cycle's movement,
         // but only if there was a direction indicated.
@@ -74,7 +74,7 @@ public class OngoingAvatar extends OrientedAvatar
         lastMovementType = Types.MOVEMENT.MOVE;
 
         //Map from the action mask to a Vector2D action.
-        Direction action2D = Utils.processMovementActionKeys(actionMask, 0); //use primary set of keys, idx = 0
+        Direction action2D = Utils.processMovementActionKeys(actionMask);
 
         //Update the orientation for this cycle's movement,
         // but only if there was a direction indicated.

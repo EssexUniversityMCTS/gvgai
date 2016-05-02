@@ -27,13 +27,10 @@ public abstract class KeyHandler extends KeyAdapter {
         }
     }
 
-    public void setAction(Types.ACTIONS action, int idx) {
-        key_mask[action.getKey()[idx]] = true;
-
-        /*
+    public void setAction(Types.ACTIONS action) {
         for(int i : action.getKey()){
             key_mask[i] = true;
-        }*/
+        }
     }
 
 

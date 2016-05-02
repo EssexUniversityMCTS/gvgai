@@ -101,7 +101,7 @@ public class MovingAvatar extends VGDLSprite {
         requestPlayerInput(game);
 
         //Map from the action mask to a Vector2D action.
-        Direction action2D = Utils.processMovementActionKeys(ki.getMask(), 0); //use primary set of keys, idx = 0
+        Direction action2D = Utils.processMovementActionKeys(ki.getMask());
 
         //Apply the physical movement.
         applyMovement(game, action2D);
@@ -116,7 +116,7 @@ public class MovingAvatar extends VGDLSprite {
     public void move(Game game, boolean[] actionMask) {
 
         //Apply action supplied (active movement). USE is checked up in the hierarchy.
-        Direction action = Utils.processMovementActionKeys(actionMask, 0); //use primary set of keys, idx = 0
+        Direction action = Utils.processMovementActionKeys(actionMask);
         applyMovement(game, action);
     }
 
@@ -168,7 +168,7 @@ public class MovingAvatar extends VGDLSprite {
         this.player.logAction(action);
         game.setAvatarLastAction(action);
         ki.reset();
-        ki.setAction(action, getPlayerID());
+        ki.setAction(action);
     }
 
 

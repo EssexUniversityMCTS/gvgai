@@ -40,8 +40,8 @@ public class Agent extends AbstractPlayer
      */
     public Types.ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer)
     {
-        Direction move = Utils.processMovementActionKeys(Game.humanki.getMask(), 0); //use primary set of keys, idx = 0
-        boolean useOn = Utils.processUseKey(Game.humanki.getMask(), 0); //use primary set of keys, idx = 0
+        Direction move = Utils.processMovementActionKeys(Game.humanki.getMask());
+        boolean useOn = Utils.processUseKey(Game.humanki.getMask());
 
         Types.ACTIONS action = Types.ACTIONS.fromVector(move);
         if(action == Types.ACTIONS.ACTION_NIL && useOn)

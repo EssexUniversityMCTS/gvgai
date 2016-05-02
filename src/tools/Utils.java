@@ -70,24 +70,24 @@ public class Utils
         return null;
     }
 
-    public static Direction processMovementActionKeys(boolean[] key_pressed, int idx) {
+    public static Direction processMovementActionKeys(boolean[] key_pressed) {
 
         int vertical = 0;
         int horizontal = 0;
 
 
-        if (key_pressed[Types.ACTIONS.ACTION_UP.getKey()[idx]]) {
+        if (key_pressed[Types.ACTIONS.ACTION_UP.getKey()[0]]) {
             vertical = -1;
         }
-        if (key_pressed[Types.ACTIONS.ACTION_DOWN.getKey()[idx]]) {
+        if (key_pressed[Types.ACTIONS.ACTION_DOWN.getKey()[0]]) {
             vertical = 1;
         }
 
 
-        if (key_pressed[Types.ACTIONS.ACTION_LEFT.getKey()[idx]]) {
+        if (key_pressed[Types.ACTIONS.ACTION_LEFT.getKey()[0]]) {
             horizontal = -1;
         }
-        if (key_pressed[Types.ACTIONS.ACTION_RIGHT.getKey()[idx]]) {
+        if (key_pressed[Types.ACTIONS.ACTION_RIGHT.getKey()[0]]) {
             horizontal = 1;
         }
 
@@ -97,9 +97,8 @@ public class Utils
             else if (vertical == -1)
                 return Types.DUP;
         } else if (vertical == 0) {
-            if (horizontal == 1) {
+            if (horizontal == 1)
                 return Types.DRIGHT;
-            }
             else if (horizontal == -1)
                 return Types.DLEFT;
         }
@@ -134,9 +133,9 @@ public class Utils
         }
     }
 
-    public static boolean processUseKey(boolean[] key_pressed, int idx)
+    public static boolean processUseKey(boolean[] key_pressed)
     {
-        return key_pressed[Types.ACTIONS.ACTION_USE.getKey()[idx]];
+        return key_pressed[Types.ACTIONS.ACTION_USE.getKey()[0]];
     }
 
     public static int argmax (double[] values)

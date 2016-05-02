@@ -89,9 +89,6 @@ public class ArcadeMachine
         //ArcadeMachine.warmUp(toPlay, CompetitionParameters.WARMUP_TIME);
 
         //Create the players.
-        if (isHuman && toPlay.no_players == 2) { //need 2 multi player humans
-            agentNames = "controllers.multiPlayer.human.Agent controllers.multiPlayer.human.Agent";
-        }
         String[] names = agentNames.split(" ");
         int no_players = names.length;
 
