@@ -894,8 +894,20 @@ public abstract class Game
 
         if(isHuman && !wi.windowClosed && CompetitionParameters.killWindowOnEnd){
         	if(CompetitionParameters.dialogBoxOnStartAndEnd){
-        		JOptionPane.showMessageDialog(frame,
-        				"GAMEOVER: YOU " + (avatars[humanID].getWinState() == Types.WINNER.PLAYER_WINS? "WIN.": "LOSE."));
+                if (no_players == 1) {
+                    JOptionPane.showMessageDialog(frame,
+                            "GAMEOVER: YOU " + (avatars[humanID].getWinState() == Types.WINNER.PLAYER_WINS ? "WIN." : "LOSE."));
+                } else {
+                    String sb = "";
+                    for (int i = 0; i < no_players; i++) {
+                        if (avatars[i].getWinState() == Types.WINNER.PLAYER_WINS) {
+                            sb += "Player " + i + "; ";
+                        }
+                    }
+                    if (sb.equals("")) sb = "NONE";
+                    JOptionPane.showMessageDialog(frame,
+                            "GAMEOVER - WINNER: " + sb);
+                }
         	}
         	frame.dispose();
         }
@@ -921,10 +933,16 @@ public abstract class Game
 
         if(!isEnded)
             frame.setTitle(sb);
-        else if(avatars[0].getWinState() == Types.WINNER.PLAYER_WINS)
-            frame.setTitle(sb + " [Player WINS!]");
-        else
-            frame.setTitle(sb + " [Player LOSES!]");
+        else {
+            for (int i = 0; i < no_players; i++) {
+                if (avatars[i].getWinState() == Types.WINNER.PLAYER_WINS)
+                    sb += " [Player " + i + " WINS!]";
+                else
+                    sb += " [Player " + i + " LOSES!]";
+            }
+        }
+
+        frame.setTitle(sb);
 
     }
 
@@ -1032,11 +1050,11 @@ public abstract class Game
         String sb1 = "";
         String sb2 = "";
         for (int i = 0; i < no_players; i++) {
-            sb1 += "Player" + i + "-" + avatars[i].getWinState().key() + ", ";
-            sb2 += "Player" + i + "-" + "Score:" + avatars[i].getScore() + ", ";
+            sb1 += "Player" + i + ":" + avatars[i].getWinState().key() + ", ";
+            sb2 += "Player" + i + "-Score:" + avatars[i].getScore() + ", ";
         }
 
-        System.out.println("Result (1->win; 0->lose):" + sb1 + sb2 + "timesteps:" + this.getGameTick());
+        System.out.println("Result (1->win; 0->lose): " + sb1 + sb2 + "timesteps:" + this.getGameTick());
         //System.out.println("Result (1->win; 0->lose):"+ winner.key() + ", Score:" + score + ", timesteps:" + this.getGameTick());
     }
 
@@ -1124,7 +1142,7 @@ public abstract class Game
                     avatars[i].setPlayerID(i);
                     //avatars[i].player.setPlayerID(i);
                 } else {
-                    System.out.println("uh oh null player");
+                    System.out.println("Null player.");
                 }
             }
         } else {
