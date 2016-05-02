@@ -28,6 +28,7 @@ BasicGame
 
         avatar wall > stepBack
         zombie wall  > stepBack
+        bullets EOS > killSprite
 
     LevelMapping
         g > goal

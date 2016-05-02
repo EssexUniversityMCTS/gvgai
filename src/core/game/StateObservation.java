@@ -443,12 +443,14 @@ public class StateObservation {
         return model.getFromAvatarSpPositions(reference);
     }
 
+
     /**
      * Returns key handler available to the player.
      * @param playerID ID of the player to query.
      * @return KeyHandler object.
      */
     public KeyHandler getKeyHandler(int playerID) { return model.avatars[playerID].getKeyHandler(); }
+
 
     /**
      * Compares if this and the received StateObservation state are equivalent.
@@ -458,60 +460,8 @@ public class StateObservation {
      */
     public boolean equiv(Object o)
     {
-        //First simple object-level checks.
-        if(this == o) return true;
-        if(!(o instanceof StateObservation)) return false;
-        StateObservation other = (StateObservation)o;
-
-        //Game state checks.
-        if(this.getGameScore() != other.getGameScore()) return false;
-        if(this.getGameTick() != other.getGameTick()) return false;
-        if(this.getGameWinner() != other.getGameWinner()) return false;
-        if(this.isGameOver() != other.isGameOver()) return false;
-        if(this.getAvatarSpeed() != other.getAvatarSpeed()) return false;
-        if(!this.getAvatarPosition().equals(other.getAvatarPosition())) return false;
-        if (!this.getAvatarOrientation().equals(other.getAvatarOrientation())) return false;
-
-        //Check resources
-        HashMap<Integer, Integer> thisResources = this.getAvatarResources();
-        HashMap<Integer, Integer> otherResources = other.getAvatarResources();
-        if(thisResources.size() != otherResources.size()) return false;
-        try
-        {
-            Set<Integer> resKeys = otherResources.keySet();
-            for (Integer k : resKeys) {
-                if (!(otherResources.get(k).equals(thisResources.get(k))))
-                    return false;
-            }
-        }catch(Exception e)
-        {
-            System.out.println(e.toString());
-            return false;
-        }
-
-        //Check events.
-        TreeSet<Event> thisEvents = this.getEventsHistory();
-        TreeSet<Event> otherEvents = other.getEventsHistory();
-        if(thisEvents.size() != otherEvents.size()) return false;
-        try
-        {
-            Iterator<Event> otherIt = otherEvents.descendingIterator();
-            Iterator<Event> thisIt = thisEvents.descendingIterator();
-
-            while(otherIt.hasNext())
-            {
-                if(!otherIt.next().equals(thisIt.next()))
-                    return false;
-            }
-
-        }catch(Exception e)
-        {
-            System.out.println(e.toString());
-            return false;
-        }
-
-        //Check observations:
-        return this.model.equalObservations(other.model);
+        System.out.println("StateObservation.equiv() is a Deprecated Method. And it always returns False, now.");
+        return false;
     }
 
 }
