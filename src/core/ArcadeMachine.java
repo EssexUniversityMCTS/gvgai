@@ -42,10 +42,23 @@ public class ArcadeMachine
      */
     public static double[] playOneGame(String game_file, String level_file, String actionFile, int randomSeed)
     {
-        //String agentName = "tools.pathfinder.Agent";
         String agentName = "controllers.human.Agent";
         boolean visuals = true;
-        return runOneGame(game_file, level_file, visuals, agentName, actionFile, randomSeed, true, 0);
+        return runOneGame(game_file, level_file, visuals, agentName, actionFile, randomSeed, 0);
+    }
+
+    /**
+     * Reads and launches a game for a human to be played. Graphics always on.
+     * @param game_file game description file.
+     * @param level_file file with the level to be played.
+     * @param actionFile to save the actions of the game.
+     * @param randomSeed for the game to be played.
+     */
+    public static double[] playOneGameMulti(String game_file, String level_file, String actionFile, int randomSeed)
+    {
+        String agentName = "controllers.multiPlayer.human.Agent";
+        boolean visuals = true;
+        return runOneGame(game_file, level_file, visuals, agentName, actionFile, randomSeed, 0);
     }
     
     /**
@@ -69,17 +82,16 @@ public class ArcadeMachine
      * @param agentNames names (inc. package) where the controllers are otherwise. Names separated by space.
      * @param actionFile filename of the files where the actions of these players, for this game, should be recorded.
      * @param randomSeed sampleRandom seed for the sampleRandom generator.
-     * @param isHuman indicates if a human is playing the game.
      * @param playerID ID of the human player
      */
-
     public static double[] runOneGame(String game_file, String level_file, boolean visuals,
-                                    String agentNames, String actionFile, int randomSeed, boolean isHuman, int playerID)
+                                    String agentNames, String actionFile, int randomSeed, int playerID)
     {
         VGDLFactory.GetInstance().init(); //This always first thing to do.
         VGDLRegistry.GetInstance().init();
 
-        System.out.println(" ** Playing game " + game_file + ", level " + level_file + " **");
+        if(VERBOSE)
+            System.out.println(" ** Playing game " + game_file + ", level " + level_file + " **");
 
         // First, we create the game to be played..
         Game toPlay = new VGDLParser().parseGame(game_file);
@@ -89,11 +101,21 @@ public class ArcadeMachine
         //ArcadeMachine.warmUp(toPlay, CompetitionParameters.WARMUP_TIME);
 
         //Create the players.
-        if (isHuman && toPlay.no_players == 2) { //need 2 multi player humans
-            agentNames = "controllers.multiPlayer.human.Agent controllers.multiPlayer.human.Agent";
-        }
         String[] names = agentNames.split(" ");
-        int no_players = names.length;
+        int no_players = toPlay.no_players;
+        if(no_players > 1 && no_players != names.length)
+        {
+            //We fill with more human players
+            String []newNames = new String[no_players];
+            System.arraycopy(names, 0, newNames, 0, names.length);
+            for(int i = names.length; i < no_players; ++i)
+                newNames[i] = "controllers.multiPlayer.human.Agent";
+            names = newNames;
+        }
+
+
+        boolean humans[] = new boolean[no_players];
+        boolean anyHuman = false;
 
         //System.out.println("Number of players: " + no_players);
 
@@ -107,12 +129,16 @@ public class ArcadeMachine
         }
 
         for (int i = 0; i < no_players; i++) {
+
+            humans[i] = isHuman(names[i]);
+            anyHuman |= humans[i];
+
             if (no_players > 1) {
                 //multi player
-                players[i] = ArcadeMachine.createMultiPlayer(names[i], actionFile, toPlay.getObservationMulti(), randomSeed, i);
+                players[i] = ArcadeMachine.createMultiPlayer(names[i], actionFile, toPlay.getObservationMulti(), randomSeed, i, humans[i]);
             } else {
                 //single player
-                players[i] = ArcadeMachine.createPlayer(names[i], actionFile, toPlay.getObservation(), randomSeed);
+                players[i] = ArcadeMachine.createPlayer(names[i], actionFile, toPlay.getObservation(), randomSeed, humans[i]);
             }
 
             if (players[i] == null) {
@@ -133,7 +159,7 @@ public class ArcadeMachine
         //Then, play the game.
         double[] score;
         if(visuals)
-            score = toPlay.playGame(players, randomSeed, isHuman, playerID);
+            score = toPlay.playGame(players, randomSeed, anyHuman, playerID);
         else
             score = toPlay.runGame(players, randomSeed);
 
@@ -227,7 +253,7 @@ public class ArcadeMachine
         ArcadeMachine.warmUp(toPlay, CompetitionParameters.WARMUP_TIME);
         
         //Create the player.
-        AbstractPlayer player = ArcadeMachine.createPlayer(agentName, actionFile, toPlay.getObservation(), randomSeed);
+        AbstractPlayer player = ArcadeMachine.createPlayer(agentName, actionFile, toPlay.getObservation(), randomSeed, isHuman);
 
         if(player == null){
             //Something went wrong in the constructor, controller disqualified
@@ -296,10 +322,10 @@ public class ArcadeMachine
         for (int i = 0; i < no_players; i++) {
             if (no_players > 1) {
                 //multi player
-                players[i] = ArcadeMachine.createMultiPlayer(agentName, null, toPlay.getObservationMulti(), -1, i);
+                players[i] = ArcadeMachine.createMultiPlayer(agentName, null, toPlay.getObservationMulti(), -1, i, false);
             } else {
                 //single player
-                players[i] = ArcadeMachine.createPlayer(agentName, null, toPlay.getObservation(), -1);
+                players[i] = ArcadeMachine.createPlayer(agentName, null, toPlay.getObservation(), -1, false);
             }
 
             if (players[i] == null) {
@@ -500,10 +526,10 @@ public class ArcadeMachine
                 for (int j = 0; j < no_players; j++) {
                     if (no_players > 1) {
                         //multi player
-                        players[j] = ArcadeMachine.createMultiPlayer(agentNames[j], filename, toPlay.getObservationMulti(), randomSeed, j);
+                        players[j] = ArcadeMachine.createMultiPlayer(agentNames[j], filename, toPlay.getObservationMulti(), randomSeed, j, false);
                     } else {
                         //single player
-                        players[j] = ArcadeMachine.createPlayer(agentNames[j], filename, toPlay.getObservation(), randomSeed);
+                        players[j] = ArcadeMachine.createPlayer(agentNames[j], filename, toPlay.getObservation(), randomSeed, false);
                     }
                     score[j] = -1;
                     if (players[j] == null) {
@@ -642,7 +668,7 @@ public class ArcadeMachine
             int randomSeed = new Random().nextInt();
 
             //Create the player.
-            AbstractPlayer player = ArcadeMachine.createPlayer(agentName, filename, toPlay.getObservation(), randomSeed);
+            AbstractPlayer player = ArcadeMachine.createPlayer(agentName, filename, toPlay.getObservation(), randomSeed, isHuman);
 
             double score = -1;
             if(player == null)
@@ -692,9 +718,11 @@ public class ArcadeMachine
      * @param actionFile filename of the file where the actions of this player, for this game, should be recorded.
      * @param so Initial state of the game to be played by the agent.
      * @param randomSeed Seed for the sampleRandom generator of the game to be played.
+     * @param isHuman Indicates if the player is human
      * @return the player, created and initialized, ready to start playing the game.
      */
-    private static AbstractPlayer createPlayer(String playerName, String actionFile, StateObservation so, int randomSeed)
+    private static AbstractPlayer createPlayer(String playerName, String actionFile,
+                                               StateObservation so, int randomSeed, boolean isHuman)
     {
         AbstractPlayer player = null;
 
@@ -702,7 +730,7 @@ public class ArcadeMachine
             //create the controller.
             player = (AbstractPlayer) createController(playerName, 0, so);
             if(player != null)
-                player.setup(actionFile, randomSeed);
+                player.setup(actionFile, randomSeed, isHuman);
             //else System.out.println("No controller created.");
 
         }catch (Exception e)
@@ -717,7 +745,17 @@ public class ArcadeMachine
         return player;
     }
 
-    private static AbstractMultiPlayer createMultiPlayer(String playerName, String actionFile, StateObservationMulti so, int randomSeed, int id)
+    /**
+     * Creates a player given its name with package for multiplayer. This class calls the constructor of the agent
+     * and initializes the action recording procedure. PlayerID used is 0, default for single player games.
+     * @param playerName name of the agent to create. It must be of the type "<agentPackage>.Agent".
+     * @param actionFile filename of the file where the actions of this player, for this game, should be recorded.
+     * @param so Initial state of the game to be played by the agent.
+     * @param randomSeed Seed for the sampleRandom generator of the game to be played.
+     * @param isHuman Indicates if the player is human
+     * @return the player, created and initialized, ready to start playing the game.
+     */
+    private static AbstractMultiPlayer createMultiPlayer(String playerName, String actionFile, StateObservationMulti so, int randomSeed, int id, boolean isHuman)
     {
         AbstractMultiPlayer player = null;
 
@@ -725,7 +763,7 @@ public class ArcadeMachine
             //create the controller.
             player = (AbstractMultiPlayer) createController(playerName, id, so);
             if(player != null) {
-                player.setup(actionFile, randomSeed);
+                player.setup(actionFile, randomSeed, isHuman);
             }
 
         }catch (Exception e)
@@ -1085,7 +1123,7 @@ public class ArcadeMachine
         //Reset input to delete warm-up effects.
         MovingAvatar[] avatars = toPlay.getAvatars();
         for (int i = 0; i < toPlay.getNoPlayers(); i++) {
-           avatars[i].getKeyHandler().reset();
+           avatars[i].getKeyHandler().resetAll();
         }
     }
 
@@ -1124,5 +1162,12 @@ public class ArcadeMachine
         return true;
     }
 
+    private static final boolean isHuman(String agentName)
+    {
+        if( agentName.equalsIgnoreCase("controllers.multiPlayer.human.Agent") ||
+            agentName.equalsIgnoreCase("controllers.human.Agent")    )
+            return true;
+        return false;
+    }
 
 }

@@ -2,6 +2,7 @@ package tools;
 
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -74,7 +75,6 @@ public class Utils
 
         int vertical = 0;
         int horizontal = 0;
-
 
         if (key_pressed[Types.ACTIONS.ACTION_UP.getKey()[idx]]) {
             vertical = -1;

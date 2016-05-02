@@ -45,9 +45,10 @@ public abstract class AbstractMultiPlayer extends Player {
      * This function sets up the controller to save the actions executed in a given game.
      * @param actionFile file to save the actions to.
      * @param randomSeed Seed for the sampleRandom generator of the game to be played.
+     * @param isHuman Indicates if the player is a human or not.
      */
-    final public void setup(String actionFile, int randomSeed) {
-        super.setup(actionFile, randomSeed);
+    final public void setup(String actionFile, int randomSeed, boolean isHuman) {
+        super.setup(actionFile, randomSeed, isHuman);
     }
 
 }

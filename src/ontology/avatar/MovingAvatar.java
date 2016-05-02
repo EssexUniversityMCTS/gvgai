@@ -1,6 +1,7 @@
 package ontology.avatar;
 
 import java.awt.Dimension;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import core.VGDLSprite;
@@ -35,8 +36,8 @@ public class MovingAvatar extends VGDLSprite {
      */
     protected boolean is_disqualified;
 
-    private KeyHandler ki = CompetitionParameters.KEY_HANDLER == CompetitionParameters.KEY_INPUT ?
-            new KeyInput() : new KeyPulse();
+    //Avatar can have any KeyHandler system. We use KeyInput by default.
+    private KeyHandler ki = new KeyInput();
 
     public Types.MOVEMENT lastMovementType = Types.MOVEMENT.STILL;
 
@@ -95,13 +96,13 @@ public class MovingAvatar extends VGDLSprite {
         lastMovementType = Types.MOVEMENT.STILL;
 
         //Sets the input mask for this cycle.
-        ki.setMask();
+        ki.setMask(getPlayerID());
 
         //Get the input from the player.
         requestPlayerInput(game);
 
         //Map from the action mask to a Vector2D action.
-        Direction action2D = Utils.processMovementActionKeys(ki.getMask(), 0); //use primary set of keys, idx = 0
+        Direction action2D = Utils.processMovementActionKeys(ki.getMask(), getPlayerID());
 
         //Apply the physical movement.
         applyMovement(game, action2D);
@@ -116,7 +117,7 @@ public class MovingAvatar extends VGDLSprite {
     public void move(Game game, boolean[] actionMask) {
 
         //Apply action supplied (active movement). USE is checked up in the hierarchy.
-        Direction action = Utils.processMovementActionKeys(actionMask, 0); //use primary set of keys, idx = 0
+        Direction action = Utils.processMovementActionKeys(actionMask, getPlayerID());
         applyMovement(game, action);
     }
 
@@ -167,7 +168,7 @@ public class MovingAvatar extends VGDLSprite {
 
         this.player.logAction(action);
         game.setAvatarLastAction(action);
-        ki.reset();
+        ki.reset(getPlayerID());
         ki.setAction(action, getPlayerID());
     }
 

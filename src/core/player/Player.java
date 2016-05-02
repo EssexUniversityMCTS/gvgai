@@ -55,6 +55,11 @@ public abstract class Player implements Cloneable{
     private int randomSeed;
 
     /**
+     * Is this a human player?
+     */
+    private boolean isHuman;
+
+    /**
      * Picks an action. This function is called every game step to request an
      * action from the player. The action returned must be contained in the
      * actions accessible from stateObs.getAvailableActions(), or no action
@@ -94,10 +99,12 @@ public abstract class Player implements Cloneable{
      * This function sets up the controller to save the actions executed in a given game.
      * @param actionFile file to save the actions to.
      * @param randomSeed Seed for the sampleRandom generator of the game to be played.
+     * @param isHuman Indicates if the player is a human or not.
      */
-    public void setup(String actionFile, int randomSeed) {
+    public void setup(String actionFile, int randomSeed, boolean isHuman) {
         this.actionFile = actionFile;
         this.randomSeed = randomSeed;
+        this.isHuman = isHuman;
 
         if(this.actionFile!=null && SHOULD_LOG)
         {
@@ -156,6 +163,12 @@ public abstract class Player implements Cloneable{
     public int getPlayerID() {
         return playerID;
     }
+
+    /**
+     * Indicates if this player is human controlled.
+     * @return true if the player is human.
+     */
+    public boolean isHuman() { return isHuman;}
 
     /**
      * Set this player's ID to a new value.

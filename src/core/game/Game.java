@@ -254,8 +254,7 @@ public abstract class Game
 
     public int no_players = 1; //default to single player
 
-    public static KeyHandler humanki = CompetitionParameters.KEY_HANDLER == CompetitionParameters.KEY_INPUT ?
-            new KeyInput() : new KeyPulse();
+    public static KeyHandler humanki;
 
     /**
      * Default constructor.
@@ -735,8 +734,13 @@ public abstract class Game
 
         factory.parseParameters(content, this);
 
+        //taking care of the key handler parameter:
+
         if(key_handler != null && key_handler.equalsIgnoreCase("Pulse"))
             CompetitionParameters.KEY_HANDLER = CompetitionParameters.KEY_PULSE;
+
+        Game.humanki = CompetitionParameters.KEY_HANDLER == CompetitionParameters.KEY_INPUT ?
+                new KeyInput() : new KeyPulse(no_players);
     }
 
     /**

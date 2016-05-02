@@ -21,23 +21,26 @@ public abstract class KeyHandler extends KeyAdapter {
         return key_mask;
     }
 
-    public void reset() {
+    public void resetAll() {
         for (int i = 0; i < Types.ALL_ACTIONS.length ; i++) {
-            key_mask[Types.ALL_ACTIONS[i]] = false;
+            for (int j = 0; j < Types.ALL_ACTIONS[i].length ; j++) {
+                key_mask[Types.ALL_ACTIONS[i][j]] = false;
+            }
+        }
+    }
+
+    public void reset(int playerID) {
+        for (int i = 0; i < Types.ALL_ACTIONS[playerID].length ; i++) {
+            key_mask[Types.ALL_ACTIONS[playerID][i]] = false;
         }
     }
 
     public void setAction(Types.ACTIONS action, int idx) {
         key_mask[action.getKey()[idx]] = true;
-
-        /*
-        for(int i : action.getKey()){
-            key_mask[i] = true;
-        }*/
     }
 
 
-    public void setMask() { }
+    public void setMask(int playerID) { }
 
     /**
      * Manages KeyPressed events
