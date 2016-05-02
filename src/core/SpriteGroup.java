@@ -132,10 +132,17 @@ public class SpriteGroup
         return sprites.get(spriteId);
     }
 
+    /**
+     * Retrieves a sprite given its position in the sprite list.
+     * Returns null sprite is not in the collection.
+     * @param idx index of the sprite.
+     * @return the desired sprite.
+     */
     public VGDLSprite getSpriteByIdx(int idx) {
         if(numSprites() == 0)
             return null;
-        return (VGDLSprite) sprites.values().toArray()[idx];
+
+        return sprites.get(idx);
     }
 
     /**
@@ -155,9 +162,13 @@ public class SpriteGroup
         return sprites.size();
     }
 
+    /**
+     * Returns the number of disabled sprites
+     * @return the number of disabled sprites
+     */
     public int numDisabledSprites() {
         int acum = 0;
-        for (VGDLSprite sp: sprites.values()) {
+        for (VGDLSprite sp: sprites) {
             if (sp.is_disabled()) acum++;
         }
         return acum;
