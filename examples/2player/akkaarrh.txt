@@ -39,5 +39,4 @@ BasicGame no_players=2 square_size=30
 
     TerminationSet
         SpriteCounter stype=ship   win=False,False
-        SpriteCounter stype=avatar   win=False,False
         MultiSpriteCounter stype1=winner limit=2 win=True,True
