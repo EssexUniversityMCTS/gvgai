@@ -1,8 +1,8 @@
 BasicGame no_players=2
     SpriteSet
-        horse > ShootAvatar stype=sword color=BROWN img=camel.png
-            avatar1 >
-            avatar2 >
+        horse > ShootAvatar stype=sword color=BROWN
+            avatar1 > img=camel
+            avatar2 > img=camelGreen
         sword > Flicker color=LIGHTGRAY limit=1 singleton=True img=sword.png
         structure >
             goal  > Door color=GREEN img=door

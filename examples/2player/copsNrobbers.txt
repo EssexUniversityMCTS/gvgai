@@ -2,8 +2,8 @@ BasicGame no_players=2
     SpriteSet
         sword > Flicker color=LIGHTGRAY limit=1 singleton=True img=sword.png
         avatar >		
-            robber > MovingAvatar img=avatar.png
-            cop  > ShootAvatar   stype=sword img=avatar.png
+            robber > MovingAvatar img=avatarRed
+            cop  > ShootAvatar   stype=sword img=avatarBlue
         diamond > Resource color=YELLOW limit=10 shrinkfactor=0.75 img=diamond.png
     LevelMapping
         B > cop
@@ -11,7 +11,6 @@ BasicGame no_players=2
         x > diamond
     InteractionSet
         avatar wall > stepBack
-        avatar avatar > stepBack
         robber cop sword > killSprite scoreChange=0,4
         diamond robber > collectResource scoreChange=1,0
         diamond cop > stepBack

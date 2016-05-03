@@ -2,9 +2,9 @@ BasicGame no_players=2
     SpriteSet
         base > Immovable color=WHITE img=base
         moving >
-            avatar  > ShootAvatar img=spaceship
-                avatar1 > stype=sam1
-                avatar2 > stype=sam2
+            avatar  > ShootAvatar
+                avatar1 > stype=sam1 img=spaceship
+                avatar2 > stype=sam2 img=spaceshipRed
             missile > Missile timeToLive=20
                 sam1  > color=BLUE singleton=True img=missile
                 sam2  > color=RED singleton=True img=missile

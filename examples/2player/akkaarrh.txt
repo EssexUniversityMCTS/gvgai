@@ -1,4 +1,4 @@
-BasicGame no_players=2
+BasicGame no_players=2 square_size=30
     SpriteSet
         ship  > Immovable color=GREEN img=spaceship portal=True
             nokey >
@@ -6,9 +6,9 @@ BasicGame no_players=2
         explosion > Flicker limit=5 img=explosion
 
         movable >
-            avatar  > ShootAvatar stype=explosion img=avatar
-                avatarA >
-                avatarB >
+            avatar  > ShootAvatar stype=explosion
+                avatarA >  img=avatar
+                avatarB > img=alien
             incoming >
                 incoming_slow  > Chaser stype=ship color=ORANGE speed=0.05
                 incoming_fast  > Chaser stype=ship color=YELLOW speed=0.15				

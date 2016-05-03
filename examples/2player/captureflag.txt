@@ -34,7 +34,7 @@ BasicGame key_handler=Pulse no_players=2
         x > box
 
     TerminationSet
-        TimeoutScoreCount limit=1000
+        TimeoutScoreCount limit=1500
         
     InteractionSet
         avatar EOS box wall > stepBack

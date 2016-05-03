@@ -1,10 +1,12 @@
 BasicGame key_handler=Pulse square_size=50 no_players=2
     SpriteSet
-        avatar > MovingAvatar img=avatar
+        avatar > MovingAvatar
+            avatar1 > img=avatarBlue
+            avatar2 > img=avatarRed
         winnerPlayer1 > Immovable color=RED 
     LevelMapping
-        A > avatar
-        B > avatar
+        A > avatar1
+        B > avatar2
     InteractionSet
         avatar wall > stepBack
         avatar avatar > transformTo stype=winnerPlayer1 scoreChange=1,0

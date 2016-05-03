@@ -8,13 +8,13 @@ BasicGame no_players=2
                 spawn2 > stypeMissile=red,green,yellow cooldown=15 speed=0.5 prob=0.2
                 spawn3 > stypeMissile=red,green cooldown=4 speed=0.6 prob=0.1
                 spawn4 > stypeMissile=red,green,yellow,blue cooldown=5 speed=0.8 prob=0.1
-            avatar  > HorizontalAvatar img=avatar
+            avatar  > HorizontalAvatar
                 none > 
-                    avatarA > 
-                    avatarB > 
+                    avatarA > img=avatar
+                    avatarB > img=alien
                 claimed > 
-                    avatarAC >
-                    avatarBC >
+                    avatarAC > img=avatar
+                    avatarBC > img=alien
         missile > Missile orientation=DOWN speed=0.1
             unclaimed >
                 red  > color=RED
