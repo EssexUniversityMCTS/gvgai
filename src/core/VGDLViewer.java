@@ -77,18 +77,18 @@ public class VGDLViewer extends JComponent
         Graphics2D gImage = mapImage.createGraphics();
         */
 
-        int[] gameSpriteOrder = game.getSpriteOrder();
-        if(this.spriteGroups != null) for(Integer spriteTypeInt : gameSpriteOrder)
-        {
-            if(spriteGroups[spriteTypeInt] != null) {
-                ArrayList<VGDLSprite> spritesList = spriteGroups[spriteTypeInt].getSprites();
-                for(VGDLSprite sp : spritesList)
-                {
-                    if(sp != null) sp.draw(g,game);
-                }
+        try {
+            int[] gameSpriteOrder = game.getSpriteOrder();
+            if (this.spriteGroups != null) for (Integer spriteTypeInt : gameSpriteOrder) {
+                if (spriteGroups[spriteTypeInt] != null) {
+                    ArrayList<VGDLSprite> spritesList = spriteGroups[spriteTypeInt].getSprites();
+                    for (VGDLSprite sp : spritesList) {
+                        if (sp != null) sp.draw(g, game);
+                    }
 
+                }
             }
-        }
+        }catch(Exception e) {}
 
         g.setColor(Types.BLACK);
         player.draw(g);
