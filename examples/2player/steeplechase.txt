@@ -1,5 +1,7 @@
 BasicGame no_players=2
     SpriteSet
+        gem > Immovable img=gem hidden=True
+        gemVisible > Immovable img=mana
         horse > ShootAvatar stype=sword color=BROWN
             avatar1 > img=camel
             avatar2 > img=camelGreen
@@ -13,12 +15,16 @@ BasicGame no_players=2
     InteractionSet
         avatar1 goal > transformTo stype=winnerPlayer1 scoreChange=1,0
         avatar2 goal > transformTo stype=winnerPlayer2 scoreChange=0,1
+        gemVisible avatar1 > killSprite scoreChange=1000,0
+        gemVisible avatar2 > killSprite scoreChange=0,1000
         horse box wall > stepBack
-        box sword > killSprite		
+        box sword > killSprite
+        gem sword > transformTo stype=gemVisible
 
     LevelMapping
         g > goal
         x > box
+        y > box gem
         A > avatar1
         B > avatar2
 

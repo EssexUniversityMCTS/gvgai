@@ -1,7 +1,7 @@
 BasicGame key_handler=Pulse no_players=2
     SpriteSet
-        black > Immovable color=BLACK
-        white > Immovable color=WHITE
+        black > Immovable color=BLACK hidden=True
+        white > Immovable color=WHITE hidden=True
         flag > Resource shrinkfactor=0.8
             flagA > img=city
             flagB > img=cityRed
@@ -13,12 +13,12 @@ BasicGame key_handler=Pulse no_players=2
             gotA > img=alien
             gotB > img=alien
         box > Immovable img=box
-        deadPortal  > Portal invisible=True portal=True
+        deadPortal  > Portal invisible=True portal=True hidden=True
             deadPortalA > stype=startA
             deadPortalB > stype=startB
             deadPortalFlagA > stype=startFlagA
             deadPortalFlagB > stype=startFlagB
-        start > Immovable invisible=True
+        start > Immovable invisible=True hidden=True
             startA > 
             startB > 
             startFlagA > 
@@ -38,6 +38,9 @@ BasicGame key_handler=Pulse no_players=2
         
     InteractionSet
         avatar EOS box wall > stepBack
+
+        inWhiteB flagA > stepBack
+        inBlackA flagB > stepBack
 
         inBlackA white > transformTo stype=inWhiteA
         inWhiteA black > transformTo stype=inBlackA

@@ -1,7 +1,7 @@
 BasicGame key_handler=Pulse square_size=50 no_players=2
     SpriteSet
         hole   > Immovable color=DARKBLUE img=hole
-        ground > Immovable img=water
+        ground > Immovable img=water hidden=True
         avatar > MovingAvatar
             avatar1 > img=avatar
             avatar2 > img=alien

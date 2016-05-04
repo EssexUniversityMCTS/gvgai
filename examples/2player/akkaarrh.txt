@@ -16,7 +16,7 @@ BasicGame no_players=2 square_size=30
         
         winner > Immovable img=spaceship
 	
-        key > Passive img=key
+        key > Immovable img=key
 
     LevelMapping
         s > nokey
@@ -27,7 +27,7 @@ BasicGame no_players=2 square_size=30
 
     InteractionSet
         enemySpawn wall > reverseDirection
-        movable wall  > stepBack
+        movable wall  > stepBack pixelPerfect=True
         avatar nokey > stepBack
         incoming ship > killBoth scoreChange=-1,-1
         incoming explosion avatarA > killSprite scoreChange=2,0
