@@ -23,7 +23,8 @@ BasicGame key_handler=Pulse square_size=50 no_players=2
         1 > kid1 ground 
         2 > kid2 ground
     InteractionSet
-        moving wall moving > stepBack
+        moving wall kid > stepBack
+        kid avatar > stepBack
         avatar avatar > transformTo stype=winnerPlayer1 scoreChange=1,0
         avatar1 safespot > stepBack
         spot0 avatar2 > addTimer timer=200 ftype=transformToAll stype=spot0 stypeTo=ground
