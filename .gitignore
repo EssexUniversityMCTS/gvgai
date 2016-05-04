@@ -1,11 +1,7 @@
 classes/
 .idea/
 examples/.DS_Store
-*.class
 *.MF
 *.jar
-src/Test.java
-src/Test.java
-src/Test.java
-src/Test.java
-src/Test.java
+*.class
+src/tools/.DS_Store

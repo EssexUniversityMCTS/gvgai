@@ -1,30 +1,37 @@
 BasicGame
-  SpriteSet         
-    goal  > Door color=GREEN img=goal
-    key   > Immovable color=ORANGE img=key
-    sword > OrientedFlicker limit=5 singleton=True img=sword
+  SpriteSet
+    floor > Immovable randomtiling=0.9 img=floor3 hidden=True       
+    goal  > Door color=GREEN img=doorclosed1
+    key   > Immovable color=ORANGE img=key2
+    sword > OrientedFlicker limit=5 singleton=True img=slash1
     movable >
-      avatar  > ShootAvatar   stype=sword 
-        nokey   > img=avatar
-        withkey > color=ORANGE img=alien
-      enemy >  img=monster
-        monsterQuick > RandomNPC cooldown=2 cons=6
-        monsterNormal > RandomNPC cooldown=4 cons=8
-        monsterSlow > RandomNPC cooldown=8
+      avatar  > ShootAvatar   stype=sword frameRate=8
+        nokey   > img=swordman1
+        withkey > color=ORANGE img=swordmankey1
+      enemy >  
+        monsterQuick > RandomNPC cooldown=2 cons=6 img=bat1
+        monsterNormal > RandomNPC cooldown=4 cons=8 img=spider2
+        monsterSlow > RandomNPC cooldown=8 cons=12 img=scorpion1
+      wall > Immovable autotiling=true img=wall3
+      	
 
   LevelMapping
-    g > goal
-    + > key        
-    A > nokey
-    1 > monsterQuick
-    2 > monsterNormal
-    3 > monsterSlow
+    g > floor goal
+    + > floor key        
+    A > floor nokey
+    1 > floor monsterQuick
+    2 > floor monsterNormal
+    3 > floor monsterSlow
+    w > wall
+    . > floor
+    
 
   InteractionSet
     movable wall  > stepBack
     nokey goal    > stepBack
     goal withkey  > killSprite scoreChange=1
     enemy sword > killSprite scoreChange=2
+    enemy enemy > stepBack
     avatar enemy > killSprite scoreChange=-1
     nokey key     > transformTo stype=withkey scoreChange=1 killSecond=True
 

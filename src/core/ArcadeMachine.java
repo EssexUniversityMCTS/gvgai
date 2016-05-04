@@ -95,7 +95,7 @@ public class ArcadeMachine
 
         // First, we create the game to be played..
         Game toPlay = new VGDLParser().parseGame(game_file);
-        toPlay.buildLevel(level_file);
+        toPlay.buildLevel(level_file, randomSeed);
 
         //Warm the game up.
         //ArcadeMachine.warmUp(toPlay, CompetitionParameters.WARMUP_TIME);
@@ -204,7 +204,7 @@ public class ArcadeMachine
         }
         
         try{
-        	toPlay.buildStringLevel(level.split("\n"));
+        	toPlay.buildStringLevel(level.split("\n"), 0);
         }
         catch(Exception e){
         	System.out.println("Undefined symbols or wrong number of avatars Disqualified ");
@@ -247,7 +247,7 @@ public class ArcadeMachine
         String[] levelLines = level.split("\n");
         
         toPlay.reset();
-        toPlay.buildStringLevel(levelLines);
+        toPlay.buildStringLevel(levelLines, 0);
 
         //Warm the game up.
         ArcadeMachine.warmUp(toPlay, CompetitionParameters.WARMUP_TIME);
@@ -305,7 +305,7 @@ public class ArcadeMachine
 
         // First, we create the game to be played..
         Game toPlay = new VGDLParser().parseGame(game_file);
-        toPlay.buildLevel(level_file);
+        toPlay.buildLevel(level_file, 0);
 
         //Second, create the player. Note: null as action_file and -1 as sampleRandom seed
         // (we don't want to record anything from this execution).
@@ -496,16 +496,16 @@ public class ArcadeMachine
                 if(VERBOSE)
                     System.out.println(" ** Playing game " + game_file + ", level " + level_file + " ("+(i+1)+"/"+level_times+") **");
 
+                //Determine the random seed, different for each game to be played.
+                int randomSeed = new Random().nextInt();
+                
                 //build the level in the game.
-                toPlay.buildLevel(level_file);
+                toPlay.buildLevel(level_file, randomSeed);
 
                 String filename = recordActions ? actionFiles[levelIdx*level_times + i] : null;
 
                 //Warm the game up.
                 ArcadeMachine.warmUp(toPlay, CompetitionParameters.WARMUP_TIME);
-
-                //Determine the random seed, different for each game to be played.
-                int randomSeed = new Random().nextInt();
 
                 //Create the player.
                 String[] agentNames = agentName.split(" ");
@@ -611,7 +611,7 @@ public class ArcadeMachine
             	toPlay.setCharMapping(charMapping);
             }
             try{
-            	toPlay.buildStringLevel(level.split("\n"));
+            	toPlay.buildStringLevel(level.split("\n"), 0);
             }
             catch(Exception e){
             	System.out.println("Undefined symbols or wrong number of avatars Disqualified ");
@@ -660,12 +660,12 @@ public class ArcadeMachine
         	String level = loadGeneratedFile(toPlay, file);
             String[] levelLines = level.split("\n");
             
-            toPlay.buildStringLevel(levelLines);
-
-            String filename = recordActions ? actionFile[levelIdx] : null;
-
             //Determine the random seed, different for each game to be played.
             int randomSeed = new Random().nextInt();
+            
+            toPlay.buildStringLevel(levelLines, randomSeed);
+
+            String filename = recordActions ? actionFile[levelIdx] : null;
 
             //Create the player.
             AbstractPlayer player = ArcadeMachine.createPlayer(agentName, filename, toPlay.getObservation(), randomSeed, isHuman);

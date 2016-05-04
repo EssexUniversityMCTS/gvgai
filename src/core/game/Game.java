@@ -1936,13 +1936,13 @@ public abstract class Game
         return block_size;
     }
 
-    public abstract void buildStringLevel(String[] levelString);
+    public abstract void buildStringLevel(String[] levelString, int randomSeed);
     
     /**
      * Builds a level, receiving a file name.
      * @param gamelvl file name containing the level.
      */
-    public void buildLevel(String gamelvl){}
+    public void buildLevel(String gamelvl, int randomSeed){}
 
 
     public ArrayList<Node> getPath(Vector2d start, Vector2d end)

@@ -1048,7 +1048,7 @@ public class ForwardModel extends Game
 
     //Must override this:
 	@Override
-	public void buildStringLevel(String[] levelString) {
+	public void buildStringLevel(String[] levelString, int randomSeed) {
 		throw new RuntimeException("buildLevel should not be called in this instance.");
 	}
 
