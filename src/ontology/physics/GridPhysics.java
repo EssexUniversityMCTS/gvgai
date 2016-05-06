@@ -73,7 +73,7 @@ public class GridPhysics implements Physics {
                 speed = sprite.speed;
         }
 
-        if(speed != 0 && action != null && action != Types.DNONE)
+        if(speed != 0 && action != null && !(action.equals(Types.DNONE)))
         {
             if(sprite.rotateInPlace)
             {
