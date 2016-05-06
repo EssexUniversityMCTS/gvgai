@@ -79,7 +79,7 @@ public class Agent extends AbstractPlayer {
      */
     public void result(StateObservation stateObservation, ElapsedCpuTimer elapsedCpuTimer)
     {
-        System.out.println("MCTS avg iters: " + SingleMCTSPlayer.iters / SingleMCTSPlayer.num);
+//        System.out.println("MCTS avg iters: " + SingleMCTSPlayer.iters / SingleMCTSPlayer.num);
         //Include your code here to know how it all ended.
         //System.out.println("Game over? " + stateObservation.isGameOver());
     }

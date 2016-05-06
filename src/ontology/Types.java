@@ -108,10 +108,10 @@ public class Types {
         public static ACTIONS fromVector(Vector2d move) {
         	// Probably better to use .equals() instead of == to test for equality,
         	// but not necessary for the current call hierarchy of this method
-            if (move == UP) return ACTION_UP;
-            else if (move == DOWN) return ACTION_DOWN;
-            else if (move == LEFT) return ACTION_LEFT;
-            else if (move == RIGHT) return ACTION_RIGHT;
+            if (move.equals(UP)) return ACTION_UP;
+            else if (move.equals(DOWN)) return ACTION_DOWN;
+            else if (move.equals(LEFT)) return ACTION_LEFT;
+            else if (move.equals(RIGHT)) return ACTION_RIGHT;
             else return ACTION_NIL;
         }
 
@@ -119,10 +119,10 @@ public class Types {
         public static ACTIONS fromVector(Direction move) {
         	// Probably better to use .equals() instead of == to test for equality,
         	// but not necessary for the current call hierarchy of this method
-            if (move == DUP) return ACTION_UP;
-            else if (move == DDOWN) return ACTION_DOWN;
-            else if (move == DLEFT) return ACTION_LEFT;
-            else if (move == DRIGHT) return ACTION_RIGHT;
+            if (move.equals(DUP)) return ACTION_UP;
+            else if (move.equals(DDOWN)) return ACTION_DOWN;
+            else if (move.equals(DLEFT)) return ACTION_LEFT;
+            else if (move.equals(DRIGHT)) return ACTION_RIGHT;
             else return ACTION_NIL;
         }
 
