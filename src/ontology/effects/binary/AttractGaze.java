@@ -35,7 +35,7 @@ public class AttractGaze extends Effect
 
                 if(align)
                 {
-                    if(sprite1.orientation.equals(Types.LEFT) || sprite1.orientation.equals(Types.RIGHT))
+                    if(sprite1.orientation.equals(Types.DLEFT) || sprite1.orientation.equals(Types.DRIGHT))
                     {
                         //Need to align on the Y coordinate.
                         sprite1.rect = new Rectangle(sprite1.rect.x, sprite2.rect.y,

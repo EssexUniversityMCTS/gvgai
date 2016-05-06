@@ -1,17 +1,17 @@
 wwwwwwwwwwwwwwwwwww
 w        wwwwwwwwww
-w CA   C wwwwwwwwww
+w cA   c wwwwwwwwww
 w     w  wwwwwwwwww
 w       wwwwwwwwwww
-w           000000G
-w C      wwwwwwwwww
-w   C    wwwwwwwwww
+w           000000g
+w c      wwwwwwwwww
+w   c    wwwwwwwwww
 w        wwwwwwwwww
 w  w       wwwwwwww
-w      C   wwwwwwww
-w        C wwwwwwww
-w   C w    wwwwwwww
-w       C  wwwwwwww
-w C    C  wwwwwwwww
+w      c   wwwwwwww
+w        c wwwwwwww
+w   c w    wwwwwwww
+w       c  wwwwwwww
+w c    c  wwwwwwwww
 w          wwwwwwww
 wwwwwwwwwwwwwwwwwww

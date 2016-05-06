@@ -1,7 +1,7 @@
 BasicGame
     SpriteSet
         avatar > MovingAvatar img=butterfly healthPoints=5 limitHealthPoints=30
-        foodbank > Immovable invisible=true
+        foodbank > Immovable img=damaged
         wall > Immovable color=BLACK img=wall
         goal > Door color=GREEN img=goal
         food > Resource img=carcass img=carcass
@@ -9,8 +9,8 @@ BasicGame
     InteractionSet
 
         avatar TIME > subtractHealthPoints timer=15 repeating=True
-        food avatar > addHealthPoints value=15 killSecond=True
-        avatar foodbank > addHealthPoints value=15 scoreChange=40 killSecond=True
+        avatar food > addHealthPoints value=15 killSecond=True
+        avatar foodbank > addHealthPoints value=20 scoreChange=40 killSecond=True
 
         goal avatar  > killSprite scoreChange=100
         avatar wall  > stepBack
@@ -20,8 +20,7 @@ BasicGame
         SpriteCounter stype=avatar limit=0 win=False
 
     LevelMapping
-        G > goal
-        A > avatar food
+        g > goal
+        A > avatar
         f > foodbank food food food
-        X > wall
 

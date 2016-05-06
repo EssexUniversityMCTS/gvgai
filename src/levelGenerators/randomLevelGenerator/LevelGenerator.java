@@ -86,11 +86,13 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		Character solidCharacter = getSolidCharacter(gameDescription);
 		
 		if(solidCharacter != null){
+			//Add the upper and lower solid object
 			for(int x=0; x<width; x++){
 				points.add(new DataPoint(x, 0, solidCharacter));
 				points.add(new DataPoint(x, height - 1, solidCharacter));
 			}
 			
+			//Add the left and right solid object
 			for(int y=0; y<height; y++){
 				points.add(new DataPoint(0, y, solidCharacter));
 				points.add(new DataPoint(width - 1, y, solidCharacter));
@@ -155,6 +157,8 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		ArrayList<SpriteData> sprites = game.getAllSpriteData();
 		ArrayList<SpriteData> avatars = game.getAvatar();
 		
+		//Get a random width and random height value based on the length of game sprites
+		//and it should be in between maxSize and minSize
 		int width = (int)Math.max(minSize, sprites.size() * (1 + 0.25 * random.nextDouble()));
 		int length = (int)Math.max(minSize, sprites.size() * (1 + 0.25 * random.nextDouble()));
 		width = (int)Math.min(width, maxSize);
@@ -164,47 +168,59 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		ArrayList<Character> choices = new ArrayList<Character>();
 		for(Map.Entry<Character, ArrayList<String>> pair:game.getLevelMapping().entrySet()){
 			boolean avatarExists = false;
+			//check if the avatar is found in this level  mapping
 			for (SpriteData avatarName:avatars){
 				if(pair.getValue().contains(avatarName.name)){
 					avatarExists = true;
 				}
 			}
 			
+			
 			if(!avatarExists){
+				//if not avatar add to other symbols
 				if(!pair.getValue().contains("avatar")){
 					choices.add(pair.getKey());
 				}
 			}
 			else{
+				//add the avatar symbol if it exist
 				avatar.add(pair.getKey());
 			}
 		}
 		
 		ArrayList<DataPoint> dataPoints = new ArrayList<DataPoint>();
 
+		//add level borders based on static variable includeBorders
 		if(includeBorders){
 			includeBorders = buildLayout(game, dataPoints, width, length);
 		}
 		
+		//Add only one of all objects in the choices array
 		for(Character c:choices){
 			addUnique(dataPoints, width, length, c);
 		}
 		
+		//if no avatar is defined in the level mapping section use 'A' to add it
 		if(avatar.size() == 0){
 			avatar.add('A');
 		}
 		addUnique(dataPoints, width, length, avatar.get(random.nextInt(avatar.size())));
 		
+		//construct the result string from the array of datapoints
 		for(int y=0; y < length; y++){
 			for(int x=0; x < width; x++){
+				//check if the position (x, y) is defined in the list of points
 				DataPoint p = isUnique(dataPoints, x, y);
+				//if yes then add the result
 				if(p != null){
 					result += p.c;
 
 				}
+				//add empty space
 				else if(random.nextDouble() < emptyPercentage){
 					result += " ";
 				}
+				//add random object
 				else{
 					result += choices.get(random.nextInt(choices.size()));
 				}

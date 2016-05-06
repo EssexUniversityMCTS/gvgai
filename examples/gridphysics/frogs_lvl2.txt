@@ -1,11 +1,11 @@
 wwwwwwwwwwwwwwwwwwwwwwwwwwww
-w                   wGw    w
+w                   wgw    w
 w00==000000===0000=====000=2
 w0000====0000000000====00012
 w00===000===000====0000===02
 www   ww   www    www  wwwww
-w   X X     XX   X  X  X   w
+w   l l     ll   l  l  l   w
 w --  --  --  -- -   -- -  w
-w XX     X      XX X  X  XXw
+w ll     l      ll l  l  llw
 w       A                  w
 wwwwwwwwwwwwwwwwwwwwwwwwwwww

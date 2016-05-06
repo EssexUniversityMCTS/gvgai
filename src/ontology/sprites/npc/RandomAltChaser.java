@@ -6,6 +6,7 @@ import core.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
+import tools.Direction;
 import tools.Utils;
 import tools.Vector2d;
 
@@ -48,7 +49,7 @@ public class RandomAltChaser extends AlternateChaser{
         {
             //do a sampleRandom move.
             super.updatePassive();
-            Vector2d act = (Vector2d) Utils.choice(Types.BASEDIRS, game.getRandomGenerator());
+            Direction act = (Direction) Utils.choice(Types.DBASEDIRS, game.getRandomGenerator());
             this.physics.activeMovement(this, act, this.speed);
         }else
         {

@@ -32,8 +32,8 @@ BasicGame key_handler=Pulse  square_size=50
         $ > crate blue
 
         t > target black
-        U > target white
-        R > target blue
+        u > target white
+        r > target blue
 
     TerminationSet
         SpriteCounter      stype=target               limit=0 win=True

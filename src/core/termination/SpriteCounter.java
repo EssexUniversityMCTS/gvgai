@@ -18,6 +18,7 @@ public class SpriteCounter extends Termination
 {
     public String stype;
     public int itype;
+    public boolean count_score = false;
 
     public SpriteCounter(){}
 
@@ -35,8 +36,30 @@ public class SpriteCounter extends Termination
         if(ended)
             return true;
 
-        if(game.getNumSprites(itype) <= limit)
+        if(game.getNumSprites(itype) - game.getNumDisabledSprites(itype) <= limit) {
+            if (count_score) {
+                double maxScore = game.getAvatar(0).getScore();
+                for (int i = 1; i < game.no_players; i++) {
+                    double score = game.getAvatar(i).getScore();
+                    if (score > maxScore) {
+                        maxScore = score;
+                    }
+                }
+                //give win to player/s with most number of points, rest lose
+                win = "";
+                for (int i = 0; i < game.no_players; i++) {
+                    if (game.getAvatar(i).getScore() == maxScore) {
+                        win += "True";
+                    } else {
+                        win += "False";
+                    }
+                    if (i != game.no_players - 1) {
+                        win += ",";
+                    }
+                }
+            }
             return true;
+        }
 
         return false;
     }

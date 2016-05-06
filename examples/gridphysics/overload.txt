@@ -25,8 +25,8 @@ BasicGame
         SpriteCounter stype=avatar limit=0 win=False
 
     LevelMapping
-        G > goal
+        g > goal
         . > marsh
         0 > gold
         1 > random
-        S > weapon
+        s > weapon

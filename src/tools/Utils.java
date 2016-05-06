@@ -2,6 +2,7 @@ package tools;
 
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -19,6 +20,11 @@ public class Utils
     public static Object choice(Object[] elements, Random rnd)
     {
         return elements[rnd.nextInt(elements.length)];
+    }
+
+    public static Direction choiceDir(ArrayList<Direction> elements, Random rnd)
+    {
+        return elements.get(rnd.nextInt(elements.size()));
     }
 
     public static Vector2d choice(ArrayList<Vector2d> elements, Random rnd)
@@ -41,13 +47,13 @@ public class Utils
      * @param orientation orientation of the sprite.
      * @return a polygon (triangle) with the specified orientation.
      */
-    public static Polygon triPoints(Rectangle rect, Vector2d orientation)
+    public static Polygon triPoints(Rectangle rect, Direction orientation)
     {
-        Vector2d p1 = new Vector2d(rect.getCenterX()+orientation.x*rect.getWidth()/3.0,
-                                   rect.getCenterY()+orientation.y*rect.getHeight()/3.0);
-        Vector2d p2 = new Vector2d(rect.getCenterX()+orientation.x*rect.getWidth()/4.0,
-                                   rect.getCenterY()+orientation.y*rect.getHeight()/4.0);
-        Vector2d orthdir = new Vector2d(orientation.y, -orientation.x);
+        Vector2d p1 = new Vector2d(rect.getCenterX()+orientation.x()*rect.getWidth()/3.0,
+                                   rect.getCenterY()+orientation.y()*rect.getHeight()/3.0);
+        Vector2d p2 = new Vector2d(rect.getCenterX()+orientation.x()*rect.getWidth()/4.0,
+                                   rect.getCenterY()+orientation.y()*rect.getHeight()/4.0);
+        Vector2d orthdir = new Vector2d(orientation.y(), -orientation.x());
 
         Vector2d p2a = new Vector2d(p2.x-orthdir.x*rect.getWidth()/6.0,
                                     p2.y-orthdir.y*rect.getHeight()/6.0);
@@ -65,39 +71,39 @@ public class Utils
         return null;
     }
 
-    public static Vector2d processMovementActionKeys(boolean[] key_pressed) {
+    public static Direction processMovementActionKeys(boolean[] key_pressed, int idx) {
 
         int vertical = 0;
         int horizontal = 0;
 
-
-        if (key_pressed[Types.ACTIONS.ACTION_UP.getKey()[0]]) {
+        if (key_pressed[Types.ACTIONS.ACTION_UP.getKey()[idx]]) {
             vertical = -1;
         }
-        if (key_pressed[Types.ACTIONS.ACTION_DOWN.getKey()[0]]) {
+        if (key_pressed[Types.ACTIONS.ACTION_DOWN.getKey()[idx]]) {
             vertical = 1;
         }
 
 
-        if (key_pressed[Types.ACTIONS.ACTION_LEFT.getKey()[0]]) {
+        if (key_pressed[Types.ACTIONS.ACTION_LEFT.getKey()[idx]]) {
             horizontal = -1;
         }
-        if (key_pressed[Types.ACTIONS.ACTION_RIGHT.getKey()[0]]) {
+        if (key_pressed[Types.ACTIONS.ACTION_RIGHT.getKey()[idx]]) {
             horizontal = 1;
         }
 
         if (horizontal == 0) {
             if (vertical == 1)
-                return Types.DOWN;
+                return Types.DDOWN;
             else if (vertical == -1)
-                return Types.UP;
+                return Types.DUP;
         } else if (vertical == 0) {
-            if (horizontal == 1)
-                return Types.RIGHT;
+            if (horizontal == 1) {
+                return Types.DRIGHT;
+            }
             else if (horizontal == -1)
-                return Types.LEFT;
+                return Types.DLEFT;
         }
-        return Types.NONE;
+        return Types.DNONE;
     }
 
     //Normalizes a value between its MIN and MAX.
@@ -128,9 +134,9 @@ public class Utils
         }
     }
 
-    public static boolean processUseKey(boolean[] key_pressed)
+    public static boolean processUseKey(boolean[] key_pressed, int idx)
     {
-        return key_pressed[Types.ACTIONS.ACTION_USE.getKey()[0]];
+        return key_pressed[Types.ACTIONS.ACTION_USE.getKey()[idx]];
     }
 
     public static int argmax (double[] values)

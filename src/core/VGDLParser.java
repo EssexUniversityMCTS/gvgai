@@ -89,6 +89,7 @@ public class VGDLParser
 
             //Parse here game and arguments of the first line
             game = VGDLFactory.GetInstance().createGame((GameContent) rootNode.content);
+            game.initMulti();
 
             //Parse here blocks of VGDL.
             for(Node n : rootNode.children)
@@ -111,7 +112,7 @@ public class VGDLParser
 
         return game;
     }
-    
+
     /**
      * Builds the tree structure that defines the game.
      * @param lines array with the lines read from the game description file.
@@ -216,9 +217,7 @@ public class VGDLParser
             //Get the class of the object
             String spriteClassName =sc.referenceClass;
 
-            //This is the class of the object, and parent of the next.
-            if(spriteClassName != null)
-                parentclass = spriteClassName;
+            //This is the class of this object
             if(parentclass != null)
                 sc.referenceClass = parentclass;
 
@@ -260,6 +259,10 @@ public class VGDLParser
                 types = (ArrayList<String>) parenttypes.clone();
 
             }else{
+                //This is the parent class of the next.
+                if(spriteClassName != null)
+                    parentclass = spriteClassName;
+
                 _parseSprites(el.children, parentclass, args, types);
                 args = (HashMap<String, String>) parentargs.clone();
                 types = (ArrayList<String>) parenttypes.clone();
@@ -310,7 +313,7 @@ public class VGDLParser
 
                         ArrayList<Effect> collEffects = game.getCollisionEffects(obj1, obj2);
 
-                        //Add the effects as many times as indicated in its 'repeat' field (1 by defualt).
+                        //Add the effects as many times as indicated in its 'repeat' field (1 by default).
                         for(int r = 0; r < ef.repeat; ++r)
                             collEffects.add(ef);
 
@@ -332,6 +335,9 @@ public class VGDLParser
                         }else if (ic.object1.equalsIgnoreCase("TIME") ||
                                    obj2Str.equalsIgnoreCase("TIME")) {
                             game.addTimeEffect((TimeEffect) ef);
+   		        //unknown sprite other than an EOS or TIME effect is an error
+                        }else {
+                            System.out.println("[PARSE ERROR] interaction entry references unknown sprite: " + ic.line);
                         }
                     }
 

@@ -12,5 +12,5 @@ w1  .........  w
 w......1..... 3w
 w............  w
 w.....w w....  w
-w.....wGw.... 3w
+w.....wgw.... 3w
 wwwwwwwwwwwwwwww

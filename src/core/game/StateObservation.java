@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import ontology.Types;
+import tools.KeyHandler;
 import tools.Vector2d;
 
 /**
@@ -20,9 +21,9 @@ import tools.Vector2d;
 public class StateObservation {
     /**
      * This is the model of the game, used to apply an action and
-     * get to the next state. This model MUST be private.
+     * get to the next state. This model MUST NOT be public.
      */
-    private ForwardModel model;
+    protected ForwardModel model;
 
     /**
      * Constructor for StateObservation. Requires a forward model
@@ -91,6 +92,11 @@ public class StateObservation {
 
 
     /**
+     * Returns the number of players in the game.
+     */
+    public int getNoPlayers() { return model.getNoPlayers(); }
+
+    /**
      * Gets the score of the game at this observation.
      * @return score of the game.
      */
@@ -147,7 +153,6 @@ public class StateObservation {
     }
 
     //Methods to retrieve the state of the avatar, in the game...
-
 
     /**
      * Returns the position of the avatar. If the game is finished, we cannot guarantee that
@@ -232,6 +237,13 @@ public class StateObservation {
      * @return the limit of health points the avatar can have.
      */
     public int getAvatarLimitHealthPoints() {return model.getAvatarLimitHealthPoints();}
+
+    /**
+     * returns true if the avatar is alive.
+     * @return true if the avatar is alive.
+     */
+    public boolean isAvatarAlive() {return model.isAvatarAlive();}
+
 
     //Methods to retrieve the state external to the avatar, in the game...
 
@@ -403,8 +415,6 @@ public class StateObservation {
         return model.getPortalsPositions(reference);
     }
 
-
-
     /**
      * Returns a list of observations of sprites created by the avatar (usually, by applying the
      * action Types.ACTIONS.ACTION_USE). As there can be sprites of different type, each entry in
@@ -433,6 +443,15 @@ public class StateObservation {
         return model.getFromAvatarSpPositions(reference);
     }
 
+
+    /**
+     * Returns key handler available to the player.
+     * @param playerID ID of the player to query.
+     * @return KeyHandler object.
+     */
+    public KeyHandler getKeyHandler(int playerID) { return model.avatars[playerID].getKeyHandler(); }
+
+
     /**
      * Compares if this and the received StateObservation state are equivalent.
      * DEBUG ONLY METHOD.
@@ -441,60 +460,8 @@ public class StateObservation {
      */
     public boolean equiv(Object o)
     {
-        //First simple object-level checks.
-        if(this == o) return true;
-        if(!(o instanceof StateObservation)) return false;
-        StateObservation other = (StateObservation)o;
-
-        //Game state checks.
-        if(this.getGameScore() != other.getGameScore()) return false;
-        if(this.getGameTick() != other.getGameTick()) return false;
-        if(this.getGameWinner() != other.getGameWinner()) return false;
-        if(this.isGameOver() != other.isGameOver()) return false;
-        if(this.getAvatarSpeed() != other.getAvatarSpeed()) return false;
-        if(!this.getAvatarPosition().equals(other.getAvatarPosition())) return false;
-        if (!this.getAvatarOrientation().equals(other.getAvatarOrientation())) return false;
-
-        //Check resources
-        HashMap<Integer, Integer> thisResources = this.getAvatarResources();
-        HashMap<Integer, Integer> otherResources = other.getAvatarResources();
-        if(thisResources.size() != otherResources.size()) return false;
-        try
-        {
-            Set<Integer> resKeys = otherResources.keySet();
-            for (Integer k : resKeys) {
-                if (!(otherResources.get(k).equals(thisResources.get(k))))
-                    return false;
-            }
-        }catch(Exception e)
-        {
-            System.out.println(e.toString());
-            return false;
-        }
-
-        //Check events.
-        TreeSet<Event> thisEvents = this.getEventsHistory();
-        TreeSet<Event> otherEvents = other.getEventsHistory();
-        if(thisEvents.size() != otherEvents.size()) return false;
-        try
-        {
-            Iterator<Event> otherIt = otherEvents.descendingIterator();
-            Iterator<Event> thisIt = thisEvents.descendingIterator();
-
-            while(otherIt.hasNext())
-            {
-                if(!otherIt.next().equals(thisIt.next()))
-                    return false;
-            }
-
-        }catch(Exception e)
-        {
-            System.out.println(e.toString());
-            return false;
-        }
-
-        //Check observations:
-        return this.model.equalObservations(other.model);
+        System.out.println("StateObservation.equiv() is a Deprecated Method. And it always returns False, now.");
+        return false;
     }
 
 }

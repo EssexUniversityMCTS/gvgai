@@ -325,12 +325,16 @@ public class GameAnalyzer {
 			for(SpriteData s2:allSprites){
 				ArrayList<InteractionData> interactions = game.getInteraction(s1.name, s2.name);
 				for(InteractionData i:interactions){
-					if(i.scoreChange > 0){
-						if(i.scoreChange > maxScoreUnit){
-							maxScoreUnit = i.scoreChange;
-						}
-						if(i.scoreChange < minScoreUnit){
-							minScoreUnit = i.scoreChange;
+					String[] scores = i.scoreChange.split(",");
+					for (String j: scores) {
+						int s = Integer.parseInt(j);
+						if (s > 0) {
+							if (s > maxScoreUnit) {
+								maxScoreUnit = s;
+							}
+							if (s < minScoreUnit) {
+								minScoreUnit = s;
+							}
 						}
 					}
 				}

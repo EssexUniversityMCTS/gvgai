@@ -21,20 +21,14 @@ import core.game.GameDescription.InteractionData;
 import core.game.GameDescription.SpriteData;
 import core.game.GameDescription.TerminationData;
 import core.player.AbstractPlayer;
+import core.player.Player;
 import core.termination.Termination;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.Effect;
 import ontology.effects.TimeEffect;
 import ontology.sprites.Resource;
-import tools.IO;
-import tools.JEasyFrame;
-import tools.KeyHandler;
-import tools.KeyInput;
-import tools.KeyPulse;
-import tools.Pair;
-import tools.Vector2d;
-import tools.WindowInput;
+import tools.*;
 import tools.pathfinder.Node;
 import tools.pathfinder.PathFinder;
 
@@ -183,12 +177,6 @@ public abstract class Game
     protected int gameTick;
 
     /**
-     * Key input
-     */
-    public static KeyHandler ki = CompetitionParameters.KEY_HANDLER == CompetitionParameters.KEY_INPUT ? 
-    		new KeyInput() : new KeyPulse();
-
-    /**
      * Handling when the window is closed
      */
     public static WindowInput wi = new WindowInput();
@@ -201,7 +189,7 @@ public abstract class Game
     /**
      * Quick reference to the gamer
      */
-    protected MovingAvatar avatar;
+    protected MovingAvatar[] avatars;
 
     /**
      * Indicates if the game is ended.
@@ -209,25 +197,9 @@ public abstract class Game
     protected boolean isEnded;
 
     /**
-     * Indicates if the game has been won by the player.
-     * See Types.WINNER for the values of this variable.
-     */
-    protected Types.WINNER winner = Types.WINNER.NO_WINNER;
-
-    /**
-     * Default frame rate of the basic game.
-     */
-    protected int frame_rate;
-
-    /**
      * State observation for this game.
      */
     protected ForwardModel fwdModel;
-
-    /**
-     * Score of the game.
-     */
-    protected double score;
 
     /**
      * Maximum number of sprites in a game.
@@ -274,9 +246,15 @@ public abstract class Game
 
 
     /**
-     * Avatar last action.
+     * Avatars last actions.
+     * Array for all avatars in the game.
+     * Index in array corresponds to playerID.
      */
-    protected Types.ACTIONS avatarLastAction;
+    protected Types.ACTIONS[] avatarLastAction;
+
+    public int no_players = 1; //default to single player
+
+    public static KeyHandler humanki;
 
     /**
      * Default constructor.
@@ -311,6 +289,15 @@ public abstract class Game
         VGDLRegistry.GetInstance().registerSprite("avatar");
     }
 
+    /**
+     * Initialisation after the game is parsed.
+     */
+    public void initMulti() {
+        avatars = new MovingAvatar[no_players];
+        avatarLastAction = new Types.ACTIONS[no_players];
+        for (int i = 0; i < no_players; i++)
+            avatarLastAction[i] = Types.ACTIONS.ACTION_NIL;
+    }
 
     /**
      * Initializes the sprite structures that hold the game.
@@ -329,7 +316,9 @@ public abstract class Game
         wallId = VGDLRegistry.GetInstance().getRegisteredSpriteValue("wall");
 
         //1. "avatar" ALWAYS at the end of the array.
-        spriteOrder[spriteOrder.length-1] = avatarId;
+        for (int i = 0; i < no_players; i++) {
+            spriteOrder[spriteOrder.length - 1 - i] = avatarId;
+        }
 
         //2. Other sprite types are sorted using spOrder
         int i = 0;
@@ -356,6 +345,8 @@ public abstract class Game
         wallConst.parameters.put("color","DARKGRAY");
         ((SpriteContent)wallConst).itypes.add(wallId);
         classConst[wallId] = wallConst;
+
+        //TODO: default avatar constructor
         Content avatarConst = new SpriteContent("avatar", "MovingAvatar");
         ((SpriteContent)avatarConst).itypes.add(avatarId);
         classConst[avatarId] = avatarConst;
@@ -407,7 +398,7 @@ public abstract class Game
 
         }
 
-        //Add walls and avatar to the subtypes list.
+        //Add walls and avatars to the subtypes list.
         if(!iSubTypes[wallId].contains(wallId))
             iSubTypes[wallId].add(wallId);
 
@@ -479,7 +470,13 @@ public abstract class Game
     	
     	return result;
     }
-    
+
+    /**
+     * Method used to access the number of players in a game.
+     * @return number of players.
+     */
+    public int getNoPlayers() { return no_players; }
+
     /**
      * return sprite type of certain sprite
      * @param sp	sprite object
@@ -681,15 +678,19 @@ public abstract class Game
     public void reset()
     {
         num_sprites = 0;
-        winner = Types.WINNER.NO_WINNER;
+
+        for (int i = 0; i < no_players; i++) {
+            avatars[i] = null;
+        }
         isEnded = false;
-        gameTick=-1;
-        avatar = null;
-        score = 0;
-        disqualified=false;
+        gameTick = -1;
+        disqualified = false;
+        avatarLastAction = new Types.ACTIONS[no_players];
+        for (int i = 0; i < no_players; i++)
+            avatarLastAction[i] = Types.ACTIONS.ACTION_NIL;
 
         //For each sprite type...
-        for(int i = 0; i < spriteGroups.length; ++i)
+        for (int i = 0; i < spriteGroups.length; ++i)
         {
             //Create the space for the sprites and effects of this type.
             spriteGroups[i].clear();
@@ -733,11 +734,13 @@ public abstract class Game
 
         factory.parseParameters(content, this);
 
+        //taking care of the key handler parameter:
+
         if(key_handler != null && key_handler.equalsIgnoreCase("Pulse"))
             CompetitionParameters.KEY_HANDLER = CompetitionParameters.KEY_PULSE;
 
-        ki = CompetitionParameters.KEY_HANDLER == CompetitionParameters.KEY_INPUT ?
-                new KeyInput() : new KeyPulse();
+        Game.humanki = CompetitionParameters.KEY_HANDLER == CompetitionParameters.KEY_INPUT ?
+                new KeyInput() : new KeyPulse(no_players);
     }
 
     /**
@@ -780,15 +783,37 @@ public abstract class Game
     }
 
     /**
+     * Returns an arraylist of subtypes of the given parent type.
+     * @param itype parent itype requested.
+     */
+    public ArrayList<Integer> getSubTypes(int itype) {
+        return this.iSubTypes[itype];
+    }
+
+    /**
+     * Returns the number of sprites disabled of the type given by parameter and all its subtypes
+     * @param itype parent itype requested.
+     * @return the number of disabled sprites of the type and subtypes.
+     */
+    public int getNumDisabledSprites(int itype) {
+        int acum = 0;
+        for( Integer subtype : this.iSubTypes[itype] )
+        {
+            acum += spriteGroups[subtype].numDisabledSprites();
+        }
+        return acum;
+    }
+
+    /**
      * Runs a game, without graphics.
-     * @param player Player that plays this game.
+     * @param players Players that play this game.
      * @param randomSeed sampleRandom seed for the whole game.
      * @return the score of the game played.
      */
-    public double runGame(AbstractPlayer player, int randomSeed)
+    public double[] runGame(Player[] players, int randomSeed)
     {
         //Prepare some structures and references for this game.
-        prepareGame(player, randomSeed);
+        prepareGame(players, randomSeed, -1, false);
 
         //Play until the game is ended
         while(!isEnded)
@@ -805,28 +830,34 @@ public abstract class Game
 
     /**
      * Plays the game, graphics enabled.
-     * @param player Player that plays this game.
+     * @param players Players that play this game.
      * @param randomSeed sampleRandom seed for the whole game.
      * @param isHuman indicates if a human is playing the game.
+     * @param humanID ID of the human player
      * @return the score of the game played.
      */
-    public double playGame(AbstractPlayer player, int randomSeed, boolean isHuman)
+
+    public double[] playGame(Player[] players, int randomSeed, boolean isHuman, int humanID)
     {
         //Prepare some structures and references for this game.
-        prepareGame(player, randomSeed);
+        prepareGame(players, randomSeed, humanID, isHuman);
 
         //Create and initialize the panel for the graphics.
-        VGDLViewer view = new VGDLViewer(this, player);
+        VGDLViewer view = new VGDLViewer(this, players[humanID]);
         JEasyFrame frame;
         frame = new JEasyFrame(view, "Java-VGDL");
-        frame.addKeyListener(ki);
+
+        frame.addKeyListener(humanki);
         frame.addWindowListener(wi);
         wi.windowClosed = false;
 
         //Determine the delay for playing with a good fps.
         double delay = CompetitionParameters.LONG_DELAY;
-        if(player instanceof controllers.human.Agent)
-            delay = 1000.0/CompetitionParameters.DELAY; //in milliseconds
+        for (Player player : players)
+            if(player instanceof controllers.human.Agent) {
+                delay = 1000.0 / CompetitionParameters.DELAY; //in milliseconds
+                break;
+            }
 
         boolean firstRun = true;
 
@@ -860,11 +891,23 @@ public abstract class Game
             	firstRun = false;
             }
         }
-        
+
         if(isHuman && !wi.windowClosed && CompetitionParameters.killWindowOnEnd){
         	if(CompetitionParameters.dialogBoxOnStartAndEnd){
-        		JOptionPane.showMessageDialog(frame,
-        				"GAMEOVER: YOU " + (winner == Types.WINNER.PLAYER_WINS? "WIN.": "LOSE."));
+                if (no_players == 1) {
+                    JOptionPane.showMessageDialog(frame,
+                            "GAMEOVER: YOU " + (avatars[humanID].getWinState() == Types.WINNER.PLAYER_WINS ? "WIN." : "LOSE."));
+                } else {
+                    String sb = "";
+                    for (int i = 0; i < no_players; i++) {
+                        if (avatars[i].getWinState() == Types.WINNER.PLAYER_WINS) {
+                            sb += "Player " + i + "; ";
+                        }
+                    }
+                    if (sb.equals("")) sb = "NONE";
+                    JOptionPane.showMessageDialog(frame,
+                            "GAMEOVER - WINNER: " + sb);
+                }
         	}
         	frame.dispose();
         }
@@ -881,12 +924,25 @@ public abstract class Game
      */
     private void setTitle (JEasyFrame frame)
     {
+        String sb = "";
+        sb += "Java-VGDL: ";
+        for (int i = 0; i < no_players; i++) {
+            sb += "Player" + i + "-Score:" + avatars[i].getScore() + ". ";
+        }
+        sb += "Tick:" + this.getGameTick();
+
         if(!isEnded)
-            frame.setTitle("Java-VGDL: Score:" + score + ". Tick:" + this.getGameTick());
-        else if(winner == Types.WINNER.PLAYER_WINS)
-            frame.setTitle("Java-VGDL: Score:" + score + ". Tick:" + this.getGameTick() + " [Player WINS!]");
-        else
-            frame.setTitle("Java-VGDL: Score:" + score + ". Tick:" + this.getGameTick() + " [Player LOSES!]");
+            frame.setTitle(sb);
+        else {
+            for (int i = 0; i < no_players; i++) {
+                if (avatars[i].getWinState() == Types.WINNER.PLAYER_WINS)
+                    sb += " [Player " + i + " WINS!]";
+                else
+                    sb += " [Player " + i + " LOSES!]";
+            }
+        }
+
+        frame.setTitle(sb);
 
     }
 
@@ -894,10 +950,10 @@ public abstract class Game
      * Initializes some variables for the game to be played, such as
      * the game tick, sampleRandom number generator, forward model and assigns
      * the player to the avatar.
-     * @param player Player that plays this game.
+     * @param players Players that play this game.
      * @param randomSeed sampleRandom seed for the whole game.
      */
-    private void prepareGame(AbstractPlayer player, int randomSeed)
+    private void prepareGame(Player[] players, int randomSeed, int humanID, boolean isHuman)
     {
         //Start tick counter.
         gameTick = -1;
@@ -905,11 +961,12 @@ public abstract class Game
         //Create the sampleRandom generator.
         random = new Random(randomSeed);
 
+        //Assigns the player to the avatar of the game.
+        createAvatars(humanID, isHuman);
+        assignPlayer(players);
+
         //Initialize state observation (sets all non-volatile references).
         initForwardModel();
-
-        //Assigns the player to the avatar of the game.
-        assignPlayer(player);
     }
 
     /**
@@ -923,6 +980,7 @@ public abstract class Game
 
         //Update our state observation (forward model) with the information of the current game state.
         fwdModel.update(this);
+        //System.out.println(avatars[0].rect);
 
         //Execute a game cycle:
         this.tick();                    //update for all entities.
@@ -938,24 +996,32 @@ public abstract class Game
     /**
      * Handles the result for the game, considering disqualifications. Prints the result
      * (score, time and winner) and returns the score of the game.
+     * Default player ID used 0 for single player games.
      * @return the result of the game.
      */
-    public double handleResult()
+    public double[] handleResult()
     {
-        //If the player got disqualified, set it here.
-        if(disqualified){
-            winner = Types.WINNER.PLAYER_DISQ;
-            score = Types.SCORE_DISQ;
-        }
+        // check all players disqualified and set scores
+        for (int i=0; i < avatars.length; i++) {
+            if (avatars[i].is_disqualified()) {
+                avatars[i].setWinState(Types.WINNER.PLAYER_DISQ);
+                avatars[i].setScore(Types.SCORE_DISQ);
+            }
 
-        //For sanity: winning a game always gives a positive score
-        if(winner == Types.WINNER.PLAYER_WINS)
-            if(score <= 0) score = 1;
+            //For sanity: winning a game always gives a positive score
+            else if(avatars[i].getWinState() == Types.WINNER.PLAYER_WINS)
+                if(avatars[i].getScore() <= 0) avatars[i].setScore(1);
+        }
 
         //Prints the result: score, time and winner.
         printResult();
 
-        return score;
+        double[] scores = new double[no_players];
+        for (int i = 0; i < no_players; i++) {
+            scores[i] = avatars[i].getScore();
+        }
+
+        return scores;
     }
 
     /**
@@ -968,8 +1034,10 @@ public abstract class Game
         if(gameTick >= CompetitionParameters.MAX_TIMESTEPS)
         {
             isEnded = true;
-            if(winner != Types.WINNER.PLAYER_WINS)
-                winner = Types.WINNER.PLAYER_LOSES;
+            for (int i = 0; i < no_players; i++) {
+                if (avatars[i].getWinState() != Types.WINNER.PLAYER_WINS)
+                    avatars[i].setWinState(Types.WINNER.PLAYER_LOSES);
+            }
         }
     }
 
@@ -979,12 +1047,21 @@ public abstract class Game
      */
     private void printResult()
     {
-        System.out.println("Result (1->win; 0->lose):"+ winner.key() + ", Score:" + score + ", timesteps:" + this.getGameTick());
+        String sb1 = "";
+        String sb2 = "";
+        for (int i = 0; i < no_players; i++) {
+            sb1 += "Player" + i + ":" + avatars[i].getWinState().key() + ", ";
+            sb2 += "Player" + i + "-Score:" + avatars[i].getScore() + ", ";
+        }
+
+        System.out.println("Result (1->win; 0->lose): " + sb1 + sb2 + "timesteps:" + this.getGameTick());
+        //System.out.println("Result (1->win; 0->lose):"+ winner.key() + ", Score:" + score + ", timesteps:" + this.getGameTick());
     }
 
     /**
      * Disqualifies the player in the game, and also sets the isEnded flag to true.
      */
+    //comment this method out to check if mistakes in method overloading anywhere
     public void disqualify()
     {
         disqualified = true;
@@ -992,29 +1069,84 @@ public abstract class Game
     }
 
     /**
-     * Looks for the avatar of the game in the existing sprites. If the player
-     * received as a parameter is not null, it is assigned to it.
-     * @param player the player that will play the game.
+     * Overloaded method for multiplayer games. Same functionality as above.
+     * @param id - id of the player that was disqualified
      */
-    private void assignPlayer(AbstractPlayer player )
+    public void disqualify(int id)
     {
-        //Avatar will usually be the first element, starting from the end.
-        int idx = spriteOrder.length-1;
-        while(avatar == null)
-        {
-            int spriteTypeId = spriteOrder[idx];
-            if(spriteGroups[spriteTypeId].numSprites() > 0)
-            {
-                //There should be just one sprite in the avatar's group.
-                VGDLSprite thisSprite = spriteGroups[spriteTypeId].getFirstSprite();
-                if(thisSprite.is_avatar)
-                    avatar = (MovingAvatar) thisSprite;
-                else idx--;
-            }else idx--;
+        if (id == -1)
+            disqualified = true;
+        else
+            avatars[id].disqualify(true);
+        isEnded = true;
+    }
+
+    /**
+     * Method to create the array of avatars from the sprites.
+     */
+    public void createAvatars(int humanID, boolean isHuman) {
+
+        //Avatars will usually be the first elements, starting from the end.
+
+        //Find avatar sprites
+        ArrayList<MovingAvatar> avSprites = new ArrayList<>();
+        int idx = spriteOrder.length;
+        int numAvatarSprites = 0;
+        while (true) {
+            idx--;
+            if (idx > 0) {
+                int spriteTypeId = spriteOrder[idx];
+                int num = spriteGroups[spriteTypeId].numSprites();
+                if (num > 0) {
+                    //There should be just one sprite in the avatar's group in single player games.
+                    //Could be more than one avatar in multiplayer games
+                    for (int j = 0; j < num; j++) {
+                        VGDLSprite thisSprite = spriteGroups[spriteTypeId].getSpriteByIdx(j);
+                        if (thisSprite.is_avatar) {
+                            avSprites.add((MovingAvatar) thisSprite);
+                        }
+                    }
+                }
+            } else {
+                numAvatarSprites = avSprites.size();
+                //System.out.println("Done finding avatars: " + numAvatarSprites);
+                break;
+            }
         }
 
-        if(player != null){
-            avatar.player = player;
+        Collections.reverse(avSprites); //read in reverse order
+        if (!avSprites.isEmpty()) {
+            for (int i = 0; i < no_players; i++) {
+                if (numAvatarSprites > i) { //check if there's enough avatars just in case
+                    avatars[i] = avSprites.get(i);
+                    if (humanID == i || isHuman)
+                        avatars[i].setKeyHandler(humanki);
+                }
+            }
+        } else {
+            System.out.println("No avatars found.");
+        }
+    }
+    /**
+     * Looks for the avatar of the game in the existing sprites. If the player
+     * received as a parameter is not null, it is assigned to it.
+     * @param players the players that will play the game (only 1 in single player games).
+     */
+    private void assignPlayer(Player[] players)
+    {
+        //iterate through all avatars and assign their players
+        if (players.length == no_players) {
+            for (int i = 0; i < no_players; i++) {
+                if (players[i] != null) {
+                    avatars[i].player = players[i];
+                    avatars[i].setPlayerID(i);
+                    //avatars[i].player.setPlayerID(i);
+                } else {
+                    System.out.println("Null player.");
+                }
+            }
+        } else {
+            System.out.println("Not enough players.");
         }
     }
 
@@ -1038,32 +1170,36 @@ public abstract class Game
      * Performs one tick for the game: calling update(this) in all sprites. It follows the
      * opposite order of the drawing order (inverse spriteOrder[]). Avatar is always
      * updated first.
+     * Doesn't update disabled sprites.
      */
     protected void tick()
     {
-        //Now, do the avatar.
-        avatar.preMovement();
-        avatar.update(this);
+        //Now, do all of the avatars.
+        for (int i = 0; i < no_players; i++) {
+            if (avatars[i] != null && !avatars[i].is_disabled()) {
+                avatars[i].preMovement();
+                avatars[i].update(this);
+            } else if (avatars[i] == null) {
+                System.out.println(gameTick + ": Something went wrong, no avatar, ID = " + i);
+            }
+        }
         //random = new Random(this.gameTick * 100); //uncomment this for testing a new rnd generator after avatar's move
 
         int spriteOrderCount = spriteOrder.length;
         for(int i = spriteOrderCount-1; i >= 0 ; --i)
         {
             int spriteTypeInt = spriteOrder[i];
-            Integer[] keys = spriteGroups[spriteTypeInt].getKeys();
-
-            if(keys!=null) for(Integer spriteKey : keys)
+            ArrayList<VGDLSprite> spritesList = spriteGroups[spriteTypeInt].getSprites();
+            if(spritesList != null) for(VGDLSprite sp : spritesList)
             {
-                VGDLSprite sp = spriteGroups[spriteTypeInt].getSprite(spriteKey);
-                if(sp != avatar)
+                if(!(sp instanceof MovingAvatar) && !sp.is_disabled())
                 {
                     sp.preMovement();
                     sp.update(this);
                 }
-
             }
-        }
 
+        }
     }
 
     /**
@@ -1086,9 +1222,12 @@ public abstract class Game
                 //With no sprite, the effect is independent from particular sprites.
                 ef.execute(null,null,this);
 
-                //Affect score:
-                if(ef.applyScore)
-                    this.score += ef.scoreChange;
+                //Affect score for all players:
+                if(ef.applyScore) {
+                    for (int i = 0; i < no_players; i++) {
+                        avatars[i].addScore(ef.getScoreChange(i));
+                    }
+                }
 
             }else {
 
@@ -1098,7 +1237,7 @@ public abstract class Game
                     for (Integer itype : allTypes) {
                         //Add all sprites of this subtype to the list of sprites.
                         //This are sprites that could potentially collide with EOS
-                        Collection<VGDLSprite> sprites = this.getSprites(itype).values();
+                        Collection<VGDLSprite> sprites = this.getSprites(itype);
                         for (VGDLSprite sp : sprites) {
                             //bucketList[intId].insert(sp);
                             bucketList[intId].add(sp);
@@ -1113,7 +1252,7 @@ public abstract class Game
                 //For all sprites that can collide.
                 for (VGDLSprite s1 : bucketList[intId].getAllSprites()) {
                     //Check that they are not dead (could happen in this same cycle).
-                    if (!kill_list.contains(s1)) {
+                    if (!kill_list.contains(s1) && !s1.is_disabled()) {
                         executeEffect(ef, s1, null);
                     }
                 }
@@ -1147,7 +1286,7 @@ public abstract class Game
                     {
                         //Add all sprites of this subtype to the list of sprites.
                         //This are sprites that could potentially collide with EOS
-                        Collection<VGDLSprite> sprites = this.getSprites(itype).values();
+                        Collection<VGDLSprite> sprites = this.getSprites(itype);
                         for(VGDLSprite sp : sprites)
                         {
                             //bucketList[intId].insert(sp);
@@ -1165,7 +1304,7 @@ public abstract class Game
                 {
                     //Check if they are at the edge to trigger the effect. Also check that they
                     //are not dead (could happen in this same cycle).
-                    if(isAtEdge(s1.rect) && !kill_list.contains(s1)) {
+                    if(isAtEdge(s1.rect) && !kill_list.contains(s1) && !s1.is_disabled()) {
                         executeEffect(ef, s1, null);
                     }
                 }
@@ -1210,7 +1349,7 @@ public abstract class Game
                         for(Integer itype : allTypes)
                         {
                             //Add all sprites of this subtype to the list of sprites
-                            Collection<VGDLSprite> sprites = this.getSprites(itype).values();
+                            Collection<VGDLSprite> sprites = this.getSprites(itype);
                             for(VGDLSprite sp : sprites)
                             {
                                 bucketList[intId].add(sp);
@@ -1224,8 +1363,8 @@ public abstract class Game
                 }
 
                 //Take the collections of sprites, one for each type, of the two sprite types of this effect.
-                TreeMap<Integer, ArrayList<VGDLSprite>> first = bucketList[p.first].getSpriteList();
-                TreeMap<Integer, ArrayList<VGDLSprite>> second = bucketList[p.second].getSpriteList();
+                HashMap<Integer, ArrayList<VGDLSprite>> first = bucketList[p.first].getSpriteList();
+                HashMap<Integer, ArrayList<VGDLSprite>> second = bucketList[p.second].getSpriteList();
 
                 if(first.size() == 0 || second.size() == 0)
                     break;
@@ -1239,37 +1378,39 @@ public abstract class Game
                     if(sprites1nBucket1!=null)
                         for(VGDLSprite s1 : sprites1nBucket1)
                         {
-                            //Decide in what buckets to look.
-                            int[] buckets;
-                            if(s1.bucketSharp)  buckets = new int[]{s1.bucket-1, s1.bucket};
-                            else                buckets = new int[]{s1.bucket, s1.bucket+1};
+                            if (!s1.is_disabled()) {
+                                //Decide in what buckets to look.
+                                int[] buckets;
+                                if (s1.bucketSharp) buckets = new int[]{s1.bucket - 1, s1.bucket};
+                                else buckets = new int[]{s1.bucket, s1.bucket + 1};
 
 
-                            for(int bucketId : buckets)
-                            {
-                                //On each bucket, take the sprites if the p.second sprite type.
-                                ArrayList<VGDLSprite> spritesInBucket2 = second.get(bucketId);
-                                if(spritesInBucket2 != null && !kill_list.contains(s1))
-                                {
-                                    int numSprites2 = spritesInBucket2.size();
-                                    s2loop: for(int idx2 = 0; idx2 < numSprites2; idx2++)
-                                    {
-                                        //Take each sprite of p.second and check for collision
-                                        VGDLSprite s2 = spritesInBucket2.get(idx2);
-                                        if(s1 != s2 && s1.rect.intersects(s2.rect))
-                                        {
-                                            executeEffect(ef, s1, s2);
+                                for (int bucketId : buckets) {
+                                    //On each bucket, take the sprites if the p.second sprite type.
+                                    ArrayList<VGDLSprite> spritesInBucket2 = second.get(bucketId);
+                                    if (spritesInBucket2 != null && !kill_list.contains(s1)) {
+                                        int numSprites2 = spritesInBucket2.size();
+                                        s2loop:
+                                        for (int idx2 = 0; idx2 < numSprites2; idx2++) {
+                                            //Take each sprite of p.second and check for collision
+                                            VGDLSprite s2 = spritesInBucket2.get(idx2);
 
-                                            if(kill_list.contains(s1))
-                                                break s2loop; //Stop checking sprite 1 if it was killed.
+                                            if (!s2.is_disabled()) {
+                                                if (s1 != s2 && s1.rect.intersects(s2.rect)) {
+                                                    executeEffect(ef, s1, s2);
 
-                                        }
+                                                    if (kill_list.contains(s1))
+                                                        break s2loop; //Stop checking sprite 1 if it was killed.
 
-                                    } //end FOR sprites s2.
+                                                }
+                                            }
 
-                                }
+                                        } //end FOR sprites s2.
 
-                            } //end FOR buckets p.second.
+                                    }
+
+                                } //end FOR buckets p.second.
+                            }
 
                         }//end FOR sprites s1
 
@@ -1287,8 +1428,12 @@ public abstract class Game
         ef.execute(s1,s2,this);
 
         //Affect score:
-        if(ef.applyScore)
-            this.score += ef.scoreChange;
+        if(ef.applyScore) {
+            //apply scores for all avatars
+            for (int i = 0; i < no_players; i++) {
+                avatars[i].addScore(ef.getScoreChange(i));
+            }
+        }
 
         //Add to events history.
         if(s1 != null && s2 != null)
@@ -1299,7 +1444,7 @@ public abstract class Game
     {
         if(s1.is_avatar)
             historicEvents.add(new Event(gameTick, false, s1.getType(), s2.getType(),
-                                         s1.spriteID, s2.spriteID, s1.getPosition()));
+                    s1.spriteID, s2.spriteID, s1.getPosition()));
 
         else if(s1.is_from_avatar)
             historicEvents.add(new Event(gameTick, true, s1.getType(), s2.getType(),
@@ -1341,7 +1486,9 @@ public abstract class Game
             if(t.isDone(this))
             {
                 isEnded = true;
-                winner = t.win? Types.WINNER.PLAYER_WINS : Types.WINNER.PLAYER_LOSES;
+                for (int j = 0; j < no_players; j++) {
+                    avatars[j].setWinState(t.win(j) ? Types.WINNER.PLAYER_WINS : Types.WINNER.PLAYER_LOSES);
+                }
             }
         }
     }
@@ -1356,14 +1503,17 @@ public abstract class Game
         for(VGDLSprite sprite : kill_list)
         {
             int spriteType = sprite.getType();
-            this.spriteGroups[spriteType].removeSprite(sprite.spriteID);
+            this.spriteGroups[spriteType].removeSprite(sprite);
             if(fm != null) {
                 fm.removeSpriteObservation(sprite);
             }
 
 
-            if(sprite.is_avatar && sprite == this.avatar)
-                this.avatar = null;
+            if(sprite.is_avatar)
+                //go through all avatars to see which avatar is dead
+                for (int i = 0; i < no_players; i++)
+                    if (sprite == avatars[i])
+                        avatars[i] = null;
 
             num_sprites--;
 
@@ -1468,21 +1618,43 @@ public abstract class Game
     public void _updateCollisionDict(VGDLSprite sprite) {}
 
     /**
+     * Returns the game score.
+     */
+    public double getScore() { return getScore(0); }
+
+
+    /**
+     * Method overloaded for multi player games.
+     * Returns the game score of the specified player.
+     * @param playerID ID of the player.
+     */
+    public double getScore(int playerID)
+    {
+        return avatars[playerID].getScore();
+    }
+
+    /**
      * Reverses the direction of a given sprite.
      * @param sprite sprite to reverse.
      */
     public void reverseDirection(VGDLSprite sprite)
     {
-        sprite.orientation = new Vector2d(-sprite.orientation.x, -sprite.orientation.y);
+        sprite.orientation = new Direction(-sprite.orientation.x(), -sprite.orientation.y());
     }
 
     /**
      * Kills a given sprite, adding it to the list of sprites killed at this step.
      * @param sprite the sprite to kill.
+     * @param transformed - indicates if the sprite was transformed (necessary to kill
+     *                    sprite even if avatar, instead of disabling it).
      */
-    public void killSprite(VGDLSprite sprite)
+    public void killSprite(VGDLSprite sprite, boolean transformed)
     {
-        kill_list.add(sprite);
+        if (sprite instanceof MovingAvatar && !transformed) { //if avatar, just disable
+            sprite.setDisabled(true);
+        } else {
+            kill_list.add(sprite);
+        }
     }
 
     /**
@@ -1508,10 +1680,10 @@ public abstract class Game
         ArrayList<Integer> allTypes = iSubTypes[spriteItype];
 
         //Add sprites of this type, and all subtypes.
-        allSprites.addAllSprites(this.getSprites(spriteItype).values());
+        allSprites.addAllSprites(this.getSprites(spriteItype));
         for(Integer itype : allTypes)
         {
-            allSprites.addAllSprites(this.getSprites(itype).values());
+            allSprites.addAllSprites(this.getSprites(itype));
         }
 
         //Return the iterator.
@@ -1523,7 +1695,7 @@ public abstract class Game
      * @param spriteItype type of the sprite to retrieve.
      * @return sprite collection of the specified type.
      */
-    public ConcurrentHashMap<Integer, VGDLSprite> getSprites(int spriteItype)
+    public ArrayList<VGDLSprite> getSprites(int spriteItype)
     {
         return spriteGroups[spriteItype].getSprites();
     }
@@ -1634,16 +1806,37 @@ public abstract class Game
     public void setStochastic(boolean stoch) {is_stochastic = stoch;}
 
     /**
-     * Returns the avatar of the game.
+     * Returns the avatar of the game in single player games.
      * @return the avatar of the game.
      */
-    public MovingAvatar getAvatar() {return avatar;}
+    public MovingAvatar getAvatar() { return getAvatar(0); }
+
+    /**
+     * Overloaded method, returns the avatar of the player specified (for multi player games).
+     * @param playerID ID of the player desired.
+     * @return the corresponding avatar.
+     */
+    public MovingAvatar getAvatar(int playerID) { return avatars[playerID]; }
+
+    /**
+     * Returns an array of all avatars in the game.
+     * @return array of avatars.
+     */
+    public MovingAvatar[] getAvatars() { return avatars; }
+
 
     /**
      * Sets the avatar of the game.
      * @param newAvatar the avatar of the game.
      */
-    public void setAvatar(MovingAvatar newAvatar) {avatar = newAvatar;}
+    public void setAvatar(MovingAvatar newAvatar) {avatars[0] = newAvatar;}
+
+    /**
+     * Overloaded method, sets the avatar specified.
+     * @param newAvatar the avatar of the game.
+     * @param playerID the ID of the player desired.
+     */
+    public void setAvatar(MovingAvatar newAvatar, int playerID) {avatars[playerID] = newAvatar;}
 
     /**
      * Sets the last action executed by the avatar. It could be NIL in case of time overspent.
@@ -1651,17 +1844,24 @@ public abstract class Game
      */
     public void setAvatarLastAction(Types.ACTIONS action)
     {
-        this.avatarLastAction = action;
+        setAvatarLastAction(action, 0);
     }
+
+
+    /**
+     * Overloaded method for multi player games.
+     * Sets the last action executed by the avatar with the corresponding player ID.
+     * It could be NIL in case of time overspent.
+     * @param action the action to set.
+     * @param playerID the ID of the player.
+     */
+    public void setAvatarLastAction(Types.ACTIONS action, int playerID) { this.avatarLastAction[playerID] = action; }
 
     /**
      * Indicates if the game is over, or if it is still being played.
      * @return true if the game is over, false if it is still being played.
      */
-    public boolean isGameOver()
-    {
-        return this.winner != Types.WINNER.NO_WINNER;
-    }
+    public abstract boolean isGameOver();
 
     /**
      * Retuns the observation of this state.
@@ -1670,6 +1870,10 @@ public abstract class Game
     public StateObservation getObservation()
     {
         return new StateObservation(fwdModel);
+    }
+
+    public StateObservationMulti getObservationMulti() {
+        return new StateObservationMulti(fwdModel);
     }
 
     /**
@@ -1692,8 +1896,29 @@ public abstract class Game
      * Returns the winner of this game. A value from Types.WINNER.
      * @return the winner of this game.
      */
-    public Types.WINNER getWinner() {return winner;}
+    public Types.WINNER getWinner() {return getWinner(0);}
 
+    /**
+     * Overloaded method for multi player games.
+     * Returns the win state of the specified player.
+     * @param playerID ID of the player.
+     * @return the win state of the specified player.
+     */
+    public Types.WINNER getWinner(int playerID) {return avatars[playerID].getWinState();}
+
+    /**
+     * Returns an array of type Types.WINNER containing
+     * the win state of all players in the game.
+     * Index in the array corresponds to playerID.
+     * @return array of Types.WINNER values.
+     */
+    public Types.WINNER[] getMultiWinner() {
+        Types.WINNER[] winners = new Types.WINNER[no_players];
+        for (int i = 0; i < no_players; i++) {
+            winners[i] = avatars[i].getWinState();
+        }
+        return winners;
+    }
 
     /**
      * Gets the order in which the sprites are drawn.
@@ -1711,13 +1936,13 @@ public abstract class Game
         return block_size;
     }
 
-    public abstract void buildStringLevel(String[] levelString);
+    public abstract void buildStringLevel(String[] levelString, int randomSeed);
     
     /**
      * Builds a level, receiving a file name.
      * @param gamelvl file name containing the level.
      */
-    public void buildLevel(String gamelvl){}
+    public void buildLevel(String gamelvl, int randomSeed){}
 
 
     public ArrayList<Node> getPath(Vector2d start, Vector2d end)
@@ -1737,13 +1962,13 @@ public abstract class Game
     protected class Bucket
     {
         ArrayList<VGDLSprite> allSprites;
-        TreeMap<Integer, ArrayList<VGDLSprite>> spriteLists;
+        HashMap<Integer, ArrayList<VGDLSprite>> spriteLists;
         int totalNumSprites;
 
         public Bucket()
         {
             allSprites = new ArrayList<VGDLSprite>();
-            spriteLists = new TreeMap<Integer, ArrayList<VGDLSprite>>();
+            spriteLists = new HashMap<Integer, ArrayList<VGDLSprite>>();
             totalNumSprites = 0;
         }
 
@@ -1786,7 +2011,7 @@ public abstract class Game
             return allSprites;
         }
 
-        public TreeMap<Integer, ArrayList<VGDLSprite>> getSpriteList()
+        public HashMap<Integer, ArrayList<VGDLSprite>> getSpriteList()
         {
             return spriteLists;
         }

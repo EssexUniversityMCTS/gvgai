@@ -12,5 +12,5 @@ w....1     ....w
 w0  ...........w
 w   .0.. w.....w
 www...         w
-w..... 000...  G
+w..... 000...  g
 wwwwwwwwwwwwwwww

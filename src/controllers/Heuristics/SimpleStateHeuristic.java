@@ -27,6 +27,7 @@ public class SimpleStateHeuristic extends StateHeuristic {
         Vector2d avatarPosition = stateObs.getAvatarPosition();
         ArrayList<Observation>[] npcPositions = stateObs.getNPCPositions(avatarPosition);
         ArrayList<Observation>[] portalPositions = stateObs.getPortalsPositions(avatarPosition);
+        ArrayList<Observation>[] immovables = stateObs.getImmovablePositions();
         HashMap<Integer, Integer> resources = stateObs.getAvatarResources();
 
         ArrayList<Observation>[] npcPositionsNotSorted = stateObs.getNPCPositions();

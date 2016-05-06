@@ -26,13 +26,13 @@ public class TransformToAll extends TransformTo {
 
     //This effect transforms all sprites of type stype to stype2.
     // It DOES NOTHING to the sprites that cause the effect (unless they are the specified types stype or stype2)
-    public String stype2;
-    public int itype2;
+    public String stypeTo;
+    public int itypeTo;
 
     public TransformToAll(InteractionContent cnt)
     {
         super(cnt);
-        itype2 = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype2);
+        itypeTo = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stypeTo);
     }
 
     @Override
@@ -45,9 +45,7 @@ public class TransformToAll extends TransformTo {
         {
             VGDLSprite s = spriteIt.next();
             //Last argument: forces the creation. This could be a parameter of the effect too, if needed.
-            VGDLSprite newSprite = game.addSprite(itype2, s.getPosition(), true);
-//            System.out.println("transforming (" + game.getNumSprites(itype) + " : "  + itype + " ) " + s +
-//                    " to " + newSprite + " after colliding with " + sprite2.getType());
+            VGDLSprite newSprite = game.addSprite(itypeTo, s.getPosition(), true);
             //newSprite inherits things from 's'. Maybe sprite2 gets killed in the process.
             super.transformTo(newSprite, s, sprite2, game);
         }

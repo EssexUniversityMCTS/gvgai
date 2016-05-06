@@ -1,10 +1,10 @@
 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-wGxxxxxxx                  T                  Hw
-wGxxxxxxx                         T           Hw
-wGxxxxxxx                  T                  Hw
-wGxxxxxxx                         T           Hw
-wGAxxxxxx                  T                  Hw
-wGxxxxxxx                         T           Hw
-wGxxxxxxx                  T                  Hw
-wGxxxxxxx                         T           Hw
+wgxxxxxxx                  t                  fw
+wgxxxxxxx                         t           fw
+wgxxxxxxx                  t                  fw
+wgxxxxxxx                         t           fw
+wgAxxxxxx                  t                  fw
+wgxxxxxxx                         t           fw
+wgxxxxxxx                  t                  fw
+wgxxxxxxx                         t           fw
 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww

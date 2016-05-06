@@ -22,6 +22,7 @@ public class KillSprite extends Effect {
 
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game) {
-        game.killSprite(sprite1);
+        //boolean variable set to false to indicate the sprite was not transformed
+        game.killSprite(sprite1, false);
     }
 }

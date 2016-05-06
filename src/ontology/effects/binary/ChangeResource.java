@@ -33,12 +33,15 @@ public class ChangeResource extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game) {
         int numResources = sprite1.getAmountResource(resourceId);
+        applyScore = false;
         if(numResources + value <= game.getResourceLimit(resourceId))
         {
             sprite1.modifyResource(resourceId, value);
+            applyScore = true;
 
             if(killResource)
-                game.killSprite(sprite2);
+                //boolean variable set to true, as the sprite was transformed
+                game.killSprite(sprite2, true);
         }
     }
 }

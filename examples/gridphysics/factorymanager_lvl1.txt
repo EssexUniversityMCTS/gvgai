@@ -1,14 +1,14 @@
-wwwwPwwwwwwwwwwwwwwwwwwww
-w      D                w
-w           D         R w
+wwwwpwwwwwwwwwwwwwwwwwwww
+w      d                w
+w           d         r w
 w                       w
-w  D         B          w
+w  d         b          w
 w                       w
 w           A           w
-w                S      w
+w                s      w
 w                       w
 w                       w
-wU      H               w
-w                   D   w
+wu      h               w
+w                   d   w
 w                       w
 wwwwwwwwwwwwwwwwwwwwwwwww

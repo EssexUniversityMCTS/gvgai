@@ -9,7 +9,9 @@ import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
@@ -25,6 +27,7 @@ import ontology.physics.GravityPhysics;
 import ontology.physics.GridPhysics;
 import ontology.physics.NoFrictionPhysics;
 import ontology.physics.Physics;
+import tools.Direction;
 import tools.Utils;
 import tools.Vector2d;
 
@@ -115,7 +118,7 @@ public abstract class VGDLSprite {
     /**
      * Orientation of the sprite.
      */
-    public Vector2d orientation;
+    public Direction orientation;
 
     /**
      * Rectangle that this sprite occupies on the screen.
@@ -162,6 +165,38 @@ public abstract class VGDLSprite {
      * If true, this sprite is never present in the observations passed to the controller.
      */
     public boolean hidden;
+    
+    /**
+     * Indicates if the tile support autotiling
+     */
+    public boolean autotiling;
+    
+    /**
+     * Indicates if the tile picking is random
+     */
+    public double randomtiling;
+    
+    /**
+     * max frameRate for animating sprites
+     */
+    public double frameRate;
+    
+    /**
+     * remaining frame speed
+     */
+    public double frameRemaining;
+    
+    /**
+     * the current frame to be drawn
+     */
+    public int currentFrame;
+
+    /**
+     * If true, this sprite's functionality is disabled.
+     * Disabled sprites are not drawn.
+     * Information about disabled sprites can still be accessed.
+     */
+    private boolean disabled;
 
     /**
      * List of types this sprite belongs to. It contains the ids, including itself's, from this sprite up
@@ -178,6 +213,11 @@ public abstract class VGDLSprite {
      * Image of this sprite.
      */
     public Image image;
+    
+    /**
+     * Dictionary for autoTiling
+     */
+    public HashMap<Integer, Image> allImages;
 
     /**
      * String that represents the image in VGDL.
@@ -241,6 +281,18 @@ public abstract class VGDLSprite {
      * If not set specifically in VGDL, the default value is set to a very high value (1000)
      */
     public int limitHealthPoints;
+    
+    /**
+     * If true, images are loaded (for instance for visualizing a game)
+     * <br> If false, images are not loaded (for instance for simulating the effects of actions in decision-making AI)
+     */
+    public static boolean thinkingTime = true;
+
+    /**
+     * Time to live for this sprite. Default set to -1 will not affect the sprite.
+     * If ttl > -1, when it gets to 0, the sprite gets killed.
+     */
+    public int timeToLive = -1;
 
     /**
      * Initializes the sprite, giving its position and dimensions.
@@ -264,13 +316,20 @@ public abstract class VGDLSprite {
         is_from_avatar = false;
         mass = 1;
         shrinkfactor = 1.0;
+        autotiling = false;
+        randomtiling = -1;
+        frameRate = -1;
+        frameRemaining = 0;
+        currentFrame = -1;
+        allImages = new HashMap<Integer, Image>();
         is_oriented = false;
         draw_arrow = false;
-        orientation = Types.NONE;
+        orientation = Types.DNONE;
         lastmove = 0;
         invisible = false;
         rotateInPlace = false;
         isFirstTick = true;
+        disabled = false;
         limitHealthPoints = 1000;
         resources = new TreeMap<Integer, Integer>();
         itypes = new ArrayList<Integer>();
@@ -357,7 +416,26 @@ public abstract class VGDLSprite {
     public void update(Game game)
     {
         updatePassive();
+        if (timeToLive > -1) {
+            if (timeToLive > 0) timeToLive--;
+            else game.killSprite(this,false);
+        }
     }
+
+    /**
+     * Set the disabled flag of this sprite.
+     * @param is_disabled - disabled state
+     */
+    public void setDisabled(boolean is_disabled) {
+        //System.out.println("disabled (real game? " + thinkingTime + ")"); //use for debugging
+        disabled = is_disabled;
+    }
+
+    /**
+     * Check if this sprite is disabled.
+     * @return true if disabled, false otherwise.
+     */
+    public boolean is_disabled() { return disabled; }
 
     /**
      * Prepares the sprite for movement.
@@ -366,6 +444,15 @@ public abstract class VGDLSprite {
     {
         lastrect = new Rectangle(rect);
         lastmove += 1;
+
+        if(VGDLSprite.thinkingTime) {
+            frameRemaining -= 1;
+            if (frameRate > 0 && frameRemaining <= 0) {
+                currentFrame = (currentFrame + 1) % allImages.size();
+                frameRemaining = frameRate;
+                image = allImages.get(currentFrame);
+            }
+        }
     }
 
     /**
@@ -386,7 +473,7 @@ public abstract class VGDLSprite {
      * the avatar is not oriented (is_oriented == false) or the previous orientation is the
      * same as the one received by parameter.
      */
-    public boolean _updateOrientation(Vector2d orientation)
+    public boolean _updateOrientation(Direction orientation)
     {
         if(!this.is_oriented) return false;
         if(this.orientation.equals(orientation)) return false;
@@ -400,14 +487,14 @@ public abstract class VGDLSprite {
      * @param speed the speed of the sprite.
      * @return true if the position changed.
      */
-    public boolean _updatePos(Vector2d orientation, int speed) {
+    public boolean _updatePos(Direction orientation, int speed) {
         if (speed == 0) {
             speed = (int) this.speed;
             if(speed == 0) return false;
         }
 
-        if (cooldown <= lastmove && (Math.abs(orientation.x) + Math.abs(orientation.y) != 0)) {
-            rect.translate((int) orientation.x * speed, (int) orientation.y * speed);
+        if (cooldown <= lastmove && (Math.abs(orientation.x()) + Math.abs(orientation.y()) != 0)) {
+            rect.translate((int) orientation.x() * speed, (int) orientation.y() * speed);
             bucket = rect.y / rect.height;
             bucketSharp = (rect.y % rect.height) == 0;
             lastmove = 0;
@@ -424,7 +511,7 @@ public abstract class VGDLSprite {
         if (speed == 0 || !is_oriented) {
             return new Vector2d(0, 0);
         } else {
-            return new Vector2d(orientation.x * speed, orientation.y * speed);
+            return new Vector2d(orientation.x() * speed, orientation.y() * speed);
         }
     }
 
@@ -447,6 +534,18 @@ public abstract class VGDLSprite {
     }
 
     /**
+     * Gets the last position of this sprite. Returns null if same as current position.
+     * @return the position as a Vector2d.
+     */
+    public Vector2d getLastPosition()
+    {
+        if (!lastrect.intersects(rect)) {
+            return new Vector2d(lastrect.x, lastrect.y);
+        }
+        return null;
+    }
+
+    /**
      * Modifies the amount of resource by a given quantity.
      * @param resourceId id of the resource whose quantity must be changed.
      * @param amount_delta amount of units the resource has to be modified by.
@@ -456,6 +555,14 @@ public abstract class VGDLSprite {
         int prev = getAmountResource(resourceId);
         int next = Math.max(0,prev + amount_delta);
         resources.put(resourceId, next);
+    }
+
+    /**
+     * Removes all resources collected of the specified type.
+     * @param resourceId - id of the resource whose quantity must be changed.
+     */
+    public void removeResource(int resourceId) {
+        resources.put(resourceId, 0);
     }
 
     /**
@@ -479,7 +586,7 @@ public abstract class VGDLSprite {
      */
     public void draw(Graphics2D gphx, Game game) {
 
-        if(!invisible)
+        if(!invisible && !disabled)
         {
             Rectangle r = new Rectangle(rect);
 
@@ -662,9 +769,12 @@ public abstract class VGDLSprite {
      */
     public void postProcess()
     {
-        loadImage(img);
+    	if(thinkingTime)
+    	{
+    		loadImage(img);
+    	}
 
-        if(this.orientation != Types.NONE)
+        if(this.orientation != Types.DNONE)
         {
             //Any sprite that receives an orientation, is oriented.
             this.is_oriented = true;
@@ -684,15 +794,36 @@ public abstract class VGDLSprite {
         {
             //load image.
             try {
-                if (!(str.contains(".png"))) str = str + ".png";
-                String image_file = CompetitionParameters.IMG_PATH + str;
-                if((new File(image_file).exists())) {
-                    image = ImageIO.read(new File(image_file));
-                }
-                else {
-                    //System.out.println(image_file);
-                    image = ImageIO.read(this.getClass().getResource("/" + image_file));
-                }
+            	if (this.autotiling || this.randomtiling >= 0 || this.frameRate >= 0){
+            		if (str.contains(".png")) str = str.substring(0, str.length() - 3);
+            		String imagePath = CompetitionParameters.IMG_PATH + str + "_";
+            		boolean noMoreFiles = false;
+            		int i = 0;
+            		do{
+            			String currentFile = imagePath + i + ".png";
+            			if((new File(currentFile).exists())) {
+            				allImages.put(i, ImageIO.read(new File(currentFile)));
+    	                }
+    	                else {
+    	                    //System.out.println(currentFile);
+    	                	//tempImage = ImageIO.read(this.getClass().getResource("/" + currentFile));
+    	                	noMoreFiles = true;
+    	                }
+            			i += 1;
+            		}while(!noMoreFiles);
+            		image = allImages.get(0);
+            	}
+            	else{
+	                if (!(str.contains(".png"))) str = str + ".png";
+	                String image_file = CompetitionParameters.IMG_PATH + str;
+	                if((new File(image_file).exists())) {
+	                    image = ImageIO.read(new File(image_file));
+	                }
+	                else {
+	                    //System.out.println(image_file);
+	                    image = ImageIO.read(this.getClass().getResource("/" + image_file));
+	                }
+            	}
 
             } catch (IOException e) {
                 System.out.println("Image " + str + " could not be found.");
@@ -738,6 +869,7 @@ public abstract class VGDLSprite {
         toSprite.name = this.name;
         toSprite.is_static = this.is_static;
         toSprite.only_active = this.only_active;
+        toSprite.disabled = this.disabled;
         toSprite.is_avatar = this.is_avatar;
         toSprite.is_stochastic = this.is_stochastic;
         toSprite.cooldown = this.cooldown;
@@ -747,7 +879,7 @@ public abstract class VGDLSprite {
         toSprite.physics = this.physics; //Object reference, but should be ok.
         toSprite.shrinkfactor = this.shrinkfactor;
         toSprite.is_oriented = this.is_oriented;
-        toSprite.orientation = this.orientation.copy();
+        toSprite.orientation = new Direction(orientation.x(), orientation.y());
         toSprite.rect = new Rectangle(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
         toSprite.lastrect =  new Rectangle(this.lastrect.x, this.lastrect.y, this.lastrect.width, this.lastrect.height);
         toSprite.lastmove = this.lastmove;
@@ -759,18 +891,28 @@ public abstract class VGDLSprite {
         toSprite.color = this.color;
         toSprite.draw_arrow = this.draw_arrow;
         toSprite.is_npc = this.is_npc;
+        toSprite.allImages = new HashMap<Integer, Image>();
+        for(Entry<Integer, Image> e:this.allImages.entrySet()){
+        	toSprite.allImages.put(e.getKey(), e.getValue());
+        }
         toSprite.image = this.image;
         toSprite.spriteID = this.spriteID;
         toSprite.is_from_avatar = this.is_from_avatar;
         toSprite.bucket = this.bucket;
         toSprite.bucketSharp = this.bucketSharp;
         toSprite.invisible = this.invisible;
+        toSprite.autotiling = this.autotiling;
+        toSprite.randomtiling = this.randomtiling;
+        toSprite.frameRate = this.frameRate;
+        toSprite.currentFrame = this.currentFrame;
+        toSprite.frameRemaining = this.frameRemaining;
         toSprite.rotateInPlace = this.rotateInPlace;
         toSprite.isFirstTick = this.isFirstTick;
         toSprite.hidden = this.hidden;
         toSprite.healthPoints = this.healthPoints;
         toSprite.maxHealthPoints = this.maxHealthPoints;
         toSprite.limitHealthPoints = this.limitHealthPoints;
+        toSprite.timeToLive = this.timeToLive;
 
         toSprite.itypes = new ArrayList<Integer>();
         for(Integer it : this.itypes)
@@ -798,6 +940,7 @@ public abstract class VGDLSprite {
         if(other.name != this.name) return false;
         if(other.is_static != this.is_static) return false;
         if(other.only_active != this.only_active) return false;
+        if(other.disabled != this.disabled) return false;
         if(other.is_avatar != this.is_avatar) return false;
         if(other.is_stochastic != this.is_stochastic) return false;
         if(other.cooldown != this.cooldown) return false;
@@ -816,6 +959,9 @@ public abstract class VGDLSprite {
         if(other.is_npc != this.is_npc) return false;
         if(other.is_from_avatar != this.is_from_avatar) return false;
         if(other.invisible != this.invisible) return false;
+        if(other.autotiling != this.autotiling) return false;
+        if(other.randomtiling != this.randomtiling) return false;
+        if(other.frameRate != this.frameRate) return false;
         if(other.spriteID != this.spriteID) return false;
         if(other.isFirstTick != this.isFirstTick) return false;
         if(other.hidden != this.hidden) return false;

@@ -1,7 +1,7 @@
 .wwwwwww
 .w.....w
-.w.O*O.w
+.w.o*o.w
 ww.*A*.w
-w..O*O.w
+w..o*o.w
 w......w
 wwwwwwww

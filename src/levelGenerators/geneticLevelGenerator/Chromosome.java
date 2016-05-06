@@ -469,12 +469,17 @@ public class Chromosome implements Comparable<Chromosome>{
 
 	/**
 	 * check if the player death terminates the game
+	 * player ID used is 0, default for single player games.
 	 * @return	true if the player death terminates the game and false otherwise
 	 */
 	private boolean isPlayerCauseDeath(){
+
 		for(TerminationData t:SharedData.gameDescription.getTerminationConditions()){
+			String[] winners = t.win.split(",");
+			Boolean win = Boolean.parseBoolean(winners[0]);
+
 			for(String s:t.sprites){
-				if(!t.win & SharedData.gameDescription.getAvatar().contains(s)){
+				if(!win & SharedData.gameDescription.getAvatar().contains(s)){
 					return true;
 				}
 			}

@@ -26,14 +26,18 @@ public class AddHealthPoints extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
+        applyScore = false;
         if(sprite1.healthPoints + value < sprite1.limitHealthPoints) {
             sprite1.healthPoints += value;
 
             if (sprite1.healthPoints > sprite1.maxHealthPoints)
                 sprite1.maxHealthPoints = sprite1.healthPoints;
 
+            applyScore = true;
+
             if(killSecond && sprite2 != null)
-                game.killSprite(sprite2);
+                //boolean variable set to false to indicate the sprite was not transformed
+                game.killSprite(sprite2, false);
         }
     }
 }

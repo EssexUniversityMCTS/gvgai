@@ -1,9 +1,9 @@
 wwwwwwwwww
-wCCCCC   w
-w CCCC   w
-w  CCC   w
-wG  CC  Aw
-w  CCC   w
-w CCCC   w
-wCCCCC   w
+wccccc   w
+w cccc   w
+w  ccc   w
+wg  cc  Aw
+w  ccc   w
+w cccc   w
+wccccc   w
 wwwwwwwwww

@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 
 import core.VGDLSprite;
 import ontology.Types;
+import tools.Direction;
 import tools.Vector2d;
 
 /**
@@ -44,7 +45,7 @@ public class ContinuousPhysics extends GridPhysics
             sprite._updatePos(sprite.orientation, (int) sprite.speed);
             if(this.gravity > 0 && sprite.mass > 0)
             {
-                Vector2d gravityAction = new Vector2d(0, this.gravity * sprite.mass);
+                Direction gravityAction = new Direction(0, this.gravity * sprite.mass);
                 this.activeMovement(sprite, gravityAction, 0);
             }else return Types.MOVEMENT.STILL;
             sprite.speed *= (1-this.friction);
@@ -56,7 +57,7 @@ public class ContinuousPhysics extends GridPhysics
 
 
     @Override
-    public Types.MOVEMENT activeMovement(VGDLSprite sprite, Vector2d action, double speed)
+    public Types.MOVEMENT activeMovement(VGDLSprite sprite, Direction action, double speed)
     {
         //Here the assumption is that the controls determine the direction of
         //acceleration of the sprite.
@@ -66,17 +67,20 @@ public class ContinuousPhysics extends GridPhysics
         if(speed == 0)
             return Types.MOVEMENT.STILL;
 
-        double v1 = (action.x / (float)sprite.mass) + (sprite.orientation.x * speed);
-        double v2 = (action.y / (float)sprite.mass) + (sprite.orientation.y * speed);
-        Vector2d dir  = new Vector2d(v1,v2);
+        double v1 = (action.x() / (float)sprite.mass) + (sprite.orientation.x() * speed);
+        double v2 = (action.y() / (float)sprite.mass) + (sprite.orientation.y() * speed);
+
+        Vector2d dir = new Vector2d(v1, v2);
+        double speedD = dir.mag();
+        dir.normalise();
+        Direction d = new Direction(dir.x, dir.y);
 
         /*Vector2d unitDir = dir.unitVector();
         sprite.orientation = unitDir;
         sprite.speed = dir.mag() / sprite.orientation.mag(); */
 
-        sprite.orientation = dir;
-        sprite.orientation.normalise();
-        sprite.speed = dir.mag();
+        sprite.orientation = d;
+        sprite.speed = speedD;
 
         return Types.MOVEMENT.MOVE;
     }

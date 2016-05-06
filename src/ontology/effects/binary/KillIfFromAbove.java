@@ -28,8 +28,11 @@ public class KillIfFromAbove extends Effect
         boolean otherHigher = sprite1.lastrect.getMinY() > sprite2.lastrect.getMinY();
         boolean goingDown = sprite2.rect.getMinY() > sprite2.lastrect.getMinY();
 
+        applyScore=false;
         if (otherHigher && goingDown){
-            game.killSprite(sprite1);
+            applyScore=true;
+            //boolean variable set to false to indicate the sprite was not transformed
+            game.killSprite(sprite1, false);
         }
     }
 }

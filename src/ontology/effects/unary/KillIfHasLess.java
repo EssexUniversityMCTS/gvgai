@@ -33,7 +33,8 @@ public class KillIfHasLess extends Effect
         applyScore = false;
         if(sprite1.getAmountResource(resourceId) <= limit)
         {
-            game.killSprite(sprite1);
+            //boolean variable set to false to indicate the sprite was not transformed
+            game.killSprite(sprite1, false);
             applyScore = true;
         }
     }

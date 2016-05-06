@@ -20,7 +20,7 @@ BasicGame square_size=30
         1 > southfacing
         2 > northfacing
         3 > westfacing
-        G > goal
+        g > goal
         A > moving
     InteractionSet
 

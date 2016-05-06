@@ -31,14 +31,16 @@ public class CollectResource extends Effect
         if(sprite1.is_resource)
         {
             Resource r = (Resource) sprite1;
-
+            applyScore=false;
             int numResources = sprite2.getAmountResource(r.resource_type);
             if(numResources + r.value <= game.getResourceLimit(r.resource_type))
             {
+                applyScore=true;
                 sprite2.modifyResource(r.resource_type, r.value);
 
                 if(killResource)
-                    game.killSprite(sprite1);
+                    //boolean variable set to false to indicate the sprite was not transformed
+                    game.killSprite(sprite1, true);
             }
 
         }

@@ -10,9 +10,12 @@ import core.VGDLRegistry;
 import core.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.player.Player;
+import ontology.Types;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.Effect;
-import tools.Vector2d;
+import tools.KeyHandler;
+import tools.Direction;
 
 /**
  * Created with IntelliJ IDEA.
@@ -65,8 +68,7 @@ public class TransformToSingleton extends Effect {
             setSpriteFields(game, newSprite, sprite1);
 
             if(takeOrientation) {
-                Vector2d orientation = sprite2.orientation.copy();
-                orientation.mul(-1);
+                Direction orientation = new Direction(-sprite2.orientation.x(), -sprite2.orientation.y());
                 newSprite.is_oriented = true;
                 newSprite.orientation = orientation;
             }
@@ -99,16 +101,29 @@ public class TransformToSingleton extends Effect {
 
 
         //Avatar handling (I think considering avatars here is weird...)
+        boolean transformed = true;
         if(oldSprite.is_avatar)
         {
-            try{
-                game.setAvatar((MovingAvatar) newSprite);
-                game.getAvatar().player = ((MovingAvatar) oldSprite).player;
-                game.getAvatar().lastAction = ((MovingAvatar) oldSprite).lastAction;
-            }catch (ClassCastException e) {}
+            try {
+                int id = ((MovingAvatar)oldSprite).getPlayerID();
+                KeyHandler k = game.getAvatar(id).getKeyHandler();
+                Player p = game.getAvatar(id).player;
+                double score = game.getAvatar(id).getScore();
+                Types.WINNER win = game.getAvatar(id).getWinState();
+                game.setAvatar((MovingAvatar) newSprite, id);
+                game.getAvatar(id).player = p;
+                game.getAvatar(id).setKeyHandler(k);
+                game.getAvatar(id).setScore(score);
+                game.getAvatar(id).setWinState(win);
+                game.getAvatar(id).setPlayerID(id);
+                transformed = true;
+            } catch (ClassCastException e) {
+                transformed = false; // new sprite is not an avatar, don't kill the current one}
+            }
         }
 
-        game.killSprite(oldSprite);
+        //boolean variable set to true to indicate the sprite was transformed
+        game.killSprite(oldSprite, transformed);
     }
     
     @Override

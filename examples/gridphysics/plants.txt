@@ -28,14 +28,15 @@ BasicGame
 
         avatar wall > stepBack
         zombie wall  > stepBack
+        bullets EOS > killSprite
 
     LevelMapping
-        G > goal
+        g > goal
         h > slowHell
-        H > fastHell
-        Z > zombie
+        f > fastHell
+        z > zombie
         x > marsh
-        T > tomb
+        t > tomb
         A > avatar marsh
 
     TerminationSet

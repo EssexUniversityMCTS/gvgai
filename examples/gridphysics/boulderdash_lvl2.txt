@@ -9,5 +9,5 @@ w.ooo..www.... ....x.....w
 w.xxx.. b.....ww...x c ..w
 w..w...  .....xx...x.....w
 w..w.....wwwoo...........w
-w....xx.....xx..c...E....w
+w....xx.....xx..c...e....w
 wwwwwwwwwwwwwwwwwwwwwwwwww

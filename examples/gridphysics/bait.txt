@@ -5,19 +5,20 @@ BasicGame  key_handler=Pulse square_size=50
 
         hole   > Immovable color=DARKBLUE img=hole
         avatar > MovingAvatar
-            nokey > img=alien 
-            withkey > img=alien 
+            nokey > img=avatar
+            withkey > img=alien
         mushroom > Immovable img=mushroom
         key > Passive img=key
-        goal > Immovable img=door
+        goal > Immovable img=door portal=True
         box    > Passive img=box shrinkfactor=0.8
 
     LevelMapping
+        A > nokey
         0 > hole
         1 > box
-        K > key
-        G > goal
-        M > mushroom
+        k > key
+        g > goal
+        m > mushroom
 
     InteractionSet
         avatar wall > stepBack
