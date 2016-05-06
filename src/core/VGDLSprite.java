@@ -281,12 +281,6 @@ public abstract class VGDLSprite {
      * If not set specifically in VGDL, the default value is set to a very high value (1000)
      */
     public int limitHealthPoints;
-    
-    /**
-     * If true, images are loaded (for instance for visualizing a game)
-     * <br> If false, images are not loaded (for instance for simulating the effects of actions in decision-making AI)
-     */
-    public static boolean thinkingTime = true;
 
     /**
      * Time to live for this sprite. Default set to -1 will not affect the sprite.
@@ -445,13 +439,11 @@ public abstract class VGDLSprite {
         lastrect = new Rectangle(rect);
         lastmove += 1;
 
-        if(VGDLSprite.thinkingTime) {
-            frameRemaining -= 1;
-            if (frameRate > 0 && frameRemaining <= 0) {
-                currentFrame = (currentFrame + 1) % allImages.size();
-                frameRemaining = frameRate;
-                image = allImages.get(currentFrame);
-            }
+        frameRemaining -= 1;
+        if (frameRate > 0 && frameRemaining <= 0) {
+            currentFrame = (currentFrame + 1) % allImages.size();
+            frameRemaining = frameRate;
+            image = allImages.get(currentFrame);
         }
     }
 
@@ -769,12 +761,9 @@ public abstract class VGDLSprite {
      */
     public void postProcess()
     {
-    	if(thinkingTime)
-    	{
-    		loadImage(img);
-    	}
+    	loadImage(img);
 
-        if(this.orientation != Types.DNONE)
+        if(!(this.orientation.equals(Types.DNONE)))
         {
             //Any sprite that receives an orientation, is oriented.
             this.is_oriented = true;

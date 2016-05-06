@@ -59,6 +59,12 @@ public abstract class Game
      * Content encloses information about the class of the object and its parameters.
      */
     protected Content[] classConst;
+    
+    /**
+     * List of template sprites, one for each object in the above
+     * "classConst" array.
+     */
+    protected VGDLSprite[] templateSprites;
 
     /**
      * Groups of sprites in the level. Each element of the array is a
@@ -339,6 +345,7 @@ public abstract class Game
 
         //Constructors, as many as number of sprite types, so they are accessed by its id:
         classConst = new Content[VGDLRegistry.GetInstance().numSpriteTypes()];
+        templateSprites = new VGDLSprite[classConst.length];
 
         //By default, we have 2 constructors:
         Content wallConst = new SpriteContent("wall", "Immovable");
@@ -1230,36 +1237,18 @@ public abstract class Game
                 }
 
             }else {
-
-                if (!noSprites[intId] && bucketList[intId].size() == 0) {
-                    //Take all the subtypes in the hierarchy of this sprite.
-                    ArrayList<Integer> allTypes = iSubTypes[intId];
-                    for (Integer itype : allTypes) {
-                        //Add all sprites of this subtype to the list of sprites.
-                        //This are sprites that could potentially collide with EOS
-                        Collection<VGDLSprite> sprites = this.getSprites(itype);
-                        for (VGDLSprite sp : sprites) {
-                            //bucketList[intId].insert(sp);
-                            bucketList[intId].add(sp);
-                        }
-                    }
-
-                    //If no sprites were added here, mark it in the array.
-                    if (bucketList[intId].size() == 0)
-                        noSprites[intId] = true;
-                }
-
-                //For all sprites that can collide.
-                for (VGDLSprite s1 : bucketList[intId].getAllSprites()) {
-                    //Check that they are not dead (could happen in this same cycle).
-                    if (!kill_list.contains(s1) && !s1.is_disabled()) {
-                        executeEffect(ef, s1, null);
-                    }
-                }
-
-                //Clear the array of sprites for this effect.
-                bucketList[intId].clear();
-                noSprites[intId] = false;
+            	
+            	ArrayList<Integer> allTypes = iSubTypes[intId];
+            	for(Integer itype : allTypes){
+            		//Find all sprites of this subtype.
+            		Collection<VGDLSprite> sprites = this.getSprites(itype);
+            		for(VGDLSprite sp : sprites){
+            			//Check that they are not dead (could happen in this same cycle).
+            			if(!kill_list.contains(sp) && !sp.is_disabled()){
+            				executeEffect(ef, sp, null);
+            			}
+            		}
+            	}
             }
 
             //If the time effect is repetitive, need to reinsert in the list of effects
@@ -1278,40 +1267,22 @@ public abstract class Game
             //For each effect that this sprite has assigned.
             for(Effect ef : eosEffects[intId])
             {
-                if(!noSprites[intId] && bucketList[intId].size() == 0)
-                {
-                    //Take all the subtypes in the hierarchy of this sprite.
-                    ArrayList<Integer> allTypes = iSubTypes[intId];
-                    for(Integer itype : allTypes)
-                    {
-                        //Add all sprites of this subtype to the list of sprites.
-                        //This are sprites that could potentially collide with EOS
-                        Collection<VGDLSprite> sprites = this.getSprites(itype);
-                        for(VGDLSprite sp : sprites)
-                        {
-                            //bucketList[intId].insert(sp);
-                            bucketList[intId].add(sp);
+            	//Take all the subtypes in the hierarchy of this sprite.
+            	ArrayList<Integer> allTypes = iSubTypes[intId];
+            	for(Integer itype : allTypes)
+            	{
+            		//Add all sprites of this subtype to the list of sprites.
+                    //These are sprites that could potentially collide with EOS
+            		Collection<VGDLSprite> sprites = this.getSprites(itype);
+            		for(VGDLSprite sp : sprites)
+            		{
+            			//Check if they are at the edge to trigger the effect. Also check that they
+                        //are not dead (could happen in this same cycle).
+                        if(isAtEdge(sp.rect) && !kill_list.contains(sp) && !sp.is_disabled()) {
+                            executeEffect(ef, sp, null);
                         }
-                    }
-
-                    //If no sprites were added here, mark it in the array.
-                    if(bucketList[intId].size() == 0)
-                        noSprites[intId] = true;
-                }
-
-                //For all sprites that can collide.
-                for(VGDLSprite s1 : bucketList[intId].getAllSprites())
-                {
-                    //Check if they are at the edge to trigger the effect. Also check that they
-                    //are not dead (could happen in this same cycle).
-                    if(isAtEdge(s1.rect) && !kill_list.contains(s1) && !s1.is_disabled()) {
-                        executeEffect(ef, s1, null);
-                    }
-                }
-
-                //Clear the array of sprites for this effect.
-                bucketList[intId].clear();
-                noSprites[intId] = false;
+            		}
+            	}
             }
 
         }
@@ -1340,26 +1311,78 @@ public abstract class Game
 
                 // Consider the two types to populate the array bucketList, that encloses the sprites
                 // of both types that could take part in any interaction.
-                for(int intId : new int[]{p.first, p.second})
+                int[] types = (getNumSprites(p.first) < getNumSprites(p.second)) ? new int[]{p.first, p.second} : new int[]{p.second, p.first};
+                
+                // store all sprites of the type that we have the lowest number of sprites of in bucketList
+                int intId = types[0];
+                
+                // we'll mark here the rows of the map that could possibly collide with rows of the map
+                // where we find sprites of the first type. Sprites of the second type will only be added
+                // to buckets that have been marked as important, or are outside of the map bounds
+                boolean[] importantBuckets = new boolean[size.height + 1];
+                if(!noSprites[intId] && bucketList[intId].size() == 0)
                 {
-                    if(!noSprites[intId] && bucketList[intId].size() == 0)
-                    {
-                        //Take all the subtypes in the hierarchy of this sprite.
-                        ArrayList<Integer> allTypes = iSubTypes[intId];
-                        for(Integer itype : allTypes)
-                        {
-                            //Add all sprites of this subtype to the list of sprites
-                            Collection<VGDLSprite> sprites = this.getSprites(itype);
-                            for(VGDLSprite sp : sprites)
-                            {
-                                bucketList[intId].add(sp);
-                            }
-                        }
-
-                        //If no sprites were added here, mark it in the array.
-                        if(bucketList[intId].size() == 0)
-                            noSprites[intId] = true;
-                    }
+                	//Take all the subtypes in the hierarchy of this sprite.
+                	ArrayList<Integer> allTypes = iSubTypes[intId];
+                	for(Integer itype : allTypes)
+                	{
+                		//Add all sprites of this subtype to the list of sprites
+                		Collection<VGDLSprite> sprites = this.getSprites(itype);
+                		for(VGDLSprite sp : sprites)
+                		{
+                			bucketList[intId].add(sp);
+                			
+                			int spBucket = sp.bucket;
+                			if(spBucket >= 0 && spBucket < importantBuckets.length)
+                			{
+                				importantBuckets[spBucket] = true;
+                			}
+                			
+                			if(sp.bucketSharp)
+                			{
+                				if(spBucket - 1 >= 0 && spBucket - 1 < importantBuckets.length)
+                				{
+                					importantBuckets[spBucket - 1] = true;
+                				}
+                			}
+                			else
+                			{
+                				if(spBucket + 1 >= 0 && spBucket + 1 < importantBuckets.length)
+                				{
+                					importantBuckets[spBucket + 1] = true;
+                				}
+                			}
+                		}
+                	}
+                	
+                	//If no sprites were added here, mark it in the array.
+                    if(bucketList[intId].size() == 0)
+                        noSprites[intId] = true;
+                }
+                
+                // if we have found sprites for the first type, also search for sprites of the second type
+                if(!noSprites[intId])
+                {
+                	intId = types[1];
+                	if(!noSprites[intId] && bucketList[intId].size() == 0)
+                	{
+                		//Take all the subtypes in the hierarchy of this sprite.
+                    	ArrayList<Integer> allTypes = iSubTypes[intId];
+                    	for(Integer itype : allTypes)
+                    	{
+                    		Collection<VGDLSprite> sprites = this.getSprites(itype);
+                    		for(VGDLSprite sp : sprites)
+                    		{
+                    			// only add this sprite if he's outside the map bounds, or if he is in an important
+                    			// bucket (one that could possibly collide with sprites added of the first type)
+                    			int bucket = sp.bucket;
+                    			if(bucket < 0 || bucket >= importantBuckets.length || importantBuckets[bucket])
+                    			{
+                    				bucketList[intId].add(sp);
+                    			}
+                    		}
+                    	}
+                	}
                 }
 
                 //Take the collections of sprites, one for each type, of the two sprite types of this effect.
@@ -1602,11 +1625,28 @@ public abstract class Game
         //Only create the sprite if there is not any other sprite that blocks it.
         if(!anyother)
         {
-            VGDLSprite newSprite = VGDLFactory.GetInstance().createSprite(
-                    content , position, new Dimension(block_size, block_size));
-
-            //Assign its types and add it to the collection of sprites.
-            newSprite.itypes = (ArrayList<Integer>) content.itypes.clone();
+        	VGDLSprite newSprite;
+        	
+        	if(templateSprites[itype] == null)			// don't have a template yet, so need to create one
+        	{
+        		newSprite = VGDLFactory.GetInstance().createSprite(
+                        content , position, new Dimension(block_size, block_size));
+        		
+        		//Assign its types and add it to the collection of sprites.
+                newSprite.itypes = (ArrayList<Integer>) content.itypes.clone();
+                
+                // save a copy as template object
+                templateSprites[itype] = newSprite.copy();
+        	}
+        	else		// we already have a template, so simply copy that one
+        	{
+        		newSprite = templateSprites[itype].copy();
+        		
+        		// make sure the copy is moved to the correct position
+        		newSprite.setRect(position, new Dimension(block_size, block_size));
+        	}
+        	
+        	// add the sprite to the collection of sprites in the game
             this.addSprite(newSprite, itype);
             return newSprite;
         }

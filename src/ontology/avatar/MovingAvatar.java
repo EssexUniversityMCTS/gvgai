@@ -135,7 +135,6 @@ public class MovingAvatar extends VGDLSprite {
         ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
         ect.setMaxTimeMillis(CompetitionParameters.ACTION_TIME);
 
-        VGDLSprite.thinkingTime = false;	// don't need to load images whilst the agent is thinking
         Types.ACTIONS action;
         if (game.no_players > 1) {
             action = this.player.act(game.getObservationMulti(), ect.copy());
@@ -143,7 +142,6 @@ public class MovingAvatar extends VGDLSprite {
             action = this.player.act(game.getObservation(), ect.copy());
         }
         //System.out.println(action);
-        VGDLSprite.thinkingTime = true;	// need to load images again for the real game
 
         /*
         if(ect.exceededMaxTime())
@@ -273,6 +271,10 @@ public class MovingAvatar extends VGDLSprite {
         targetSprite.playerID = this.playerID;
         targetSprite.winState = this.winState;
         targetSprite.score = this.score;
+        
+        // need to copy orientation here already because MovingAvatar.postProcess() requires the orientation
+        targetSprite.orientation = this.orientation.copy();	
+        
         targetSprite.postProcess();
         super.copyTo(targetSprite);
     }

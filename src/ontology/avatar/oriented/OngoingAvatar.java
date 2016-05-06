@@ -56,7 +56,7 @@ public class OngoingAvatar extends OrientedAvatar
 
         //Update the orientation for this cycle's movement,
         // but only if there was a direction indicated.
-        if(action2D != Types.DNONE)
+        if(!(action2D.equals(Types.DNONE)))
             this._updateOrientation(action2D);
 
         //Update movement.
@@ -78,7 +78,7 @@ public class OngoingAvatar extends OrientedAvatar
 
         //Update the orientation for this cycle's movement,
         // but only if there was a direction indicated.
-        if(action2D != Types.DNONE)
+        if(!(action2D.equals(Types.DNONE)))
             this._updateOrientation(action2D);
 
         //Update movement.

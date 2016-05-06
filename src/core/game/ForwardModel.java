@@ -196,8 +196,9 @@ public class ForwardModel extends Game
         if(obs != null)
         {
             oldPosition = obs.position;
-            moved = ! obs.position.equals(sprite.getPosition());
-            obs.position = sprite.getPosition();
+            Vector2d position = sprite.getPosition();
+            moved = ! obs.position.equals(position);
+            obs.position = position;
         }else
         {
             obs = createSpriteObservation(sprite);
@@ -436,6 +437,7 @@ public class ForwardModel extends Game
         this.spriteOrder = a_gameState.spriteOrder;
         this.singletons = a_gameState.singletons;
         this.classConst = a_gameState.classConst;
+        this.templateSprites = a_gameState.templateSprites;
         this.collisionEffects = a_gameState.collisionEffects;
         this.definedEffects = a_gameState.definedEffects;
         this.eosEffects = a_gameState.eosEffects;
