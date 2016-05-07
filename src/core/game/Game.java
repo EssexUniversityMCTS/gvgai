@@ -711,6 +711,13 @@ public abstract class Game
             bucketList[j].clear();
         }
 
+        for(int i = 0; i < templateSprites.length; ++i)
+        {
+            templateSprites[i] = null;
+        }
+
+
+
         resetShieldEffects();
     }
 
