@@ -34,12 +34,24 @@ public class SimpleStateHeuristic extends StateHeuristicMulti {
         ArrayList<Observation>[] npcPositionsNotSorted = stateObs.getNPCPositions();
 
         double won = 0;
+        int oppID = (playerID + 1) % stateObs.getNoPlayers();
         Types.WINNER[] winners = stateObs.getMultiGameWinner();
-        if (winners[playerID] == Types.WINNER.PLAYER_WINS) {
+
+        boolean bothWin = (winners[playerID] == Types.WINNER.PLAYER_WINS) && (winners[oppID] == Types.WINNER.PLAYER_WINS);
+        boolean meWins  = (winners[playerID] == Types.WINNER.PLAYER_WINS) && (winners[oppID] == Types.WINNER.PLAYER_LOSES);
+        boolean meLoses = (winners[playerID] == Types.WINNER.PLAYER_LOSES) && (winners[oppID] == Types.WINNER.PLAYER_WINS);
+        boolean bothLose = (winners[playerID] == Types.WINNER.PLAYER_LOSES) && (winners[oppID] == Types.WINNER.PLAYER_LOSES);
+
+        if(meWins || bothWin)
             won = 1000000000;
-        } else if (winners[playerID] == Types.WINNER.PLAYER_LOSES) {
+        else if (meLoses)
             return -999999999;
-        }
+
+//        if (winners[playerID] == Types.WINNER.PLAYER_WINS) {
+//            won = 1000000000;
+//        } else if (winners[playerID] == Types.WINNER.PLAYER_LOSES) {
+//            return -999999999;
+//        }
 
 
         double minDistance = Double.POSITIVE_INFINITY;

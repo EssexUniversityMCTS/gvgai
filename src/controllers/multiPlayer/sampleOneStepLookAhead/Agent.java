@@ -8,6 +8,8 @@ import ontology.Types;
 import tools.ElapsedCpuTimer;
 import tools.Utils;
 
+import javax.swing.plaf.nimbus.State;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -42,6 +44,8 @@ public class Agent extends AbstractMultiPlayer {
         int id = getPlayerID(); //player ID of this agent
         oppID = (getPlayerID() + 1) % stateObs.getNoPlayers();
 
+        //A random non-suicidal action by the opponent.
+        Types.ACTIONS oppAction = getOppNotLosingAction(stateObs, id, oppID);
         SimpleStateHeuristic heuristic =  new SimpleStateHeuristic(stateObs);
 
         for (Types.ACTIONS action : stateObs.getAvailableActions(id)) {
@@ -53,12 +57,10 @@ public class Agent extends AbstractMultiPlayer {
 
             //set this agent's action
             acts[id] = action;
-
-            //get actions available to the opponent and assume they will do a random action
-            ArrayList<Types.ACTIONS> oppActions = stateObs.getAvailableActions(oppID);
-            acts[oppID] = oppActions.get(new Random().nextInt(oppActions.size()));
+            acts[oppID] = oppAction;
 
             stCopy.advance(acts);
+
             double Q = heuristic.evaluateState(stCopy, id);
             Q = Utils.noise(Q, this.epsilon, this.m_rnd.nextDouble());
 
@@ -69,8 +71,37 @@ public class Agent extends AbstractMultiPlayer {
             }
         }
 
-        //System.out.println("======== "  + maxQ + " " + bestAction + "============");
-        //System.out.println("Action:" + bestAction);
+        //System.out.println("======== " + getPlayerID() + " " + maxQ + " " + bestAction + "============");
+        //System.out.println(elapsedTimer.remainingTimeMillis());
         return bestAction;
+    }
+
+    //Returns an action, at random, that the oppponet would make, assuming I do NIL, which wouldn't make it lose the game.
+    private Types.ACTIONS getOppNotLosingAction(StateObservationMulti stm, int thisID, int oppID)
+    {
+        int no_players = stm.getNoPlayers();
+        ArrayList<Types.ACTIONS> oppActions = stm.getAvailableActions(oppID);
+
+        ArrayList<Types.ACTIONS> nonDeathActions = new ArrayList<>();
+
+        //Look for the opp actions that would not kill the opponent.
+        for (Types.ACTIONS action : stm.getAvailableActions(oppID)) {
+            Types.ACTIONS[] acts = new Types.ACTIONS[no_players];
+            acts[thisID] = Types.ACTIONS.ACTION_NIL;
+            acts[oppID] = action;
+
+            StateObservationMulti stCopy = stm.copy();
+            stCopy.advance(acts);
+
+            if(stCopy.getMultiGameWinner()[oppID] != Types.WINNER.PLAYER_LOSES)
+                nonDeathActions.add(action);
+        }
+
+        if(nonDeathActions.size() == 0)
+            //Simply random
+            return oppActions.get(new Random().nextInt(oppActions.size()));
+        else
+            //Random, but among those that would not kill the opponent.
+            return (Types.ACTIONS) Utils.choice(nonDeathActions.toArray(), m_rnd);
     }
 }
