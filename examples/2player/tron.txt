@@ -11,8 +11,8 @@ BasicGame square_size=10 no_players=2
 			
     LevelMapping
         . > snow
-        A > avatar1
-        B > avatar2
+        A > avatar1 snow
+        B > avatar2 snow
 		
     InteractionSet
 
