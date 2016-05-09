@@ -54,7 +54,7 @@ public class KeyPulse extends KeyHandler {
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
         int registered = getRegisteredID(key);
-        if(registered!=-1) {
+        if(registered!=-1 && registered<pulsesFIFO.length) {
             pulsesFIFO[registered].addLast(new Pulse(key));
             pulses[key] = false;
         }

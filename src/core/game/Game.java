@@ -1651,6 +1651,9 @@ public abstract class Game
         		
         		// make sure the copy is moved to the correct position
         		newSprite.setRect(position, new Dimension(block_size, block_size));
+
+                //Set last rect
+                newSprite.lastrect = new Rectangle(newSprite.rect);
         	}
         	
         	// add the sprite to the collection of sprites in the game
