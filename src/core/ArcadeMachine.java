@@ -482,12 +482,16 @@ public class ArcadeMachine
                     "you must supply an action file for each game instance to be played, or null.";
         }
 
-        StatSummary victories = new StatSummary();
-        StatSummary scores = new StatSummary();
-        performance = new StatSummary();
-
         Game toPlay = new VGDLParser().parseGame(game_file);
         int levelIdx = 0;
+
+        StatSummary[] victories = new StatSummary[toPlay.getNoPlayers()];
+        StatSummary[] scores = new StatSummary[toPlay.getNoPlayers()];
+        for (int i = 0; i < toPlay.getNoPlayers(); i++) {
+            victories[i] = new StatSummary();
+            scores[i] = new StatSummary();
+        }
+        performance = new StatSummary();
 
         for(String level_file : level_files)
         {
@@ -553,16 +557,14 @@ public class ArcadeMachine
 
                 //Finally, when the game is over, we need to tear the players down.
                 for (Player player : players)
-                    if(player != null)
-                        if(!ArcadeMachine.tearPlayerDown(toPlay, player))
+                    if(player != null) {
+                        int id = player.getPlayerID();
+                        if (!ArcadeMachine.tearPlayerDown(toPlay, player)) {
                             score = toPlay.handleResult();
-                scores.add(score);
-                victories.add(toPlay.getWinner()== Types.WINNER.PLAYER_WINS ? 1 : 0);
-
-                for (MovingAvatar a : toPlay.getAvatars()) {
-                    if (a.getWinState() == Types.WINNER.PLAYER_WINS)
-                        scores.addWin();
-                }
+                        }
+                        scores[id].add(score[id]);
+                        victories[id].add(toPlay.getWinner(id) == Types.WINNER.PLAYER_WINS ? 1 : 0);
+                    }
 
                 //reset the game.
                 toPlay.reset();
@@ -571,9 +573,17 @@ public class ArcadeMachine
             levelIdx++;
         }
 
-
+        String vict = "", sc = "";
+        for (int i = 0; i < toPlay.no_players; i++) {
+            vict += victories[i].mean();
+            sc += scores[i].mean();
+            if (i != toPlay.no_players - 1) {
+                vict += ", ";
+                sc += ", ";
+            }
+        }
         System.out.println("Results in game " + game_file + ", " +
-                        victories.mean() + ", " + scores.mean() );
+                        vict + " | " + sc );
                         //+ "," + performance.mean());
     }
 
@@ -804,6 +814,7 @@ public class ArcadeMachine
                 Object[] constructorArgs = new Object[]{so, ect.copy()};
 
                 player = (AbstractPlayer) controllerArgsConstructor.newInstance(constructorArgs);
+                player.setPlayerID(playerID);
 
             } else { //multi player
                 //Get the class and the constructor with arguments (StateObservation, long, int).
@@ -815,6 +826,7 @@ public class ArcadeMachine
                 Object[] constructorArgs = new Object[]{(StateObservationMulti)so, ect.copy(), playerID};
 
                 player = (AbstractMultiPlayer) controllerArgsConstructor.newInstance(constructorArgs);
+                player.setPlayerID(playerID);
             }
             //Check if we returned on time, and act in consequence.
             long timeTaken = ect.elapsedMillis();
@@ -1186,7 +1198,7 @@ public class ArcadeMachine
             long exceeded =  - ect.remainingTimeMillis();
             System.out.println("Controller tear down time out (" + exceeded + ").");
 
-            toPlay.disqualify();
+            toPlay.disqualify(player.getPlayerID());
             return false;
         }
 
