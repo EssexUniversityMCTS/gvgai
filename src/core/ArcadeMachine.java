@@ -1055,61 +1055,95 @@ public class ArcadeMachine
      * @param toPlay game to be warmed up.
      * @param howLong for how long the warming up process must last (in milliseconds).
      */
-    //TODO
     public static void warmUp(Game toPlay, long howLong)
     {
-        StateObservation stateObs = toPlay.getObservation();
         ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
         ect.setMaxTimeMillis(howLong);
-
         int playoutLength = 10;
-        ArrayList<Types.ACTIONS> actions = stateObs.getAvailableActions();
         int copyStats = 0;
         int advStats = 0;
+        int no_players = toPlay.no_players;
 
         StatSummary ss1 = new StatSummary();
         StatSummary ss2 = new StatSummary();
 
-
         boolean finish = ect.exceededMaxTime() || (copyStats>CompetitionParameters.WARMUP_CP && advStats>CompetitionParameters.WARMUP_ADV);
+
+        ArrayList<Types.ACTIONS>[] actions = new ArrayList[no_players];
+        StateObservation stateObs;
+
+        if (no_players > 1) {
+            //multi player
+            stateObs = toPlay.getObservationMulti();
+            for (int i = 0; i < no_players; i++) {
+                actions[i] = ((StateObservationMulti)stateObs).getAvailableActions(i);
+            }
+        } else {
+            //single player
+            stateObs = toPlay.getObservation();
+            actions[0] = stateObs.getAvailableActions();
+        }
 
         //while(!ect.exceededMaxTime())
         while(!finish)
         {
-            for (Types.ACTIONS action : actions)
-            {
-                StateObservation stCopy = stateObs.copy();
-                ElapsedCpuTimer ectAdv = new ElapsedCpuTimer();
-                stCopy.advance(action);
-                copyStats++;
-                advStats++;
+            for (int i = 0; i < no_players; i++) {
+                for (Types.ACTIONS action : actions[i]) {
 
-                if( ect.remainingTimeMillis() < CompetitionParameters.WARMUP_TIME*0.5)
-                {
-                    ss1.add(ectAdv.elapsedNanos());
-                }
+                    StateObservation stCopy = stateObs.copy();
+                    ElapsedCpuTimer ectAdv = new ElapsedCpuTimer();
 
-                for (int i = 0; i < playoutLength; i++) {
+                    Types.ACTIONS[] acts = new Types.ACTIONS[no_players];
+                    for (int j = 0; j < no_players; j++) {
+                        if (j != i) acts[j] = Types.ACTIONS.ACTION_NIL;
+                    }
+                    acts[i] = action;
 
-                    int index = new Random().nextInt(actions.size());
-                    Types.ACTIONS actionPO = actions.get(index);
+                    if (no_players > 1) {
+                        //multi player
+                        ((StateObservationMulti)stCopy).advance(acts);
+                    } else {
+                        stCopy.advance(action);
+                    }
 
-                    ectAdv = new ElapsedCpuTimer();
-                    stCopy.advance(actionPO);
+                    copyStats++;
                     advStats++;
 
-                    if( ect.remainingTimeMillis() < CompetitionParameters.WARMUP_TIME*0.5)
-                    {
-                        ss2.add(ectAdv.elapsedNanos());
+                    if (ect.remainingTimeMillis() < CompetitionParameters.WARMUP_TIME * 0.5) {
+                        ss1.add(ectAdv.elapsedNanos());
+                    }
+
+                    for (int j = 0; j < playoutLength; j++) {
+
+                        int[] index = new int[no_players];
+                        Types.ACTIONS[] actionPO = new Types.ACTIONS[no_players];
+                        for (int k = 0; k < no_players; k++) {
+                            index[k] = new Random().nextInt(actions[i].size());
+                            actionPO[k] = actions[i].get(index[k]);
+                        }
+
+                        ectAdv = new ElapsedCpuTimer();
+
+                        if (no_players > 1) {
+                            ((StateObservationMulti)stCopy).advance(actionPO);
+                        } else {
+                            stCopy.advance(actionPO[0]);
+                        }
+
+                        advStats++;
+
+                        if (ect.remainingTimeMillis() < CompetitionParameters.WARMUP_TIME * 0.5) {
+                            ss2.add(ectAdv.elapsedNanos());
+                        }
                     }
                 }
+
+                finish = ect.exceededMaxTime() || (copyStats > CompetitionParameters.WARMUP_CP && advStats > CompetitionParameters.WARMUP_ADV);
+
+                //if(VERBOSE)
+                //System.out.println("[WARM-UP] Remaining time: " + ect.remainingTimeMillis() +
+                //        " ms, copy() calls: " + copyStats + ", advance() calls: " + advStats);
             }
-
-            finish = ect.exceededMaxTime() || (copyStats>CompetitionParameters.WARMUP_CP && advStats>CompetitionParameters.WARMUP_ADV);
-
-            //if(VERBOSE)
-            //System.out.println("[WARM-UP] Remaining time: " + ect.remainingTimeMillis() +
-            //        " ms, copy() calls: " + copyStats + ", advance() calls: " + advStats);
         }
 
         if(VERBOSE)
