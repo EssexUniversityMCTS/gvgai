@@ -100,7 +100,6 @@ public class SingleTreeNode
         }
 
         //Roll the state
-        StateObservationMulti nextState = state.copy();
 
         //need to provide actions for all players to advance the forward model
         Types.ACTIONS[] acts = new Types.ACTIONS[Agent.no_players];
@@ -112,7 +111,7 @@ public class SingleTreeNode
         Types.ACTIONS[] oppActions = Agent.actions[Agent.oppID];
         acts[Agent.oppID] = oppActions[new Random().nextInt(oppActions.length)];
 
-        nextState.advance(acts);
+        state.advance(acts);
 
         SingleTreeNode tn = new SingleTreeNode(this,bestAction,this.m_rnd);
         children[bestAction] = tn;
@@ -149,7 +148,6 @@ public class SingleTreeNode
         }
 
         //Roll the state:
-        StateObservationMulti nextState = state.copy();
 
         //need to provide actions for all players to advance the forward model
         Types.ACTIONS[] acts = new Types.ACTIONS[Agent.no_players];
@@ -161,7 +159,7 @@ public class SingleTreeNode
         Types.ACTIONS[] oppActions = Agent.actions[Agent.oppID];
         acts[Agent.oppID] = oppActions[new Random().nextInt(oppActions.length)];
 
-        nextState.advance(acts);
+        state.advance(acts);
 
         return selected;
     }
