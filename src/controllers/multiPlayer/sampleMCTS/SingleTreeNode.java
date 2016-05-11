@@ -1,9 +1,7 @@
 package controllers.multiPlayer.sampleMCTS;
 
-import java.util.ArrayList;
 import java.util.Random;
 
-import core.game.StateObservation;
 import core.game.StateObservationMulti;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
@@ -123,7 +121,7 @@ public class SingleTreeNode
 
         //get actions available to the opponent and assume they will do a random action
         Types.ACTIONS[] oppActions = Agent.actions[thisoppid];
-        acts[Agent.oppID] = oppActions[new Random().nextInt(oppActions.length)];
+        acts[thisoppid] = oppActions[new Random().nextInt(oppActions.length)];
 
         nextState.advance(acts);
 

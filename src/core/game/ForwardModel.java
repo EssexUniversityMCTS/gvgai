@@ -454,6 +454,10 @@ public class ForwardModel extends Game
         this.avatarLastAction = new Types.ACTIONS[no_players];
         System.arraycopy(a_gameState.avatarLastAction, 0, avatarLastAction, 0, no_players);
         this.avatars = new MovingAvatar[no_players];
+        for (int i = 0; i < no_players; i++) {
+            avatars[i] = (MovingAvatar) a_gameState.avatars[i].copy();
+            avatars[i].setKeyHandler(a_gameState.avatars[i].getKeyHandler());
+        }
 
         //create the boolean maps of sprite types.
         npcList = new boolean[a_gameState.spriteGroups.length];

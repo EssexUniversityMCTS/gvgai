@@ -1,6 +1,5 @@
 package controllers.multiPlayer.sampleMCTS;
 
-import controllers.sampleMCTS.SingleMCTSPlayer;
 import core.game.Observation;
 import core.game.StateObservation;
 import core.game.StateObservationMulti;

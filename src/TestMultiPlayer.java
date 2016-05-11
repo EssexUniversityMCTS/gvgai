@@ -46,7 +46,7 @@ public class TestMultiPlayer
         // 2. This plays a game in a level by the controllers. Separate controllers with a space character.
         // Provide enough players as required by the game. If one of them is human, change the playerID passed
         // to the runOneGame method to be that of the human player.
-        String controllers = sampleMCTSController + " " + doNothingController;
+        String controllers = sampleMCTSController + " " + oneStepController;
         ArcadeMachine.runOneGame(game, level1, visuals, controllers, recordActionsFile, seed, 0);
 
         // 3. This replays a game from an action file previously recorded
