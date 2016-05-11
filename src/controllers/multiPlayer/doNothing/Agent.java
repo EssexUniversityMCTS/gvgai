@@ -1,25 +1,19 @@
 package controllers.multiPlayer.doNothing;
 
-import core.game.StateObservation;
 import core.game.StateObservationMulti;
 import core.player.AbstractMultiPlayer;
-import core.player.AbstractPlayer;
-import ontology.Types;
 import ontology.Types.ACTIONS;
 import tools.ElapsedCpuTimer;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 public class Agent extends AbstractMultiPlayer {
-
 
 	/**
 	 * initialize all variables for the agent
 	 * @param stateObs Observation of the current state.
      * @param elapsedTimer Timer when the action returned is due.
+	 * @param playerID ID if this agent
 	 */
-	public Agent(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer){
+	public Agent(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer, int playerID) {
 	}
 
 	/**
@@ -33,3 +27,5 @@ public class Agent extends AbstractMultiPlayer {
 		return ACTIONS.ACTION_NIL;
 	}
 }
+
+

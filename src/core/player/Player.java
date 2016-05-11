@@ -16,13 +16,7 @@ import java.util.ArrayList;
 /**
  * Created by Raluca on 07-Apr-16.
  */
-public abstract class Player implements Cloneable{
-
-    /**
-     * Variable to store player id.
-     * Default 0 for single player games.
-     */
-    private int playerID = 0;
+public abstract class Player {
 
     /**
      * File where the actions played in a given game are stored.
@@ -157,26 +151,10 @@ public abstract class Player implements Cloneable{
     }
 
     /**
-     * Get this player's ID.
-     * @return player ID.
-     */
-    public int getPlayerID() {
-        return playerID;
-    }
-
-    /**
      * Indicates if this player is human controlled.
      * @return true if the player is human.
      */
     public boolean isHuman() { return isHuman;}
-
-    /**
-     * Set this player's ID to a new value.
-     * @param id - new player ID.
-     */
-    public void setPlayerID(int id) {
-        playerID = id;
-    }
 
     /**
      * Gets the player the control to draw something on the screen.

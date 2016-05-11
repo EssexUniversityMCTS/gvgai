@@ -18,11 +18,24 @@ import java.util.Random;
  */
 public class Agent extends AbstractMultiPlayer {
     int oppID; //player ID of the opponent
+    int id; //ID of this player
+    int no_players; //number of players in the game
     public static double epsilon = 1e-6;
     public static Random m_rnd;
 
-    public Agent(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer) {
+    /**
+     * initialize all variables for the agent
+     * @param stateObs Observation of the current state.
+     * @param elapsedTimer Timer when the action returned is due.
+     * @param playerID ID if this agent
+     */
+    public Agent(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer, int playerID) {
         m_rnd = new Random();
+
+        //get game information
+        no_players = stateObs.getNoPlayers();
+        id = playerID; //player ID of this agent
+        oppID = (playerID + 1) % stateObs.getNoPlayers();
     }
 
     /**
@@ -39,10 +52,6 @@ public class Agent extends AbstractMultiPlayer {
 
         Types.ACTIONS bestAction = null;
         double maxQ = Double.NEGATIVE_INFINITY;
-
-        int no_players = stateObs.getNoPlayers();
-        int id = getPlayerID(); //player ID of this agent
-        oppID = (getPlayerID() + 1) % stateObs.getNoPlayers();
 
         //A random non-suicidal action by the opponent.
         Types.ACTIONS oppAction = getOppNotLosingAction(stateObs, id, oppID);

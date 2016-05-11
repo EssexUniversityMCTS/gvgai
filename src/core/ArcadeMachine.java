@@ -804,19 +804,17 @@ public class ArcadeMachine
                 Object[] constructorArgs = new Object[]{so, ect.copy()};
 
                 player = (AbstractPlayer) controllerArgsConstructor.newInstance(constructorArgs);
-                player.setPlayerID(playerID);
 
             } else { //multi player
-                //Get the class and the constructor with arguments (StateObservation, long).
+                //Get the class and the constructor with arguments (StateObservation, long, int).
                 Class<? extends AbstractMultiPlayer> controllerClass = Class.forName(playerName).asSubclass(AbstractMultiPlayer.class);
-                Class[] gameArgClass = new Class[]{StateObservationMulti.class, ElapsedCpuTimer.class};
+                Class[] gameArgClass = new Class[]{StateObservationMulti.class, ElapsedCpuTimer.class, int.class};
                 Constructor controllerArgsConstructor = controllerClass.getConstructor(gameArgClass);
 
                 //Call the constructor with the appropriate parameters.
-                Object[] constructorArgs = new Object[]{(StateObservationMulti)so, ect.copy()};
+                Object[] constructorArgs = new Object[]{(StateObservationMulti)so, ect.copy(), playerID};
 
                 player = (AbstractMultiPlayer) controllerArgsConstructor.newInstance(constructorArgs);
-                player.setPlayerID(playerID);
             }
             //Check if we returned on time, and act in consequence.
             long timeTaken = ect.elapsedMillis();
@@ -1057,6 +1055,7 @@ public class ArcadeMachine
      * @param toPlay game to be warmed up.
      * @param howLong for how long the warming up process must last (in milliseconds).
      */
+    //TODO
     public static void warmUp(Game toPlay, long howLong)
     {
         StateObservation stateObs = toPlay.getObservation();

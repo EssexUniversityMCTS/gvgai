@@ -15,14 +15,17 @@ import tools.Utils;
  */
 public class Agent extends AbstractMultiPlayer
 {
+    int id; //this player's ID
 
     /**
      * Public constructor with state observation and time due.
      * @param so state observation of the current game.
      * @param elapsedTimer Timer for the controller creation.
+     * @param playerID ID if this agent
      */
-    public Agent(StateObservationMulti so, ElapsedCpuTimer elapsedTimer)
+    public Agent(StateObservationMulti so, ElapsedCpuTimer elapsedTimer, int playerID)
     {
+        id = playerID;
     }
 
 
@@ -36,8 +39,8 @@ public class Agent extends AbstractMultiPlayer
     public Types.ACTIONS act(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer)
     {
         //int id = (getPlayerID() + 1) % stateObs.getNoPlayers();
-        Direction move = Utils.processMovementActionKeys(Game.humanki.getMask(), getPlayerID());
-        boolean useOn = Utils.processUseKey(Game.humanki.getMask(), getPlayerID());
+        Direction move = Utils.processMovementActionKeys(Game.humanki.getMask(), id);
+        boolean useOn = Utils.processUseKey(Game.humanki.getMask(), id);
 
         //In the keycontroller, move has preference.
         Types.ACTIONS action = Types.ACTIONS.fromVector(move);
