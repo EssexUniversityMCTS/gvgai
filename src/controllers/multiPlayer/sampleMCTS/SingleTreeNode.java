@@ -36,10 +36,7 @@ public class SingleTreeNode
             m_depth = parent.m_depth+1;
         else
             m_depth = 0;
-        int thisid;
-        if (m_depth % 2 == 0) thisid = Agent.id;
-        else thisid = Agent.oppID;
-        children = new SingleTreeNode[Agent.NUM_ACTIONS[thisid]];
+        children = new SingleTreeNode[Agent.NUM_ACTIONS[Agent.id]];
     }
 
 
@@ -104,26 +101,20 @@ public class SingleTreeNode
         }
 
         /**
-         * Advance state. If depth even number, this agent's actions are considered. Otherwise, the opponent's.
+         * Advance state.
          */
 
-        int thisid, thisoppid;
-        if (m_depth % 2 == 0) {
-            thisid = Agent.id; thisoppid = Agent.oppID;
-        } else {
-            thisid = Agent.oppID; thisoppid = Agent.id;
-        }
         StateObservationMulti nextState = state.copy();
 
         //need to provide actions for all players to advance the forward model
         Types.ACTIONS[] acts = new Types.ACTIONS[Agent.no_players];
 
         //set this agent's action
-        acts[thisid] = Agent.actions[thisid][bestAction];
+        acts[Agent.id] = Agent.actions[Agent.id][bestAction];
 
         //get actions available to the opponent and assume they will do a random action
-        Types.ACTIONS[] oppActions = Agent.actions[thisoppid];
-        acts[thisoppid] = oppActions[new Random().nextInt(oppActions.length)];
+        Types.ACTIONS[] oppActions = Agent.actions[Agent.oppID];
+        acts[Agent.oppID] = oppActions[new Random().nextInt(oppActions.length)];
 
         nextState.advance(acts);
 
@@ -150,11 +141,6 @@ public class SingleTreeNode
 
             // small sampleRandom numbers: break ties in unexpanded nodes
             uctValue = Utils.noise(uctValue, this.epsilon, this.m_rnd.nextDouble());     //break ties randomly
-
-            // if opponent action, reverse it.
-            if (m_depth % 2 != 0) {
-                uctValue *= -1;
-            }
 
             // small sampleRandom numbers: break ties in unexpanded nodes
             if (uctValue > bestValue) {
@@ -190,11 +176,6 @@ public class SingleTreeNode
                 double hvVal = child.totValue;
                 hvVal = Utils.noise(hvVal, this.epsilon, this.m_rnd.nextDouble());     //break ties randomly
                 // small sampleRandom numbers: break ties in unexpanded nodes
-
-                // if opponent action, reverse it.
-                if (m_depth % 2 != 0) {
-                    hvVal *= -1;
-                }
 
                 if (hvVal > bestValue) {
                     selected = child;
@@ -244,16 +225,8 @@ public class SingleTreeNode
     public double value(StateObservationMulti a_gameState) {
 
         boolean gameOver = a_gameState.isGameOver();
-
-        int thisid;
-        if (m_depth % 2 == 0) {
-            thisid = Agent.id;
-        } else {
-            thisid = Agent.oppID;
-        }
-
-        Types.WINNER win = a_gameState.getMultiGameWinner()[thisid];
-        double rawScore = a_gameState.getGameScore(thisid);
+        Types.WINNER win = a_gameState.getMultiGameWinner()[Agent.id];
+        double rawScore = a_gameState.getGameScore(Agent.id);
 
         if(gameOver && win == Types.WINNER.PLAYER_LOSES)
             rawScore += HUGE_NEGATIVE;
