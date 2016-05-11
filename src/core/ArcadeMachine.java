@@ -98,7 +98,7 @@ public class ArcadeMachine
         toPlay.buildLevel(level_file, randomSeed);
 
         //Warm the game up.
-        //ArcadeMachine.warmUp(toPlay, CompetitionParameters.WARMUP_TIME);
+        ArcadeMachine.warmUp(toPlay, CompetitionParameters.WARMUP_TIME);
 
         //Create the players.
         String[] names = agentNames.split(" ");
