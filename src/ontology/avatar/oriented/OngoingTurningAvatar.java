@@ -1,5 +1,7 @@
 package ontology.avatar.oriented;
 
+import core.VGDLFactory;
+import core.VGDLRegistry;
 import core.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
@@ -19,6 +21,10 @@ import java.awt.*;
  */
 public class OngoingTurningAvatar extends OrientedAvatar
 {
+
+    public String spawnBehind;
+    private int spawnId;
+
     public OngoingTurningAvatar(){}
 
     public OngoingTurningAvatar(Vector2d position, Dimension size, SpriteContent cnt)
@@ -39,6 +45,15 @@ public class OngoingTurningAvatar extends OrientedAvatar
         speed = 1;
         is_oriented = true;
     }
+
+
+    public void postProcess()
+    {
+        super.postProcess();
+        if(spawnBehind != null)
+            spawnId = VGDLRegistry.GetInstance().getRegisteredSpriteValue(spawnBehind);
+    }
+
 
     /**
      * This update call is for the game tick() loop.
@@ -63,6 +78,10 @@ public class OngoingTurningAvatar extends OrientedAvatar
 
         //Update movement.
         super.updatePassive();
+
+        //Spawn behind:
+        if(!this.rect.intersects(this.lastrect))
+            game.addSprite(spawnId, this.getLastPosition());
     }
 
 
