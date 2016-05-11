@@ -57,7 +57,7 @@ public class Agent extends AbstractMultiPlayer {
             for (int j = 0; j < act.size(); ++j) {
                 actions[i][j] = act.get(j);
             }
-            NUM_ACTIONS[i] = actions.length;
+            NUM_ACTIONS[i] = actions[i].length;
         }
 
         //Create the player.
