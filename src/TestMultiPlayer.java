@@ -18,7 +18,12 @@ public class TestMultiPlayer
         String randomController = "controllers.multiPlayer.sampleRandom.Agent";
         String oneStepController = "controllers.multiPlayer.sampleOneStepLookAhead.Agent";
         String sampleMCTSController = "controllers.multiPlayer.sampleMCTS.Agent";
+        String sampleOLMCTSController = "controllers.multiPlayer.sampleOLMCTS.Agent";
+        String sampleGAController = "controllers.multiPlayer.sampleGA.Agent";
         String humanController = "controllers.multiPlayer.human.Agent";
+
+        //Set here the controllers used in the games (need 2 separated by space).
+        String controllers = sampleMCTSController + " " + sampleOLMCTSController;
 
         //Available games:
         String gamesPath = "examples/2player/";
@@ -33,7 +38,7 @@ public class TestMultiPlayer
         int seed = new Random().nextInt();
 
         //Game and level to play
-        int gameIdx = 0;
+        int gameIdx = 9;
         int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
@@ -43,10 +48,8 @@ public class TestMultiPlayer
         // 1. This starts a game, in a level, played by two humans.
         //ArcadeMachine.playOneGameMulti(game, level1, recordActionsFile, seed);
 
-        // 2. This plays a game in a level by the controllers. Separate controllers with a space character.
-        // Provide enough players as required by the game. If one of them is human, change the playerID passed
-        // to the runOneGame method to be that of the human player.
-        String controllers = sampleMCTSController + " " + oneStepController;
+        // 2. This plays a game in a level by the controllers. If one of the players is human, change the playerID passed
+        // to the runOneGame method to be that of the human player (0 or 1).
         ArcadeMachine.runOneGame(game, level1, visuals, controllers, recordActionsFile, seed, 0);
 
         // 3. This replays a game from an action file previously recorded
@@ -63,11 +66,11 @@ public class TestMultiPlayer
 //        }
 
         //5. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
-//        int N = 60, L = 5, M = 1;
+//        int N = 60, L = 1, M = 1;
 //        boolean saveActions = false;
 //        String[] levels = new String[L];
 //        String[] actionFiles = new String[L*M];
-//        for(int i = 0; i < N; ++i)
+//        for(int i = 0; i < 2; ++i)
 //        {
 //            int actionIdx = 0;
 //            game = gamesPath + games[i] + ".txt";
@@ -76,7 +79,7 @@ public class TestMultiPlayer
 //                if(saveActions) for(int k = 0; k < M; ++k)
 //                    actionFiles[actionIdx++] = "actions_game_" + i + "_level_" + j + "_" + k + ".txt";
 //            }
-//            ArcadeMachine.runGames(game, levels, M, oneStepController, saveActions? actionFiles:null);
+//            ArcadeMachine.runGames(game, levels, M, controllers, saveActions? actionFiles:null);
 //        }
     }
 }

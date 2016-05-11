@@ -151,10 +151,10 @@ public class MovingAvatar extends VGDLSprite {
             if(ect.elapsedMillis() > CompetitionParameters.ACTION_TIME_DISQ)
             {
                 //The agent took too long to replay. The game is over and the agent is disqualified
-                System.out.println("Too long: " + "(exceeding "+(exceeded)+"ms): controller disqualified.");
-                game.disqualify();
+                System.out.println("Too long: " + playerID + "(exceeding "+(exceeded)+"ms): controller disqualified.");
+                game.disqualify(playerID);
             }else{
-                System.out.println("Overspent: " + "(exceeding "+(exceeded)+"ms): applying ACTION_NIL.");
+                System.out.println("Overspent: " + playerID + "(exceeding "+(exceeded)+"ms): applying ACTION_NIL.");
             }
 
             action = Types.ACTIONS.ACTION_NIL;
