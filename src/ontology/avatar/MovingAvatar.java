@@ -143,7 +143,7 @@ public class MovingAvatar extends VGDLSprite {
         }
         //System.out.println(action);
 
-
+        /*
         if(ect.exceededMaxTime())
         {
             long exceeded =  - ect.remainingTimeMillis();
@@ -159,7 +159,7 @@ public class MovingAvatar extends VGDLSprite {
 
             action = Types.ACTIONS.ACTION_NIL;
         }
-
+        */
 
         if(!actions.contains(action))
             action = Types.ACTIONS.ACTION_NIL;

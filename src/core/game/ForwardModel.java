@@ -135,8 +135,7 @@ public class ForwardModel extends Game
              * playerID in the avatars array).
              */
             Iterator<VGDLSprite> spriteIt = a_gameState.spriteGroups[i].getSpriteIterator();
-            boolean hiddenSprites = false;
-            if(spriteIt != null) while(spriteIt.hasNext() && !hiddenSprites)
+            if(spriteIt != null) while(spriteIt.hasNext())
             {
                 VGDLSprite sp = spriteIt.next();
                 VGDLSprite spCopy = sp.copy();
@@ -146,7 +145,7 @@ public class ForwardModel extends Game
                 if(!spCopy.hidden) {
                     checkSpriteFeatures(spCopy, i);
                     updateObservation(spCopy);
-                }else hiddenSprites = true;
+                }
             }
 
             int nSprites = spriteGroups[i].numSprites();
