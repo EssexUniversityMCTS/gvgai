@@ -19,6 +19,11 @@ import java.util.ArrayList;
 public abstract class Player {
 
     /**
+     * playerID
+     */
+    private int playerID;
+
+    /**
      * File where the actions played in a given game are stored.
      */
     private String actionFile;
@@ -155,6 +160,17 @@ public abstract class Player {
      * @return true if the player is human.
      */
     public boolean isHuman() { return isHuman;}
+
+    /**
+     * @return the ID of this player
+     */
+    public int getPlayerID() { return playerID; }
+
+    /**
+     * Set the ID of this player.
+     * @param id - the player's ID
+     */
+    public void setPlayerID(int id) {playerID = id;}
 
     /**
      * Gets the player the control to draw something on the screen.
