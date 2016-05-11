@@ -23,7 +23,7 @@ public class TestMultiPlayer
         String humanController = "controllers.multiPlayer.human.Agent";
 
         //Set here the controllers used in the games (need 2 separated by space).
-        String controllers = sampleMCTSController + " " + sampleOLMCTSController;
+        String controllers = sampleOLMCTSController + " " + doNothingController;
 
         //Available games:
         String gamesPath = "examples/2player/";
@@ -38,7 +38,7 @@ public class TestMultiPlayer
         int seed = new Random().nextInt();
 
         //Game and level to play
-        int gameIdx = 9;
+        int gameIdx = 0;
         int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
@@ -62,15 +62,15 @@ public class TestMultiPlayer
 //        for(int i=0; i<games.length; i++){
 //        	game = gamesPath + games[i] + ".txt";
 //        	level1 = gamesPath + games[i] + "_lvl" + levelIdx +".txt";
-//        	ArcadeMachine.runGames(game, new String[]{level1}, 5, oneStepController, null);
+//        	ArcadeMachine.runGames(game, new String[]{level1}, M, controllers, null);
 //        }
 
         //5. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
-//        int N = 60, L = 1, M = 1;
+//        int N = 10, L = 5, M = 5;
 //        boolean saveActions = false;
 //        String[] levels = new String[L];
 //        String[] actionFiles = new String[L*M];
-//        for(int i = 0; i < 2; ++i)
+//        for(int i = 0; i < N; ++i)
 //        {
 //            int actionIdx = 0;
 //            game = gamesPath + games[i] + ".txt";
