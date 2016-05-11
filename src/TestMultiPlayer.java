@@ -17,6 +17,7 @@ public class TestMultiPlayer
         String doNothingController = "controllers.multiPlayer.doNothing.Agent";
         String randomController = "controllers.multiPlayer.sampleRandom.Agent";
         String oneStepController = "controllers.multiPlayer.sampleOneStepLookAhead.Agent";
+        String sampleMCTSController = "controllers.multiPlayer.sampleMCTS.Agent";
         String humanController = "controllers.multiPlayer.human.Agent";
 
         //Available games:
@@ -39,14 +40,14 @@ public class TestMultiPlayer
 
         String recordActionsFile = null;//"actions_" + games[gameIdx] + "_lvl" + levelIdx + "_" + seed + ".txt"; //where to record the actions executed. null if not to save.
 
-        // 1. This starts a game, in a level, played by a human.
-        ArcadeMachine.playOneGameMulti(game, level1, recordActionsFile, seed);
+        // 1. This starts a game, in a level, played by two humans.
+        //ArcadeMachine.playOneGameMulti(game, level1, recordActionsFile, seed);
 
         // 2. This plays a game in a level by the controllers. Separate controllers with a space character.
         // Provide enough players as required by the game. If one of them is human, change the playerID passed
         // to the runOneGame method to be that of the human player.
-//        String controllers = oneStepController + " " + oneStepController;
-//        ArcadeMachine.runOneGame(game, level1, visuals, controllers, recordActionsFile, seed, 0);
+        String controllers = sampleMCTSController + " " + doNothingController;
+        ArcadeMachine.runOneGame(game, level1, visuals, controllers, recordActionsFile, seed, 0);
 
         // 3. This replays a game from an action file previously recorded
         //String readActionsFile = recordActionsFile;
