@@ -39,36 +39,41 @@ BasicGame no_players=2
 		
         avatarA red > updateSpawnType stype=redA spawnPoint=blockSpawn
         avatarA red > transformToAll stype=red stypeTo=redA
+        avatarA avA > transformTo stype=avatarAC
 		
         avatarA green > updateSpawnType stype=greenA spawnPoint=blockSpawn
         avatarA green > transformToAll stype=green stypeTo=greenA
+        avatarA avA > transformTo stype=avatarAC
 		
         avatarA yellow > updateSpawnType stype=yellowA spawnPoint=blockSpawn
         avatarA yellow > transformToAll stype=yellow stypeTo=yellowA
+        avatarA avA > transformTo stype=avatarAC
 		
         avatarA blue > updateSpawnType stype=blueA spawnPoint=blockSpawn
         avatarA blue > transformToAll stype=blue stypeTo=blueA
-		
         avatarA avA > transformTo stype=avatarAC
-        avA avatarAC > killSprite scoreChange=2,0
-        avB avatarAC > killSprite scoreChange=1,0
-        avatarAC unclaimed > removeScore killSecond=True
 				
         avatarB red > updateSpawnType stype=redB spawnPoint=blockSpawn
         red avatarB > transformToAll stype=red stypeTo=redB
+        avatarB avB > transformTo stype=avatarBC
 		
         avatarB green > updateSpawnType stype=greenB spawnPoint=blockSpawn
         green avatarB > transformToAll stype=green stypeTo=greenB
+        avatarB avB > transformTo stype=avatarBC
 		
         avatarB yellow > updateSpawnType stype=yellowB spawnPoint=blockSpawn
         yellow avatarB > transformToAll stype=yellow stypeTo=yellowB
+        avatarB avB > transformTo stype=avatarBC
         
         avatarB blue > updateSpawnType stype=blueB spawnPoint=blockSpawn
         avatarB blue > transformToAll stype=blue stypeTo=blueB
-		
         avatarB avB > transformTo stype=avatarBC
+
         avB avatarBC > killSprite scoreChange=0,2
+        avB avatarAC > killSprite scoreChange=1,0
         avA avatarBC > killSprite scoreChange=0,1
+        avA avatarAC > killSprite scoreChange=2,0
+        avatarAC unclaimed > removeScore killSecond=True
         avatarBC unclaimed > removeScore killSecond=True
  		
     LevelMapping
