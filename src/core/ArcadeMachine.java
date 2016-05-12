@@ -42,7 +42,7 @@ public class ArcadeMachine
      */
     public static double[] playOneGame(String game_file, String level_file, String actionFile, int randomSeed)
     {
-        String agentName = "controllers.human.Agent";
+        String agentName = "controllers.singlePlayer.human.Agent";
         boolean visuals = true;
         return runOneGame(game_file, level_file, visuals, agentName, actionFile, randomSeed, 0);
     }
@@ -69,7 +69,7 @@ public class ArcadeMachine
      * @param levelFile			a file to save the generated level
      */
     public static double playOneGeneratedLevel(String gameFile, String actionFile, String levelFile, int randomSeed){
-    	String agentName = "controllers.human.Agent";
+    	String agentName = "controllers.singlePlayer.human.Agent";
         boolean visuals = true;
     	return runOneGeneratedLevel(gameFile, visuals, agentName, actionFile, levelFile, randomSeed, true);
     }
@@ -163,11 +163,9 @@ public class ArcadeMachine
         else
             score = toPlay.runGame(players, randomSeed);
 
-        //Finally, when the game is over, we need to tear the player down.
-        for (Player p : players) {
-            if (!ArcadeMachine.tearPlayerDown(toPlay, p))
-                return toPlay.handleResult();
-        }
+        //Finally, when the game is over, we need to tear the players down.
+        if (!ArcadeMachine.tearPlayerDown(toPlay, players, actionFile, randomSeed, true))
+            return toPlay.handleResult();
 
         return score;
     }
@@ -275,13 +273,14 @@ public class ArcadeMachine
          */
         AbstractPlayer[] p = new AbstractPlayer[0];
         p[0] = player;
+
         if(visuals)
             score = toPlay.playGame(p, randomSeed, isHuman, 0)[0];
         else
             score = toPlay.runGame(p, randomSeed)[0];
 
         //Finally, when the game is over, we need to tear the player down.
-        if(! ArcadeMachine.tearPlayerDown(toPlay, player) )
+        if(! ArcadeMachine.tearPlayerDown(toPlay, p, actionFile, randomSeed, true) )
             return toPlay.handleResult()[0];
 
         return score;
@@ -299,13 +298,21 @@ public class ArcadeMachine
      */
     public static double[] replayGame(String game_file, String level_file, boolean visuals, String actionFile)
     {
-        String agentName = "controllers.replayer.Agent";
         VGDLFactory.GetInstance().init();  //This always first thing to do.
         VGDLRegistry.GetInstance().init();
 
         // First, we create the game to be played..
         Game toPlay = new VGDLParser().parseGame(game_file);
         toPlay.buildLevel(level_file, 0);
+
+        String agentName;
+        if (toPlay.getNoPlayers() > 1) {
+            //multi player
+            agentName = "controllers.multiPlayer.replayer.Agent";
+        } else {
+            //single player
+            agentName = "controllers.singlePlayer.replayer.Agent";
+        }
 
         //Second, create the player. Note: null as action_file and -1 as sampleRandom seed
         // (we don't want to record anything from this execution).
@@ -346,7 +353,7 @@ public class ArcadeMachine
 
         int seed = 0;
         int[] win = new int[no_players];
-        double loggedScore = 0.0;
+        double[] loggedScore = new double[no_players];
         int timesteps = 0;
         ArrayList<Types.ACTIONS> actions = new ArrayList<Types.ACTIONS> ();
 
@@ -360,7 +367,7 @@ public class ArcadeMachine
                 String[] firstLine = br.readLine().split(" ");
                 seed = Integer.parseInt(firstLine[0]);
                 win[0] = Integer.parseInt(firstLine[1]);
-                loggedScore = Double.parseDouble(firstLine[2]);
+                loggedScore[0] = Double.parseDouble(firstLine[2]);
                 timesteps = Integer.parseInt(firstLine[3]);
 
                 System.out.println("Replaying game in " + game_file + ", " + level_file + " with seed " + seed +
@@ -378,7 +385,7 @@ public class ArcadeMachine
                 }
 
                 //Assign the actions to the player. playerID used is 0, default for single player games
-                ((controllers.replayer.Agent)players[0]).setActions(actions);
+                ((controllers.singlePlayer.replayer.Agent)players[0]).setActions(actions);
 
             } else {
                 //Multi player file
@@ -386,24 +393,29 @@ public class ArcadeMachine
                 // first line contains the sampleRandom seed and the timesteps.
                 String[] firstLine = br.readLine().split(" ");
                 seed = Integer.parseInt(firstLine[0]);
-                timesteps = Integer.parseInt(firstLine[3]);
+                timesteps = Integer.parseInt(firstLine[1]);
 
                 //next line contain scores for all players, in order.
                 String secondLine = br.readLine();
+                String[] scores = secondLine.split(" ");
+                for (int i = 0; i < no_players; i++) {
+                    if (scores.length > i)
+                        loggedScore[i] = Double.parseDouble(scores[i]);
+                    else loggedScore[i] = 0;
+                }
 
                 //next line contains win state for all players, in order.
-                String[] thirdLine = br.readLine().split(" ");
-                String w = "";
+                String thirdLine = br.readLine();
+                String[] wins = thirdLine.split(" ");
                 for (int i = 0; i < no_players; i++) {
-                    if (thirdLine.length > i)
-                        win[i] = Integer.parseInt(thirdLine[i]);
+                    if (wins.length > i)
+                        win[i] = Integer.parseInt(wins[i]);
                     else win[i] = 0;
-                    w += (win[i] == 1) + " ";
                 }
 
                 //display information
                 System.out.println("Replaying game in " + game_file + ", " + level_file + " with seed " + seed +
-                        " expecting players' win states = " + w + "; scores: " + secondLine +
+                        " expecting players' win states = " + thirdLine + "; scores: " + secondLine +
                         "; timesteps: " + timesteps);
 
                 //next lines contain players actions, one line per game tick, actions for players in order,
@@ -425,7 +437,7 @@ public class ArcadeMachine
 
                 //Assign the actions to the players.
                 for (int i = 0; i < no_players; i++) {
-                    ((controllers.replayer.Agent)players[i]).setActions(act.get(i));
+                    ((controllers.multiPlayer.replayer.Agent)players[i]).setActions(act.get(i));
                 }
             }
         }catch(Exception e)
@@ -442,14 +454,12 @@ public class ArcadeMachine
             score = toPlay.runGame(players, seed);
 
         //Finally, when the game is over, we need to tear the player down. Actually in this case this might never do anything.
-        for (Player p : players) {
-            if (!ArcadeMachine.tearPlayerDown(toPlay, p))
-                return toPlay.handleResult();
-        }
+        if (!ArcadeMachine.tearPlayerDown(toPlay, players,actionFile, seed, false))
+            return toPlay.handleResult();
 
         for (int i = 0; i < toPlay.getNoPlayers(); i++) {
             int actualWinner = (toPlay.getWinner(i) == Types.WINNER.PLAYER_WINS ? 1 : 0);
-            if (actualWinner != win[i] || score[i] != loggedScore || timesteps != toPlay.getGameTick())
+            if (actualWinner != win[i] || score[i] != loggedScore[i] || timesteps != toPlay.getGameTick())
                 throw new RuntimeException("ERROR: Game Replay Failed.");
         }
 
@@ -556,12 +566,14 @@ public class ArcadeMachine
                 }
 
                 //Finally, when the game is over, we need to tear the players down.
+                if (!ArcadeMachine.tearPlayerDown(toPlay, players, filename, randomSeed, true)) {
+                    score = toPlay.handleResult();
+                }
+
+                //Get players stats
                 for (Player player : players)
                     if(player != null) {
                         int id = player.getPlayerID();
-                        if (!ArcadeMachine.tearPlayerDown(toPlay, player)) {
-                            score = toPlay.handleResult();
-                        }
                         scores[id].add(score[id]);
                         victories[id].add(toPlay.getWinner(id) == Types.WINNER.PLAYER_WINS ? 1 : 0);
                     }
@@ -645,7 +657,7 @@ public class ArcadeMachine
      * @param isHuman indicates if the level will be played by a human or a bot.
      */
     public static void playGeneratedLevels(String gameFile, String[] actionFile, String[] levelFile, boolean isHuman){
-    	String agentName = "controllers.human.Agent";
+    	String agentName = "controllers.singlePlayer.human.Agent";
     	
     	VGDLFactory.GetInstance().init(); //This always first thing to do.
         VGDLRegistry.GetInstance().init();
@@ -680,6 +692,10 @@ public class ArcadeMachine
             //Create the player.
             AbstractPlayer player = ArcadeMachine.createPlayer(agentName, filename, toPlay.getObservation(), randomSeed, isHuman);
 
+            //Add player to player array.
+            AbstractPlayer[] p = new AbstractPlayer[1];
+            p[0] = player;
+
             double score = -1;
             if(player == null)
             {
@@ -699,15 +715,13 @@ public class ArcadeMachine
                  * games, an array is created containing only one element: the player created earlier.
                  * To get back just 1 score for the player, the first element in the score array is returned.
                  */
-                AbstractPlayer[] p = new AbstractPlayer[1];
-                p[0] = player;
                 score = toPlay.playGame(p, randomSeed, isHuman, 0)[0];
             }
 
             scores.add(score);
 
             //Finally, when the game is over, we need to tear the player down.
-            if(player != null) ArcadeMachine.tearPlayerDown(toPlay, player);
+            if(player != null) ArcadeMachine.tearPlayerDown(toPlay, p, filename, randomSeed, true);
 
 
             //reset the game.
@@ -1176,41 +1190,96 @@ public class ArcadeMachine
     /**
      * Tears the player down. This initiates the saving of actions to file.
      * It should be called when the game played is over.
-     * @param player player to be closed.
-     * @return false if there was a timeout from the palyer. true otherwise.
+     * @param toPlay game played.
+     * @param players players to be closed.
+     * @param actionFile file where players' actions should be saved.
+     * @param randomSeed random seed of the game.
+     * @param record boolean, true if actions should be recorded, false otherwise
+     * @return false if there was a timeout from the players. true otherwise.
      */
-    private static boolean tearPlayerDown(Game toPlay, Player player)
+    private static boolean tearPlayerDown(Game toPlay, Player[] players, String actionFile, int randomSeed, boolean record)
     {
         //This is finished, no more actions, close the writer.
-        player.teardown(toPlay);
+        if (toPlay.no_players > 1) {
+            //multi player, write actions to files.
+            try {
+                if((actionFile != null && !actionFile.equals("") && record)) {
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(new File(actionFile)));
 
-        //Determine the time due for the controller close up.
-        ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
-        ect.setMaxTimeMillis(CompetitionParameters.TEAR_DOWN_TIME);
+                    //write random seed and game ticks
+                    writer.write(randomSeed + " " + toPlay.getGameTick() + "\n");
 
-        //Inform about the result and the final game state.
-        player.result(toPlay.getObservation(), ect);
+                    //get player specific information
 
-        //Check if we returned on time, and act in consequence.
-        long timeTaken = ect.elapsedMillis();
-        if(ect.exceededMaxTime())
-        {
-            long exceeded =  - ect.remainingTimeMillis();
-            System.out.println("Controller tear down time out (" + exceeded + ").");
+                    String scores = "", winState = "";
+                    String[] actions = new String[toPlay.getGameTick() + 1];
+                    for (int i = 0; i < actions.length; i++) {
+                        actions[i] = "";
+                    }
 
-            toPlay.disqualify(player.getPlayerID());
-            return false;
+                    for (Player p: players) {
+                        //scores for all players
+                        scores += toPlay.getScore(p.getPlayerID()) + " ";
+
+                        //win state for all players
+                        winState += (toPlay.getWinner(p.getPlayerID()) == Types.WINNER.PLAYER_WINS ? 1 : 0) + " ";
+
+                        //actions for all players (same line if during the same game tick)
+                        int i = 0;
+                        for(Types.ACTIONS act : p.getAllActions()) {
+                            actions[i] += act.toString() + " ";
+                            i++;
+                        }
+                    }
+
+                    //write everything to file
+                    writer.write(scores + "\n" + winState + "\n");
+                    for (String action : actions) {
+                        writer.write(action + "\n");
+                    }
+
+                    writer.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            //single player, let the player do all of this.
+            players[0].teardown(toPlay);
         }
 
-        if(VERBOSE)
-            System.out.println("Controller tear down time: " + timeTaken + " ms.");
+        for (Player p : players) {
+            //Determine the time due for the controller close up.
+            ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
+            ect.setMaxTimeMillis(CompetitionParameters.TEAR_DOWN_TIME);
+
+            //Inform about the result and the final game state.
+            p.result(toPlay.getObservation(), ect);
+
+            //Check if we returned on time, and act in consequence.
+            long timeTaken = ect.elapsedMillis();
+            if (ect.exceededMaxTime()) {
+                long exceeded = -ect.remainingTimeMillis();
+                System.out.println("Controller tear down time out (" + exceeded + ").");
+
+                toPlay.disqualify(p.getPlayerID());
+                return false;
+            }
+
+            if (VERBOSE)
+                System.out.println("Controller tear down time: " + timeTaken + " ms.");
+            return true;
+        }
+
         return true;
     }
+
+
 
     private static final boolean isHuman(String agentName)
     {
         if( agentName.equalsIgnoreCase("controllers.multiPlayer.human.Agent") ||
-            agentName.equalsIgnoreCase("controllers.human.Agent")    )
+            agentName.equalsIgnoreCase("controllers.singlePlayer.human.Agent")    )
             return true;
         return false;
     }

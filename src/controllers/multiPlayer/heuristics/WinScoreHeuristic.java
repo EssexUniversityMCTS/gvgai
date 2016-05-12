@@ -24,12 +24,13 @@ public class WinScoreHeuristic extends StateHeuristicMulti {
     public double evaluateState(StateObservationMulti stateObs, int playerID) {
         boolean gameOver = stateObs.isGameOver();
         Types.WINNER win = stateObs.getMultiGameWinner()[playerID];
+        Types.WINNER oppWin = stateObs.getMultiGameWinner()[(playerID + 1) % stateObs.getNoPlayers()];
         double rawScore = stateObs.getGameScore(playerID);
 
-        if(gameOver && win == Types.WINNER.PLAYER_LOSES)
+        if(gameOver && (win == Types.WINNER.PLAYER_LOSES || oppWin == Types.WINNER.PLAYER_WINS))
             return HUGE_NEGATIVE;
 
-        if(gameOver && win == Types.WINNER.PLAYER_WINS)
+        if(gameOver && (win == Types.WINNER.PLAYER_WINS || oppWin == Types.WINNER.PLAYER_LOSES))
             return HUGE_POSITIVE;
 
         return rawScore;

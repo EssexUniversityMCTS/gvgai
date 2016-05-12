@@ -170,7 +170,13 @@ public abstract class Player {
      * Set the ID of this player.
      * @param id - the player's ID
      */
-    public void setPlayerID(int id) {playerID = id;}
+    public void setPlayerID(int id) { playerID = id; }
+
+    /**
+     * Get the history of actions of this player.
+     * @return arrayList of all actions
+     */
+    public ArrayList<Types.ACTIONS> getAllActions() { return allActions; }
 
     /**
      * Gets the player the control to draw something on the screen.

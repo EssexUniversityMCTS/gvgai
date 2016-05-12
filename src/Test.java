@@ -15,14 +15,14 @@ public class Test
     public static void main(String[] args)
     {
         //Available controllers:
-    	String sampleRandomController = "controllers.sampleRandom.Agent";
-    	String doNothingController = "controllers.doNothing.Agent";
-        String sampleOneStepController = "controllers.sampleonesteplookahead.Agent";
-        String sampleMCTSController = "controllers.sampleMCTS.Agent";
-        String sampleFlatMCTSController = "controllers.sampleFlatMCTS.Agent";
-        String sampleOLMCTSController = "controllers.sampleOLMCTS.Agent";
-        String sampleGAController = "controllers.sampleGA.Agent";
-        String repeatOLETS = "controllers.repeatOLETS.Agent";
+    	String sampleRandomController = "controllers.singlePlayer.sampleRandom.Agent";
+    	String doNothingController = "controllers.singlePlayer.doNothing.Agent";
+        String sampleOneStepController = "controllers.singlePlayer.sampleonesteplookahead.Agent";
+        String sampleMCTSController = "controllers.singlePlayer.sampleMCTS.Agent";
+        String sampleFlatMCTSController = "controllers.singlePlayer.sampleFlatMCTS.Agent";
+        String sampleOLMCTSController = "controllers.singlePlayer.sampleOLMCTS.Agent";
+        String sampleGAController = "controllers.singlePlayer.sampleGA.Agent";
+        String repeatOLETS = "controllers.singlePlayer.repeatOLETS.Agent";
 
         //Available Generators
         String randomLevelGenerator = "levelGenerators.randomLevelGenerator.LevelGenerator";
