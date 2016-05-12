@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import core.VGDLRegistry;
 import core.termination.Termination;
@@ -176,7 +177,7 @@ public class GameDescription {
 		}
 		String[] lines = level.split("\n");
 		currentGame.reset();
-		currentGame.buildStringLevel(lines);
+		currentGame.buildStringLevel(lines, new Random().nextInt());
 		currentGame.setCharMapping(this.charMapping);
 		
 		return currentGame.getObservation();
@@ -343,17 +344,22 @@ public class GameDescription {
 		public int limit;
 		
 		/**
-		 * Boolean to differentiate between Winning or Losing Condition
+		 * String containing booleans to differentiate between Winning or Losing Condition
 		 */
-		public boolean win;
+		public String win;
 		
 		public TerminationData(){
 			sprites = new ArrayList<String>();
 		}
-		
+
+		/**
+		 * Player ID for win state used is 0, default for single player games.
+		 * @return
+		 */
 		@Override
 		public String toString(){
-			String result = win?"Win":"Lose";
+			String[] winners = win.split(",");
+			String result = Boolean.parseBoolean(winners[0])?"Win":"Lose";
 			result += ":" + type + " " + sprites.toString();
 			return result;
 		}
@@ -371,7 +377,7 @@ public class GameDescription {
 		/**
 		 * The amount of score this interaction changes
 		 */
-		public int scoreChange;
+		public String scoreChange;
 		
 		/**
 		 * All the depending sprites on that

@@ -50,6 +50,7 @@ public class SpawnPoint extends SpriteProducer
         cooldown = 1;
         is_static = true;
         spawnorientation = Types.DNONE;
+        itype = -1;
     }
 
     public void postProcess()
@@ -57,7 +58,8 @@ public class SpawnPoint extends SpriteProducer
         super.postProcess();
         is_stochastic = (prob > 0 && prob < 1);
         counter = 0;
-        itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
+        if(stype != null) //Could be, if we're using different stype variants in subclasses.
+            itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
     }
 
     public void update(Game game)
@@ -70,10 +72,10 @@ public class SpawnPoint extends SpriteProducer
                 counter++;
 
                 //We set the orientation given by default it this was passed.
-                if(spawnorientation != Types.DNONE)
+                if(!(spawnorientation.equals(Types.DNONE)))
                     newSprite.orientation = spawnorientation.copy();
                 //If no orientation given, we set the one from the spawner.
-                else if (newSprite.orientation == Types.DNONE)
+                else if (newSprite.orientation.equals(Types.DNONE))
                     newSprite.orientation = this.orientation.copy();
             }
         }
@@ -82,8 +84,18 @@ public class SpawnPoint extends SpriteProducer
 
         if(total > 0 && counter >= total)
         {
-            game.killSprite(this);
+            //boolean variable set to false to indicate the sprite was not transformed
+            game.killSprite(this, false);
         }
+    }
+
+    /**
+     * Updates spawn itype with newitype
+     * @param itype - current spawn type
+     * @param newitype - new spawn type to replace the first
+     */
+    public void updateItype(int itype, int newitype) {
+        this.itype = newitype;
     }
 
     public VGDLSprite copy()

@@ -40,7 +40,8 @@ public class ChangeResource extends Effect
             applyScore = true;
 
             if(killResource)
-                game.killSprite(sprite2);
+                //boolean variable set to true, as the sprite was transformed
+                game.killSprite(sprite2, true);
         }
     }
 }

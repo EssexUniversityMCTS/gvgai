@@ -39,7 +39,8 @@ public class CollectResource extends Effect
                 sprite2.modifyResource(r.resource_type, r.value);
 
                 if(killResource)
-                    game.killSprite(sprite1);
+                    //boolean variable set to false to indicate the sprite was not transformed
+                    game.killSprite(sprite1, true);
             }
 
         }

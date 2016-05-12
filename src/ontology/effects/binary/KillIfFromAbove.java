@@ -30,9 +30,9 @@ public class KillIfFromAbove extends Effect
 
         applyScore=false;
         if (otherHigher && goingDown){
-
             applyScore=true;
-            game.killSprite(sprite1);
+            //boolean variable set to false to indicate the sprite was not transformed
+            game.killSprite(sprite1, false);
         }
     }
 }

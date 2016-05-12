@@ -16,12 +16,12 @@ import ontology.Types;
  */
 public abstract class Termination {
 
-    public boolean win;
+    public String win;
     public int limit;
 
     public void parseParameters(TerminationContent content)
     {
-        VGDLFactory.GetInstance().parseParameters(content,this);
+        VGDLFactory.GetInstance().parseParameters(content, this);
     }
 
     public abstract boolean isDone(Game game);
@@ -30,6 +30,21 @@ public abstract class Termination {
     {
         //It's finished if the player pressed ESCAPE or the game is over..
         return game.isGameOver();
+    }
+
+    /**
+     * Determine win state of a specific player.
+     * @param playerID - ID of the player to query.
+     * @return - true if player won, false otherwise.
+     */
+    public boolean win (int playerID) {
+        try {
+            String[] winners = win.split(",");
+            boolean win = Boolean.parseBoolean(winners[playerID]);
+            return win;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**

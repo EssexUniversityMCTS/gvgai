@@ -30,6 +30,21 @@ public class Direction
     }
 
     /**
+     * Returns true if both directions are orthogonal
+     * @param a one direction
+     * @param b another direction
+     * @return true, if orthogonal, false otherwise.
+     */
+    public static boolean orthogonal(Direction a, Direction b)
+    {
+        Vector2d aV = new Vector2d(a.x(), a.y());
+        Vector2d bV = new Vector2d(b.x(), b.y());
+        if(aV.dot(bV) == 0)
+            return true;
+        return false;
+    }
+
+    /**
      * Checks if a direction and this are the same.
      * @param d the other direction to check
      * @return true if their coordinates are the same.

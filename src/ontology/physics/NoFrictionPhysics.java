@@ -1,5 +1,9 @@
 package ontology.physics;
 
+import core.VGDLSprite;
+import ontology.Types;
+import tools.Vector2d;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Diego

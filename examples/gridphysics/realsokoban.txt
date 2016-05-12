@@ -2,7 +2,7 @@ BasicGame key_handler=Pulse square_size=50
 
     SpriteSet
         hole   > Immovable color=DARKBLUE img=hole
-        ground > Immovable img=water
+        ground > Immovable img=water hidden=True
         avatar > MovingAvatar
         bbox > Passive
             box    >  img=box

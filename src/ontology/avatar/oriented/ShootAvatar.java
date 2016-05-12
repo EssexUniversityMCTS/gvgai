@@ -79,7 +79,7 @@ public class ShootAvatar extends OrientedAvatar
 
     public void updateUse(Game game)
     {
-        if(Utils.processUseKey(game.ki.getMask()) && hasAmmo())
+        if(Utils.processUseKey(getKeyHandler().getMask(), getPlayerID()) && hasAmmo()) //use primary set of keys
         {
             shoot(game);
         }

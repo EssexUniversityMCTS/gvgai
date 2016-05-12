@@ -29,7 +29,7 @@ public class TeleportToExit extends Effect
     {
         int destinationId = VGDLFactory.GetInstance().requestFieldValueInt(sprite2, "itype");
 
-        Collection<VGDLSprite> sprites = game.getSprites(destinationId).values();
+        Collection<VGDLSprite> sprites = game.getSprites(destinationId);
 
         if(sprites.size() > 0)
         {
@@ -43,7 +43,8 @@ public class TeleportToExit extends Effect
             }
         }else{
             //If there is no exit... kill the sprite
-            game.killSprite(sprite1);
+            //boolean variable set to false to indicate the sprite was not transformed
+            game.killSprite(sprite1, false);
         }
     }
 }

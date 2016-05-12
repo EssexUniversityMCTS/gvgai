@@ -89,6 +89,7 @@ public class VGDLParser
 
             //Parse here game and arguments of the first line
             game = VGDLFactory.GetInstance().createGame((GameContent) rootNode.content);
+            game.initMulti();
 
             //Parse here blocks of VGDL.
             for(Node n : rootNode.children)
@@ -111,7 +112,7 @@ public class VGDLParser
 
         return game;
     }
-    
+
     /**
      * Builds the tree structure that defines the game.
      * @param lines array with the lines read from the game description file.
@@ -312,7 +313,7 @@ public class VGDLParser
 
                         ArrayList<Effect> collEffects = game.getCollisionEffects(obj1, obj2);
 
-                        //Add the effects as many times as indicated in its 'repeat' field (1 by defualt).
+                        //Add the effects as many times as indicated in its 'repeat' field (1 by default).
                         for(int r = 0; r < ef.repeat; ++r)
                             collEffects.add(ef);
 

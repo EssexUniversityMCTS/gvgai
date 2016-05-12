@@ -15,15 +15,14 @@ public class Test
     public static void main(String[] args)
     {
         //Available controllers:
-    	String sampleRandomController = "controllers.sampleRandom.Agent";
-    	String doNothingController = "controllers.doNothing.Agent";
-        String sampleOneStepController = "controllers.sampleonesteplookahead.Agent";
-        String sampleMCTSController = "controllers.sampleMCTS.Agent";
-        String sampleFlatMCTSController = "controllers.sampleFlatMCTS.Agent";
-        String sampleOLMCTSController = "controllers.sampleOLMCTS.Agent";
-        String sampleGAController = "controllers.sampleGA.Agent";
-        String tester = "controllers.Tester.Agent";
-        String repeatOLETS = "controllers.repeatOLETS.Agent";
+    	String sampleRandomController = "controllers.singlePlayer.sampleRandom.Agent";
+    	String doNothingController = "controllers.singlePlayer.doNothing.Agent";
+        String sampleOneStepController = "controllers.singlePlayer.sampleonesteplookahead.Agent";
+        String sampleMCTSController = "controllers.singlePlayer.sampleMCTS.Agent";
+        String sampleFlatMCTSController = "controllers.singlePlayer.sampleFlatMCTS.Agent";
+        String sampleOLMCTSController = "controllers.singlePlayer.sampleOLMCTS.Agent";
+        String sampleGAController = "controllers.singlePlayer.sampleGA.Agent";
+        String repeatOLETS = "controllers.singlePlayer.repeatOLETS.Agent";
 
         //Available Generators
         String randomLevelGenerator = "levelGenerators.randomLevelGenerator.LevelGenerator";
@@ -67,20 +66,20 @@ public class Test
         ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
         
         // 2. This plays a game in a level by the controller.
-        //ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed, false);
+//        ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
 
         // 3. This replays a game from an action file previously recorded
         //String readActionsFile = recordActionsFile;
         //ArcadeMachine.replayGame(game, level1, visuals, readActionsFile);
 
         // 4. This plays a single game, in N levels, M times :
-        //String level2 = gamesPath + games[gameIdx] + "_lvl" + 1 +".txt";
-        //int M = 3;
-        //for(int i=0; i<games.length; i++){
-        //	game = gamesPath + games[i] + ".txt";
-        //	level1 = gamesPath + games[i] + "_lvl" + levelIdx +".txt";
-        //	ArcadeMachine.runGames(game, new String[]{level1}, 5, evolutionStrategies, null);
-        //}
+//        String level2 = gamesPath + games[gameIdx] + "_lvl" + 1 +".txt";
+//        int M = 10;
+//        for(int i=0; i<games.length; i++){
+//        	game = gamesPath + games[i] + ".txt";
+//        	level1 = gamesPath + games[i] + "_lvl" + levelIdx +".txt";
+//        	ArcadeMachine.runGames(game, new String[]{level1}, M, sampleMCTSController, null);
+//        }
         
         //5. This starts a game, in a generated level created by a specific level generator
 
@@ -89,11 +88,11 @@ public class Test
         //}
         
         //6. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
-//        int N = 62, L = 1, M = 1;
+//        int N = 62, L = 5, M = 1;
 //        boolean saveActions = false;
 //        String[] levels = new String[L];
 //        String[] actionFiles = new String[L*M];
-//        for(int i = 0; i < N; ++i)
+//        for(int i = 37; i < N; ++i)
 //        {
 //            int actionIdx = 0;
 //            game = gamesPath + games[i] + ".txt";

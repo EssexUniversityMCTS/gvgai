@@ -41,7 +41,7 @@ public class RandomMissile extends Missile
 
     public void update(Game game)
     {
-        if(orientation == Types.DNIL)
+        if(orientation.equals(Types.DNIL))
         {
             orientation = (Direction) Utils.choice(Types.DBASEDIRS, game.getRandomGenerator());
         }

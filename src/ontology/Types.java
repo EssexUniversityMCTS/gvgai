@@ -70,16 +70,20 @@ public class Types {
         return null;
     }
 
-    public static int[] ALL_ACTIONS = new int[]{KeyEvent.VK_UP, KeyEvent.VK_LEFT, KeyEvent.VK_DOWN,
-                                                KeyEvent.VK_RIGHT, KeyEvent.VK_SPACE, KeyEvent.VK_ESCAPE};
+    public static int DEFAULT_SINGLE_PLAYER_KEYIDX = 0;
+    public static int[][] ALL_ACTIONS = new int[][]{    {KeyEvent.VK_UP, KeyEvent.VK_LEFT, KeyEvent.VK_DOWN,
+                                                         KeyEvent.VK_RIGHT, KeyEvent.VK_SPACE, KeyEvent.VK_ESCAPE},
+                                                        {KeyEvent.VK_W, KeyEvent.VK_A, KeyEvent.VK_S,
+                                                         KeyEvent.VK_D, KeyEvent.VK_SHIFT, KeyEvent.VK_ESCAPE}};
+
     public static enum ACTIONS {
-        ACTION_NIL(new int[]{0}),
-        ACTION_UP(new int[]{KeyEvent.VK_UP}),
-        ACTION_LEFT(new int[]{KeyEvent.VK_LEFT}),
-        ACTION_DOWN(new int[]{KeyEvent.VK_DOWN}),
-        ACTION_RIGHT(new int[]{KeyEvent.VK_RIGHT}),
-        ACTION_USE(new int[]{KeyEvent.VK_SPACE}),
-        ACTION_ESCAPE(new int[]{KeyEvent.VK_ESCAPE});
+        ACTION_NIL(new int[]{0, 0}),
+        ACTION_UP(new int[]{KeyEvent.VK_UP, KeyEvent.VK_W}),
+        ACTION_LEFT(new int[]{KeyEvent.VK_LEFT, KeyEvent.VK_A}),
+        ACTION_DOWN(new int[]{KeyEvent.VK_DOWN, KeyEvent.VK_S}),
+        ACTION_RIGHT(new int[]{KeyEvent.VK_RIGHT, KeyEvent.VK_D}),
+        ACTION_USE(new int[]{KeyEvent.VK_SPACE, KeyEvent.VK_SHIFT}),
+        ACTION_ESCAPE(new int[]{KeyEvent.VK_ESCAPE, KeyEvent.VK_ESCAPE});
 
         private int[] key;
 
@@ -102,19 +106,23 @@ public class Types {
         }
 
         public static ACTIONS fromVector(Vector2d move) {
-            if (move == UP) return ACTION_UP;
-            else if (move == DOWN) return ACTION_DOWN;
-            else if (move == LEFT) return ACTION_LEFT;
-            else if (move == RIGHT) return ACTION_RIGHT;
+        	// Probably better to use .equals() instead of == to test for equality,
+        	// but not necessary for the current call hierarchy of this method
+            if (move.equals(UP)) return ACTION_UP;
+            else if (move.equals(DOWN)) return ACTION_DOWN;
+            else if (move.equals(LEFT)) return ACTION_LEFT;
+            else if (move.equals(RIGHT)) return ACTION_RIGHT;
             else return ACTION_NIL;
         }
 
 
         public static ACTIONS fromVector(Direction move) {
-            if (move == DUP) return ACTION_UP;
-            else if (move == DDOWN) return ACTION_DOWN;
-            else if (move == DLEFT) return ACTION_LEFT;
-            else if (move == DRIGHT) return ACTION_RIGHT;
+        	// Probably better to use .equals() instead of == to test for equality,
+        	// but not necessary for the current call hierarchy of this method
+            if (move.equals(DUP)) return ACTION_UP;
+            else if (move.equals(DDOWN)) return ACTION_DOWN;
+            else if (move.equals(DLEFT)) return ACTION_LEFT;
+            else if (move.equals(DRIGHT)) return ACTION_RIGHT;
             else return ACTION_NIL;
         }
 

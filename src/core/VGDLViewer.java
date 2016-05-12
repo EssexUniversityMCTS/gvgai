@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -11,6 +12,7 @@ import javax.swing.JComponent;
 
 import core.game.Game;
 import core.player.AbstractPlayer;
+import core.player.Player;
 import ontology.Types;
 
 /**
@@ -40,14 +42,14 @@ public class VGDLViewer extends JComponent
     /**
      * Player of the game
      */
-    public AbstractPlayer player;
+    public Player player;
 
 
     /**
      * Creates the viewer for the game.
      * @param game game to be displayed
      */
-    public VGDLViewer(Game game, AbstractPlayer player)
+    public VGDLViewer(Game game, Player player)
     {
         this.game = game;
         this.size = game.getScreenSize();
@@ -75,19 +77,18 @@ public class VGDLViewer extends JComponent
         Graphics2D gImage = mapImage.createGraphics();
         */
 
-        int[] gameSpriteOrder = game.getSpriteOrder();
-        if(this.spriteGroups != null) for(Integer spriteTypeInt : gameSpriteOrder)
-        {
-            if(spriteGroups[spriteTypeInt] != null) {
-                ConcurrentHashMap<Integer, VGDLSprite> cMap =spriteGroups[spriteTypeInt].getSprites();
-                Set<Integer> s = cMap.keySet();
-                for (Integer key : s) {
-                    VGDLSprite sp = cMap.get(key);
-                    if (sp != null)
-                        sp.draw(g, game);
+        try {
+            int[] gameSpriteOrder = game.getSpriteOrder();
+            if (this.spriteGroups != null) for (Integer spriteTypeInt : gameSpriteOrder) {
+                if (spriteGroups[spriteTypeInt] != null) {
+                    ArrayList<VGDLSprite> spritesList = spriteGroups[spriteTypeInt].getSprites();
+                    for (VGDLSprite sp : spritesList) {
+                        if (sp != null) sp.draw(g, game);
+                    }
+
                 }
             }
-        }
+        }catch(Exception e) {}
 
         g.setColor(Types.BLACK);
         player.draw(g);
@@ -106,7 +107,7 @@ public class VGDLViewer extends JComponent
         for(int i = 0; i < this.spriteGroups.length; ++i)
         {
             this.spriteGroups[i] = new SpriteGroup(spriteGroupsGame[i].getItype());
-            this.spriteGroups[i].copyAllSprites(spriteGroupsGame[i].getSprites().values());
+            this.spriteGroups[i].copyAllSprites(spriteGroupsGame[i].getSprites());
         }
 
         this.repaint();
