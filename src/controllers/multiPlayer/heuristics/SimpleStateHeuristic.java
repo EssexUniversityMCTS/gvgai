@@ -1,6 +1,6 @@
 package controllers.multiPlayer.heuristics;
 
-import controllers.Heuristics.StateHeuristic;
+import controllers.multiPlayer.heuristics.StateHeuristicMulti;
 import core.game.Observation;
 import core.game.StateObservation;
 import core.game.StateObservationMulti;
