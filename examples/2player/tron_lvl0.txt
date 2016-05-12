@@ -10,7 +10,7 @@ w                                                                   w
 w                                                                   w
 w                                                                   w
 w                                                                   w
-w             A                         B                           w
+w             A                          B                          w
 w                                                                   w
 w                                                                   w
 w                                                                   w
