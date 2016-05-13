@@ -83,6 +83,8 @@ public class Spreader extends Flicker
     {
         Spreader targetSprite = (Spreader) target;
         targetSprite.spreadprob = this.spreadprob;
+        targetSprite.stype = this.stype;
+        ((Spreader) target).itype = this.itype;
         super.copyTo(targetSprite);
     }
     
