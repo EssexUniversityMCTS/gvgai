@@ -1,0 +1,74 @@
+BasicGame
+    SpriteSet
+        hole   > Immovable color=DARKBLUE img=hole portal=true
+        goal > Immovable img=door portal=true
+
+        avatar > OrientedAvatar rotateInPlace=false
+        box    > Passive img=box
+        boulder > Missile
+            master > img=boulderRed
+                masterBoulder > speed=0.0
+                mboulderm > speed=1.0
+            targetBoulder > img=boulder
+                normalBoulder > speed=0.0
+                stoppingBoulder > speed=0.0
+                boulderm > speed=1.0
+
+
+    LevelMapping
+        A > avatar
+        b > box
+        c > normalBoulder
+        m > masterBoulder
+        0 > hole
+        g > goal
+
+
+    InteractionSet
+
+        masterBoulder avatar  > transformTo stype=mboulderm
+        mboulderm avatar > attractGaze
+        avatar normalBoulder masterBoulder > stepBack
+    
+        avatar wall > stepBack
+        box avatar  > bounceForward
+        box wall box hole goal   > undoAll
+        box boulder > stepBack
+        
+        avatar wall > stepBack
+
+        mboulderm wall > transformTo stype=masterBoulder
+        masterBoulder wall > undoAll
+
+        mboulderm box > transformTo stype=masterBoulder
+        masterBoulder box > undoAll
+
+        # The following 9 lines are insane. Gave me a headache, truly. Need a better way of doing this in the future.
+        normalBoulder boulderm > attractGaze
+        boulderm normalBoulder > transformTo stype=stoppingBoulder
+        normalBoulder stoppingBoulder > transformTo stype=boulderm
+        stoppingBoulder normalBoulder > transformTo stype=normalBoulder
+        normalBoulder normalBoulder > stepBack
+
+        normalBoulder mboulderm > attractGaze
+        mboulderm normalBoulder > transformTo stype=masterBoulder
+        normalBoulder masterBoulder > transformTo stype=boulderm
+        masterBoulder normalBoulder > stepBack
+
+
+        boulderm wall > transformTo stype=normalBoulder
+        normalBoulder wall > stepBack
+        boulderm box > transformTo stype=normalBoulder
+        normalBoulder box > stepBack
+
+        mboulderm hole goal > killSprite scoreChange=-10
+        boulderm hole > killSprite scoreChange=-5
+        boulderm goal > killSprite scoreChange=2
+
+        avatar hole > killSprite scoreChange=-10
+
+    TerminationSet
+        SpriteCounter stype=avatar    limit=0 win=False
+        SpriteCounter stype=targetBoulder limit=0 win=True
+        SpriteCounter stype=master    limit=0 win=False
+        Timeout limit=1500 win=False

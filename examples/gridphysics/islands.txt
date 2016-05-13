@@ -1,0 +1,65 @@
+BasicGame
+    SpriteSet
+
+        avatar > ShootAvatar stype=shovel
+        shovel > OrientedFlicker limit=1 color=LIGHTGRAY img=shovel.png
+
+        land > Immovable
+            landNoSand > img=damaged
+            landSand > img=dirt
+
+        water > Immovable img=water
+
+        bomb > Immovable img=base
+        spark  > SpawnPoint stype=fireStart total=1 shrinkfactor=0.6 img=explosion
+        fire >
+            fireStart > Spreader color=ORANGE spreadprob=1.0 stype=fireEnd img=fire
+            fireEnd > Immovable img=fire
+
+        whirlpool > Immovable img=flower
+        goal > Immovable img=door portal=true
+
+        sand > Resource limit=10 color=YELLOW shrinkfactor=0.45
+        treasure > Immovable img=boxBlue
+
+
+    LevelMapping
+        . > water
+        x > landSand
+        A > landSand avatar
+        b > bomb
+        p > whirlpool
+        t > landSand treasure
+        g > goal
+
+    InteractionSet
+
+        avatar EOS wall bomb  > stepBack
+        avatar  fireEnd  > killSprite
+
+        bomb fireEnd shovel > transformTo stype=spark
+        water fireEnd > transformTo stype=landNoSand
+
+        fireEnd land whirlpool goal treasure EOS wall > killSprite
+        fireEnd fireEnd > transformTo stype=landNoSand
+
+        sand avatar > collectResource
+
+        avatar water  > killIfHasLess resource=sand limit=0
+        avatar water > changeResource resource=sand value=-1
+        water avatar > transformTo stype=landNoSand
+
+        treasure avatar > killSprite scoreChange=100
+
+        shovel landSand > spawnIfHasMore resource=sand stype=sand limit=0
+        landSand sand > transformTo stype=landNoSand
+
+        shovel water > spawnIfHasMore resource=sand stype=sand limit=1
+        avatar whirlpool > killSprite
+        goal avatar > killSprite scoreChange=1
+
+
+    TerminationSet
+        SpriteCounter      stype=goal limit=0 win=True
+        SpriteCounter      stype=avatar limit=0 win=False
+        Timeout limit=1000 win=False

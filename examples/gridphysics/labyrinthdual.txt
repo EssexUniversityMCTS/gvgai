@@ -1,0 +1,45 @@
+BasicGame key_handler=Pulse
+    SpriteSet
+        exit > Door color=GREEN img=goal
+        trap > Immovable img=hell
+
+        wall > Immovable
+            normalWall > img=wall
+            redWall > img=wallRed
+            blueWall > img=wallBlue
+
+        redcoat > Resource img=powerpill limit=1 value=0
+        bluecoat > Resource img=diamond limit=1 value=0
+
+        avatar > MovingAvatar
+            avatarNormal > img=avatar
+            avatarRed > img=avatarRed
+            avatarBlue > img=avatarBlue
+
+    InteractionSet
+
+        avatar normalWall > stepBack
+        avatarBlue redWall > stepBack
+        avatarRed blueWall > stepBack
+
+        avatar redcoat > changeResource resource=redcoat value=1 scoreChange=3
+        avatar redcoat > transformTo stype=avatarRed killSecond=True
+
+        avatar bluecoat > changeResource resource=bluecoat value=1 scoreChange=3
+        avatar bluecoat > transformTo stype=avatarBlue killSecond=True
+
+        exit avatar > killSprite scoreChange=1
+        avatar trap > killSprite scoreChange=-1
+
+    TerminationSet
+        Timeout limit=1000 win=False
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=exit limit=0 win=True
+
+    LevelMapping
+        x > exit
+        t > trap
+        r > redWall
+        b > blueWall
+        1 > redcoat
+        2 > bluecoat

@@ -1,0 +1,76 @@
+BasicGame key_handler=Pulse
+    SpriteSet
+        avatar  > ShootAvatar stype=bomb healthPoints=10
+        water > Immovable img=water
+        mud > Immovable img=dirt
+        box > Immovable img=box
+        ground > Immovable invisible=True
+
+        line > SpawnPoint
+            lcup > img=spaceship stype=lup
+            lcdown > img=spaceship stype=ldown
+            lcright > img=spaceship stype=lright
+            lcleft > img=spaceship stype=lleft
+            lcswap > img=spaceship stype=lleft
+        laser > Missile shrinkfactor=0.5 speed=0.5 color=YELLOW
+            lup > orientation=UP
+            ldown > orientation=DOWN
+            lright > orientation=RIGHT
+            lleft > orientation=LEFT
+
+        goal   > Door color=GREEN img=door
+        bombm > Missile img=bomb shrinkfactor=0.8 speed=0.8
+
+        fire >
+            fireStart > Spreader color=ORANGE spreadprob=1.0 stype=fireEnd img=fire
+            fireEnd > Immovable img=fire
+
+        spark  > SpawnPoint stype=fireStart total=1 shrinkfactor=0.6 img=explosion
+        bomb > Passive img=bomb singleton=True
+
+
+    LevelMapping
+        g > goal
+        e > box ground
+        b > bomb
+        , > ground
+        . > water
+        A > avatar ground
+        1 > lcup
+        2 > lcright
+        3 > lcdown
+        4 > lcleft
+
+
+    InteractionSet
+        avatar wall box > stepBack
+        avatar water > killSprite
+
+        goal avatar > killSprite
+
+        bomb avatar  > transformTo stype=bombm
+        bomb avatar box water > killSprite
+
+        bombm avatar laser > attractGaze
+
+        bombm wall box line > transformTo stype=spark
+
+        laser box EOS goal wall > killSprite
+
+        box fire > killSprite scoreChange=1
+        water fire > transformTo stype=mud
+        bomb fire > transformTo stype=spark
+
+        fire box > transformTo stype=spark
+        fire wall water bomb > killSprite
+
+        avatar fire > subtractHealthPoints
+
+        fireEnd ground mud > killSprite
+
+
+
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=goal   limit=0 win=True
+        Timeout limit=1000 win=False

@@ -1,0 +1,67 @@
+BasicGame key_handler=Pulse
+    SpriteSet
+        exit > Door color=GREEN img=door.png
+        hole   > Immovable color=DARKBLUE img=hole portal=True
+
+        boxes   > Passive  shrinkfactor=0.8
+            box > img=box
+            bluebox > img=boxBlue
+            redbox > img=boxRed
+            greenbox > img=boxGreen
+
+        switch > Immovable
+             normalSwitch > img=city
+             blueSwitch > img=cityBlue
+             redSwitch > img=cityRed
+             greenSwitch > img=cityGreen
+
+        avatar > MovingAvatar
+             normalAvatar > img=avatar
+             blueAvatar > img=avatarBlue
+             redAvatar > img=avatarRed
+             greenAvatar > img=avatarGreen
+
+    LevelMapping
+            A > normalAvatar
+            x > exit
+            h > hole
+
+            1 > box
+            2 > bluebox
+            3 > redbox
+            4 > greenbox
+
+            a > normalSwitch
+            b > blueSwitch
+            c > redSwitch
+            d > greenSwitch
+
+    InteractionSet
+        avatar wall > stepBack
+
+        greenbox greenAvatar > bounceForward
+        greenbox blueAvatar redAvatar normalAvatar > undoAll
+
+        redbox redAvatar > bounceForward
+        redbox blueAvatar greenAvatar normalAvatar > undoAll
+
+        bluebox blueAvatar > bounceForward
+        bluebox redAvatar greenAvatar normalAvatar > undoAll
+
+        box normalAvatar  > bounceForward
+        box redAvatar greenAvatar blueAvatar > undoAll
+
+        boxes wall switch exit boxes > undoAll
+        avatar hole > killSprite scoreChange=-1
+        exit avatar > killSprite scoreChange=1
+        boxes hole    > killSprite
+
+        avatar normalSwitch > transformTo stype=normalAvatar
+        avatar redSwitch > transformTo stype=redAvatar
+        avatar blueSwitch > transformTo stype=blueAvatar
+        avatar greenSwitch > transformTo stype=greenAvatar
+
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=exit limit=0 win=True
+        Timeout limit=1500 win=False

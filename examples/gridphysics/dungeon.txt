@@ -1,0 +1,86 @@
+BasicGame square_size=30
+    SpriteSet
+        avatar > MovingAvatar healthPoints=10
+
+        resources >
+            gold > Resource color=GOLD limit=11 img=gold
+            key > Resource img=key limit=1
+
+        doors >
+            exit > Door color=GREEN img=goal
+            lock > Immovable img=lock
+
+        #traps
+        firehole > SpawnPoint stype=fireStart shrinkfactor=0.6 img=fire prob=0.05
+        fire >
+            fireStart > Spreader color=ORANGE spreadprob=1.0 stype=fireEnd img=explosion
+            fireEnd > Flicker limit=3 img=fire
+
+        boulderHole > SpawnPoint cooldown=2 stype=boulderLeft img=hole prob=0.05 portal=true
+            boulderLefthole > stype=boulderLeft
+            boulderRighthole > stype=boulderRight
+        boulder  >
+            boulderLeft > Missile img=boulder speed=0.5 orientation=LEFT
+            boulderRight > Missile img=boulder speed=0.5 orientation=RIGHT
+
+        groundTrapHole > SpawnPoint cooldown=5 invisible=true prob=0.05 stype=groundTrap hidden=True
+        groundTrap > Flicker limit=5 img=hell
+
+        lasercannon > SpawnPoint img=spaceship
+            lcup > stype=lup
+            lcdown > stype=ldown
+            lcright > stype=lright
+            lcleft > stype=lleft
+        lasercannonOff > Immovable img=spaceship
+
+        laser > Missile color=YELLOW  shrinkfactor=0.5 speed=0.5
+            lup > orientation=UP
+            ldown > orientation=DOWN
+            lright > orientation=RIGHT
+            lleft > orientation=LEFT
+
+    LevelMapping
+        x > exit
+        g > gold
+        A > avatar
+        k > key
+        m > lock
+
+        f > firehole
+        1 > boulderRighthole
+        2 > boulderLefthole
+        t > groundTrapHole
+
+        l > lcleft
+        r > lcright
+        u > lcup
+        d > lcdown
+
+    InteractionSet
+
+        gold avatar     > killSprite scoreChange=1
+        key avatar      > collectResource
+
+        avatar wall boulderHole > stepBack
+        lock avatar > killIfOtherHasMore resource=key limit=1
+        avatar lock > stepBack
+
+        exit avatar > killSprite scoreChange=10
+        avatar fireEnd > subtractHealthPoints
+
+        fireEnd avatar wall resources doors > killSprite
+
+        avatar boulder > killSprite
+        boulder wall resources doors > killSprite
+
+        avatar groundTrap > subtractHealthPoints value=2
+
+        lasercannon avatar > transformTo stype=lasercannonOff scoreChange=2
+        avatar lasercannonOff lasercannon > stepBack
+
+        avatar laser > subtractHealthPoints
+        laser wall resources doors > killSprite
+
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=exit limit=0 win=True

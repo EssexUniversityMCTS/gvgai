@@ -1,0 +1,42 @@
+BasicGame square_size=30 key_handler=Pulse
+    SpriteSet
+
+        avatar  > ShootAvatar stype=shovel
+        shovel > OrientedFlicker limit=1 color=LIGHTGRAY img=shovel
+
+        ground > Immovable img=forest
+        rock > Immovable img=boulder
+        hole > Immovable invisible=True hidden=True
+
+        house > Immovable
+            dryHouse > img=wall
+            waterHouse > img=wallBlue
+
+        water > img=water
+            waterStart > Spreader color=BLUE spreadprob=1.0 stype=waterEnd
+            waterOn > SpawnPoint stype=waterStart prob=1.0
+            waterEnd > Immovable
+
+    LevelMapping
+        h > dryHouse ground
+        n > waterOn
+        A > avatar ground
+        r > rock
+        . > ground
+
+    InteractionSet
+        avatar wall rock house > stepBack
+
+        water ground rock house wall EOS > killSprite
+
+        waterEnd hole > transformTo stype=waterOn killSecond=True
+        waterEnd waterOn > killSprite
+
+        dryHouse water > transformTo stype=waterHouse scoreChange=1
+        ground shovel > transformTo stype=hole
+
+
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=dryHouse limit=0 win=True
+        Timeout limit=1250 win=False

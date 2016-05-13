@@ -1,0 +1,75 @@
+BasicGame square_size=30
+    SpriteSet
+
+        water > Immovable img=water
+        land > Immovable img=dirt
+
+        port > Immovable
+            portGold > img=city
+            portGems > img=cityGreen
+            portDiamonds > img=cityBlue
+
+        shipwreck > Immovable img=shovel portal=True
+
+        holes > SpawnPoint invisible=True hidden=True
+            goldhole  >  stype=gold  prob=0.01
+            gemshole  >  stype=gems  prob=0.01
+            diamondshole  >  stype=diamonds  prob=0.01
+
+        good > Resource limit=1
+            gold > img=coin singleton=True
+            gems > img=mana singleton=True
+            diamonds > img=diamond singleton=True
+
+        whirlpool > Immovable img=flower
+
+        treasure > Resource invisible=True
+            t10 >
+            t5 >
+            t1 >
+
+
+    LevelMapping
+        . > water
+        x > land
+        A > water avatar
+        1 > portGold
+        2 > portGems
+        3 > portDiamonds
+        w > whirlpool
+        s > shipwreck goldhole gemshole diamondshole
+
+    TerminationSet
+        SpriteCounter      stype=avatar               limit=0 win=False
+        Timeout limit=1000 win=True
+
+    InteractionSet
+        avatar  EOS  > stepBack
+        avatar  land  > stepBack
+        avatar whirlpool > killSprite scoreChange=-10
+
+        good avatar > collectResource
+
+        avatar portGold > spawnIfHasMore resource=gold limit=1 stype=t10
+        avatar portGems > spawnIfHasMore resource=gems limit=1 stype=t10
+        avatar portDiamonds > spawnIfHasMore resource=diamonds limit=1 stype=t10
+
+        avatar portGold > spawnIfHasMore resource=diamonds limit=1 stype=t5
+        avatar portGems > spawnIfHasMore resource=gold limit=1 stype=t5
+        avatar portDiamonds > spawnIfHasMore resource=gems limit=1 stype=t5
+
+        avatar portGold > spawnIfHasMore resource=gems limit=1 stype=t1
+        avatar portGems > spawnIfHasMore resource=diamonds limit=1 stype=t1
+        avatar portDiamonds > spawnIfHasMore resource=gold limit=1 stype=t1
+
+        avatar t10 > changeResource resource=gold value=-1 killResource=True scoreChange=10
+        avatar t10 > changeResource resource=gems value=-1 killResource=True scoreChange=10
+        avatar t10 > changeResource resource=diamonds value=-1 killResource=True scoreChange=10
+
+        avatar t5 > changeResource resource=gold value=-1 killResource=True scoreChange=5
+        avatar t5 > changeResource resource=gems value=-1 killResource=True scoreChange=5
+        avatar t5 > changeResource resource=diamonds value=-1 killResource=True scoreChange=5
+
+        avatar t1 > changeResource resource=gold value=-1 killResource=True scoreChange=1
+        avatar t1 > changeResource resource=gems value=-1 killResource=True scoreChange=1
+        avatar t1 > changeResource resource=diamonds value=-1 killResource=True scoreChange=1
