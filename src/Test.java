@@ -35,19 +35,21 @@ public class Test
         String generateLevelPath = "examples/gridphysics/";
 
         //All public games
-        games = new String[]{"aliens", "bait", "blacksmoke", "boloadventures", "boulderchase",              //0-4
-                             "boulderdash", "brainman", "butterflies", "cakybaky", "camelRace",     //5-9
-                             "catapults", "chase", "chipschallenge", "chopper", "cookmepasta",        //10-14
-                             "crossfire", "defem", "defender", "digdug", "eggomania",           //15-19
-                             "enemycitadel", "escape", "factorymanager", "firecaster",  "firestorms",   //20-24
-                             "frogs", "gymkhana", "hungrybirds", "iceandfire", "infection",    //25-29
-                             "intersection", "jaws", "labyrinth", "lasers", "lasers2",        //30-34
-                             "lemmings", "missilecommand", "modality", "overload", "pacman",             //35-39
-                             "painter", "plants", "plaqueattack", "portals", "raceBet2",         //40-44
-                             "realportals", "realsokoban", "roguelike", "seaquest", "sheriff",      //45-49
-                             "sokoban", "solarfox" ,"superman", "surround", "survivezombies", //50-54
-                             "tercio", "thecitadel", "waitforbreakfast", "watergame", "whackamole", //55-59
-                             "zelda", "zenpuzzle" }; //60, 61 ...
+        games = new String[]{"aliens", "bait", "blacksmoke", "boloadventures", "bomber", //0-4
+                "boulderchase", "boulderdash", "brainman", "butterflies", "cakybaky", //5-9
+                "camelRace", "catapults", "chainreaction", "chase", "chipschallenge", //10-14
+                "clusters", "colourescape", "chopper", "cookmepasta", "crossfire", //15-19
+                "defem", "defender", "digdug", "dungeon", "eggomania", //20-24
+                "enemycitadel",  "escape", "factorymanager", "firecaster",  "fireman", //25-29
+                "firestorms", "frogs", "gymkhana", "hungrybirds", "iceandfire", //30-34
+                "infection", "intersection", "islands", "jaws", "labyrinth", //35-39
+                "labyrinthdual", "lasers", "lasers2", "lemmings", "missilecommand", //40-44
+                "modality", "overload", "pacman", "painter", "plants", //45-49
+                "plaqueattack", "portals", "raceBet2", "realportals", "realsokoban", //50-54
+                "rivers", "roguelike", "seaquest", "sheriff", "shipwreck", //55-59
+                "sokoban", "solarfox" ,"superman", "surround", "survivezombies", //60-64
+                "tercio", "thecitadel", "waitforbreakfast", "watergame", "whackamole",//65-69
+                "zelda", "zenpuzzle" }; //70, 71
 
         //Other settings
         boolean visuals = true;
