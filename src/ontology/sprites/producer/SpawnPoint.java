@@ -27,6 +27,8 @@ public class SpawnPoint extends SpriteProducer
     public int itype;
     public Direction spawnorientation;
 
+    private int start;
+
     public SpawnPoint(){}
 
     public SpawnPoint(Vector2d position, Dimension size, SpriteContent cnt)
@@ -46,6 +48,7 @@ public class SpawnPoint extends SpriteProducer
         super.loadDefaults();
         prob = 1.0;
         total = 0;
+        start = -1;
         color = Types.BLACK;
         cooldown = 1;
         is_static = true;
@@ -64,8 +67,11 @@ public class SpawnPoint extends SpriteProducer
 
     public void update(Game game)
     {
+        if(start == -1)
+            start = game.getGameTick();
+
         float rollDie = game.getRandomGenerator().nextFloat();
-        if((game.getGameTick() % cooldown == 0) && rollDie < prob)
+        if(((start+game.getGameTick()) % cooldown == 0) && rollDie < prob)
         {
             VGDLSprite newSprite = game.addSprite(itype, this.getPosition());
             if(newSprite != null) {
@@ -114,6 +120,7 @@ public class SpawnPoint extends SpriteProducer
         targetSprite.stype = this.stype;
         targetSprite.itype = this.itype;
         targetSprite.spawnorientation = this.spawnorientation.copy();
+        targetSprite.start = this.start;
         super.copyTo(targetSprite);
     }
 
