@@ -44,8 +44,8 @@ BasicGame no_players=2
         asteroid EOS > stepBack
         
         avatar avatar > killBoth
-        avatar1 sam2 > killSprite scoreChange=-2,10
-        avatar2 sam1 > killSprite scoreChange=10,-2
+        avatar1 sam2 > killSprite scoreChange=-2,1000
+        avatar2 sam1 > killSprite scoreChange=1000,-2
         
         missile big > spawn stype=medium
         missile big > spawn stype=medium
@@ -65,8 +65,8 @@ BasicGame no_players=2
         sam1 rndSmall small > killBoth scoreChange=3,0
         sam2 rndSmall small > killBoth scoreChange=0,3
 
-        avatar1 asteroid > killBoth scoreChange=-1,0
-        avatar2 asteroid > killBoth scoreChange=0,-1
+        avatar1 asteroid > killBoth scoreChange=-1,1000
+        avatar2 asteroid > killBoth scoreChange=1000,-1
 
 
         asteroid base > reverseDirection

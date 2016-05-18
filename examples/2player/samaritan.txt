@@ -12,11 +12,12 @@ BasicGame no_players=2
         avatar1 avatar2 > bounceForward
         avatar1 avatar2 > stepBack
         avatar2 avatar1 > stepBack
-        avatar1 pull > spawn stype=deadPortal
+        avatar1 pull > spawn stype=deadPortal scoreChange=0,1
         deadPortal avatar1 > killSprite
         avatar1 deadPortal > teleportToExit
         avatar wall > undoAll
-        avatar deathSpot > killSprite
+        avatar1 deathSpot > killSprite scoreChange=1000,0
+        avatar2 deathSpot > killSprite
     
     TerminationSet
         SpriteCounter stype=avatar1   limit=0 win=True,False
