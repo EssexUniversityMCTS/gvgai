@@ -44,7 +44,7 @@ public class ElapsedCpuTimer {
 
 
     public long elapsedNanos() {
-        return (long) (elapsed() / 1000.0);
+        return elapsed();
     }
 
     public long elapsedMillis() {
