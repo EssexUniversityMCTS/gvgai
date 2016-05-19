@@ -880,10 +880,7 @@ public abstract class VGDLSprite {
         toSprite.color = this.color;
         toSprite.draw_arrow = this.draw_arrow;
         toSprite.is_npc = this.is_npc;
-        toSprite.allImages = new HashMap<Integer, Image>();
-        for(Entry<Integer, Image> e:this.allImages.entrySet()){
-        	toSprite.allImages.put(e.getKey(), e.getValue());
-        }
+        toSprite.allImages = this.allImages;
         toSprite.image = this.image;
         toSprite.spriteID = this.spriteID;
         toSprite.is_from_avatar = this.is_from_avatar;
