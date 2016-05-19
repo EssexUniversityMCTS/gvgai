@@ -94,7 +94,7 @@ public class Test
 //        boolean saveActions = false;
 //        String[] levels = new String[L];
 //        String[] actionFiles = new String[L*M];
-//        for(int i = 37; i < N; ++i)
+//        for(int i = 0; i < N; ++i)
 //        {
 //            int actionIdx = 0;
 //            game = gamesPath + games[i] + ".txt";

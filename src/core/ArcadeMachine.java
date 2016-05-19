@@ -163,11 +163,14 @@ public class ArcadeMachine
         else
             score = toPlay.runGame(players, randomSeed);
 
-        //Finally, when the game is over, we need to tear the players down.
-        if (!ArcadeMachine.tearPlayerDown(toPlay, players, actionFile, randomSeed, true))
-            return toPlay.handleResult();
 
-        return score;
+        //Finally, when the game is over, we need to tear the players down.
+        ArcadeMachine.tearPlayerDown(toPlay, players, actionFile, randomSeed, true);
+
+        //This, the last thing to do in this method, always:
+        double result[] = toPlay.handleResult();
+        toPlay.printResult();
+        return result;
     }
     
     /**
@@ -193,6 +196,7 @@ public class ArcadeMachine
 
             //Get the score for the result.
             toPlay.handleResult();
+            toPlay.printResult();
             return false;
         }
         
@@ -210,6 +214,7 @@ public class ArcadeMachine
 
             //Get the score for the result.
             toPlay.handleResult();
+            toPlay.printResult();
             return false;
         }
         
@@ -258,8 +263,9 @@ public class ArcadeMachine
             toPlay.disqualify();
 
             //Get the score for the result.
-            return toPlay.handleResult()[0];
-
+            double result = toPlay.handleResult()[0];
+            toPlay.printResult();
+            return result;
         }
 
         //Then, play the game.
@@ -280,10 +286,11 @@ public class ArcadeMachine
             score = toPlay.runGame(p, randomSeed)[0];
 
         //Finally, when the game is over, we need to tear the player down.
-        if(! ArcadeMachine.tearPlayerDown(toPlay, p, actionFile, randomSeed, true) )
-            return toPlay.handleResult()[0];
+        ArcadeMachine.tearPlayerDown(toPlay, p, actionFile, randomSeed, true);
 
-        return score;
+        double result = toPlay.handleResult()[0];
+        toPlay.printResult();
+        return result;
     }
     
     /**
@@ -346,8 +353,9 @@ public class ArcadeMachine
                 }
 
                 //Get the score for the result.
-                return toPlay.handleResult();
-
+                double result[] = toPlay.handleResult();
+                toPlay.printResult();
+                return result;
             }
         }
 
@@ -454,8 +462,8 @@ public class ArcadeMachine
             score = toPlay.runGame(players, seed);
 
         //Finally, when the game is over, we need to tear the player down. Actually in this case this might never do anything.
-        if (!ArcadeMachine.tearPlayerDown(toPlay, players,actionFile, seed, false))
-            return toPlay.handleResult();
+        ArcadeMachine.tearPlayerDown(toPlay, players, actionFile, seed, false);
+
 
         for (int i = 0; i < toPlay.getNoPlayers(); i++) {
             int actualWinner = (toPlay.getWinner(i) == Types.WINNER.PLAYER_WINS ? 1 : 0);
@@ -463,7 +471,9 @@ public class ArcadeMachine
                 throw new RuntimeException("ERROR: Game Replay Failed.");
         }
 
-        return score;
+        double result[] = toPlay.handleResult();
+        toPlay.printResult();
+        return result;
     }
 
     /**
@@ -559,15 +569,18 @@ public class ArcadeMachine
                 //Get array of scores back.
                 if ((no_players - disqCount) >= toPlay.no_players) {
                     score = toPlay.runGame(players, randomSeed);
+                    toPlay.printResult();
                 }
                 else {
                     //Get the score for the result.
                     score = toPlay.handleResult();
+                    toPlay.printResult();
                 }
 
                 //Finally, when the game is over, we need to tear the players down.
                 if (!ArcadeMachine.tearPlayerDown(toPlay, players, filename, randomSeed, true)) {
                     score = toPlay.handleResult();
+                    toPlay.printResult();
                 }
 
                 //Get players stats
@@ -626,6 +639,7 @@ public class ArcadeMachine
 
                 //Get the score for the result.
                 toPlay.handleResult();
+                toPlay.printResult();
             }
             
             HashMap<Character, ArrayList<String>> charMapping = generator.getLevelMapping();
@@ -641,6 +655,7 @@ public class ArcadeMachine
 
                 //Get the score for the result.
                 toPlay.handleResult();
+                toPlay.printResult();
             }
             if(levelFile != null){
             	saveLevel(level, levelFile[i], toPlay.getCharMapping());
@@ -704,6 +719,7 @@ public class ArcadeMachine
                 
                 //Get the score for the result. PlayerID used 0, default in single player games.
                 score = toPlay.handleResult()[0];
+                toPlay.printResult();
 
             }else{
 

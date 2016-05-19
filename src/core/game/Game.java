@@ -1028,7 +1028,7 @@ public abstract class Game
         }
 
         //Prints the result: score, time and winner.
-        printResult();
+        //printResult();
 
         double[] scores = new double[no_players];
         for (int i = 0; i < no_players; i++) {
@@ -1059,7 +1059,7 @@ public abstract class Game
      * Prints the result of the game, indicating the winner, the score and the
      * number of game ticks played, in this order.
      */
-    private void printResult()
+    public void printResult()
     {
         String sb1 = "";
         String sb2 = "";
