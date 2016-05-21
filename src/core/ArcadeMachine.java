@@ -277,7 +277,7 @@ public class ArcadeMachine
          * games, an array is created containing only one element: the player created earlier.
          * To get back just 1 score for the player, the first element in the score array is returned.
          */
-        AbstractPlayer[] p = new AbstractPlayer[0];
+        AbstractPlayer[] p = new AbstractPlayer[1];
         p[0] = player;
 
         if(visuals)
