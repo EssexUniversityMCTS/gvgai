@@ -168,9 +168,10 @@ public class ArcadeMachine
         ArcadeMachine.tearPlayerDown(toPlay, players, actionFile, randomSeed, true);
 
         //This, the last thing to do in this method, always:
-        double result[] = toPlay.handleResult();
+        toPlay.handleResult();
         toPlay.printResult();
-        return result;
+
+        return toPlay.getFullResult();
     }
     
     /**

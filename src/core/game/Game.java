@@ -1073,6 +1073,23 @@ public abstract class Game
     }
 
     /**
+     * Returns the complete result of the game (victory, score, timestep).
+     * Indicated in triplets, one per player.
+     * @return [w0,s0,t0,w1,s1,t1,...]
+     */
+    public double[] getFullResult()
+    {
+        double[] allRes = new double[no_players * 3];
+        for (int i = 0; i < no_players; i++) {
+
+            allRes[i*no_players] = avatars[i].getWinState().key();
+            allRes[i*no_players + 1] = avatars[i].getScore();
+            allRes[i*no_players + 2] = this.getGameTick();
+        }
+        return allRes;
+    }
+
+    /**
      * Disqualifies the player in the game, and also sets the isEnded flag to true.
      */
     //comment this method out to check if mistakes in method overloading anywhere
