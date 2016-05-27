@@ -37,7 +37,7 @@ public class MovingAvatar extends VGDLSprite {
     protected boolean is_disqualified;
 
     //Avatar can have any KeyHandler system. We use KeyInput by default.
-    private KeyHandler ki = new KeyInput();
+    private KeyHandler ki;
 
     public Types.MOVEMENT lastMovementType = Types.MOVEMENT.STILL;
 
@@ -186,7 +186,9 @@ public class MovingAvatar extends VGDLSprite {
      * Sets the key handler of this avatar.
      * @param k - new KeyHandler object.
      */
-    public void setKeyHandler(KeyHandler k) { ki = k; }
+    public void setKeyHandler(KeyHandler k) {
+        ki = k;
+    }
 
     /**
      * Checks whether this player is disqualified.
@@ -257,8 +259,6 @@ public class MovingAvatar extends VGDLSprite {
             newSprite.player = player;
         } catch (Exception e) {e.printStackTrace();}
 
-        //copy key handler
-        newSprite.setKeyHandler(this.getKeyHandler());
 
         return newSprite;
     }
@@ -271,6 +271,9 @@ public class MovingAvatar extends VGDLSprite {
         targetSprite.playerID = this.playerID;
         targetSprite.winState = this.winState;
         targetSprite.score = this.score;
+
+        //copy key handler
+        targetSprite.setKeyHandler(this.getKeyHandler());
         
         // need to copy orientation here already because MovingAvatar.postProcess() requires the orientation
         targetSprite.orientation = this.orientation.copy();	

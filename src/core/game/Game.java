@@ -827,7 +827,7 @@ public abstract class Game
     public double[] runGame(Player[] players, int randomSeed)
     {
         //Prepare some structures and references for this game.
-        prepareGame(players, randomSeed, -1, false);
+        prepareGame(players, randomSeed, -1);
 
         //Play until the game is ended
         while(!isEnded)
@@ -854,7 +854,7 @@ public abstract class Game
     public double[] playGame(Player[] players, int randomSeed, boolean isHuman, int humanID)
     {
         //Prepare some structures and references for this game.
-        prepareGame(players, randomSeed, humanID, isHuman);
+        prepareGame(players, randomSeed, humanID);
 
         //Create and initialize the panel for the graphics.
         VGDLViewer view = new VGDLViewer(this, players[humanID]);
@@ -967,7 +967,7 @@ public abstract class Game
      * @param players Players that play this game.
      * @param randomSeed sampleRandom seed for the whole game.
      */
-    private void prepareGame(Player[] players, int randomSeed, int humanID, boolean isHuman)
+    private void prepareGame(Player[] players, int randomSeed, int humanID)
     {
         //Start tick counter.
         gameTick = -1;
@@ -976,7 +976,7 @@ public abstract class Game
         random = new Random(randomSeed);
 
         //Assigns the player to the avatar of the game.
-        createAvatars(humanID, isHuman);
+        createAvatars(humanID);
         assignPlayer(players);
 
         //Initialize state observation (sets all non-volatile references).
@@ -1115,7 +1115,7 @@ public abstract class Game
     /**
      * Method to create the array of avatars from the sprites.
      */
-    public void createAvatars(int humanID, boolean isHuman) {
+    public void createAvatars(int humanID) {
 
         //Avatars will usually be the first elements, starting from the end.
 
@@ -1150,8 +1150,7 @@ public abstract class Game
             for (int i = 0; i < no_players; i++) {
                 if (numAvatarSprites > i) { //check if there's enough avatars just in case
                     avatars[i] = avSprites.get(i);
-                    if (humanID == i || isHuman)
-                        avatars[i].setKeyHandler(humanki);
+                    avatars[i].setKeyHandler(humanki);
                 }
             }
         } else {

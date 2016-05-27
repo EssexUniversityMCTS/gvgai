@@ -42,6 +42,7 @@ public abstract class KeyHandler extends KeyAdapter {
 
     public void setMask(int playerID) { }
 
+
     /**
      * Manages KeyPressed events
      * @param e the event.
