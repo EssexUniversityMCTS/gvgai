@@ -11,7 +11,6 @@ import java.util.Random;
 import core.competition.CompetitionParameters;
 import core.game.Game;
 import core.game.GameDescription;
-import core.game.GameDescription.SpriteData;
 import core.game.StateObservation;
 import core.game.StateObservationMulti;
 import core.generator.AbstractLevelGenerator;
@@ -19,7 +18,6 @@ import core.player.AbstractMultiPlayer;
 import core.player.AbstractPlayer;
 import core.player.Player;
 import ontology.Types;
-import ontology.avatar.MovingAvatar;
 import tools.ElapsedCpuTimer;
 import tools.IO;
 import tools.StatSummary;
@@ -1197,10 +1195,7 @@ public class ArcadeMachine
         }
 
         //Reset input to delete warm-up effects.
-        MovingAvatar[] avatars = toPlay.getAvatars();
-        for (int i = 0; i < toPlay.getNoPlayers(); i++) {
-           avatars[i].getKeyHandler().resetAll();
-        }
+        Game.ki.resetAll();
     }
 
 

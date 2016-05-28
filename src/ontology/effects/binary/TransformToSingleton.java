@@ -14,7 +14,6 @@ import core.player.Player;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.Effect;
-import tools.KeyHandler;
 import tools.Direction;
 
 /**
@@ -106,13 +105,12 @@ public class TransformToSingleton extends Effect {
         {
             try {
                 int id = ((MovingAvatar)oldSprite).getPlayerID();
-                KeyHandler k = game.getAvatar(id).getKeyHandler();
                 Player p = game.getAvatar(id).player;
                 double score = game.getAvatar(id).getScore();
                 Types.WINNER win = game.getAvatar(id).getWinState();
                 game.setAvatar((MovingAvatar) newSprite, id);
                 game.getAvatar(id).player = p;
-                game.getAvatar(id).setKeyHandler(k);
+                game.getAvatar(id).setKeyHandler(Game.ki);
                 game.getAvatar(id).setScore(score);
                 game.getAvatar(id).setWinState(win);
                 game.getAvatar(id).setPlayerID(id);

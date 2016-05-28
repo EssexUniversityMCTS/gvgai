@@ -172,7 +172,7 @@ public class BasicGame extends Game {
         kill_list = new ArrayList<VGDLSprite>();
 
         //Generate the initial state observation.
-        this.createAvatars(-1, false);
+        this.createAvatars(-1);
         this.initForwardModel();
     }
 
