@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.JOptionPane;
 
@@ -20,7 +19,6 @@ import core.content.SpriteContent;
 import core.game.GameDescription.InteractionData;
 import core.game.GameDescription.SpriteData;
 import core.game.GameDescription.TerminationData;
-import core.player.AbstractPlayer;
 import core.player.Player;
 import core.termination.Termination;
 import ontology.Types;
@@ -260,7 +258,7 @@ public abstract class Game
 
     public int no_players = 1; //default to single player
 
-    public static KeyHandler humanki;
+    public static KeyHandler ki;
 
     /**
      * Default constructor.
@@ -753,8 +751,7 @@ public abstract class Game
         if(key_handler != null && key_handler.equalsIgnoreCase("Pulse"))
             CompetitionParameters.KEY_HANDLER = CompetitionParameters.KEY_PULSE;
 
-        Game.humanki = CompetitionParameters.KEY_HANDLER == CompetitionParameters.KEY_INPUT ?
-                new KeyInput() : new KeyPulse(no_players);
+        ki = CompetitionParameters.KEY_HANDLER == CompetitionParameters.KEY_INPUT ? new KeyInput() : new KeyPulse(no_players);
     }
 
     /**
@@ -861,7 +858,7 @@ public abstract class Game
         JEasyFrame frame;
         frame = new JEasyFrame(view, "Java-VGDL");
 
-        frame.addKeyListener(humanki);
+        frame.addKeyListener(ki);
         frame.addWindowListener(wi);
         wi.windowClosed = false;
 
@@ -1150,7 +1147,7 @@ public abstract class Game
             for (int i = 0; i < no_players; i++) {
                 if (numAvatarSprites > i) { //check if there's enough avatars just in case
                     avatars[i] = avSprites.get(i);
-                    avatars[i].setKeyHandler(humanki);
+                    avatars[i].setKeyHandler(ki);
                 }
             }
         } else {

@@ -187,7 +187,9 @@ public class MovingAvatar extends VGDLSprite {
      * @param k - new KeyHandler object.
      */
     public void setKeyHandler(KeyHandler k) {
-        ki = k;
+        if (k instanceof KeyInput)
+            ki = new KeyInput();
+        else ki = k;
     }
 
     /**

@@ -7,7 +7,6 @@ import ontology.Types;
 import tools.Direction;
 import tools.ElapsedCpuTimer;
 import tools.Utils;
-import tools.Vector2d;
 
 import java.util.ArrayList;
 
@@ -40,8 +39,8 @@ public class Agent extends AbstractPlayer
      */
     public Types.ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer)
     {
-        Direction move = Utils.processMovementActionKeys(Game.humanki.getMask(), Types.DEFAULT_SINGLE_PLAYER_KEYIDX); //use primary set of keys, idx = 0
-        boolean useOn = Utils.processUseKey(Game.humanki.getMask(), Types.DEFAULT_SINGLE_PLAYER_KEYIDX); //use primary set of keys, idx = 0
+        Direction move = Utils.processMovementActionKeys(Game.ki.getMask(), Types.DEFAULT_SINGLE_PLAYER_KEYIDX); //use primary set of keys, idx = 0
+        boolean useOn = Utils.processUseKey(Game.ki.getMask(), Types.DEFAULT_SINGLE_PLAYER_KEYIDX); //use primary set of keys, idx = 0
 
         Types.ACTIONS action = Types.ACTIONS.fromVector(move);
         if(action == Types.ACTIONS.ACTION_NIL && useOn)

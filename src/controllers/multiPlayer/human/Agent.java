@@ -4,7 +4,6 @@ import core.game.Game;
 import core.game.StateObservation;
 import core.game.StateObservationMulti;
 import core.player.AbstractMultiPlayer;
-import core.player.AbstractPlayer;
 import ontology.Types;
 import tools.Direction;
 import tools.ElapsedCpuTimer;
@@ -39,8 +38,8 @@ public class Agent extends AbstractMultiPlayer
     public Types.ACTIONS act(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer)
     {
         //int id = (getPlayerID() + 1) % stateObs.getNoPlayers();
-        Direction move = Utils.processMovementActionKeys(Game.humanki.getMask(), id);
-        boolean useOn = Utils.processUseKey(Game.humanki.getMask(), id);
+        Direction move = Utils.processMovementActionKeys(Game.ki.getMask(), id);
+        boolean useOn = Utils.processUseKey(Game.ki.getMask(), id);
 
         //In the keycontroller, move has preference.
         Types.ACTIONS action = Types.ACTIONS.fromVector(move);

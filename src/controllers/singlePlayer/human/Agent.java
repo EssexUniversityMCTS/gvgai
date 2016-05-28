@@ -7,7 +7,6 @@ import ontology.Types;
 import tools.Direction;
 import tools.ElapsedCpuTimer;
 import tools.Utils;
-import tools.Vector2d;
 
 /**
  * Created by diego on 06/02/14.
@@ -34,8 +33,8 @@ public class Agent extends AbstractPlayer
      */
     public Types.ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer)
     {
-        Direction move = Utils.processMovementActionKeys(Game.humanki.getMask(), Types.DEFAULT_SINGLE_PLAYER_KEYIDX);
-        boolean useOn = Utils.processUseKey(Game.humanki.getMask(), Types.DEFAULT_SINGLE_PLAYER_KEYIDX);
+        Direction move = Utils.processMovementActionKeys(Game.ki.getMask(), Types.DEFAULT_SINGLE_PLAYER_KEYIDX);
+        boolean useOn = Utils.processUseKey(Game.ki.getMask(), Types.DEFAULT_SINGLE_PLAYER_KEYIDX);
 
         //In the keycontroller, move has preference.
         Types.ACTIONS action = Types.ACTIONS.fromVector(move);
