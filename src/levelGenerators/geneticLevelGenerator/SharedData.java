@@ -101,15 +101,15 @@ public class SharedData {
 	/**
 	 * The name of a the best agent with some human error
 	 */
-	public static final String AGENT_NAME = "controllers.repeatOLETS.Agent";
+	public static final String AGENT_NAME = "controllers.singlePlayer.repeatOLETS.Agent";
 	/**
 	 * The name of a naive agent
 	 */
-	public static final String NAIVE_AGENT_NAME = "controllers.sampleonesteplookahead.Agent";
+	public static final String NAIVE_AGENT_NAME = "controllers.singlePlayer.sampleonesteplookahead.Agent";
 	/**
 	 * The name of the do nothing agent
 	 */
-	public static final String DO_NOTHING_AGENT_NAME = "controllers.doNothing.Agent";
+	public static final String DO_NOTHING_AGENT_NAME = "controllers.singlePlayer.doNothing.Agent";
 	
 	/**
 	 * The game description object
