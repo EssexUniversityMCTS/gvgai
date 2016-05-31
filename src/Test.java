@@ -22,6 +22,7 @@ public class Test
         String sampleFlatMCTSController = "controllers.singlePlayer.sampleFlatMCTS.Agent";
         String sampleOLMCTSController = "controllers.singlePlayer.sampleOLMCTS.Agent";
         String sampleGAController = "controllers.singlePlayer.sampleGA.Agent";
+        String sampleOLETSController = "controllers.singlePlayer.olets.Agent";
         String repeatOLETS = "controllers.singlePlayer.repeatOLETS.Agent";
 
         //Available Generators
@@ -56,7 +57,7 @@ public class Test
         int seed = new Random().nextInt();
 
         //Game and level to play
-        int gameIdx = 70;
+        int gameIdx = 0;
         int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
