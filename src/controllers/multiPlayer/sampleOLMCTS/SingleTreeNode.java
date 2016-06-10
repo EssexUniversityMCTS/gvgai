@@ -174,7 +174,7 @@ public class SingleTreeNode
             //random move for all players
             Types.ACTIONS[] acts = new Types.ACTIONS[Agent.no_players];
             for (int i = 0; i < Agent.no_players; i++) {
-                acts[i] = Agent.actions[i][m_rnd.nextInt(Agent.NUM_ACTIONS[Agent.id])];
+                acts[i] = Agent.actions[i][m_rnd.nextInt(Agent.NUM_ACTIONS[i])];
             }
             state.advance(acts);
             thisDepth++;

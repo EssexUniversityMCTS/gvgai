@@ -81,5 +81,46 @@ public class TestMultiPlayer
 //            }
 //            ArcadeMachine.runGames(game, levels, M, controllers, saveActions? actionFiles:null);
 //        }
+
+        //6. This plays a round robin style tournament between multiple controllers, in N games, first L levels, M times each.
+        // Controllers are swapped for each match as well. Actions to file optional (set saveActions to true).
+//        int N = 10, L = 5, M = 2;
+//        boolean saveActions = false;
+//        String[] levels = new String[L];
+//        String[] actionFiles = new String[L*M];
+//
+//        String[] cont = new String[]{doNothingController, randomController, oneStepController, sampleGAController,
+//                sampleMCTSController, sampleOLMCTSController}; //add all controllers that should play in this array
+//
+//        for(int i = 0; i < N; ++i)
+//        {
+//            int actionIdx = 0;
+//            game = gamesPath + games[i] + ".txt";
+//            for (int k = 0; k < cont.length - 1; k++) {
+//                for (int t = k + 1; t < cont.length; t++) {
+//                    // set action files for the first controller order
+//                    for(int j = 0; j < L; ++j){
+//                        levels[j] = gamesPath + games[i] + "_lvl" + j +".txt";
+//                        if(saveActions) for(int p = 0; p < M; ++p)
+//                            actionFiles[actionIdx++] = "actions_game_" + i + "_level_" + j + "_" + p + ".txt";
+//                    }
+//                    controllers = cont[k] + " " + cont[t];
+//                    System.out.println(controllers);
+//                    ArcadeMachine.runGames(game, levels, M, controllers, saveActions ? actionFiles : null);
+//
+//                    // reset action files for the swapped controllers
+//                    if (saveActions) {
+//                        actionIdx = 0;
+//                        for (int j = 0; j < L; ++j) {
+//                            for (int p = 0; p < M; ++p)
+//                                actionFiles[actionIdx++] = "actions_game_" + i + "_level_" + j + "_" + p + "_swapped.txt";
+//                        }
+//                    }
+//                    controllers = cont[t] + " " + cont[k];
+//                    System.out.println(controllers);
+//                    ArcadeMachine.runGames(game, levels, M, controllers, saveActions ? actionFiles : null);
+//                }
+//            }
+//        }
     }
 }
