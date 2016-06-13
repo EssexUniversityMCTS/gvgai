@@ -51,7 +51,7 @@ public class TestMultiPlayer
         // 2. This plays a game in a level by the controllers. If one of the players is human, change the playerID passed
         // to the runOneGame method to be that of the human player (0 or 1).
         ArcadeMachine.runOneGame(game, level1, visuals, controllers, recordActionsFile, seed, 0);
-
+        
         // 3. This replays a game from an action file previously recorded
         //String readActionsFile = recordActionsFile;
         //ArcadeMachine.replayGame(game, level1, visuals, readActionsFile);
@@ -102,7 +102,7 @@ public class TestMultiPlayer
 //                    for(int j = 0; j < L; ++j){
 //                        levels[j] = gamesPath + games[i] + "_lvl" + j +".txt";
 //                        if(saveActions) for(int p = 0; p < M; ++p)
-//                            actionFiles[actionIdx++] = "actions_game_" + i + "_level_" + j + "_" + p + ".txt";
+//                            actionFiles[actionIdx++] = "actions_" + cont[k] + "_" + cont[t] + "_game_" + i + "_level_" + j + "_" + p + ".txt";
 //                    }
 //                    controllers = cont[k] + " " + cont[t];
 //                    System.out.println(controllers);
@@ -113,7 +113,7 @@ public class TestMultiPlayer
 //                        actionIdx = 0;
 //                        for (int j = 0; j < L; ++j) {
 //                            for (int p = 0; p < M; ++p)
-//                                actionFiles[actionIdx++] = "actions_game_" + i + "_level_" + j + "_" + p + "_swapped.txt";
+//                                actionFiles[actionIdx++] = "actions_" + cont[t] + "_" + cont[k] + "_game_" + i + "_level_" + j + "_" + p + ".txt";
 //                        }
 //                    }
 //                    controllers = cont[t] + " " + cont[k];
