@@ -22,7 +22,7 @@ public class AgentExecutorMulti {
         String action_file = args[4];
 
         String players = playerClassString0 + " " + playerClassString1;
-        String playersSwapped = playerClassString0 + " " + playerClassString1;
+        String playersSwapped = playerClassString1 + " " + playerClassString0;
 
         System.out.println("Game: " + game);
         System.out.println("Level: " + level);
@@ -35,8 +35,9 @@ public class AgentExecutorMulti {
         /**
          * Play 2 games, reversing the order of the players in the second one.
          */
+        String[] filename = action_file.split(".");
         double[] gameScore = ArcadeMachine.runOneGame(game, level, false, players, action_file, seed, 0);
-        double[] gameScoreSwapped = ArcadeMachine.runOneGame(game, level, false, playersSwapped, action_file + "_swapped", seed, 0);
+        double[] gameScoreSwapped = ArcadeMachine.runOneGame(game, level, false, playersSwapped, filename[0] + "_swapped." + filename[1], seed, 0);
 
         //System.out.println(gameScore);
         //System.out.println(gameScoreSwapped);
