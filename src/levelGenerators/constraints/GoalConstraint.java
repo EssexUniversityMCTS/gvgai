@@ -41,6 +41,9 @@ public class GoalConstraint extends AbstractConstraint{
 					result += 1;
 				}
 			}
+			else{
+				result += 1;
+			}
 		}
 		
 		return result / gameDescription.getTerminationConditions().size();
