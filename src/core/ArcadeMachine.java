@@ -852,7 +852,7 @@ public class ArcadeMachine
                 Constructor controllerArgsConstructor = controllerClass.getConstructor(gameArgClass);
 
                 //Call the constructor with the appropriate parameters.
-                Object[] constructorArgs = new Object[]{(StateObservationMulti)so, ect.copy(), playerID};
+                Object[] constructorArgs = new Object[]{(StateObservationMulti)so.copy(), ect.copy(), playerID};
 
                 player = (AbstractMultiPlayer) controllerArgsConstructor.newInstance(constructorArgs);
                 player.setPlayerID(playerID);
