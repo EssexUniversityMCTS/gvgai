@@ -405,7 +405,7 @@ public class ForwardModel extends Game
             return Types.TYPE_NPC;
 
         //Is it immovable?
-         if(sp.is_static)
+        if(sp.is_static)
             return Types.TYPE_STATIC;
 
         //is it created by the avatar?
@@ -575,23 +575,19 @@ public class ForwardModel extends Game
      *                to playerID).
      */
     final public void advance(Types.ACTIONS[] actions) {
-        //new array list to shuffle
-        ArrayList<Types.ACTIONS> actions_shuffled = new ArrayList<>();
-        Collections.addAll(actions_shuffled, actions);
-        Collections.shuffle(actions_shuffled, randomObs);
-        List<Types.ACTIONS> actionsList = Arrays.asList(actions);
 
         if(!isEnded) {
             //apply actions of all players
             for (int i = 0; i < actions.length; i++) {
-                Types.ACTIONS a = actions_shuffled.get(i); // action
-                updateAvatars(a, actionsList.indexOf(a)); // index in array actions is the playerID
+                Types.ACTIONS a = actions[i]; // action
+                updateAvatars(a, i); // index in array actions is the playerID
             }
             //update all other sprites in the game
             tick();
             //update game state
             advance_aux();
         }
+        //System.out.println(isMultiGameOver());
     }
 
     /**
@@ -1053,9 +1049,9 @@ public class ForwardModel extends Game
 
 
     //Must override this:
-	@Override
-	public void buildStringLevel(String[] levelString, int randomSeed) {
-		throw new RuntimeException("buildLevel should not be called in this instance.");
-	}
+    @Override
+    public void buildStringLevel(String[] levelString, int randomSeed) {
+        throw new RuntimeException("buildLevel should not be called in this instance.");
+    }
 
 }

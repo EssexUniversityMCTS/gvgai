@@ -93,6 +93,9 @@ public abstract class Player {
     {
     }
 
+    public void resultMulti(StateObservationMulti stateObs, ElapsedCpuTimer elapsedCpuTimer)
+    {
+    }
 
     /**
      * This function sets up the controller to save the actions executed in a given game.

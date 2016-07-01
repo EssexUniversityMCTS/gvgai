@@ -1266,7 +1266,11 @@ public class ArcadeMachine
             ect.setMaxTimeMillis(CompetitionParameters.TEAR_DOWN_TIME);
 
             //Inform about the result and the final game state.
-            p.result(toPlay.getObservation(), ect);
+            //Inform about the result and the final game state.
+            if (toPlay.no_players > 1)
+                p.resultMulti(toPlay.getObservationMulti().copy(), ect);
+            else
+                p.result(toPlay.getObservation(), ect);
 
             //Check if we returned on time, and act in consequence.
             long timeTaken = ect.elapsedMillis();
