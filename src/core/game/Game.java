@@ -1242,12 +1242,14 @@ public abstract class Game
         {
             TimeEffect ef = timeEffects.pollFirst();
             int intId = ef.itype;
+            boolean exec = false;
 
             //if intId==-1, we have no sprite
             if(intId == -1)
             {
                 //With no sprite, the effect is independent from particular sprites.
                 ef.execute(null,null,this);
+                exec = true;
 
                 //Affect score for all players:
                 if(ef.applyScore) {
@@ -1266,6 +1268,7 @@ public abstract class Game
             			//Check that they are not dead (could happen in this same cycle).
             			if(!kill_list.contains(sp) && !sp.is_disabled()){
             				executeEffect(ef, sp, null);
+                            exec = true;
             			}
             		}
             	}
@@ -1274,6 +1277,7 @@ public abstract class Game
             //If the time effect is repetitive, need to reinsert in the list of effects
             if(ef.repeating)
             {
+                if(!exec) ef.planExecution(this);
                 this.addTimeEffect(ef);
             }
 
