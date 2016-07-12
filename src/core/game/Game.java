@@ -714,7 +714,7 @@ public abstract class Game
             templateSprites[i] = null;
         }
 
-
+        historicEvents.clear();
 
         resetShieldEffects();
     }
