@@ -165,7 +165,7 @@ public class MovingAvatar extends VGDLSprite {
             action = Types.ACTIONS.ACTION_NIL;
 
         this.player.logAction(action);
-        game.setAvatarLastAction(action);
+        game.setAvatarLastAction(action, getPlayerID());
         ki.reset(getPlayerID());
         ki.setAction(action, getPlayerID());
     }

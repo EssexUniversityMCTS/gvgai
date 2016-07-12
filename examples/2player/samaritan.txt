@@ -4,7 +4,7 @@ BasicGame no_players=2
             avatar1 > MovingAvatar img=avatarRed.png
             avatar2 > ShootAvatar stype=pull img=avatar.png
         pull > Flicker singleton=True img=sword.png
-        deathSpot > Immovable img=hole color=BLACK
+        deathSpot > Door img=hole color=BLACK
         safeSpot > Immovable invisible=True
         deadPortal > Portal invisible=True portal=True stype=safeSpot
         
