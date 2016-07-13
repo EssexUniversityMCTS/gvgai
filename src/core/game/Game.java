@@ -1148,6 +1148,7 @@ public abstract class Game
                 if (numAvatarSprites > i) { //check if there's enough avatars just in case
                     avatars[i] = avSprites.get(i);
                     avatars[i].setKeyHandler(ki);
+                    avatars[i].setPlayerID(i);
                 }
             }
         } else {
