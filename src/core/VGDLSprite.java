@@ -487,12 +487,17 @@ public abstract class VGDLSprite {
 
         if (cooldown <= lastmove && (Math.abs(orientation.x()) + Math.abs(orientation.y()) != 0)) {
             rect.translate((int) orientation.x() * speed, (int) orientation.y() * speed);
-            bucket = rect.y / rect.height;
-            bucketSharp = (rect.y % rect.height) == 0;
+            updateBucket();
             lastmove = 0;
             return true;
         }
         return false;
+    }
+
+    public void updateBucket()
+    {
+        bucket = rect.y / rect.height;
+        bucketSharp = (rect.y % rect.height) == 0;
     }
 
     /**
