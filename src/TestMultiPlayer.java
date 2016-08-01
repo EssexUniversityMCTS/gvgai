@@ -87,7 +87,7 @@ public class TestMultiPlayer
 
         //6. This plays a round robin style tournament between multiple controllers, in N games, first L levels, M times each.
         // Controllers are swapped for each match as well. Actions to file optional (set saveActions to true).
-//        int N = 10, L = 5, M = 2;
+//        int N = 20, L = 5, M = 2;
 //        boolean saveActions = false;
 //        String[] levels = new String[L];
 //        String[] actionFiles = new String[L*M];
