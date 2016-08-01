@@ -14,9 +14,9 @@ BasicGame key_handler=Pulse square_size=40 no_players=2
             player1 > speed=0.4 cons=1
             player2 > speed=0.2 cons=3
 		
-        foot > Flicker img=sword 
-            footA >
-            footB >
+        foot > Flicker shrinkfactor=0.5
+            footA > img=oryx/boots2
+            footB > img=oryx/boots1
         deadPortal > Portal invisible=True hidden=True stype=start
         start > Immovable hidden=True invisible=True
         wall > Immovable img=oryx/wall6

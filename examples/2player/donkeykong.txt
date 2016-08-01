@@ -1,5 +1,6 @@
 BasicGame square_size=20 no_players=2
     SpriteSet
+        back > Immovable img=oryx/backLBlue hidden=True
         floor > Immovable img=oryx/floor1 orientation=RIGHT hidden=True
         ground > Immovable img=oryx/floor1 orientation=RIGHT hidden=True
         ladder > Immovable img=newset/ladder2 orientation=DOWN hidden=True
@@ -65,6 +66,7 @@ BasicGame square_size=20 no_players=2
         SpriteCounter stype=avatar2 limit=0 win=True,False
     
     LevelMapping
+        _ > back
         g > goalA goalB ground
         w > wall
         l > ladder ground

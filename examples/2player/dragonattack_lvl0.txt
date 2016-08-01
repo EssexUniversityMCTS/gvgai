@@ -1,21 +1,21 @@
 wwwwwwwwwwwwwwwwwwwwwwwwwwwww
-w 1	 ...A...............  2 w
-w                           w
-wwwww                   wwwww
-w                           w
-w                           w
-w a                         w
-w                           w
-w                           w
-w      rrrrrrrrrrrrrrr      w
-w      ggggggggggggggg      w
-w      rrrrrrrrrrrrrrr      w
-w                           w
-w                           w
-w                         b w
-w                           w
-w                           w
-wwwww                   wwwww
-w                           w
-w 3  --------------B----  4 w
+w_1	_...A...............__2_w
+w___________________________w
+wwwww___________________wwwww
+w___________________________w
+w___________________________w
+w_a_________________________w
+w___________________________w
+w___________________________w
+w______rrrrrrrrrrrrrrr______w
+w______ggggggggggggggg______w
+w______rrrrrrrrrrrrrrr______w
+w___________________________w
+w___________________________w
+w_________________________b_w
+w___________________________w
+w___________________________w
+wwwww___________________wwwww
+w___________________________w
+w_3__--------------B----__4_w
 wwwwwwwwwwwwwwwwwwwwwwwwwwwww
