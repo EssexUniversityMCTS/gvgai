@@ -20,6 +20,7 @@ BasicGame key_handler=Pulse
     InteractionSet
 
         avatar normalWall > stepBack
+        avatarNormal wall > stepBack
         avatarBlue redWall > stepBack
         avatarRed blueWall > stepBack
 

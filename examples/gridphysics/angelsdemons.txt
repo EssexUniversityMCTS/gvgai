@@ -26,7 +26,7 @@ BasicGame
     InteractionSet
         movable wall  > reverseDirection
         movable wall  > stepBack
-        avatar wall  > stepBack
+        avatar wall EOS > stepBack
 
         box avatar  > bounceForward
         box box  > bounceForward repeat=10
