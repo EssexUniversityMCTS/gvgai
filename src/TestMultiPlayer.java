@@ -24,6 +24,7 @@ public class TestMultiPlayer
 
         //Set here the controllers used in the games (need 2 separated by space).
         String controllers = doNothingController + " " + doNothingController;
+        //String controllers = sampleOLMCTSController + " " + sampleOLMCTSController;
 
         //Available games:
         String gamesPath = "examples/2player/";
@@ -68,7 +69,7 @@ public class TestMultiPlayer
 //        }
 
         //5. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
-//        int N = 10, L = 5, M = 5;
+//        int N = 20, L = 5, M = 5;
 //        boolean saveActions = false;
 //        String[] levels = new String[L];
 //        String[] actionFiles = new String[L*M];
