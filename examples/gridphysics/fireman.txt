@@ -1,17 +1,19 @@
 BasicGame square_size=30 key_handler=Pulse
     SpriteSet
-        avatar  > ShootAvatar ammo=waterAmmo stype=water healthPoints=10
 
+        ground > Immovable img=newset/street3 hidden=True
         waterAmmo > Resource color=BLUE limit=10
-        water > Missile img=water speed=1.0 shrinkfactor=0.8
-        box > Immovable img=box
-        ground > Immovable invisible=True hidden=True
-        extinguisher > Immovable img=busstop
+        water > Missile img=oryx/slime1 speed=1.0 shrinkfactor=0.8
+        box > Immovable img=newset/city1
+        extinguisher > Immovable img=newset/hydrant
 
-        fire > img=fire
+        fire > img=oryx/fire1
+            fireOn > SpawnPoint stype=fireStart prob=0.01 img=newset/city1_fire
             fireStart > Spreader color=ORANGE spreadprob=0.6 stype=fireEnd
-            fireOn > SpawnPoint stype=fireStart prob=0.01
             fireEnd > Immovable
+        avatar  > ShootAvatar ammo=waterAmmo stype=water healthPoints=10 img=newset/fireman
+
+        wall > Immovable img=oryx/wall1
 
     LevelMapping
         b > box ground

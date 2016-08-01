@@ -1,16 +1,18 @@
 BasicGame
     SpriteSet
-        exit > Door color=GREEN img=goal
-        avatar > MovingAvatar img=avatar
-        trap > Immovable img=hell
-        ice > Immovable img=ice
-        fire > Immovable img=fire
+        floor > Immovable img=oryx/grass autotiling=True hidden=True
+        exit > Door color=GREEN img=oryx/dooropen1
+        avatar > MovingAvatar img=oryx/dwarf1
+        trap > Immovable img=oryx/spike2
+        ice > Immovable img=oryx/backGrey
+        fire > Immovable img=oryx/fire1
 
-        feetwear > Resource limit=1 value=1
-            iceshoes > img=diamond
-            fireboots > img=powerpill
+        feetwear > Resource limit=1 value=1 shrinkfactor=0.7
+            iceshoes > img=oryx/boots3
+            fireboots > img=oryx/boots2
 
-        chip > Immovable img=gold
+        chip > Immovable img=oryx/gold1 shrinkfactor=0.5
+        wall > Immovable img=oryx/tree1
 
     InteractionSet
 
@@ -29,10 +31,13 @@ BasicGame
         SpriteCounter stype=exit limit=0 win=True
 
     LevelMapping
-        e > exit
-        t > trap
-        c > chip
-        i > iceshoes
-        f > fireboots
+        e > exit floor
+        t > trap floor
+        c > chip floor
+        i > iceshoes floor
+        f > fireboots floor
         _ > ice
-        x > fire
+        x > fire floor
+        . > floor
+        A > avatar floor
+        w > wall floor

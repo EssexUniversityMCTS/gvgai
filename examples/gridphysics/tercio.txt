@@ -2,20 +2,22 @@
 
 BasicGame key_handler=Pulse  square_size=50
     SpriteSet
-        black > Immovable color=BLACK
-        white > Immovable color=WHITE
-        blue > Immovable color=LIGHTBLUE
+        black > Immovable img=oryx/backBlack
+        white > Immovable img=oryx/backGrey
+        blue > Immovable img=oryx/backBlue
 
-        grey > Immovable
+        grey > Immovable img=oryx/backOBrown
 
-        target > Immovable img=portal shrinkfactor=0.9
-        winTarget > Immovable img=portal shrinkfactor=0.9
-        crate > Passive img=box shrinkfactor=0.8
+        target > Immovable img=newset/hole1
+        winTarget > Immovable img=newset/hole1
+        crate > Passive img=oryx/bush5 shrinkfactor=0.8
         avatar > MovingAvatar
-            inGrey > img=ghost
-            inBlack > img=avatar
-            inWhite > img=alien
-            inBlue > img=waitor
+            inGrey > img=newset/girl4
+            inBlack > img=newset/girl2
+            inWhite > img=newset/girl1
+            inBlue > img=newset/girl3
+
+        wall > Immovable img=oryx/dirtwall autotiling=True
     
     LevelMapping
         . > black
@@ -34,6 +36,8 @@ BasicGame key_handler=Pulse  square_size=50
         t > target black
         u > target white
         r > target blue
+
+        w > wall
 
     TerminationSet
         SpriteCounter      stype=target               limit=0 win=True

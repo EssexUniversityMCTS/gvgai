@@ -1,27 +1,31 @@
 BasicGame square_size=30
     SpriteSet
-        water > Immovable color=BLUE img=water
+        floor > Immovable img=oryx/grass autotiling=True hidden=True
+        water > Immovable color=BLUE img=oryx/seaWater
         catapult > Immovable
-            southfacing > orientation=DOWN  color=RED img=honey
-            northfacing > orientation=UP  color=ORANGE img=honeyUp
-            eastfacing  > orientation=RIGHT color=YELLOW img=honeyRight
-            westfacing  > orientation=LEFT color=YELLOW img=honeyLeft
+            southfacing > orientation=DOWN  color=RED img=oryx/bookDown
+            northfacing > orientation=UP  color=ORANGE img=oryx/bookUp
+            eastfacing  > orientation=RIGHT color=YELLOW img=oryx/bookRight
+            westfacing  > orientation=LEFT color=YELLOW img=oryx/bookLeft
         avatar >
-            moving > MovingAvatar img=avatar
-            bullet > MissileAvatar img=alien
+            moving > MovingAvatar img=oryx/vampire1
+            bullet > MissileAvatar img=oryx/bat1
                 north  > orientation=UP color=RED
                 south  > orientation=DOWN color=ORANGE
                 east   > orientation=RIGHT color=YELLOW
                 west   > orientation=LEFT color=GREEN
-        goal  > Immovable color=GREEN img=door portal=True
+        goal  > Immovable color=GREEN img=oryx/dooropen1 portal=True
+        wall > Immovable img=oryx/bush5
     LevelMapping
-        . > water
-        0 > eastfacing
-        1 > southfacing
-        2 > northfacing
-        3 > westfacing
-        g > goal
-        A > moving
+        . > water floor
+        0 > eastfacing floor
+        1 > southfacing floor
+        2 > northfacing floor
+        3 > westfacing floor
+        g > goal floor
+        A > moving floor
+        _ > floor
+        w > wall floor
     InteractionSet
 
         bullet wall > transformTo stype=moving

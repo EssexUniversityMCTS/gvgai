@@ -1,29 +1,33 @@
 BasicGame no_players=2 square_size=30
     SpriteSet
-        ship  > Immovable color=GREEN img=spaceship portal=True
-            nokey >
-            withkey >
-        explosion > Flicker limit=5 img=explosion
+        background > Immovable hidden=True img=oryx/space1
+        ship  > Immovable color=GREEN portal=True
+            nokey > img=oryx/spaceship1
+            withkey > img=oryx/spaceship2
+        explosion > Flicker limit=5 img=oryx/sparkle3
 
         movable >
             avatar  > ShootAvatar stype=explosion
-                avatarA >  img=avatar
-                avatarB > img=alien
+                avatarA >  img=newset/spaceman1
+                avatarB > img=newset/spaceman2
             incoming >
-                incoming_slow  > Chaser stype=ship color=ORANGE speed=0.05
-                incoming_fast  > Chaser stype=ship color=YELLOW speed=0.15				
+                incoming_slow  > Chaser stype=ship color=ORANGE speed=0.05 img=oryx/alien3
+                incoming_fast  > Chaser stype=ship color=YELLOW speed=0.15 img=oryx/alien1
             enemySpawn > BomberRandomMissile stypeMissile=incoming_slow,incoming_fast invisible=True hidden=True singleton=True cooldown=8 speed=0.8 prob=0.1
         
-        winner > Immovable img=spaceship
+        winner > Immovable img=oryx/spaceship2
 	
-        key > Immovable img=key
+        key > Immovable img=oryx/key1 shrinkfactor=0.7
+        wall > Immovable img=oryx/planet
 
     LevelMapping
-        s > nokey
-        e > enemySpawn
-        k > key
-        A > avatarA
-        B > avatarB
+        . > background
+        s > nokey background
+        e > enemySpawn background
+        k > key background
+        A > avatarA background
+        B > avatarB background
+        w > wall background
 
     InteractionSet
         enemySpawn wall > reverseDirection

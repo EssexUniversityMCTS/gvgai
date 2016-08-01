@@ -1,15 +1,15 @@
 BasicGame square_size=30
     SpriteSet
 
-        water > Immovable img=water
-        land > Immovable img=dirt
+        water > Immovable img=newset/water3
+        land > Immovable img=oryx/grass autotiling=True
 
         port > Immovable
-            portGold > img=city
-            portGems > img=cityGreen
-            portDiamonds > img=cityBlue
+            portGold > img=newset/dock1
+            portGems > img=newset/dock2
+            portDiamonds > img=newset/dock3
 
-        shipwreck > Immovable img=shovel portal=True
+        shipwreck > Immovable img=newset/shipwreck portal=True
 
         holes > SpawnPoint invisible=True hidden=True
             goldhole  >  stype=gold  prob=0.01
@@ -17,27 +17,29 @@ BasicGame square_size=30
             diamondshole  >  stype=diamonds  prob=0.01
 
         good > Resource limit=1
-            gold > img=coin singleton=True
-            gems > img=mana singleton=True
-            diamonds > img=diamond singleton=True
+            gold > img=oryx/gold2 singleton=True
+            gems > img=oryx/diamond2 singleton=True
+            diamonds > img=oryx/goldsack singleton=True
 
-        whirlpool > Immovable img=flower
+        whirlpool > Immovable img=newset/whirlpool2
 
         treasure > Resource invisible=True
             t10 >
             t5 >
             t1 >
 
+        avatar > MovingAvatar img=newset/ship
+
 
     LevelMapping
         . > water
-        x > land
+        x > water land
         A > water avatar
-        1 > portGold
-        2 > portGems
-        3 > portDiamonds
-        w > whirlpool
-        s > shipwreck goldhole gemshole diamondshole
+        1 > water portGold
+        2 > water portGems
+        3 > water portDiamonds
+        w > water whirlpool
+        s > water shipwreck goldhole gemshole diamondshole
 
     TerminationSet
         SpriteCounter      stype=avatar               limit=0 win=False

@@ -1,16 +1,18 @@
 BasicGame square_size=30
     SpriteSet
-        snow   > Immovable color=WHITE
-        mud    > Immovable color=LIGHTGREEN img=dirt
-        grass  > Immovable color=GREEN img=forest
+        snow   > Immovable color=WHITE img=oryx/backGrey
+        mud    > Immovable color=LIGHTGREEN img=oryx/floorTileOrange
+        grass  > Immovable color=GREEN img=oryx/floorTileGreen
         sword  > Flicker invisible=True
         moving >
-            avatar > ShootAvatar stype=sword
-            dog    > RandomNPC cooldown=5 img=monster cons=15
+            avatar > ShootAvatar stype=sword img=oryx/yeti1
+            dog    > RandomNPC cooldown=5 img=oryx/wolf1 cons=15
+        wall > Immovable img=oryx/dirtwall autotiling=True
     LevelMapping
         . > snow
         1 > dog mud
         A > avatar grass
+        w > wall
     InteractionSet
         avatar dog > killSprite
         avatar mud  > stepBack

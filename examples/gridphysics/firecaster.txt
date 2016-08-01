@@ -1,13 +1,16 @@
 BasicGame
     SpriteSet
-        fireAsh > Immovable
-        goal   > Door color=GREEN img=door
-        box    > Immovable color=BROWN img=box
-        mana    > Resource color=GREEN limit=3 img=mana
-        bullet > Missile color=RED speed=0.5 singleton=True img=bullet
-        fire   > Spreader color=ORANGE spreadprob=0.25 stype=spark img=fire
-        spark  > SpawnPoint stype=fireAsh total=1 img=explosion
-        avatar > ShootAvatar ammo=mana stype=bullet healthPoints=3
+        floor > Immovable img=newset/floor2 hidden=True
+        fireAsh > Immovable img=oryx/smoke
+        goal   > Door color=GREEN img=oryx/dooropen1
+        box    > Immovable color=BROWN img=newset/block3
+        mana    > Resource color=GREEN limit=3 img=oryx/diamond3 shrinkfactor=0.5
+        bullet > Missile color=RED speed=0.5 singleton=True img=oryx/bullet1
+        fire   > Spreader color=ORANGE spreadprob=0.25 stype=spark img=oryx/fire1
+        spark  > SpawnPoint stype=fireAsh total=1 img=oryx/slash1
+        avatar > ShootAvatar ammo=mana stype=bullet healthPoints=3 img=oryx/devil1 frameRate=8
+
+        wall > Immovable img=oryx/wall3 autotiling=True
 
     InteractionSet
         fire box fire  > killSprite
@@ -27,7 +30,8 @@ BasicGame
         SpriteCounter stype=goal   limit=0 win=True
 
     LevelMapping
-        g > goal
-        b > box
-        . > mana
-        A > avatar
+        g > goal floor
+        b > box floor
+        . > mana floor
+        _ > floor
+        A > avatar floor

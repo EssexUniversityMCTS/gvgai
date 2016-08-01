@@ -1,0 +1,57 @@
+BasicGame no_players=2 key_handler=Pulse square_size=30
+    SpriteSet
+        floor > Immovable img=oryx/backGreen hidden=True
+        ground > Immovable img=oryx/backGreen hidden=True
+        door1 > Door
+            doorClosed1 > Immovable img=oryx/doorclosed1
+            doorOpened1 > Immovable img=oryx/dooropen1
+        door2 > Door
+            doorClosed2 > Immovable img=oryx/doorclosed1
+            doorOpened2 > Immovable img=oryx/dooropen1
+        exit > Door img=newset/exit2
+        switch > Immovable img=oryx/wall3_0
+            switch1 >
+            switch2 >
+        winner >
+            winner1 > MovingAvatar img=oryx/wolf1
+            winner2 > MovingAvatar img=oryx/bear1
+        avatar >
+            player1 > MovingAvatar img=oryx/wolf1
+            player2 > MovingAvatar img=oryx/bear1
+            push >
+                push1 > MovingAvatar img=oryx/wolf1
+                push2 > MovingAvatar img=oryx/bear1
+
+        wall > Immovable img=oryx/tree2
+
+    LevelMapping
+        A > player1 floor
+        B > player2 floor
+        0 > doorClosed1 floor
+        1 > doorClosed2 floor
+        2 > switch1
+        3 > switch2
+        e > exit floor
+        . > ground
+        - > floor
+        w > floor wall
+
+
+    InteractionSet
+        avatar wall doorClosed1 doorClosed2 avatar > stepBack
+        winner wall doorClosed1 doorClosed2 > stepBack
+        player1 switch1 > transformToAll stype=doorClosed1 stypeTo=doorOpened1 scoreChange=1,0
+        player1 switch1 > transformTo stype=push1
+        player2 switch2 > transformToAll stype=doorClosed2 stypeTo=doorOpened2 scoreChange=0,1
+        player2 switch2 > transformTo stype=push2
+        player1 ground > transformToAll stype=doorOpened1 stypeTo=doorClosed1
+        player2 ground > transformToAll stype=doorOpened2 stypeTo=doorClosed2
+        player1 exit > transformTo stype=winner1 scoreChange=10
+        player2 exit > transformTo stype=winner2 scoreChange=10
+        winner1 ground > transformTo stype=player1 scoreChange=-10
+        winner2 ground > transformTo stype=player2 scoreChange=-10
+        push1 ground > transformTo stype=player1 scoreChange=-1,0
+        push2 ground > transformTo stype=player2 scoreChange=0,-1
+
+    TerminationSet
+        MultiSpriteCounter stype1=winner limit=2 win=True,True

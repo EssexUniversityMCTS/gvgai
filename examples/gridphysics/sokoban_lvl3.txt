@@ -1,11 +1,7 @@
-wwwwwwwwwwwww
-w  0A wwwwwww
-w w0w wwwwwww
-w   1 wwwwwww
-w011 wwwwwwww
-w  wwwwwwwwww
-wwwwwwwwwwwww
-wwwwwwwwwwwww
-wwwwwwwwwwwww
-wwwwwwwwwwwww
-wwwwwwwwwwwww
+wwwwwww
+w..0A.w
+w.w0w.w
+w...1.w
+w011.ww
+w..wwww
+wwwwwww

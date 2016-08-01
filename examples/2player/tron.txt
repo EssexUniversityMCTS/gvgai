@@ -1,16 +1,21 @@
 BasicGame square_size=10 no_players=2
     SpriteSet
+        floor > Immovable hidden=True img=oryx/backGrey
+
         anyWall   > Immovable
-            blueWall  > img=wallBlue
-            redWall  > img=wallRed
+            blueWall  > img=newset/blockB
+            redWall  > img=newset/blockR
 
         avatar > OngoingTurningAvatar speed=1.0
-            avatar1 > img=avatar spawnBehind=blueWall
-            avatar2 > img=avatarRed spawnBehind=redWall
-			
+            avatar1 > img=newset/blockB3 spawnBehind=blueWall
+            avatar2 > img=newset/blockR3 spawnBehind=redWall
+
+        wall > Immovable img=oryx/wall1
+
     LevelMapping
-        A > avatar1
-        B > avatar2
+        . > floor
+        A > avatar1 floor
+        B > avatar2 floor
 		
     InteractionSet
 

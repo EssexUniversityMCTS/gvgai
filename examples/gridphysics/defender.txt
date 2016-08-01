@@ -1,11 +1,12 @@
 BasicGame key_handler=Pulse
     SpriteSet
-        city    > Immovable    color=WHITE img=base
-        avatar  > ShootAvatar color=YELLOW ammo=bullet stype=sam img=spaceship rotateInPlace=False
+        floor > Immovable img=oryx/space1 hidden=True
+        city    > Immovable    color=WHITE img=newset/city1
+        avatar  > ShootAvatar color=YELLOW ammo=bullet stype=sam img=oryx/spaceship1 rotateInPlace=False
         missile > Missile
-            sam  > orientation=RIGHT color=BLUE img=spaceship
-            bomb > orientation=DOWN color=RED speed=0.5 img=bomb
-        alien   > Bomber   orientation=LEFT stype=bomb   prob=0.04  cooldown=4 speed=0.6 img=alien
+            sam  > orientation=RIGHT color=BLUE img=oryx/bullet1
+            bomb > orientation=DOWN color=RED speed=0.5 img=newset/bomb shrinkfactor=0.6
+        alien   > Bomber   orientation=LEFT stype=bomb   prob=0.04  cooldown=4 speed=0.6 img=oryx/alien3
 
         portal  > SpawnPoint stype=alien  cooldown=10  invisible=True hidden=True
             portalSlow  > prob=0.2
@@ -13,15 +14,17 @@ BasicGame key_handler=Pulse
 
         portalAmmo  > SpawnPoint stype=supply cooldown=10 prob=0.15 invisible=True
 
-        supply > Missile orientation=DOWN speed=0.25 img=coin
+        supply > Missile orientation=DOWN speed=0.25 img=oryx/goldsack
         bullet > Resource limit=20
+        wall > Immovable img=oryx/wall1
     
     LevelMapping
-        0 > city
-        1 > portalSlow
-        2 > portalFast
-        3 > portalAmmo
-        A > avatar supply
+        0 > city floor
+        1 > portalSlow floor
+        2 > portalFast floor
+        3 > portalAmmo floor
+        A > avatar supply floor
+        . > floor
 
     TerminationSet
         SpriteCounter      stype=avatar             limit=0 win=False

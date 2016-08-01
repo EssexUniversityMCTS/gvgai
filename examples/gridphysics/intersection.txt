@@ -1,32 +1,38 @@
 BasicGame
     SpriteSet
 
-        goal  > Portal color=GREEN img=goal singleton=True portal=True stype=start
+        floor > Immovable img=newset/highway hidden=True
+        floorV > Immovable img=newset/highway2 hidden=True
+        crossing > Immovable img=newset/street3 hidden=True
+        goal  > Portal color=GREEN img=newset/exit2 singleton=True portal=True stype=start
         deadPortal  > Portal invisible=True singleton=True portal=True stype=start
-        car  > img=bus
+        car  >
             rightcar  > Missile   orientation=RIGHT 
-                fastRcar  > speed=0.9  color=ORANGE
-                slowRcar  > speed=0.7  color=RED
+                fastRcar  > speed=0.9  color=ORANGE img=newset/car2R
+                slowRcar  > speed=0.7  color=RED img=newset/car1R
             downcar  > Missile   orientation=DOWN
-                fastDcar  > speed=0.9  color=ORANGE
-                slowDcar  > speed=0.7  color=RED
+                fastDcar  > speed=0.9  color=ORANGE img=newset/car_orangeD
+                slowDcar  > speed=0.7  color=RED img=newset/car_redD
 
         start > Immovable invisible=True
-        wall > Immovable color=BLACK img=wall
-        tree > Immovable color=GREEN img=forest
+        wall > Immovable color=BLACK img=oryx/wall1
+        tree > Immovable color=GREEN img=oryx/tree2
         input > SpawnPoint stype=goal cooldown=16 prob=0.05 total=1 invisible=True hidden=True
 
-        avatar > MovingAvatar img=avatar healthPoints=5
+        avatar > MovingAvatar img=newset/man4 healthPoints=5
 
     LevelMapping
-        t > tree
-        - > slowRcar
-        x > fastDcar
-        _ > slowRcar
-        l > fastDcar
+        t > crossing tree
+        - > floor slowRcar
+        x > floorV fastDcar
+        _ > floor slowRcar
+        l > floorV fastDcar
 
-        i > input
-        s > start avatar
+        i > crossing input
+        s > crossing start avatar
+        . > crossing
+        = > floor
+        + > floorV
 
     InteractionSet
 

@@ -1,60 +1,65 @@
 BasicGame square_size=30
     SpriteSet
-        avatar > MovingAvatar healthPoints=10
 
+        floor > Immovable hidden=True img=oryx/floor3
         resources >
-            gold > Resource color=GOLD limit=11 img=gold
-            key > Resource img=key limit=1
+            gold > Resource color=GOLD limit=11 img=oryx/gold1 shrinkfactor=0.5
+            key > Resource img=oryx/key2 limit=1
 
         doors >
-            exit > Door color=GREEN img=goal
-            lock > Immovable img=lock
+            exit > Door color=GREEN img=oryx/doorclosed1
+            lock > Immovable img=newset/lock1
 
         #traps
-        firehole > SpawnPoint stype=fireStart shrinkfactor=0.6 img=fire prob=0.05
+        firehole > SpawnPoint stype=fireStart img=oryx/torch1 prob=0.05
         fire >
-            fireStart > Spreader color=ORANGE spreadprob=1.0 stype=fireEnd img=explosion
-            fireEnd > Flicker limit=3 img=fire
+            fireStart > Spreader color=ORANGE spreadprob=1.0 stype=fireEnd img=oryx/fire1  shrinkfactor=0.4
+            fireEnd > Flicker limit=3 img=oryx/fire1
 
-        boulderHole > SpawnPoint cooldown=2 stype=boulderLeft img=hole prob=0.05 portal=true
+        boulderHole > SpawnPoint cooldown=2 stype=boulderLeft img=newset/hole1 prob=0.05 portal=true
             boulderLefthole > stype=boulderLeft
             boulderRighthole > stype=boulderRight
         boulder  >
-            boulderLeft > Missile img=boulder speed=0.5 orientation=LEFT
-            boulderRight > Missile img=boulder speed=0.5 orientation=RIGHT
+            boulderLeft > Missile img=oryx/planet1 speed=0.5 orientation=LEFT
+            boulderRight > Missile img=oryx/planet1 speed=0.5 orientation=RIGHT
 
         groundTrapHole > SpawnPoint cooldown=5 invisible=true prob=0.05 stype=groundTrap hidden=True
-        groundTrap > Flicker limit=5 img=hell
+        groundTrap > Flicker limit=5 img=oryx/spike2
 
-        lasercannon > SpawnPoint img=spaceship
-            lcup > stype=lup
-            lcdown > stype=ldown
-            lcright > stype=lright
-            lcleft > stype=lleft
-        lasercannonOff > Immovable img=spaceship
+        lasercannon > SpawnPoint
+            lcup > img=newset/lasercannon stype=lup
+            lcdown > img=newset/lasercannon_2 stype=ldown
+            lcright > img=newset/lasercannon_1 stype=lright
+            lcleft > img=newset/lasercannon_3 stype=lleft
+            lcswap > img=newset/lasercannon_4 stype=lleft
+        lasercannonOff > Immovable img=newset/lasercannon_4
 
         laser > Missile color=YELLOW  shrinkfactor=0.5 speed=0.5
-            lup > orientation=UP
-            ldown > orientation=DOWN
-            lright > orientation=RIGHT
-            lleft > orientation=LEFT
+            lup > orientation=UP img=newset/laser1
+            ldown > orientation=DOWN img=newset/laser1
+            lright > orientation=RIGHT img=newset/laser1_1
+            lleft > orientation=LEFT img=newset/laser1_1
+
+        avatar > MovingAvatar healthPoints=10 img=oryx/rogue
+        wall > Immovable img=oryx/wall3 autotiling=True
 
     LevelMapping
-        x > exit
-        g > gold
-        A > avatar
-        k > key
-        m > lock
+        x > exit floor
+        g > gold floor
+        A > avatar floor
+        k > key floor
+        m > lock floor
 
-        f > firehole
-        1 > boulderRighthole
-        2 > boulderLefthole
-        t > groundTrapHole
+        f > firehole floor
+        1 > boulderRighthole floor
+        2 > boulderLefthole floor
+        t > groundTrapHole floor
 
-        l > lcleft
-        r > lcright
-        u > lcup
-        d > lcdown
+        l > lcleft floor
+        r > lcright floor
+        u > lcup floor
+        d > lcdown floor
+        . > floor
 
     InteractionSet
 

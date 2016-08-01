@@ -1,23 +1,27 @@
 BasicGame
 	SpriteSet
-		sword > Flicker color=LIGHTGRAY limit=1 singleton=True img=sword.png
-		dirt > Immovable color=BROWN img=dirt.png
-		exitdoor > Door color=GREEN img=door.png
-		diamond > Resource color=YELLOW limit=10 shrinkfactor=0.75 img=diamond.png
-		boulder > Missile orientation=DOWN color=GRAY speed=0.2 img=boulder.png
+		background > Immovable img=oryx/backBlack hidden=True
+		wall > Immovable autotiling=true img=oryx/dirtWall
+		sword > Flicker color=LIGHTGRAY limit=1 singleton=True img=oryx/pickaxe
+		dirt > Immovable color=BROWN img=oryx/backLBrown
+		exitdoor > Door color=GREEN img=oryx/door2
+		diamond > Resource color=YELLOW limit=10 shrinkfactor=0.75 img=oryx/diamond3
+		boulder > Missile orientation=DOWN color=GRAY speed=0.2 img=oryx/mineral1
 		moving >
-			avatar  > ShootAvatar   stype=sword img=avatar.png
+			avatar  > ShootAvatar   stype=sword frameRate=8 img=oryx/spelunky
 			enemy > Chaser stype=avatar speed=0.1
-				crab > color=RED img=camel.png
-				butterfly > color=PINK img=butterfly.png
+				crab > color=RED img=oryx/scorpion2
+				butterfly > color=PINK img=oryx/bat2
 
 	LevelMapping
-		. > dirt
-		e > exitdoor
-		o > boulder
-		x > diamond
-		c > crab
-		b > butterfly
+		. > background dirt
+		e > background exitdoor
+		o > background boulder
+		x > background diamond
+		c > background crab
+		b > background butterfly
+		- > background
+		A > background avatar
 
 	InteractionSet
 		dirt avatar sword > killSprite

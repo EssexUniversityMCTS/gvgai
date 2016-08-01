@@ -1,6 +1,6 @@
-.wwwwwww
-.w.....w
-.w.o*o.w
+wwwwwwww
+ww.....w
+ww.o*o.w
 ww.*A*.w
 w..o*o.w
 w......w

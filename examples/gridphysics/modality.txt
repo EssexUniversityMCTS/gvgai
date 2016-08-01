@@ -2,16 +2,17 @@
 
 BasicGame key_handler=Pulse  square_size=50
     SpriteSet
-        black > Immovable color=BLACK
-        white > Immovable color=WHITE
-        grey > Immovable
-        target > Passive img=portal shrinkfactor=0.9 portal=True
-        winTarget > Immovable img=portal shrinkfactor=0.9
-        crate > Passive img=box shrinkfactor=0.8
-        avatar > MovingAvatar img=ghost
-        	inBlack > img=avatar
-        	inWhite > img=alien
-        	inGrey > 
+        black > Immovable color=BLACK img=oryx/backBlack
+        white > Immovable color=WHITE img=oryx/backGrey
+        grey > Immovable img=oryx/backOBrown
+        target > Passive img=newset/hole1 portal=True
+        winTarget > Immovable img=newset/hole1
+        crate > Passive img=oryx/bush5 shrinkfactor=0.8
+        avatar > MovingAvatar img=newset/girl3
+        	inBlack > img=newset/girl2
+        	inWhite > img=newset/girl1
+        	inGrey >
+        wall > Immovable img=oryx/dirtwall autotiling=True
     
     LevelMapping
         . > black

@@ -1,0 +1,21 @@
+wwwwwwwwwwwwwwwwwwwwwwwwwwwww
+w 1......  ...A...  ......2 w
+w                           w
+www                       www
+w a                         w
+w                           w
+w                           w
+w    rrr             rrr    w
+w      y             y      w
+w      rrrrr  g  rrrrr      w
+w      yyyyyyyyyyyyyyy      w
+w      rrrrr  g  rrrrr      w
+w      y             y      w
+w    rrr             rrr    w
+w                           w
+w                           w
+w                         b w
+www                       www
+w                           w
+w 3------  ---B---  ------4 w
+wwwwwwwwwwwwwwwwwwwwwwwwwwwww

@@ -1,0 +1,54 @@
+BasicGame
+    SpriteSet
+        floor > Immovable img=newset/highway hidden=True
+        crossing > Immovable img=newset/street2 hidden=True
+        goal  > Portal color=GREEN img=newset/exit2 singleton=True portal=True stype=start
+        truck  >
+            rightTruck  > Missile   orientation=RIGHT 
+                fastRtruck  > speed=0.9  color=ORANGE img=newset/car1R
+                slowRtruck  > speed=0.7  color=RED img=newset/car2R
+            leftTruck  > Missile   orientation=LEFT
+                fastLtruck  > speed=0.9  color=ORANGE img=newset/car1
+                slowLtruck  > speed=0.7  color=RED img=newset/car2
+
+        start > Immovable invisible=True hidden=True
+        tree > Immovable color=GREEN img=oryx/tree2
+        input > SpawnPoint stype=goal cooldown=16 prob=0.05 total=1 invisible=True hidden=True
+
+        avatar >  healthPoints=5
+            moving > MovingAvatar img=newset/man3 frameRate=8
+            dead > MissileAvatar orientation=DOWN img=oryx/ghost1 speed=1.0
+
+        wall > Immovable img=oryx/wall1
+
+    LevelMapping
+        . > floor
+        + > crossing
+        t > crossing tree
+        - > floor slowRtruck
+        x > floor fastRtruck
+        _ > floor slowLtruck
+        l > floor fastLtruck
+
+        i > crossing input
+        S > crossing start moving
+
+    InteractionSet
+
+
+        goal moving  > killSprite scoreChange=10
+        moving goal > teleportToExit
+        moving tree > stepBack
+
+        moving truck > subtractHealthPoints
+        moving truck > transformTo stype=dead
+
+        dead wall > transformTo stype=moving
+        moving wall  > stepBack
+        truck  EOS   > wrapAround
+    
+    TerminationSet
+        Timeout limit=1900 win=True
+        SpriteCounter stype=avatar limit=0 win=False
+
+

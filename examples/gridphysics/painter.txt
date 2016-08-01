@@ -1,10 +1,10 @@
 #(Inspired by) Notsnake: http://www.puzzlescript.net/play.html?p=e2c1c8e99b3f9d9b6edd
 
-BasicGame key_handler=Pulse
+BasicGame key_handler=Pulse square_size=60
     SpriteSet
         
-        ground > Immovable color=GRAY
-        paint > Immovable color=DARKBLUE
+        ground > Immovable color=GRAY img=oryx/backGrey
+        paint > Immovable color=DARKBLUE img=newset/paint2
 
         prepaint > Flicker limit=2 invisible=TRUE
         prepainting > Resource limit=2
@@ -12,12 +12,16 @@ BasicGame key_handler=Pulse
         preground > Flicker limit=2 invisible=TRUE
         pregrounding > Resource limit=2
 
-        avatar > MovingAvatar shrinkfactor=0.8
+        avatar > MovingAvatar shrinkfactor=0.8 img=newset/painter21
+
+        wall > Immovable img=newset/floor5
 
     LevelMapping
         A > avatar ground
         . > ground
         x > paint
+        w > wall
+
     InteractionSet
         avatar EOS > stepBack
         

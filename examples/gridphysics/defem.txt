@@ -1,20 +1,21 @@
 BasicGame
     SpriteSet
+        floor > Immovable hidden=True img=oryx/backLBrown
         cannon > Passive invisible=TRUE hidden=TRUE
-        avatar > MovingAvatar img=avatar
-        bullet > RandomMissile img=bullet
+        avatar > MovingAvatar img=oryx/axeman1
+        bullet > RandomMissile img=oryx/axe1 shrinkfactor=0.5
 
         enemyW >
             enemy   >
-                randomEnemy > RandomNPC cooldown=5 img=bee
-                chaseEnemy  > Chaser cooldown=5 stype=avatar img=monster
-                dirEnemy   > Missile cooldown=5 img=camel
+                randomEnemy > RandomNPC cooldown=5 img=oryx/freak1
+                chaseEnemy  > Chaser cooldown=5 stype=avatar img=oryx/freak2
+                dirEnemy   > Missile cooldown=5 img=oryx/freak3
 
             spawner >
-                spawnRandom > SpawnPoint stype=randomEnemy total=10 cooldown=20 img=portal
-                spawnChase  > SpawnPoint stype=chaseEnemy total=10 cooldown=40 img=hole
+                spawnRandom > SpawnPoint stype=randomEnemy total=10 cooldown=20 img=newset/hole1
+                spawnChase  > SpawnPoint stype=chaseEnemy total=10 cooldown=40 img=newset/hole5
 
-            dirSpawner > SpawnPoint stype=dirEnemy total=5 cooldown=30 img=door
+            dirSpawner > SpawnPoint stype=dirEnemy total=5 cooldown=30 img=newset/hole4
                 spawnHorzR  > orientation=RIGHT
                 spawnHorzL  > orientation=LEFT
                 spawnHorzU  > orientation=UP
@@ -35,11 +36,11 @@ BasicGame
 
 
     LevelMapping
-        a > avatar cannon
-        r > spawnRandom cannon
-        c > spawnChase cannon
-        z > spawnHorzR cannon
-        x > spawnHorzL cannon
-        f > spawnHorzD cannon
-        v > spawnHorzU cannon
-        . > cannon
+        a > avatar cannon floor
+        r > spawnRandom cannon floor
+        c > spawnChase cannon floor
+        z > spawnHorzR cannon floor
+        x > spawnHorzL cannon floor
+        f > spawnHorzD cannon floor
+        v > spawnHorzU cannon floor
+        . > cannon floor

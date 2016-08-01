@@ -2,26 +2,31 @@
 
 BasicGame square_size=25
     SpriteSet
-        enemyground > Immovable img=water
-        powerblibturning > Flicker limit=8
-        avatar  > OngoingAvatar color=YELLOW img=spaceship speed=0.15
-        powerblib > Passive img=powerpill
-        blib > Passive img=pellet
-        enemy > Missile cooldown=3 img=camel
+        floor > Immovable img=oryx/backGrey
+        enemyground > Immovable img=newset/water
+        avatar  > OngoingAvatar color=YELLOW img=oryx/spaceship1 speed=0.15
+        powerblib > Passive img=oryx/diamond3
+        powerblibturning > Flicker limit=8 img=oryx/sparkle4
+        blib > Passive img=oryx/diamond1
+        enemy > Missile cooldown=3 img=oryx/necromancer1
             top > orientation=RIGHT shrinkfactor=1
             btm > orientation=LEFT shrinkfactor=1
-        shot > Missile shrinkfactor=0.5 img=explosion
-            upshot > orientation=UP speed=0.15
-            downshot > orientation=DOWN speed=0.15
-        res > Resource color=GREEN value=0 limit=4
+        shot > Missile shrinkfactor=0.7
+            upshot > orientation=UP speed=0.15 img=oryx/fireup1
+            downshot > orientation=DOWN speed=0.15 img=oryx/firedown1
+        res > Resource color=GREEN value=0 limit=4 img=oryx/diamond2
+        wall > Immovable img=oryx/wall3 autotiling=True
         
 
     LevelMapping
-        b > blib
-        p > powerblib
-        2 > top enemyground
-        1 > btm enemyground
+        b > floor blib
+        p > floor powerblib
+        2 > floor top enemyground
+        1 > floor btm enemyground
         . > enemyground
+        w > wall
+        + > floor
+        A > floor avatar
  
 
     TerminationSet

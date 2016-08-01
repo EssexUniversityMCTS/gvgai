@@ -1,9 +1,12 @@
 BasicGame
     SpriteSet
-        carcass > Immovable color=BROWN img=carcass
+        floor > Immovable hidden=True img=oryx/grass autotiling=True
+        carcass > Immovable color=BROWN img=oryx/worm2 shrinkfactor=0.6
         goat > stype=avatar
-            angry  > Chaser  color=ORANGE img=monster
-            scared > Fleeing color=BLUE img=virus
+            angry  > Chaser  color=ORANGE img=oryx/bird3
+            scared > Fleeing color=BLUE img=oryx/bird1
+        avatar > MovingAvatar img=oryx/princess1
+        wall > Immovable img=oryx/tree2
 
     InteractionSet
         goat   wall goat   > stepBack
@@ -14,7 +17,10 @@ BasicGame
         scared carcass > transformTo stype=angry
 
     LevelMapping
-        0 > scared
+        0 > scared floor
+        . > floor
+        A > floor avatar
+        w > floor wall
 
     TerminationSet
         SpriteCounter stype=scared win=True

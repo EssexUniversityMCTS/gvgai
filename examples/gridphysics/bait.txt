@@ -3,22 +3,25 @@
 BasicGame  key_handler=Pulse square_size=50
     SpriteSet
 
-        hole   > Immovable color=DARKBLUE img=hole
+        floor > Immovable hidden=True img=oryx/backLBrown
+        hole   > Immovable color=DARKBLUE img=newset/hole1
         avatar > MovingAvatar
-            nokey > img=avatar
-            withkey > img=alien
-        mushroom > Immovable img=mushroom
-        key > Passive img=key
-        goal > Immovable img=door portal=True
-        box    > Passive img=box shrinkfactor=0.8
+            nokey > img=oryx/swordman1 frameRate=8
+            withkey > img=oryx/swordmankey1 frameRate=8
+        mushroom > Immovable img=oryx/mushroom2 shrinkfactor=0.6
+        key > Passive img=oryx/key2 shrinkfactor=0.7
+        goal > Immovable img=oryx/doorclosed1
+        box    > Passive img=newset/block3 shrinkfactor=0.8
+        wall > Immovable img=oryx/dirtwall autotiling=True
 
     LevelMapping
-        A > nokey
-        0 > hole
-        1 > box
-        k > key
-        g > goal
-        m > mushroom
+        A > nokey floor
+        0 > hole floor
+        1 > box floor
+        k > key floor
+        g > goal floor
+        m > mushroom floor
+        . > floor
 
     InteractionSet
         avatar wall > stepBack

@@ -9,12 +9,12 @@ ww.wwwwwwww.wwww.wwwwwwww.ww
 ww......f..........f......ww
 ww.w.ww.wwwwwwwwwwww.ww.w.ww
 ww.w.ww.wwwwwwwwwwww.ww.w.ww
-ww.w.ww.w          w.ww.w.ww
-ww.w.ww.w          w.ww.w.ww
-ww.w.ww.w www  www w.ww.w.ww
-          ww1234ww
-ww.ww.www wwwwwwww www.ww.ww
-ww.ww.www          www.ww.ww
+ww.w.ww.w++++++++++w.ww.w.ww
+ww.w.ww.w++++++++++w.ww.w.ww
+ww.w.ww.w+www++www+w.ww.w.ww
+++++++++++ww1234ww++++++++++
+ww.ww.www+wwwwwwww+www.ww.ww
+ww.ww.www++++++++++www.ww.ww
 ww.ww.wwwwwwwwwwwwwwww.ww.ww
 ww.ww.wwwwwwwwwwwwwwww.ww.ww
 ww....f..............f....ww

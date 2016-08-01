@@ -1,32 +1,35 @@
 BasicGame
     SpriteSet
 
-        building > Immovable img=box
-        street > Immovable invisible=True
+        sky > Immovable hidden=True img=oryx/backGrey
+        building > Immovable img=newset/cloud2
+        street > Immovable img=newset/street3
         emptyspace > Immovable invisible=True
-        jail > Immovable img=lock
+        jail > Immovable img=newset/jail
 
-        portal  > SpawnPoint img=portal portal=True cooldown=50   total=20
+        portal  > SpawnPoint img=newset/jaildoor1 portal=True cooldown=50   total=20
             portalLeft  > stype=bleft
             portalRight  > stype=bright
 
-        bandit > Bomber prob=0.1 cooldown=6 speed=0.5 img=camel stype=missile orientation=UP
-            bleft > spawnorientation=LEFT
+        bandit > Bomber prob=0.1 cooldown=6 speed=0.5 img=newset/bandit1 stype=missile orientation=UP
+            bleft > spawnorientation=LEFT img=newset/bandit1h
             bright > spawnorientation=RIGHT
 
         villain  > Resource color=GREEN limit=8 value=0
         villaingang > Resource color=GREEN limit=1 value=0
 
         civilian >
-            standingcivilian > Missile orientation=DOWN color=GRAY speed=0.2 img=prof
-            hurtcivilian > Immovable img=ghost
-            fallingcivilian > Missile orientation=DOWN color=GRAY speed=0.2 img=zombie
+            standingcivilian > Missile orientation=DOWN color=GRAY speed=0.2 img=newset/man4
+            hurtcivilian > Immovable img=newset/cursedman
+            fallingcivilian > Missile orientation=DOWN color=GRAY speed=0.2 img=newset/man3
 
 
-        missile > Missile img=bullet shrinkfactor=0.6 speed=0.6
+        missile > Missile img=oryx/bullet1 speed=0.6
 
         avatar > MovingAvatar
-            superman > img=alien
+            superman > img=newset/superman frameRate=8
+
+        wall > Immovable img=oryx/wall1
 
     InteractionSet
         avatar wall EOS portal > stepBack
@@ -53,14 +56,15 @@ BasicGame
 
     LevelMapping
         A > superman street
-        b > building
+        b > building sky
         s > street
-        l > bleft
-        r > bright
-        c > standingcivilian
-        p > portalRight
-        q > portalLeft
+        l > bleft sky
+        r > bright sky
+        c > standingcivilian sky
+        p > portalRight street
+        q > portalLeft street
         j > jail
+        . > sky
 
     TerminationSet
         MultiSpriteCounter stype1=hurtcivilian limit=1 win=False

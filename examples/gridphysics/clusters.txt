@@ -1,31 +1,36 @@
 BasicGame key_handler=Pulse
     SpriteSet
-        hole   > Immovable color=DARKBLUE img=hole portal=True
+
+        floor > Immovable img=oryx/floor3 hidden=True
+        hole   > Immovable color=DARKBLUE img=oryx/spike2 portal=True
 
         block > Immovable
-            blueblock > img=wallBlue
-            redblock > img=wallRed
-            greenblock > img=wallGreen
+            blueblock > img=newset/blockB
+            redblock > img=newset/blockR
+            greenblock > img=newset/blockG
 
         box   > Passive shrinkfactor=0.8
-            bluebox > img=boxBlue
-            redbox > img=boxRed
-            greenbox > img=boxGreen
-            brokenBox > img=damaged
+            bluebox > img=newset/blockB2
+            redbox > img=newset/blockR2
+            greenbox > img=newset/blockG2
+            brokenBox > img=newset/block3
 
-        avatar > MovingAvatar img=avatar
+        avatar > MovingAvatar img=oryx/knight1
+        wall > Immovable img=oryx/wall3 autotiling=True
 
     LevelMapping
-            A > avatar
-            h > hole
+            A > avatar floor
+            h > hole floor
 
-            1 > bluebox
-            2 > redbox
-            3 > greenbox
+            1 > bluebox floor
+            2 > redbox floor
+            3 > greenbox floor
 
-            a > blueblock
-            b > redblock
-            c > greenblock
+            a > blueblock floor
+            b > redblock floor
+            c > greenblock floor
+
+            . > floor
 
 
     InteractionSet

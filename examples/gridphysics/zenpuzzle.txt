@@ -2,12 +2,12 @@
 
 BasicGame key_handler=Pulse square_size=48
     SpriteSet
-        background > Immovable img=backBiege
+        background > Immovable img=oryx/backBiege hidden=True
         isincenter > Flicker limit=1
-        avatar  > MovingAvatar img=angel1
-        ground > Immovable img=floorTileOrange
-        walked > Immovable img=floorTileGreen
-        rock > Immovable img=wall5
+        avatar  > MovingAvatar img=oryx/angel1
+        ground > Immovable img=oryx/floorTileOrange
+        walked > Immovable img=oryx/floorTileGreen
+        rock > Immovable img=oryx/wall5
     
     LevelMapping
         r > background rock

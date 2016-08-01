@@ -1,12 +1,17 @@
 BasicGame no_players=2
     SpriteSet
-        avatar >
-            avatar1 > MovingAvatar img=avatarRed.png
-            avatar2 > ShootAvatar stype=pull img=avatar.png
-        pull > Flicker singleton=True img=sword.png
-        deathSpot > Door img=hole color=BLACK
+        floor > Immovable hidden=True img=oryx/floor2
+        ground > Immovable hidden=True img=oryx/backBlack
+
+        avatar > frameRate=16
+            avatar1 > MovingAvatar img=newset/girl3
+            avatar2 > ShootAvatar stype=pull img=newset/cop2
+        pull > Flicker singleton=True img=oryx/sparkle3
+        deathSpot > Door img=oryx/dooropen1 color=BLACK
         safeSpot > Immovable invisible=True
         deadPortal > Portal invisible=True portal=True stype=safeSpot
+
+        wall > Immovable img=oryx/wall3 autotiling=True
         
     InteractionSet
         avatar1 avatar2 > bounceForward
@@ -22,6 +27,7 @@ BasicGame no_players=2
         Timeout limit=1500 win=False,True
     
     LevelMapping
-        A > avatar1 safeSpot
-        B > avatar2
-        x > deathSpot
+        . > floor
+        A > avatar1 safeSpot floor
+        B > avatar2 floor
+        x > deathSpot ground

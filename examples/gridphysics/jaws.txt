@@ -1,26 +1,29 @@
 BasicGame
     SpriteSet
-        holes > SpawnPoint color=LIGHTGRAY img=portal portal=True
+        water > Immovable img=newset/water2
+        holes > SpawnPoint color=LIGHTGRAY img=newset/whirlpool2 portal=True
             sharkhole  >  stype=shark  prob=0.025 total=1
             whalehole  >  stype=whale  prob=0.1 cooldown=10
             piranhahole  >  stype=piranha  prob=0.1 cooldown=10
 
         moving >
-            avatar  > ShootAvatar color=YELLOW  stype=torpedo img=spaceship
-            torpedo > Missile color=YELLOW shrinkfactor=0.3 img=missile
+            avatar  > ShootAvatar color=YELLOW  stype=torpedo img=newset/submarine
+            torpedo > Missile color=YELLOW shrinkfactor=0.3 img=oryx/orb2
             fish >
-                shark  > Chaser speed=0.1 color=ORANGE img=frog stype=avatar
-                whale  > Missile  orientation=RIGHT  speed=0.1 color=BROWN img=bee
-                piranha > Missile orientation=LEFT speed=0.1 color=RED img=camel
+                shark  > Chaser speed=0.1 color=ORANGE img=newset/shark2 stype=avatar
+                whale  > Missile  orientation=RIGHT  speed=0.1 color=BROWN img=newset/whale
+                piranha > Missile orientation=LEFT speed=0.1 color=RED img=newset/piranha1
 
-        shell > Resource color=GOLD limit=20 img=honey
-        sharkFang > Resource color=GOLD limit=1 img=mana
+        shell > Resource color=GOLD limit=20 img=oryx/amulat1 shrinkfactor=0.5
+        sharkFang > Resource color=GOLD limit=1 img=oryx/sword4 shrinkfactor=0.5
 
 
     LevelMapping
-        1 > piranhahole
-        2 > whalehole
-        3 > sharkhole
+        1 > water piranhahole
+        2 > water whalehole
+        3 > water sharkhole
+        . > water
+        A > water avatar
 
     TerminationSet
         SpriteCounter stype=avatar limit=0 win=False

@@ -1,9 +1,10 @@
 BasicGame square_size=20 obs=wall
     SpriteSet
+        floor > Immovable img=oryx/floor3
         food > Immovable
-            fruit > color=PINK img=mushroom
-            pellet > color=LIGHTYELLOW shrinkfactor=0.5 img=pellet
-            power  > Resource color=LIGHTGREEN shrinkfactor=0.8 img=powerpill
+            fruit > color=PINK img=newset/cherries2
+            pellet > color=LIGHTYELLOW shrinkfactor=0.5 img=oryx/gold2
+            power  > Resource color=LIGHTGREEN shrinkfactor=0.8 img=oryx/orb2
         nest > SpawnPoint img=portal portal=True invisible=True
             redspawn > stype=redOk
             orangespawn > stype=orangeOk
@@ -14,23 +15,23 @@ BasicGame square_size=20 obs=wall
 
             ghost >
                 red > singleton=True
-                    redOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=ghostRed cons=4
-                    redSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=ghostscared
+                    redOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=oryx/ghost3 cons=4
+                    redSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=oryx/ghost1
                 blue > singleton=True
-                    blueOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=ghostBlue cons=4
-                    blueSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=ghostscared
+                    blueOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=oryx/ghost4 cons=4
+                    blueSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=oryx/ghost1
                 pink > singleton=True
-                    pinkOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=ghostPink cons=4
-                    pinkSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=ghostscared
+                    pinkOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=oryx/ghost5 cons=4
+                    pinkSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=oryx/ghost1
                 orange > singleton=True
-                    orangeOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=ghostOrange cons=4
-                    orangeSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=ghostscared
+                    orangeOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=oryx/ghost6 cons=4
+                    orangeSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=oryx/ghost1
 
 
-            pacman > OrientedAvatar img=avatar rotateInPlace=false speed=0.5
+            pacman > OrientedAvatar img=newset/pacman rotateInPlace=false speed=0.5
                 hungry  > color=YELLOW
                 powered > color=ORANGE            
-            
+        wall > Immovable img=oryx/wall3 autotiling=True
     InteractionSet
         moving wall > stepBack
         pacman EOS  > wrapAround
@@ -62,14 +63,16 @@ BasicGame square_size=20 obs=wall
 
         
     LevelMapping
-        0 > power
-        . > pellet
-        A > hungry
-        1 > redspawn
-        2 > orangespawn
-        3 > bluespawn
-        4 > pinkspawn
-        f > fruit
+        + > floor
+        0 > floor power
+        . > floor pellet
+        A > floor hungry
+        1 > floor redspawn
+        2 > floor orangespawn
+        3 > floor bluespawn
+        4 > floor pinkspawn
+        f > floor fruit
+        w > floor wall
         
     TerminationSet
         SpriteCounter stype=food   win=True     

@@ -1,0 +1,35 @@
+BasicGame key_handler=Pulse square_size=50 no_players=2
+    SpriteSet
+        floor > Immovable img=newset/floor2 hidden=True
+        hole   > Immovable color=DARKBLUE img=oryx/cspell4
+        ground > Immovable img=newset/floor2 hidden=True
+        avatar > MovingAvatar
+            avatarA > img=oryx/knight1
+            avatarB > img=oryx/guard1
+        bbox    > Passive 
+            boxA > img=newset/block2
+            boxB > img=newset/block2
+            boxinA > img=newset/block1
+            boxinB > img=newset/block1
+        wall > Immovable img=oryx/wall3 autotiling=True
+
+    InteractionSet
+        avatar wall avatar > stepBack
+        bbox avatar  > bounceForward
+        bbox wall bbox   > undoAll
+        boxA hole    > transformTo stype=boxinA scoreChange=1,0
+        boxB hole    > transformTo stype=boxinB scoreChange=0,1
+        boxinA ground > transformTo stype=boxA scoreChange=-1,0
+        boxinB ground > transformTo stype=boxB scoreChange=0,-1
+		
+    TerminationSet
+        SpriteCounter stype=boxA    limit=0 win=True,False
+        SpriteCounter stype=boxB    limit=0 win=False,True
+
+    LevelMapping
+        0 > hole floor
+        1 > boxB ground
+        2 > boxA ground
+        . > ground
+        A > avatarA ground
+        B > avatarB ground

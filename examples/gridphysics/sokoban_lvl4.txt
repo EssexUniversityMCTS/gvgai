@@ -1,9 +1,8 @@
-wwwwwwwwwwwww
-wwwwwwwwwwwww
-ww 0    wwwww
-ww   1A wwwww
-w    w  wwwww
-www1w   wwwww
-www   w wwwww
-www0    wwwww
-wwwwwwwwwwwww
+wwwwwwwww
+ww.0....w
+ww...1A.w
+w....w..w
+www1w...w
+www...w.w
+www0....w
+wwwwwwwww

@@ -36,21 +36,23 @@ public class Test
         String generateLevelPath = "examples/gridphysics/";
 
         //All public games
-        games = new String[]{"aliens", "bait", "blacksmoke", "boloadventures", "bomber", //0-4
-                "boulderchase", "boulderdash", "brainman", "butterflies", "cakybaky", //5-9
-                "camelRace", "catapults", "chainreaction", "chase", "chipschallenge", //10-14
-                "clusters", "colourescape", "chopper", "cookmepasta", "crossfire", //15-19
-                "defem", "defender", "digdug", "dungeon", "eggomania", //20-24
-                "enemycitadel",  "escape", "factorymanager", "firecaster",  "fireman", //25-29
-                "firestorms", "frogs", "gymkhana", "hungrybirds", "iceandfire", //30-34
-                "infection", "intersection", "islands", "jaws", "labyrinth", //35-39
-                "labyrinthdual", "lasers", "lasers2", "lemmings", "missilecommand", //40-44
-                "modality", "overload", "pacman", "painter", "plants", //45-49
-                "plaqueattack", "portals", "raceBet2", "realportals", "realsokoban", //50-54
-                "rivers", "roguelike", "seaquest", "sheriff", "shipwreck", //55-59
-                "sokoban", "solarfox" ,"superman", "surround", "survivezombies", //60-64
-                "tercio", "thecitadel", "waitforbreakfast", "watergame", "whackamole",//65-69
-                "zelda", "zenpuzzle" }; //70, 71
+        games = new String[]{"aliens", "angelsdemons", "assemblyline", "avoidgeorge", "bait", //0-4
+                "blacksmoke", "boloadventures", "bomber", "boulderchase", "boulderdash",      //5-9
+                "brainman", "butterflies", "cakybaky", "camelRace", "catapults",              //10-14
+                "chainreaction", "chase", "chipschallenge", "clusters", "colourescape",       //15-19
+                "chopper", "cookmepasta", "cops", "crossfire", "defem",                       //20-24
+                "defender", "digdug", "dungeon", "eggomania", "enemycitadel",                 //25-29
+                "escape", "factorymanager", "firecaster",  "fireman", "firestorms",           //30-34
+                "freeway", "frogs", "gymkhana", "hungrybirds", "iceandfire",                  //35-39
+                "infection", "intersection", "islands", "jaws", "labyrinth",                  //40-44
+                "labyrinthdual", "lasers", "lasers2", "lemmings", "missilecommand",           //45-49
+                "modality", "overload", "pacman", "painter", "plants",                        //50-54
+                "plaqueattack", "portals", "racebet", "raceBet2", "realportals",              //55-59
+                "realsokoban", "rivers", "roguelike", "run", "seaquest",                      //60-64
+                "sheriff", "shipwreck", "sokoban", "solarfox" ,"superman",                    //65-69
+                "surround", "survivezombies", "tercio", "thecitadel", "thesnowman",           //70-74
+                "waitforbreakfast", "watergame", "waves", "whackamole", "witnessprotection",  //75-79
+                "zelda", "zenpuzzle" };                                                       //80, 81
 
         //Other settings
         boolean visuals = true;

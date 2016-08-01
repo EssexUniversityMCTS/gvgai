@@ -1,9 +1,10 @@
 BasicGame
     SpriteSet
 
-        sky   > Immovable color=WHITE
-        saved > Immovable color=LIGHTGREEN img=avatar
-        holes > SpawnPoint color=LIGHTGRAY img=portal portal=True
+        sky   > Immovable img=oryx/backLBlue
+        water > Immovable img=newset/water2
+        saved > Immovable color=LIGHTGREEN
+        holes > SpawnPoint color=LIGHTGRAY img=newset/whirlpool2 portal=True
             sharkhole  >  stype=shark  prob=0.01
             whalehole  >  stype=whale  prob=0.005
             diverhole  >  stype=diver
@@ -11,15 +12,15 @@ BasicGame
                 oftendiverhole  > prob=0.025
 
         moving >
-            avatar  > ShootAvatar color=YELLOW  stype=torpedo img=spaceship healthPoints=18 limitHealthPoints=20
-            torpedo > Missile color=YELLOW shrinkfactor=0.3 img=missile
+            avatar  > ShootAvatar color=YELLOW  stype=torpedo img=newset/submarine healthPoints=18 limitHealthPoints=20
+            torpedo > Missile color=YELLOW img=oryx/bullet1
             fish >
-                shark  > Missile orientation=LEFT  speed=0.25 color=ORANGE img=frog
-                whale  > Bomber  orientation=RIGHT  speed=0.1 color=BROWN stype=pirana prob=0.02 img=bee 
-                pirana > Missile orientation=RIGHT speed=0.25 color=RED shrinkfactor=0.5 img=camel
-            diver > RandomNPC color=GREEN speed=0.5 img=ghost cons=2
+                shark  > Missile orientation=LEFT  speed=0.25 color=ORANGE img=newset/shark2
+                whale  > Bomber  orientation=RIGHT  speed=0.1 color=BROWN stype=pirana prob=0.02 img=newset/whale
+                pirana > Missile orientation=RIGHT speed=0.25 color=RED shrinkfactor=0.6 img=newset/piranha2
+            diver > RandomNPC color=GREEN speed=0.5 img=newset/diver1 cons=2
 
-        crew  > Resource color=GREEN limit=4 img=alien
+        crew  > Resource color=GREEN limit=4
 
     InteractionSet
 
@@ -40,11 +41,12 @@ BasicGame
 
     LevelMapping
         a > sky
-        A > avatar
-        1 > sharkhole
-        2 > whalehole
-        3 > normaldiverhole
-        4 > oftendiverhole
+        A > water avatar
+        1 > water sharkhole
+        2 > water whalehole
+        3 > water normaldiverhole
+        4 > water oftendiverhole
+        . > water
 
     TerminationSet
         SpriteCounter      stype=avatar               limit=0 win=False

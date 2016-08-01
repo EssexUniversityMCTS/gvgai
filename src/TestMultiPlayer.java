@@ -23,15 +23,17 @@ public class TestMultiPlayer
         String humanController = "controllers.multiPlayer.human.Agent";
 
         //Set here the controllers used in the games (need 2 separated by space).
-        String controllers = humanController + " " + humanController;
+        String controllers = doNothingController + " " + doNothingController;
 
         //Available games:
         String gamesPath = "examples/2player/";
         String games[] = new String[]{};
 
         //All public games
-        games = new String[]{"akkaarrh", "asteroids", "captureflag", "copsNrobbers", "gotcha", //0-4
-                "klax", "samaritan", "sokoban", "steeplechase", "tron"};                          //5-9
+        games = new String[]{"akkaarrh", "asteroids", "beekeeper", "bombergirl", "captureflag", // 0-4
+                "competesokoban", "copsNrobbers", "donkeykong", "dragonattack", "football",     // 5-9
+                "gotcha", "klax", "minesweeper", "rivalry", "romeoNjuliet",                     // 10-14
+                "samaritan", "sokoban", "steeplechase", "teamescape", "tron"};                  // 15-19
 
         //Other settings
         boolean visuals = true;
@@ -46,11 +48,11 @@ public class TestMultiPlayer
         String recordActionsFile = null;//"actions_" + games[gameIdx] + "_lvl" + levelIdx + "_" + seed + ".txt"; //where to record the actions executed. null if not to save.
 
         // 1. This starts a game, in a level, played by two humans.
-        //ArcadeMachine.playOneGameMulti(game, level1, recordActionsFile, seed);
+        ArcadeMachine.playOneGameMulti(game, level1, recordActionsFile, seed);
 
         // 2. This plays a game in a level by the controllers. If one of the players is human, change the playerID passed
         // to the runOneGame method to be that of the human player (0 or 1).
-        ArcadeMachine.runOneGame(game, level1, visuals, controllers, recordActionsFile, seed, 0);
+//        ArcadeMachine.runOneGame(game, level1, visuals, controllers, recordActionsFile, seed, 0);
         
         // 3. This replays a game from an action file previously recorded
         //String readActionsFile = recordActionsFile;

@@ -1,9 +1,14 @@
 BasicGame
     SpriteSet
-        turret > RandomBomber stype=bomb prob=0.4 cooldown=3 speed=0.1 rotateInPlace=True img=base.png
-        bomb > Missile color=RED  speed=0.9 img=bomb
+        floor > Immovable hidden=True img=oryx/space2
+        turret > RandomBomber stype=bomb prob=0.4 cooldown=3 speed=0.1 rotateInPlace=True img=newset/cannon
+        bomb > Missile color=RED  speed=0.9 img=newset/bomb shrinkfactor=0.7
         structure >
-            goal  > Door color=GREEN img=door
+            goal  > Door color=GREEN img=oryx/dooropen1
+
+        avatar > MovingAvatar img=oryx/knight1
+
+        wall > Immovable img=oryx/wall3 autotiling=True
 
     InteractionSet
 
@@ -15,8 +20,10 @@ BasicGame
 
 
     LevelMapping
-        g > goal
-        t > turret
+        g > goal floor
+        t > turret floor
+        . > floor
+        A > avatar floor
 
     TerminationSet
         SpriteCounter stype=goal limit=0 win=True

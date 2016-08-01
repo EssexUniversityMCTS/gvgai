@@ -1,27 +1,29 @@
 BasicGame key_handler=Pulse square_size=50 no_players=2
     SpriteSet
-        safespot > Immovable img=water
+        ground > Immovable img=oryx/grass autotiling=True
+        safespot > Immovable img=newset/water
             spot0 >
             spot1 >
-        ground > Immovable img=dirt
         moving > 
-            avatar > MovingAvatar
-                avatar1 > img=avatarBlue
-                avatar2 > img=avatarRed
-            kid > RandomNPC img=alien
+            avatar > MovingAvatar frameRate=16
+                avatar1 > img=newset/girl2
+                avatar2 > img=newset/man1
+            kid > RandomNPC img=newset/man4 shrinkfactor=0.8
                 kid0 > speed=0.6 cons=2
                 kid1 > speed=0.5 cons=1
                 kid2 > speed=0.2 cons=3
-        winnerPlayer1 > Immovable color=RED 
+        winnerPlayer1 > Immovable color=RED img=newset/girl2
+        wall > Immovable img=oryx/tree2
     LevelMapping
         A > avatar1 ground
         B > avatar2 ground
-        + > spot0
-        - > spot1
+        + > spot0 ground
+        - > spot1 ground
         . > ground
         0 > kid0 ground 
         1 > kid1 ground 
         2 > kid2 ground
+        w > wall ground
     InteractionSet
         moving wall kid > stepBack
         kid avatar > stepBack

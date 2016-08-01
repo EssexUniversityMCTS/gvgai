@@ -1,20 +1,21 @@
 BasicGame key_handler=Pulse
     SpriteSet
-        exit > Door color=GREEN img=goal
-        trap > Immovable img=hell
+        floor > Immovable img=oryx/grass autotiling=True hidden=True
+        trap > Immovable img=oryx/spike2
+        exit > Door color=GREEN img=newset/exit2
 
         wall > Immovable
-            normalWall > img=wall
-            redWall > img=wallRed
-            blueWall > img=wallBlue
+            normalWall > img=oryx/wall1
+            redWall > img=oryx/dirtwall autotiling=True
+            blueWall > img=oryx/wall3 autotiling=True
 
-        redcoat > Resource img=powerpill limit=1 value=0
-        bluecoat > Resource img=diamond limit=1 value=0
+        redcoat > Resource img=oryx/cloak2 limit=1 value=0 color=RED
+        bluecoat > Resource img=oryx/cloak3 limit=1 value=0 color=BLUE
 
         avatar > MovingAvatar
-            avatarNormal > img=avatar
-            avatarRed > img=avatarRed
-            avatarBlue > img=avatarBlue
+            avatarNormal > img=newset/girl1
+            avatarRed > img=oryx/princess1
+            avatarBlue > img=oryx/queen1
 
     InteractionSet
 
@@ -22,11 +23,11 @@ BasicGame key_handler=Pulse
         avatarBlue redWall > stepBack
         avatarRed blueWall > stepBack
 
-        avatar redcoat > changeResource resource=redcoat value=1 scoreChange=3
-        avatar redcoat > transformTo stype=avatarRed killSecond=True
+        #avatar redcoat > changeResource resource=redcoat value=1 scoreChange=3
+        avatar redcoat > transformTo stype=avatarRed killSecond=True scoreChange=3
 
-        avatar bluecoat > changeResource resource=bluecoat value=1 scoreChange=3
-        avatar bluecoat > transformTo stype=avatarBlue killSecond=True
+        #avatar bluecoat > changeResource resource=bluecoat value=1 scoreChange=3
+        avatar bluecoat > transformTo stype=avatarBlue killSecond=True scoreChange=3
 
         exit avatar > killSprite scoreChange=1
         avatar trap > killSprite scoreChange=-1
@@ -37,9 +38,12 @@ BasicGame key_handler=Pulse
         SpriteCounter stype=exit limit=0 win=True
 
     LevelMapping
-        x > exit
-        t > trap
-        r > redWall
-        b > blueWall
-        1 > redcoat
-        2 > bluecoat
+        x > floor exit
+        t > floor trap
+        r > floor redWall
+        b > floor blueWall
+        w > floor normalWall
+        1 > floor redcoat
+        2 > floor bluecoat
+        A > floor avatarNormal
+        . > floor

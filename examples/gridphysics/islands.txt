@@ -1,36 +1,35 @@
 BasicGame
     SpriteSet
 
-        avatar > ShootAvatar stype=shovel
-        shovel > OrientedFlicker limit=1 color=LIGHTGRAY img=shovel.png
-
+        water > Immovable img=newset/water2_1
+        avatar > ShootAvatar stype=shovel img=newset/man3
         land > Immovable
-            landNoSand > img=damaged
-            landSand > img=dirt
+            landNoSand > img=oryx/backLBrown
+            landSand > img=oryx/backBiege
 
-        water > Immovable img=water
+        shovel > OrientedFlicker limit=1 color=LIGHTGRAY img=oryx/pickaxe shrinkfactor=0.4
 
-        bomb > Immovable img=base
-        spark  > SpawnPoint stype=fireStart total=1 shrinkfactor=0.6 img=explosion
+        bomb > Immovable img=newset/bomb shrinkfactor=0.8
+        spark  > SpawnPoint stype=fireStart total=1 shrinkfactor=0.6 img=oryx/sparkle1
         fire >
-            fireStart > Spreader color=ORANGE spreadprob=1.0 stype=fireEnd img=fire
-            fireEnd > Immovable img=fire
+            fireStart > Spreader color=ORANGE spreadprob=1.0 stype=fireEnd img=oryx/fire1
+            fireEnd > Immovable img=oryx/fire1
 
-        whirlpool > Immovable img=flower
-        goal > Immovable img=door portal=true
+        whirlpool > Immovable img=newset/whirlpool2
+        goal > Immovable img=newset/hole1 portal=true
 
-        sand > Resource limit=10 color=YELLOW shrinkfactor=0.45
-        treasure > Immovable img=boxBlue
+        sand > Resource limit=10 color=YELLOW shrinkfactor=0.45 img=oryx/wall4 shrinkfactor=0.6
+        treasure > Immovable img=oryx/treasure2
 
 
     LevelMapping
         . > water
         x > landSand
         A > landSand avatar
-        b > bomb
-        p > whirlpool
+        b > water bomb
+        p > water whirlpool
         t > landSand treasure
-        g > goal
+        g > landSand goal
 
     InteractionSet
 

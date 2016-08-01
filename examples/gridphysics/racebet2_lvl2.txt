@@ -1,9 +1,8 @@
 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
-wa                          w    gw
-wb                               gw
-wc                               gw
-wd                          t    gw
-w                                 w
+wa++++++++++++++++++++++++++-++++gw
+wb+++++++++++++++++++++++++++++++gw
+wc+++++++++++++++++++++++++++++++gw
+wd++++++++++++++++++++++++++t++++gw
 wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
 wwwwwwwwwwwwwwwww3wwwwwwwwwwwwwwwww
 wwwwwwwwwwwwwwwww.wwwwwwwwwwwwwwwww

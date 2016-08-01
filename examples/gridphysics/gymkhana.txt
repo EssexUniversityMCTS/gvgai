@@ -1,32 +1,32 @@
 BasicGame square_size=30 key_handler=Pulse
     SpriteSet
-        background > Immovable color=BLUE img=seaWater
-        water > Immovable color=BLUE img=seaWater
-        floor > Immovable autotiling=true img=grass
-        wall  > Immovable img=bush5
-        goal  > Immovable color=GREEN img=doorclosed1 portal=True
+        background > Immovable color=BLUE img=oryx/seaWater hidden=True
+        water > Immovable color=BLUE img=oryx/seaWater
+        floor > Immovable autotiling=true img=oryx/grass hidden=True
+        wall  > Immovable img=oryx/bush5
+        goal  > Immovable color=GREEN img=oryx/doorclosed1 portal=True
 		
-        forest > SpawnPoint stype=log prob=0.25  cooldown=10 img=seaWater
+        forest > SpawnPoint stype=log prob=0.25  cooldown=10 img=oryx/seaWater
             forestR > stype=logR
             forestL > stype=logL
 
-        log    > Missile speed=0.1 color=BROWN img=bush1
+        log    > Missile speed=0.1 color=BROWN img=oryx/bush1
             logR > orientation=RIGHT
             logL > orientation=LEFT
-            landingpad > speed=0.0 img=floorTileOrange
+            landingpad > speed=0.0 img=oryx/floorTileOrange
 
 
         catapult > Immovable
-            southfacing > orientation=DOWN  color=RED img=bookDown
-            northfacing > orientation=UP  color=ORANGE img=bookUp
-            eastfacing  > orientation=RIGHT color=YELLOW img=bookRight
-            westfacing  > orientation=LEFT color=YELLOW img=bookLeft
+            southfacing > orientation=DOWN  color=RED img=oryx/bookDown
+            northfacing > orientation=UP  color=ORANGE img=oryx/bookUp
+            eastfacing  > orientation=RIGHT color=YELLOW img=oryx/bookRight
+            westfacing  > orientation=LEFT color=YELLOW img=oryx/bookLeft
 
         avatar >
-            moving > OrientedAvatar img=vampire1
+            moving > OrientedAvatar img=oryx/vampire1
                 onground >
                 onlog >
-            bullet > MissileAvatar img=bat1
+            bullet > MissileAvatar img=oryx/bat1
                 north  > orientation=UP color=RED
                 south  > orientation=DOWN color=ORANGE
                 east   > orientation=RIGHT color=YELLOW

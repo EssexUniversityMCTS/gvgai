@@ -1,11 +1,12 @@
 BasicGame
     SpriteSet
-        fire    > RandomMissile color=ORANGE speed=0.25 img=fire
-        seed    > SpawnPoint color=RED prob=0.25 img=portal stype=fire portal=True
-        water   > Resource color=BLUE limit=10 value=2
-        escape  > Door color=GREEN img=door
-        avatar  > MovingAvatar healthPoints=1
-        wall    > Immovable color=DARKGRAY img=wall
+        floor   > Immovable img=oryx/backGrey hidden=True
+        fire    > RandomMissile color=ORANGE speed=0.25 img=oryx/fire1
+        seed    > SpawnPoint color=RED prob=0.25 img=oryx/fire1 shrinkfactor=0.3 stype=fire portal=True
+        water   > Resource color=BLUE limit=10 value=2 img=newset/water
+        escape  > Door color=GREEN img=oryx/dooropen1
+        avatar  > MovingAvatar healthPoints=1 img=oryx/druid1
+        wall    > Immovable color=DARKGRAY img=oryx/wall6
 
     TerminationSet
         SpriteCounter stype=escape win=True
@@ -21,6 +22,8 @@ BasicGame
         fire water avatar wall > killSprite
 
     LevelMapping
-        1 > escape
-        0 > seed
-        h > water
+        1 > escape floor
+        0 > seed floor
+        h > water floor
+        . > floor
+        A > floor avatar

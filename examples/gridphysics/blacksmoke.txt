@@ -1,19 +1,22 @@
 BasicGame
     SpriteSet
 
-        shovel > Flicker color=LIGHTGRAY limit=1 singleton=True img=sword.png
-        avatar  > ShootAvatar stype=shovel
 
-        death > Immovable color=GRAY
-        ground > Immovable color=BLACK img=dirt
-        lock   > Immovable color=WHITE img=lock
+        death > Immovable color=GRAY img=oryx/backBrown
+        ground > Immovable color=BLACK img=oryx/backLBrown
+        lock   > Immovable color=WHITE img=newset/lock1
 
-        smoke   > SpawnPoint cooldown=2  total=6 stype=smokespawn img=smoke
+        smoke   > SpawnPoint cooldown=2  total=6 stype=smokespawn img=oryx/smoke
         smokespawn > RandomMissile color=ORANGE speed=0.25 invisible=True
-        exit > Door img=door
+        exit > Door img=oryx/dooropen1
 
-        box    > Immovable img=box
-        key > Resource limit=1 img=key singleton=True
+        box    > Immovable img=newset/block2
+        key > Resource limit=1 img=oryx/key2 singleton=True shrinkfactor=0.7
+
+        shovel > Flicker color=LIGHTGRAY limit=1 singleton=True img=oryx/pickaxe shrinkfactor=0.5
+        avatar  > ShootAvatar stype=shovel img=oryx/axeman1
+
+        wall > Immovable img=oryx/dirtwall autotiling=True
 
     InteractionSet
 
@@ -39,7 +42,7 @@ BasicGame
         . > ground death
         c > death
         d > smoke death
-        e > exit
+        e > exit ground
         A > avatar ground death
         k > key ground death
         l > lock ground death

@@ -1,42 +1,45 @@
 BasicGame
     SpriteSet
 
-        avatar > ShootAvatar stype=boulder rotateInPlace=true
-        boulder > Missile color=BLUE singleton=True img=bullet
+        floor > Immovable img=oryx/floor3 hidden=True
+        avatar > ShootAvatar stype=boulder rotateInPlace=true img=oryx/archer1
+        boulder > Missile color=BLUE singleton=True img=oryx/orb2 shrinkfactor=0.3
         line > SpawnPoint
-            lcup > img=spaceship stype=lup
-            lcdown > img=spaceship stype=ldown
-            lcright > img=spaceship stype=lright
-            lcleft > img=spaceship stype=lleft
-            lcswap > img=spaceship stype=lleft
+            lcup > img=newset/lasercannon stype=lup
+            lcdown > img=newset/lasercannon_2 stype=ldown
+            lcright > img=newset/lasercannon_1 stype=lright
+            lcleft > img=newset/lasercannon_3 stype=lleft
+            lcswap > img=newset/lasercannon_4 stype=lleft
         laser > Missile shrinkfactor=0.5 speed=0.5 color=YELLOW
-            lup > orientation=UP
-            ldown > orientation=DOWN
-            lright > orientation=RIGHT
-            lleft > orientation=LEFT
+            lup > orientation=UP img=newset/laser1
+            ldown > orientation=DOWN img=newset/laser1
+            lright > orientation=RIGHT img=newset/laser1_1
+            lleft > orientation=LEFT img=newset/laser1_1
 
         goal > Immovable portal=true
-            highway > img=hole
-            street > img=door
-        box    > Passive img=box
-        trap > Immovable img=hell
-        carcrash > Immovable img=explosion
+            highway > img=newset/highway3
+            street > img=newset/street2
+        box    > Passive img=newset/block3
+        trap > Immovable img=oryx/spike2
+        carcrash > Immovable img=oryx/slash1
 
         portal  > SpawnPoint   stype=car  cooldown=20 img=portal portal=True
-        car > Missile orientation=DOWN color=RED speed=0.1 img=bus
+        car > Missile orientation=DOWN color=RED speed=0.1 img=newset/car_redD
+        wall > Immovable img=oryx/wall3 autotiling=True
 
 
     LevelMapping
-        A > avatar
-        l > lcleft
-        r > lcright
-        u > lcup
-        d > lcdown
-        p > portal
-        b > box
-        h > highway
-        s > street
-        t > trap
+        A > avatar floor
+        l > lcleft floor
+        r > lcright floor
+        u > lcup floor
+        d > lcdown floor
+        p > portal floor
+        b > box floor
+        h > highway floor
+        s > street floor
+        t > trap floor
+        . > floor
 
     InteractionSet
     

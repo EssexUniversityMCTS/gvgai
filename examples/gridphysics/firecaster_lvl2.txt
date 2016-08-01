@@ -1,11 +1,11 @@
 wwwwwwwwwwwwwwwwwww
-w...    .w       Aw
-w   bbb  w bbb  bbw
-wbb  bb  w  bbb   w
-w...  b  w...bbb  w
+w...____.w_______Aw
+w___bbb__w_bbb__bbw
+wbb__bb__w__bbb___w
+w...__b__w...bbb__w
 wbbbbbbbbbbbbbbbbbw
-w wwwwwwww        w
-w    bb. w bbbbbb w
-wwwb  bb wb      bw
-wg b     w .....  w
+w_wwwwwwww________w
+w____bb._w_bbbbbb_w
+wwwb__bb_wb______bw
+wg_b_____w_.....__w
 wwwwwwwwwwwwwwwwwww

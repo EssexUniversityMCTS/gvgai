@@ -1,0 +1,25 @@
+BasicGame
+    SpriteSet
+        base    > Immovable    color=WHITE img=base
+        avatar  > HorizontalAvatar
+        alien   > Missile  orientation=DOWN  speed=0.8 img=alien
+        ghost > Missile orientation=DOWN speed=0.8 img=ghost
+        portal  >
+            portalAlien  > SpawnPoint orientation=RIGHT   stype=alien  cooldown=16  prob=0.08 total=20 img=portal
+            portalGhost  > SpawnPoint orientation=RIGHT   stype=ghost  cooldown=12  prob=0.08 total=20 img=portal
+
+    LevelMapping
+        0 > base
+        1 > portalAlien
+        2 > portalGhost
+
+    TerminationSet
+        SpriteCounter      stype=avatar               limit=0 win=False
+        Timeout limit=1000 win=True
+
+    InteractionSet
+        avatar  wall  > stepBack
+        alien   EOS  > turnAround
+        base   alien > killSprite
+        alien avatar > killSprite scoreChange=1
+        avatar ghost > killSprite scoreChange=-10

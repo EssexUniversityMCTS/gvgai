@@ -2,25 +2,28 @@
 
 BasicGame
     SpriteSet
-        avatar > OrientedAvatar img=alien rotateInPlace=false
-        gem > Immovable
-            green > Immovable img=diamond
-            red > Immovable img=powerpill
-            blue > Immovable img=mana
-        key > Passive img=key
-        keym > Missile img=city
-        exit > Immovable img=goal
-        door > Immovable img=door
-        boulder > Passive img=boulder 
+        floor > Immovable hidden=True img=newset/floor2
+        avatar > OrientedAvatar img=oryx/prince1 rotateInPlace=false
+        gem > Immovable shrinkfactor=0.7
+            green >  img=oryx/diamond3
+            red >  img=oryx/diamond2
+            blue >  img=oryx/diamond1
+        key > Passive img=oryx/key3 shrinkfactor=0.7
+        keym > Missile img=oryx/key3 shrinkfactor=0.6
+        exit > Immovable img=newset/exit2
+        door > Immovable img=oryx/doorclosed1
+        boulder > Passive img=newset/block3
+        wall > Immovable img=oryx/wall3 autotiling=True
     LevelMapping
-        A > avatar
-        k > key
-        d > door
-        e > exit
-        g > green
-        r > red
-        b > blue 
-        O > boulder
+        A > avatar floor
+        k > key floor
+        d > door floor
+        e > exit floor
+        g > green floor
+        r > red floor
+        b > blue  floor
+        O > boulder floor
+        . > floor
     InteractionSet
 
         keym key wall gem boulder > transformTo stype=key

@@ -1,39 +1,44 @@
 BasicGame key_handler=Pulse
     SpriteSet
-        water > Immovable color=BLUE img=water
-        weaponToggle1 > Immovable color=RED img=city
-        weaponToggle2 > Immovable color=RED img=flower
+        floor > Immovable img=oryx/backOBrown
+
+        water > Immovable color=BLUE img=newset/water
+        weaponToggle1 > Immovable color=RED img=oryx/staff3 shrinkfactor=0.6
+        weaponToggle2 > Immovable color=RED img=oryx/staff2 shrinkfactor=0.6
         weapon > Resource color=BLUE value=10000 limit=10000 img=spaceship
 
-        key > Resource shrinkfactor=0.8 color=RED img=key
-        lock > Immovable img=lock
+        key > Resource shrinkfactor=0.8 color=RED img=oryx/key2
+        lock > Immovable img=oryx/doorclosed1
 
-        portalentry > Portal stype=portalexit color=LIGHTBLUE img=portal
-        portalexit  > Immovable color=BROWN img=door
-        goal > Immovable color=GREEN img=goal
+        portalentry > Portal stype=portalexit color=LIGHTBLUE img=oryx/circleEffect1
+        portalexit  > Immovable color=BROWN img=oryx/explosion2
+        goal > Immovable color=GREEN img=oryx/door2
 
         missile > Missile color=YELLOW speed=0.5 shrinkfactor=0.3
-            missileIn > img=missile singleton=True
-            missileOut > img=explosion singleton=True
+            missileIn > img=oryx/bullet1 singleton=True
+            missileOut > img=oryx/bullet2 singleton=True
 
-        boulderm > Missile img=boulder
+        boulderm > Missile img=oryx/potion1
 
         moving >
-            boulder > Passive img=boulder
+            boulder > Passive img=oryx/potion1
             avatar > ShootAvatar ammo=weapon cooldown=2
-                avatarIn > stype=missileIn img=avatar
-                avatarOut > stype=missileOut img=alien
+                avatarIn > stype=missileIn img=oryx/necromancer1
+                avatarOut > stype=missileOut img=oryx/mage1
 
+        wall > Immovable img=oryx/dirtwall autotiling=True
 
     LevelMapping
-        g > goal
-        . > water
-        A > avatarIn weapon
-        t > weaponToggle1
-        p > weaponToggle2
-        k > key
-        l > lock
-        o > boulder
+        g > floor goal
+        . > floor water
+        A > floor avatarIn weapon
+        t > floor weaponToggle1
+        p > floor weaponToggle2
+        k > floor key
+        l > floor lock
+        o > floor boulder
+        + > floor
+        w > floor wall
 
     TerminationSet
         SpriteCounter stype=goal   limit=0 win=True

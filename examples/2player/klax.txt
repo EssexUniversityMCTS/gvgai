@@ -9,28 +9,29 @@ BasicGame no_players=2
                 spawn3 > stypeMissile=red,green cooldown=4 speed=0.6 prob=0.1
                 spawn4 > stypeMissile=red,green,yellow,blue cooldown=5 speed=0.8 prob=0.1
             avatar  > HorizontalAvatar
-                none > 
-                    avatarA > img=avatar
-                    avatarB > img=alien
+                none > frameRate=16
+                    avatarA > img=newset/girl2
+                    avatarB > img=newset/man3
                 claimed > 
-                    avatarAC > img=avatar
-                    avatarBC > img=alien
+                    avatarAC > img=newset/girl2
+                    avatarBC > img=newset/man3
         missile > Missile orientation=DOWN speed=0.1
             unclaimed >
-                red  > color=RED
-                green  > color=GREEN
-                yellow  > color=YELLOW
-                blue  > color=BLUE
+                red  > color=RED img=newset/blockR
+                green  > color=GREEN img=newset/blockG
+                yellow  > color=YELLOW img=newset/blockY
+                blue  > color=BLUE img=newset/blockB
             avA >
-                redA > color=RED
-                greenA  > color=GREEN
-                yellowA  > color=YELLOW
-                blueA  > color=BLUE
+                redA > color=RED img=newset/blockR2
+                greenA  > color=GREEN img=newset/blockG2
+                yellowA  > color=YELLOW img=newset/blockY2
+                blueA  > color=BLUE img=newset/blockB2
             avB >
-                redB > color=RED
-                greenB  > color=GREEN
-                yellowB  > color=YELLOW
-                blueB  > color=BLUE
+                redB > color=RED img=newset/blockR3
+                greenB  > color=GREEN img=newset/blockG3
+                yellowB  > color=YELLOW img=newset/blockY3
+                blueB  > color=BLUE img=newset/blockB3
+        wall > Immovable img=oryx/wall1
 
     InteractionSet
         blockSpawn wall  > reverseDirection
@@ -86,4 +87,4 @@ BasicGame no_players=2
         B > avatarB
 
     TerminationSet
-        TimeoutScoreCount limit=1500
+        Timeout limit=1500 count_score=True

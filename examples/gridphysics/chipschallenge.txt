@@ -2,55 +2,61 @@
 
 BasicGame square_size=45 key_handler=Pulse
     SpriteSet
-        water > Immovable img=water
-        mud > Immovable img=marsh
-        fire > Immovable img=fire
+        floor > Immovable hidden=True img=oryx/floor3
+
+        water > Immovable img=newset/water
+        mud > Immovable img=oryx/backLBrown
+        fire > Immovable img=oryx/fire1
 
         key > Resource shrinkfactor=0.5
-            redkey > color=RED
-            bluekey > color=BLUE
-            greenkey > color=GREEN
-            yellowkey > color=YELLOW
+            redkey > img=oryx/potion3
+            bluekey > img=oryx/potion1
+            greenkey > img=oryx/potion4
+            yellowkey > img=oryx/potion5
 
         door > Immovable
-            reddoor > Immovable color=RED
-            bluedoor > Immovable color=BLUE
-            greendoor > Immovable color=GREEN
-            yellowdoor > Immovable color=YELLOW
+            reddoor > Immovable img=oryx/slime3
+            bluedoor > Immovable img=oryx/slime1
+            greendoor > Immovable img=oryx/slime2
+            yellowdoor > Immovable img=oryx/slime6
 
         boots > Resource limit=1
-            flippers > img=diamond
-            fireboots > img=powerpill
+            flippers > img=oryx/boots3
+            fireboots > img=oryx/boots2
         
-        crate > Passive img=box
+        crate > Passive img=newset/block3
         
-        gate > Immovable img=base
-        exit > Immovable img=goal
-        chip > Resource img=gold limit=11
-        avatar > MovingAvatar img=alien
+        gate > Immovable img=oryx/doorclosed1
+        exit > Immovable img=newset/exit2
+        chip > Resource img=oryx/gold1 shrinkfactor=0.5 limit=11
+        avatar > MovingAvatar img=oryx/rogue
+
+        wall > Immovable img=oryx/wall3 autotiling=True
             
     
     LevelMapping
-        A > avatar
-        ~ > water
-        m > mud
-        x > fire
-        r > redkey
-        g > greenkey
-        b > bluekey
-        y > yellowkey
+        A > avatar floor
+        ~ > water floor
+        m > mud floor
+        x > fire floor
+        r > redkey floor
+        g > greenkey floor
+        b > bluekey floor
+        y > yellowkey floor
 
-        1 > reddoor
-        2 > greendoor
-        3 > bluedoor
-        4 > yellowdoor
+        1 > reddoor floor
+        2 > greendoor floor
+        3 > bluedoor floor
+        4 > yellowdoor floor
 
-        - > gate
-        c > chip
-        e > exit
-        f > flippers
-        i > fireboots
-        d > crate
+        - > gate floor
+        c > chip floor
+        e > exit floor
+        f > flippers floor
+        i > fireboots floor
+        d > crate floor
+
+        . > floor
 
 
     TerminationSet

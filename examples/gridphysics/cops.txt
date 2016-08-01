@@ -1,0 +1,75 @@
+BasicGame square_size=40
+    SpriteSet
+        floor > Immovable img=oryx/space4 hidden=True
+        jaildoor    > Immovable    color=WHITE img=newset/jaildoor1
+        depot > Immovable    color=WHITE img=oryx/key1
+        jail    > Immovable    color=WHITE img=newset/jail
+
+        transaction > Immovable invisible=True hidden=True
+            redtrans >
+            greentrans >
+            yellowtrans >
+
+        thug > Fleeing stype=avatar speed=0.9
+            redthug > img=newset/redthug frameRate=7
+            greenthug > img=newset/greenthug frameRate=9
+            yellowthug > img=newset/yellowthug frameRate=5
+            boss > img=newset/bossthug frameRate=12
+
+        key > Resource limit=1 img=key singleton=True color=LIGHTBLUE
+        villain > Resource
+            redvillain > color=RED
+            greenvillain > color=GREEN
+            yellowvillain > color=YELLOW
+
+        avatar > MovingAvatar img=newset/cop2 frameRate=8
+
+        wall > Immovable img=oryx/wall1
+
+
+    LevelMapping
+        . > floor
+        0 > floor jail
+        1 > floor depot
+        d > floor jaildoor
+
+        g > floor greenthug
+        y > floor yellowthug
+        r > floor redthug
+        b > floor boss
+
+        A > floor avatar
+
+        
+    InteractionSet
+
+        avatar  wall  > stepBack
+        thug wall jaildoor > stepBack
+
+        key avatar      > collectResource
+        key avatar      > killSprite
+
+        jaildoor avatar > killIfOtherHasMore resource=key limit=1
+        avatar jaildoor > changeResource resource=key value=-1
+        avatar jaildoor > stepBack
+
+        avatar depot > spawnIfHasLess resource=key limit=0 stype=key
+
+        avatar redthug > changeResource resource=redvillain value=1 killResource=True
+        avatar greenthug > changeResource resource=greenvillain value=1  killResource=True
+        avatar yellowthug > changeResource resource=yellowvillain value=1 killResource=True
+
+        avatar jail > spawnIfHasMore resource=greenvillain limit=1 stype=greentrans
+        avatar greentrans > changeResource resource=greenvillain value=-1 killResource=True scoreChange=2
+
+        avatar jail > spawnIfHasMore resource=yellowvillain limit=1 stype=yellowtrans
+        avatar yellowtrans > changeResource resource=yellowvillain value=-1 killResource=True scoreChange=5
+
+        avatar jail > spawnIfHasMore resource=redvillain limit=1 stype=redtrans
+        avatar redtrans > changeResource resource=redvillain value=-1 killResource=True scoreChange=100
+
+        boss avatar > killSprite scoreChange=100
+
+    TerminationSet
+        Timeout limit=1900 win=False
+        SpriteCounter      stype=boss               limit=0 win=True

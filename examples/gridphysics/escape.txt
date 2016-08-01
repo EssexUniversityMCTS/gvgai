@@ -1,14 +1,18 @@
 BasicGame key_handler=Pulse
     SpriteSet
-        avatar > MovingAvatar 
-        box    > Passive img=box
-        exit > Door color=GREEN img=door.png
-        hole   > Immovable color=DARKBLUE img=hole portal=True
+        floor > Immovable hidden=True img=oryx/backLBrown
+        avatar > MovingAvatar img=oryx/rat1
+        box    > Passive img=newset/block3
+        exit > Door color=GREEN img=newset/cheese
+        hole   > Immovable color=DARKBLUE img=newset/hole1 portal=True
+        wall > Immovable img=oryx/dirtwall autotiling=True
 
     LevelMapping
-        x > exit
-        h > hole
-        1 > box
+        x > exit floor
+        h > hole floor
+        1 > box floor
+        A > avatar floor
+        . > floor
 
     InteractionSet
         avatar wall > stepBack

@@ -1,22 +1,23 @@
 BasicGame no_players=2
     SpriteSet
-        base > Immovable color=WHITE img=base
+        background > Immovable hidden=True img=oryx/space1
+        base > Immovable color=WHITE img=newset/block3
         moving >
             avatar  > ShootAvatar speed=0.9
-                avatar1 > stype=sam1 img=spaceship
-                avatar2 > stype=sam2 img=spaceshipRed
+                avatar1 > stype=sam1 img=oryx/spaceship1
+                avatar2 > stype=sam2 img=oryx/spaceship2
             missile > Missile timeToLive=20
-                sam1  > color=BLUE singleton=True img=missile
-                sam2  > color=RED singleton=True img=missile
+                sam1  > color=BLUE singleton=True img=oryx/orb3 shrinkfactor=0.5
+                sam2  > color=RED singleton=True img=oryx/orb1 shrinkfactor=0.5
 
         asteroid >
 
-            static > RandomNPC img=boulder is_npc=False
+            static > RandomNPC img=oryx/planet is_npc=False
                 big > speed=0.05 cons=1
                 medium > speed=0.10 cons=2 shrinkfactor=0.8
                 small > speed=0.15 cons=3 shrinkfactor=0.5
 
-            rnd > RandomMissile speed=0.15 img=boulder
+            rnd > RandomMissile speed=0.15 img=oryx/planet
                 rndBig > speed=0.05
                 rndMedium > speed=0.10 shrinkfactor=0.8
                 rndSmall > speed=0.15 shrinkfactor=0.5
@@ -26,18 +27,19 @@ BasicGame no_players=2
             portalH > stype=rndBig total=1
     
     LevelMapping
-        p > portalR
-        h > portalH
-        b > base
-        A > avatar1
-        B > avatar2
+        p > portalR background
+        h > portalH background
+        b > base background
+        A > avatar1 background
+        B > avatar2 background
+        . > background
 
     TerminationSet
         MultiSpriteCounter stype1=avatar1 stype2=avatar2 limit=0 win=False,False
         SpriteCounter stype=avatar1 limit=0 win=False,True
         SpriteCounter stype=avatar2 limit=0 win=True,False
         SpriteCounter stype=asteroid limit=0 count_score=True
-        TimeoutScoreCount limit=2000
+        Timeout limit=2000 count_score=True
         
     InteractionSet
         moving EOS > wrapAround

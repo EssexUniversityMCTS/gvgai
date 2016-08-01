@@ -1,29 +1,32 @@
 BasicGame
    SpriteSet
-      chef > Chaser img=alien color=ORANGE stype=avatar speed=0.1 maxDistance=200
+      floor > Immovable img=newset/floor6 hidden=True
+      chef > Chaser img=newset/chef frameRate=8 color=ORANGE stype=avatar speed=0.1 maxDistance=200
 
-      table > Immovable img=tableused
-      inc > Resource
-         inc1 > img=base limit=1
-         inc2 > img=water  limit=1
-         inc3 > img=mushroom limit=1
-         inc4 > img=honey limit=1
-         inc5 > img=cocoon limit=1
-         inc6 > img=carcass limit=1
+      table > Immovable img=newset/table1
+      inc > Resource shrinkfactor=0.9
+         inc1 > img=newset/flour limit=1
+         inc2 > img=newset/milk  limit=1
+         inc3 > img=newset/egg limit=1
+         inc4 > img=newset/sugar limit=1
+         inc5 > img=newset/butter limit=1
+         inc6 > img=newset/cherries limit=1
 
-      avatar > OrientedAvatar img=avatar rotateInPlace=false
+      avatar > OrientedAvatar img=newset/man4 rotateInPlace=false frameRate=8
+      wall > Immovable color=BLACK img=newset/floor4
     
    LevelMapping
-      1 > inc1
-      2 > inc2
-      3 > inc3
-      4 > inc4
-      5 > inc5
-      6 > inc6
-      t > table
-      C > avatar inc1 inc2
-      A > avatar
-      c > chef
+      1 > inc1 floor
+      2 > inc2 floor
+      3 > inc3 floor
+      4 > inc4 floor
+      5 > inc5 floor
+      6 > inc6 floor
+      t > table floor
+      C > avatar inc1 inc2 floor
+      A > avatar floor
+      c > chef floor
+      . > floor
            
    TerminationSet
       Timeout limit=1500 win=False

@@ -1,23 +1,28 @@
 BasicGame square_size=30
     SpriteSet
+        floor > Immovable hidden=True img=oryx/backlBrown
         goodies > Immovable
-            gold > color=GOLD img=gold.png
-            gem  > color=GREEN shrinkfactor=0.6 img=diamond.png
-        shovel > OrientedFlicker limit=2 color=LIGHTGRAY img=shovel.png
+            gold > color=GOLD img=oryx/gold2 shrinkfactor=0.5
+            gem  > color=GREEN shrinkfactor=0.6 img=oryx/diamond1
+        shovel > OrientedFlicker limit=2 color=LIGHTGRAY img=oryx/pickaxe shrinkfactor=0.6
         weapon > singleton=True
-            resting > Immovable speed=0.0 img=boulder.png
-            boulder > Missile speed=0.2 img=boulder.png
+            resting > Immovable speed=0.0 img=oryx/planet
+            boulder > Missile speed=0.2 img=oryx/planet
         moving >
-            avatar  > ShootAvatar stype=shovel
-            monster > Missile color=RED orientation=DOWN cooldown=4 img=monster.png
-            falling > Missile orientation=DOWN color=YELLOW speed=0.5 img=boulder.png
-        entrance > SpawnPoint total=5 cooldown=200 stype=monster img=portal.png portal=True
+            avatar  > ShootAvatar stype=shovel img=oryx/axeman1
+            monster > Missile color=RED orientation=DOWN cooldown=4 img=oryx/scorpion3
+            falling > Missile orientation=DOWN color=YELLOW speed=0.5 img=oryx/planet
+        entrance > SpawnPoint total=5 cooldown=200 stype=monster img=newset/hole1 portal=True
+        wall > Immovable img=oryx/dirtwall autotiling=True
 
     LevelMapping
-        0 > gem
-        1 > gold
-        e > entrance
-        m > monster
+        0 > gem floor
+        1 > gold floor
+        e > entrance floor
+        m > monster floor
+        . > floor
+        A > avatar floor
+        w > wall floor
 
     TerminationSet
         SpriteCounter  stype=avatar  limit=0 win=False

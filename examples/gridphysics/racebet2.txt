@@ -1,33 +1,37 @@
-BasicGame
+BasicGame square_size=40
     SpriteSet
-        goal  > Door color=GREEN img=door
-        trap > Immovable img=hell
+        floor > Immovable img=oryx/backBiege hidden=True
+        goal  > Door color=GREEN img=newset/exit2
+        trap > Immovable img=oryx/spike3
 
-        camel > Missile img=camel.png orientation=RIGHT
-            camelA > speed=0.45
-            camelB > speed=0.35
-            camelC > speed=0.25
-            camelD > speed=0.15
+        camel > Missile orientation=RIGHT
+            camelA > speed=0.45 img=newset/camel1 frameRate=4
+            camelB > speed=0.35 img=newset/camel2 frameRate=5
+            camelC > speed=0.25 img=newset/camel3 frameRate=6
+            camelD > speed=0.15 img=newset/camel4 frameRate=7
 
         winner > Immovable singleton=True
-            winA > speed=0.25 img=diamond
-            winB > speed=0.25 img=mana
-            winC > speed=0.25 img=powerpill
-            winD > speed=0.25 img=crystal
+            winA > speed=0.25 img=newset/win1
+            winB > speed=0.25 img=newset/win2
+            winC > speed=0.25 img=newset/win3
+            winD > speed=0.25 img=newset/win4
 
         pit > Immovable
-            arena > color=LIGHTYELLOW
-            pitA > color=LIGHTBLUE
-            pitB > color=LIGHTGREEN
-            pitC > color=LIGHTORANGE
-            pitD > color=LIGHTGRAY
+            arena > color=LIGHTYELLOW img=newset/floor6
+            pitA > color=LIGHTBLUE img=newset/tile1
+            pitB > color=LIGHTGREEN img=newset/tile2
+            pitC > color=LIGHTORANGE img=newset/tile3
+            pitD > color=LIGHTGRAY img=newset/tile4
 
-        avatar > MovingAvatar speed=1.0
-            normal > img=avatar
-            betA > img=diamond
-            betB > img=mana
-            betC > img=powerpill
-            betD > img=crystal
+        avatar > MovingAvatar speed=1.0 img=newset/man4
+            normal >
+            betA >
+            betB >
+            betC >
+            betD >
+
+        barrier > Immovable img=newset/barrier1
+        wall > Immovable img=oryx/space5
 
     InteractionSet
 
@@ -43,7 +47,7 @@ BasicGame
         camelD goal > transformTo stype=winD
 
         avatar wall > stepBack
-        camel wall  > stepBack
+        camel wall barrier  > stepBack
         camel trap > killSprite
 
     LevelMapping
@@ -53,12 +57,14 @@ BasicGame
         2 > pitB
         3 > pitC
         4 > pitD
-        a > camelA
-        b > camelB
-        c > camelC
-        d > camelD
-        t > trap
-        g > goal
+        a > floor camelA
+        b > floor camelB
+        c > floor camelC
+        d > floor camelD
+        g > floor goal
+        + > floor
+        - > floor barrier
+        t > floor trap
 
 
     TerminationSet

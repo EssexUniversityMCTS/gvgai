@@ -2,21 +2,23 @@
 
 BasicGame square_size=40 key_handler=Pulse
     SpriteSet
-        squarehole   > Immovable color=DARKBLUE img=portal
-        roundhole   > Immovable color=DARKBLUE img=hole
-        avatar > MovingAvatar
-            nokey > img=alien
-            withkey > img=alien
-        goal > Immovable img=door
-        crate    > Passive img=box shrinkfactor=0.8
-        boulder    > Passive img=boulder shrinkfactor=0.8
-        holefilling > Flicker img=box limit=0
+        background > Immovable img=oryx/backLBrown hidden=True
+        squarehole   > Immovable color=DARKBLUE img=newset/hole5
+        roundhole   > Immovable color=DARKBLUE img=newset/hole4
+        avatar > MovingAvatar img=oryx/spelunky_0
+        goal > Immovable img=oryx/door2
+        crate    > Passive img=oryx/wall2 shrinkfactor=0.8
+        boulder    > Passive img=oryx/barrel1 shrinkfactor=0.8
+        wall > Immovable img=oryx/dirtwall autotiling=true
     LevelMapping
-        0 > roundhole
-        1 > squarehole
-        b > boulder
-        c > crate
-        g > goal
+        0 > background roundhole
+        1 > background squarehole
+        b > background boulder
+        c > background crate
+        g > background goal
+        . > background
+        A > background avatar
+        w > wall
     InteractionSet
 
 

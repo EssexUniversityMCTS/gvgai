@@ -1,18 +1,18 @@
 BasicGame key_handler=Pulse no_players=2
     SpriteSet
-        black > Immovable color=BLACK hidden=True
-        white > Immovable color=WHITE hidden=True
+        black > Immovable color=BLACK hidden=True img=oryx/backLBlue
+        white > Immovable color=WHITE hidden=True img=oryx/backGrey
         flag > Resource shrinkfactor=0.8
-            flagA > img=city
-            flagB > img=cityRed
-        avatar > MovingAvatar 
-            inBlackA > img=avatarYellow
-            inWhiteA > img=avatarYellow
-            inWhiteB > img=avatarRed
-            inBlackB > img=avatarRed
-            gotA > img=alien
-            gotB > img=alien
-        box > Immovable img=box
+            flagA > img=newset/flag1
+            flagB > img=newset/flag2
+        avatar > MovingAvatar frameRate=16
+            inBlackA > img=newset/girl3
+            inWhiteA > img=newset/girl3
+            inWhiteB > img=newset/man3
+            inBlackB > img=newset/man3
+            gotA > img=newset/girl3flag
+            gotB > img=newset/man3flag
+        box > Immovable img=newset/block1
         deadPortal  > Portal invisible=True portal=True hidden=True
             deadPortalA > stype=startA
             deadPortalB > stype=startB
@@ -22,7 +22,8 @@ BasicGame key_handler=Pulse no_players=2
             startA > 
             startB > 
             startFlagA > 
-            startFlagB > 
+            startFlagB >
+        wall > Immovable img=oryx/wall1
     
     LevelMapping
         . > black
@@ -34,7 +35,7 @@ BasicGame key_handler=Pulse no_players=2
         x > box
 
     TerminationSet
-        TimeoutScoreCount limit=1500
+        Timeout limit=1500 count_score=True
         
     InteractionSet
         avatar EOS box wall > stepBack
