@@ -18,6 +18,8 @@ public abstract class Termination {
 
     public String win;
     public int limit;
+    public boolean count_score = false;
+    public static boolean canEnd = true;
 
     public void parseParameters(TerminationContent content)
     {
@@ -44,6 +46,34 @@ public abstract class Termination {
             return win;
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    public void countScore(Game game) {
+        if (count_score) {
+            double maxScore = game.getAvatar(0).getScore();
+            for (int i = 1; i < game.no_players; i++) {
+                double score = game.getAvatar(i).getScore();
+                if (score > maxScore) {
+                    maxScore = score;
+                }
+            }
+            //give win to player/s with most number of points, rest lose
+            win = "";
+            boolean winner = false;
+            for (int i = 0; i < game.no_players; i++) {
+                double s = game.getAvatar(i).getScore();
+                if (s == maxScore) {
+                    win += "True";
+                } else {
+                    win += "False";
+                }
+                if (i != game.no_players - 1) {
+                    win += ",";
+                }
+                if (s != 0) winner = true;
+            }
+            if (!winner) win="False,False";
         }
     }
 

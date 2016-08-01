@@ -23,6 +23,10 @@ public class PathAltChaser extends AlternateChaser
 {
     private Vector2d lastKnownTargetPosition;
 
+    public boolean randomTarget;
+
+    private VGDLSprite lastTarget;
+
     public PathAltChaser(){}
 
     public PathAltChaser(Vector2d position, Dimension size, SpriteContent cnt)
@@ -41,6 +45,7 @@ public class PathAltChaser extends AlternateChaser
     {
         super.loadDefaults();
         fleeing = false;
+        randomTarget = false;
         targets = new ArrayList<VGDLSprite>();
         actions = new ArrayList<Direction>();
         lastKnownTargetPosition = null;
@@ -49,7 +54,9 @@ public class PathAltChaser extends AlternateChaser
     public void postProcess()
     {
         super.postProcess();
-        //Define actions here.
+
+        if(randomTarget)
+            is_stochastic = true;
     }
 
     public void update(Game game)
@@ -60,13 +67,20 @@ public class PathAltChaser extends AlternateChaser
         super.updatePassive();
 
         //Get the closest targets
-        closestTargets(game);
+        if( (lastTarget == null) || (lastTarget != null && this.rect.contains(lastTarget.rect)))
+        {
+            closestTargets(game, randomTarget);
+        }else{
+            targets.add(lastTarget);
+        }
 
         Direction act = Types.DNONE;
         if(!fleeing && targets.size() > 0)
         {
             //If there's a target, get the path to it and take the first action.
             VGDLSprite target = targets.get(0);
+            lastTarget = target;
+
             ArrayList<Node> path = game.getPath(this.getPosition(), target.getPosition());
 
             if(path==null && lastKnownTargetPosition!=null)
@@ -126,6 +140,8 @@ public class PathAltChaser extends AlternateChaser
         targetSprite.actions = new ArrayList<Direction>();
         targetSprite.lastKnownTargetPosition = lastKnownTargetPosition != null ?
                         lastKnownTargetPosition.copy() : null;
+        targetSprite.randomTarget = this.randomTarget;
+        targetSprite.lastTarget = this.lastTarget;
         super.copyTo(targetSprite);
     }
 

@@ -16,6 +16,7 @@ import core.termination.*;
 import ontology.Types;
 import ontology.avatar.FlakAvatar;
 import ontology.avatar.HorizontalAvatar;
+import ontology.avatar.VerticalAvatar;
 import ontology.avatar.MovingAvatar;
 import ontology.avatar.oriented.*;
 import ontology.effects.Effect;
@@ -51,7 +52,7 @@ public class VGDLFactory
              "ResourcePack", "Chaser", "PathChaser", "Fleeing", "RandomInertial",
              "RandomNPC", "AlternateChaser", "RandomAltChaser","PathAltChaser", "RandomPathAltChaser",
              "Bomber", "RandomBomber", "Portal", "SpawnPoint", "SpriteProducer", "Door",
-             "FlakAvatar", "HorizontalAvatar","MovingAvatar","MissileAvatar",
+             "FlakAvatar", "HorizontalAvatar", "VerticalAvatar", "MovingAvatar","MissileAvatar",
              "OrientedAvatar","ShootAvatar", "OngoingAvatar", "OngoingTurningAvatar", "BomberRandomMissile"};
 
 
@@ -64,7 +65,7 @@ public class VGDLFactory
              ResourcePack.class, Chaser.class, PathChaser.class, Fleeing.class, RandomInertial.class,
              RandomNPC.class, AlternateChaser.class, RandomAltChaser.class, PathAltChaser.class, RandomPathAltChaser.class,
              Bomber.class, RandomBomber.class, Portal.class, SpawnPoint.class, SpriteProducer.class, Door.class,
-             FlakAvatar.class, HorizontalAvatar.class,MovingAvatar.class,MissileAvatar.class,
+             FlakAvatar.class, HorizontalAvatar.class, VerticalAvatar.class, MovingAvatar.class,MissileAvatar.class,
              OrientedAvatar.class,ShootAvatar.class, OngoingAvatar.class, OngoingTurningAvatar.class, BomberRandomMissile.class};
 
     /**
@@ -78,7 +79,8 @@ public class VGDLFactory
                 "pullWithIt", "wallStop", "collectResource", "collectResourceIfHeld", "killIfOtherHasMore", "killIfFromAbove",
                 "teleportToExit", "bounceForward", "attractGaze", "subtractHealthPoints", "addHealthPoints",
                     "transformToAll", "addTimer", "killIfFrontal", "killIfNotFrontal", "spawnBehind",
-                    "updateSpawnType", "removeScore"
+                    "updateSpawnType", "removeScore", "increaseSpeedToAll", "decreaseSpeedToAll", "setSpeedForAll", "transformToRandomChild",
+                    "addHealthPointsToMax"
             };
 
     /**
@@ -92,7 +94,8 @@ public class VGDLFactory
                 PullWithIt.class, WallStop.class, CollectResource.class, CollectResourceIfHeld.class, KillIfOtherHasMore.class, KillIfFromAbove.class,
                 TeleportToExit.class, BounceForward.class, AttractGaze.class, SubtractHealthPoints.class, AddHealthPoints.class,
                     TransformToAll.class, AddTimer.class, KillIfFrontal.class, KillIfNotFrontal.class, SpawnBehind.class, UpdateSpawnType.class,
-                    RemoveScore.class
+                    RemoveScore.class, IncreaseSpeedToAll.class, DecreaseSpeedToAll.class, SetSpeedForAll.class, TransformToRandomChild.class,
+                    AddHealthPointsToMax.class
             };
 
 
@@ -101,7 +104,7 @@ public class VGDLFactory
      */
     private String[] terminationStrings = new String[]
             {
-                    "MultiSpriteCounter", "SpriteCounter", "Timeout", "TimeoutScoreCount"
+                    "MultiSpriteCounter", "SpriteCounter", "SpriteCounterMore", "Timeout", "StopCounter"
             };
 
     /**
@@ -109,7 +112,7 @@ public class VGDLFactory
      */
     private Class[] terminationClasses = new Class[]
             {
-                    MultiSpriteCounter.class, SpriteCounter.class, Timeout.class, TimeoutScoreCount.class
+                    MultiSpriteCounter.class, SpriteCounter.class, SpriteCounterMore.class, Timeout.class, StopCounter.class
             };
 
 

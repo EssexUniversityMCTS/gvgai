@@ -27,11 +27,14 @@ public class Timeout extends Termination
     public boolean isDone(Game game)
     {
         boolean ended = super.isFinished(game);
-        if(ended)
+        if(ended) {
             return true;
+        }
 
-        if(game.getGameTick() >= limit)
+        if(game.getGameTick() >= limit) {
+            countScore(game);
             return true;
+        }
 
         return false;
     }

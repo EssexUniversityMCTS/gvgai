@@ -70,7 +70,7 @@ public class AlternateChaser extends RandomNPC
         super.updatePassive();
 
         //Get the closest targets
-        closestTargets(game);
+        closestTargets(game, false);
         for(VGDLSprite target : targets)
         {
             //Update the list of actions that moves me towards each target
@@ -112,8 +112,9 @@ public class AlternateChaser extends RandomNPC
     /**
      * Sets a list with the closest targets (sprites with the type 'stype'), by distance
      * @param game game to access all sprites
+     * @param randomTarget if true, a random target is added to 'targets'. Otherwise, only the closest one is.
      */
-    protected void closestTargets(Game game)
+    protected void closestTargets(Game game, boolean randomTarget)
     {
         targets.clear();
         double bestDist = Double.MAX_VALUE;
@@ -138,16 +139,29 @@ public class AlternateChaser extends RandomNPC
             if(spriteIt != null) while(spriteIt.hasNext())
             {
                 VGDLSprite s = spriteIt.next();
-                double distance = this.physics.distance(rect, s.rect);
-                if(distance < bestDist)
+
+                if(randomTarget)
                 {
-                    bestDist = distance;
-                    targets.clear();
                     targets.add(s);
-                }else if(distance == bestDist){
-                    targets.add(s);
+                }else{
+                    double distance = this.physics.distance(rect, s.rect);
+                    if(distance < bestDist)
+                    {
+                        bestDist = distance;
+                        targets.clear();
+                        targets.add(s);
+                    }else if(distance == bestDist){
+                        targets.add(s);
+                    }
                 }
             }
+        }
+
+        if(randomTarget)
+        {
+            VGDLSprite sel = targets.get(game.getRandomGenerator().nextInt(targets.size()));
+            targets.clear();
+            targets.add(sel);
         }
     }
 

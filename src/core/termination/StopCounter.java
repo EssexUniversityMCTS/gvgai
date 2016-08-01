@@ -1,11 +1,10 @@
 package core.termination;
 
-import java.util.ArrayList;
-
 import core.VGDLRegistry;
 import core.content.TerminationContent;
 import core.game.Game;
-import core.game.GameDescription.TerminationData;
+
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,16 +13,19 @@ import core.game.GameDescription.TerminationData;
  * Time: 18:54
  * This is a Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
-public class MultiSpriteCounter extends Termination
+
+// Anti termination: this prevents counter terminations from triggering if certain conditions are met.
+
+public class StopCounter extends Termination
 {
     //TODO if needed: Theoretically, we could have an array of types here... to be done.
     public String stype1, stype2, stype3;
     public int itype1=-1, itype2=-1, itype3=-1;
     public boolean min = false;
 
-    public MultiSpriteCounter(){}
+    public StopCounter(){}
 
-    public MultiSpriteCounter(TerminationContent cnt)
+    public StopCounter(TerminationContent cnt)
     {
         //Parse the arguments.
         this.parseParameters(cnt);
@@ -39,20 +41,17 @@ public class MultiSpriteCounter extends Termination
         if(ended)
             return true;
 
-         int countAcum = 0;
+        int countAcum = 0;
 
         if(itype1 != -1) countAcum += game.getNumSprites(itype1) - game.getNumDisabledSprites(itype1);
         if(itype2 != -1) countAcum += game.getNumSprites(itype2) - game.getNumDisabledSprites(itype2);
         if(itype3 != -1) countAcum += game.getNumSprites(itype3) - game.getNumDisabledSprites(itype3);
 
-        if(countAcum == limit && canEnd) {
-            countScore(game);
-            return true;
+        if (min) {
+            canEnd = countAcum <= limit;
         }
-
-        if(min && countAcum > limit && canEnd) {
-            countScore(game);
-            return true; //If the limit is a lower bound in what's required.
+        else {
+            canEnd = countAcum != limit;
         }
 
         return false;

@@ -440,7 +440,7 @@ public abstract class VGDLSprite {
         lastmove += 1;
 
         frameRemaining -= 1;
-        if (frameRate > 0 && frameRemaining <= 0) {
+        if (frameRate > 0 && frameRemaining <= 0 && allImages.size() > 0) {
             currentFrame = (currentFrame + 1) % allImages.size();
             frameRemaining = frameRate;
             image = allImages.get(currentFrame);

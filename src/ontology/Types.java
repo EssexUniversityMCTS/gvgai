@@ -164,6 +164,7 @@ public class Types {
     public static final Color LIGHTORANGE = new Color(250, 200, 100);
     public static final Color LIGHTBLUE = new Color(50, 100, 250);
     public static final Color LIGHTGREEN = new Color(50, 250, 50);
+    public static final Color DARKGREEN = new Color(35, 117, 29);
     public static final Color LIGHTYELLOW = new Color(255, 250, 128);
     public static final Color LIGHTGRAY = new Color(238, 238, 238);
     public static final Color DARKGRAY = new Color(30, 30, 30);

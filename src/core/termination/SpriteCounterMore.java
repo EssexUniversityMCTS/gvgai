@@ -1,11 +1,10 @@
 package core.termination;
 
-import java.util.ArrayList;
-
 import core.VGDLRegistry;
 import core.content.TerminationContent;
 import core.game.Game;
-import core.game.GameDescription.TerminationData;
+
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,14 +13,14 @@ import core.game.GameDescription.TerminationData;
  * Time: 18:52
  * This is a Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
-public class SpriteCounter extends Termination
+public class SpriteCounterMore extends Termination
 {
     public String stype;
     public int itype;
 
-    public SpriteCounter(){}
+    public SpriteCounterMore(){}
 
-    public SpriteCounter(TerminationContent cnt)
+    public SpriteCounterMore(TerminationContent cnt)
     {
         //Parse the arguments.
         this.parseParameters(cnt);
@@ -35,7 +34,7 @@ public class SpriteCounter extends Termination
         if(ended)
             return true;
 
-        if(game.getNumSprites(itype) - game.getNumDisabledSprites(itype) <= limit && canEnd) {
+        if(game.getNumSprites(itype) - game.getNumDisabledSprites(itype) >= limit && canEnd) {
             countScore(game);
             return true;
         }

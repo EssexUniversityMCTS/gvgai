@@ -159,7 +159,7 @@ public class BasicGame extends Game {
 	                    }
 	                    if(s.randomtiling >= 0){
 	                    	Random random = new Random(randomSeed);
-	                    	if(random.nextDouble() > s.randomtiling){
+	                    	if(random.nextDouble() > s.randomtiling && s.allImages.size()>0){
 	                    		s.image = s.allImages.get(random.nextInt(s.allImages.size()));
 	                    	}
 	                    }
