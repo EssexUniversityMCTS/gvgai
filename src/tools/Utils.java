@@ -22,6 +22,11 @@ public class Utils
         return elements[rnd.nextInt(elements.length)];
     }
 
+    public static int choice(int[] elements, Random rnd)
+    {
+        return elements[rnd.nextInt(elements.length)];
+    }
+
     public static Direction choiceDir(ArrayList<Direction> elements, Random rnd)
     {
         return elements.get(rnd.nextInt(elements.size()));
