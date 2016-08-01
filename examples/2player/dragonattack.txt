@@ -1,5 +1,7 @@
 BasicGame no_players=2 key_handler=Pulse
     SpriteSet
+        back > Immovable img=oryx/backGrey hidden=True
+
         base > Immovable img=base
             base1 > img=oryx/cspell4
             base2 > img=oryx/cspell2
@@ -41,19 +43,20 @@ BasicGame no_players=2 key_handler=Pulse
         wall > Immovable img=oryx/wall6
 
     LevelMapping
-        r > redBlock
-        g > greenBlock
-        y > blueBlock
-        1 > triggerOpen1
-        2 > triggerOpen2
-        3 > triggerOpen3
-        4 > triggerOpen4
-        A > base1 avatar1
-        B > base2 avatar2
-        a  > dragon1
-        b  > dragon2
-        . > base1
-        - > base2
+        r > redBlock back
+        g > greenBlock back
+        y > blueBlock back
+        1 > triggerOpen1 back
+        2 > triggerOpen2 back
+        3 > triggerOpen3 back
+        4 > triggerOpen4 back
+        A > base1 avatar1 back
+        B > base2 avatar2 back
+        a  > dragon1 back
+        b  > dragon2 back
+        . > base1 back
+        - > base2 back
+        _ > back
 
     InteractionSet
 

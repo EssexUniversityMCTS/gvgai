@@ -1,17 +1,17 @@
 BasicGame
     SpriteSet
         floor > Immovable img=oryx/backOBrown
-        hole   > Immovable color=DARKBLUE img=newset/structures/hole1 portal=True
+        hole   > Immovable color=DARKBLUE img=newset/hole1 portal=True
         shovel > Flicker color=LIGHTGRAY limit=1 singleton=True img=oryx/pickaxe shrinkfactor=0.5
 
-        entrance > SpawnPoint total=20 cooldown=50 stype=lemming img=newset/structures/hole5 portal=True
+        entrance > SpawnPoint total=20 cooldown=50 stype=lemming img=newset/hole5 portal=True
         exit > Door color=GREEN img=oryx/door2
 
         moving >
             avatar  > ShootAvatar stype=shovel img=oryx/axeman1
-            lemming > Chaser stype=exit cooldown=5 color=RED img=oryx/spelunky_0 shrinkfactor=0.75
+            lemming > Chaser stype=exit cooldown=5 color=RED img=oryx/spelunky frameRate=8 shrinkfactor=0.75
 
-        wall > Immovable img=newset/walls/wall1 autotiling=True
+        wall > Immovable img=oryx/dirtwall autotiling=True
     LevelMapping
         x > floor exit
         e > floor entrance
