@@ -1,0 +1,114 @@
+BasicGame no_players=2 square_size=30 key_handler=Pulse
+	SpriteSet
+		ground > Immovable color=BROWN hidden=True img=oryx/backLBrown
+
+		control > Immovable
+		    left > color=LIGHTYELLOW img=oryx/bookleft
+		    right > color=RED img=oryx/bookright
+		    up > color=BLUE img=oryx/bookup
+		    down > color=GREEN img=oryx/bookdown
+
+		movable >
+			avatar > frameRate=16
+				avatarA > ShootAvatar img=newset/girl3 stype=missileA
+				avatarB > ShootAvatar img=newset/man3 stype=missileB
+			minion > Missile speed=0.05
+				minionA >  img=oryx/ogre1 shrinkfactor=0.5
+				    minionAR > orientation=RIGHT
+				    minionAL > orientation=LEFT
+				    minionAD > orientation=DOWN
+				    minionAU > orientation=UP
+				    winnerA > shrinkfactor=0.4
+				minionB > img=oryx/ogre2 shrinkfactor=0.5
+				    minionBR > orientation=RIGHT
+				    minionBL > orientation=LEFT
+				    minionBD > orientation=DOWN
+				    minionBU > orientation=UP
+				    winnerB > shrinkfactor=0.4
+
+		missile > Missile shrinkfactor=0.4
+		    missileA > img=oryx/orb1
+		    missileB > img=oryx/orb3
+
+		trap > Immovable img=oryx/spike2
+
+		goal > Immovable img=newset/exit2
+		    goalA >
+		    goalB >
+
+		dead > Immovable invisible=True
+		    deadA > singleton=True color=BLUE
+		    deadB > singleton=True color=RED
+
+		wall > Immovable img=oryx/dirtwall autotiling=True
+		
+	LevelMapping
+		A > avatarA ground
+		B > avatarB ground
+		. > ground
+		a > minionAR ground
+		b > minionBL ground
+		t > trap ground
+		l > left ground
+		r > right ground
+		u > up ground
+		d > down ground
+		0 > goalA ground
+		1 > goalB ground
+	
+	InteractionSet
+		movable wall > stepBack pixelPerfect=True
+
+		minion trap > killSprite
+
+		avatarA left > transformToAll stype=minionAR stypeTo=minionAL
+		avatarA left > transformToAll stype=minionAU stypeTo=minionAL
+		avatarA left > transformToAll stype=minionAD stypeTo=minionAL
+
+		avatarA right > transformToAll stype=minionAL stypeTo=minionAR
+		avatarA right > transformToAll stype=minionAD stypeTo=minionAR
+		avatarA right > transformToAll stype=minionAU stypeTo=minionAR
+
+		avatarA down > transformToAll stype=minionAR stypeTo=minionAD
+		avatarA down > transformToAll stype=minionAL stypeTo=minionAD
+		avatarA down > transformToAll stype=minionAU stypeTo=minionAD
+
+		avatarA up > transformToAll stype=minionAR stypeTo=minionAU
+		avatarA up > transformToAll stype=minionAL stypeTo=minionAU
+		avatarA up > transformToAll stype=minionAD stypeTo=minionAU
+
+		avatarB left > transformToAll stype=minionBR stypeTo=minionBL
+		avatarB left > transformToAll stype=minionBD stypeTo=minionBL
+		avatarB left > transformToAll stype=minionBU stypeTo=minionBL
+
+		avatarB right > transformToAll stype=minionBL stypeTo=minionBR
+		avatarB right > transformToAll stype=minionBD stypeTo=minionBR
+		avatarB right > transformToAll stype=minionBU stypeTo=minionBR
+
+		avatarB down > transformToAll stype=minionBR stypeTo=minionBD
+		avatarB down > transformToAll stype=minionBL stypeTo=minionBD
+		avatarB down > transformToAll stype=minionBU stypeTo=minionBD
+
+		avatarB up > transformToAll stype=minionBR stypeTo=minionBU
+		avatarB up > transformToAll stype=minionBL stypeTo=minionBU
+		avatarB up > transformToAll stype=minionBD stypeTo=minionBU
+
+		minionA goalA > transformTo stype=winnerA scoreChange=10,0
+		minionA goalB > stepBack pixelPerfect=True
+		minionB goalB > transformTo stype=winnerB scoreChange=0,10
+		minionB goalA > stepBack pixelPerfect=True
+
+		minionA missileB > flipDirection scoreChange=0,1
+		minionB missileA > flipDirection scoreChange=1,0
+
+		#minionA missileB > transformTo stype=deadA killSecond=True
+		#minionB missileA > transformTo stype=deadB killSecond=True
+		#dead ground wall trap > killSprite
+
+	TerminationSet
+		SpriteCounterMore stype=winnerA limit=3 win=True,False
+		SpriteCounterMore stype=winnerB limit=3 win=False,True
+		SpriteCounter stype=minionA limit=2 win=False,True
+		SpriteCounter stype=minionB limit=2 win=True,False
+		Timeout limit=1500 count_score=True
+		

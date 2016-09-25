@@ -1,0 +1,61 @@
+BasicGame square_size=20 obs=wall,tunnel
+    SpriteSet
+
+        moving >
+            switch > Immovable img=oryx/wall3_0
+            tunnel > Passive img=newset/wallBlue
+            alientunnel > Passive img=newset/wallRed
+            tunnelend > Passive invisible=True hidden=True
+            alientunnelend > Passive invisible=True hidden=True
+            exit > Door color=GREEN img=newset/exit2
+
+            door > Door
+                doorClosed > Immovable img=oryx/doorclosed1
+                doorOpened > Immovable img=oryx/dooropen1
+
+            alien > singleton=True
+                pursuer > PathAltChaser stype1=standing stype2=crouching cooldown=2 img=oryx/ogre1
+                pursuertunnel > PathAltChaser stype1=standing stype2=crouching cooldown=2 img=oryx/ogre2 invisible=True hidden=True
+                wanderer > PathAltChaser stype1=tunnelend stype2=crouching cooldown=1 img=oryx/ogre2 randomTarget=True invisible=True hidden=True
+
+            human > OrientedAvatar rotateInPlace=false
+                standing  > img=oryx/rogue color=YELLOW  speed=0.5 frameRate=8
+                crouching > img=oryx/ghost2 color=ORANGE  speed=0.5
+
+            wall > Immovable img=oryx/wall1
+
+
+
+    InteractionSet
+
+        moving wall > stepBack pixelPerfect=True
+        human alientunnel > stepBack pixelPerfect=True
+        human alien  > killSprite scoreChange=-10
+        exit human > killSprite scoreChange=10
+
+        crouching tunnelend > transformToAll stype=wanderer stypeTo=pursuer
+        crouching tunnelend > transformTo stype=standing
+
+        standing tunnel > transformToAll stype=pursuer stypeTo=wanderer
+        standing tunnel > transformToAll stype=pursuertunnel stypeTo=wanderer
+        standing tunnel > transformTo stype=crouching
+
+        pursuertunnel alientunnelend > transformToAll stype=pursuertunnel stypeTo=pursuer
+        pursuer alientunnel > transformToAll stype=pursuer stypeTo=pursuertunnel
+
+        human switch > transformToAll stype=doorClosed stypeTo=doorOpened scoreChange=2
+
+    LevelMapping
+        A > standing
+        a > pursuer
+        e > exit
+        t > tunnel
+        x > alientunnel
+        n > tunnelend
+        m > alientunnelend
+        s > switch
+        d > doorClosed
+
+    TerminationSet
+        SpriteCounter stype=exit   win=True
+        SpriteCounter stype=human win=False

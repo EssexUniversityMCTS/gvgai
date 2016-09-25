@@ -153,6 +153,8 @@ public class Agent extends AbstractMultiPlayer {
             Types.ACTIONS[] acts = new Types.ACTIONS[stateObs.getNoPlayers()];
             for (int i = 0; i < stateObs.getNoPlayers(); i++) {
                 acts[i] = action_mapping[i].get(policy[depth]);
+                if(acts[i] == null)
+                    acts[i] = action_mapping[1-i].get(policy[depth]);
             }
 
             stateObs.advance(acts);

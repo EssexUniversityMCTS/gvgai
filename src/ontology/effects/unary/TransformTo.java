@@ -28,6 +28,7 @@ public class TransformTo extends Effect {
     public int itype;
     //Indicates if the second sprite should be killed.
     public boolean killSecond = false;
+    public boolean forceOrientation = false;
 
     public TransformTo(InteractionContent cnt)
     {
@@ -49,7 +50,7 @@ public class TransformTo extends Effect {
         {
             //System.out.println(game.getGameTick() + " " + sprite1 + " --> " + newSprite) ;
             //Orientation
-            if(newSprite.is_oriented && sprite1.is_oriented && newSprite.orientation.equals(Types.DNONE))
+            if(forceOrientation || newSprite.is_oriented && sprite1.is_oriented && newSprite.orientation.equals(Types.DNONE))
             {
                 newSprite.orientation = sprite1.orientation;
             }

@@ -1,0 +1,42 @@
+BasicGame key_handler=Pulse square_size=50 no_players=2
+    SpriteSet
+        ground > Immovable img=oryx/grass autotiling=True hidden=True
+        moving > 
+            avatar >
+                ghost > OrientedAvatar img=oryx/ghost1
+                hunter > ShootAvatar stype=missile speed=1.4 img=newset/humanShotgun
+            enemy > RandomBomber
+                enemy0 > speed=0.3 stype=missileA prob=0.02 img=newset/shooter1
+                enemy1 > speed=0.5 stype=missileB prob=0.03 img=newset/bandit1
+        missile > Missile img=oryx/orb1 shrinkfactor=0.4 timeToLive=15
+        missileE > RandomMissile shrinkfactor=0.4 speed=0.5
+            missileA > img=oryx/orb3
+            missileB > img=oryx/orb2
+        wall > Immovable img=oryx/wall1
+
+    LevelMapping
+        . > ground
+        A > ghost ground
+        B > hunter ground
+        0 > enemy0 ground
+        1 > enemy1 ground
+        w > wall ground
+
+    InteractionSet
+        hunter wall > stepBack pixelPerfect=True
+        ghost EOS > wrapAround
+        enemy wall > stepBack pixelPerfect=True
+
+        ghost missile > killBoth scoreChange=0,100
+        hunter ghost > killSprite scoreChange=100,0
+        ghost missileA > killBoth scoreChange=-10,-20
+        hunter missileB > killBoth scoreChange=-20,-10
+        missileE wall EOS > killSprite
+
+        missile enemy > killSprite
+        missile EOS > wrapAround
+
+    TerminationSet
+        SpriteCounter stype=ghost limit=0 win=False,True
+        SpriteCounter stype=hunter limit=0 win=True,False
+        Timeout limit=1500 win=True,False

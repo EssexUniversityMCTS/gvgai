@@ -451,6 +451,7 @@ public class ForwardModel extends Game
         this.block_size = a_gameState.block_size;
         this.MAX_SPRITES = a_gameState.MAX_SPRITES;
         this.no_players = a_gameState.no_players;
+        this.no_counters = a_gameState.no_counters;
         this.avatarLastAction = new Types.ACTIONS[no_players];
         System.arraycopy(a_gameState.avatarLastAction, 0, avatarLastAction, 0, no_players);
         this.avatars = new MovingAvatar[no_players];
@@ -458,6 +459,8 @@ public class ForwardModel extends Game
             avatars[i] = (MovingAvatar) a_gameState.avatars[i].copy();
             avatars[i].setKeyHandler(a_gameState.avatars[i].getKeyHandler());
         }
+        this.counter = new int[no_counters];
+        System.arraycopy(a_gameState.counter, 0, this.counter, 0, no_counters);
 
         //create the boolean maps of sprite types.
         npcList = new boolean[a_gameState.spriteGroups.length];

@@ -1,0 +1,134 @@
+BasicGame
+  SpriteSet
+    floor > Immovable randomtiling=0.9 img=oryx/floor3 hidden=True
+    hiddenDoor > Immovable invisible=True hidden=True
+
+    goal  > Door color=GREEN img=oryx/doorclosed1
+
+    lift > Immovable
+        liftdown > orientation=DOWN  color=RED img=oryx/bookDown
+        liftup > orientation=UP  color=ORANGE img=oryx/bookUp
+
+    landinglift > Immovable color=GREEN img=oryx/floorTileOrange invisible=True hidden=True
+        sG >
+        sF >
+        sS >
+        sT >
+
+    sword > OrientedFlicker limit=5 singleton=True img=oryx/slash1
+
+
+    avatar >
+      onground  > ShootAvatar stype=sword frameRate=8 healthPoints=20 img=oryx/swordman1
+      bullet > MissileAvatar speed=1.0 img=oryx/bat1
+         up  > orientation=UP color=RED
+         down  > orientation=DOWN color=ORANGE
+
+    enemy >
+      randomEnemy1 > RandomNPC cooldown=2 cons=2 img=oryx/guard1
+      randomEnemy1Hdn > RandomNPC cooldown=2 cons=2 invisible=True hidden=True
+
+      randomEnemy2 > RandomNPC cooldown=2 cons=3 img=oryx/guard1
+      randomEnemy2Hdn > RandomNPC cooldown=2 cons=3 invisible=True hidden=True
+
+      randomEnemy3 > RandomNPC cooldown=2 cons=6 img=oryx/guard1
+      randomEnemy3Hdn > RandomNPC cooldown=2 cons=6 invisible=True hidden=True
+
+
+    trap > Immovable img=oryx/tombstone1
+      trap1 >
+      trap1Hdn > invisible=True hidden=True
+      trap2 >
+      trap2Hdn > invisible=True hidden=True
+      trap3 >
+      trap3Hdn > invisible=True hidden=True
+
+
+    wall > Immovable autotiling=true img=oryx/wall3
+
+    gold > Resource limit=10
+    chip > Passive img=oryx/gold2
+      chip1 >
+      chip1Hdn > invisible=True hidden=True
+      chip2 >
+      chip2Hdn > invisible=True hidden=True
+      chip3 >
+      chip3Hdn > invisible=True hidden=True
+
+
+  LevelMapping
+    A > onground floor
+    e > floor goal
+    w > wall
+    . > floor
+
+    u > liftup floor
+    d > liftdown floor
+    h > hiddenDoor floor
+
+    x > randomEnemy1Hdn floor
+    y > randomEnemy2Hdn floor
+    z > randomEnemy3Hdn floor
+
+    + > trap1Hdn floor
+    - > trap2Hdn floor
+    / > trap3Hdn floor
+
+    1 > chip1Hdn floor
+    2 > chip2Hdn floor
+    3 > chip3Hdn floor
+
+    g > sG floor
+    f > sF floor
+    s > sS floor
+    t > sT floor
+
+  InteractionSet
+    onground wall  > stepBack
+    enemy wall hiddenDoor trap enemy > stepBack
+    enemy sword > killSprite scoreChange=2
+
+    avatar enemy > subtractHealthPoints
+    avatar trap > killSprite scoreChange=-1
+
+    onground lift > attractGaze prob=1 align=True
+    onground liftup > transformTo stype=up
+    onground liftdown > transformTo stype=down
+
+    bullet landinglift > transformTo stype=onground
+
+    onground sG > transformToAll stype=randomEnemy1 stypeTo=randomEnemy1Hdn
+    onground sG > transformToAll stype=trap1 stypeTo=trap1Hdn
+    onground sG > transformToAll stype=chip1 stypeTo=chip1Hdn
+
+    onground sF > transformToAll stype=randomEnemy1Hdn stypeTo=randomEnemy1
+    onground sF > transformToAll stype=randomEnemy2 stypeTo=randomEnemy2Hdn
+    onground sF > transformToAll stype=trap1Hdn stypeTo=trap1
+    onground sF > transformToAll stype=trap2 stypeTo=trap2Hdn
+    onground sF > transformToAll stype=chip1Hdn stypeTo=chip1
+    onground sF > transformToAll stype=chip2 stypeTo=chip2Hdn
+
+    onground sS > transformToAll stype=randomEnemy2Hdn stypeTo=randomEnemy2
+    onground sS > transformToAll stype=randomEnemy1 stypeTo=randomEnemy1Hdn
+    onground sS > transformToAll stype=randomEnemy3 stypeTo=randomEnemy3Hdn
+    onground sS > transformToAll stype=trap2Hdn stypeTo=trap2
+    onground sS > transformToAll stype=trap1 stypeTo=trap1Hdn
+    onground sS > transformToAll stype=trap3 stypeTo=trap3Hdn
+    onground sS > transformToAll stype=chip2Hdn stypeTo=chip2
+    onground sS > transformToAll stype=chip1 stypeTo=chip1Hdn
+    onground sS > transformToAll stype=chip3 stypeTo=chip3Hdn
+
+    onground sT > transformToAll stype=randomEnemy3Hdn stypeTo=randomEnemy3
+    onground sT > transformToAll stype=randomEnemy2 stypeTo=randomEnemy2Hdn
+    onground sT > transformToAll stype=trap3Hdn stypeTo=trap3
+    onground sT > transformToAll stype=trap2 stypeTo=trap2Hdn
+    onground sT > transformToAll stype=chip3Hdn stypeTo=chip3
+    onground sT > transformToAll stype=chip2 stypeTo=chip2Hdn
+
+    onground chip > changeResource resource=gold value=1 scoreChange=1 killResource=True
+    goal onground > killIfOtherHasMore resource=gold limit=10 scoreChange=500
+
+
+  TerminationSet
+    SpriteCounter stype=goal   win=True
+    SpriteCounter stype=avatar win=False

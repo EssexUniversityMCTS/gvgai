@@ -1,0 +1,83 @@
+BasicGame square_size=24
+    SpriteSet
+        background > Immovable img=oryx/backGrey hidden=True
+        goal  > Door color=GREEN img=oryx/dooropen1
+        bomberman > ShootAvatar stype=bomb_10 img=oryx/spelunky frameRate=8
+        enemy >
+            bat > RandomNPC cooldown=2 cons=6 img=oryx/bat1
+            spider > RandomNPC cooldown=4 cons=8 img=oryx/spider2
+            scorpion > RandomNPC cooldown=8 cons=12 img=oryx/scorpion1
+        bombs >
+            bomb_10 > Immovable img=newset/bomb
+            bomb_9 > Immovable img=newset/bomb
+            bomb_8 > Immovable img=newset/bomb
+            bomb_7 > Immovable img=newset/bomb
+            bomb_6 > Immovable img=newset/bomb
+            bomb_5 > Immovable img=newset/bomb
+            bomb_4 > Immovable img=newset/bomb
+            bomb_3 > Immovable img=newset/bomb
+            bomb_2 > Immovable img=newset/bomb
+            bomb_1 > Immovable img=newset/bomb
+            bomb > Immovable img=newset/bomb
+        explosion > OrientedFlicker limit=5 speed=0.5
+            explosionLeft > orientation=LEFT singleton=true img=oryx/fireleft1
+            explosionRight > orientation=RIGHT singleton=true img=oryx/fireright1
+            explosionUp > orientation=UP singleton=true img=oryx/fireup1
+            explosionDown > orientation=DOWN singleton=true img=oryx/firedown1
+        wall > Immovable img=oryx/wall1
+        wallBreak > Immovable img=newset/block3
+
+    InteractionSet
+        bomberman wall > stepBack
+        bomberman wallBreak > stepBack
+        bomberman bombs > stepBack
+        enemy wall > stepBack
+        enemy wallBreak > stepBack
+        enemy bombs > stepBack
+
+        enemy explosion > killSprite scoreChange=5
+        wallBreak explosion > killBoth scoreChange=1
+        explosion wall > killSprite
+        goal bomberman > killSprite scoreChange=10
+        bomberman explosion > killSprite
+        bomberman enemy > killSprite
+        bomb_10 wall > killSprite
+        bomb_10 wallBreak > killSprite
+
+        bomb_1 background > spawn stype=bomb
+        bomb_1 background > killSprite
+        bomb_2 background > spawn stype=bomb_1
+        bomb_2 background > killSprite
+        bomb_3 background > spawn stype=bomb_2
+        bomb_3 background > killSprite
+        bomb_4 background > spawn stype=bomb_3
+        bomb_4 background > killSprite
+        bomb_5 background > spawn stype=bomb_4
+        bomb_5 background > killSprite
+        bomb_6 background > spawn stype=bomb_5
+        bomb_6 background > killSprite
+        bomb_7 background > spawn stype=bomb_6
+        bomb_7 background > killSprite
+        bomb_8 background > spawn stype=bomb_7
+        bomb_8 background > killSprite
+        bomb_9 background > spawn stype=bomb_8
+        bomb_9 background > killSprite
+        bomb_10 background > spawn stype=bomb_9
+        bomb_10 background > killSprite
+        bomb background > spawn stype=explosionLeft
+        explosionLeft bomb > spawn stype=explosionRight
+        explosionRight bomb > spawn stype=explosionUp
+        explosionUp bomb > spawn stype=explosionDown
+        bomb explosionDown > killSprite
+    LevelMapping
+        A > background bomberman
+        . > background
+        w > wall
+        q > background wallBreak
+        b > background bat
+        s > background spider
+        c > background scorpion
+        g > background goal wallBreak
+    TerminationSet
+        SpriteCounter stype=bomberman limit=0 win=False
+        SpriteCounter stype=goal limit=0 win=True

@@ -2,6 +2,7 @@ package ontology.avatar.oriented;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import core.VGDLRegistry;
 import core.VGDLSprite;
@@ -21,14 +22,18 @@ import tools.Vector2d;
  */
 public class ShootAvatar extends OrientedAvatar
 {
+    static int MAX_WEAPONS = 5;
 
     //This is the resource I need, to be able to shoot.
     public String ammo; //If ammo is null, no resource needed to shoot.
-    public int ammoId;
+    public String[] ammos;
+    public int[] ammoId;
+
 
     //This is the sprite I shoot
     public String stype;
-    public int itype;
+    public String[] stypes;
+    public int[] itype;
 
     public ShootAvatar(){}
 
@@ -49,9 +54,11 @@ public class ShootAvatar extends OrientedAvatar
     {
         super.loadDefaults();
         ammo = null;
-        ammoId = -1;
+        ammos = new String[MAX_WEAPONS];
+        ammoId = new int[MAX_WEAPONS];
         stype = null;
-        itype = -1;
+        stypes = new String[MAX_WEAPONS];
+        itype = new int[MAX_WEAPONS];
     }
 
     /**
@@ -79,47 +86,47 @@ public class ShootAvatar extends OrientedAvatar
 
     public void updateUse(Game game)
     {
-        if(Utils.processUseKey(getKeyHandler().getMask(), getPlayerID()) && hasAmmo()) //use primary set of keys
-        {
-            shoot(game);
+        if(Utils.processUseKey(getKeyHandler().getMask(), getPlayerID())) {
+            for (int i = 0; i < itype.length; i++) {
+                if (hasAmmo(i)) {
+                    shoot(game, i);
+                    break; // remove this to shoot all types of bullets at once; if here, shoots the first priority one only
+                }
+            }
         }
     }
 
-    private void shoot(Game game)
+    private void shoot(Game game, int idx)
     {
-        //TODO: Theoretically, we should be able to shoot many things here... to be done.
         Vector2d dir = this.orientation.getVector();
         dir.normalise();
 
-        VGDLSprite newOne = game.addSprite(itype, new Vector2d(this.rect.x + dir.x*this.lastrect.width,
+        VGDLSprite newOne = game.addSprite(itype[idx], new Vector2d(this.rect.x + dir.x*this.lastrect.width,
                                            this.rect.y + dir.y*this.lastrect.height));
 
         if(newOne != null)
         {
             if(newOne.is_oriented)
                 newOne.orientation = new Direction(dir.x, dir.y);
-            reduceAmmo();
+            reduceAmmo(idx);
             newOne.setFromAvatar(true);
         }
     }
 
-    private boolean hasAmmo()
-    {
-        if(ammo == null)
+    private boolean hasAmmo(int idx) {
+        if (ammo == null || idx >= ammos.length)
             return true; //no ammo defined, I can shoot.
 
         //If I have ammo, I must have enough resource of ammo type to be able to shoot.
-        if(resources.containsKey(ammoId))
-            return resources.get(ammoId) > 0;
+        return resources.containsKey(ammoId[idx]) && resources.get(ammoId[idx]) > 0;
 
-        return false;
     }
 
-    private void reduceAmmo()
+    private void reduceAmmo(int idx)
     {
-        if(ammo != null && resources.containsKey(ammoId))
+        if(ammo != null && idx < ammos.length && resources.containsKey(ammoId[idx]))
         {
-            resources.put(ammoId, resources.get(ammoId) - 1);
+            resources.put(ammoId[idx], resources.get(ammoId[idx]) - 1);
         }
     }
 
@@ -137,9 +144,18 @@ public class ShootAvatar extends OrientedAvatar
 
         super.postProcess();
 
-        itype =  VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
-        if(ammo != null)
-            ammoId = VGDLRegistry.GetInstance().getRegisteredSpriteValue(ammo);
+        stypes = stype.split(",");
+        itype = new int[stypes.length];
+
+        for (int i = 0; i < itype.length; i++)
+            itype[i] = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stypes[i]);
+        if(ammo != null) {
+            ammos = ammo.split(",");
+            ammoId = new int[ammos.length];
+            for (int i = 0; i < ammos.length; i++) {
+                ammoId[i] = VGDLRegistry.GetInstance().getRegisteredSpriteValue(ammos[i]);
+            }
+        }
     }
 
     public VGDLSprite copy()
@@ -153,9 +169,11 @@ public class ShootAvatar extends OrientedAvatar
     {
         ShootAvatar targetSprite = (ShootAvatar) target;
         targetSprite.stype = this.stype;
-        targetSprite.itype= this.itype;
+        targetSprite.itype = this.itype.clone();
+        targetSprite.stypes = this.stypes.clone();
         targetSprite.ammo = this.ammo;
-        targetSprite.ammoId= this.ammoId;
+        targetSprite.ammoId= this.ammoId.clone();
+        targetSprite.ammos = this.ammos.clone();
 
         super.copyTo(targetSprite);
     }
@@ -163,8 +181,8 @@ public class ShootAvatar extends OrientedAvatar
     @Override
     public ArrayList<String> getDependentSprites(){
     	ArrayList<String> result = new ArrayList<String>();
-    	if(ammo != null) result.add(ammo);
-    	if(stype != null) result.add(stype);
+        if(ammo != null) result.addAll(Arrays.asList(ammos));
+    	if(stype != null) result.addAll(Arrays.asList(stypes));
     	
     	return result;
     }

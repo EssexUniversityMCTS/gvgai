@@ -208,7 +208,7 @@ public abstract class Game
     /**
      * Maximum number of sprites in a game.
      */
-    protected int MAX_SPRITES;
+    protected static int MAX_SPRITES;
 
     /**
      * Random number generator for this game. It can only be received when the game is started.
@@ -258,6 +258,9 @@ public abstract class Game
 
     public int no_players = 1; //default to single player
 
+    public int no_counters = 0; //default no counters
+    public int[] counter;
+
     public static KeyHandler ki;
 
     /**
@@ -301,6 +304,8 @@ public abstract class Game
         avatarLastAction = new Types.ACTIONS[no_players];
         for (int i = 0; i < no_players; i++)
             avatarLastAction[i] = Types.ACTIONS.ACTION_NIL;
+
+        counter = new int[no_counters];
     }
 
     /**
@@ -481,6 +486,10 @@ public abstract class Game
      * @return number of players.
      */
     public int getNoPlayers() { return no_players; }
+
+    public int getNoCounters() {return no_counters;}
+
+    public int getValueCounter(int idx) {return counter[idx];}
 
     /**
      * return sprite type of certain sprite
@@ -686,6 +695,9 @@ public abstract class Game
 
         for (int i = 0; i < no_players; i++) {
             avatars[i] = null;
+        }
+        for (int i = 0; i < no_counters; i++) {
+            counter[i] = 0;
         }
         isEnded = false;
         gameTick = -1;
@@ -941,6 +953,11 @@ public abstract class Game
             sb += "Player" + i + "-Score:" + avatars[i].getScore() + ". ";
         }
         sb += "Tick:" + this.getGameTick();
+
+//        sb += " --Counter:";
+//        for (int i = 0; i < no_counters; i++) {
+//            sb += counter[i] + ", ";
+//        }
 
         if(!isEnded)
             frame.setTitle(sb);
@@ -1486,6 +1503,12 @@ public abstract class Game
         //Add to events history.
         if(s1 != null && s2 != null)
             addEvent(s1, s2);
+
+        if(ef.count) {
+            for (int i = 0; i < no_counters; i++) {
+                this.counter[i] += ef.getCounter(i);
+            }
+        }
     }
 
     private void addEvent(VGDLSprite s1, VGDLSprite s2)
@@ -1994,6 +2017,10 @@ public abstract class Game
      */
     public int[] getSpriteOrder() {return spriteOrder;}
 
+    /**
+     * Returns the number of sprites
+     */
+    public static int getMaxSprites() {return MAX_SPRITES;}
 
     /**
      * Indicates how many pixels form a block in the game.

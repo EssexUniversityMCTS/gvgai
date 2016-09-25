@@ -73,7 +73,11 @@ public abstract class Termination {
                 }
                 if (s != 0) winner = true;
             }
-            if (!winner) win="False,False";
+            if (!winner)
+                for (int i = 0; i < game.no_players; i++) {
+                    if (i != game.no_players - 1) win += "False,";
+                    else win += "False";
+                }
         }
     }
 

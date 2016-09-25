@@ -86,8 +86,11 @@ public class BasicGame extends Game {
 
         buildStringLevel(lines, randomSeed);
 
-        if(doPathf)
+        if(doPathf) {long t = System.currentTimeMillis();
+
             pathf.run(this.getObservation());
+            System.out.println(System.currentTimeMillis() - t);
+        }
     }
 
     @Override

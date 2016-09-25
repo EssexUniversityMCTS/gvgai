@@ -1,0 +1,64 @@
+BasicGame key_handler=Pulse square_size=50 no_players=2
+    SpriteSet
+        ground > Immovable img=oryx/grass autotiling=True hidden=True
+        water   > Immovable color=DARKBLUE img=oryx/seaWater
+        reset > Immovable hidden=True color=BROWN img=oryx/grass autotiling=True
+        edge > Immovable hidden=True invisible=True
+        bbox    > Passive
+            boxin > img=newset/blockB
+            box > img=newset/block2
+            boxReset > img=newset/blockR singleton=True
+        goal > Door img=newset/exit2
+        winner > Immovable img=newset/exit2
+        avatar > ShootAvatar frameRate=16
+            avatarA > img=newset/girl3 stype=resetA
+            avatarB > img=newset/man3 stype=resetB
+        avReset > Flicker img=oryx/sparkle4
+            resetA >
+            resetB >
+        resetPortal  > Portal invisible=True portal=True hidden=True stype=reset
+            resetPortalA >
+            resetPortalB >
+        wall > Immovable img=oryx/tree2
+			
+    LevelMapping
+        0 > water ground
+        1 > reset
+        b > box ground
+        . > ground
+        + > edge ground
+        A > avatarA ground
+        B > avatarB ground
+        g > goal ground
+        w > wall ground
+		
+    InteractionSet
+        avatar wall avatar > stepBack
+
+        avatar boxin > shieldFrom ftype=killSprite stype=water
+        box boxin > shieldFrom ftype=transformTo stype=water
+
+        box water    > transformTo stype=boxin scoreChange=1,1
+        avatarA water > killSprite
+        avatarB water > killSprite
+
+        resetA boxin > spawn stype=resetPortalA
+        resetB boxin > spawn stype=resetPortalB
+        boxin avReset > transformTo stype=boxReset killSecond=True
+        resetPortal bbox > killSprite
+        boxReset resetPortalA > teleportToExit scoreChange=-2,0
+        boxReset resetPortalB > teleportToExit scoreChange=0,-2
+        boxReset ground > transformTo stype=box
+        box reset > transformTo stype=boxReset
+
+        box avatar  > bounceForward
+        boxReset avatar > bounceForward
+        box edge box > stepBack
+        boxReset edge boxReset > stepBack
+
+        avatar goal > transformTo stype=winner
+		
+    TerminationSet
+        MultiSpriteCounter stype1=winner limit=2 win=True,True
+        MultiSpriteCounter stype1=avatar stype2=winner limit=1 win=False,False
+        MultiSpriteCounter stype1=avatar stype2=winner limit=0 win=False,False

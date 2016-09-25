@@ -1,0 +1,80 @@
+BasicGame key_handler=Pulse square_size=50 no_players=2
+    SpriteSet
+        water > Immovable img=oryx/seaWater
+        safespot > Immovable img=newset/logm
+            spot0 >
+            spot1 >
+            spot2 >
+            spot3 >
+            spot4 >
+            spot5 >
+        moving > 
+            avatar > OrientedAvatar healthPoints=500 limitHealthPoints=500 frameRate=16
+                avatarA > img=newset/girl3
+                    inWaterA >
+                    onDryA >
+                avatarB > img=newset/man1
+                    inWaterB >
+                    onDryB >
+
+    LevelMapping
+        A > inWaterA water
+        B > inWaterB water
+        + > spot0 water
+        - > spot1 water
+        * > spot2 water
+        & > spot3 water
+        $ > spot4 water
+        % > spot5 water
+        . > water
+
+    InteractionSet
+        moving EOS > wrapAround
+        avatar avatar > bounceForward
+        avatar avatar > stepBack
+
+        onDryA water > transformTo stype=inWaterA
+        onDryB water > transformTo stype=inWaterB
+
+        inWaterA water > subtractHealthPoints value=1
+        inWaterB water > subtractHealthPoints value=1
+
+        inWaterA spot4 > transformTo stype=onDryA scoreChange=6,0
+        inWaterA spot0 > transformTo stype=onDryA scoreChange=5,0
+        inWaterA spot5 > transformTo stype=onDryA scoreChange=4,0
+        inWaterA spot2 > transformTo stype=onDryA scoreChange=3,0
+        inWaterA spot1 > transformTo stype=onDryA scoreChange=2,0
+        inWaterA spot3 > transformTo stype=onDryA scoreChange=1,0
+
+        inWaterB spot4 > transformTo stype=onDryB scoreChange=0,6
+        inWaterB spot0 > transformTo stype=onDryB scoreChange=0,5
+        inWaterB spot5 > transformTo stype=onDryB scoreChange=0,4
+        inWaterB spot2 > transformTo stype=onDryB scoreChange=0,3
+        inWaterB spot1 > transformTo stype=onDryB scoreChange=0,2
+        inWaterB spot3 > transformTo stype=onDryB scoreChange=0,1
+
+        onDryA safespot > addHealthPoints value=3
+        onDryB safespot > addHealthPoints value=3
+
+        spot4 onDryA > addTimer timer=500 ftype=transformToAll stype=spot4 stypeTo=water
+        spot4 onDryB > addTimer timer=500 ftype=transformToAll stype=spot4 stypeTo=water
+
+        spot0 onDryA > addTimer timer=400 ftype=transformToAll stype=spot0 stypeTo=water
+        spot0 onDryB > addTimer timer=400 ftype=transformToAll stype=spot0 stypeTo=water
+
+        spot5 onDryA > addTimer timer=350 ftype=transformToAll stype=spot5 stypeTo=water
+        spot5 onDryB > addTimer timer=350 ftype=transformToAll stype=spot5 stypeTo=water
+
+        spot2 onDryA > addTimer timer=300 ftype=transformToAll stype=spot2 stypeTo=water
+        spot2 onDryB > addTimer timer=300 ftype=transformToAll stype=spot2 stypeTo=water
+
+        spot1 onDryA > addTimer timer=200 ftype=transformToAll stype=spot1 stypeTo=water
+        spot1 onDryB > addTimer timer=200 ftype=transformToAll stype=spot1 stypeTo=water
+
+        spot3 onDryA > addTimer timer=100 ftype=transformToAll stype=spot3 stypeTo=water
+        spot3 onDryB > addTimer timer=100 ftype=transformToAll stype=spot3 stypeTo=water
+
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=True,True
+        SpriteCounter stype=avatarA limit=0 win=False,True
+        SpriteCounter stype=avatarB limit=0 win=True,False

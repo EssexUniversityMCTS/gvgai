@@ -31,10 +31,13 @@ public class TestMultiPlayer
         String games[] = new String[]{};
 
         //All public games
-        games = new String[]{"akkaarrh", "asteroids", "beekeeper", "bombergirl", "captureflag", // 0-4
-                "competesokoban", "copsNrobbers", "donkeykong", "dragonattack", "football",     // 5-9
-                "gotcha", "klax", "minesweeper", "rivalry", "romeoNjuliet",                     // 10-14
-                "samaritan", "sokoban", "steeplechase", "teamescape", "tron"};                  // 15-19
+        games = new String[]{"accelerator", "akkaarrh", "asteroids", "beekeeper", "bombergirl",     // 0-4
+                "breedingdragons", "captureflag", "competesokoban", "copsNrobbers", "donkeykong",   // 5-9
+                "dragonattack", "drowning", "firetruck", "football", "ghostbusters",                // 10-14
+                "gotcha", "klax", "minesweeper", "minions", "oopsbrokeit",                          // 15-19
+                "rivalry", "romeoNjuliet", "samaritan", "sokoban", "steeplechase",                  // 20-24
+                "teamescape", "thebridge", "tron", "uphigh", "watchout"};                           // 25-29
+
 
         //Other settings
         boolean visuals = true;

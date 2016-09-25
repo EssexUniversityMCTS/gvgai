@@ -30,7 +30,7 @@ public class StepBack extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
-        if(pixelPerfect)
+        if(pixelPerfect && sprite2!=null) //Sprite2 could be Null in an EOS case.
             sprite1.setRect(calculatePixelPerfect(sprite1, sprite2));
         else
             sprite1.setRect(sprite1.lastrect);

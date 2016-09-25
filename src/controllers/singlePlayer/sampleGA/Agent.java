@@ -174,12 +174,14 @@ public class Agent extends AbstractPlayer {
                 } catch (TimeoutException e) {
                     break outerloop;
                 }
-                int int_act = this.r_action_mapping.get(action);
 
-                if (score > maxScores[int_act]) {
-                    maxScores[int_act] = score;
-                }
+                try {
+                    int int_act = this.r_action_mapping.get(action);
 
+                    if (score > maxScores[int_act]) {
+                        maxScores[int_act] = score;
+                    }
+                }catch (Exception e){}
 
             }
         }

@@ -25,6 +25,10 @@ public abstract class Effect{
     //Change of the score this effect makes.
     public String scoreChange = "0";
 
+    //Count something
+    public boolean count = true;
+    public String counter = "0";
+
     //Probabilty for stochastic effects.
     public double prob = 1;
 
@@ -69,8 +73,12 @@ public abstract class Effect{
      */
     public int getScoreChange(int playerID) {
         String[] scores = scoreChange.split(",");
-        int s = playerID < scores.length ? Integer.parseInt(scores[playerID]) : Integer.parseInt(scores[0]);
-        return s;
+        return playerID < scores.length ? Integer.parseInt(scores[playerID]) : Integer.parseInt(scores[0]);
+    }
+
+    public int getCounter(int idx) {
+        String[] scores = counter.split(",");
+        return idx < scores.length ? Integer.parseInt(scores[idx]) : Integer.parseInt(scores[0]);
     }
     
     public ArrayList<String> getEffectSprites(){
