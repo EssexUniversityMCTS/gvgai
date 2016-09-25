@@ -915,10 +915,10 @@ public class ArcadeMachine
     }
     
     /**
-     * 
-     * @param ucbEquationName
-     * @return
-     * @throws RuntimeException
+     * Creates UCB Equation according to class name
+     * @param ucbEquationName		className for the ucb equation
+     * @return						the correct class equation
+     * @throws RuntimeException		wrong class name throw exception
      */
     protected static UCBEquation createUCBEquation(String ucbEquationName) throws RuntimeException{
     	UCBEquation ucb = null;
@@ -960,11 +960,11 @@ public class ArcadeMachine
     }
     
     /**
-     * 
-     * @param optimizerName
-     * @param obj
-     * @return
-     * @throws RuntimeException
+     * Create the optimizer based on its class name
+     * @param optimizerName			optimizer class name
+     * @param obj					optimization objective for the constructed optimizer
+     * @return						a constructed optimizer class
+     * @throws RuntimeException		any errors happens during construction or wrong class name
      */
     protected static AbstractOptimizer createOptimizer(String optimizerName, OptimizationObjective obj) throws RuntimeException{
     	AbstractOptimizer optimizer = null;
@@ -1019,12 +1019,12 @@ public class ArcadeMachine
     }
     
     /**
-     * 
-     * @param optimizerName
-     * @param ucbEquationName
-     * @param games
-     * @param levels
-     * @return
+     * Optimize an UCB equation for a MCTS agent playing multiple games
+     * @param optimizerName		class name for the optimizer
+     * @param ucbEquationName	class name for the optimized equation
+     * @param games				array of games to test against
+     * @param levels			array of levels to test against
+     * @return					array of parameters if work fine, null otherwise
      */
     public static double[] optimizeUCBAgent(String optimizerName, String ucbEquationName, String[] games, String[] levels){
     	OptimizationObjective obj = new UCBOptimization(games, levels, 
