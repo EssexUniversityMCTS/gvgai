@@ -36,7 +36,8 @@ public class GVGExecutor {
         System.out.println("\t-ag Agent name to execute.\n" +
                 "\t\t[Mandatory]\n" +
                 "\t\t[Only one agent]\n" +
-                "\t\t[Ex: -ag controllers.singlePlayer.sampleMCTS.Agent]");
+                "\t\t[Ex: -ag controllers.singlePlayer.sampleMCTS.Agent]" +
+                "\t\t[Ex for HUMANS: -ag controllers.singlePlayer.human.Agent]");
         System.out.println("\t-res Output results file.\n" +
                 "\t\t[Optional]\n" +
                 "\t\t[Games separated by ':'. A file per game, or all games the same common file ('output.txt' as default). Number of games must match the one from '-g']\n" +
