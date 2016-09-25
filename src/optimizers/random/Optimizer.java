@@ -1,4 +1,4 @@
-package optimizers.randomOptimizer;
+package optimizers.random;
 
 import java.util.Random;
 

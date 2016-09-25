@@ -1,8 +1,4 @@
-import core.optimization.AbstractOptimizer;
-import core.optimization.OptimizationObjective;
-import core.optimization.ucbOptimization.UCBEvoEquation;
-import core.optimization.ucbOptimization.UCBOptimization;
-import tools.ElapsedCpuTimer;
+import core.ArcadeMachine;
 
 public class TestOptimization {
 	public static void main(String[] args)
@@ -31,6 +27,11 @@ public class TestOptimization {
 		int[] selectedGames = new int[]{0, 9, 11};
 		int selectedLevel = 0;
 		
+		String ucbEvoEquationName = "core.optimization.ucbOptimization.UCBEvoEquation";
+		
+		String randomOptimizerName = "optimizers.random.Optimizer";
+		String hillClimibingOptimizerName = "optimizers.hillClimbing.Optimizer";
+		
 		String[] tempGames = new String[selectedGames.length];
 		String[] tempLevels = new String[selectedGames.length];
 		for(int i=0; i<selectedGames.length; i++){
@@ -38,12 +39,7 @@ public class TestOptimization {
 			tempLevels[i] = gamesPath + games[selectedGames[i]] + "_lvl" + selectedLevel + ".txt";
 		}
 		
-		OptimizationObjective obj = new UCBOptimization(tempGames, tempLevels, 1, new UCBEvoEquation());
-		ElapsedCpuTimer timer = new ElapsedCpuTimer();
-		timer.setMaxTimeMillis(1000);
-		AbstractOptimizer optimizer = new optimizers.hillClimbing.Optimizer(timer, obj);
-		timer.setMaxTimeMillis((int)(5 * 60 * 1000));
-		double[] parameters = optimizer.optimize(timer, obj);
+		double[] parameters = ArcadeMachine.optimizeUCBAgent(hillClimibingOptimizerName, ucbEvoEquationName, tempGames, tempLevels);
 		for(int i=0; i<parameters.length; i++){
 			System.out.print(parameters[i] + ", ");
 		}
