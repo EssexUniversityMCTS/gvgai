@@ -2,8 +2,8 @@ package core.optimization;
 
 import tools.ElapsedCpuTimer;
 
-public abstract class Optimizer {
-	public Optimizer(ElapsedCpuTimer time, OptimizationObjective obj){
+public abstract class AbstractOptimizer {
+	public AbstractOptimizer(ElapsedCpuTimer time, OptimizationObjective obj){
 		
 	}
 	

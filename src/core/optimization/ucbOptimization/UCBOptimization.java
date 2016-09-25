@@ -33,7 +33,8 @@ public class UCBOptimization implements OptimizationObjective {
 		
 		double[] results = new double[this.getNumberOfObjectives()];
 		for(int i=0; i<this.gamePaths.length; i++){
-			double total = 0;
+			double totalWins = 0;
+			double totalScore = 0;
 			for(int j=0; j<this.repetition; j++){
 				double[] gameResults = null;
 				do{
@@ -41,9 +42,10 @@ public class UCBOptimization implements OptimizationObjective {
 							"controllers.singlePlayer.ucbOptimizerAgent.Agent", null, new Random().nextInt(), 0);
 				}while(gameResults[0] < -10);
 				
-				total += Math.max(gameResults[0], 0) * 1000 + gameResults[1];
+				totalWins += Math.max(gameResults[0], 0);
+				totalScore += gameResults[1];
 			}
-			results[i] = total / this.repetition;
+			results[i] = 1000 * totalWins / this.repetition + totalScore / this.repetition;
 		}
 		
 		return results;
