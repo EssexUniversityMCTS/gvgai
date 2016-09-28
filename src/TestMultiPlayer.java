@@ -38,6 +38,9 @@ public class TestMultiPlayer
                 "rivalry", "romeoNjuliet", "samaritan", "sokoban", "steeplechase",                  // 20-24
                 "teamescape", "thebridge", "tron", "uphigh", "watchout"};                           // 25-29
 
+        //Training Set 1
+        games = new String[]{"akkaarrh", "asteroids", "captureflag", "copsNrobbers", "gotcha",      // 0-4
+                "klax", "samaritan", "sokoban", "steeplechase", "tron"};                            // 5-9
 
         //Other settings
         boolean visuals = true;
