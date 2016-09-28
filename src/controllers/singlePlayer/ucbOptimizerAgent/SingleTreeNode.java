@@ -57,7 +57,7 @@ public class SingleTreeNode
         int numIters = 0;
 
         int remainingLimit = 5;
-        while(remaining > 2*avgTimeTaken && remaining > remainingLimit){
+        while(remaining > 2*avgTimeTaken + Agent.safetyMargin && remaining > remainingLimit + Agent.safetyMargin){
             ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
             SingleTreeNode selected = treePolicy();
             double delta = selected.rollOut();

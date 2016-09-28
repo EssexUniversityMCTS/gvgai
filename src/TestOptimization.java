@@ -1,4 +1,5 @@
 import core.ArcadeMachine;
+import core.optimization.ucbOptimization.UCBEvoEquation;
 
 public class TestOptimization {
 	public static void main(String[] args)
@@ -47,8 +48,6 @@ public class TestOptimization {
 		
 		//run optimization process on ucb equation for an MCTS player
 		double[] parameters = ArcadeMachine.optimizeUCBAgent(hillClimibingOptimizerName, ucbEvoEquationName, tempGames, tempLevels);
-		for(int i=0; i<parameters.length; i++){
-			System.out.print(parameters[i] + ", ");
-		}
+		System.out.println(new UCBEvoEquation().toString(parameters));
     }
 }

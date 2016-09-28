@@ -25,6 +25,7 @@ public class Agent extends AbstractPlayer {
     public static Types.ACTIONS[] actions;
     public static UCBEquation ucb;
     public static double[] parameters;
+    public static double safetyMargin = 0;
 
     /**
      * Random generator for the agent.

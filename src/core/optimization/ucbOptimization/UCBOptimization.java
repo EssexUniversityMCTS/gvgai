@@ -5,11 +5,31 @@ import java.util.Random;
 import core.ArcadeMachine;
 import core.optimization.OptimizationObjective;
 
+/**
+ * an implementation of optimization objective for any UCBEquation
+ * @author AhmedKhalifa
+ */
 public class UCBOptimization implements OptimizationObjective {
+	/**
+	 * all games paths require to test against
+	 */
 	private String[] gamePaths;
+	/**
+	 * all level paths associated with the games
+	 */
 	private String[] levelPaths;
+	/**
+	 * number of repetition to play each game
+	 */
 	private int repetition;
 	
+	/**
+	 * Constructor for the current ucb optimization objective
+	 * @param gamePaths		all game paths require to test against
+	 * @param levelPaths	all level paths associated with the games
+	 * @param repetition	number of repetition to play each game
+	 * @param ucb			the current ucb equation to optimize
+	 */
 	public UCBOptimization(String[] gamePaths, String[] levelPaths, int repetition, UCBEquation ucb){
 		this.gamePaths = gamePaths;
 		this.levelPaths = levelPaths;
@@ -17,16 +37,28 @@ public class UCBOptimization implements OptimizationObjective {
 		controllers.singlePlayer.ucbOptimizerAgent.Agent.ucb = ucb;
 	}
 	
+	/**
+	 * small value to avoid division by zero
+	 */
 	@Override
 	public int getNumberOfParameters() {
 		return controllers.singlePlayer.ucbOptimizerAgent.Agent.ucb.lengthParameters();
 	}
 
+	/**
+	 * get the number of parameters used in this equation
+	 * @return number of ucb parameters (14)
+	 */
 	@Override
 	public int getNumberOfObjectives() {
 		return this.gamePaths.length;
 	}
 
+	/**
+	 * evaluate the current parameters against the target objectives
+	 * @param parameters	the current set of parameters to test
+	 * @return				array of fitness against all objectives (the higher the better)
+	 */
 	@Override
 	public double[] evaluate(double[] parameters) {
 		controllers.singlePlayer.ucbOptimizerAgent.Agent.parameters = parameters;
