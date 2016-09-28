@@ -1,7 +1,5 @@
 package core.optimization.ucbOptimization;
 
-import java.text.DecimalFormat;
-
 import controllers.singlePlayer.ucbOptimizerAgent.Helper;
 
 /**

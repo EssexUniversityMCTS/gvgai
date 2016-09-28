@@ -971,21 +971,21 @@ public class ArcadeMachine
     	
     	try{
 	    	Class<? extends AbstractOptimizer> optimizerClass = Class.forName(optimizerName).asSubclass(AbstractOptimizer.class);
-	        Class[] gameArgClass = new Class[]{ElapsedCpuTimer.class, OptimizationObjective.class};
+	        Class[] gameArgClass = new Class[]{OptimizationObjective.class};
 	        Constructor optimizerArgsConstructor = optimizerClass.getConstructor(gameArgClass);
 	        
-	        ElapsedCpuTimer timer = new ElapsedCpuTimer();
-			timer.setMaxTimeMillis(CompetitionParameters.OPTIMIZATION_INITIALIZATION_TIME);
+//	        ElapsedCpuTimer timer = new ElapsedCpuTimer();
+//			timer.setMaxTimeMillis(CompetitionParameters.OPTIMIZATION_INITIALIZATION_TIME);
 	        //Call the constructor with the appropriate parameters.
-	        Object[] constructorArgs = new Object[]{timer.copy(), obj};
+	        Object[] constructorArgs = new Object[]{obj};
 	        
 	        optimizer = (AbstractOptimizer) optimizerArgsConstructor.newInstance(constructorArgs);
-	        if (timer.exceededMaxTime()) {
-                long exceeded = -timer.remainingTimeMillis();
-                System.out.println("Optimizer initialization time out (" + exceeded + ").");
-
-                return null;
-            }
+//	        if (timer.exceededMaxTime()) {
+//                long exceeded = -timer.remainingTimeMillis();
+//                System.out.println("Optimizer initialization time out (" + exceeded + ").");
+//
+//                return null;
+//            }
     	}catch(NoSuchMethodException e)
         {
             e.printStackTrace();
@@ -1028,18 +1028,20 @@ public class ArcadeMachine
      */
     public static double[] optimizeUCBAgent(String optimizerName, String ucbEquationName, String[] games, String[] levels){
     	OptimizationObjective obj = new UCBOptimization(games, levels, 
-    			CompetitionParameters.OPTIMIZATION_REPEATITION, createUCBEquation(ucbEquationName));
+    			CompetitionParameters.OPTIMIZATION_REPEATITION,
+    			CompetitionParameters.OPTIMIZATION_EVALUATION,
+    			createUCBEquation(ucbEquationName));
 		AbstractOptimizer optimizer = createOptimizer(optimizerName, obj);
 		
 		ElapsedCpuTimer timer = new ElapsedCpuTimer();
 		timer.setMaxTimeMillis(CompetitionParameters.OPTIMIZATION_ACTION_TIME);
-		double[] parameters = optimizer.optimize(timer, obj);
+		double[] parameters = optimizer.optimize(obj);
 		
-		if(timer.elapsedMillis() > CompetitionParameters.OPTIMIZATION_ACTION_TIME_DISQ){
-			System.out.println("Optimizer Disqualified exceeded(" + (-timer.elapsedMillis() + 
-				CompetitionParameters.OPTIMIZATION_ACTION_TIME_DISQ) + ")");
-			return null;
-		}
+//		if(timer.elapsedMillis() > CompetitionParameters.OPTIMIZATION_ACTION_TIME_DISQ){
+//			System.out.println("Optimizer Disqualified exceeded(" + (-timer.elapsedMillis() + 
+//				CompetitionParameters.OPTIMIZATION_ACTION_TIME_DISQ) + ")");
+//			return null;
+//		}
 		
 		return parameters;
     }

@@ -52,6 +52,11 @@ public class CompetitionParameters
     public static int OPTIMIZATION_REPEATITION = 1;
     
     /**
+     * Max number of evaluations that can be done
+     */
+    public static int OPTIMIZATION_EVALUATION = 5;
+    
+    /**
      * Milliseconds allowed for optimizer to initialize
      */
     public static int OPTIMIZATION_INITIALIZATION_TIME = 1000;
@@ -86,7 +91,7 @@ public class CompetitionParameters
     /**
      * Max time a game can run
      */
-    public static int MAX_TIMESTEPS = 2000;
+    public static int MAX_TIMESTEPS = 1000;
 
     /**
      * Terminates the program when the playing window is closed

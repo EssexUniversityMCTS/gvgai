@@ -4,7 +4,6 @@ import java.util.Random;
 
 import core.optimization.AbstractOptimizer;
 import core.optimization.OptimizationObjective;
-import tools.ElapsedCpuTimer;
 
 /**
  * use hill climbing algorithm to get the best set of parameters
@@ -19,8 +18,8 @@ public class Optimizer extends AbstractOptimizer {
 	/**
 	 * initialize the random object
 	 */
-	public Optimizer(ElapsedCpuTimer time, OptimizationObjective obj) {
-		super(time, obj);
+	public Optimizer(OptimizationObjective obj) {
+		super(obj);
 		
 		this.random = new Random();
 	}
@@ -67,7 +66,7 @@ public class Optimizer extends AbstractOptimizer {
 	 * use hill climbing to optimize the problem
 	 */
 	@Override
-	public double[] optimize(ElapsedCpuTimer time, OptimizationObjective obj) {
+	public double[] optimize(OptimizationObjective obj) {
 		/**
 		 * initialize random parameter
 		 */
@@ -76,19 +75,14 @@ public class Optimizer extends AbstractOptimizer {
 			parameters[i] = 2 * random.nextDouble() - 1;
 		}
 		/**
-		 * evalualte the random parameters
+		 * evaluate the random parameters
 		 */
 		double currentFitness = this.getAverage(obj.evaluate(parameters));
 		
-		double totalTime = 0;
-		double iterations = 0;
-		double averageTime = 0;
 		/**
-		 * as long as there is time remaining
+		 * as long as there is evaluations
 		 */
-		while(time.remainingTimeMillis() > averageTime){
-			ElapsedCpuTimer tempTimer = new ElapsedCpuTimer();
-			
+		while(true){
 			/**
 			 * change the current parameters
 			 */
@@ -96,17 +90,17 @@ public class Optimizer extends AbstractOptimizer {
 			/**
 			 * evaluate the new parameters
 			 */
-			double newFitness = this.getAverage(obj.evaluate(parameters));
+			double[] tempValues = obj.evaluate(parameters);
+			if(tempValues == null){
+				break;
+			}
+			double newFitness = this.getAverage(tempValues);
 			/**
 			 * if the new parameters are better then pick it
 			 */
 			if(newFitness > currentFitness){
 				parameters = newParameters;
 			}
-			
-			totalTime += tempTimer.elapsedMillis();
-			iterations += 1;
-			averageTime = totalTime / iterations;
 		}
 		
 		/**

@@ -22,18 +22,24 @@ public class UCBOptimization implements OptimizationObjective {
 	 * number of repetition to play each game
 	 */
 	private int repetition;
+	/**
+	 * the maximum allowed number of evaluation calls
+	 */
+	private int numberOfEvaluation;
 	
 	/**
 	 * Constructor for the current ucb optimization objective
 	 * @param gamePaths		all game paths require to test against
 	 * @param levelPaths	all level paths associated with the games
 	 * @param repetition	number of repetition to play each game
+	 * @param evaluation	the maximum number of calls allowed for the evaluation function
 	 * @param ucb			the current ucb equation to optimize
 	 */
-	public UCBOptimization(String[] gamePaths, String[] levelPaths, int repetition, UCBEquation ucb){
+	public UCBOptimization(String[] gamePaths, String[] levelPaths, int repetition, int evaluation, UCBEquation ucb){
 		this.gamePaths = gamePaths;
 		this.levelPaths = levelPaths;
 		this.repetition = repetition;
+		this.numberOfEvaluation = evaluation;
 		controllers.singlePlayer.ucbOptimizerAgent.Agent.ucb = ucb;
 	}
 	
@@ -57,10 +63,16 @@ public class UCBOptimization implements OptimizationObjective {
 	/**
 	 * evaluate the current parameters against the target objectives
 	 * @param parameters	the current set of parameters to test
-	 * @return				array of fitness against all objectives (the higher the better)
+	 * @return				array of fitness against all objectives (the higher the better), 
+	 * 						null if you exceed the number of allowed evaluations
 	 */
 	@Override
 	public double[] evaluate(double[] parameters) {
+		if(this.numberOfEvaluation <= 0){
+			return null;
+		}
+		this.numberOfEvaluation -= 1;
+		
 		controllers.singlePlayer.ucbOptimizerAgent.Agent.parameters = parameters;
 		
 		double[] results = new double[this.getNumberOfObjectives()];

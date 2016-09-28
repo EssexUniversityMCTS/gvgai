@@ -16,8 +16,8 @@ public class Optimizer extends AbstractOptimizer{
 	 */
 	private Random random;
 	
-	public Optimizer(ElapsedCpuTimer time, OptimizationObjective obj) {
-		super(time, obj);
+	public Optimizer(OptimizationObjective obj) {
+		super(obj);
 		
 		this.random = new Random();
 	}
@@ -26,7 +26,7 @@ public class Optimizer extends AbstractOptimizer{
 	 * return random parameters
 	 */
 	@Override
-	public double[] optimize(ElapsedCpuTimer time, OptimizationObjective obj) {
+	public double[] optimize(OptimizationObjective obj) {
 		/**
 		 * initialize random array with number of optimized
 		 */
