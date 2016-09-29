@@ -57,21 +57,6 @@ public class CompetitionParameters
     public static int OPTIMIZATION_EVALUATION = 5;
     
     /**
-     * Milliseconds allowed for optimizer to initialize
-     */
-    public static int OPTIMIZATION_INITIALIZATION_TIME = 1000;
-    
-    /**
-     * Milliseconds allowed for optimizer to run
-     */
-    public static int OPTIMIZATION_ACTION_TIME = 5 * 60 * 1000;
-    
-    /**
-     * Milliseconds for disqualifying optimizer
-     */
-    public static int OPTIMIZATION_ACTION_TIME_DISQ = 6 * 60 * 1000;
-    
-    /**
      * Path to sprite images.
      */
     public static String IMG_PATH = "sprites/";

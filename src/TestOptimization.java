@@ -47,7 +47,9 @@ public class TestOptimization {
 		}
 		
 		//run optimization process on ucb equation for an MCTS player
-		double[] parameters = ArcadeMachine.optimizeUCBAgent(hillClimibingOptimizerName, ucbEvoEquationName, tempGames, tempLevels);
-		System.out.println(new UCBEvoEquation().toString(parameters));
+		double[][] parameters = ArcadeMachine.optimizeUCBAgent(hillClimibingOptimizerName, ucbEvoEquationName, tempGames, tempLevels);
+		for(int i=0; i<parameters.length; i++){
+			System.out.println(new UCBEvoEquation().toString(parameters[i]));
+		}
     }
 }

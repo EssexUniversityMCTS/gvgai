@@ -4,7 +4,6 @@ import java.util.Random;
 
 import core.optimization.AbstractOptimizer;
 import core.optimization.OptimizationObjective;
-import tools.ElapsedCpuTimer;
 
 /**
  * random optimizer, it just return any random values
@@ -26,16 +25,16 @@ public class Optimizer extends AbstractOptimizer{
 	 * return random parameters
 	 */
 	@Override
-	public double[] optimize(OptimizationObjective obj) {
+	public double[][] optimize(OptimizationObjective obj) {
 		/**
 		 * initialize random array with number of optimized
 		 */
-		double[] parameters = new double[obj.getNumberOfParameters()];
+		double[][] parameters = new double[1][obj.getNumberOfParameters()];
 		/**
 		 * put random values for the parameters
 		 */
-		for(int i=0; i<parameters.length; i++){
-			parameters[i] = 2 * random.nextDouble() - 1;
+		for(int i=0; i<parameters[0].length; i++){
+			parameters[0][i] = 2 * random.nextDouble() - 1;
 		}
 		/**
 		 * return the parameter array

@@ -19,5 +19,5 @@ public abstract class AbstractOptimizer {
 	 * @param obj	optimization objective object, can be used to test the current parameters
 	 * @return 		the best parameters for the optimization problem,
 	 */
-	public abstract double[] optimize(OptimizationObjective obj);
+	public abstract double[][] optimize(OptimizationObjective obj);
 }

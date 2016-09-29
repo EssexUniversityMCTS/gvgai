@@ -66,18 +66,18 @@ public class Optimizer extends AbstractOptimizer {
 	 * use hill climbing to optimize the problem
 	 */
 	@Override
-	public double[] optimize(OptimizationObjective obj) {
+	public double[][] optimize(OptimizationObjective obj) {
 		/**
 		 * initialize random parameter
 		 */
-		double[] parameters = new double[obj.getNumberOfParameters()];
-		for(int i=0; i<parameters.length; i++){
-			parameters[i] = 2 * random.nextDouble() - 1;
+		double[][] parameters = new double[1][obj.getNumberOfParameters()];
+		for(int i=0; i<parameters[0].length; i++){
+			parameters[0][i] = 2 * random.nextDouble() - 1;
 		}
 		/**
 		 * evaluate the random parameters
 		 */
-		double currentFitness = this.getAverage(obj.evaluate(parameters));
+		double currentFitness = this.getAverage(obj.evaluate(parameters[0]));
 		
 		/**
 		 * as long as there is evaluations
@@ -86,11 +86,11 @@ public class Optimizer extends AbstractOptimizer {
 			/**
 			 * change the current parameters
 			 */
-			double[] newParameters = this.randomChange(parameters, 0.1);
+			double[] newParameters = this.randomChange(parameters[0], 0.1);
 			/**
 			 * evaluate the new parameters
 			 */
-			double[] tempValues = obj.evaluate(parameters);
+			double[] tempValues = obj.evaluate(parameters[0]);
 			if(tempValues == null){
 				break;
 			}
@@ -99,7 +99,7 @@ public class Optimizer extends AbstractOptimizer {
 			 * if the new parameters are better then pick it
 			 */
 			if(newFitness > currentFitness){
-				parameters = newParameters;
+				parameters[0] = newParameters;
 			}
 		}
 		
