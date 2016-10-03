@@ -1,0 +1,57 @@
+BasicGame key_handler=Pulse no_players=2
+    SpriteSet
+        floor > Immovable color=WHITE hidden=True img=oryx/floor3
+
+        door > Door
+            doorOpen > img=oryx/dooropen1
+            doorClosed > img=oryx/doorclosed1
+
+        present > Resource value=1 limit=1 color=RED img=oryx/book2
+
+        avatar > ShootAvatar
+            santa > stype=gift,kick ammo=present img=oryx/guard1
+            grinch > stype=steal img=oryx/ogre1
+
+        gift > Flicker img=oryx/book2
+        kick > Flicker img=oryx/mace1 shrinkfactor=0.4
+        steal > Flicker img=oryx/belt2 shrinkfactor=0.5
+
+        deadPortal  > Portal invisible=True portal=True hidden=True stype=start
+        start > Immovable invisible=True hidden=True
+
+        child > RandomNPC speed=0.1 cons=2 shrinkfactor=0.5
+            childSad > img=newset/cursedman
+            childHappy > img=newset/blessedman
+
+        wall > Immovable color=WHITE img=oryx/wall3 autotiling=True
+    
+    LevelMapping
+        . > floor
+        + > start floor
+        d > doorOpen floor
+        A > santa floor
+        B > grinch floor
+        * > present floor
+        c > childSad floor
+
+    TerminationSet
+        SpriteCounter stype=childSad win=True,False
+        Timeout limit=1500 win=False,True
+        
+    InteractionSet
+        avatar EOS doorClosed wall child > stepBack
+        santa doorOpen > stepBack
+        child EOS wall door > stepBack
+
+        grinch kick > spawn stype=deadPortal
+        grinch kick > transformToAll stype=doorOpen stypeTo=doorClosed
+        deadPortal grinch > killSprite
+        grinch deadPortal > teleportToExit
+
+        grinch start > addTimer timer=150 ftype=transformToAll stype=doorClosed stypeTo=doorOpen
+
+        present santa > collectResource killResource=False
+        childSad gift > transformTo stype=childHappy killSecond=True
+        childHappy steal > transformTo stype=childSad killSecond=True
+
+

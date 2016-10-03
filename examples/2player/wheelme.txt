@@ -1,0 +1,72 @@
+BasicGame key_handler=Pulse no_players=2
+    SpriteSet
+        floor > Immovable color=WHITE hidden=True img=newset/street3
+        gap > Immovable img=oryx/grass autotiling=True
+
+        ramp > Immovable img=newset/logm
+
+        chargePoint > Passive img=newset/lasercannon
+
+        avatar >
+            wheelchair > MovingAvatar img=oryx/guard1 healthPoints=50 limitHealthPoints=50
+            caregiver > ShootAvatar stype=use img=oryx/ogre1
+
+        use > Flicker img=oryx/belt2 shrinkfactor=0.5
+
+        deadPortal  > Portal invisible=True portal=True hidden=True
+            portalWheel > stype=startWheel
+            portalNPC > stype=startNPC
+
+        start > Immovable invisible=True hidden=True
+            startWheel >
+            startNPC >
+
+        rude > Chaser stype=wheelchair speed=0.2 img=newset/man4
+
+        exit > Door img=newset/exit2
+
+        wall > Immovable color=WHITE img=oryx/tree2
+    
+    LevelMapping
+        . > floor
+        - > gap floor
+        + > startNPC floor
+        d > exit floor
+        A > wheelchair floor startWheel
+        B > caregiver floor
+        0 > rude floor
+        * > chargePoint floor
+        w > wall floor
+
+    TerminationSet
+        SpriteCounter stype=wheelchair win=False,False
+        SpriteCounter stype=exit win=True,True
+        
+    InteractionSet
+        wheelchair TIME > subtractHealthPoints timer=26 repeating=True
+
+        avatar EOS wall > stepBack
+        wheelchair gap > stepBack
+        rude caregiver wall > stepBack
+        caregiver chargePoint > stepBack
+
+        wheelchair rude > spawn stype=portalWheel
+        wheelchair rude > spawn stype=portalNPC
+        portalWheel wheelchair > killSprite
+        portalNPC rude > killSprite
+        wheelchair portalWheel > teleportToExit
+        rude portalNPC > teleportToExit
+
+        rude use > spawn stype=portalNPC
+        portalNPC rude > killSprite
+        rude portalNPC > teleportToExit
+
+        gap use > spawn stype=ramp
+        gap use > killBoth
+
+        exit wheelchair > killSprite
+
+        wheelchair chargePoint > addHealthPointsToMax value=10
+
+
+

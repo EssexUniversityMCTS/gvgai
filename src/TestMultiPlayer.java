@@ -33,21 +33,27 @@ public class TestMultiPlayer
         //All public games
         games = new String[]{"accelerator", "akkaarrh", "asteroids", "beekeeper", "bombergirl",     // 0-4
                 "breedingdragons", "captureflag", "competesokoban", "copsNrobbers", "donkeykong",   // 5-9
-                "dragonattack", "drowning", "firetruck", "football", "ghostbusters",                // 10-14
-                "gotcha", "klax", "minesweeper", "minions", "oopsbrokeit",                          // 15-19
-                "rivalry", "romeoNjuliet", "samaritan", "sokoban", "steeplechase",                  // 20-24
-                "teamescape", "thebridge", "tron", "uphigh", "watchout"};                           // 25-29
+                "dragonattack", "drowning", "egghunt", "fatty", "firetruck",                        // 10-14
+                "football", "ghostbusters", "gotcha", "isawsanta", "klax",                          // 15-19
+                "mimic", "minesweeper", "minions", "oopsbrokeit", "reflection",                     // 20-24
+                "rivalry", "romeoNjuliet", "samaritan", "sokoban", "steeplechase",                  // 25-29
+                "teamescape", "thebridge", "trainride", "treasuremap", "tron",                      // 30-34
+                "upgrade-x", "uphigh", "warzone", "watchout", "wheelme"};                           // 35-39
 
         //Training Set 1
         games = new String[]{"akkaarrh", "asteroids", "captureflag", "copsNrobbers", "gotcha",      // 0-4
                 "klax", "samaritan", "sokoban", "steeplechase", "tron"};                            // 5-9
+
+        // Test set CIG 2016
+        games = new String[]{"egghunt", "fatty", "isawsanta", "mimic", "reflection",                // 0-4
+                "trainride", "treasuremap", "upgrade-x", "warzone", "wheelme"};                     // 5-9
 
         //Other settings
         boolean visuals = true;
         int seed = new Random().nextInt();
 
         //Game and level to play
-        int gameIdx = 0;
+        int gameIdx = 9;
         int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";

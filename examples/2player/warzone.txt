@@ -1,0 +1,121 @@
+BasicGame key_handler=Pulse no_players=2
+    SpriteSet
+        floor > Immovable img=newset/street3 hidden=True
+
+        armour > Immovable
+            armour1 > color=RED img=oryx/helmet1 #protect from opponent bullets
+            armour2 > color=BLUE img=oryx/helmet3 #protect from warriors
+            armour3 > color=GREEN img=oryx/helmet2 #protect from shooter bullets
+            armourU > color=WHITE img=oryx/cloak1 #ultimate armour, protect from everything, stepback with enemies
+
+        bullet > Resource
+            bullet1 > color=YELLOW limit=10 value=2 img=oryx/cspell4 #default, gives 2 point per enemy and 50 for opponent, takes health points off
+            bullet2 > color=ORANGE limit=5 value=1 img=oryx/cspell2 #kills enemies in one shot, 20 points for NPC, 200 for opponent
+
+        healSpot > Immovable img=oryx/heart1
+
+        avatar > ShootAvatar ammo=bullet1,bullet2 healthPoints=50 limitHealthPoints=50
+            avatarA > img=newset/shooter1 stype=missileA1,missileA2
+                nakedA >
+                armour1A >
+                armour2A >
+                armour3A >
+                armourUA >
+            avatarB > img=newset/bandit1 stype=missileB1,missileB2
+                nakedB >
+                armour1B >
+                armour2B >
+                armour3B >
+                armourUB >
+
+        warrior > RandomNPC speed=0.5 cooldown=5 cons=10 img=oryx/cyclop1 healthPoints=40
+
+        shooter > RandomBomber prob=0.05 cooldown=10 stype=missile0 healthPoints=20 img=newset/alienShotgun frameRate=16
+
+        missile > Missile shrinkfactor=0.5
+            missile0 > img=oryx/orb3
+            missileA > img=oryx/orb1
+                missileA1 >
+                missileA2 >
+            missileB > img=oryx/orb2
+                missileB1 >
+                missileB2 >
+
+        wall > Immovable img=oryx/wall3 autotiling=True
+
+    LevelMapping
+        . > floor
+        A > nakedA floor
+        B > nakedB floor
+        + > bullet1 floor
+        = > bullet2 floor
+        1 > armour1 floor
+        2 > armour2 floor
+        3 > armour3 floor
+        u > armourU floor
+        r > warrior floor
+        s > shooter floor
+        h > healSpot floor
+        w > wall floor
+
+    TerminationSet
+        SpriteCounter stype=avatarA win=False,True
+        SpriteCounter stype=avatarB win=True,False
+        MultiSpriteCounter stype1=warrior stype2=shooter count_score=True
+        Timeout limit=1500 count_score=True
+
+    InteractionSet
+        avatar avatar EOS wall > stepBack
+        warrior EOS wall > stepBack
+        shooter EOS wall > stepBack
+        missile wall > killSprite
+
+        bullet1 avatar > collectResource killResource=False
+        bullet2 avatar > collectResource killResource=False
+
+        avatarA missileB2 > killBoth scoreChange=0,200
+        warrior missileB2 > killBoth scoreChange=0,20
+        shooter missileB2 > killBoth scoreChange=0,20
+
+        avatarB missileA2 > killBoth scoreChange=200,0
+        warrior missileA2 > killBoth scoreChange=20,0
+        shooter missileA2 > killBoth scoreChange=20,0
+
+        warrior missileA1 missileB1 avatar > subtractHealthPoints value=4
+        shooter missileA1 missileB1 > subtractHealthPoints value=2
+
+        nakedA missile0 warrior > subtractHealthPoints value=10 scoreChange=-5,0
+        armour1A missile0 warrior > subtractHealthPoints value=3 scoreChange=-2,0
+        armour2A missile0 > subtractHealthPoints value=2 scoreChange=-2,0
+        armour3A warrior > subtractHealthPoints value=1 scoreChange=-2,0
+
+        nakedA missileB1 > subtractHealthPoints value=15 scoreChange=-5,5
+        armour2A missileB1 > subtractHealthPoints value=8 scoreChange=-2,2
+        armour3A missileB1 > subtractHealthPoints value=4 scoreChange=-2,2
+
+        nakedB missile0 warrior > subtractHealthPoints value=10 scoreChange=0,-5
+        armour1B missile0 warrior > subtractHealthPoints value=10 scoreChange=0,-2
+        armour2B missile0 > subtractHealthPoints value=10 scoreChange=0,-2
+        armour3B warrior > subtractHealthPoints value=10 scoreChange=0,-2
+
+        nakedB missileA1 > subtractHealthPoints value=15 scoreChange=5,-5
+        armour2B missileA1 > subtractHealthPoints value=8 scoreChange=2,-2
+        armour3B missileA1 > subtractHealthPoints value=4 scoreChange=2,-2
+
+        avatarA armour1 > transformTo stype=armour1A killSecond=True
+        avatarA armour2 > transformTo stype=armour2A killSecond=True
+        avatarA armour3 > transformTo stype=armour3A killSecond=True
+        avatarA armourU > transformTo stype=armourUA killSecond=True
+
+        avatarB armour1 > transformTo stype=armour1B killSecond=True
+        avatarB armour2 > transformTo stype=armour2B killSecond=True
+        avatarB armour3 > transformTo stype=armour3B killSecond=True
+        avatarB armourU > transformTo stype=armourUB killSecond=True
+
+        avatar healSpot > addHealthPoints value=1
+        warrior healSpot > addHealthPoints value=1
+        shooter healSpot > addHealthPoints value=1
+
+
+        armourUA avatar shooter warrior > stepBack pixelPerfect=True
+        armourUB avatar shooter warrior > stepBack pixelPerfect=True

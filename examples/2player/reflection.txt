@@ -1,0 +1,54 @@
+BasicGame key_handler=Pulse no_players=2
+    SpriteSet
+        floor > Immovable img=oryx/floor3 hidden=True
+        cliff > Immovable color=BLACK
+        avatar > ShootAvatar rotateInPlace=true
+            avatarA > img=newset/cop2 stype=bullet1
+            avatarB > img=newset/sheriff1 stype=bullet2
+
+        mirror > Passive img=oryx/diamond3
+           mup > orientation=UP img=newset/mirror_u
+           mdown > orientation=DOWN img=newset/mirror_d
+           mright > orientation=RIGHT img=newset/mirror_r
+           mleft > orientation=LEFT img=newset/mirror_l
+           mswap >
+
+        bullet > Missile color=BLUE shrinkfactor=0.3
+            bullet1 > img=oryx/orb2
+            bulletA > img=oryx/orb2
+            bullet2 > img=oryx/orb3
+            bulletB > img=oryx/orb3
+
+        wall > Immovable img=oryx/wall3 autotiling=True
+
+    LevelMapping
+        . > floor
+        , > cliff
+        A > floor avatarA
+        B > floor avatarB
+        u > floor mup
+        d > floor mdown
+        r > floor mright
+        l > floor mleft
+
+    InteractionSet
+
+        avatar wall > stepBack
+        mirror avatar  > bounceForward
+        mirror wall > stepBack
+
+        mirror cliff > killSprite
+        avatar cliff > killSprite
+
+        bullet wall EOS > killSprite
+        bullet1 mirror > transformTo stype=bulletA
+        bullet2 mirror > transformTo stype=bulletB
+        bullet mirror > attractGaze align=True
+
+        avatarA bulletB > killSprite
+        avatarB bulletA > killSprite
+
+    TerminationSet
+        SpriteCounter stype=avatarA limit=0 win=False,True
+        SpriteCounter stype=avatarB limit=0 win=True,False
+        Timeout limit=1500 win=False,False
