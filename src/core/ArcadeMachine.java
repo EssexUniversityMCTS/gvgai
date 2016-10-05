@@ -14,6 +14,11 @@ import core.game.GameDescription;
 import core.game.StateObservation;
 import core.game.StateObservationMulti;
 import core.generator.AbstractLevelGenerator;
+import core.optimization.AbstractOptimizer;
+import core.optimization.OptimizationObjective;
+import core.optimization.ucbOptimization.UCBEquation;
+import core.optimization.ucbOptimization.UCBEvoEquation;
+import core.optimization.ucbOptimization.UCBOptimization;
 import core.player.AbstractMultiPlayer;
 import core.player.AbstractPlayer;
 import core.player.Player;
@@ -910,6 +915,120 @@ public class ArcadeMachine
     }
     
     /**
+     * Creates UCB Equation according to class name
+     * @param ucbEquationName		className for the ucb equation
+     * @return						the correct class equation
+     * @throws RuntimeException		wrong class name throw exception
+     */
+    protected static UCBEquation createUCBEquation(String ucbEquationName) throws RuntimeException{
+    	UCBEquation ucb = null;
+    	
+    	try{
+    		Class<? extends UCBEquation> equationClass = Class.forName(ucbEquationName).asSubclass(UCBEquation.class);
+	        Constructor equationConstructor = equationClass.getConstructor();
+	        ucb = (UCBEquation) equationConstructor.newInstance();
+    	}catch(NoSuchMethodException e)
+        {
+            e.printStackTrace();
+            System.err.println("Constructor " + ucbEquationName + "(StateObservation,long) not found in controller class:");
+            System.exit(1);
+
+        }catch(ClassNotFoundException e)
+        {
+            System.err.println("Class " + ucbEquationName + " not found for the controller:");
+            e.printStackTrace();
+            System.exit(1);
+
+        }catch(InstantiationException e)
+        {
+            System.err.println("Exception instantiating " + ucbEquationName + ":");
+            e.printStackTrace();
+            System.exit(1);
+
+        }catch(IllegalAccessException e)
+        {
+            System.err.println("Illegal access exception when instantiating " + ucbEquationName + ":");
+            e.printStackTrace();
+            System.exit(1);
+        }catch(InvocationTargetException e)
+        {
+            System.err.println("Exception calling the constructor " + ucbEquationName + "(StateObservation,long):");
+            e.printStackTrace();
+            System.exit(1);
+        }
+    	return ucb;
+    }
+    
+    /**
+     * Create the optimizer based on its class name
+     * @param optimizerName			optimizer class name
+     * @param obj					optimization objective for the constructed optimizer
+     * @return						a constructed optimizer class
+     * @throws RuntimeException		any errors happens during construction or wrong class name
+     */
+    protected static AbstractOptimizer createOptimizer(String optimizerName, OptimizationObjective obj) throws RuntimeException{
+    	AbstractOptimizer optimizer = null;
+    	
+    	try{
+	    	Class<? extends AbstractOptimizer> optimizerClass = Class.forName(optimizerName).asSubclass(AbstractOptimizer.class);
+	        Class[] gameArgClass = new Class[]{OptimizationObjective.class};
+	        Constructor optimizerArgsConstructor = optimizerClass.getConstructor(gameArgClass);
+	        
+	        //Call the constructor with the appropriate parameters.
+	        Object[] constructorArgs = new Object[]{obj};
+	        optimizer = (AbstractOptimizer) optimizerArgsConstructor.newInstance(constructorArgs);
+    	}catch(NoSuchMethodException e)
+        {
+            e.printStackTrace();
+            System.err.println("Constructor " + optimizerName + "(StateObservation,long) not found in controller class:");
+            System.exit(1);
+
+        }catch(ClassNotFoundException e)
+        {
+            System.err.println("Class " + optimizerName + " not found for the controller:");
+            e.printStackTrace();
+            System.exit(1);
+
+        }catch(InstantiationException e)
+        {
+            System.err.println("Exception instantiating " + optimizerName + ":");
+            e.printStackTrace();
+            System.exit(1);
+
+        }catch(IllegalAccessException e)
+        {
+            System.err.println("Illegal access exception when instantiating " + optimizerName + ":");
+            e.printStackTrace();
+            System.exit(1);
+        }catch(InvocationTargetException e)
+        {
+            System.err.println("Exception calling the constructor " + optimizerName + "(StateObservation,long):");
+            e.printStackTrace();
+            System.exit(1);
+        }
+    	return optimizer;
+    }
+    
+    /**
+     * Optimize an UCB equation for a MCTS agent playing multiple games
+     * @param optimizerName		class name for the optimizer
+     * @param ucbEquationName	class name for the optimized equation
+     * @param games				array of games to test against
+     * @param levels			array of levels to test against
+     * @return					array of parameters if work fine, null otherwise
+     */
+    public static double[][] optimizeUCBAgent(String optimizerName, String ucbEquationName, String[] games, String[] levels){
+    	OptimizationObjective obj = new UCBOptimization(games, levels, 
+    			CompetitionParameters.OPTIMIZATION_REPEATITION,
+    			CompetitionParameters.OPTIMIZATION_EVALUATION,
+    			createUCBEquation(ucbEquationName));
+		AbstractOptimizer optimizer = createOptimizer(optimizerName, obj);
+		double[][] parameters = optimizer.optimize(obj);
+		
+		return parameters;
+    }
+    
+    /**
      * Generate AbstractLevelGenerator object to generate levels 
      * for the game using the supplied class path.
      * @param levelGenerator	class path for the supplied level generator
@@ -982,7 +1101,6 @@ public class ArcadeMachine
 
         return generator;
     }
-
 
     /**
      * Generate a level for the described game using the supplied level generator.
