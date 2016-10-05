@@ -47,16 +47,6 @@ public class CompetitionParameters
     public static int LEVEL_INITIALIZATION_TIME = 60000;
     
     /**
-     * Number of repetition during the optimization operation
-     */
-    public static int OPTIMIZATION_REPEATITION = 1;
-    
-    /**
-     * Max number of evaluations that can be done
-     */
-    public static int OPTIMIZATION_EVALUATION = 5;
-    
-    /**
      * Path to sprite images.
      */
     public static String IMG_PATH = "sprites/";
