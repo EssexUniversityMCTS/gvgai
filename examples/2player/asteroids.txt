@@ -1,0 +1,79 @@
+BasicGame no_players=2
+    SpriteSet
+        background > Immovable hidden=True img=oryx/space1
+        base > Immovable color=WHITE img=newset/block3
+        moving >
+            avatar  > ShootAvatar speed=0.9
+                avatar1 > stype=sam1 img=oryx/spaceship1
+                avatar2 > stype=sam2 img=oryx/spaceship2
+            missile > Missile timeToLive=20
+                sam1  > color=BLUE singleton=True img=oryx/orb3 shrinkfactor=0.5
+                sam2  > color=RED singleton=True img=oryx/orb1 shrinkfactor=0.5
+
+        asteroid >
+
+            static > RandomNPC img=oryx/planet is_npc=False
+                big > speed=0.05 cons=1
+                medium > speed=0.10 cons=2 shrinkfactor=0.8
+                small > speed=0.15 cons=3 shrinkfactor=0.5
+
+            rnd > RandomMissile speed=0.15 img=oryx/planet
+                rndBig > speed=0.05
+                rndMedium > speed=0.10 shrinkfactor=0.8
+                rndSmall > speed=0.15 shrinkfactor=0.5
+
+        portal  > SpawnPoint cooldown=16 invisible=True hidden=True
+            portalR > stype=big total=3
+            portalH > stype=rndBig total=1
+    
+    LevelMapping
+        p > portalR background
+        h > portalH background
+        b > base background
+        A > avatar1 background
+        B > avatar2 background
+        . > background
+
+    TerminationSet
+        MultiSpriteCounter stype1=avatar1 stype2=avatar2 limit=0 win=False,False
+        SpriteCounter stype=avatar1 limit=0 win=False,True
+        SpriteCounter stype=avatar2 limit=0 win=True,False
+        SpriteCounter stype=asteroid limit=0 count_score=True
+        Timeout limit=2000 count_score=True
+        
+    InteractionSet
+        moving EOS > wrapAround
+        rnd EOS > wrapAround
+        asteroid EOS > stepBack
+        
+        avatar avatar > killBoth
+        avatar1 sam2 > killSprite scoreChange=-2,10
+        avatar2 sam1 > killSprite scoreChange=10,-2
+        
+        missile big > spawn stype=medium
+        missile big > spawn stype=medium
+        missile big > killBoth
+        missile medium > spawn stype=small
+        missile medium > spawn stype=small
+        missile medium > killBoth
+
+
+        missile rndBig > spawn stype=rndMedium
+        missile rndBig > spawn stype=rndMedium
+        missile rndBig > killBoth
+        missile rndMedium > spawn stype=rndSmall
+        missile rndMedium > spawn stype=rndSmall
+        missile rndMedium > killBoth
+
+        sam1 rndSmall small > killBoth scoreChange=3,0
+        sam2 rndSmall small > killBoth scoreChange=0,3
+
+        avatar1 asteroid > killBoth scoreChange=-1,0
+        avatar2 asteroid > killBoth scoreChange=0,-1
+
+
+        asteroid base > reverseDirection
+        base asteroid > killSprite
+        base sam1 > killBoth scoreChange=1,0
+        base sam2 > killBoth scoreChange=0,1
+        avatar base > stepBack pixelPerfect=True

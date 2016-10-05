@@ -1,0 +1,46 @@
+BasicGame square_size=30 key_handler=Pulse
+    SpriteSet
+
+        floor > Immovable img=oryx/backOBrown
+        avatar  > ShootAvatar stype=shovel img=newset/man1
+        shovel > OrientedFlicker limit=1 color=LIGHTGRAY img=oryx/axe2
+
+        ground > Immovable img=oryx/tree2
+        rock > Immovable img=oryx/wall4
+        hole > Immovable invisible=True hidden=True
+
+        house > Immovable
+            dryHouse > img=oryx/cloak1
+            waterHouse > img=oryx/cloak3
+
+        water > img=newset/water
+            waterStart > Spreader color=BLUE spreadprob=1.0 stype=waterEnd
+            waterOn > SpawnPoint stype=waterStart prob=1.0
+            waterEnd > Immovable
+
+        wall > Immovable img=oryx/dirtwall autotiling=True
+
+    LevelMapping
+        h > floor dryHouse ground
+        n > floor waterOn
+        A > floor avatar ground
+        r > floor rock
+        . > floor ground
+        w > wall
+
+    InteractionSet
+        avatar wall rock house > stepBack
+
+        water ground rock house wall EOS > killSprite
+
+        waterEnd hole > transformTo stype=waterOn killSecond=True
+        waterEnd waterOn > killSprite
+
+        dryHouse water > transformTo stype=waterHouse scoreChange=1
+        ground shovel > transformTo stype=hole
+
+
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=dryHouse limit=0 win=True
+        Timeout limit=1250 win=False

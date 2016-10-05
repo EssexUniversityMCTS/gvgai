@@ -1,0 +1,36 @@
+BasicGame
+    SpriteSet
+        floor > Immovable img=oryx/backGrey hidden=True
+        sword > Flicker limit=5 singleton=True img=oryx/sword1
+        entrance > SpawnPoint total=5 cooldown=100 stype=doctor img=oryx/dooropen1 portal=True
+        virus > Immovable color=RED img=oryx/slime4 shrinkfactor=0.7
+        moving >
+            avatar > ShootAvatar stype=sword
+                 normal   > color=WHITE img=newset/girl2
+                 carrier  > color=RED img=newset/girl2_c frameRate=8
+            npc    > RandomNPC speed=0.25  cons=1
+                 host     > color=GREEN img=newset/man3
+                 infected > color=ORANGE speed=0.5 img=newset/cursedman frameRate=8
+                 doctor > color=BLUE speed=0.2 img=newset/nurse
+        wall > Immovable img=oryx/wall3 autotiling=True
+
+    TerminationSet
+        SpriteCounter stype=host   win=True
+
+    InteractionSet
+        doctor sword    > killSprite scoreChange=2
+        moving wall       > stepBack
+        carrier doctor  > transformTo stype=normal  scoreChange=-1
+        host carrier      > transformTo stype=infected scoreChange=2
+        infected doctor > transformTo stype=host
+        normal infected virus  > transformTo stype=carrier
+        host infected virus    > transformTo stype=infected
+        doctor virus    > killSprite
+
+    LevelMapping
+        1 > floor doctor
+        0 > floor host
+        x > floor virus
+        A > floor normal
+        e > floor entrance
+        . > floor

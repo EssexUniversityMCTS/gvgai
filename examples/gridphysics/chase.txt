@@ -1,0 +1,27 @@
+BasicGame
+    SpriteSet
+        floor > Immovable hidden=True img=oryx/grass autotiling=True
+        carcass > Immovable color=BROWN img=oryx/worm2 shrinkfactor=0.6
+        goat > stype=avatar
+            angry  > Chaser  color=ORANGE img=oryx/bird3
+            scared > Fleeing color=BLUE img=oryx/bird1
+        avatar > MovingAvatar img=oryx/princess1
+        wall > Immovable img=oryx/tree2
+
+    InteractionSet
+        goat   wall goat   > stepBack
+        avatar wall    > stepBack
+        avatar  angry  > killSprite scoreChange=-1
+        carcass scared > killSprite
+        scared avatar  > transformTo stype=carcass scoreChange=1
+        scared carcass > transformTo stype=angry
+
+    LevelMapping
+        0 > scared floor
+        . > floor
+        A > floor avatar
+        w > floor wall
+
+    TerminationSet
+        SpriteCounter stype=scared win=True
+        SpriteCounter stype=avatar win=False

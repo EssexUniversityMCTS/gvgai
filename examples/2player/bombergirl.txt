@@ -1,0 +1,51 @@
+BasicGame no_players=2 square_size=30 key_handler=Pulse
+	SpriteSet
+		ground > Immovable img=oryx/grass autotiling=True hidden=True
+		movable >
+			avatar >
+				avatarA > ShootAvatar img=oryx/rogue stype=bomb1 frameRate=16
+				avatarB > ShootAvatar img=oryx/spelunky stype=bomb2 frameRate=16
+			minion > RandomBomber prob=0.05 cooldown=10
+				minionA > stype=bomb1 color=BLUE img=oryx/ogre1 shrinkfactor=0.5
+				minionB > stype=bomb2 color=RED img=oryx/ogre2 shrinkfactor=0.5
+		box > Immovable img=newset/block3
+		bomb > SpawnPoint total=1 cooldown=100 shrinkfactor=0.8
+			bomb1 > img=newset/bomb singleton=True stype=explosion1
+			bomb2 > img=newset/bomb2 singleton=True stype=explosion2
+
+		explosion1 > Spreader spreadprob=1.0 stype=spark1 img=oryx/sparkle4 hidden=True
+		explosion2 > Spreader spreadprob=1.0 stype=spark2 img=oryx/sparkle1 hidden=True
+		endExplosion > Immovable timeToLive=20
+			endExplosion1 > img=oryx/sparkle4
+			endExplosion2 > img=oryx/sparkle1
+		spark1  > SpawnPoint total=1 img=oryx/sparkle4 stype=endExplosion1 hidden=True
+		spark2  > SpawnPoint total=1 img=oryx/sparkle1 stype=endExplosion2 hidden=True
+		wall > Immovable img=oryx/wall1
+		
+	LevelMapping
+		A > avatarA ground
+		B > avatarB ground
+		. > ground
+		b > box ground
+		0 > minionA ground
+		1 > minionB ground
+	
+	InteractionSet
+		movable wall box > stepBack
+		movable bomb > stepBack pixelPerfect=True
+		bomb wall box avatar > killSprite
+		endExplosion wall > killSprite
+
+		box explosion1 endExplosion1 > killSprite scoreChange=1,0
+		box explosion2 endExplosion2 > killSprite scoreChange=0,1
+		avatarB explosion1 endExplosion1 > killSprite scoreChange=50,0
+		minionB explosion1 endExplosion1 > killSprite scoreChange=10,0
+		avatarA explosion2 endExplosion2 > killSprite scoreChange=0,50
+		minionA explosion2 endExplosion2 > killSprite scoreChange=0,10
+
+	TerminationSet
+		SpriteCounter stype=avatarA limit=0 win=False,True
+		SpriteCounter stype=avatarB limit=0 win=True,False
+		SpriteCounter stype=box limit=0 count_score=True
+		Timeout limit=2000 count_score=True
+		

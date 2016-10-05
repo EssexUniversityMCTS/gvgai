@@ -1,0 +1,49 @@
+BasicGame key_handler=Pulse
+    SpriteSet
+        floor > Immovable img=oryx/space1 hidden=True
+        city    > Immovable    color=WHITE img=newset/city1
+        avatar  > ShootAvatar color=YELLOW ammo=bullet stype=sam img=oryx/spaceship1 rotateInPlace=False
+        missile > Missile
+            sam  > orientation=RIGHT color=BLUE img=oryx/bullet1
+            bomb > orientation=DOWN color=RED speed=0.5 img=newset/bomb shrinkfactor=0.6
+        alien   > Bomber   orientation=LEFT stype=bomb   prob=0.04  cooldown=4 speed=0.6 img=oryx/alien3
+
+        portal  > SpawnPoint stype=alien  cooldown=10  invisible=True hidden=True
+            portalSlow  > prob=0.2
+            portalFast  > prob=0.5
+
+        portalAmmo  > SpawnPoint stype=supply cooldown=10 prob=0.15 invisible=True
+
+        supply > Missile orientation=DOWN speed=0.25 img=oryx/goldsack
+        bullet > Resource limit=20
+        wall > Immovable img=oryx/wall1
+    
+    LevelMapping
+        0 > city floor
+        1 > portalSlow floor
+        2 > portalFast floor
+        3 > portalAmmo floor
+        A > avatar supply floor
+        . > floor
+
+    TerminationSet
+        SpriteCounter      stype=avatar             limit=0 win=False
+        SpriteCounter      stype=city               limit=0 win=False
+        Timeout limit=1000 win=True
+        
+    InteractionSet
+        avatar  EOS city wall  > stepBack
+
+        alien   EOS  > killSprite
+        missile EOS city > killSprite
+
+        city bomb > killSprite scoreChange=-1
+        city sam alien > killSprite
+
+        supply alien > killSprite
+        alien  sam   > killBoth scoreChange=2
+
+        supply supply > stepBack
+        supply wall city > stepBack pixelPerfect=True
+
+        avatar supply > changeResource resource=bullet value=5 killResource=True

@@ -1,0 +1,7 @@
+classes/
+.idea/
+examples/.DS_Store
+*.MF
+*.jar
+*.class
+src/tools/.DS_Store

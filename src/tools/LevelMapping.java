@@ -114,6 +114,7 @@ public class LevelMapping {
 	}
 	
 	/**
+<<<<<<< HEAD
 	 * Remove useless entities in the list
 	 * @param data 	list of objects
 	 * @return		fixed list of objects after removing empty elements
@@ -130,6 +131,8 @@ public class LevelMapping {
 	}
 	
 	/**
+=======
+>>>>>>> 69b5a53ad8c3de85119ff2c5bbb3251523c96b38
 	 * get character corresponding to a certain arraylist of strings
 	 * @param data	list of sprite names
 	 * @return		character corresponding to the list

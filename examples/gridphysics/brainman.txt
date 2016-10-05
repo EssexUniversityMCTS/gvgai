@@ -1,0 +1,53 @@
+#BrainMan: http://www.mobygames.com/game/brainman
+
+BasicGame
+    SpriteSet
+        floor > Immovable hidden=True img=newset/floor2
+        avatar > OrientedAvatar img=oryx/prince1 rotateInPlace=false
+        gem > Immovable shrinkfactor=0.7
+            green >  img=oryx/diamond3
+            red >  img=oryx/diamond2
+            blue >  img=oryx/diamond1
+        key > Passive img=oryx/key3 shrinkfactor=0.7
+        keym > Missile img=oryx/key3 shrinkfactor=0.6
+        exit > Immovable img=newset/exit2
+        door > Immovable img=oryx/doorclosed1
+        boulder > Passive img=newset/block3
+        wall > Immovable img=oryx/wall3 autotiling=True
+    LevelMapping
+        A > avatar floor
+        k > key floor
+        d > door floor
+        e > exit floor
+        g > green floor
+        r > red floor
+        b > blue  floor
+        O > boulder floor
+        . > floor
+    InteractionSet
+
+        keym key wall gem boulder > transformTo stype=key
+
+        avatar wall door > stepBack
+        
+        boulder avatar > bounceForward
+        
+        key avatar > transformTo stype=keym
+        keym avatar > attractGaze
+        avatar key keym > stepBack
+        
+        door keym > killBoth scoreChange=4
+
+        green avatar > killSprite scoreChange=1
+        blue avatar > killSprite scoreChange=2
+        red avatar > killSprite scoreChange=5
+        
+        boulder wall key gem boulder > undoAll
+        
+        key wall gem key > undoAll
+
+        exit avatar > killSprite scoreChange=10
+        
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=exit limit=0 win=True

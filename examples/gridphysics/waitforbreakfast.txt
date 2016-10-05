@@ -1,0 +1,79 @@
+BasicGame
+  SpriteSet
+    ground > Immovable img=newset/floor6
+    floor > Immovable img=newset/floor6 hidden=True
+    exit > Immovable color=DARKBLUE img=oryx/doorclosed1 portal=True
+    wall > Immovable color=BLACK img=newset/floor4
+    othertable > Immovable color=DARKBLUE img=newset/table1
+    table > Immovable color=DARKBLUE
+      emptytable > img=newset/table1
+      tablewb > img=newset/table2
+      endtable > img=newset/table3
+    kitchen > SpawnPoint color=LIGHTGRAY img=oryx/dooropen1 stype=waiterwb prob=0.05 portal=True
+    chair > Immovable color=GRAY img=newset/chair1
+      front > img=newset/chair2
+      back > img=newset/chair1
+      left > img=newset/chair3
+      right > img=newset/chair4
+    singlechair > Immovable color=GRAY img=newset/chair1
+      singlefront > img=newset/chair2
+      singleback > img=newset/chair1
+      singleleft > img=newset/chair3
+      singleright > img=newset/chair4
+    avatar > MovingAvatar speed=0.25
+      standingavatar > img=newset/man3 frameRate=8
+      leavingavatar > img=newset/man3 frameRate=8
+      satavatar > img=newset/man2
+        satfront > img=newset/man3_satfront
+        satback > img=newset/man3_satback
+        satleft > img=newset/man3_satleft
+        satright > img=newset/man3_satright
+
+    waiter >  Chaser stype=table speed=0.5 img=newset/waiter singleton=True frameRate=8
+      waiterwb > 
+      waiternb >
+
+  LevelMapping
+    . > ground
+    t > emptytable floor
+    k > kitchen  floor
+    b > back  floor
+    f > front  floor
+    l > left  floor
+    r > right  floor
+    0 > singlefront  floor
+    1 > singleback  floor
+    2 > singleleft  floor
+    3 > singleright  floor
+    e > exit  floor
+    o > othertable  floor
+    A > standingavatar  floor
+
+  InteractionSet
+
+    tablewb satavatar > transformTo stype=endtable  scoreChange=1
+    emptytable waiterwb > transformTo stype=tablewb
+    exit avatar > killSprite
+
+    satavatar ground > transformTo stype=leavingavatar
+    leavingavatar singlefront > transformTo stype=satfront
+    leavingavatar singleback > transformTo stype=satback
+    leavingavatar singleleft > transformTo stype=satleft
+    leavingavatar singleright > transformTo stype=saright
+
+    standingavatar singlefront > transformTo stype=satfront
+    standingavatar singleback > transformTo stype=satback
+    standingavatar singleleft > transformTo stype=satleft
+    standingavatar singleright > transformTo stype=saright
+
+    waiter table othertable wall EOS > stepBack
+    avatar othertable wall EOS table > stepBack
+
+
+
+  TerminationSet
+    MultiSpriteCounter stype1=emptytable stype2=tablewb limit=0 win=True
+    MultiSpriteCounter stype1=leavingavatar limit=1 win=False
+    SpriteCounter stype=exit limit=0 win=False
+    Timeout limit=1500 win=False
+    

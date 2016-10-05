@@ -1,0 +1,28 @@
+BasicGame key_handler=Pulse
+    SpriteSet
+        floor > Immovable hidden=True img=oryx/backLBrown
+        avatar > MovingAvatar img=oryx/rat1
+        box    > Passive img=newset/block3
+        exit > Door color=GREEN img=newset/cheese
+        hole   > Immovable color=DARKBLUE img=newset/hole1 portal=True
+        wall > Immovable img=oryx/dirtwall autotiling=True
+
+    LevelMapping
+        x > exit floor
+        h > hole floor
+        1 > box floor
+        A > avatar floor
+        . > floor
+
+    InteractionSet
+        avatar wall > stepBack
+        box avatar  > bounceForward
+        box wall exit box   > undoAll
+        avatar hole > killSprite scoreChange=-1
+        exit avatar > killSprite scoreChange=1
+        box hole    > killSprite
+
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=exit limit=0 win=True
+        Timeout limit=1000 win=False

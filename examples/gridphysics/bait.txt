@@ -1,0 +1,40 @@
+#Bait: http://www.mobygames.com/game/bait
+
+BasicGame  key_handler=Pulse square_size=50
+    SpriteSet
+
+        floor > Immovable hidden=True img=oryx/backLBrown
+        hole   > Immovable color=DARKBLUE img=newset/hole1
+        avatar > MovingAvatar
+            nokey > img=oryx/swordman1 frameRate=8
+            withkey > img=oryx/swordmankey1 frameRate=8
+        mushroom > Immovable img=oryx/mushroom2 shrinkfactor=0.6
+        key > Passive img=oryx/key2 shrinkfactor=0.7
+        goal > Immovable img=oryx/doorclosed1
+        box    > Passive img=newset/block3 shrinkfactor=0.8
+        wall > Immovable img=oryx/dirtwall autotiling=True
+
+    LevelMapping
+        A > nokey floor
+        0 > hole floor
+        1 > box floor
+        k > key floor
+        g > goal floor
+        m > mushroom floor
+        . > floor
+
+    InteractionSet
+        avatar wall > stepBack
+        avatar hole > killSprite
+        box avatar  > bounceForward
+        box wall box mushroom > undoAll
+        box hole > killBoth scoreChange=1
+        nokey key > transformTo stype=withkey
+        key avatar > killSprite
+        nokey goal    > stepBack
+        goal withkey > killSprite scoreChange=5
+        mushroom avatar > killSprite scoreChange=1
+
+    TerminationSet
+        SpriteCounter stype=goal limit=0 win=True
+        SpriteCounter stype=avatar limit=0 win=False

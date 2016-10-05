@@ -1,0 +1,48 @@
+BasicGame
+    SpriteSet
+        water > Immovable img=newset/water2
+        holes > SpawnPoint color=LIGHTGRAY img=newset/whirlpool2 portal=True
+            sharkhole  >  stype=shark  prob=0.025 total=1
+            whalehole  >  stype=whale  prob=0.1 cooldown=10
+            piranhahole  >  stype=piranha  prob=0.1 cooldown=10
+
+        moving >
+            avatar  > ShootAvatar color=YELLOW  stype=torpedo img=newset/submarine
+            torpedo > Missile color=YELLOW shrinkfactor=0.3 img=oryx/orb2
+            fish >
+                shark  > Chaser speed=0.1 color=ORANGE img=newset/shark2 stype=avatar
+                whale  > Missile  orientation=RIGHT  speed=0.1 color=BROWN img=newset/whale
+                piranha > Missile orientation=LEFT speed=0.1 color=RED img=newset/piranha1
+
+        shell > Resource color=GOLD limit=20 img=oryx/amulat1 shrinkfactor=0.5
+        sharkFang > Resource color=GOLD limit=1 img=oryx/sword4 shrinkfactor=0.5
+
+
+    LevelMapping
+        1 > water piranhahole
+        2 > water whalehole
+        3 > water sharkhole
+        . > water
+        A > water avatar
+
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        Timeout limit=1000 win=True
+
+    InteractionSet
+        EOS avatar shark > stepBack
+        EOS torpedo fish > killSprite
+
+        whale torpedo > transformTo stype=shell scoreChange=1
+        piranha torpedo > transformTo stype=shell scoreChange=1
+        torpedo fish > killSprite
+
+        sharkFang avatar > collectResource scoreChange=1000
+        shell avatar > collectResource scoreChange=1
+
+        avatar shark > spawnIfHasMore resource=shell limit=15 stype=sharkFang
+        shark avatar > killIfOtherHasMore resource=shell limit=15
+
+        avatar shark  > killIfHasLess resource=shell limit=15
+        avatar whale piranha > killSprite
+

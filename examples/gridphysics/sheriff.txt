@@ -1,0 +1,60 @@
+BasicGame
+    SpriteSet
+
+        floor > Immovable img=oryx/backBiege
+        base    > Immovable    color=WHITE img=oryx/wall4
+        avatar  > ShootAvatar stype=bullet img=newset/sheriff1
+        surround > Immovable    color=YELLOW img=dirt invisible=True
+        bullet > Missile img=oryx/orb3 shrinkfactor=0.5 singleton=True
+
+        turn > Immovable invisible=True hidden=True
+            turnup > orientation=UP img=dirt
+            turndown > orientation=DOWN img=dirt
+            turnleft > orientation=LEFT img=dirt
+            turnright > orientation=RIGHT img=dirt
+
+        bandit > Bomber prob=0.1 cooldown=6 speed=1 img=newset/bandit1
+            bup > orientation=UP spawnorientation=LEFT stype=missile
+            bdown > orientation=DOWN spawnorientation=RIGHT stype=missile
+            bleft > orientation=LEFT spawnorientation=DOWN stype=missile
+            bright > orientation=RIGHT spawnorientation=UP stype=missile
+
+        missile > Missile img=oryx/orb1 shrinkfactor=0.5 speed=0.6
+
+        wall > Immovable autotiling=True img=oryx/dirtwall
+
+    LevelMapping
+        0 > floor base
+        u > floor surround bup
+        d > floor surround bdown
+        l > floor surround bleft
+        r > floor surround bright
+        s > floor surround
+        A > floor avatar
+        1 > floor turnup
+        2 > floor turnleft
+        3 > floor turndown
+        4 > floor turnright
+        w > floor wall
+        . > floor
+
+    TerminationSet
+        SpriteCounter      stype=avatar             limit=0 win=False
+        SpriteCounter      stype=bandit             limit=0 win=True
+        Timeout limit=1000 win=True
+        
+    InteractionSet
+        avatar surround base wall > stepBack
+
+        base missile bullet > killBoth
+        EOS missile bullet > killSprite
+
+        bleft turndown > transformTo stype=bdown
+        bright turnup > transformTo stype=bup
+        bdown turnright > transformTo stype=bright
+        bup turnleft > transformTo stype=bleft
+
+        bandit bullet > killBoth scoreChange=1
+        avatar missile > killBoth scoreChange=-1
+
+        bullet wall > killSprite

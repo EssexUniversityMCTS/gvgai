@@ -1,0 +1,61 @@
+BasicGame key_handler=Pulse square_size=40 no_players=2
+    SpriteSet
+        grass > Immovable hidden=True img=oryx/grass autotiling=True
+        goal > Immovable color=DARKBLUE
+            goalA > img=newset/goalpost2
+            goalB > img=newset/goalpost1
+        moving >
+            avatar > ShootAvatar frameRate=16
+                avatarA > img=newset/girl3 stype=footA
+                avatarB > img=newset/man3 stype=footB
+        ball > Passive img=newset/football singleton=True
+        player > RandomNPC img=newset/man4 frameRate=16
+            player0 > speed=0.1 cons=2
+            player1 > speed=0.4 cons=1
+            player2 > speed=0.2 cons=3
+		
+        foot > Flicker shrinkfactor=0.5
+            footA > img=oryx/boots2
+            footB > img=oryx/boots1
+        deadPortal > Portal invisible=True hidden=True stype=start
+        start > Immovable hidden=True invisible=True
+        wall > Immovable img=oryx/wall6
+			
+    LevelMapping
+        . > grass
+        0 > goalA grass
+        1 > goalB grass
+        b > ball start grass
+        A > avatarA  grass
+        B > avatarB  grass
+        q > player0 grass
+        e > player1 grass
+        r > player2 grass
+        w > wall grass
+		
+    InteractionSet
+        avatar avatar player wall goal > stepBack
+        player avatar goal wall ball > stepBack pixelPerfect=True
+        ball avatar  > bounceForward
+        ball player wall avatar > undoAll
+		
+        ball goalA > spawn stype=deadPortal scoreChange=0,15
+        deadPortal ball > killSprite
+        ball deadPortal > teleportToExit
+		
+        ball goalB > spawn stype=deadPortal scoreChange=15,0
+        deadPortal ball > killSprite
+        ball deadPortal > teleportToExit
+		
+        footA ball > spawn stype=deadPortal scoreChange=-1,0
+        footA ball > killSprite
+        deadPortal ball > killSprite
+        ball deadPortal > teleportToExit
+		
+        footB ball > spawn stype=deadPortal scoreChange=0,-1
+        footB ball > killSprite
+        deadPortal ball > killSprite
+        ball deadPortal > teleportToExit
+		
+    TerminationSet
+        Timeout limit=1500 count_score=True

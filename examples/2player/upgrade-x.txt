@@ -1,0 +1,124 @@
+BasicGame key_handler=Pulse no_players=2
+    SpriteSet
+        floor > Immovable img=oryx/floor3 hidden=True
+        nothing > Immovable img=oryx/backBlack
+
+        base > Immovable img=oryx/wall1
+            baseA >
+            baseB >
+
+        upgrade > Resource
+            upgrade1 > color=YELLOW limit=1 value=1 img=oryx/cspell4 #destroys resources
+            upgrade2 > color=ORANGE limit=1 value=1 img=oryx/cspell2 #doesn't affect own player
+            upgrade3 > color=BLUE limit=1 value=1 img=oryx/cspell1 #explodes against enemy base
+
+        cannon > SpawnPoint
+            cA > img=newset/lasercannon_1
+                cA0 > stype=lA0
+                cA1 > stype=lA1
+                cA2 > stype=lA2
+                cA3 > stype=lA3
+            cB > img=newset/lasercannon_3
+                cB0 > stype=lB0
+                cB1 > stype=lB1
+                cB2 > stype=lB2
+                cB3 > stype=lB3
+
+        laser > Missile shrinkfactor=0.5 speed=0.5 color=YELLOW
+            lA > orientation=RIGHT img=newset/laser1_1
+                lA0 >
+                lA1 >
+                lA2 >
+                lA3 >
+            lB > orientation=LEFT img=newset/laser2_1
+                lB0 >
+                lB1 >
+                lB2 >
+                lB3 >
+
+        avatar > ShootAvatar ammo=upgrade1,upgrade2,upgrade3 healthPoints=200 limitHealthPoints=200
+            avatarA > img=newset/girl3 stype=up1A,up2A,up3A
+            avatarB > img=newset/man3 stype=up1B,up2B,up3B
+
+        ups > Flicker shrinkfactor=0.5
+            up1 > img=oryx/slime1
+                up1A >
+                up1B >
+            up2 > img=oryx/slime2
+                up2A >
+                up2B >
+            up3 > img=oryx/slime3
+                up3A >
+                up3B >
+
+        explosion1 > Spreader spreadprob=1.0 stype=spark1 img=oryx/sparkle4 hidden=True
+        explosion2 > Spreader spreadprob=1.0 stype=spark2 img=oryx/sparkle1 hidden=True
+        endExplosion > Immovable timeToLive=20
+        	endExplosion1 > img=oryx/sparkle4
+        	endExplosion2 > img=oryx/sparkle1
+        spark1  > SpawnPoint total=1 img=oryx/sparkle4 stype=endExplosion1 hidden=True
+        spark2  > SpawnPoint total=1 img=oryx/sparkle1 stype=endExplosion2 hidden=True
+
+        wall > Immovable img=oryx/wall3 autotiling=True
+
+    LevelMapping
+        . > floor
+        _ > nothing
+        A > avatarA floor
+        B > avatarB floor
+        1 > upgrade1 floor
+        2 > upgrade2 floor
+        3 > upgrade3 floor
+        a > baseA floor
+        b > baseB floor
+        + > cA0 floor
+        = > cB0 floor
+
+    TerminationSet
+        SpriteCounter stype=avatarA win=False,True
+        SpriteCounter stype=avatarB win=True,False
+        Timeout limit=1500 count_score=True
+
+    InteractionSet
+        avatar avatar EOS nothing wall > stepBack
+        laser wall > killSprite
+        base avatar > bounceForward
+        cannon wall > stepBack
+        base wall > stepBack
+        base nothing > killSprite
+        cannon nothing > killSprite
+
+        cannon avatar > bounceForward
+
+        upgrade1 avatar > collectResource killResource=False
+        upgrade2 avatar > collectResource killResource=False
+        upgrade3 avatar > collectResource killResource=False
+
+        cA0 up1 > transformTo killSecond=True stype=cA1
+        cA0 up2 > transformTo killSecond=True stype=cA2
+        cA0 up3 > transformTo killSecond=True stype=cA3
+
+        cB0 up1 > transformTo killSecond=True stype=cB1
+        cB0 up2 > transformTo killSecond=True stype=cB2
+        cB0 up3 > transformTo killSecond=True stype=cB3
+
+        lA1 upgrade > killBoth
+        lB1 upgrade > killBoth
+
+        avatarB lA0 lB0 > subtractHealthPoints value=1 scoreChange=1,0
+        avatarB lA1 lB1 > subtractHealthPoints value=3 scoreChange=2,0
+        avatarB lA2 lA3 lB3 > subtractHealthPoints value=5 scoreChange=3,0
+
+        avatarA lA0 lB0 > subtractHealthPoints value=1 scoreChange=0,1
+        avatarA lA1 lB1 > subtractHealthPoints value=3 scoreChange=0,2
+        avatarA lB2 lA3 lB3 > subtractHealthPoints value=5 scoreChange=0,3
+
+        lA3 baseB > spawn stype=explosion1
+        lA3 baseB > killBoth
+        lB3 baseA > spawn stype=explosion2
+        lB3 baseA > killBoth
+
+        laser base > killSprite
+
+        avatarB endExplosion1 > killBoth scoreChange=0,-20
+        avatarA endExplosion2 > killBoth scoreChange=-20,0

@@ -1,0 +1,79 @@
+BasicGame square_size=20 obs=wall
+    SpriteSet
+        floor > Immovable img=oryx/floor3
+        food > Immovable
+            fruit > color=PINK img=newset/cherries2
+            pellet > color=LIGHTYELLOW shrinkfactor=0.5 img=oryx/gold2
+            power  > Resource color=LIGHTGREEN shrinkfactor=0.8 img=oryx/orb2
+        nest > SpawnPoint img=portal portal=True invisible=True
+            redspawn > stype=redOk
+            orangespawn > stype=orangeOk
+            bluespawn > stype=blueOk
+            pinkspawn > stype=pinkOk
+        moving >
+
+
+            ghost >
+                red > singleton=True
+                    redOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=oryx/ghost3 cons=4
+                    redSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=oryx/ghost1
+                blue > singleton=True
+                    blueOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=oryx/ghost4 cons=4
+                    blueSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=oryx/ghost1
+                pink > singleton=True
+                    pinkOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=oryx/ghost5 cons=4
+                    pinkSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=oryx/ghost1
+                orange > singleton=True
+                    orangeOk > RandomPathAltChaser stype1=hungry stype2=powered cooldown=4 img=oryx/ghost6 cons=4
+                    orangeSc > Fleeing stype=pacman maxDistance=500 cooldown=2 img=oryx/ghost1
+
+
+            pacman > OrientedAvatar img=newset/pacman rotateInPlace=false speed=0.5
+                hungry  > color=YELLOW
+                powered > color=ORANGE            
+        wall > Immovable img=oryx/wall3 autotiling=True
+    InteractionSet
+        moving wall > stepBack
+        pacman EOS  > wrapAround
+
+        ghost EOS ghost > stepBack
+
+        power hungry  > killSprite
+        hungry ghost  > killSprite scoreChange=-1
+
+        power pacman > killSprite scoreChange=10
+        pellet pacman > killSprite scoreChange=1
+        fruit pacman > killSprite scoreChange=5
+
+        hungry power > transformToAll stype=redOk stypeTo=redSc
+        hungry power > transformToAll stype=pinkOk stypeTo=pinkSc
+        hungry power > transformToAll stype=blueOk stypeTo=blueSc
+        hungry power > transformToAll stype=orangeOk stypeTo=orangeSc
+
+        hungry power > addTimer timer=200 ftype=transformToAll stype=redSc stypeTo=redOk killSecond=True
+        hungry power > addTimer timer=200 ftype=transformToAll stype=pinkSc stypeTo=pinkOk killSecond=True
+        hungry power > addTimer timer=200 ftype=transformToAll stype=blueSc stypeTo=blueOk killSecond=True
+        hungry power > addTimer timer=200 ftype=transformToAll stype=orangeSc stypeTo=orangeOk killSecond=True
+
+        hungry power > addTimer timer=200 ftype=transformToAll stype=powered stypeTo=hungry
+        hungry power > transformTo stype=powered
+
+        ghost powered > killSprite scoreChange=40
+
+
+        
+    LevelMapping
+        + > floor
+        0 > floor power
+        . > floor pellet
+        A > floor hungry
+        1 > floor redspawn
+        2 > floor orangespawn
+        3 > floor bluespawn
+        4 > floor pinkspawn
+        f > floor fruit
+        w > floor wall
+        
+    TerminationSet
+        SpriteCounter stype=food   win=True     
+        SpriteCounter stype=pacman win=False   

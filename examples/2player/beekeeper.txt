@@ -1,0 +1,39 @@
+BasicGame no_players=2 square_size=30
+    SpriteSet
+        background > Immovable hidden=True img=oryx/grass autotiling=True
+        base > Immovable
+            base1 > img=oryx/bee1
+            base2 > img=oryx/bee2
+        moving >
+            avatar > FlakAvatar
+                player1 > stype=sam1 img=oryx/axeman1 orientation=DOWN
+                player2 > stype=sam2 img=oryx/axeman1 orientation=UP
+
+            missile > Missile timeToLive=20
+                sam1 > color=BLUE singleton=True img=oryx/axe1 orientation=UP
+                sam2 > color=RED singleton=True img=oryx/axe2 orientation=DOWN
+
+    LevelMapping
+        . > background
+        b > base1 background
+        c > base2 background
+        A > player1 background
+        B > player2 background
+
+    TerminationSet
+        SpriteCounter stype=base1 limit=0 win=False,True
+        SpriteCounter stype=base2 limit=0 win=True,False
+        Timeout limit=1500 count_score=True
+
+    InteractionSet
+        avatar EOS > stepBack
+        missile EOS > killSprite
+
+        sam1 player2 > killSprite scoreChange=-2,2
+        sam2 player1 > killSprite scoreChange=2,-2
+
+        missile missile > killBoth
+        sam2 base1 > killBoth scoreChange=0,5
+        sam1 base1 > killBoth scoreChange=-1,0
+        sam1 base2 > killBoth scoreChange=5,0
+        sam2 base2 > killBoth scoreChange=0,-1

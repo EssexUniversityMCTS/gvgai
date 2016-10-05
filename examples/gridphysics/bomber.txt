@@ -1,0 +1,76 @@
+BasicGame key_handler=Pulse
+    SpriteSet
+        ground > Immovable img=oryx/floor3 hidden=True
+        water > Immovable img=oryx/seaWater
+        mud > Immovable img=oryx/backLBrown
+        box > Immovable img=newset/block3
+
+        line > SpawnPoint
+            lcup > img=newset/lasercannon stype=lup
+            lcdown > img=newset/lasercannon_2 stype=ldown
+            lcright > img=newset/lasercannon_1 stype=lright
+            lcleft > img=newset/lasercannon_3 stype=lleft
+            lcswap > img=newset/lasercannon_4 stype=lleft
+        laser > Missile shrinkfactor=0.5 speed=0.5 color=YELLOW
+            lup > orientation=UP img=newset/laser1
+            ldown > orientation=DOWN img=newset/laser1
+            lright > orientation=RIGHT img=newset/laser1_1
+            lleft > orientation=LEFT img=newset/laser1_1
+
+        goal   > Door color=GREEN img=oryx/dooropen1
+        bombm > Missile img=newset/bomb shrinkfactor=0.8 speed=0.8
+
+        fire >
+            fireStart > Spreader color=ORANGE spreadprob=1.0 stype=fireEnd img=oryx/fire1
+            fireEnd > Immovable img=oryx/fire1
+
+        spark  > SpawnPoint stype=fireStart total=1 shrinkfactor=0.6 img=oryx/slash1
+        bomb > Passive img=newset/bomb singleton=True
+        avatar  > ShootAvatar stype=bomb healthPoints=10 img=oryx/spelunky frameRate=8
+        wall > Immovable img=oryx/wall3 autotiling=True
+
+    LevelMapping
+        g > goal ground
+        e > box ground
+        b > bomb ground
+        , > ground
+        . > water
+        A > avatar ground
+        1 > lcup ground
+        2 > lcright ground
+        3 > lcdown ground
+        4 > lcleft ground
+
+
+    InteractionSet
+        avatar wall box > stepBack
+        avatar water > killSprite
+
+        goal avatar > killSprite
+
+        bomb avatar  > transformTo stype=bombm
+        bomb avatar box water > killSprite
+
+        bombm avatar laser > attractGaze
+
+        bombm wall box line > transformTo stype=spark
+
+        laser box EOS goal wall > killSprite
+
+        box fire > killSprite scoreChange=1
+        water fire > transformTo stype=mud
+        bomb fire > transformTo stype=spark
+
+        fire box > transformTo stype=spark
+        fire wall water bomb > killSprite
+
+        avatar fire > subtractHealthPoints
+
+        fireEnd ground mud > killSprite
+
+
+
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=goal   limit=0 win=True
+        Timeout limit=1000 win=False

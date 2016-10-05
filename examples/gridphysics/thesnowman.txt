@@ -1,0 +1,74 @@
+#The Citadel: http://www.mobygames.com/game/citadel__
+
+BasicGame
+    SpriteSet
+
+        floor > Immovable img=oryx/backGrey hidden=True
+        avatar > MovingAvatar img=newset/winterelf1 frameRate=8
+        key > Resource img=oryx/key2 limit=1 shrinkfactor=0.6
+        lock > Immovable img=newset/lock1
+
+        parts > Passive
+            base > img=newset/snowmanbase
+            body > img=newset/snowmanbody
+            chest > img=newset/snowmanchest
+            head > img=newset/snowmanhead
+
+        placed > Immovable
+            baseinplace > img=newset/snowmanbase
+            bodyinplace > img=newset/snowmanbodyinplace
+            chestinplace > img=newset/snowmanchestinplace
+            headinplace > img=newset/snowmanheadinplace2
+            wrongplace  > img=newset/snowmanwrong
+
+        wall > Immovable img=oryx/wall3 autotiling=True
+
+    LevelMapping
+        s > floor base
+        b > floor body
+        c > floor chest
+        h > floor head
+        k > floor key
+        l > floor lock
+        . > floor
+        A > floor avatar
+
+    InteractionSet
+        avatar wall > stepBack
+
+        #base avatar > bounceForward
+        body avatar > bounceForward
+        chest avatar > bounceForward
+        head avatar > bounceForward
+
+
+        base key wall lock > undoAll
+        body key wall lock > undoAll
+        chest key wall lock > undoAll
+        head key wall lock > undoAll
+
+        avatar baseinplace > stepBack
+        avatar bodyinplace > stepBack
+        avatar chestinplace > stepBack
+        avatar headinplace > stepBack
+
+        body base > transformTo stype=bodyinplace scoreChange=2
+        body head  > transformTo stype=wrongplace scoreChange=-1
+        body chest > transformTo stype=wrongplace scoreChange=-1
+
+        chest bodyinplace > transformTo stype=chestinplace scoreChange=5
+        chest base > transformTo stype=wrongplace scoreChange=-1
+        chest head > transformTo stype=wrongplace scoreChange=-1
+
+        head chestinplace > transformTo stype=headinplace scoreChange=13
+        head base > transformTo stype=wrongplace scoreChange=-1
+        head bodyinplace > transformTo stype=wrongplace scoreChange=-1
+
+        key avatar      > collectResource scoreChange=1
+
+        lock avatar > killIfOtherHasMore resource=key limit=1
+        avatar lock > stepBack
+
+    TerminationSet
+        MultiSpriteCounter stype1=wrongplace limit=1 win=False
+        MultiSpriteCounter stype1=headinplace limit=1 win=True

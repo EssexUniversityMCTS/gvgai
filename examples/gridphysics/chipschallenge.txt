@@ -1,0 +1,97 @@
+#Chip's Challenge
+
+BasicGame square_size=45 key_handler=Pulse
+    SpriteSet
+        floor > Immovable hidden=True img=oryx/floor3
+
+        water > Immovable img=newset/water
+        mud > Immovable img=oryx/backLBrown
+        fire > Immovable img=oryx/fire1
+
+        key > Resource shrinkfactor=0.5
+            redkey > img=oryx/potion3
+            bluekey > img=oryx/potion1
+            greenkey > img=oryx/potion4
+            yellowkey > img=oryx/potion5
+
+        door > Immovable
+            reddoor > Immovable img=oryx/slime3
+            bluedoor > Immovable img=oryx/slime1
+            greendoor > Immovable img=oryx/slime2
+            yellowdoor > Immovable img=oryx/slime6
+
+        boots > Resource limit=1
+            flippers > img=oryx/boots3
+            fireboots > img=oryx/boots2
+        
+        crate > Passive img=newset/block3
+        
+        gate > Immovable img=oryx/doorclosed1
+        exit > Immovable img=newset/exit2
+        chip > Resource img=oryx/gold1 shrinkfactor=0.5 limit=11
+        avatar > MovingAvatar img=oryx/rogue
+
+        wall > Immovable img=oryx/wall3 autotiling=True
+            
+    
+    LevelMapping
+        A > avatar floor
+        ~ > water floor
+        m > mud floor
+        x > fire floor
+        r > redkey floor
+        g > greenkey floor
+        b > bluekey floor
+        y > yellowkey floor
+
+        1 > reddoor floor
+        2 > greendoor floor
+        3 > bluedoor floor
+        4 > yellowdoor floor
+
+        - > gate floor
+        c > chip floor
+        e > exit floor
+        f > flippers floor
+        i > fireboots floor
+        d > crate floor
+
+        . > floor
+
+
+    TerminationSet
+        SpriteCounter      stype=avatar               limit=0 win=False  
+        SpriteCounter      stype=exit               limit=0 win=True        
+    InteractionSet
+
+        crate avatar > bounceForward
+        crate crate wall door key chip gate mud fire boots > undoAll
+
+        water crate > transformTo stype=mud scoreChange=1 killSecond=true
+        
+        mud avatar > killSprite
+        
+        gate avatar > killIfOtherHasMore resource=chip limit=11 scoreChange=4
+        avatar gate > stepBack
+
+        chip avatar > collectResource scoreChange=1
+        key avatar > collectResource
+        boots avatar > collectResource scoreChange=3
+
+        reddoor avatar > killIfOtherHasMore resource=redkey limit=1 scoreChange=2
+        avatar reddoor > changeResource resource=redkey value=-1
+
+        greendoor avatar > killIfOtherHasMore resource=greenkey limit=1  scoreChange=2
+        avatar greendoor > changeResource resource=greenkey value=-1
+
+        bluedoor avatar > killIfOtherHasMore resource=bluekey limit=1  scoreChange=2
+        avatar bluedoor > changeResource resource=bluekey value=-1
+
+        yellowdoor avatar > killIfOtherHasMore resource=yellowkey limit=1  scoreChange=2
+        avatar yellowdoor > changeResource resource=yellowkey value=-1
+        
+        avatar wall door > undoAll
+        avatar water > killIfHasLess resource=flippers limit=0
+        avatar fire > killIfHasLess resource=fireboots limit=0
+
+        exit avatar > killSprite scoreChange=5

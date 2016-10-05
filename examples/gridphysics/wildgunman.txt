@@ -1,0 +1,40 @@
+BasicGame
+  SpriteSet
+    floor > Immovable img=oryx/backBlack
+    city  > Immovable color=GREEN img=newset/city1
+    bullet > Flicker limit=5 img=oryx/cspell5 shrinkfactor=0.7
+    movable >
+        avatar > ShootAvatar stype=bullet img=newset/humanShotgun
+        goalObjects >
+            enemy > Chaser stype=city
+                enemy_slow  > color=ORANGE speed=0.1 img=newset/alienShotgun_0
+                enemy_fast  > color=YELLOW speed=0.3 img=newset/alienShotgun_1
+            niceGuy > Chaser stype=city color=ORANGE speed=0.1 img=newset/niceGuy
+    death   > Immovable hidden=True invisible=True
+    portal  > SpawnPoint invisible=True hidden=True
+        enemySlowPortal > stype=enemy_slow   cooldown=100  total=2 
+        enemyFastPortal > stype=enemy_fast   cooldown=100  total=2 
+        niceGuyPortal   > stype=niceGuy      cooldown=100  total=2
+
+    wall > Immovable img=newset/block2
+
+  LevelMapping
+    c > city floor
+    m > enemySlowPortal floor
+    f > enemyFastPortal floor
+    n > niceGuyPortal floor
+    . > floor
+    A > avatar floor
+
+  InteractionSet
+    movable EOS    > stepBack
+    movable wall   > stepBack
+    enemy city     > killBoth scoreChange=-1
+    niceGuy bullet > transformTo stype=death scoreChange=-1
+    enemy bullet   > killSprite scoreChange=2
+    niceGuy city   > killSprite scoreChange=2
+
+  TerminationSet
+    SpriteCounter stype=city   win=False
+    MultiSpriteCounter stype1=goalObjects stype2=portal limit=0 win=True
+    MultiSpriteCounter stype1=death limit=1 win=False

@@ -1,0 +1,64 @@
+BasicGame
+    SpriteSet
+
+        water > Immovable img=newset/water2_1
+        avatar > ShootAvatar stype=shovel img=newset/man3
+        land > Immovable
+            landNoSand > img=oryx/backLBrown
+            landSand > img=oryx/backBiege
+
+        shovel > OrientedFlicker limit=1 color=LIGHTGRAY img=oryx/pickaxe shrinkfactor=0.4
+
+        bomb > Immovable img=newset/bomb shrinkfactor=0.8
+        spark  > SpawnPoint stype=fireStart total=1 shrinkfactor=0.6 img=oryx/sparkle1
+        fire >
+            fireStart > Spreader color=ORANGE spreadprob=1.0 stype=fireEnd img=oryx/fire1
+            fireEnd > Immovable img=oryx/fire1
+
+        whirlpool > Immovable img=newset/whirlpool2
+        goal > Immovable img=newset/hole1 portal=true
+
+        sand > Resource limit=10 color=YELLOW shrinkfactor=0.45 img=oryx/wall4 shrinkfactor=0.6
+        treasure > Immovable img=oryx/treasure2
+
+
+    LevelMapping
+        . > water
+        x > landSand
+        A > landSand avatar
+        b > water bomb
+        p > water whirlpool
+        t > landSand treasure
+        g > landSand goal
+
+    InteractionSet
+
+        avatar EOS wall bomb  > stepBack
+        avatar  fireEnd  > killSprite
+
+        bomb fireEnd shovel > transformTo stype=spark
+        water fireEnd > transformTo stype=landNoSand
+
+        fireEnd land whirlpool goal treasure EOS wall > killSprite
+        fireEnd fireEnd > transformTo stype=landNoSand
+
+        sand avatar > collectResource
+
+        avatar water  > killIfHasLess resource=sand limit=0
+        avatar water > changeResource resource=sand value=-1
+        water avatar > transformTo stype=landNoSand
+
+        treasure avatar > killSprite scoreChange=100
+
+        shovel landSand > spawnIfHasMore resource=sand stype=sand limit=0
+        landSand sand > transformTo stype=landNoSand
+
+        shovel water > spawnIfHasMore resource=sand stype=sand limit=1
+        avatar whirlpool > killSprite
+        goal avatar > killSprite scoreChange=1
+
+
+    TerminationSet
+        SpriteCounter      stype=goal limit=0 win=True
+        SpriteCounter      stype=avatar limit=0 win=False
+        Timeout limit=1000 win=False

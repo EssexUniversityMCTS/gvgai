@@ -1,0 +1,29 @@
+BasicGame
+  SpriteSet
+    floor > Immovable img=oryx/backBlack
+    city  > Immovable color=GREEN img=newset/city1 randomtiling=0.5
+    explosion > Flicker limit=5 img=oryx/circleEffect1 shrinkfactor=0.5
+
+    movable >
+      avatar  > ShootAvatar stype=explosion img=oryx/spaceship1
+      incoming >
+        incoming_slow  > Chaser stype=city color=ORANGE speed=0.1 img=oryx/firedown1
+        incoming_fast  > Chaser stype=city color=YELLOW speed=0.3 img=oryx/firedown2
+
+    wall > Immovable img=newset/block2
+
+  LevelMapping
+    c > floor city
+    m > floor incoming_slow
+    f > floor incoming_fast
+    . > floor
+    A > floor avatar
+
+  InteractionSet
+    movable wall  > stepBack
+    incoming city > killBoth scoreChange=-1
+    incoming explosion > killSprite scoreChange=2
+
+  TerminationSet
+    SpriteCounter stype=city   win=False
+    SpriteCounter stype=incoming win=True

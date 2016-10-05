@@ -1,0 +1,52 @@
+#The Citadel: http://www.mobygames.com/game/citadel__
+
+BasicGame square_size=40 key_handler=Pulse
+    SpriteSet
+        background > Immovable img=oryx/backLBrown hidden=True
+        squarehole   > Immovable color=DARKBLUE img=newset/hole5
+        roundhole   > Immovable color=DARKBLUE img=newset/hole4
+        avatar > MovingAvatar healthPoints=30 img=oryx/spelunky_0
+        goal > Immovable img=oryx/door2
+        crate    > Passive img=oryx/wall2 shrinkfactor=0.8
+        boulder    > Passive img=oryx/barrel1 shrinkfactor=0.8
+        enemy > RandomNPC speed=0.5 color=PINK img=oryx/eviltree1 cons=1
+        wall > Immovable img=oryx/dirtwall autotiling=true
+
+    LevelMapping
+        0 > roundhole background
+        1 > squarehole background
+        b > boulder background
+        c > crate background
+        g > goal background
+        A > avatar background
+        e > enemy background
+        . > background
+
+    InteractionSet
+
+        avatar wall squarehole roundhole > stepBack
+
+        boulder avatar  > bounceForward
+        boulder boulder crate wall goal > undoAll notStype=enemy
+        
+        boulder roundhole > killBoth scoreChange=1
+        boulder squarehole > killSprite
+        
+        crate avatar  > bounceForward
+        crate crate  > bounceForward repeat=10
+
+        crate wall boulder goal roundhole > undoAll notStype=enemy
+
+        crate squarehole > killBoth scoreChange=1
+        goal avatar > killSprite scoreChange=5
+
+        enemy crate squarehole roundhole goal boulder > stepBack
+        crate enemy > undoAll notStype=enemy
+
+        enemy wall > stepBack
+
+        avatar enemy > subtractHealthPoints
+
+    TerminationSet
+        SpriteCounter stype=goal limit=0 win=True
+        SpriteCounter stype=avatar limit=0 win=False

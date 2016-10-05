@@ -1,0 +1,48 @@
+BasicGame square_size=25
+  SpriteSet
+    floor > Immovable hidden=True img=oryx/backBlack
+    fullMolar > Immovable
+        fullMolarInf > img=newset/tooth1
+        fullMolarSup > img=newset/tooth2
+    deadMolar > Immovable
+        deadMolarInf > img=newset/tooth3
+        deadMolarSup > img=newset/tooth4
+
+    movable >
+        avatar  > ShootAvatar stype=fluor img=newset/girl2 frameRate=8
+        food > Chaser speed=0.1
+            hotdog >  stype=fullMolarInf img=newset/hotdog
+            burger >  stype=fullMolarSup img=newset/burger
+
+    holes > SpawnPoint color=LIGHTGRAY portal=True
+        hotdoghole  >  stype=hotdog  prob=0.15 cooldown=8 total=5 img=newset/fastfoodtrolley1
+        burgerhole  >  stype=burger  prob=0.15 cooldown=8 total=5 img=newset/fastfoodtrolley2
+
+    fluor > Missile color=YELLOW shrinkfactor=0.5 img=oryx/slime1
+    wall > Immovable img=oryx/wall6
+
+
+  LevelMapping
+    h > hotdog floor
+    d > hotdoghole floor
+    b > burger floor
+    v > burgerhole floor
+    n > fullMolarSup floor
+    m > fullMolarInf floor
+    . > floor
+    A > avatar floor
+
+  InteractionSet
+    movable wall > stepBack pixelPerfect=True
+    food fluor   > killBoth scoreChange=2
+    fluor wall   > killSprite
+
+    fullMolarInf food > transformTo stype=deadMolarInf scoreChange=-3 killSecond=True
+    deadMolarInf avatar > transformTo stype=fullMolarInf scoreChange=1
+
+    fullMolarSup food > transformTo stype=deadMolarSup scoreChange=-3 killSecond=True
+    deadMolarSup avatar > transformTo stype=fullMolarSup scoreChange=1
+
+  TerminationSet
+    SpriteCounter stype=fullMolar win=False
+    MultiSpriteCounter stype1=holes stype2=food limit=0 win=True

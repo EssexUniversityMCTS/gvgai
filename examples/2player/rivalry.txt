@@ -1,0 +1,177 @@
+BasicGame key_handler=Pulse no_players=2
+    SpriteSet
+        black > Immovable color=BLACK hidden=True img=oryx/backLBlue
+        white > Immovable color=WHITE hidden=True img=oryx/backGrey
+        grey > Immovable hidden=True img=oryx/backLBrown
+
+        flag > Resource shrinkfactor=0.8 img=newset/flag1
+
+        avatar >
+            avatarA > img=newset/girl3
+                inBlackA > ShootAvatar stype=missile1
+                inWhiteA > ShootAvatar stype=sword1
+                inGreyA > MovingAvatar
+                gotA > MovingAvatar img=newset/girl3flag
+            avatarB > img=newset/man3
+                inBlackB > ShootAvatar stype=sword2
+                inWhiteB > ShootAvatar stype=missile2
+                inGreyB > MovingAvatar
+                gotB > MovingAvatar img=newset/man3flag
+
+        warrior > RandomNPC
+            warrior0 > speed=0.5 cooldown=5 cons=10 img=oryx/cyclop1
+            warrior1 > speed=0.3 cooldown=3 cons=15 img=oryx/cyclop2
+
+        sword > Flicker shrinkfactor=0.8
+            sword1 > img=oryx/sword4
+            sword2 > img=oryx/sword1
+        missile > Missile shrinkfactor=0.5
+            missile1 > img=oryx/orb3
+            missile2 > img=oryx/orb1
+
+        deadPortal  > Portal invisible=True portal=True hidden=True
+            deadPortalA > stype=startA
+            deadPortalB > stype=startB
+            deadPortalFlag > stype=startFlag
+            deadPortal0 > stype=start0
+            deadPortal1 > stype=start1
+        start > Immovable invisible=True hidden=True
+            startA >
+            startB >
+            start0 >
+            start1 >
+            startFlag >
+
+        wall > Immovable img=oryx/wall3 autotiling=True
+
+    LevelMapping
+        . > black
+        + > white
+        - > grey
+        A > startA inBlackA black
+        B > startB inWhiteB white
+        * > startFlag flag grey
+        0 > start0 warrior0 grey
+        1 > start1 warrior1 grey
+
+    TerminationSet
+        Timeout limit=1500 count_score=True
+
+    InteractionSet
+        avatar avatar EOS wall > stepBack
+        warrior EOS wall > stepBack
+        missile wall > killSprite
+        sword wall > killSprite
+
+        inBlackA white > transformTo stype=inWhiteA
+        inBlackA grey > transformTo stype=inGreyA
+        inWhiteA black > transformTo stype=inBlackA
+        inWhiteA grey > transformTo stype=inGreyA
+        inGreyA black > transformTo stype=inBlackA
+        inGreyA white > transformTo stype=inWhiteA
+
+        inBlackB white > transformTo stype=inWhiteB
+        inBlackB grey > transformTo stype=inGreyB
+        inWhiteB black > transformTo stype=inBlackB
+        inWhiteB grey > transformTo stype=inGreyB
+        inGreyB white > transformTo stype=inWhiteB
+        inGreyB black > transformTo stype=inBlackB
+
+        inGreyA flag > transformTo stype=gotA
+        inGreyB flag > transformTo stype=gotB
+        flag avatar > killSprite
+
+        warrior0 sword1 > spawn stype=deadPortal0 scoreChange=6,0
+        warrior1 sword1 > spawn stype=deadPortal1 scoreChange=6,0
+        warrior0 sword2 > spawn stype=deadPortal0 scoreChange=0,6
+        warrior1 sword2 > spawn stype=deadPortal1 scoreChange=0,6
+        warrior0 missile1 > spawn stype=deadPortal0 scoreChange=2,0
+        warrior1 missile1 > spawn stype=deadPortal1 scoreChange=2,0
+        warrior0 missile2 > spawn stype=deadPortal0 scoreChange=0,2
+        warrior1 missile2 > spawn stype=deadPortal1 scoreChange=0,2
+        sword warrior > killSprite
+        missile warrior > killSprite
+
+        gotA warrior > spawn stype=deadPortalA
+        gotA warrior > spawn stype=flag
+        gotA warrior > spawn stype=deadPortalFlag
+        gotA warrior0 > spawn stype=deadPortal0
+        gotA warrior1 > spawn stype=deadPortal1
+        gotA warrior > transformTo stype=inBlackA scoreChange=-5,0
+
+        inWhiteA warrior > spawn stype=deadPortalA scoreChange=-3,0
+        inGreyA warrior > spawn stype=deadPortalA scoreChange=-2,0
+        inBlackA warrior > spawn stype=deadPortalA scoreChange=-1,0
+        avatarA warrior0 > spawn stype=deadPortal0
+        avatarA warrior1 > spawn stype=deadPortal1
+
+        gotB warrior > spawn stype=deadPortalB
+        gotB warrior > spawn stype=flag
+        gotB warrior > spawn stype=deadPortalFlag
+        gotB warrior0 > spawn stype=deadPortal0
+        gotB warrior1 > spawn stype=deadPortal1
+        gotB warrior > transformTo stype=inWhiteB scoreChange=0,-5
+
+        inBlackB warrior > spawn stype=deadPortalB scoreChange=0,-3
+        inGreyB warrior > spawn stype=deadPortalB scoreChange=0,-2
+        inWhiteB warrior > spawn stype=deadPortalB scoreChange=0,-1
+        avatarB warrior0 > spawn stype=deadPortal0
+        avatarB warrior1 > spawn stype=deadPortal1
+
+        gotA black > spawn stype=deadPortalA
+        gotA black > spawn stype=flag
+        gotA black > spawn stype=deadPortalFlag
+        gotA black > transformTo stype=inBlackA scoreChange=10,0
+
+        gotB white > spawn stype=deadPortalB
+        gotB white > spawn stype=flag
+        gotB white > spawn stype=deadPortalFlag
+        gotB white > transformTo stype=inWhiteB scoreChange=0,10
+
+        sword avatarA > spawn stype=flag
+        sword avatarA > spawn stype=deadPortalFlag
+        sword avatarA > spawn stype=deadPortalA
+        gotA sword > transformTo stype=inBlackA scoreChange=-3,3
+        inWhiteA sword > transformTo stype=inBlackA scoreChange=-2,2
+        inGreyA sword > transformTo stype=inBlackA scoreChange=-1,1
+        sword inBlackA > killSprite scoreChange=-3,1
+
+        missile avatarA > spawn stype=flag
+        missile avatarA > spawn stype=deadPortalFlag
+        missile avatarA > spawn stype=deadPortalA
+        gotA missile > transformTo stype=inBlackA scoreChange=-6,6
+        inWhiteA missile > transformTo stype=inBlackA scoreChange=-4,4
+        inGreyA missile > transformTo stype=inBlackA scoreChange=-2,2
+        missile inBlackA > killSprite scoreChange=-1,1
+
+        sword avatarB > spawn stype=flag
+        sword avatarB > spawn stype=deadPortalFlag
+        sword avatarB > spawn stype=deadPortalB
+        gotB sword > transformTo stype=inWhiteB scoreChange=3,-3
+        inBlackB sword > transformTo stype=inWhiteB scoreChange=2,-2
+        inGreyB sword > transformTo stype=inWhiteB scoreChange=1,-1
+        sword inWhiteB > killSprite scoreChange=1,-3
+
+        missile avatarB > spawn stype=flag
+        missile avatarB > spawn stype=deadPortalFlag
+        missile avatarB > spawn stype=deadPortalB
+        gotB missile > transformTo stype=inWhiteB scoreChange=6,-6
+        inBlackB missile > transformTo stype=inWhiteB scoreChange=4,-4
+        inGreyB missile > transformTo stype=inWhiteB scoreChange=2,-2
+        missile inWhiteB > killSprite scoreChange=1,-1
+
+        deadPortalFlag flag > killSprite
+        flag deadPortalFlag > teleportToExit
+
+        deadPortal0 warrior0 > killSprite
+        warrior0 deadPortal0 > teleportToExit
+        deadPortal1 warrior1 > killSprite
+        warrior1 deadPortal1 > teleportToExit
+
+        deadPortalA inBlackA > killSprite
+        inBlackA deadPortalA > teleportToExit
+        deadPortalB inWhiteB > killSprite
+        inWhiteB deadPortalB > teleportToExit
+
+        missile avatar > killSprite
+        sword avatar > killSprite

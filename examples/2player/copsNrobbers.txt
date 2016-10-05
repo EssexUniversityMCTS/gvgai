@@ -1,0 +1,23 @@
+BasicGame no_players=2
+    SpriteSet
+        floor > Immovable img=oryx/space4 hidden=True
+        sword > Flicker color=LIGHTGRAY limit=1 singleton=True img=oryx/sword1 shrinkfactor=0.5
+        avatar >		 frameRate=16
+            robber > MovingAvatar img=newset/redthug
+            cop  > ShootAvatar   stype=sword img=newset/cop2
+        diamond > Resource color=RED limit=10 shrinkfactor=0.75 img=oryx/diamond2
+        wall > Immovable img=oryx/wall1
+    LevelMapping
+        . > floor
+        B > cop floor
+        A > robber floor
+        x > diamond floor
+    InteractionSet
+        avatar wall > stepBack
+        robber cop sword > killSprite scoreChange=0,4
+        diamond robber > collectResource scoreChange=1,0
+        diamond cop > stepBack
+    TerminationSet
+        SpriteCounter stype=robber limit=0 win=False,True
+        SpriteCounter stype=diamond limit=0 win=True,False
+        Timeout limit=2000 win=False,False

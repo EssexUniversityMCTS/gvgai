@@ -1,0 +1,10 @@
+wwwwwwwwwwwww
+w...........w
+w..1..2.c3..w
+w....h..h...w
+w...2..3..1.w
+w....b..h...w
+w..3...2..1.w
+w..h.h...a..w
+w.....A.....w
+wwwwwwwwwwwww

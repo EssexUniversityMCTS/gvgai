@@ -1,0 +1,39 @@
+BasicGame no_players=2 key_handler=Pulse
+    SpriteSet
+        ground > Immovable hidden=True img=oryx/grass autotiling=True
+        floor > Immovable hidden=True img=oryx/grass autotiling=True
+
+        bush > Immovable img=oryx/bush2
+        egg > Resource img=newset/egg value=1 limit=20
+            seen > color=WHITE
+            hidden > hidden=True invisible=True color=RED
+
+        avatar >  frameRate=16
+            bunny > MovingAvatar img=newset/chicken shrinkfactor=0.7
+            kid > ShootAvatar stype=bush rotateInPlace=True img=newset/girl3
+
+        wall > Immovable img=oryx/tree2
+        
+    InteractionSet
+        avatar avatar wall > stepBack
+        egg kid > bounceForward
+        egg wall > stepBack
+
+        egg bunny > collectResource killResource=True scoreChange=5,0
+
+        bush wall > killSprite
+
+        seen bush > transformTo stype=hidden scoreChange=0,1
+        ground bush > killSprite
+        hidden ground > transformTo stype=seen
+
+    TerminationSet
+        SpriteCounter stype=egg win=True,False
+        Timeout limit=1500 win=False,True
+    
+    LevelMapping
+        A > bunny ground floor
+        B > kid ground floor
+        x > seen ground floor
+        w > wall ground floor
+        . > ground floor

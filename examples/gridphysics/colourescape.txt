@@ -1,0 +1,72 @@
+BasicGame key_handler=Pulse
+    SpriteSet
+        floor > Immovable img=oryx/floor3 hidden=True
+        exit > Door color=GREEN img=oryx/doorclosed1
+        hole   > Immovable color=DARKBLUE img=oryx/spike2 portal=True
+
+        boxes   > Passive  shrinkfactor=0.8
+            box > img=newset/block2
+            bluebox > img=newset/blockB
+            redbox > img=newset/blockR
+            greenbox > img=newset/blockG
+
+        switch > Immovable
+             normalSwitch > img=newset/floor6
+             blueSwitch > img=newset/tile1
+             redSwitch > img=newset/tile3
+             greenSwitch > img=newset/tile4
+
+        avatar > MovingAvatar
+             normalAvatar > img=newset/girl3
+             blueAvatar > img=newset/girl2
+             redAvatar > img=newset/girl5
+             greenAvatar > img=newset/girl1
+
+        wall > Immovable img=oryx/wall3 autotiling=True
+
+    LevelMapping
+            A > normalAvatar floor
+            x > exit floor
+            h > hole floor
+
+            1 > box floor
+            2 > bluebox floor
+            3 > redbox floor
+            4 > greenbox floor
+
+            a > normalSwitch floor
+            b > blueSwitch floor
+            c > redSwitch floor
+            d > greenSwitch floor
+
+            . > floor
+
+    InteractionSet
+        avatar wall > stepBack
+
+        greenbox greenAvatar > bounceForward
+        greenbox blueAvatar redAvatar normalAvatar > undoAll
+
+        redbox redAvatar > bounceForward
+        redbox blueAvatar greenAvatar normalAvatar > undoAll
+
+        bluebox blueAvatar > bounceForward
+        bluebox redAvatar greenAvatar normalAvatar > undoAll
+
+        box normalAvatar  > bounceForward
+        box redAvatar greenAvatar blueAvatar > undoAll
+
+        boxes wall switch exit boxes > undoAll
+        avatar hole > killSprite scoreChange=-1
+        exit avatar > killSprite scoreChange=1
+        boxes hole    > killSprite
+
+        avatar normalSwitch > transformTo stype=normalAvatar
+        avatar redSwitch > transformTo stype=redAvatar
+        avatar blueSwitch > transformTo stype=blueAvatar
+        avatar greenSwitch > transformTo stype=greenAvatar
+
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=exit limit=0 win=True
+        Timeout limit=1500 win=False

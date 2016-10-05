@@ -1,0 +1,84 @@
+BasicGame
+    SpriteSet
+
+        floor > Immovable img=newset/floor6 hidden=True
+        avatar > ShootAvatar stype=attack img=newset/girl1
+
+        bossAbility > Chaser stype=pokemon speed=0.9 img=oryx/explosion1 singleton=True
+            bossAbility0 >
+            bossAbility1 >
+            bossAbility2 >
+        pokemonAbility > speed=0.9
+            ability0 > Chaser img=oryx/sparkle1 stype=boss  singleton=True #does damage depending on boss type
+            ability1 > Chaser img=oryx/sparkle2 stype=boss  singleton=True #changes boss type
+            ability2 > Chaser img=oryx/sparkle3 singleton=True stype=pokemon0 #heals friendly pokemons
+            ability3 > Chaser img=oryx/sparkle3 singleton=True stype=pokemon1 #heals friendly pokemons
+            ability4 > Chaser img=oryx/sparkle4 stype=boss  singleton=True #all pokemons have access to this, damage to all boss types
+
+        pokemon > BomberRandomMissile speed=0
+            pokemon0 > img=oryx/scorpion1 stypeMissile=ability0,ability4 prob=0.001 healthPoints=20 limitHealthPoints=20
+            pokemon1 > img=oryx/bat1 stypeMissile=ability1,ability4 prob=0.005 healthPoints=30 limitHealthPoints=30
+            pokemon2 > img=oryx/wolf1 stypeMissile=ability2,ability3,ability4 prob=0.01 healthPoints=10 limitHealthPoints=10
+
+        boss > SpawnPoint prob=0.0001 healthPoints=100 limitHealthPoints=100
+            bossDragon > img=oryx/dragon1 stype=bossAbility0
+            bossWater > img=oryx/freak2 stype=bossAbility1
+            bossThunder > img=oryx/worm2 stype=bossAbility2
+
+        attack > Flicker img=oryx/slash1 singleton=True
+
+        wall > Immovable img=oryx/wall6
+
+
+    TerminationSet
+        SpriteCounter stype=pokemon  win=False
+        SpriteCounter stype=boss   win=True
+        Timeout limit=1000 win=False
+
+    InteractionSet
+        avatar wall > stepBack
+
+        attack pokemon0 > spawn stype=ability0
+        attack pokemon1 > spawn stype=ability1
+        attack pokemon2 > spawn stype=ability3
+        attack pokemon > killSprite
+
+        bossDragon ability0 > subtractHealthPoints value=10
+        bossWater ability0 > subtractHealthPoints value=13
+        bossThunder ability0 > subtractHealthPoints value=17
+
+        boss ability1 > transformToRandomChild stype=boss
+
+        pokemon0 ability2 > addHealthPointsToMax value=6
+        pokemon1 ability3 > addHealthPointsToMax value=9
+
+        boss ability4 > subtractHealthPoints value=32
+
+        bossDragon pokemonAbility > spawn stype=bossAbility0
+        bossWater pokemonAbility > spawn stype=bossAbility1
+        bossThunder pokemonAbility > spawn stype=bossAbility2
+        bossThunder pokemonAbility > addHealthPoints value=8
+
+        pokemon bossAbility0 > subtractHealthPoints value=12
+        pokemon bossAbility1 > subtractHealthPoints value=3
+        pokemon bossAbility1 > transformToRandomChild stype=pokemon
+        pokemon bossAbility2 > subtractHealthPoints value=6
+
+        pokemonAbility boss > killSprite
+        ability2 pokemon0 > killSprite
+        ability3 pokemon1 > killSprite
+        bossAbility pokemon > killSprite
+
+        pokemonAbility wall > killSprite
+        bossAbility wall > killSprite
+
+
+    LevelMapping
+        A > floor avatar
+        d > floor bossDragon
+        a > floor bossWater
+        t > floor bossThunder
+        0 > floor pokemon0
+        1 > floor pokemon1
+        2 > floor pokemon2
+        . > floor

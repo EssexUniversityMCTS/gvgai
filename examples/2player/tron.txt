@@ -1,0 +1,29 @@
+BasicGame square_size=10 no_players=2
+    SpriteSet
+        floor > Immovable hidden=True img=oryx/backGrey
+
+        anyWall   > Immovable
+            blueWall  > img=newset/blockB
+            redWall  > img=newset/blockR
+
+        avatar > OngoingTurningAvatar speed=1.0
+            avatar1 > img=newset/blockB3 spawnBehind=blueWall
+            avatar2 > img=newset/blockR3 spawnBehind=redWall
+
+        wall > Immovable img=oryx/wall1
+
+    LevelMapping
+        . > floor
+        A > avatar1 floor
+        B > avatar2 floor
+		
+    InteractionSet
+
+        avatar1 anyWall wall > killSprite scoreChange=0,1
+        avatar2 anyWall wall > killSprite scoreChange=1,0
+
+
+    TerminationSet
+        SpriteCounter stype=avatar1 limit=0 win=False,True
+        SpriteCounter stype=avatar2 limit=0 win=True,False
+        Timeout limit=1000 win=False,False

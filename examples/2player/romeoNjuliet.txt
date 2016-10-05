@@ -1,0 +1,54 @@
+BasicGame no_players=2 key_handler=Pulse 
+    SpriteSet
+        floor > Immovable img=oryx/floor3 hidden=True
+        door > Immovable img=oryx/doorclosed1
+        movable >
+            avatar >
+                romeo  > ShootAvatar healthPoints=48 limitHealthPoints=50 stype=sword img=oryx/prince1
+                    poisoned >
+                    healthy >
+                juliet > MovingAvatar img=oryx/queen1
+            incoming > img=newset/bandit1
+                incoming_slow  > Chaser stype=juliet color=ORANGE speed=0.06
+                incoming_fast  > Chaser stype=juliet color=YELLOW speed=0.09
+            enemySpawn > BomberRandomMissile stypeMissile=incoming_slow,incoming_fast invisible=True hidden=True singleton=True cooldown=8 speed=0.8 prob=0.1
+
+        winner > Immovable img=oryx/doorclosed1
+        sword > Flicker limit=5 img=oryx/sword2 shrinkfactor=0.8
+
+        potion > Immovable img=oryx/potion2
+        wall > Immovable img=oryx/wall3 autotiling=True
+
+    LevelMapping
+        d > floor door
+        e > floor enemySpawn
+        p > floor potion
+        A > floor poisoned
+        B > floor juliet
+        . > floor
+
+    InteractionSet
+        poisoned TIME > subtractHealthPoints timer=26 repeating=True
+
+        enemySpawn wall > reverseDirection
+        movable EOS wall  > stepBack
+
+        poisoned door > stepBack
+        avatar door > transformTo stype=winner
+
+        romeo incoming > killSprite scoreChange=-20,0
+        juliet incoming > killSprite scoreChange=0,-20
+
+        romeo juliet > addHealthPoints value=1
+
+        juliet potion > transformToAll stype=poisoned stypeTo=healthy scoreChange=0,50
+        potion juliet > killSprite
+        sword incoming > killBoth scoreChange=2,0
+
+        avatar avatar > stepBack
+
+    TerminationSet
+        MultiSpriteCounter stype1=winner limit=2 win=True,True
+        MultiSpriteCounter stype1=avatar stype2=winner limit=1 win=False,False
+        MultiSpriteCounter stype1=avatar stype2=winner limit=0 win=False,False
+        Timeout limit=1500 win=False,False

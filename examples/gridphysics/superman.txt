@@ -1,0 +1,72 @@
+BasicGame
+    SpriteSet
+
+        sky > Immovable hidden=True img=oryx/backGrey
+        building > Immovable img=newset/cloud2
+        street > Immovable img=newset/street3
+        emptyspace > Immovable invisible=True
+        jail > Immovable img=newset/jail
+
+        portal  > SpawnPoint img=newset/jaildoor1 portal=True cooldown=50   total=20
+            portalLeft  > stype=bleft
+            portalRight  > stype=bright
+
+        bandit > Bomber prob=0.1 cooldown=6 speed=0.5 img=newset/bandit1 stype=missile orientation=UP
+            bleft > spawnorientation=LEFT img=newset/bandit1h
+            bright > spawnorientation=RIGHT
+
+        villain  > Resource color=GREEN limit=8 value=0
+        villaingang > Resource color=GREEN limit=1 value=0
+
+        civilian >
+            standingcivilian > Missile orientation=DOWN color=GRAY speed=0.2 img=newset/man4
+            hurtcivilian > Immovable img=newset/cursedman
+            fallingcivilian > Missile orientation=DOWN color=GRAY speed=0.2 img=newset/man3
+
+
+        missile > Missile img=oryx/bullet1 speed=0.6
+
+        avatar > MovingAvatar
+            superman > img=newset/superman frameRate=8
+
+        wall > Immovable img=oryx/wall1
+
+    InteractionSet
+        avatar wall EOS portal > stepBack
+
+        bandit wall > reverseDirection
+        bandit wall > stepBack
+        missile EOS > killSprite
+
+        building missile > transformTo stype=emptyspace killSecond=True
+
+        standingcivilian building > stepBack
+        standingcivilian emptyspace > transformTo stype=fallingcivilian
+        fallingcivilian building > transformTo stype=standingcivilian
+
+        fallingcivilian wall > transformTo stype=hurtcivilian
+        fallingcivilian avatar > killSprite scoreChange=1
+
+        avatar bandit > changeResource resource=villain value=1 killResource=True scoreChange=1
+
+        avatar jail > spawnIfHasMore resource=villain stype=villaingang limit=8
+        avatar jail > changeResource resource=villain value=-8
+        villaingang jail > killSprite scoreChange=1000
+
+
+    LevelMapping
+        A > superman street
+        b > building sky
+        s > street
+        l > bleft sky
+        r > bright sky
+        c > standingcivilian sky
+        p > portalRight street
+        q > portalLeft street
+        j > jail
+        . > sky
+
+    TerminationSet
+        MultiSpriteCounter stype1=hurtcivilian limit=1 win=False
+        SpriteCounter stype=avatar win=False
+        MultiSpriteCounter stype1=portal stype2=bandit limit=0 win=True

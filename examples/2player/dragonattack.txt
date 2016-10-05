@@ -1,0 +1,123 @@
+BasicGame no_players=2 key_handler=Pulse
+    SpriteSet
+        back > Immovable img=oryx/backGrey hidden=True
+
+        base > Immovable img=base
+            base1 > img=oryx/cspell4
+            base2 > img=oryx/cspell2
+
+        gold > Immovable color=YELLOW
+            gold1 > img=oryx/mushroom1
+            gold2 > img=oryx/mushroom2
+
+        static > Immovable
+            block >
+                greenBlock > img=newset/blockG
+                blueBlock > img=newset/blockB
+                redBlock > img=newset/blockR
+            trigger >
+                triggerOpen1 > img=oryx/treasure1
+                triggerOpen2 > img=oryx/treasure1
+                triggerOpen3 > img=oryx/treasure1
+                triggerOpen4 > img=oryx/treasure1
+                triggerClosed1 > img=oryx/treasure2
+                triggerClosed2 > img=oryx/treasure2
+                triggerClosed3 > img=oryx/treasure2
+                triggerClosed4 > img=oryx/treasure2
+
+        moving >
+            avatar > FlakAvatar
+                avatar1 > stype=missile1 img=oryx/mage1 orientation=DOWN
+                avatar2 > stype=missile2 img=oryx/necromancer1 orientation=UP
+            missile > Missile timeToLive=20 speed=1 shrinkfactor=0.5
+                missile1  > color=BLUE singleton=True orientation=DOWN img=oryx/orb1
+                missile2  > color=RED singleton=True orientation=UP img=oryx/orb3
+            dragonAttack > Missile shrinkfactor=0.8
+                dragonFire1 > orientation=DOWN color=BLUE speed=0.2 img=oryx/firedown1
+                dragonFire2 > orientation=UP color=RED speed=0.2 img=oryx/fireup1
+                dragonKill1 > orientationDOWN color=GREEN speed=0.4 img=oryx/firedown3
+                dragonKill2 > orientation=UP color=PINK speed=0.4 img=oryx/fireup3
+            dragon > Bomber speed=0.9 cooldown=10 prob=0.1
+                dragon1 > img=oryx/dragon2 stype=dragonFire1 orientation=LEFT spawnorientation=DOWN
+                dragon2 > img=oryx/dragon4 stype=dragonFire2 orientation=RIGHT spawnorientation=UP
+        wall > Immovable img=oryx/wall6
+
+    LevelMapping
+        r > redBlock back
+        g > greenBlock back
+        y > blueBlock back
+        1 > triggerOpen1 back
+        2 > triggerOpen2 back
+        3 > triggerOpen3 back
+        4 > triggerOpen4 back
+        A > base1 avatar1 back
+        B > base2 avatar2 back
+        a  > dragon1 back
+        b  > dragon2 back
+        . > base1 back
+        - > base2 back
+        _ > back
+
+    InteractionSet
+
+        avatar wall  > stepBack pixelPerfect=True
+        dragon wall > reverseDirection
+        dragon wall  > stepBack
+        missile wall > killSprite
+        dragonAttack wall > killSprite
+
+        missile1 missile2 > killBoth
+        dragonFire1 dragonFire2 > killBoth
+        dragonKill1 dragonKill2 > killBoth
+        missile dragonAttack > killBoth
+
+        greenBlock missile > spawnBehind stype=blueBlock
+        greenBlock missile1 > killBoth scoreChange=2,0
+        greenBlock missile2 > killBoth scoreChange=0,2
+
+        blueBlock missile > spawnBehind stype=redBlock
+        blueBlock missile1 > killBoth scoreChange=1,0
+        blueBlock missile2 > killBoth scoreChange=0,1
+
+        redBlock missile1 > killBoth scoreChange=1,-1
+        redBlock missile2 > killBoth scoreChange=-1,1
+
+        dragon missile1 > killBoth scoreChange=20,-5
+        dragon missile2 > killBoth scoreChange=-5,20
+
+        base dragonFire1 > spawn stype=gold1
+        base dragonFire1 > killBoth
+        base dragonFire2 > spawn stype=gold2
+        base dragonFire2 > killBoth
+
+        gold1 avatar > killSprite scoreChange=10,-5
+        gold2 avatar > killSprite scoreChange=-5,10
+
+        avatar2 dragonKill1 > killBoth scoreChange=1000,-10
+        avatar1 dragonKill2 > killBoth scoreChange=-10,1000
+
+        block dragonKill1 > killBoth scoreChange=4,0
+        block dragonKill2 > killBoth scoreChange=0,4
+
+        avatar1 triggerOpen1 > transformToAll stype=triggerOpen1 stypeTo=triggerClosed1
+        avatar1 triggerOpen1 > transformToAll stype=triggerClosed2 stypeTo=triggerOpen2
+        avatar1 triggerOpen1 > updateSpawnType spawnPoint=dragon1 stype=dragonFire1
+        avatar1 triggerOpen2 > transformToAll stype=triggerOpen2 stypeTo=triggerClosed2
+        avatar1 triggerOpen2 > transformToAll stype=triggerClosed1 stypeTo=triggerOpen1
+        avatar1 triggerOpen2 > updateSpawnType spawnPoint=dragon1 stype=dragonKill1
+
+        avatar2 triggerOpen3 > transformToAll stype=triggerOpen3 stypeTo=triggerClosed3
+        avatar2 triggerOpen3 > transformToAll stype=triggerClosed4 stypeTo=triggerOpen4
+        avatar2 triggerOpen3 > updateSpawnType spawnPoint=dragon2 stype=dragonFire2
+        avatar2 triggerOpen4 > transformToAll stype=triggerOpen4 stypeTo=triggerClosed4
+        avatar2 triggerOpen4 > transformToAll stype=triggerClosed3 stypeTo=triggerOpen3
+        avatar2 triggerOpen4 > updateSpawnType spawnPoint=dragon2 stype=dragonKill2
+
+
+    TerminationSet
+        SpriteCounter stype=avatar1 limit=0 win=False,True
+        SpriteCounter stype=avatar2 limit=0 win=True,False
+        SpriteCounter stype=base1 limit=0 win=False,True
+        SpriteCounter stype=base2 limit=0 win=True,False
+        SpriteCounter stype=block limit=0 count_score=True
+        Timeout limit=2000 count_score=True

@@ -1,0 +1,46 @@
+BasicGame no_players=2 square_size=30
+    SpriteSet
+        background > Immovable hidden=True img=oryx/space1
+        ship  > Immovable color=GREEN portal=True
+            nokey > img=oryx/spaceship1
+            withkey > img=oryx/spaceship2
+        explosion > Flicker limit=5 img=oryx/sparkle3
+
+        movable >
+            avatar  > ShootAvatar stype=explosion
+                avatarA >  img=newset/spaceman1
+                avatarB > img=newset/spaceman2
+            incoming >
+                incoming_slow  > Chaser stype=ship color=ORANGE speed=0.05 img=oryx/alien3
+                incoming_fast  > Chaser stype=ship color=YELLOW speed=0.15 img=oryx/alien1
+            enemySpawn > BomberRandomMissile stypeMissile=incoming_slow,incoming_fast invisible=True hidden=True singleton=True cooldown=8 speed=0.8 prob=0.1
+        
+        winner > Immovable img=oryx/spaceship2
+	
+        key > Immovable img=oryx/key1 shrinkfactor=0.7
+        wall > Immovable img=oryx/planet
+
+    LevelMapping
+        . > background
+        s > nokey background
+        e > enemySpawn background
+        k > key background
+        A > avatarA background
+        B > avatarB background
+        w > wall background
+
+    InteractionSet
+        enemySpawn wall > reverseDirection
+        movable wall  > stepBack pixelPerfect=True
+        avatar nokey > stepBack
+        incoming ship > killBoth scoreChange=-1,-1
+        incoming explosion avatarA > killSprite scoreChange=2,0
+        incoming explosion avatarB > killSprite scoreChange=0,2
+        avatar key > transformToAll stype=nokey stypeTo=withkey
+        key avatarA > killSprite scoreChange=10,0
+        key avatarB > killSprite scoreChange=0,10
+        avatar withkey > transformTo stype=winner
+
+    TerminationSet
+        SpriteCounter stype=ship   win=False,False
+        MultiSpriteCounter stype1=winner limit=2 win=True,True

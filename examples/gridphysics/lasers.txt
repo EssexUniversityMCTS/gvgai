@@ -1,0 +1,58 @@
+BasicGame key_handler=Pulse
+    SpriteSet
+        floor > Immovable img=oryx/floor3 hidden=True
+        goal > Immovable img=oryx/dooropen1 portal=true
+        avatar > ShootAvatar stype=boulder rotateInPlace=true img=oryx/archer1
+        box    > Passive img=newset/block2
+        lasercannon > SpawnPoint 
+            lcup > img=newset/lasercannon stype=lup
+            lcdown > img=newset/lasercannon_2 stype=ldown
+            lcright > img=newset/lasercannon_1 stype=lright
+            lcleft > img=newset/lasercannon_3 stype=lleft
+            lcswap > img=newset/lasercannon_4 stype=lleft
+        laser > Missile color=YELLOW  shrinkfactor=0.5 speed=0.5
+            lup > orientation=UP img=newset/laser1
+            ldown > orientation=DOWN img=newset/laser1
+            lright > orientation=RIGHT img=newset/laser1_1
+            lleft > orientation=LEFT img=newset/laser1_1
+
+        boulder > Missile color=BLUE singleton=True img=oryx/orb2 shrinkfactor=0.3
+        wall > Immovable img=oryx/wall3 autotiling=True
+
+    LevelMapping
+        . > floor
+        A > floor avatar
+        b > floor box
+        l > floor lcleft
+        r > floor lcright
+        u > floor lcup
+        d > floor lcdown
+        g > floor goal
+
+    InteractionSet
+
+        avatar wall lasercannon > stepBack
+
+        avatar box > shieldFrom ftype=killIfFrontal stype=laser
+        box avatar  > bounceForward
+        box wall box lasercannon > undoAll
+
+        avatar laser > killIfFrontal
+        avatar laser > killIfNotFrontal
+
+
+        avatar wall > stepBack
+        laser wall box > killSprite
+        boulder wall lasercannon EOS > killSprite
+        goal avatar > killSprite scoreChange=5
+
+        lcdown boulder > transformTo stype=lcswap
+        lcleft boulder > transformTo stype=lcdown
+        lcup boulder > transformTo stype=lcleft
+        lcright boulder > transformTo stype=lcup
+        lcswap boulder > transformTo stype=lcright
+
+
+    TerminationSet
+        SpriteCounter stype=avatar    limit=0 win=False
+        SpriteCounter stype=goal    limit=0 win=True

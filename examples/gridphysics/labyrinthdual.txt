@@ -1,0 +1,50 @@
+BasicGame key_handler=Pulse
+    SpriteSet
+        floor > Immovable img=oryx/grass autotiling=True hidden=True
+        trap > Immovable img=oryx/spike2
+        exit > Door color=GREEN img=newset/exit2
+
+        wall > Immovable
+            normalWall > img=oryx/wall1
+            redWall > img=oryx/dirtwall autotiling=True
+            blueWall > img=oryx/wall3 autotiling=True
+
+        redcoat > Resource img=oryx/cloak2 limit=1 value=0 color=RED
+        bluecoat > Resource img=oryx/cloak3 limit=1 value=0 color=BLUE
+
+        avatar > MovingAvatar
+            avatarNormal > img=newset/girl1
+            avatarRed > img=oryx/princess1
+            avatarBlue > img=oryx/queen1
+
+    InteractionSet
+
+        avatar normalWall > stepBack
+        avatarNormal wall > stepBack
+        avatarBlue redWall > stepBack
+        avatarRed blueWall > stepBack
+
+        #avatar redcoat > changeResource resource=redcoat value=1 scoreChange=3
+        avatar redcoat > transformTo stype=avatarRed killSecond=True scoreChange=3
+
+        #avatar bluecoat > changeResource resource=bluecoat value=1 scoreChange=3
+        avatar bluecoat > transformTo stype=avatarBlue killSecond=True scoreChange=3
+
+        exit avatar > killSprite scoreChange=1
+        avatar trap > killSprite scoreChange=-1
+
+    TerminationSet
+        Timeout limit=1000 win=False
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=exit limit=0 win=True
+
+    LevelMapping
+        x > floor exit
+        t > floor trap
+        r > floor redWall
+        b > floor blueWall
+        w > floor normalWall
+        1 > floor redcoat
+        2 > floor bluecoat
+        A > floor avatarNormal
+        . > floor

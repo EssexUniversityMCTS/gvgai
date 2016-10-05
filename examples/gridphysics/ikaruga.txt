@@ -1,0 +1,59 @@
+BasicGame square_size=24
+    SpriteSet
+        background > Immovable img=oryx/space1 hidden=True
+        wall    > Immovable    color=WHITE img=oryx/planet
+        avatar  > FlakAvatar rotateInPlace=False
+            whiteAvatar > stype=whiteBullet img=oryx/spaceship1
+            blackAvatar > stype=blackBullet img=oryx/spaceship2
+        missile > Missile
+            whiteBullet  > orientation=UP    color=BLUE singleton=True img=oryx/cspell1
+            blackBullet  > orientation=UP    color=BLUE singleton=True img=oryx/orb3 shrinkfactor=0.5
+            bomb         > orientation=DOWN  color=RED cooldown=4 speed=1 img=newset/bomb
+        changer > Missile orientation=DOWN color=RED cooldown=2 speed=0.5
+            whiteChanger > img=oryx/mineral1
+            blackChanger > img=oryx/mineral3
+        alien   > Bomber stype=bomb prob=0.01  cooldown=6 speed=0.9 orientation=DOWN
+            blackAlien > img=oryx/bird3
+            whiteAlien > img=oryx/bird1
+        portal  > SpawnPoint invisible=True hidden=True img=portal
+        	whitePortal1   > stype=whiteAlien   cooldown=28  total=10 
+        	blackPortal1   > stype=blackAlien   cooldown=28  total=10
+        	whitePortal2   > stype=whiteAlien   cooldown=56  total=5
+        	blackPortal2   > stype=blackAlien   cooldown=56  total=5
+        portal2 > SpawnPoint invisible=True hidden=True cooldown=100  total=40 img=portal
+        	wChangerPortal > stype=whiteChanger
+        	bChangerPortal > stype=blackChanger
+    
+    LevelMapping
+        o > wall background
+        q > whitePortal1 background
+        w > blackPortal1 background
+        e > whitePortal2 background
+        r > blackPortal2 background
+        A > whiteAvatar background
+        z > wChangerPortal background
+        x > bChangerPortal background
+        . > background
+
+    TerminationSet
+        SpriteCounter      stype=avatar               limit=0 win=False
+        MultiSpriteCounter stype1=portal stype2=alien limit=0 win=True
+        
+    InteractionSet
+        avatar      wall        > stepBack
+        avatar      EOS         > stepBack
+        alien       EOS         > killSprite
+        changer     EOS         > killSprite
+        missile     EOS         > killSprite
+        bomb        whiteBullet > killBoth
+        bomb        blackBullet > killBoth
+        
+        blackAvatar  whiteChanger > transformTo stype=whiteAvatar
+        whiteChanger blackAvatar  > killSprite
+        whiteAvatar  blackChanger > transformTo stype=blackAvatar
+        blackChanger whiteAvatar  > killSprite
+        
+        avatar      alien       > killSprite scoreChange=-1
+        avatar      bomb        > killBoth scoreChange=-1
+        blackAlien  blackBullet > killBoth scoreChange=1
+        whiteAlien  whiteBullet > killBoth scoreChange=1

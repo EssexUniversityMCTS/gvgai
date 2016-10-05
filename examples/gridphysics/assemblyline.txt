@@ -1,0 +1,96 @@
+BasicGame key_handler=Pulse
+    SpriteSet
+        floor > Immovable img=newset/floor2
+
+        assembly > Immovable
+            assembly1 > color=PINK
+            assembly2 > color=LIGHTORANGE
+            assembly3 > color=GREEN
+
+        line > Immovable hidden=True
+            linedown > orientation=DOWN img=newset/linedown
+            lineright > orientation=RIGHT img=newset/lineright
+            lineup > orientation=UP img=newset/lineup
+            lineleft > orientation=LEFT img=newset/lineleft
+
+
+        avatar > ShootAvatar stype=lever rotateInPlace=true img=newset/man3
+        lever > Flicker limit=1 singleton=True img=oryx/mace1 shrinkfactor=0.5
+        lasercannon > SpawnPoint
+            lcup > img=newset/lasercannon stype=lup
+            lcdown > img=newset/lasercannon_2 stype=ldown
+            lcright > img=newset/lasercannon_1 stype=lright
+            lcleft > img=newset/lasercannon_3 stype=lleft
+            lcswap > img=newset/lasercannon_4 stype=lleft
+
+        laser > Missile color=YELLOW  shrinkfactor=0.5 speed=0.5
+            lup > orientation=UP img=newset/laser1
+            ldown > orientation=DOWN img=newset/laser1
+            lright > orientation=RIGHT img=newset/laser1_1
+            lleft > orientation=LEFT img=newset/laser1_1
+
+        goal > Immovable img=oryx/dooropen1 portal=true
+        vortex    > Passive img=newset/block3
+
+        portal  > SpawnPoint orientation=DOWN  stype=potato  cooldown=20 img=portal portal=True
+        product > Missile color=RED speed=0.1
+            potato > img=newset/potato
+            potatoeyes > img=newset/potatoeyes
+            potatoeyesnose > img=newset/potatoeyesnose
+            potatofull > img=newset/potatofull
+            victory > img=oryx/goldsack
+
+        wall > Immovable img=oryx/wall3 autotiling=True
+
+
+    LevelMapping
+        . > floor
+        A > floor avatar
+        l > floor lcleft
+        r > floor lcright
+        u > floor lcup
+        d > floor lcdown
+        g > floor goal
+        p > floor portal
+        v > floor vortex
+
+        1 > floor assembly1 linedown
+        2 > floor assembly2 lineright
+        3 > floor assembly3 linedown
+        4 > floor assembly1 lineright
+        5 > floor assembly2 lineup
+        6 > floor assembly3 lineleft
+        7 > floor assembly2 linedown
+        8 > floor assembly1 lineleft
+        9 > floor assembly3 lineright
+
+    InteractionSet
+    
+        avatar wall lasercannon > stepBack
+
+        vortex avatar  > bounceForward
+        vortex wall vortex lasercannon  > undoAll
+        laser vortex wall > killSprite
+
+        lcdown lever > transformTo stype=lcswap
+        lcleft lever > transformTo stype=lcdown
+        lcup lever > transformTo stype=lcleft
+        lcright lever > transformTo stype=lcup
+        lcswap lever > transformTo stype=lcright
+        lever lasercannon > killSprite
+
+        product laser > attractGaze align=True
+        product wall lasercannon > killSprite
+
+
+        potato assembly1 > transformTo stype=potatoeyes scoreChange=1
+        potatoeyes assembly2 > transformTo stype=potatoeyesnose scoreChange=2
+        potatoeyesnose assembly3 > transformTo stype=potatofull scoreChange=4
+
+        product portal line > attractGaze align=True
+
+        potatofull goal > transformTo stype=victory
+
+    TerminationSet
+        MultiSpriteCounter stype1=victory limit=1 win=True min=True
+        Timeout limit=1500 win=False

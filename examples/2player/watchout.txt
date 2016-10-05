@@ -1,0 +1,55 @@
+BasicGame key_handler=Pulse square_size=50 no_players=2
+    SpriteSet
+        edge > Immovable
+            edgeA > img=oryx/backBlue
+                edgeA0 > color=BLUE
+                edgeA1 > color=BLUE
+            edgeB > img=oryx/backRed
+                edgeB0 > color=RED
+                edgeB1 > color=RED
+        box > Passive
+            boxA > img=newset/blockB2
+            boxB > img=newset/blockR2
+        flyingBox > Missile speed=0.8
+            fBoxA > orientation=RIGHT img=newset/blockB
+            fBoxB > orientation=LEFT  img=newset/blockR
+        avatar > MovingAvatar frameRate=16
+            avatarA > img=newset/girl3
+            avatarB > img=newset/man3
+        wall > Immovable img=oryx/wall1
+
+    LevelMapping
+        a > boxA
+        b > boxB
+        0 > edgeA0
+        1 > edgeA1
+        2 > edgeB0
+        3 > edgeB1
+        A > avatarA
+        B > avatarB
+		
+    InteractionSet
+        avatar wall avatar > stepBack
+        avatarA edgeB > stepBack
+        avatarB edgeA > stepBack
+
+        fBoxA edgeB1 > transformTo stype=boxB
+        fBoxB edgeA1 > transformTo stype=boxA
+
+        box avatar > bounceForward
+        boxA edgeA > stepBack pixelPerfect=True
+        boxB edgeB > stepBack pixelPerfect=True
+
+        boxA boxA > transformTo stype=fBoxA killSecond=True
+        boxB boxB > transformTo stype=fBoxB killSecond=True
+
+        fBoxA boxB > killSprite
+        fBoxB boxA > killSprite
+        fBoxA avatarB > transformTo stype=fBoxB
+        fBoxB avatarA > transformTo stype=fBoxA
+
+    TerminationSet
+        StopCounter stype1=flyingBox limit=0 min=True
+        MultiSpriteCounter stype1=boxA limit=0 win=True,False
+        MultiSpriteCounter stype1=boxB limit=0 win=False,True
+        MultiSpriteCounter stype1=box limit=2 win=False,False

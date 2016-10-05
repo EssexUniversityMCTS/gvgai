@@ -1,0 +1,45 @@
+BasicGame square_size=30 key_handler=Pulse
+    SpriteSet
+
+        ground > Immovable img=newset/street3 hidden=True
+        waterAmmo > Resource color=BLUE limit=10
+        water > Missile img=oryx/slime1 speed=1.0 shrinkfactor=0.8
+        box > Immovable img=newset/city1
+        extinguisher > Immovable img=newset/hydrant
+
+        fire > img=oryx/fire1
+            fireOn > SpawnPoint stype=fireStart prob=0.01 img=newset/city1_fire
+            fireStart > Spreader color=ORANGE spreadprob=0.6 stype=fireEnd
+            fireEnd > Immovable
+        avatar  > ShootAvatar ammo=waterAmmo stype=water healthPoints=10 img=newset/fireman
+
+        wall > Immovable img=oryx/wall1
+
+    LevelMapping
+        b > box ground
+        A > avatar ground
+        e > extinguisher ground
+        f > fireOn ground
+        . > ground
+
+
+    InteractionSet
+        avatar wall box > stepBack
+
+        box fireEnd > killSprite scoreChange=-1
+        fireEnd box > transformTo stype=fireOn
+
+        fire wall > killSprite
+        fire water > killSprite scoreChange=2
+        water fire box wall > killSprite
+
+        avatar fire > subtractHealthPoints
+
+        fireEnd ground > killSprite
+
+        avatar extinguisher > changeResource resource=waterAmmo value=2
+
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=fire limit=0 win=True
+        Timeout limit=1500 win=False

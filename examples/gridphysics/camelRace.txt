@@ -1,0 +1,46 @@
+BasicGame
+    SpriteSet
+        floor > Immovable hidden=True img=oryx/backBiege
+        camel > color=BROWN
+            randomCamel > RandomNPC speed=0.25 cons=8 img=newset/camel1 frameRate=7
+            straightCamelFast > Missile speed=0.6 frameRate=4
+                fastR > orientation=RIGHT img=newset/camel2
+                fastL > orientation=LEFT img=newset/camel2L
+            straightCamelMedium > Missile speed=0.3 frameRate=6
+                mediumR > orientation=RIGHT img=newset/camel3
+                mediumL > orientation=LEFT img=newset/camel3L
+            straightCamelSlow > Missile speed=0.15 frameRate=10
+                slowR > orientation=RIGHT img=newset/camel4
+                slowL > orientation=LEFT img=newset/camel4L
+        structure >
+            goal  > Door color=GREEN img=newset/exit2
+        winnerNPC > Immovable color=RED img=oryx/sparkle2
+        winnerPlayer > Immovable color=PINK img=oryx/sparkle1
+        avatar > MovingAvatar frameRate=8
+            left > img=newset/camel5L
+            right > img=newset/camel5
+
+        wall > Immovable img=oryx/dirtwall autotiling=True
+
+    InteractionSet
+        avatar goal > transformTo stype=winnerPlayer scoreChange=1
+        camel goal  > transformTo stype=winnerNPC scoreChange=-1
+        avatar wall > stepBack
+        camel wall  > stepBack
+
+    LevelMapping
+        g > goal floor
+        r > randomCamel floor
+        h > fastR floor
+        n > mediumR floor
+        t > slowR floor
+        f > fastL floor
+        m > mediumL floor
+        s > slowL floor
+        . > floor
+        A > right floor
+        B > left floor
+
+    TerminationSet
+        MultiSpriteCounter stype1=winnerPlayer limit=1 win=True
+        MultiSpriteCounter stype1=winnerNPC limit=1 win=False

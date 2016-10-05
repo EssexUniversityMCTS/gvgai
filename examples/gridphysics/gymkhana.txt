@@ -1,0 +1,76 @@
+BasicGame square_size=30 key_handler=Pulse
+    SpriteSet
+        background > Immovable color=BLUE img=oryx/seaWater hidden=True
+        water > Immovable color=BLUE img=oryx/seaWater
+        floor > Immovable autotiling=true img=oryx/grass hidden=True
+        wall  > Immovable img=oryx/bush5
+        goal  > Immovable color=GREEN img=oryx/doorclosed1 portal=True
+		
+        forest > SpawnPoint stype=log prob=0.25  cooldown=10 img=oryx/seaWater
+            forestR > stype=logR
+            forestL > stype=logL
+
+        log    > Missile speed=0.1 color=BROWN img=oryx/bush1
+            logR > orientation=RIGHT
+            logL > orientation=LEFT
+            landingpad > speed=0.0 img=oryx/floorTileOrange
+
+
+        catapult > Immovable
+            southfacing > orientation=DOWN  color=RED img=oryx/bookDown
+            northfacing > orientation=UP  color=ORANGE img=oryx/bookUp
+            eastfacing  > orientation=RIGHT color=YELLOW img=oryx/bookRight
+            westfacing  > orientation=LEFT color=YELLOW img=oryx/bookLeft
+
+        avatar >
+            moving > OrientedAvatar img=oryx/vampire1
+                onground >
+                onlog >
+            bullet > MissileAvatar img=oryx/bat1
+                north  > orientation=UP color=RED
+                south  > orientation=DOWN color=ORANGE
+                east   > orientation=RIGHT color=YELLOW
+                west   > orientation=LEFT color=GREEN
+
+
+    LevelMapping
+        . > water
+        - > background floor
+        , > background floor landingpad
+        0 > background floor eastfacing
+        1 > background floor southfacing
+        2 > background floor northfacing
+        3 > background floor westfacing
+        r > forestR log
+        l > forestL log
+        g > background floor goal
+        A > background floor onground
+        w > background floor wall
+
+    InteractionSet
+        bullet wall log > transformTo stype=onground
+        moving wall > stepBack pixelPerfect=True
+
+        onground log   > shieldFrom ftype=killSprite stype=water
+        onground logR logL   > pullWithIt
+        onground landingpad   > pullWithIt pixelPerfect=True
+
+        landingpad onground > killSprite
+        log    wall   > killSprite
+
+        avatar catapult    > attractGaze prob=1 align=True
+        avatar westfacing  > transformTo stype=west
+        avatar eastfacing  > transformTo stype=east
+        avatar southfacing > transformTo stype=south
+        avatar northfacing > transformTo stype=north
+
+        catapult avatar    > killSprite scoreChange=1
+        goal avatar        > killSprite
+
+        onground water > killSprite
+        avatar forest > stepBack
+
+    TerminationSet
+        SpriteCounter stype=goal    limit=0 win=True
+        SpriteCounter stype=avatar  limit=0 win=False
+        Timeout limit=1000 win=False

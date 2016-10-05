@@ -1,0 +1,43 @@
+BasicGame
+    SpriteSet
+        floor > Immovable img=oryx/grass autotiling=True hidden=True
+        exit > Door color=GREEN img=oryx/dooropen1
+        avatar > MovingAvatar img=oryx/dwarf1
+        trap > Immovable img=oryx/spike2
+        ice > Immovable img=oryx/backGrey
+        fire > Immovable img=oryx/fire1
+
+        feetwear > Resource limit=1 value=1 shrinkfactor=0.7
+            iceshoes > img=oryx/boots3
+            fireboots > img=oryx/boots2
+
+        chip > Immovable img=oryx/gold1 shrinkfactor=0.5
+        wall > Immovable img=oryx/tree1
+
+    InteractionSet
+
+        avatar wall > stepBack
+        exit avatar > killSprite scoreChange=1
+        avatar trap > killSprite scoreChange=-1
+        chip avatar > killSprite scoreChange=1
+
+        feetwear avatar > collectResource scoreChange=3
+        avatar ice > killIfHasLess resource=iceshoes limit=0
+        avatar fire > killIfHasLess resource=fireboots limit=0
+
+    TerminationSet
+        Timeout limit=500 win=False
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=exit limit=0 win=True
+
+    LevelMapping
+        e > exit floor
+        t > trap floor
+        c > chip floor
+        i > iceshoes floor
+        f > fireboots floor
+        _ > ice
+        x > fire floor
+        . > floor
+        A > avatar floor
+        w > wall floor

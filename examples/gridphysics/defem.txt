@@ -1,0 +1,46 @@
+BasicGame
+    SpriteSet
+        floor > Immovable hidden=True img=oryx/backLBrown
+        cannon > Passive invisible=TRUE hidden=TRUE
+        avatar > MovingAvatar img=oryx/axeman1
+        bullet > RandomMissile img=oryx/axe1 shrinkfactor=0.5
+
+        enemyW >
+            enemy   >
+                randomEnemy > RandomNPC cooldown=5 img=oryx/freak1
+                chaseEnemy  > Chaser cooldown=5 stype=avatar img=oryx/freak2
+                dirEnemy   > Missile cooldown=5 img=oryx/freak3
+
+            spawner >
+                spawnRandom > SpawnPoint stype=randomEnemy total=10 cooldown=20 img=newset/hole1
+                spawnChase  > SpawnPoint stype=chaseEnemy total=10 cooldown=40 img=newset/hole5
+
+            dirSpawner > SpawnPoint stype=dirEnemy total=5 cooldown=30 img=newset/hole4
+                spawnHorzR  > orientation=RIGHT
+                spawnHorzL  > orientation=LEFT
+                spawnHorzU  > orientation=UP
+                spawnHorzD  > orientation=DOWN
+
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=enemy limit=0 win=True
+
+    InteractionSet
+
+        cannon avatar      > spawnIfHasMore stype=bullet resource=null limit=0 prob=0.5
+        enemy bullet       > killSprite scoreChange=1
+        avatar enemy       > killSprite
+        EOS avatar cannon  > stepBack
+        dirEnemy EOS       > reverseDirection
+        bullet enemy EOS   > killSprite
+
+
+    LevelMapping
+        a > avatar cannon floor
+        r > spawnRandom cannon floor
+        c > spawnChase cannon floor
+        z > spawnHorzR cannon floor
+        x > spawnHorzL cannon floor
+        f > spawnHorzD cannon floor
+        v > spawnHorzU cannon floor
+        . > cannon floor

@@ -1,0 +1,66 @@
+BasicGame
+    SpriteSet
+        floor > Immovable img=oryx/backBiege hidden=True
+        passenger > Immovable color=GREEN img=oryx/king1
+        belt > Immovable img=oryx/space5
+        death > Immovable img=oryx/tombstone1
+
+        lever > Immovable
+            leverUp > img=oryx/bookUp
+            leverRight > img=oryx/bookRight
+            leverDown > img=oryx/bookDown
+            leverLeft > img=oryx/bookLeft
+
+        joint > Passive
+            jointUp > img=oryx/bookUp orientation=UP
+            jointRight > img=oryx/bookRight orientation=RIGHT
+            jointDown > img=oryx/bookDown orientation=DOWN
+            jointLeft > img=oryx/bookLeft orientation=LEFT
+
+        suitcase > Missile orientation=RIGHT speed=0.25 img=oryx/treasure2
+        avatar > MovingAvatar speed=1.0 img=newset/man4 rotateInPlace=False
+        wall > Immovable img=oryx/dirtWall autotiling=True
+
+    InteractionSet
+
+        avatar leverUp > transformToAll stype=jointRight stypeTo=jointUp
+        avatar leverUp > transformToAll stype=jointDown stypeTo=jointUp
+        avatar leverUp > transformToAll stype=jointLeft stypeTo=jointUp
+
+        avatar leverRight > transformToAll stype=jointUp stypeTo=jointRight
+        avatar leverRight > transformToAll stype=jointDown stypeTo=jointRight
+        avatar leverRight > transformToAll stype=jointLeft stypeTo=jointRight
+
+        avatar leverDown > transformToAll stype=jointUp stypeTo=jointDown
+        avatar leverDown > transformToAll stype=jointRight stypeTo=jointDown
+        avatar leverDown > transformToAll stype=jointLeft stypeTo=jointDown
+
+        avatar leverLeft > transformToAll stype=jointUp stypeTo=jointLeft
+        avatar leverLeft > transformToAll stype=jointDown stypeTo=jointLeft
+        avatar leverLeft > transformToAll stype=jointRight stypeTo=jointLeft
+
+        suitcase joint > attractGaze align=True
+        passenger suitcase > killSprite scoreChange=1
+        suitcase death > killSprite scoreChange=-1
+        suitcase wall > killSprite scoreChange=-1
+        suitcase floor > stepBack
+
+        avatar wall > stepBack
+
+    LevelMapping
+        A > avatar floor
+        . > floor
+        1 > leverUp floor
+        2 > leverRight floor
+        3 > leverDown floor
+        4 > leverLeft floor
+        p > floor passenger
+        s > belt suitcase
+        b > belt
+        d > floor death
+        j > jointRight belt
+
+
+    TerminationSet
+        SpriteCounter stype=passenger win=True
+        SpriteCounter stype=suitcase win=False

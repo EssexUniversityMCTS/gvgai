@@ -1,0 +1,53 @@
+BasicGame no_players=2
+
+    SpriteSet
+        landS > Immovable hidden=True img=oryx/backGreen
+        land > Missile orientation=LEFT speed=0.2 img=oryx/tree2
+        trainS > Immovable hidden=True img=oryx/wall3 autotiling=True
+        train > Missile   orientation=RIGHT  speed=0.05 color=BROWN invisible=True
+        spawnObstacle0 > SpawnPoint stype=obstacle0 prob=0.006 hidden=True invisible=True
+        spawnObstacle1 > SpawnPoint stype=obstacle0 prob=0.01 hidden=True invisible=True
+        obstacle0 > Missile orientation=RIGHT speed=0.08 img=oryx/mineral1
+        obstacle > Immovable
+            obstacleA > img=oryx/mineral2
+            obstacleB > img=oryx/mineral3
+
+        avatar > ShootAvatar speed=0.2
+            avatarA > stype=hitA img=newset/girl2 frameRate=8
+            avatarB > stype=hitB img=newset/man3 frameRate=8
+        hit > Flicker img=oryx/cspell4
+            hitA > singleton=True
+            hitB > singleton=True
+        
+    InteractionSet
+        avatar land eos > killSprite
+        avatarA obstacle0 obstacleB > stepBack
+        #avatarA obstacle0 > bounceForward
+        avatarB obstacle0 obstacleA > stepBack
+        #avatarB obstacle0 > bounceForward
+        train eos > wrapAround
+        land eos > wrapAround
+
+        avatar train > pullWithIt
+        #obstacle train > pullWithIt
+
+        obstacle0 hitA > killBoth scoreChange=4,0
+        obstacle0 hitB > killBoth scoreChange=0,4
+        obstacleB hitA > killBoth scoreChange=2,0
+        obstacleA hitB > killBoth scoreChange=0,2
+
+        hitA train > transformTo stype=obstacleA
+        hitB train > transformTo stype=obstacleB
+    
+    TerminationSet
+        SpriteCounter stype=avatarA limit=0 win=False,True
+        SpriteCounter stype=avatarB limit=0 win=True,False
+        Timeout limit=1000 win=True,True
+    
+    LevelMapping
+        + > land landS
+        . > train trainS
+        0 > spawnObstacle0 train trainS
+        1 > spawnObstacle1 train trainS
+        A > avatarA train trainS
+        B > avatarB train trainS

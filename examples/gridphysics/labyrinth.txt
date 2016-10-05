@@ -1,0 +1,25 @@
+BasicGame
+    SpriteSet
+        floor > Immovable img=oryx/grass autotiling=True hidden=True
+        exit > Door color=GREEN img=newset/exit2
+        avatar > MovingAvatar img=newset/girl1
+        trap > Immovable img=oryx/spike2
+        wall > Immovable img=oryx/wall1
+
+    InteractionSet
+
+        avatar wall > stepBack
+        exit avatar > killSprite scoreChange=1
+        avatar trap > killSprite scoreChange=-1
+
+    TerminationSet
+        Timeout limit=1000 win=False
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=exit limit=0 win=True
+
+    LevelMapping
+        x > floor exit
+        t > floor trap
+        . > floor
+        w > floor wall
+        A > floor avatar

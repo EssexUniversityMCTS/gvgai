@@ -1,0 +1,64 @@
+#Bolo Adventures III: http://www.mobygames.com/game/dos/bolo-adventures-iii
+BasicGame key_handler=Pulse
+    SpriteSet
+        ground > Immovable img=oryx/backLBrown hidden=True
+        hole   > Immovable color=DARKBLUE img=newset/hole1
+        goal > Immovable img=oryx/doorclosed1
+        avatar > OrientedAvatar rotateInPlace=false img=oryx/spelunky frameRate=8
+        box    > Passive img=newset/block1
+        boulder  > Passive img=newset/block2
+        boulderm > Missile img=newset/block3
+        lasercannon > SpawnPoint 
+            lcup > img=newset/lasercannon stype=lup
+            lcdown > img=newset/lasercannon_2 stype=ldown
+            lcright > img=newset/lasercannon_1 stype=lright
+            lcleft > img=newset/lasercannon_3 stype=lleft
+        laser > Missile color=YELLOW  shrinkfactor=0.5 speed=0.1
+            lup > orientation=UP img=newset/laser1
+            ldown > orientation=DOWN img=newset/laser1
+            lright > orientation=RIGHT img=newset/laser1_1
+            lleft > orientation=LEFT img=newset/laser1_1
+
+        wall > Immovable img=oryx/wall3 autotiling=True
+
+    LevelMapping
+        A > avatar ground
+        b > box ground
+        c > boulder ground
+        l > lcleft ground
+        r > lcright ground
+        u > lcup ground
+        d > lcdown ground
+        0 > hole ground
+        g > goal ground
+        . > ground
+
+    InteractionSet
+
+        boulderm wall box boulder lasercannon > transformTo stype=boulder
+        boulderm hole > killBoth scoreChange=1
+
+        avatar wall lasercannon > stepBack
+        avatar box > shieldFrom ftype=killIfFrontal stype=laser
+
+        box avatar  > bounceForward
+        box wall box hole lasercannon   > undoAll
+        
+        avatar wall > stepBack
+        boulder avatar  > transformTo stype=boulderm
+        boulderm avatar > attractGaze
+        avatar boulder boulderm > stepBack
+
+        boulder box wall boulder lasercannon > undoAll
+        laser wall boulder boulderm box hole > killSprite
+        avatar hole > stepBack
+
+        avatar laser > killIfFrontal
+        avatar laser > killIfNotFrontal
+
+        
+        goal avatar > killSprite scoreChange=5
+
+    TerminationSet
+        SpriteCounter stype=avatar    limit=0 win=False
+        SpriteCounter stype=goal    limit=0 win=True

@@ -1,0 +1,21 @@
+BasicGame square_size=10
+    SpriteSet
+        floor > Immovable img=oryx/backGrey hidden=True
+        playerWall > Immovable img=oryx/wall6
+        avatar > OngoingTurningAvatar speed=1.0 img=oryx/butcher1 spawnBehind=playerWall
+        garbage > Passive img=oryx/slime5
+        wall > Immovable img=oryx/dirtwall autotiling=True
+
+    LevelMapping
+        A > avatar floor
+        g > garbage floor
+        . > floor
+		
+    InteractionSet
+        avatar playerWall wall > killSprite scoreChange=-1
+        garbage avatar > killSprite scoreChange=2
+
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=garbage limit=0 win=True
+        Timeout limit=1000 win=False

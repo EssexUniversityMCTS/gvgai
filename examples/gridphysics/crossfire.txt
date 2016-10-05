@@ -1,0 +1,30 @@
+BasicGame
+    SpriteSet
+        floor > Immovable hidden=True img=oryx/space2
+        turret > RandomBomber stype=bomb prob=0.4 cooldown=3 speed=0.1 rotateInPlace=True img=newset/cannon
+        bomb > Missile color=RED  speed=0.9 img=newset/bomb shrinkfactor=0.7
+        structure >
+            goal  > Door color=GREEN img=oryx/dooropen1
+
+        avatar > MovingAvatar img=oryx/knight1
+
+        wall > Immovable img=oryx/wall3 autotiling=True
+
+    InteractionSet
+
+        goal avatar > killSprite scoreChange=5
+        avatar wall > stepBack
+        turret wall > stepBack
+        avatar bomb > killSprite scoreChange=-1
+        bomb wall > killSprite
+
+
+    LevelMapping
+        g > goal floor
+        t > turret floor
+        . > floor
+        A > avatar floor
+
+    TerminationSet
+        SpriteCounter stype=goal limit=0 win=True
+        SpriteCounter stype=avatar limit=0 win=False

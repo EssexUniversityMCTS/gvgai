@@ -1,0 +1,36 @@
+BasicGame no_players=2
+    SpriteSet
+        floor > Immovable hidden=True img=oryx/backBiege
+        gem > Immovable img=oryx/diamond3 hidden=True invisible=True
+        gemVisible > Immovable img=oryx/diamond3
+        horse > ShootAvatar stype=sword color=BROWN frameRate=16
+            avatar1 > img=newset/camel1
+            avatar2 > img=newset/camel3
+        sword > Flicker color=LIGHTGRAY limit=1 singleton=True img=oryx/sword1 shrinkfactor=0.6
+        structure >
+            goal  > Door color=GREEN img=newset/exit2
+        winnerPlayer1 > Immovable color=RED img=newset/win1
+        winnerPlayer2 > Immovable color=PINK img=newset/win3
+        box > Immovable img=newset/barrier1
+        wall > Immovable img=oryx/dirtwall autotiling=True
+
+    InteractionSet
+        avatar1 goal > transformTo stype=winnerPlayer1 scoreChange=1,0
+        avatar2 goal > transformTo stype=winnerPlayer2 scoreChange=0,1
+        gemVisible avatar1 > killSprite scoreChange=1000,0
+        gemVisible avatar2 > killSprite scoreChange=0,1000
+        horse box wall > stepBack
+        box sword > killSprite
+        gem sword > transformTo stype=gemVisible
+
+    LevelMapping
+        . > floor
+        g > goal floor
+        x > box floor
+        y > box gem floor
+        A > avatar1 floor
+        B > avatar2 floor
+
+    TerminationSet
+        MultiSpriteCounter stype1=winnerPlayer1 limit=1 win=True,False
+        MultiSpriteCounter stype1=winnerPlayer2 limit=1 win=False,True

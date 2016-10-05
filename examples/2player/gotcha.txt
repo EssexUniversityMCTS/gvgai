@@ -1,0 +1,36 @@
+BasicGame key_handler=Pulse square_size=50 no_players=2
+    SpriteSet
+        ground > Immovable img=oryx/grass autotiling=True
+        safespot > Immovable img=newset/water
+            spot0 >
+            spot1 >
+        moving > 
+            avatar > MovingAvatar frameRate=16
+                avatar1 > img=newset/girl2
+                avatar2 > img=newset/man1
+            kid > RandomNPC img=newset/man4 shrinkfactor=0.8
+                kid0 > speed=0.6 cons=2
+                kid1 > speed=0.5 cons=1
+                kid2 > speed=0.2 cons=3
+        winnerPlayer1 > Immovable color=RED img=newset/girl2
+        wall > Immovable img=oryx/tree2
+    LevelMapping
+        A > avatar1 ground
+        B > avatar2 ground
+        + > spot0 ground
+        - > spot1 ground
+        . > ground
+        0 > kid0 ground 
+        1 > kid1 ground 
+        2 > kid2 ground
+        w > wall ground
+    InteractionSet
+        moving wall kid > stepBack
+        kid avatar > stepBack
+        avatar avatar > transformTo stype=winnerPlayer1 scoreChange=1,0
+        avatar1 safespot > stepBack
+        spot0 avatar2 > addTimer timer=200 ftype=transformToAll stype=spot0 stypeTo=ground
+        spot1 avatar2 > addTimer timer=100 ftype=transformToAll stype=spot1 stypeTo=ground
+    TerminationSet
+        MultiSpriteCounter stype1=winnerPlayer1 limit=1 win=True,False
+        Timeout limit=1000 win=False,True

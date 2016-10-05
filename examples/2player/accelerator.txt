@@ -1,0 +1,64 @@
+BasicGame no_players=2
+
+    SpriteSet
+        land > Immovable hidden=True img=oryx/grass autotiling=True
+        structure > Immovable
+            water > color=BLUE img=newset/water4
+            goal  > Door color=GREEN img=newset/exit2
+            winner >
+                winnerA > singleton=True
+                winnerB > singleton=True
+        log > Missile   orientation=RIGHT  speed=0.05 color=BROWN img=newset/logm
+            logA >
+            logB >
+        spawnPull > SpawnPoint stype=pull prob=0.1 hidden=True invisible=True
+        pull > Missile hidden=True invisible=True orientation=DOWN speed=0.05
+        avatar > ShootAvatar speed=0.2
+            avatarA > stype=pushA img=newset/girl2 frameRate=8
+            avatarB > stype=pushB img=newset/man3 frameRate=8
+        push > Flicker
+            pushA > singleton=True
+            pushB > singleton=True
+        wall > Immovable color=BLACK img=oryx/tree2
+        
+    InteractionSet
+        avatar wall  > stepBack pixelPerfect=True
+
+        avatarA goal > transformTo stype=winnerA scoreChange=1,0
+        avatarB goal > transformTo stype=winnerB scoreChange=0,1
+
+        logA pushA > increaseSpeedToAll stype=logA value=0.001
+        pushA logA > killSprite
+        logB pushB > increaseSpeedToAll stype=logB value=0.001
+        pushB logB > killSprite
+
+        avatar log   > pullWithIt
+        avatar pull > pullWithIt
+        spawnPull log > pullWithIt
+
+        avatar log > shieldFrom ftype=killSprite stype=water
+        pull log > shieldFrom ftype=killSprite stype=water
+        log wall > stepBack pixelPerfect=True
+
+        avatarA water > killSprite
+        avatarB water > killSprite
+        pull water wall pull > killSprite
+    
+    TerminationSet
+        MultiSpriteCounter stype1=winnerA stype2=winnerB limit=2 win=True,True
+        MultiSpriteCounter stype1=winnerA limit=1 win=True,False
+        MultiSpriteCounter stype1=winnerB limit=1 win=False,True
+        SpriteCounter stype=avatar limit=0 win=False,False
+        SpriteCounter stype=avatarA limit=0 win=False,True
+        SpriteCounter stype=avatarB limit=0 win=True,False
+    
+    LevelMapping
+        g > goal water
+        . > water land
+        = > water logA spawnPull
+        + > water logA
+        - > water logB spawnPull
+        _ > water logB
+        A > avatarA logA water
+        B > avatarB logB water
+        w > land wall

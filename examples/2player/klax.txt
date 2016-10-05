@@ -1,0 +1,93 @@
+BasicGame no_players=2
+
+    SpriteSet
+        back > Immovable img=oryx/backGrey hidden=True
+
+        movable >
+            blockSpawn  > BomberRandomMissile hidden=True invisible=True singleton=True
+                spawn0 > stypeMissile=red,green,yellow cooldown=4 speed=0.8 prob=0.1
+                spawn1 > stypeMissile=red,green cooldown=8 speed=0.8 prob=0.2
+                spawn2 > stypeMissile=red,green,yellow cooldown=15 speed=0.5 prob=0.2
+                spawn3 > stypeMissile=red,green cooldown=4 speed=0.6 prob=0.1
+                spawn4 > stypeMissile=red,green,yellow,blue cooldown=5 speed=0.8 prob=0.1
+            avatar  > HorizontalAvatar
+                none > frameRate=16
+                    avatarA > img=newset/girl2
+                    avatarB > img=newset/man3
+                claimed > 
+                    avatarAC > img=newset/girl2
+                    avatarBC > img=newset/man3
+        missile > Missile orientation=DOWN speed=0.1
+            unclaimed >
+                red  > color=RED img=newset/blockR
+                green  > color=GREEN img=newset/blockG
+                yellow  > color=YELLOW img=newset/blockY
+                blue  > color=BLUE img=newset/blockB
+            avA >
+                redA > color=RED img=newset/blockR2
+                greenA  > color=GREEN img=newset/blockG2
+                yellowA  > color=YELLOW img=newset/blockY2
+                blueA  > color=BLUE img=newset/blockB2
+            avB >
+                redB > color=RED img=newset/blockR3
+                greenB  > color=GREEN img=newset/blockG3
+                yellowB  > color=YELLOW img=newset/blockY3
+                blueB  > color=BLUE img=newset/blockB3
+        wall > Immovable img=oryx/wall1
+
+    InteractionSet
+        blockSpawn wall  > reverseDirection
+        movable wall  > stepBack
+        missile wall  > killSprite
+		
+        avatarA red > updateSpawnType stype=redA spawnPoint=blockSpawn
+        avatarA red > transformToAll stype=red stypeTo=redA
+        avatarA avA > transformTo stype=avatarAC
+		
+        avatarA green > updateSpawnType stype=greenA spawnPoint=blockSpawn
+        avatarA green > transformToAll stype=green stypeTo=greenA
+        avatarA avA > transformTo stype=avatarAC
+		
+        avatarA yellow > updateSpawnType stype=yellowA spawnPoint=blockSpawn
+        avatarA yellow > transformToAll stype=yellow stypeTo=yellowA
+        avatarA avA > transformTo stype=avatarAC
+		
+        avatarA blue > updateSpawnType stype=blueA spawnPoint=blockSpawn
+        avatarA blue > transformToAll stype=blue stypeTo=blueA
+        avatarA avA > transformTo stype=avatarAC
+				
+        avatarB red > updateSpawnType stype=redB spawnPoint=blockSpawn
+        red avatarB > transformToAll stype=red stypeTo=redB
+        avatarB avB > transformTo stype=avatarBC
+		
+        avatarB green > updateSpawnType stype=greenB spawnPoint=blockSpawn
+        green avatarB > transformToAll stype=green stypeTo=greenB
+        avatarB avB > transformTo stype=avatarBC
+		
+        avatarB yellow > updateSpawnType stype=yellowB spawnPoint=blockSpawn
+        yellow avatarB > transformToAll stype=yellow stypeTo=yellowB
+        avatarB avB > transformTo stype=avatarBC
+        
+        avatarB blue > updateSpawnType stype=blueB spawnPoint=blockSpawn
+        avatarB blue > transformToAll stype=blue stypeTo=blueB
+        avatarB avB > transformTo stype=avatarBC
+
+        avB avatarBC > killSprite scoreChange=0,2
+        avB avatarAC > killSprite scoreChange=1,0
+        avA avatarBC > killSprite scoreChange=0,1
+        avA avatarAC > killSprite scoreChange=2,0
+        avatarAC unclaimed > removeScore killSecond=True
+        avatarBC unclaimed > removeScore killSecond=True
+ 		
+    LevelMapping
+        s > spawn0 back
+        d > spawn1 back
+        f > spawn2 back
+        g > spawn3 back
+        h > spawn4 back
+        A > avatarA back
+        B > avatarB back
+        . > back
+
+    TerminationSet
+        Timeout limit=1500 count_score=True

@@ -1,0 +1,88 @@
+BasicGame no_players=2 square_size=30 key_handler=Pulse
+	SpriteSet
+		ground > Immovable color=BROWN hidden=True img=newset/street3
+
+		control > Immovable
+		    left > color=LIGHTYELLOW img=oryx/bookleft
+		    right > color=ORANGE img=oryx/bookright
+		    up > color=BLUE img=oryx/bookup
+		    down > color=GREEN img=oryx/bookdown
+		    #stop > color=RED
+		    #slow > color=BLACK
+
+		spawnCitizen > SpawnPoint invisible=True hidden=True stype=citizen prob=0.01 total=2
+
+		movable >
+			avatar >
+				avatarA > HorizontalAvatar img=newset/fireman
+				avatarB > VerticalAvatar img=newset/fireman2
+			truck > Missile speed=0 img=newset/firetruckR frameRate=8
+				truckL > orientation=LEFT img=newset/firetruckL
+				truckR > orientation=RIGHT
+				truckU > orientation=UP
+				truckD > orientation=DOWN
+			citizen > RandomNPC img=newset/girl3 speed=0.3
+
+		trap > Immovable img=oryx/cspell4
+
+		goal > Immovable img=newset/city1_fire
+
+		deadPortal > Portal hidden=True invisible=True stype=start
+		start > Immovable invisible=True
+		wall > Immovable img=newset/city1_1
+		wall2 > Immovable img=oryx/wall1
+		
+	LevelMapping
+		A > avatarA ground
+		B > avatarB ground
+		. > ground
+		t > truckU ground start
+		+ > trap ground
+		l > left ground
+		r > right ground
+		u > up ground
+		d > down ground
+		#s > stop
+		g > goal ground
+		c > spawnCitizen ground
+		w > wall ground
+		p > wall2
+	
+	InteractionSet
+		movable wall wall2 > stepBack pixelPerfect=True
+
+		truck trap > spawn stype=deadPortal
+		deadPortal truck > killSprite
+		truck deadPortal > teleportToExit
+		truck deadPortal > setSpeedForAll stype=truck value=0
+
+		avatar left > transformToAll stype=truckR stypeTo=truckL
+		avatar left > transformToAll stype=truckU stypeTo=truckL
+		avatar left > transformToAll stype=truckD stypeTo=truckL
+		avatar left > increaseSpeedToAll stype=truck value=0.001
+
+		avatar right > transformToAll stype=truckL stypeTo=truckR
+		avatar right > transformToAll stype=truckD stypeTo=truckR
+		avatar right > transformToAll stype=truckU stypeTo=truckR
+		avatar right > increaseSpeedToAll stype=truck value=0.001
+
+		avatar down > transformToAll stype=truckR stypeTo=truckD
+		avatar down > transformToAll stype=truckL stypeTo=truckD
+		avatar down > transformToAll stype=truckU stypeTo=truckD
+		avatar down > increaseSpeedToAll stype=truck value=0.001
+
+		avatar up > transformToAll stype=truckR stypeTo=truckU
+		avatar up > transformToAll stype=truckL stypeTo=truckU
+		avatar up > transformToAll stype=truckD stypeTo=truckU
+		avatar up > increaseSpeedToAll stype=truck value=0.001
+
+		#avatar slow > decreaseSpeedToAll stype=truck value=0.001
+		#avatar stop > setSpeedForAll stype=truck value=0
+
+		goal truck > killSprite
+		citizen truck > killSprite scoreChange=5
+		citizen trap > killSprite
+
+	TerminationSet
+		SpriteCounter stype=goal limit=0 win=True,True
+		

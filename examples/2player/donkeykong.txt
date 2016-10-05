@@ -1,0 +1,81 @@
+BasicGame square_size=20 no_players=2
+    SpriteSet
+        back > Immovable img=oryx/backLBlue hidden=True
+        floor > Immovable img=oryx/floor1 orientation=RIGHT hidden=True
+        ground > Immovable img=oryx/floor1 orientation=RIGHT hidden=True
+        ladder > Immovable img=newset/ladder2 orientation=DOWN hidden=True
+        barrier > Immovable img=oryx/floor1
+            barrierA >
+            barrierB >
+        goal  > Door color=GREEN img=newset/exit2
+            goalA >
+            goalB >
+
+        rightBarrelSpawn > SpawnPoint stype=rollingBarrelA orientation=RIGHT cooldown=250 invisible=True hidden=True
+        leftBarrelSpawn > SpawnPoint stype=rollingBarrelB orientation=LEFT cooldown=300 invisible=True hidden=True
+
+        barrel  > Missile
+            downBarrel  > orientation=DOWN speed=0.2
+                downBarrelA > img=oryx/barrel1
+                downBarrelB > img=oryx/barrel2
+            rollingBarrel > speed=0.05
+                rollingBarrelA > orientation=RIGHT img=oryx/barrel1
+                rollingBarrelB > orientation=LEFT img=oryx/barrel2
+
+        avatar > MovingAvatar speed=0.5 frameRate=16
+            avatar1 > img=oryx/rogue
+            avatar2 > img=oryx/spelunky
+
+        wall > Immovable color=BLACK img=oryx/wall1
+        
+    InteractionSet
+        avatar wall avatar eos > stepBack
+
+        rollingBarrelA avatar1  > reverseDirection scoreChange=1,0
+        rollingBarrelB avatar2 > reverseDirection scoreChange=0,1
+
+        avatar1 rollingBarrelB > killSprite scoreChange=0,500
+        avatar2 rollingBarrelA > killSprite scoreChange=500,0
+
+        downBarrelA avatar1 > killSprite scoreChange=2,0
+        downBarrelB avatar2 > killSprite scoreChange=0,2
+
+        downBarrelB avatar1 > killSprite scoreChange=-10,5
+        downBarrelA avatar2 > killSprite scoreChange=5,-10
+
+        rollingBarrelA barrierA > reverseDirection
+        rollingBarrelB barrierB > reverseDirection
+
+        downBarrel floor > attractGaze align=True
+        downBarrelA floor > transformTo stype=rollingBarrelA
+        downBarrelB floor > transformTo stype=rollingBarrelB
+        rollingBarrel ladder > attractGaze align=True
+        rollingBarrelA ladder > transformTo stype=downBarrelA
+        rollingBarrelB ladder > transformTo stype=downBarrelB
+        rollingBarrel wall > reverseDirection
+        rollingBarrel eos > killSprite
+
+        goalA avatar1  > killSprite scoreChange=1,0
+        goalB avatar2  > killSprite scoreChange=0,1
+
+    
+    TerminationSet
+        SpriteCounter stype=goalA   limit=0 win=True,False
+        SpriteCounter stype=goalB   limit=0 win=False,True
+        SpriteCounter stype=avatar1 limit=0 win=False,True
+        SpriteCounter stype=avatar2 limit=0 win=True,False
+    
+    LevelMapping
+        _ > back
+        g > goalA goalB ground
+        w > wall
+        l > ladder ground
+        A > ground avatar1
+        B > ground avatar2
+        * > rightBarrelSpawn ground
+        x > leftBarrelSpawn ground
+        . > floor
+        0 > barrierA ground
+        1 > barrierB ground
+
+

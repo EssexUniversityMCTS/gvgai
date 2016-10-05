@@ -1,0 +1,47 @@
+BasicGame
+   SpriteSet
+      floor > Immovable img=newset/floor6 hidden=True
+      chef > Chaser img=newset/chef frameRate=8 color=ORANGE stype=avatar speed=0.1 maxDistance=200
+
+      table > Immovable img=newset/table1
+      inc > Resource shrinkfactor=0.9
+         inc1 > img=newset/flour limit=1
+         inc2 > img=newset/milk  limit=1
+         inc3 > img=newset/egg limit=1
+         inc4 > img=newset/sugar limit=1
+         inc5 > img=newset/butter limit=1
+         inc6 > img=newset/cherries limit=1
+
+      avatar > OrientedAvatar img=newset/man4 rotateInPlace=false frameRate=8
+      wall > Immovable color=BLACK img=newset/floor4
+    
+   LevelMapping
+      1 > inc1 floor
+      2 > inc2 floor
+      3 > inc3 floor
+      4 > inc4 floor
+      5 > inc5 floor
+      6 > inc6 floor
+      t > table floor
+      C > avatar inc1 inc2 floor
+      A > avatar floor
+      c > chef floor
+      . > floor
+           
+   TerminationSet
+      Timeout limit=1500 win=False
+      SpriteCounter stype=avatar win=False
+      SpriteCounter stype=inc6 limit=0 win=True
+        
+   InteractionSet
+      avatar  wall table  > stepBack
+      chef  wall table  > stepBack
+
+      avatar chef > killSprite scoreChange=-1
+
+      inc1 avatar > collectResource scoreChange=1
+      inc2 avatar > collectResourceIfHeld heldResource=inc1 scoreChange=1
+      inc3 avatar > collectResourceIfHeld heldResource=inc2 scoreChange=1
+      inc4 avatar > collectResourceIfHeld heldResource=inc3 scoreChange=1
+      inc5 avatar > collectResourceIfHeld heldResource=inc4 scoreChange=1
+      inc6 avatar > collectResourceIfHeld heldResource=inc5 scoreChange=1

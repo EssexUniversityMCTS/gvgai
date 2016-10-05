@@ -1,0 +1,38 @@
+BasicGame
+    SpriteSet
+        floor > Immovable img=oryx/floor3
+        flower > SpawnPoint stype=bee    prob=0.02 color=PINK img=oryx/cloak3
+        hell   > 
+            fastHell   > SpawnPoint stype=zombie prob=0.05 color=RED img=oryx/tombstone1
+            slowHell   > SpawnPoint stype=zombie prob=0.03 color=RED img=oryx/tombstone1
+        honey  > Passive color=GOLD img=oryx/heart1
+        moving >
+            avatar > MovingAvatar healthPoints=1 limitHealthPoints=10 frameRate=8 img=oryx/swordman1
+            bee    > RandomNPC speed=1   cooldown=3  color=YELLOW img=oryx/priest1
+            zombie > Chaser stype=avatar cooldown=6 speed=0.5 color=BROWN img=newset/zombie
+        wall > Immovable autotiling=true img=oryx/wall3
+
+    InteractionSet
+        avatar honey    > addHealthPoints killSecond=True scoreChange=1
+
+        moving wall     > stepBack
+
+        avatar zombie   > subtractHealthPoints scoreChange=-1
+        zombie avatar   > killSprite
+
+        bee zombie      > transformTo stype=honey killSecond=True
+        avatar hell     > killSprite scoreChange=-1
+
+    TerminationSet
+        Timeout limit=1000 win=True
+        SpriteCounter stype=avatar limit=0 win=False
+
+    LevelMapping
+        0 > floor flower
+        1 > floor slowHell
+        2 > floor fastHell
+        . > floor honey
+        - > floor zombie
+        + > floor
+        A > floor avatar
+        w > wall

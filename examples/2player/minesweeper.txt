@@ -1,0 +1,104 @@
+BasicGame key_handler=Pulse no_players=2 square_size=30
+    SpriteSet
+        ground > Immovable img=newset/floor2 hidden=True
+        base > Immovable img=oryx/cspell5
+        bomb > Immovable
+            bombA > img=newset/bomb5
+            bombB > img=newset/bomb4
+        box > Immovable img=newset/block3
+            boxE >
+            boxB >
+                boxBA >
+                    pA >
+                    nA >
+                boxBB >
+                    pB >
+                    nB >
+            boxR >
+        flag > Immovable 
+            flagA > img=newset/blockB2
+                flagAE >
+                flagAB >
+                    flagABA >
+                    flagABB >
+                flagAR >
+            flagB > img=newset/blockR2
+                flagBE >
+                flagBB >
+                    flagBBA >
+                    flagBBB >
+                flagBR >
+        avatar > ShootAvatar healthPoints=3 frameRate=16
+            avatarA > img=newset/girl2 stype=magicA
+            avatarB > img=newset/man3 stype=magicB
+        magic > Flicker
+            magicA > img=oryx/sparkle4
+            magicB > img=oryx/sparkle1
+        point > Resource limit=3 color=RED img=oryx/heart1 shrinkfactor=0.8
+        health > Passive invisible=True hidden=True
+
+        wall > Immovable img=oryx/wall6
+        offBox > Immovable color=RED hidden=True invisible=True
+            offBoxA >
+            offBoxB >
+        
+    LevelMapping
+        . > ground
+        b > pB ground
+        a > pA ground
+        e > boxE ground
+        r > boxR ground
+        A > avatarA ground
+        B > avatarB ground
+        + > base ground
+
+    InteractionSet
+        avatar avatar wall > stepBack
+        magic avatar > killSprite
+
+        avatarA pA > spawnBehind stype=offBoxA scoreChange=1,0
+        pA avatarA > transformTo stype=nA
+        avatarB pB > spawnBehind stype=offBoxB scoreChange=0,1
+        pB avatarB > transformTo stype=nB
+        offBoxA avatarA > transformToAll stype=nA stypeTo=pA  scoreChange=-1,0
+        offBoxA avatarA > killSprite
+        offBoxB avatarB > transformToAll stype=nB stypeTo=pB scoreChange=0,-1
+        offBoxB avatarB > killSprite
+
+        flagABA magicB > subtractHealthPoints stype=avatarA value=1 #subtract health points from A
+        flagABA magicB > transformTo killSecond=True stype=bombA scoreChange=0,10
+        flagABB magicB > subtractHealthPoints stype=avatarB value=1 #subtract health points from B
+        flagABB magicB > transformTo killSecond=True stype=bombB scoreChange=10,0
+        flagAE magicB > killSprite
+        flagAR magicB > transformTo killSecond=True stype=point
+
+        boxBA magicA > transformTo killSecond=True stype=flagABA
+        boxBB magicA > transformTo killSecond=True stype=flagABB
+        boxE magicA > transformTo killSecond=True stype=flagAE
+        boxR magicA > transformTo killSecond=True stype=flagAR
+
+        flagBBA magicA > subtractHealthPoints stype=avatarA value=1 #subtract health points from A
+        flagBBA magicA > transformTo killSecond=True stype=bombA scoreChange=0,10
+        flagBBB magicA > subtractHealthPoints stype=avatarB value=1 #subtract health points from B
+        flagBBB magicA > transformTo killSecond=True stype=bombB scoreChange=10,0
+        flagBE magicA > killSprite
+        flagBR magicA > transformTo killSecond=True stype=point
+
+        boxBA magicB > transformTo killSecond=True stype=flagBBA
+        boxBB magicB > transformTo killSecond=True stype=flagBBB
+        boxE magicB > transformTo killSecond=True stype=flagBE
+        boxR magicB > transformTo killSecond=True stype=flagBR
+
+
+        avatar base > spawnIfHasMore resource=point stype=health limit=3 spend=4
+        avatar health > addHealthPoints value=1
+        health avatar > killSprite
+
+        avatar point > changeResource resource=point
+        point avatar > killSprite
+        
+    TerminationSet
+        SpriteCounter stype=box limit=0 count_score=True
+        SpriteCounter stype=avatarA limit=0 win=False,True
+        SpriteCounter stype=avatarB limit=0 win=True,False
+        Timeout limit=2000 count_score=True

@@ -1,0 +1,174 @@
+BasicGame key_handler=Pulse no_players=2
+    SpriteSet
+        floor > Immovable color=WHITE img=newset/street3
+        ground > Immovable hidden=True invisible=True
+            ground1 >
+            ground2 >
+            ground3 >
+            out1 >
+            out2 >
+            out3 >
+
+        entry > Door
+            hiddenE > img=oryx/doorclosed1
+                entry1H >
+                entry2H >
+                entry3H >
+            seenE > img=oryx/dooropen1
+                entry1S >
+                entry2S >
+                entry3S >
+
+        use > Flicker img=oryx/belt2 shrinkfactor=0.5
+
+        deadPortal  > Portal invisible=True portal=True hidden=True
+            portalA > stype=startA
+            portalB > stype=startB
+
+        start > Immovable invisible=True hidden=True
+            startA >
+            startB >
+
+        treasure > Immovable
+            open > img=oryx/treasure1
+            closed > img=oryx/treasure2
+                treasure1H > hidden=True invisible=True
+                treasure1S >
+                treasure2H > hidden=True invisible=True
+                treasure2S >
+                treasure3H >  hidden=True invisible=True
+                treasure3S >
+
+        switch > Immovable
+            switch1 > img=oryx/slime1
+            switch2 > img=oryx/slime2
+            switch3 > img=oryx/slime3
+
+        avatar >
+            avatarA > img=newset/girl3
+                avatarA1 > ShootAvatar stype=use
+                avatarA2 > ShootAvatar stype=use
+                avatarA3 > ShootAvatar stype=use
+                avatarA0 > MovingAvatar
+                avatarAnull > MovingAvatar
+                    avatarAnull1 >
+                    avatarAnull2 >
+                    avatarAnull3 >
+            avatarB > img=newset/man3
+                avatarB1 > ShootAvatar stype=use
+                avatarB2 > ShootAvatar stype=use
+                avatarB3 > ShootAvatar stype=use
+                avatarB0 > MovingAvatar
+                avatarBnull > MovingAvatar
+                    avatarBnull1 >
+                    avatarBnull2 >
+                    avatarBnull3 >
+
+        insideWall > Immovable color=WHITE img=oryx/wall3 autotiling=True
+            first >
+                wall1S >
+                wall1H > hidden=True invisible=True
+            second >
+                wall2S >
+                wall2H > hidden=True invisible=True
+            third >
+                wall3S >
+                wall3H > hidden=True invisible=True
+
+        wall > Immovable color=WHITE img=oryx/wall3 autotiling=True
+    
+    LevelMapping
+        . > floor
+        A > avatarA0 floor startA
+        B > avatarB0 floor startB
+
+        d > entry1H floor
+        9 > out1 floor
+        s > switch1 floor
+        b > ground1 floor
+        0 > wall1H floor
+        t > treasure1H floor
+
+        f > entry2H floor
+        8 > out2 floor
+        x > switch2 floor
+        n > ground2 floor
+        1 > wall2H floor
+        y > treasure2H floor
+
+        g > entry3H floor
+        7 > out3 floor
+        z > switch3 floor
+        m > ground3 floor
+        2 > wall3H floor
+        u > treasure3H floor
+
+    TerminationSet
+        SpriteCounter stype=closed win=True,True
+        
+    InteractionSet
+        avatar EOS wall insideWall treasure hiddenE > stepBack
+
+        avatarA0 entry1S > transformTo stype=avatarA1
+        avatarA0 entry2S > transformTo stype=avatarA2
+        avatarA0 entry3S > transformTo stype=avatarA3
+
+        avatarA1 out1 > transformTo stype=avatarA0
+        avatarA2 out2 > transformTo stype=avatarA0
+        avatarA3 out3 > transformTo stype=avatarA0
+
+        avatarB0 entry1S > transformTo stype=avatarB1
+        avatarB0 entry2S > transformTo stype=avatarB2
+        avatarB0 entry3S > transformTo stype=avatarB3
+
+        avatarB1 out1 > transformTo stype=avatarB0
+        avatarB2 out2 > transformTo stype=avatarB0
+        avatarB3 out3 > transformTo stype=avatarB0
+
+        #reveal area 1
+        avatar switch1 > transformToAll stype=entry1H stypeTo=entry1S
+        avatar switch1 > transformToAll stype=wall1H stypeTo=wall1S
+        avatar switch1 > transformToAll stype=treasure1H stypeTo=treasure1S
+        avatar switch1 > transformToAll stype=avatarAnull1 stypeTo=avatarA1
+        avatar switch1 > transformToAll stype=avatarBnull1 stypeTo=avatarB1
+
+        #reveal area 2
+        avatar switch2 > transformToAll stype=entry2H stypeTo=entry2S
+        avatar switch2 > transformToAll stype=wall2H stypeTo=wall2S
+        avatar switch2 > transformToAll stype=treasure2H stypeTo=treasure2S
+        avatar switch2 > transformToAll stype=avatarAnull2 stypeTo=avatarA2
+        avatar switch2 > transformToAll stype=avatarBnull2 stypeTo=avatarB2
+
+        #reveal area 3
+        avatar switch3 > transformToAll stype=entry3H stypeTo=entry3S
+        avatar switch3 > transformToAll stype=wall3H stypeTo=wall3S
+        avatar switch3 > transformToAll stype=treasure3H stypeTo=treasure3S
+        avatar switch3 > transformToAll stype=avatarAnull3 stypeTo=avatarA3
+        avatar switch3 > transformToAll stype=avatarBnull3 stypeTo=avatarB3
+
+        #hide area 1
+        avatar ground1 > transformToAll stype=entry1S stypeTo=entry1H
+        avatar ground1 > transformToAll stype=wall1S stypeTo=wall1H
+        avatar ground1 > transformToAll stype=treasure1S stypeTo=treasure1H
+        avatar ground1 > transformToAll stype=avatarA1 stypeTo=avatarAnull1
+        avatar ground1 > transformToAll stype=avatarB1 stypeTo=avatarBnull1
+
+        #hide area 2
+        avatar ground2 > transformToAll stype=entry2S stypeTo=entry2H
+        avatar ground2 > transformToAll stype=wall2S stypeTo=wall2H
+        avatar ground2 > transformToAll stype=treasure2S stypeTo=treasure2H
+        avatar ground2 > transformToAll stype=avatarA2 stypeTo=avatarAnull2
+        avatar ground2 > transformToAll stype=avatarB2 stypeTo=avatarBnull2
+
+        #hide area 3
+        avatar ground3 > transformToAll stype=entry3S stypeTo=entry3H
+        avatar ground3 > transformToAll stype=wall3S stypeTo=wall3H
+        avatar ground3 > transformToAll stype=treasure3S stypeTo=treasure3H
+        avatar ground3 > transformToAll stype=avatarA3 stypeTo=avatarAnull3
+        avatar ground3 > transformToAll stype=avatarB3 stypeTo=avatarBnull3
+
+        closed use > transformTo stype=open
+
+
+
+

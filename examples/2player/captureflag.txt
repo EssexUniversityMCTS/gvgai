@@ -1,0 +1,94 @@
+BasicGame key_handler=Pulse no_players=2
+    SpriteSet
+        black > Immovable color=BLACK hidden=True img=oryx/backLBlue
+        white > Immovable color=WHITE hidden=True img=oryx/backGrey
+        flag > Resource shrinkfactor=0.8
+            flagA > img=newset/flag1
+            flagB > img=newset/flag2
+        avatar > MovingAvatar frameRate=16
+            inBlackA > img=newset/girl3
+            inWhiteA > img=newset/girl3
+            inWhiteB > img=newset/man3
+            inBlackB > img=newset/man3
+            gotA > img=newset/girl3flag
+            gotB > img=newset/man3flag
+        box > Immovable img=newset/block1
+        deadPortal  > Portal invisible=True portal=True hidden=True
+            deadPortalA > stype=startA
+            deadPortalB > stype=startB
+            deadPortalFlagA > stype=startFlagA
+            deadPortalFlagB > stype=startFlagB
+        start > Immovable invisible=True hidden=True
+            startA > 
+            startB > 
+            startFlagA > 
+            startFlagB >
+        wall > Immovable img=oryx/wall1
+    
+    LevelMapping
+        . > black
+        + > white
+        A > startA inBlackA black
+        B > startB inWhiteB white
+        * > startFlagA flagA white
+        @ > startFlagB flagB black
+        x > box
+
+    TerminationSet
+        Timeout limit=1500 count_score=True
+        
+    InteractionSet
+        avatar EOS box wall > stepBack
+
+        inWhiteB flagA > stepBack
+        inBlackA flagB > stepBack
+
+        inBlackA white > transformTo stype=inWhiteA
+        inWhiteA black > transformTo stype=inBlackA
+        inBlackB white > transformTo stype=inWhiteB
+        inWhiteB black > transformTo stype=inBlackB
+
+        inWhiteA flagA > transformTo stype=gotA
+        inBlackB flagB > transformTo stype=gotB
+        flagA inWhiteA > killSprite
+        flagB inBlackB > killSprite
+		
+        gotA black > spawn stype=deadPortalA
+        gotA black > spawn stype=flagA
+        gotA black > spawn stype=deadPortalFlagA
+        gotA black > transformTo stype=inBlackA scoreChange=3,0
+
+        gotB white > spawn stype=deadPortalB
+        gotB white > spawn stype=flagB
+        gotB white > spawn stype=deadPortalFlagB
+        gotB white > transformTo stype=inWhiteB scoreChange=0,3
+		
+        inWhiteB gotA > spawn stype=flagA
+        inWhiteB gotA > spawn stype=deadPortalFlagA
+        inWhiteB gotA > spawn stype=deadPortalA
+        inWhiteB gotA > spawn stype=deadPortalB
+        gotA inWhiteB > transformTo stype=inBlackA scoreChange=-2,2
+        
+        inBlackA gotB > spawn stype=flagB
+        inBlackA gotB > spawn stype=deadPortalFlagB
+        inBlackA gotB > spawn stype=deadPortalA
+        inBlackA gotB > spawn stype=deadPortalB
+        gotB inBlackA > transformTo stype=inWhiteB scoreChange=2,-2
+        
+        inWhiteA inWhiteB > spawn stype=deadPortalA
+        inWhiteA inWhiteB > spawn stype=deadPortalB
+        inWhiteA inWhiteB > transformTo stype=inBlackA scoreChange=-1,1
+		
+        inBlackB inBlackA > spawn stype=deadPortalA
+        inBlackB inBlackA > spawn stype=deadPortalB
+        inBlackB inBlackA > transformTo stype=inWhiteB scoreChange=1,-1
+		
+        deadPortalFlagA flagA > killSprite
+        flagA deadPortalFlagA > teleportToExit
+        deadPortalFlagB flagB > killSprite
+        flagB deadPortalFlagB > teleportToExit
+		
+        deadPortalA inBlackA > killSprite
+        inBlackA deadPortalA > teleportToExit
+        deadPortalB inWhiteB > killSprite
+        inWhiteB deadPortalB > teleportToExit

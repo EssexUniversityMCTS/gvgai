@@ -1,0 +1,79 @@
+BasicGame square_size=40
+    SpriteSet
+        floor > Immovable img=oryx/backBiege hidden=True
+        goal  > Door color=GREEN img=newset/exit2
+        trap > Immovable img=oryx/spike3
+
+        camel > Missile orientation=RIGHT
+            camelA > speed=0.45 img=newset/camel1 frameRate=4
+            camelB > speed=0.35 img=newset/camel2 frameRate=5
+            camelC > speed=0.25 img=newset/camel3 frameRate=6
+            camelD > speed=0.15 img=newset/camel4 frameRate=7
+
+        winner > Immovable singleton=True
+            winA > speed=0.25 img=newset/win1
+            winB > speed=0.25 img=newset/win2
+            winC > speed=0.25 img=newset/win3
+            winD > speed=0.25 img=newset/win4
+
+        pit > Immovable
+            arena > color=LIGHTYELLOW img=newset/floor6
+            pitA > color=LIGHTBLUE img=newset/tile1
+            pitB > color=LIGHTGREEN img=newset/tile2
+            pitC > color=LIGHTORANGE img=newset/tile3
+            pitD > color=LIGHTGRAY img=newset/tile4
+
+        avatar > MovingAvatar speed=1.0 img=newset/man4
+            normal >
+            betA >
+            betB >
+            betC >
+            betD >
+
+        barrier > Immovable img=newset/barrier1
+        wall > Immovable img=oryx/space5
+
+    InteractionSet
+
+        avatar arena > transformTo stype=normal
+        avatar pitA > transformTo stype=betA
+        avatar pitB > transformTo stype=betB
+        avatar pitC > transformTo stype=betC
+        avatar pitD > transformTo stype=betD
+
+        camelA goal > transformTo stype=winA
+        camelB goal > transformTo stype=winB
+        camelC goal > transformTo stype=winC
+        camelD goal > transformTo stype=winD
+
+        avatar wall > stepBack
+        camel wall barrier  > stepBack
+        camel trap > killSprite
+
+    LevelMapping
+        A > normal arena
+        . > arena
+        1 > pitA
+        2 > pitB
+        3 > pitC
+        4 > pitD
+        a > floor camelA
+        b > floor camelB
+        c > floor camelC
+        d > floor camelD
+        g > floor goal
+        + > floor
+        - > floor barrier
+        t > floor trap
+
+
+    TerminationSet
+        MultiSpriteCounter stype1=winA stype2=betA limit=2 win=True
+        MultiSpriteCounter stype1=winB stype2=betB limit=2 win=True
+        MultiSpriteCounter stype1=winC stype2=betC limit=2 win=True
+        MultiSpriteCounter stype1=winD stype2=betD limit=2 win=True
+
+        MultiSpriteCounter stype1=winA limit=1 win=False
+        MultiSpriteCounter stype1=winB limit=1 win=False
+        MultiSpriteCounter stype1=winC limit=1 win=False
+        MultiSpriteCounter stype1=winD limit=1 win=False

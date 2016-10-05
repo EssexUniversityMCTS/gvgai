@@ -1,0 +1,43 @@
+BasicGame
+    SpriteSet
+
+        cliff > Immovable color=BLACK img=newset/water2
+        ground > Immovable color=BLACK img=oryx/backLBrown
+        lock   > Immovable color=WHITE img=newset/lock1
+        damaged   > SpawnPoint cooldown=2  total=6 stype=groundeater img=newset/water5 frameRate=8
+        groundeater > RandomMissile color=ORANGE speed=0.25 invisible=True hidden=True
+        exit > Door img=oryx/door2
+
+        key > Resource limit=1 img=oryx/key2 singleton=True shrinkfactor=0.8
+        wall > Immovable img=oryx/dirtwall autotiling=True
+        avatar > MovingAvatar img=newset/girl2 frameRate=8
+
+    InteractionSet
+
+        avatar wall > stepBack
+
+        avatar ground damaged > shieldFrom ftype=killSprite stype=cliff
+        avatar cliff > killSprite
+
+        exit avatar > killSprite scoreChange=1
+
+        ground groundeater  > transformTo stype=damaged
+        groundeater ground wall > killSprite
+
+        key avatar      > collectResource
+        lock avatar > killIfOtherHasMore resource=key limit=1
+        avatar lock > changeResource resource=key value=-1
+        avatar lock > stepBack
+
+    LevelMapping
+        . > ground cliff
+        c > cliff
+        d > damaged cliff
+        e > ground exit
+        A > avatar ground cliff
+        k > ground cliff key
+        l > lock ground cliff
+
+    TerminationSet
+        SpriteCounter stype=exit win=True
+        SpriteCounter stype=avatar    win=False

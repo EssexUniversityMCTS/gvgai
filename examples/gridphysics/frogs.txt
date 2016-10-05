@@ -1,0 +1,52 @@
+BasicGame
+    SpriteSet
+        grass > Immovable img=oryx/grass autotiling=True hidden=True
+        highway > Immovable img=newset/highway hidden=True
+
+        forestDense > SpawnPoint stype=log prob=0.4  cooldown=10 img=newset/water5
+        forestSparse > SpawnPoint stype=log prob=0.1  cooldown=5 img=newset/water5
+        structure > Immovable
+            water > color=BLUE img=newset/water2_1
+            goal  > Door color=GREEN img=newset/exit2
+        log    > Missile   orientation=LEFT  speed=0.1 color=BROWN img=newset/log
+        truck  >
+            rightTruck  > Missile   orientation=RIGHT 
+                fastRtruck  > speed=0.2  color=ORANGE img=newset/car3R
+                slowRtruck  > speed=0.1  color=RED img=newset/car4R
+            leftTruck  > Missile   orientation=LEFT
+                fastLtruck  > speed=0.2  color=ORANGE img=newset/car3
+                slowLtruck  > speed=0.1  color=RED img=newset/car4
+
+        avatar > MovingAvatar img=newset/girl1
+        wall > Immovable color=BLACK img=oryx/tree2
+        
+    InteractionSet
+        goal avatar  > killSprite scoreChange=1
+        avatar log   > shieldFrom ftype=killSprite stype=water
+        avatar log   > pullWithIt
+        avatar wall EOS  > stepBack
+        avatar truck water > killSprite
+        log    EOS   > killSprite
+        truck  EOS   > wrapAround
+    
+    TerminationSet
+        SpriteCounter stype=goal   limit=0 win=True
+        SpriteCounter stype=avatar limit=0 win=False
+    
+    LevelMapping
+        g > grass goal
+        0 > water grass
+        1 > forestDense water       # note how a single character can spawn multiple sprites
+        2 > forestDense log
+        3 > forestSparse water       # note how a single character can spawn multiple sprites
+        4 > forestSparse log
+        - > highway slowRtruck
+        x > highway fastRtruck
+        _ > highway slowLtruck
+        l > highway fastLtruck
+        = > log water
+        B > avatar log water
+        A > avatar grass
+        w > wall grass
+        + > grass
+        . > highway grass

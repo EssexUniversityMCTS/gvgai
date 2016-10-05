@@ -1,0 +1,62 @@
+#Modality: #http://www.puzzlescript.net/play.html?p=6888061
+
+BasicGame key_handler=Pulse  square_size=50
+    SpriteSet
+        black > Immovable img=oryx/backBlack
+        white > Immovable img=oryx/backGrey
+        blue > Immovable img=oryx/backBlue
+
+        grey > Immovable img=oryx/backOBrown
+
+        target > Immovable img=newset/hole1
+        winTarget > Immovable img=newset/hole1
+        crate > Passive img=oryx/bush5 shrinkfactor=0.8
+        avatar > MovingAvatar
+            inGrey > img=newset/girl4
+            inBlack > img=newset/girl2
+            inWhite > img=newset/girl1
+            inBlue > img=newset/girl3
+
+        wall > Immovable img=oryx/dirtwall autotiling=True
+    
+    LevelMapping
+        . > black
+        + > white
+        - > blue
+        g > grey
+
+        B > avatar black
+        A > avatar white
+        L > avatar blue
+
+        * > crate black
+        @ > crate white
+        $ > crate blue
+
+        t > target black
+        u > target white
+        r > target blue
+
+        w > wall
+
+    TerminationSet
+        SpriteCounter      stype=target               limit=0 win=True
+        Timeout limit=1000 win=False
+        
+    InteractionSet
+        avatar EOS > stepBack
+
+        inBlack white blue > stepBack
+        inWhite black blue > stepBack
+        inBlue black white > stepBack
+
+        avatar black > transformTo stype=inBlack
+        avatar white > transformTo stype=inWhite
+        avatar blue > transformTo stype=inBlue
+        avatar grey > transformTo stype=inGrey
+
+        crate avatar > bounceForward
+        crate wall > undoAll
+        target wall > undoAll
+        avatar wall > stepBack
+        target crate > transformTo stype=winTarget scoreChange=1

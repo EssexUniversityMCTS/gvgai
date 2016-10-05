@@ -1,0 +1,54 @@
+BasicGame
+    SpriteSet
+
+        floor > Immovable img=newset/highway hidden=True
+        floorV > Immovable img=newset/highway2 hidden=True
+        crossing > Immovable img=newset/street3 hidden=True
+        goal  > Portal color=GREEN img=newset/exit2 singleton=True portal=True stype=start
+        deadPortal  > Portal invisible=True singleton=True portal=True stype=start
+        car  >
+            rightcar  > Missile   orientation=RIGHT 
+                fastRcar  > speed=0.9  color=ORANGE img=newset/car2R
+                slowRcar  > speed=0.7  color=RED img=newset/car1R
+            downcar  > Missile   orientation=DOWN
+                fastDcar  > speed=0.9  color=ORANGE img=newset/car_orangeD
+                slowDcar  > speed=0.7  color=RED img=newset/car_redD
+
+        start > Immovable invisible=True
+        wall > Immovable color=BLACK img=oryx/wall1
+        tree > Immovable color=GREEN img=oryx/tree2
+        input > SpawnPoint stype=goal cooldown=16 prob=0.05 total=1 invisible=True hidden=True
+
+        avatar > MovingAvatar img=newset/man4 healthPoints=5
+
+    LevelMapping
+        t > crossing tree
+        - > floor slowRcar
+        x > floorV fastDcar
+        _ > floor slowRcar
+        l > floorV fastDcar
+
+        i > crossing input
+        s > crossing start avatar
+        . > crossing
+        = > floor
+        + > floorV
+
+    InteractionSet
+
+        goal avatar  > killSprite scoreChange=10
+        avatar goal > teleportToExit
+
+        avatar car > subtractHealthPoints scoreChange=-5
+        avatar car > spawn stype=deadPortal
+        deadPortal avatar > killSprite
+        avatar deadPortal > teleportToExit
+
+        avatar tree wall  > stepBack
+        car  EOS   > wrapAround
+    
+    TerminationSet
+        Timeout limit=1000 win=True
+        SpriteCounter stype=avatar limit=0 win=False
+
+

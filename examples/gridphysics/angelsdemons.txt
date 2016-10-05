@@ -1,0 +1,63 @@
+BasicGame
+
+    SpriteSet
+        sky > Immovable img=oryx/backLBlue
+        trunk   > Immovable    color=BROWN  img=newset/cloud1
+        cursed > Immovable    color=YELLOW img=newset/cursedman
+
+        movable >
+            demon  > Bomber stype=bolt   img=oryx/devil1 prob=0.15  cooldown=6 speed=0.4 frameRate=8
+            angel  > Bomber stype=salvation   img=oryx/angel1 prob=0.05  cooldown=6 speed=0.45 frameRate=8
+            citizen > Chaser stype=output img=newset/man2 speed=0.4
+            blessed > Chaser stype=output img=newset/blessedman speed=0.4
+
+        avatar > MovingAvatar img=newset/girl4 frameRate=10
+
+        input > SpawnPoint stype=citizen  cooldown=16 img=oryx/dooropen1 portal=True
+        output > Immovable img=oryx/dooropen1 portal=True
+        box    > Passive img=newset/cloud2 shrinkfactor=0.8
+
+        missile > Missile
+            bolt  > orientation=DOWN  color=RED speed=0.2 img=oryx/firedown1
+            salvation > orientation=DOWN  color=RED speed=0.2 img=oryx/icedown1
+
+        wall > Immovable img=oryx/wall3 autotiling=True
+
+    InteractionSet
+        movable wall  > reverseDirection
+        movable wall  > stepBack
+        avatar wall EOS > stepBack
+
+        box avatar  > bounceForward
+        box box  > bounceForward repeat=10
+        box wall    > killSprite
+
+        bolt wall  > killSprite scoreChange=-1
+        bolt box > killSprite scoreChange=1
+
+        citizen bolt > transformTo stype=cursed killSecond=True scoreChange=-1
+
+        bolt avatar > killSprite scoreChange=-5
+
+        salvation wall  > killSprite scoreChange=1
+        salvation box > killSprite scoreChange=-1
+
+        citizen salvation > transformTo stype=blessed killSecond=True scoreChange=100
+
+        citizen output > killSprite
+        blessed output > killSprite
+
+    LevelMapping
+        d > sky demon
+        a > sky angel
+        t > sky trunk
+        x > sky box
+        i > sky input
+        o > sky output
+        . > sky
+        w > wall
+        A > sky avatar
+
+    TerminationSet
+        Timeout limit=1000 win=True
+        MultiSpriteCounter stype1=cursed limit=1 win=False

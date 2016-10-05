@@ -1,0 +1,44 @@
+BasicGame
+
+    SpriteSet
+        trunk   > Immovable    color=BROWN  img=newset/log
+        brokenegg > Immovable    color=YELLOW img=newset/eggcracked
+        explosiveegg > Resource color=GOLD limit=20
+        movable >
+            chicken  > Bomber stype=egg   img=newset/chicken
+                fastChicken > prob=0.2  cooldown=4 speed=0.8 frameRate=4
+                    #fastChickenR > orientation=RIGHT img=newset/chickenr
+                    #fastChickenL > orientation=LEFT img=newset/chicken
+                slowChicken > prob=0.1  cooldown=6 speed=0.4 frameRate=8
+                    #slowChickenR > orientation=RIGHT img=newset/chickenr
+                    #slowChickenL > orientation=LEFT img=newset/chicken
+            avatar  > FlakAvatar stype=sam ammo=explosiveegg minAmmo=5 ammoCost=5 img=newset/girl3
+        missile > Missile
+            sam  > orientation=UP    color=BLUE singleton=True img=oryx/fireup1
+            egg  > orientation=DOWN  color=RED speed=0.2 img=newset/egg
+        wall > Immovable img=oryx/wall6
+
+    InteractionSet
+        chicken wall  > reverseDirection
+        #fastChickenR wall > transformTo stype=fastChickenL
+        #fastChickenL wall > transformTo stype=fastChickenR
+        #slowChickenR wall > transformTo stype=slowChickenL
+        #slowChickenL wall > transformTo stype=slowChickenR
+        chicken wall  > stepBack
+        avatar wall  > stepBack
+        egg wall  > transformTo stype=brokenegg
+        avatar egg > changeResource resource=explosiveegg value=1 scoreChange=1 killResource=True
+        chicken sam > killSprite scoreChange=100
+        sam EOS > killSprite
+
+    LevelMapping
+        #s > slowChickenR
+        #c > fastChickenR
+        s > slowChicken
+        c > fastChicken
+        t > trunk
+
+    TerminationSet
+        Timeout limit=1500 win=True
+        SpriteCounter      stype=chicken limit=0 win=True
+        MultiSpriteCounter stype1=brokenegg limit=1 win=False

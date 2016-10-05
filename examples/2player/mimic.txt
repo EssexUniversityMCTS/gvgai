@@ -1,0 +1,169 @@
+BasicGame key_handler=Pulse no_players=2 no_counters=2
+    SpriteSet
+        floor > Immovable img=oryx/floor3 hidden=True
+
+        startA > Immovable img=oryx/floor3 hidden=True invisible=True
+
+        blocks > Immovable
+            blocksA >
+                blockA1 >
+                    blockA1OFF > img=oryx/slime1
+                    blockA1ON > img=oryx/slime2
+                blockA2 >
+                    blockA2OFF > img=oryx/slime1
+                    blockA2ON > img=oryx/slime2
+                blockA3 >
+                    blockA3OFF > img=oryx/slime1
+                    blockA3ON > img=oryx/slime2
+                blockA4 >
+                    blockA4OFF > img=oryx/slime1
+                    blockA4ON > img=oryx/slime2
+                blockA5 >
+                    blockA5OFF > img=oryx/slime1
+                    blockA5ON > img=oryx/slime2
+                blockA6 >
+                    blockA6OFF > img=oryx/slime1
+                    blockA6ON > img=oryx/slime2
+                blockA7 >
+                    blockA7OFF > img=oryx/slime1
+                    blockA7ON > img=oryx/slime2
+                blockA8 >
+                    blockA8OFF > img=oryx/slime1
+                    blockA8ON > img=oryx/slime2
+                blockA9 >
+                    blockA9OFF > img=oryx/slime1
+                    blockA9ON > img=oryx/slime2
+            blocksB > img=oryx/slime6
+                blockB1 >
+                    blockB1OFF > img=oryx/slime3
+                    blockB1ON >
+                        blockB1OK >
+                        blockB1NOT >
+                blockB2 >
+                    blockB2OFF > img=oryx/slime3
+                    blockB2ON >
+                        blockB2OK >
+                        blockB2NOT >
+                blockB3 >
+                    blockB3OFF > img=oryx/slime3
+                    blockB3ON >
+                        blockB3OK >
+                        blockB3NOT >
+                blockB4 >
+                    blockB4OFF > img=oryx/slime3
+                    blockB4ON >
+                        blockB4OK >
+                        blockB4NOT >
+                blockB5 >
+                    blockB5OFF > img=oryx/slime3
+                    blockB5ON >
+                        blockB5OK >
+                        blockB5NOT >
+                blockB6 >
+                    blockB6OFF > img=oryx/slime3
+                    blockB6ON >
+                        blockB6OK >
+                        blockB6NOT >
+                blockB7 >
+                    blockB7OFF > img=oryx/slime3
+                    blockB7ON >
+                        blockB7OK >
+                        blockB7NOT >
+                blockB8 >
+                    blockB8OFF > img=oryx/slime3
+                    blockB8ON >
+                        blockB8OK >
+                        blockB8NOT >
+                blockB9 >
+                    blockB9OFF > img=oryx/slime3
+                    blockB9ON >
+                        blockB9OK >
+                        blockB9NOT >
+
+        hit > Flicker color=BLUE img=oryx/orb2 shrinkfactor=0.3
+            hitA >
+            hitB >
+
+        avatar > ShootAvatar rotateInPlace=true
+            avatarA > img=newset/girl3 stype=hitA
+            avatarB > img=newset/man3 stype=hitB
+
+        frozen > MovingAvatar
+            frozenA > img=newset/girl3
+            frozenB > img=newset/man3
+
+        wall > Immovable img=oryx/wall3 autotiling=True
+
+    LevelMapping
+        . > floor
+        A > floor avatarA startA
+        B > floor frozenB
+        q > floor blockA1OFF
+        e > floor blockA2OFF
+        r > floor blockA3OFF
+        t > floor blockA4OFF
+        y > floor blockA5OFF
+        u > floor blockA6OFF
+        i > floor blockA7OFF
+        o > floor blockA8OFF
+        p > floor blockA9OFF
+        1 > floor blockB1OFF
+        2 > floor blockB2OFF
+        3 > floor blockB3OFF
+        4 > floor blockB4OFF
+        5 > floor blockB5OFF
+        6 > floor blockB6OFF
+        7 > floor blockB7OFF
+        8 > floor blockB8OFF
+        9 > floor blockB9OFF
+
+    InteractionSet
+
+        avatar wall > stepBack
+        frozen wall > stepBack
+
+        avatarA startA > addTimer timer=500 ftype=transformToAll stype=frozenB stypeTo=avatarB
+        avatarA startA > addTimer timer=500 ftype=transformToAll stype=avatarA stypeTo=frozenA
+
+        blockA1ON hit > transformTo stype=blockA1OFF counter=-1,0 killSecond=True
+        hit blockA1OFF > transformTo stype=blockA1ON counter=1,0 killSecond=True
+        blockA2ON hit > transformTo stype=blockA2OFF counter=-1,0 killSecond=True
+        hit blockA2OFF > transformTo stype=blockA2ON counter=1,0 killSecond=True
+        blockA3ON hit > transformTo stype=blockA3OFF counter=-1,0 killSecond=True
+        hit blockA3OFF > transformTo stype=blockA3ON counter=1,0 killSecond=True
+        blockA4ON hit > transformTo stype=blockA4OFF counter=-1,0 killSecond=True
+        hit blockA4OFF > transformTo stype=blockA4ON counter=1,0 killSecond=True
+        blockA5ON hit > transformTo stype=blockA5OFF counter=-1,0 killSecond=True
+        hit blockA5OFF > transformTo stype=blockA5ON counter=1,0 killSecond=True
+        blockA6ON hit > transformTo stype=blockA6OFF counter=-1,0 killSecond=True
+        hit blockA6OFF > transformTo stype=blockA6ON counter=1,0 killSecond=True
+        blockA7ON hit > transformTo stype=blockA7OFF counter=-1,0 killSecond=True
+        hit blockA7OFF > transformTo stype=blockA7ON counter=1,0 killSecond=True
+        blockA8ON hit > transformTo stype=blockA8OFF counter=-1,0 killSecond=True
+        hit blockA8OFF > transformTo stype=blockA8ON counter=1,0 killSecond=True
+        blockA9ON hit > transformTo stype=blockA9OFF counter=-1,0 killSecond=True
+        hit blockA9OFF > transformTo stype=blockA9ON counter=1,0 killSecond=True
+
+        blockB1ON hit > transformIfCount stype=blockB1OFF estype=blockB1OFF stypeCount=blockA1ON geq=1 counter=0,-1 killSecond=True
+        blockB2ON hit > transformIfCount stype=blockB2OFF estype=blockB2OFF stypeCount=blockA2ON geq=1 counter=0,-1 killSecond=True
+        blockB3ON hit > transformIfCount stype=blockB3OFF estype=blockB3OFF stypeCount=blockA3ON geq=1 counter=0,-1 killSecond=True
+        blockB4ON hit > transformIfCount stype=blockB4OFF estype=blockB4OFF stypeCount=blockA4ON geq=1 counter=0,-1 killSecond=True
+        blockB5ON hit > transformIfCount stype=blockB5OFF estype=blockB5OFF stypeCount=blockA5ON geq=1 counter=0,-1 killSecond=True
+        blockB6ON hit > transformIfCount stype=blockB6OFF estype=blockB6OFF stypeCount=blockA6ON geq=1 counter=0,-1 killSecond=True
+        blockB7ON hit > transformIfCount stype=blockB7OFF estype=blockB7OFF stypeCount=blockA7ON geq=1 counter=0,-1 killSecond=True
+        blockB8ON hit > transformIfCount stype=blockB8OFF estype=blockB8OFF stypeCount=blockA8ON geq=1 counter=0,-1 killSecond=True
+        blockB9ON hit > transformIfCount stype=blockB9OFF estype=blockB9OFF stypeCount=blockA9ON geq=1 counter=0,-1 killSecond=True
+
+        hit blockB1OFF > transformIfCount stype=blockB1OK estype=blockB1NOT stypeCount=blockA1ON geq=1 counter=0,1 killSecond=True
+        hit blockB2OFF > transformIfCount stype=blockB2OK estype=blockB2NOT stypeCount=blockA2ON geq=1 counter=0,1 killSecond=True
+        hit blockB3OFF > transformIfCount stype=blockB3OK estype=blockB3NOT stypeCount=blockA3ON geq=1 counter=0,1 killSecond=True
+        hit blockB4OFF > transformIfCount stype=blockB4OK estype=blockB4NOT stypeCount=blockA4ON geq=1 counter=0,1 killSecond=True
+        hit blockB5OFF > transformIfCount stype=blockB5OK estype=blockB5NOT stypeCount=blockA5ON geq=1 counter=0,1 killSecond=True
+        hit blockB6OFF > transformIfCount stype=blockB6OK estype=blockB6NOT stypeCount=blockA6ON geq=1 counter=0,1 killSecond=True
+        hit blockB7OFF > transformIfCount stype=blockB7OK estype=blockB7NOT stypeCount=blockA7ON geq=1 counter=0,1 killSecond=True
+        hit blockB8OFF > transformIfCount stype=blockB8OK estype=blockB8NOT stypeCount=blockA8ON geq=1 counter=0,1 killSecond=True
+        hit blockB9OFF > transformIfCount stype=blockB9OK estype=blockB9NOT stypeCount=blockA9ON geq=1 counter=0,1 killSecond=True
+
+
+    TerminationSet
+        Timeout limit=1000 use_counter=True compare=True

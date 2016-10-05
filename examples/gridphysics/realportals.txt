@@ -1,0 +1,97 @@
+BasicGame key_handler=Pulse
+    SpriteSet
+        floor > Immovable img=oryx/backOBrown
+
+        water > Immovable color=BLUE img=newset/water
+        weaponToggle1 > Immovable color=RED img=oryx/staff3 shrinkfactor=0.6
+        weaponToggle2 > Immovable color=RED img=oryx/staff2 shrinkfactor=0.6
+        weapon > Resource color=BLUE value=10000 limit=10000 img=spaceship
+
+        key > Resource shrinkfactor=0.8 color=RED img=oryx/key2
+        lock > Immovable img=oryx/doorclosed1
+
+        portalentry > Portal stype=portalexit color=LIGHTBLUE img=oryx/circleEffect1
+        portalexit  > Immovable color=BROWN img=oryx/explosion2
+        goal > Immovable color=GREEN img=oryx/door2
+
+        missile > Missile color=YELLOW speed=0.5 shrinkfactor=0.3
+            missileIn > img=oryx/bullet1 singleton=True
+            missileOut > img=oryx/bullet2 singleton=True
+
+        boulderm > Missile img=oryx/potion1
+
+        moving >
+            boulder > Passive img=oryx/potion1
+            avatar > ShootAvatar ammo=weapon cooldown=2
+                avatarIn > stype=missileIn img=oryx/necromancer1
+                avatarOut > stype=missileOut img=oryx/mage1
+
+        wall > Immovable img=oryx/dirtwall autotiling=True
+
+    LevelMapping
+        g > floor goal
+        . > floor water
+        A > floor avatarIn weapon
+        t > floor weaponToggle1
+        p > floor weaponToggle2
+        k > floor key
+        l > floor lock
+        o > floor boulder
+        + > floor
+        w > floor wall
+
+    TerminationSet
+        SpriteCounter stype=goal   limit=0 win=True
+        SpriteCounter stype=avatar limit=0 win=False
+
+    InteractionSet
+
+        boulderm boulder > transformTo stype=boulder
+        boulder boulder > stepBack
+
+        goal   avatar    > killSprite scoreChange=5
+        avatar portalexit > stepBack
+        avatar portalentry > teleportToExit scoreChange=1
+        avatar water       > killSprite
+        weapon avatar   > collectResource
+
+        avatar key > changeResource resource=key value=1
+        key avatar > killSprite
+        lock avatar > killIfOtherHasMore resource=key limit=1
+        avatar lock > stepBack
+        moving lock wall > stepBack
+
+        avatarIn weaponToggle1 > transformTo stype=avatarOut
+        avatarOut weaponToggle2 > transformTo stype=avatarIn
+
+        #Avatar and Boulder
+        boulder avatar > transformTo stype=boulderm
+        boulderm avatar > attractGaze
+        avatar boulder boulderm > stepBack
+
+        #moving boulder stops after hitting:
+        boulderm wall > transformTo stype=boulder
+        boulder wall > undoAll
+        boulderm key > transformTo stype=boulder
+        boulder key > undoAll
+        boulderm lock > transformTo stype=boulder
+        boulder lock > undoAll
+        boulderm weaponToggle1 > transformTo stype=boulder
+        boulder weaponToggle1 > undoAll
+        boulderm weaponToggle2 > transformTo stype=boulder
+        boulder weaponToggle2 > undoAll
+
+        water boulderm > killBoth
+
+        boulderm portalentry > teleportToExit
+
+
+        #Missiles - order is important.
+        missile portalentry > teleportToExit
+        missile portalexit > attractGaze
+        EOS missile boulderm moving  > stepBack
+
+        wall missileIn > transformToSingleton stype=portalentry stype_other=wall
+        wall missileOut > transformToSingleton stype=portalexit stype_other=wall takeOrientation=True
+
+        missile goal wall > killSprite

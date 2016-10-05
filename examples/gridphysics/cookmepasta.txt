@@ -1,0 +1,62 @@
+BasicGame key_handler=Pulse
+    SpriteSet
+
+        floor > Immovable img=newset/floor6 hidden=True
+        avatar > MovingAvatar img=newset/chef frameRate=8
+        key > Resource img=oryx/key2 limit=1 shrinkfactor=0.6
+        lock > Immovable img=newset/lock1
+
+        food >
+            ingredients > Passive
+                boilingwater > img=newset/boilingwater frameRate=8
+                rawpasta > img=newset/pasta
+                tomato > img=newset/tomato shrinkfactor=0.7
+                tuna > img=newset/tuna shrinkfactor=0.7
+
+            placedIngredients > Passive
+                pastainplace > img=newset/pastaplate shrinkfactor=0.9
+                sauceinplace > img=newset/tomatosauce shrinkfactor=0.9
+
+        placed > Immovable
+            wrongplace  > img=oryx/slash1
+            plateinplace > img=newset/pastasauce
+        wall > Immovable color=BLACK img=newset/floor4
+
+
+    LevelMapping
+        b > boilingwater floor
+        p > rawpasta floor
+        o > tomato floor
+        t > tuna floor
+        k > key floor
+        l > lock floor
+        . > floor
+        A > avatar floor
+
+    InteractionSet
+
+        food avatar > bounceForward
+        food wall lock key > undoAll
+
+        rawpasta boilingwater > transformTo stype=pastainplace scoreChange=4 killSecond=True
+        rawpasta tuna  > transformTo stype=wrongplace scoreChange=-1 killSecond=True
+        rawpasta tomato > transformTo stype=wrongplace scoreChange=-1 killSecond=True
+        rawpasta sauceinplace > transformTo stype=wrongplace scoreChange=-1 killSecond=True
+
+        tomato tuna > transformTo stype=sauceinplace scoreChange=4 killSecond=True
+        tomato boilingwater > transformTo stype=wrongplace scoreChange=-1 killSecond=True
+        tomato pastainplace > transformTo stype=wrongplace scoreChange=-1 killSecond=True
+        boilingwater sauceinplace > transformTo stype=wrongplace scoreChange=-1 killSecond=True
+
+        tuna boilingwater > transformTo stype=wrongplace scoreChange=-1 killSecond=True
+        tuna pastainplace > transformTo stype=wrongplace scoreChange=-1 killSecond=True
+        pastainplace sauceinplace > transformTo stype=plateinplace scoreChange=17 killSecond=True
+
+        key avatar > collectResource scoreChange=1
+        lock avatar > killIfOtherHasMore resource=key limit=1
+
+        avatar wall lock > stepBack
+
+    TerminationSet
+        MultiSpriteCounter stype1=wrongplace limit=1 win=False
+        MultiSpriteCounter stype1=plateinplace limit=1 win=True

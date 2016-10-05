@@ -1,0 +1,32 @@
+BasicGame
+    SpriteSet
+        floor > Immovable img=oryx/backOBrown
+        hole   > Immovable color=DARKBLUE img=newset/hole1 portal=True
+        shovel > Flicker color=LIGHTGRAY limit=1 singleton=True img=oryx/pickaxe shrinkfactor=0.5
+
+        entrance > SpawnPoint total=20 cooldown=50 stype=lemming img=newset/hole5 portal=True
+        exit > Door color=GREEN img=oryx/door2
+
+        moving >
+            avatar  > ShootAvatar stype=shovel img=oryx/axeman1
+            lemming > Chaser stype=exit cooldown=5 color=RED img=oryx/spelunky frameRate=8 shrinkfactor=0.75
+
+        wall > Immovable img=oryx/dirtwall autotiling=True
+    LevelMapping
+        x > floor exit
+        e > floor entrance
+        h > floor hole
+        . > floor
+        A > floor avatar
+        w > floor wall
+
+    TerminationSet
+        SpriteCounter  stype=avatar  limit=0 win=False
+        MultiSpriteCounter stype1=entrance stype2=lemming limit=0 win=True
+
+    InteractionSet
+        avatar hole  > killSprite scoreChange=-5
+        lemming hole  > killSprite scoreChange=-2
+        moving wall EOS > stepBack
+        wall shovel  > killSprite scoreChange=-1
+        lemming exit > killSprite scoreChange=2

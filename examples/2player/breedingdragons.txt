@@ -1,0 +1,105 @@
+BasicGame key_handler=Pulse square_size=50 no_players=2
+    SpriteSet
+        grass > Immovable hidden=True img=oryx/backLBrown
+        changeFood > Immovable
+            changeFood0 > color=GREEN
+                changeFoodA0 > color=LIGHTGREEN img=oryx/bush1
+                changeFoodB0 > color=LIGHTORANGE img=oryx/bush5
+            changeFood1 > color=ORANGE
+                changeFoodA1 > color=DARKGREEN img=oryx/bush2
+                changeFoodB1 > color=BROWN img=oryx/bush3
+        moving >
+            dragon > RandomNPC
+                baby > healthPoints=70 limitHealthPoints=70 speed=0.1 cons=2
+                    babyA > img=oryx/dragon2 shrinkfactor=0.5
+                    babyB > img=oryx/dragon4 shrinkfactor=0.5
+                adult > speed=0.08 cons=8
+                    adultA >
+                        adultAf > img=oryx/dragon2 healthPoints=50 limitHealthPoints=50
+                        adultAi > img=oryx/dragon1 healthPoints=100 limitHealthPoints=100
+                        adultAp > img=oryx/yeti2 healthPoints=100 limitHealthPoints=100
+                    adultB >
+                        adultBf > img=oryx/dragon4 healthPoints=50 limitHealthPoints=50
+                        adultBi > img=oryx/dragon3 healthPoints=100 limitHealthPoints=100
+            avatar > ShootAvatar
+                avatarA > img=oryx/knight1
+                    foodA0 > stype=food0
+                    foodA1 > stype=food1
+                avatarB > img=oryx/guard1
+                    foodB0 > stype=food0
+                    foodB1 > stype=food1
+        food > Flicker
+            food0 > color=GREEN singleton=True img=oryx/bush1 shrinkfactor=0.7
+            food1 > color=ORANGE singleton=True img=oryx/bush2 shrinkfactor=0.7
+
+        wall > Immovable img=oryx/wall6
+
+    LevelMapping
+        . > grass
+        A > foodA0 grass
+        B > foodB0 grass
+        0 > babyA grass
+        1 > babyB grass
+        2 > adultAf grass
+        3 > adultBf grass
+        4 > adultAi grass
+        5 > adultBi grass
+        a > changeFoodA0 grass
+        b > changeFoodB0 grass
+        c > changeFoodA1 grass
+        d > changeFoodB1 grass
+        w > wall grass
+
+    InteractionSet
+        dragon TIME > subtractHealthPoints timer=26 repeating=True
+
+        moving wall > stepBack pixelPerfect=True
+
+        baby food0 > addHealthPoints value=10
+        adultAf food0 > addHealthPoints value=8
+        adultBf food0 > addHealthPoints value=8
+        adultAi food0 > addHealthPoints value=12 scoreChange=1,0
+        adultBi food0 > addHealthPoints value=12 scoreChange=0,1
+
+        adultAf food1 > killBoth scoreChange=-4,0
+        adultBf food1 > killBoth scoreChange=0,-4
+        adultAi food1 > killBoth scoreChange=-3,0
+        adultBi food1 > killBoth scoreChange=0,-3
+        babyA food1 > transformTo stype=adultAf scoreChange=5,0
+        adultAf food1 > addHealthPoints value=100
+        babyB food1 > transformTo stype=adultBf scoreChange=0,5
+        adultBf food1 > addHealthPoints value=100
+
+        food dragon > killSprite
+
+        adultAf adultAf > spawn stype=babyA scoreChange=2,0
+        adultAf adultAf > transformTo stype=adultAi
+        adultAi adultAf > addHealthPoints value=100
+
+        adultBf adultBf > spawn stype=babyB scoreChange=0,2
+        adultBf adultBf > transformTo stype=adultBi
+        adultBi adultBf > addHealthPoints value=100
+
+        adultAf adultBf > spawn stype=babyA scoreChange=1
+        adultAf adultBf > spawn stype=babyB scoreChange=1
+        adultAf adultBf > transformTo stype=adultAp
+        adultBf adultAp > transformTo stype=adultBi
+        adultAp adultBi > transformTo stype=adultAi
+        adult adult > stepBack
+
+        adultAp food > spawn stype=adultAi
+        adultAp food > killBoth scoreChange=50
+
+        foodA1 changeFoodA0 > transformTo stype=foodA0
+        foodA0 changeFoodA1 > transformTo stype=foodA1
+
+        foodB1 changeFoodB0 > transformTo stype=foodB0
+        foodB0 changeFoodB1 > transformTo stype=foodB1
+
+    TerminationSet
+        MultiSpriteCounter stype1=dragon limit=20 min=True count_score=True
+        MultiSpriteCounter stype1=babyA stype2=adultAf limit=0 win=False,True
+        MultiSpriteCounter stype1=babyB stype2=adultBf limit=0 win=True,False
+        MultiSpriteCounter stype1=baby stype2=adultAf stype3=adultBf limit=0 count_score=True
+        MultiSpriteCounter stype1=dragon limit=1 count_score=True
+        Timeout limit=1500 count_score=True

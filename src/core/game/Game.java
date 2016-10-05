@@ -533,7 +533,6 @@ public abstract class Game
     	SpriteData data = new SpriteData();
     	data.name = sc.identifier;
     	data.type = sc.referenceClass;
-    	
     	data.isSingleton = Boolean.parseBoolean(sc.parameters.get("singleton").toLowerCase());
     	
     	VGDLSprite sprite = VGDLFactory.GetInstance().createSprite(sc, new Vector2d(), new Dimension(1, 1));

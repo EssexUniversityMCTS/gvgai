@@ -1,0 +1,102 @@
+BasicGame no_players=2 key_handler=Pulse
+    SpriteSet
+
+        floor > Immovable img=oryx/backGrey hidden=True
+        edge > Immovable hidden=True invisible=True
+        avatar > MovingAvatar frameRate=16
+            avatarA > img=newset/girl3
+            avatarB > img=newset/man3
+        key > Resource img=oryx/key2 limit=1 shrinkfactor=0.6
+        lock > Immovable img=newset/lock1
+
+        piece > Passive img=newset/block2
+            smallN > shrinkfactor=0.5
+            mediumN > shrinkfactor=0.7
+            largeN > shrinkfactor=0.9
+
+        pieceInPlace > Immovable
+            base >
+                baseA > color=BLUE img=oryx/backBlue
+                baseB > color=RED img=oryx/backRed
+                bA > hidden=True color=BLUE img=oryx/backBlue
+                bB > hidden=True color=RED img=oryx/backRed
+            large > shrinkfactor=0.9
+                largeA > img=newset/blockB
+                largeB > img=newset/blockR
+            medium > shrinkfactor=0.7 img=box
+                mediumA > img=newset/blockB
+                mediumB > img=newset/blockR
+            small > shrinkfactor=0.5 img=box
+                smallA > img=newset/blockB
+                smallB > img=newset/blockR
+
+        wall > Immovable img=oryx/wall3 autotiling=True
+
+    LevelMapping
+        s > floor smallN
+        m > floor mediumN
+        l > floor largeN
+        a > floor baseA bA
+        b > floor baseB bB
+        k > floor key
+        0 > floor lock
+        . > floor
+        + > floor edge
+        A > floor avatarA
+        B > floor avatarB
+
+    InteractionSet
+        piece avatar > bounceForward
+        avatar wall pieceInPlace > stepBack
+        piece edge piece key lock > stepBack
+
+
+        # on base
+        largeN baseA > transformTo stype=largeA scoreChange=2,0 killSecond=True
+        largeN baseB > transformTo stype=largeB scoreChange=0,2 killSecond=True
+        mediumN baseA > transformTo stype=mediumA scoreChange=5,0 killSecond=True
+        mediumN baseB > transformTo stype=mediumB scoreChange=0,5 killSecond=True
+        smallN baseA > transformTo stype=smallA scoreChange=9,0 killSecond=True
+        smallN baseB > transformTo stype=smallB scoreChange=0,9 killSecond=True
+
+        # on large
+        largeN largeA > transformTo stype=largeA scoreChange=1,0 killSecond=True
+        largeN largeB > transformTo stype=largeB scoreChange=0,1 killSecond=True
+        mediumN largeA > transformTo stype=mediumA scoreChange=4,0 killSecond=True
+        mediumN largeB > transformTo stype=mediumB scoreChange=0,4 killSecond=True
+        smallN largeA > transformTo stype=smallA scoreChange=8,0 killSecond=True
+        smallN largeB > transformTo stype=smallB scoreChange=0,8 killSecond=True
+
+        # on medium
+        mediumN mediumA > transformTo stype=mediumA scoreChange=3,0 killSecond=True
+        mediumN mediumB > transformTo stype=mediumB scoreChange=0,3 killSecond=True
+        smallN mediumA > transformTo stype=smallA scoreChange=7,0 killSecond=True
+        smallN mediumB > transformTo stype=smallB scoreChange=0,7 killSecond=True
+
+        # on small
+        smallN smallA > transformTo stype=smallA scoreChange=6,0 killSecond=True
+        smallN smallB > transformTo stype=smallB scoreChange=0,6 killSecond=True
+
+        # wrong on medium (large)
+        largeN mediumA > removeScore stype=avatarA
+        mediumA largeN > transformTo stype=baseA killSecond=True
+        largeN mediumB > removeScore stype=avatarB
+        mediumB largeN > transformTo stype=baseB killSecond=True
+
+        # wrong on small (medium and large)
+        largeN smallA > removeScore stype=avatarA
+        smallA largeN > transformTo stype=baseA killSecond=True
+        largeN smallB > removeScore stype=avatarB
+        smallB largeN > transformTo stype=baseB killSecond=True
+        mediumN smallA > removeScore stype=avatarA
+        smallA mediumN > transformTo stype=baseA killSecond=True
+        mediumN smallB > removeScore stype=avatarB
+        smallB mediumN > transformTo stype=baseB killSecond=True
+
+        key avatar > collectResource scoreChange=1
+        lock avatar > killIfOtherHasMore resource=key limit=1
+        avatar lock > stepBack
+
+    TerminationSet
+        SpriteCounter stype=piece limit=0 count_score=True
+        Timeout limit=1500 count_score=True

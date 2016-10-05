@@ -1,0 +1,29 @@
+BasicGame
+    SpriteSet
+        floor > Immovable img=oryx/grass autotiling=True hidden=True
+        avatar > MovingAvatar img=oryx/bird1 healthPoints=5 limitHealthPoints=30
+        foodbank > Immovable invisible=true
+        wall > Immovable color=BLACK img=oryx/tree2
+        goal > Door color=GREEN img=newset/exit2
+        food > Resource img=oryx/worm1 shrinkfactor=0.5
+
+    InteractionSet
+
+        avatar TIME > subtractHealthPoints timer=15 repeating=True
+        avatar food > addHealthPoints value=15 killSecond=True
+        avatar foodbank > addHealthPoints value=15 scoreChange=40 killSecond=True
+
+        goal avatar  > killSprite scoreChange=100
+        avatar wall  > stepBack
+
+    TerminationSet
+        SpriteCounter stype=goal   limit=0 win=True
+        SpriteCounter stype=avatar limit=0 win=False
+
+    LevelMapping
+        g > goal floor
+        A > avatar food floor
+        f > foodbank food food food floor
+        w > wall floor
+        . > floor
+

@@ -1,0 +1,42 @@
+BasicGame no_players=2 key_handler=Pulse
+    SpriteSet
+        ground > Immovable hidden=True img=oryx/backGrey
+        door > Door img=oryx/doorclosed1
+        avatar > frameRate=16
+            child > ShootAvatar stype=break img=newset/man4 shrinkfactor=0.7
+                childIn >
+                childOut >
+            parent > ShootAvatar stype=fix img=newset/girl3
+                parentIn >
+                parentOut >
+        break > Flicker singleton=True img=oryx/slash1
+        fix > Flicker singleton=True img=oryx/sparkle4
+        object > Immovable
+            fixed > img=newset/blockG
+            broken > img=newset/blockR2
+
+        wall > Immovable img=oryx/wall3 autotiling=True
+        
+    InteractionSet
+        avatar avatar wall object > stepBack
+        fixed break > transformTo stype=broken killSecond=True scoreChange=1,0
+        broken fix > transformTo stype=fixed killSecond=True scoreChange=0,1
+
+        childIn door > transformTo stype=childOut
+        childOut ground > transformTo stype=childIn
+
+        parentIn door > transformTo stype=parentOut
+        parentOut ground > transformTo stype=parentIn
+
+    TerminationSet
+        MultiSpriteCounter stype1=childIn stype2=fixed limit=0 win=True,False
+        MultiSpriteCounter stype1=parentIn stype2=broken limit=0 win=False,True
+        Timeout limit=1500 count_score=True
+    
+    LevelMapping
+        A > childIn ground
+        B > parentIn ground
+        x > broken
+        o > fixed
+        . > ground
+        d > door

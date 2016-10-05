@@ -11,7 +11,6 @@ import core.termination.Termination;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.Effect;
-import tools.Direction;
 
 /**
  * This is an abstract class encapsulating all the data required for generating

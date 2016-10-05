@@ -1,0 +1,51 @@
+#Solar Fox: http://www.mobygames.com/game/atari-2600/solar-fox
+
+BasicGame square_size=25
+    SpriteSet
+        floor > Immovable img=oryx/backGrey
+        enemyground > Immovable img=newset/water
+        avatar  > OngoingAvatar color=YELLOW img=oryx/spaceship1 speed=0.15
+        powerblib > Passive img=oryx/diamond3
+        powerblibturning > Flicker limit=8 img=oryx/sparkle4
+        blib > Passive img=oryx/diamond1
+        enemy > Missile cooldown=3 img=oryx/necromancer1
+            top > orientation=RIGHT shrinkfactor=1
+            btm > orientation=LEFT shrinkfactor=1
+        shot > Missile shrinkfactor=0.7
+            upshot > orientation=UP speed=0.15 img=oryx/fireup1
+            downshot > orientation=DOWN speed=0.15 img=oryx/firedown1
+        res > Resource color=GREEN value=0 limit=4 img=oryx/diamond2
+        wall > Immovable img=oryx/wall3 autotiling=True
+        
+
+    LevelMapping
+        b > floor blib
+        p > floor powerblib
+        2 > floor top enemyground
+        1 > floor btm enemyground
+        . > enemyground
+        w > wall
+        + > floor
+        A > floor avatar
+ 
+
+    TerminationSet
+        SpriteCounter      stype=avatar               limit=0 win=False
+        MultiSpriteCounter      stype1=blib stype2=powerblib               limit=0 win=True
+
+    InteractionSet
+        avatar wall enemy enemyground shot > killSprite scoreChange=-10
+
+        blib avatar > killSprite scoreChange=1
+
+        powerblib powerblibturning > spawnIfHasMore resource=res stype=blib limit=2
+        powerblibturning avatar > killSprite
+
+        powerblib blib > killSprite scoreChange=1
+        powerblib avatar > spawnIfHasMore resource=null stype=powerblibturning limit=0
+        powerblib powerblibturning > changeResource resource=res
+
+        enemy wall > reverseDirection
+
+        btm enemyground > spawnIfHasMore resource=null stype=upshot limit=0 prob=0.02
+        top enemyground > spawnIfHasMore resource=null stype=downshot limit=0 prob=0.02

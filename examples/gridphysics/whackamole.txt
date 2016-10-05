@@ -1,0 +1,27 @@
+BasicGame
+    SpriteSet
+        wall > Immovable color=LIGHTGRAY img=oryx/backOBrown
+        entrance > SpawnPoint portal=True
+            tight > stype=slow color=WHITE prob=0.002 img=newset/hole1
+            wide  > stype=quick color=GRAY prob=0.01 img=newset/hole4
+        moving >
+            cat > RandomNPC color=RED img=newset/cat cons=2 shrinkfactor=0.5
+            avatar  > MovingAvatar img=oryx/cyclop1
+        mole > Flicker shrinkfactor=0.7
+            quick > color=BLUE limit=20 img=newset/mole_fast
+            slow  > color=GREEN  limit=60 img=newset/mole_slow
+
+    LevelMapping
+        0 > wall wide
+        1 > wall tight
+        2 > wall cat
+        A > wall avatar
+
+    TerminationSet
+        Timeout limit=500 win=True
+        SpriteCounter  stype=avatar  limit=0 win=False
+
+    InteractionSet
+        moving  EOS  > stepBack
+        mole avatar cat > killSprite scoreChange=1
+        avatar cat > killSprite scoreChange=-5

@@ -1,0 +1,43 @@
+#(Inspired by) Notsnake: http://www.puzzlescript.net/play.html?p=e2c1c8e99b3f9d9b6edd
+
+BasicGame key_handler=Pulse square_size=60
+    SpriteSet
+        
+        ground > Immovable color=GRAY img=oryx/backGrey
+        paint > Immovable color=DARKBLUE img=newset/paint2
+
+        prepaint > Flicker limit=2 invisible=TRUE
+        prepainting > Resource limit=2
+
+        preground > Flicker limit=2 invisible=TRUE
+        pregrounding > Resource limit=2
+
+        avatar > MovingAvatar shrinkfactor=0.8 img=newset/painter21
+
+        wall > Immovable img=newset/floor5
+
+    LevelMapping
+        A > avatar ground
+        . > ground
+        x > paint
+        w > wall
+
+    InteractionSet
+        avatar EOS > stepBack
+        
+        prepaint avatar > killSprite
+        ground avatar > spawnIfHasMore stype=prepaint resource=null limit=0
+        prepaint ground > changeResource resource=prepainting value=1
+        prepaint ground > spawnIfHasMore resource=prepainting limit=2 stype=paint
+        ground prepaint > killIfOtherHasMore resource=prepainting limit=2  scoreChange=1
+        
+        preground avatar > killSprite
+        paint avatar > spawnIfHasMore stype=preground resource=null limit=0
+        preground paint > changeResource resource=pregrounding value=1
+        preground paint > spawnIfHasMore resource=pregrounding limit=2 stype=ground
+        paint preground > killIfOtherHasMore resource=pregrounding limit=2 
+
+    TerminationSet
+        SpriteCounter stype=ground limit=0 win=True
+        
+        

@@ -1,0 +1,49 @@
+BasicGame
+    SpriteSet
+        floor > Immovable img=oryx/backOBrown
+        static > Immovable
+            marsh > color=BROWN img=oryx/grass autotiling=True
+            eatenBrains > color=RED img=oryx/eye1
+            tomb > color=GRAY img=oryx/tombstone1 shrinkfactor=0.75
+        shooters > Bomber
+            plant > color=GREEN img=oryx/bush4 stype=pea prob=0.05 cooldown=2
+            zombie > Bomber color=BROWN img=newset/zombie speed=0.1 orientation=LEFT stype=axe prob=0.005
+        bullets > Missile
+            axe > orientation=LEFT speed=0.3 color=RED shrinkfactor=0.75 img=oryx/axe2
+            pea > orientation=RIGHT speed=0.3 color=GREEN shrinkfactor=0.35 img=oryx/bush1
+        goal > Door color=GREEN img=oryx/cloak3
+        hell > SpawnPoint portal=True stype=zombie color=RED img=oryx/spike3
+            fastHell > prob=0.01
+            slowHell > prob=0.005
+        shovel > OrientedFlicker limit=2 color=LIGHTGRAY img=oryx/staff1
+        avatar  > ShootAvatar stype=shovel img=oryx/rogue
+        wall > Immovable img=oryx/wall6
+
+    InteractionSet
+
+        shovel marsh > transformTo stype=plant killSecond=True
+        zombie goal  > transformTo stype=eatenBrains scoreChange=-1
+
+        plant axe > transformTo stype=marsh killSecond=True
+        zombie pea > killBoth scoreChange=1
+        pea tomb > killSprite
+
+        avatar wall > stepBack
+        zombie wall  > stepBack
+        bullets EOS > killSprite
+
+    LevelMapping
+        g > floor goal
+        h > floor slowHell
+        f > floor fastHell
+        z > floor zombie
+        x > floor marsh
+        t > floor tomb
+        A > floor avatar marsh
+        w > floor wall
+        . > floor
+
+    TerminationSet
+        Timeout limit=1000 win=True
+        MultiSpriteCounter stype1=eatenBrains limit=1 win=False
+        SpriteCounter stype=avatar limit=0 win=False
