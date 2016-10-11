@@ -17,12 +17,10 @@ import tools.ElapsedCpuTimer;
  */
 public class Agent extends AbstractPlayer {
 
-    public static int NUM_ACTIONS;
     public static int MCTS_ITERATIONS = 100;
-    public static int ROLLOUT_DEPTH = 10;
-    public static double K = Math.sqrt(2);
     public static double REWARD_DISCOUNT = 1.00;
-    public static Types.ACTIONS[] actions;
+    public int num_actions;
+    public Types.ACTIONS[] actions;
 
     protected SingleMCTSPlayer mctsPlayer;
 
@@ -40,7 +38,7 @@ public class Agent extends AbstractPlayer {
         {
             actions[i] = act.get(i);
         }
-        NUM_ACTIONS = actions.length;
+        num_actions = actions.length;
 
         //Create the player.
 
@@ -48,7 +46,7 @@ public class Agent extends AbstractPlayer {
     }
 
     public SingleMCTSPlayer getPlayer(StateObservation so, ElapsedCpuTimer elapsedTimer) {
-        return new SingleMCTSPlayer(new Random());
+        return new SingleMCTSPlayer(new Random(), num_actions, actions);
     }
 
 

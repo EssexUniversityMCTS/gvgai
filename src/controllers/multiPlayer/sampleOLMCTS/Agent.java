@@ -17,13 +17,9 @@ import tools.ElapsedCpuTimer;
  */
 public class Agent extends AbstractMultiPlayer {
 
-    public static int[] NUM_ACTIONS;
-    public static int MCTS_ITERATIONS = 100;
-    public static int ROLLOUT_DEPTH = 10;
-    public static double K = Math.sqrt(2);
-    public static double REWARD_DISCOUNT = 1.00;
-    public static Types.ACTIONS[][] actions;
-    public static int id, oppID, no_players;
+    public int[] NUM_ACTIONS;
+    public Types.ACTIONS[][] actions;
+    public int id, oppID, no_players;
 
     protected SingleMCTSPlayer mctsPlayer;
 
@@ -57,11 +53,11 @@ public class Agent extends AbstractMultiPlayer {
 
         //Create the player.
 
-        mctsPlayer = getPlayer(so, elapsedTimer);
+        mctsPlayer = getPlayer(so, elapsedTimer, NUM_ACTIONS, actions, id, oppID, no_players);
     }
 
-    public SingleMCTSPlayer getPlayer(StateObservationMulti so, ElapsedCpuTimer elapsedTimer) {
-        return new SingleMCTSPlayer(new Random());
+    public SingleMCTSPlayer getPlayer(StateObservationMulti so, ElapsedCpuTimer elapsedTimer, int[] NUM_ACTIONS, Types.ACTIONS[][] actions, int id, int oppID, int no_players) {
+        return new SingleMCTSPlayer(new Random(), NUM_ACTIONS, actions, id, oppID, no_players);
     }
 
 

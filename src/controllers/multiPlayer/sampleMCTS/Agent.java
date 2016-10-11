@@ -19,12 +19,10 @@ import java.util.Random;
  */
 public class Agent extends AbstractMultiPlayer {
 
-    public static int[] NUM_ACTIONS;
-    public static int ROLLOUT_DEPTH = 10;
-    public static double K = Math.sqrt(2);
-    public static Types.ACTIONS[][] actions;
+    public int[] NUM_ACTIONS;
+    public Types.ACTIONS[][] actions;
 
-    public static int id, oppID, no_players;
+    public int id, oppID, no_players;
 
     /**
      * Random generator for the agent.
@@ -61,7 +59,7 @@ public class Agent extends AbstractMultiPlayer {
         }
 
         //Create the player.
-        mctsPlayer = new SingleMCTSPlayer(new Random());
+        mctsPlayer = new SingleMCTSPlayer(new Random(), NUM_ACTIONS, actions, id, oppID, no_players);
     }
 
 

@@ -18,10 +18,8 @@ import tools.ElapsedCpuTimer;
  */
 public class Agent extends AbstractPlayer {
 
-    public static int NUM_ACTIONS;
-    public static int ROLLOUT_DEPTH = 10;
-    public static double K = Math.sqrt(2);
-    public static Types.ACTIONS[] actions;
+    public int num_actions;
+    public Types.ACTIONS[] actions;
 
     /**
      * Random generator for the agent.
@@ -42,10 +40,10 @@ public class Agent extends AbstractPlayer {
         {
             actions[i] = act.get(i);
         }
-        NUM_ACTIONS = actions.length;
+        num_actions = actions.length;
 
         //Create the player.
-        mctsPlayer = new SingleMCTSPlayer(new Random());
+        mctsPlayer = new SingleMCTSPlayer(new Random(), num_actions, actions);
     }
 
 

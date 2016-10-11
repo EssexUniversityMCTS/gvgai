@@ -3,6 +3,7 @@ package controllers.singlePlayer.sampleMCTS;
 import java.util.Random;
 
 import core.game.StateObservation;
+import ontology.Types;
 import tools.ElapsedCpuTimer;
 
 /**
@@ -25,14 +26,20 @@ public class SingleMCTSPlayer
 
     public static int iters = 0, num = 0;
 
+    public int num_actions;
+
+    Types.ACTIONS[] actions;
+
     /**
      * Creates the MCTS player with a sampleRandom generator object.
      * @param a_rnd sampleRandom generator object.
      */
-    public SingleMCTSPlayer(Random a_rnd)
+    public SingleMCTSPlayer(Random a_rnd, int num_actions, Types.ACTIONS[] actions)
     {
+        this.num_actions = num_actions;
+        this.actions = actions;
         m_rnd = a_rnd;
-        m_root = new SingleTreeNode(a_rnd);
+        m_root = new SingleTreeNode(a_rnd, num_actions, actions);
     }
 
     /**
@@ -42,7 +49,7 @@ public class SingleMCTSPlayer
     public void init(StateObservation a_gameState)
     {
         //Set the game observation to a newly root node.
-        m_root = new SingleTreeNode(m_rnd);
+        m_root = new SingleTreeNode(m_rnd, num_actions, actions);
         m_root.state = a_gameState;
 
     }

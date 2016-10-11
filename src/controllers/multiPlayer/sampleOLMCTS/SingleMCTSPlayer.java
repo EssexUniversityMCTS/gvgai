@@ -3,6 +3,7 @@ package controllers.multiPlayer.sampleOLMCTS;
 import java.util.Random;
 
 import core.game.StateObservationMulti;
+import ontology.Types;
 import tools.ElapsedCpuTimer;
 
 /**
@@ -20,15 +21,24 @@ public class SingleMCTSPlayer
      */
     public SingleTreeNode m_root;
 
+    int[] NUM_ACTIONS;
+    Types.ACTIONS[][] actions;
+
     /**
      * Random generator.
      */
     public Random m_rnd;
+    public int id, oppID, no_players;
 
 
-    public SingleMCTSPlayer(Random a_rnd)
+    public SingleMCTSPlayer(Random a_rnd, int[] NUM_ACTIONS, Types.ACTIONS[][] actions, int id, int oppID, int no_players)
     {
         m_rnd = a_rnd;
+        this.NUM_ACTIONS = NUM_ACTIONS;
+        this.actions = actions;
+        this.id = id;
+        this.oppID = oppID;
+        this.no_players = no_players;
     }
 
     /**
@@ -39,7 +49,7 @@ public class SingleMCTSPlayer
     {
         //Set the game observation to a newly root node.
         //System.out.println("learning_style = " + learning_style);
-        m_root = new SingleTreeNode(m_rnd);
+        m_root = new SingleTreeNode(m_rnd, NUM_ACTIONS, actions, id, oppID, no_players);
         m_root.rootState = a_gameState;
     }
 

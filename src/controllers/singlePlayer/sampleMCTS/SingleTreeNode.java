@@ -10,34 +10,43 @@ import tools.Utils;
 
 public class SingleTreeNode
 {
-    private static final double HUGE_NEGATIVE = -10000000.0;
-    private static final double HUGE_POSITIVE =  10000000.0;
-    public static double epsilon = 1e-6;
-    public static double egreedyEpsilon = 0.05;
+    private final double HUGE_NEGATIVE = -10000000.0;
+    private final double HUGE_POSITIVE =  10000000.0;
+    public double epsilon = 1e-6;
+    public double egreedyEpsilon = 0.05;
     public StateObservation state;
     public SingleTreeNode parent;
     public SingleTreeNode[] children;
     public double totValue;
     public int nVisits;
-    public static Random m_rnd;
+    public Random m_rnd;
     private int m_depth;
-    protected static double[] bounds = new double[]{Double.MAX_VALUE, -Double.MAX_VALUE};
-    public SingleTreeNode(Random rnd) {
-        this(null, null, rnd);
-    }
+    protected double[] bounds = new double[]{Double.MAX_VALUE, -Double.MAX_VALUE};
+    public int num_actions;
+    Types.ACTIONS[] actions;
+
+    public int ROLLOUT_DEPTH = 10;
+    public double K = Math.sqrt(2);
 
     public static int totalIters = 0;
 
-    public SingleTreeNode(StateObservation state, SingleTreeNode parent, Random rnd) {
+    public SingleTreeNode(Random rnd, int num_actions, Types.ACTIONS[] actions) {
+        this(null, null, rnd, num_actions, actions);
+    }
+
+    public SingleTreeNode(StateObservation state, SingleTreeNode parent, Random rnd, int num_actions, Types.ACTIONS[] actions) {
         this.state = state;
         this.parent = parent;
+        this.num_actions = num_actions;
         this.m_rnd = rnd;
-        children = new SingleTreeNode[Agent.NUM_ACTIONS];
+        this.actions = actions;
+        children = new SingleTreeNode[num_actions];
         totValue = 0.0;
         if(parent != null)
             m_depth = parent.m_depth+1;
         else
             m_depth = 0;
+
     }
 
 
@@ -72,7 +81,7 @@ public class SingleTreeNode
 
         SingleTreeNode cur = this;
 
-        while (!cur.state.isGameOver() && cur.m_depth < Agent.ROLLOUT_DEPTH)
+        while (!cur.state.isGameOver() && cur.m_depth < ROLLOUT_DEPTH)
         {
             if (cur.notFullyExpanded()) {
                 return cur.expand();
@@ -102,9 +111,9 @@ public class SingleTreeNode
         }
 
         StateObservation nextState = state.copy();
-        nextState.advance(Agent.actions[bestAction]);
+        nextState.advance(actions[bestAction]);
 
-        SingleTreeNode tn = new SingleTreeNode(nextState, this, this.m_rnd);
+        SingleTreeNode tn = new SingleTreeNode(nextState, this, this.m_rnd, num_actions, actions);
         children[bestAction] = tn;
         return tn;
 
@@ -123,7 +132,7 @@ public class SingleTreeNode
             childValue = Utils.normalise(childValue, bounds[0], bounds[1]);
 
             double uctValue = childValue +
-                    Agent.K * Math.sqrt(Math.log(this.nVisits + 1) / (child.nVisits + this.epsilon));
+                    K * Math.sqrt(Math.log(this.nVisits + 1) / (child.nVisits + this.epsilon));
 
             // small sampleRandom numbers: break ties in unexpanded nodes
             uctValue = Utils.noise(uctValue, this.epsilon, this.m_rnd.nextDouble());     //break ties randomly
@@ -187,8 +196,8 @@ public class SingleTreeNode
 
         while (!finishRollout(rollerState,thisDepth)) {
 
-            int action = m_rnd.nextInt(Agent.NUM_ACTIONS);
-            rollerState.advance(Agent.actions[action]);
+            int action = m_rnd.nextInt(num_actions);
+            rollerState.advance(actions[action]);
             thisDepth++;
         }
 
@@ -220,7 +229,7 @@ public class SingleTreeNode
 
     public boolean finishRollout(StateObservation rollerState, int depth)
     {
-        if(depth >= Agent.ROLLOUT_DEPTH)      //rollout end condition.
+        if(depth >= ROLLOUT_DEPTH)      //rollout end condition.
             return true;
 
         if(rollerState.isGameOver())               //end of game
