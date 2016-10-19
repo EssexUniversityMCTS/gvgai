@@ -125,7 +125,12 @@ public class GameAnalyzer {
 			else{
 				if(getAllInteractions(sprite.name, InteractionType.ALL, game).size() > 0 || 
 						spawnerTypes.contains(sprite.type)){
-					minRequiredNumber.put(sprite.name, 1);
+					if(sprite.isSingleton){
+						minRequiredNumber.put(sprite.name, 1);
+					}
+					else{
+						minRequiredNumber.put(sprite.name, 2);
+					}
 				}
 			}
 			
