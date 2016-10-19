@@ -114,16 +114,36 @@ public class LevelMapping {
 	}
 	
 	/**
+<<<<<<< HEAD
+	 * Remove useless entities in the list
+	 * @param data 	list of objects
+	 * @return		fixed list of objects after removing empty elements
+	 */
+	public ArrayList<String> fixArrayList(ArrayList<String> data){
+		ArrayList<String> result = (ArrayList<String>) data.clone();
+		for(int i=0; i<result.size(); i++){
+			if(result.get(i).trim().length() == 0){
+				result.remove(i);
+				i--;
+			}
+		}
+		return result;
+	}
+	
+	/**
+=======
+>>>>>>> 69b5a53ad8c3de85119ff2c5bbb3251523c96b38
 	 * get character corresponding to a certain arraylist of strings
 	 * @param data	list of sprite names
 	 * @return		character corresponding to the list
 	 */
 	public Character getCharacter(ArrayList<String> data){
-		if(data.size() == 0){
+		ArrayList<String> result = fixArrayList(data);
+		if(result.size() == 0){
 			return ' ';
 		}
 		
-		long hashValue = hashValueFunction(data);
+		long hashValue = hashValueFunction(result);
 		if(!charMapping.containsKey(hashValue)){
 			return null;
 		}
