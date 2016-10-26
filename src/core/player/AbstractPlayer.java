@@ -31,4 +31,8 @@ public abstract class AbstractPlayer extends Player {
         return Types.ACTIONS.ACTION_NIL;
     }
 
+    @Override
+    public Types.ACTIONS act(String stateObsStr, ElapsedCpuTimer elapsedTimer) {
+        return null;
+    }
 }

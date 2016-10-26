@@ -3,15 +3,14 @@ package core.game;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 import javax.swing.JOptionPane;
 
-import core.SpriteGroup;
-import core.VGDLFactory;
-import core.VGDLRegistry;
-import core.VGDLSprite;
-import core.VGDLViewer;
+import com.google.gson.Gson;
+import core.*;
 import core.competition.CompetitionParameters;
 import core.content.Content;
 import core.content.GameContent;
@@ -19,6 +18,7 @@ import core.content.SpriteContent;
 import core.game.GameDescription.InteractionData;
 import core.game.GameDescription.SpriteData;
 import core.game.GameDescription.TerminationData;
+import core.player.AbstractLearner;
 import core.player.Player;
 import core.termination.Termination;
 import ontology.Types;
@@ -263,6 +263,10 @@ public abstract class Game
 
     public static KeyHandler ki;
 
+    public int[][] gameStateRGB;
+
+    public byte[] gameStateBytes;
+
     /**
      * Default constructor.
      */
@@ -284,6 +288,7 @@ public abstract class Game
         nextSpriteID = 0;
 
         loadDefaultConstr();
+
     }
 
     /**
@@ -873,7 +878,8 @@ public abstract class Game
         frame.addKeyListener(ki);
         frame.addWindowListener(wi);
         wi.windowClosed = false;
-
+        gameStateRGB = view.save();
+        gameStateBytes = view.saveToByte();
         //Determine the delay for playing with a good fps.
         double delay = CompetitionParameters.LONG_DELAY;
         for (Player player : players)
@@ -904,14 +910,19 @@ public abstract class Game
 
             //Update the frame title to reflect current score and tick.
             this.setTitle(frame);
-            
+
+
+            // TODO: 21/10/2016 attention ! added by Jialin to test gson game state transfer
+            gameStateRGB = view.save();
+            gameStateBytes = view.saveToByte();
+
             if(firstRun && isHuman){
-            	if(CompetitionParameters.dialogBoxOnStartAndEnd){
-            		JOptionPane.showMessageDialog(frame, 
-            				"Click OK to start.");
-            	}
-            	
-            	firstRun = false;
+                if(CompetitionParameters.dialogBoxOnStartAndEnd){
+                  JOptionPane.showMessageDialog(frame,
+                      "Click OK to start.");
+                }
+
+                firstRun = false;
             }
         }
 
@@ -1219,11 +1230,27 @@ public abstract class Game
      */
     protected void tick()
     {
+      // TODO: 21/10/2016 added to test learning track
+      ElapsedCpuTimer t = new ElapsedCpuTimer();
+//      String gameObsStr = fwdModel.parseGameState(gameStateRGB);
+      String gameObsStr = fwdModel.parseGameStateByBytes(gameStateBytes);
+
+      System.out.println("Game : parseGameState() : " + t);
+
         //Now, do all of the avatars.
         for (int i = 0; i < no_players; i++) {
             if (avatars[i] != null && !avatars[i].is_disabled()) {
                 avatars[i].preMovement();
+//                avatars[i].update(this);
+              // TODO: 21/10/2016 the above line is replaced by the one below for learning track test
+              if (ArcadeMachine.learningTrack) {
+                ElapsedCpuTimer tu = new ElapsedCpuTimer();
+                avatars[i].update(this, gameObsStr);
+                System.out.println("Game : update() : " + tu);
+              } else {
                 avatars[i].update(this);
+              }
+//              System.out.println(this.fwdModel.getAvatarActions(false));
             } else if (avatars[i] == null) {
                 System.out.println(gameTick + ": Something went wrong, no avatar, ID = " + i);
             }

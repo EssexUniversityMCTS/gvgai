@@ -108,6 +108,28 @@ public class MovingAvatar extends VGDLSprite {
         applyMovement(game, action2D);
     }
 
+    /**
+     * todo for learning track test
+     * This update call is for the game tick() loop.
+     * @param gameObsStr current state of the game.
+     */
+    public void update(Game game, String gameObsStr) {
+        lastMovementType = Types.MOVEMENT.STILL;
+
+        //Sets the input mask for this cycle.
+        ki.setMask(getPlayerID());
+
+        //Get the input from the player.
+        requestPlayerInput(game, gameObsStr);
+
+        //Map from the action mask to a Vector2D action.
+        Direction action2D = Utils.processMovementActionKeys(ki.getMask(), getPlayerID());
+
+        //Apply the physical movement.
+        applyMovement(game, action2D);
+    }
+
+
 
     /**
      * This move call is for the Forward Model tick() loop.
@@ -123,24 +145,29 @@ public class MovingAvatar extends VGDLSprite {
 
     private void applyMovement(Game game, Direction action)
     {
+        System.out.println("MovingAvatar : applyMovement : " + action);
         lastMovementType = this.physics.activeMovement(this, action, this.speed);
     }
 
     /**
+     * todo for learning track test
      * Requests the controller's input, setting the game.ki.action mask with the processed data.
-     * @param game
+     * @param gameObsStr
      */
-    protected void requestPlayerInput(Game game)
+    protected void requestPlayerInput(Game game, String gameObsStr)
     {
         ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
         ect.setMaxTimeMillis(CompetitionParameters.ACTION_TIME);
 
         Types.ACTIONS action;
-        if (game.no_players > 1) {
-            action = this.player.act(game.getObservationMulti(), ect.copy());
-        } else {
-            action = this.player.act(game.getObservation(), ect.copy());
-        }
+
+        ElapsedCpuTimer t = new ElapsedCpuTimer();
+
+        action = this.player.act(gameObsStr, ect.copy());
+
+        System.out.println("MovingAvatar : requestPlayerInput(game,gameObsStr) :" +
+            " this.player.act() : " + action + " time " + t);
+
         //System.out.println(action);
 
         
@@ -160,6 +187,57 @@ public class MovingAvatar extends VGDLSprite {
             action = Types.ACTIONS.ACTION_NIL;
         }
 
+        System.out.println("MovingAvatar : requestPlayerInput : after time test " + action);
+
+
+        if(!actions.contains(action))
+            action = Types.ACTIONS.ACTION_NIL;
+        System.out.println("MovingAvatar : requestPlayerInput : after contain test " + action);
+
+        this.player.logAction(action);
+        game.setAvatarLastAction(action, getPlayerID());
+        ki.reset(getPlayerID());
+        ki.setAction(action, getPlayerID());
+    }
+
+    /**
+     * Requests the controller's input, setting the game.ki.action mask with the processed data.
+     * @param game
+     */
+    protected void requestPlayerInput(Game game)
+    {
+        ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
+        ect.setMaxTimeMillis(CompetitionParameters.ACTION_TIME);
+
+        Types.ACTIONS action;
+
+        if (game.no_players > 1) {
+            action = this.player.act(game.getObservationMulti(), ect.copy());
+        } else {
+            action = this.player.act(game.getObservation(), ect.copy());
+        }
+        System.out.println("MovingAvatar : requestPlayerInput(game) :" +
+            " this.player.act() : " + action);
+        //System.out.println(action);
+
+
+        if(ect.exceededMaxTime())
+        {
+            long exceeded =  - ect.remainingTimeMillis();
+
+            if(ect.elapsedMillis() > CompetitionParameters.ACTION_TIME_DISQ)
+            {
+                //The agent took too long to replay. The game is over and the agent is disqualified
+                System.out.println("Too long: " + playerID + "(exceeding "+(exceeded)+"ms): controller disqualified.");
+                game.disqualify(playerID);
+            }else{
+                System.out.println("Overspent: " + playerID + "(exceeding "+(exceeded)+"ms): applying ACTION_NIL.");
+            }
+
+            action = Types.ACTIONS.ACTION_NIL;
+        }
+
+        System.out.println(action);
 
         if(!actions.contains(action))
             action = Types.ACTIONS.ACTION_NIL;

@@ -14,6 +14,7 @@ import core.game.GameDescription;
 import core.game.StateObservation;
 import core.game.StateObservationMulti;
 import core.generator.AbstractLevelGenerator;
+import core.player.AbstractLearner;
 import core.player.AbstractMultiPlayer;
 import core.player.AbstractPlayer;
 import core.player.Player;
@@ -31,6 +32,7 @@ import tools.StatSummary;
  */
 public class ArcadeMachine
 {
+    public static boolean learningTrack = true;
     public static final boolean VERBOSE = false;
 
     /**
@@ -118,27 +120,46 @@ public class ArcadeMachine
         //System.out.println("Number of players: " + no_players);
 
         Player[] players;
-        if (no_players > 1) {
-            //multi player games
-            players = new AbstractMultiPlayer[no_players];
+
+        if (learningTrack) {
+            if (no_players > 1) {
+                //multi player games
+                players = new AbstractLearner[no_players];
+            } else {
+                //single player games
+                players = new AbstractLearner[no_players];
+            }
         } else {
-            //single player games
-            players = new AbstractPlayer[no_players];
+            if (no_players > 1) {
+                //multi player games
+                players = new AbstractMultiPlayer[no_players];
+            } else {
+                //single player games
+                players = new AbstractPlayer[no_players];
+            }
         }
 
         for (int i = 0; i < no_players; i++) {
 
             humans[i] = isHuman(names[i]);
             anyHuman |= humans[i];
-
-            if (no_players > 1) {
-                //multi player
-                players[i] = ArcadeMachine.createMultiPlayer(names[i], actionFile, toPlay.getObservationMulti(), randomSeed, i, humans[i]);
+            if (learningTrack) {
+                if (no_players > 1) {
+                    //multi player
+                    players[i] = ArcadeMachine.createMultiPlayer(names[i], actionFile, toPlay.getObservationMulti(), randomSeed, i, humans[i]);
+                } else {
+                    //single player
+                    players[i] = ArcadeMachine.createLearner(names[i], actionFile, toPlay.getObservation(), randomSeed, humans[i]);
+                }
             } else {
-                //single player
-                players[i] = ArcadeMachine.createPlayer(names[i], actionFile, toPlay.getObservation(), randomSeed, humans[i]);
+                if (no_players > 1) {
+                    //multi player
+                    players[i] = ArcadeMachine.createMultiPlayer(names[i], actionFile, toPlay.getObservationMulti(), randomSeed, i, humans[i]);
+                } else {
+                    //single player
+                    players[i] = ArcadeMachine.createPlayer(names[i], actionFile, toPlay.getObservation(), randomSeed, humans[i]);
+                }
             }
-
             if (players[i] == null) {
                 //Something went wrong in the constructor, controller disqualified
                 if (no_players > 1) {
@@ -816,6 +837,33 @@ public class ArcadeMachine
         return player;
     }
 
+  /**
+   * create learner
+   */
+  private static AbstractLearner createLearner(String playerName, String actionFile,
+                                             StateObservation so, int randomSeed, boolean isHuman)
+  {
+      AbstractLearner player = null;
+
+      try{
+          //create the controller.
+          player = (AbstractLearner) createController(playerName, 0, so);
+          if(player != null)
+              player.setup(actionFile, randomSeed, isHuman);
+          //else System.out.println("No controller created.");
+
+      }catch (Exception e)
+      {
+          //This probably happens because controller took too much time to be created.
+          e.printStackTrace();
+          System.exit(1);
+      }
+
+      //System.out.println("Created player.");
+
+      return player;
+  }
+
     /**
      * Creates and initializes a new controller with the given name. Takes into account the initialization time,
      * calling the appropriate constructor with the state observation and time due parameters.
@@ -834,29 +882,48 @@ public class ArcadeMachine
             ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
             ect.setMaxTimeMillis(CompetitionParameters.INITIALIZATION_TIME);
 
-            if (so.getNoPlayers() < 2) { //single player
-                //Get the class and the constructor with arguments (StateObservation, long).
-                Class<? extends AbstractPlayer> controllerClass = Class.forName(playerName).asSubclass(AbstractPlayer.class);
-                Class[] gameArgClass = new Class[]{StateObservation.class, ElapsedCpuTimer.class};
-                Constructor controllerArgsConstructor = controllerClass.getConstructor(gameArgClass);
+            // TODO: 21/10/2016 add the if block for learning track test
+            if (learningTrack) {
+                if (so.getNoPlayers() < 2) { //single player
+                    //Get the class and the constructor with arguments (StateObservation, long).
+                    Class<? extends AbstractLearner> controllerClass = Class.forName(playerName).asSubclass(AbstractLearner.class);
+                    Class[] gameArgClass = new Class[]{String.class, ElapsedCpuTimer.class};
+                    Constructor controllerArgsConstructor = controllerClass.getConstructor(gameArgClass);
 
-                //Call the constructor with the appropriate parameters.
-                Object[] constructorArgs = new Object[]{so, ect.copy()};
+                    //Call the constructor with the appropriate parameters.
+                    Object[] constructorArgs = new Object[]{so.getStateObsString(), ect.copy()};
 
-                player = (AbstractPlayer) controllerArgsConstructor.newInstance(constructorArgs);
-                player.setPlayerID(playerID);
+                    player = (AbstractLearner) controllerArgsConstructor.newInstance(constructorArgs);
+                    player.setPlayerID(playerID);
 
-            } else { //multi player
-                //Get the class and the constructor with arguments (StateObservation, long, int).
-                Class<? extends AbstractMultiPlayer> controllerClass = Class.forName(playerName).asSubclass(AbstractMultiPlayer.class);
-                Class[] gameArgClass = new Class[]{StateObservationMulti.class, ElapsedCpuTimer.class, int.class};
-                Constructor controllerArgsConstructor = controllerClass.getConstructor(gameArgClass);
+                } else { //multi player
+                    /// TODO: 21/10/2016
+                }
+            } else {
+                if (so.getNoPlayers() < 2) { //single player
+                    //Get the class and the constructor with arguments (StateObservation, long).
+                    Class<? extends AbstractPlayer> controllerClass = Class.forName(playerName).asSubclass(AbstractPlayer.class);
+                    Class[] gameArgClass = new Class[]{StateObservation.class, ElapsedCpuTimer.class};
+                    Constructor controllerArgsConstructor = controllerClass.getConstructor(gameArgClass);
 
-                //Call the constructor with the appropriate parameters.
-                Object[] constructorArgs = new Object[]{(StateObservationMulti)so.copy(), ect.copy(), playerID};
+                    //Call the constructor with the appropriate parameters.
+                    Object[] constructorArgs = new Object[]{so, ect.copy()};
 
-                player = (AbstractMultiPlayer) controllerArgsConstructor.newInstance(constructorArgs);
-                player.setPlayerID(playerID);
+                    player = (AbstractPlayer) controllerArgsConstructor.newInstance(constructorArgs);
+                    player.setPlayerID(playerID);
+
+                } else { //multi player
+                    //Get the class and the constructor with arguments (StateObservation, long, int).
+                    Class<? extends AbstractMultiPlayer> controllerClass = Class.forName(playerName).asSubclass(AbstractMultiPlayer.class);
+                    Class[] gameArgClass = new Class[]{StateObservationMulti.class, ElapsedCpuTimer.class, int.class};
+                    Constructor controllerArgsConstructor = controllerClass.getConstructor(gameArgClass);
+
+                    //Call the constructor with the appropriate parameters.
+                    Object[] constructorArgs = new Object[]{(StateObservationMulti) so.copy(), ect.copy(), playerID};
+
+                    player = (AbstractMultiPlayer) controllerArgsConstructor.newInstance(constructorArgs);
+                    player.setPlayerID(playerID);
+                }
             }
             //Check if we returned on time, and act in consequence.
             long timeTaken = ect.elapsedMillis();

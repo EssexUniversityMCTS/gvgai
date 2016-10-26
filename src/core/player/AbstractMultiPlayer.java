@@ -40,4 +40,9 @@ public abstract class AbstractMultiPlayer extends Player {
     public Types.ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
         return Types.ACTIONS.ACTION_NIL;
     }
+
+    @Override
+    public Types.ACTIONS act(String stateObsStr, ElapsedCpuTimer elapsedTimer) {
+        return null;
+    }
 }

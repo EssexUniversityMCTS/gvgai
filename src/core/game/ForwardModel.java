@@ -1,9 +1,12 @@
 package core.game;
 
 import java.awt.Dimension;
+import java.io.File;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.google.gson.Gson;
+import core.JsonGameState;
 import core.SpriteGroup;
 import core.VGDLSprite;
 import core.competition.CompetitionParameters;
@@ -92,6 +95,10 @@ public class ForwardModel extends Game
      * Observation grid
      */
     private ArrayList<Observation>[][] observationGrid;
+
+
+    public File gameStateFile;
+
 
     /**
      * Constructor for StateObservation. Initializes everything
@@ -1055,6 +1062,43 @@ public class ForwardModel extends Game
     @Override
     public void buildStringLevel(String[] levelString, int randomSeed) {
         throw new RuntimeException("buildLevel should not be called in this instance.");
+    }
+
+
+    /**
+     * Parse game state by Gson
+     */
+    public String parseGameState(int[][] gameStateRGB) {
+        ArrayList<Types.ACTIONS>[] availableActions = new ArrayList[no_players];
+        double[] scores = new double[no_players];
+        Types.WINNER[] winStates = new Types.WINNER[no_players];
+        for (int playerId=0; playerId<no_players; playerId++) {
+            availableActions[playerId] = this.getAvatarActions(false);
+            scores[playerId] = this.getScore(playerId);
+            winStates[playerId] = this.getWinner(playerId);
+        }
+
+        JsonGameState jgs = new JsonGameState(gameStateRGB,
+            getGameTick(), availableActions, scores, winStates);
+        return new Gson().toJson(jgs);
+    }
+
+    /**
+     * Parse game state by Gson
+     */
+    public String parseGameStateByBytes(byte[] gameStateBytes) {
+        ArrayList<Types.ACTIONS>[] availableActions = new ArrayList[no_players];
+        double[] scores = new double[no_players];
+        Types.WINNER[] winStates = new Types.WINNER[no_players];
+        for (int playerId=0; playerId<no_players; playerId++) {
+            availableActions[playerId] = this.getAvatarActions(false);
+            scores[playerId] = this.getScore(playerId);
+            winStates[playerId] = this.getWinner(playerId);
+        }
+
+        JsonGameState jgs = new JsonGameState(gameStateBytes,
+            getGameTick(), availableActions, scores, winStates);
+        return new Gson().toJson(jgs);
     }
 
 }

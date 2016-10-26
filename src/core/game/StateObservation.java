@@ -464,4 +464,13 @@ public class StateObservation {
         return false;
     }
 
+
+  /**
+   * Parse the state observation
+   */
+    public String getStateObsString() {
+        return this.model.parseGameStateByBytes(this.model.gameStateBytes);
+
+//        return this.model.parseGameState(this.model.gameStateRGB);
+    }
 }

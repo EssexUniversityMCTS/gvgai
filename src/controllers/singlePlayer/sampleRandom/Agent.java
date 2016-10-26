@@ -99,8 +99,8 @@ public class Agent extends AbstractPlayer {
             avgTimeTaken  = acumTimeTaken/numIters;
             remaining = elapsedTimer.remainingTimeMillis();
         }
-
-        return action;
+        return Types.ACTIONS.ACTION_USE;
+//        return action;
     }
 
     /**

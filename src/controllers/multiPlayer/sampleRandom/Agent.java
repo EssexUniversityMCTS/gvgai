@@ -33,4 +33,5 @@ public class Agent extends AbstractMultiPlayer {
 		ArrayList<ACTIONS> a = stateObs.getAvailableActions(id);
 		return ACTIONS.values()[new Random().nextInt(a.size())];
 	}
+
 }
