@@ -112,6 +112,21 @@ public class VGDLParser
 
         return game;
     }
+    
+    /**
+     * parse both rules and termination and add them to the current game object
+     * @param currentGame	the current game object
+     * @param rules		the current interaction set as in the VGDL file
+     * @param terminations	the current termination set as in the VGDL file
+     */
+    public void parseInteractionTermination(Game currentGame, String[] rules, String[] terminations){
+	this.game = currentGame;
+	
+	Node rulesNode = indentTreeParser(rules);
+	Node terNode = indentTreeParser(terminations);
+	parseInteractionSet(rulesNode.children);
+	parseTerminationSet(terNode.children);
+    }
 
     /**
      * Builds the tree structure that defines the game.

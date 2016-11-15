@@ -292,7 +292,7 @@ public class GameDescription {
 	/**
 	 * Simple data class represents all game sprites
 	 */
-	public static class SpriteData{
+	public static class SpriteData implements Cloneable{
 		/**
 		 * VGDL class type for the current sprite
 		 */
@@ -323,6 +323,24 @@ public class GameDescription {
 		@Override
 		public String toString(){
 			return name + ":" + type + " " + sprites.toString();
+		}
+		
+		@Override
+		protected Object clone() throws CloneNotSupportedException {
+		    SpriteData s = new SpriteData();
+		    s.type = type;
+		    s.name = name;
+		    for(int i=0; i<sprites.size(); i++){
+			s.sprites.add(sprites.get(i));
+		    }
+		    s.isSingleton = isSingleton;
+		    s.isAvatar = isAvatar;
+		    s.isNPC = isNPC;
+		    s.isPortal = isPortal;
+		    s.isResource = isResource;
+		    s.isStatic = isStatic;
+		    
+		    return s;
 		}
 	}
 	
