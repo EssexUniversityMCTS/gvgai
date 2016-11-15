@@ -31,10 +31,6 @@ public class SLDescription {
      * 
      */
     private String[][] currentLevel;
-    /**
-     * 
-     */
-    private boolean[] background;
     
     /**
      * 
@@ -56,7 +52,6 @@ public class SLDescription {
 	this.level = level;
 	this.gameSprites = null;
 	this.currentLevel = null;
-	this.background = null;
 	
 	this.shift = shift;
 	this.random = new Random();
@@ -78,24 +73,8 @@ public class SLDescription {
 	}
 	ArrayList<SpriteData> list = this.currentGame.getSpriteData();
 	this.gameSprites = new SpriteData[list.size()];
-	this.background = new boolean[list.size()];
 	for(int i=0; i<this.gameSprites.length; i++){
 	    this.gameSprites[i] = list.get(i);
-	}
-	
-	for(int i=0; i<this.gameSprites.length; i++){
-	    int itype1 = VGDLRegistry.GetInstance().getRegisteredSpriteValue(this.gameSprites[i].name);
-	    this.background[i] = true;
-	    for(int j=0; j<this.gameSprites.length; j++){
-		int itype2 = VGDLRegistry.GetInstance().getRegisteredSpriteValue(this.gameSprites[j].name);
-		ArrayList<InteractionData> i1 = this.currentGame.getInteractionData(itype1, itype2);
-		ArrayList<InteractionData> i2 = this.currentGame.getInteractionData(itype2, itype1);
-		if(i1.size() + i2.size() > 0){
-		    this.background[i] = false;
-		    break;
-		}
-		//TODO: if its a side object or a bullet object or in the win conditions
-	    }
 	}
 	
 	if(this.level == null){
@@ -189,35 +168,6 @@ public class SLDescription {
 	
 	return result;
     }
-    
-//    /**
-//     * return which sprites are background sprite to either 
-//     * ignore in the rules or use them for something more interesting
-//     * @return an array of sprite data that are everywhere
-//     */
-//    public SpriteData[] getBackgroundSprites(){
-//	int size=0;
-//	for(int i=0; i<background.length; i++){
-//	    if(background[i]){
-//		size += 1;
-//	    }
-//	}
-//	SpriteData[] result = new SpriteData[size];
-//	size = 0;
-//	for(int i=0; i<background.length; i++){
-//	    if(background[i]){
-//		try {
-//		    result[size] = (SpriteData) gameSprites[i].clone();
-//		} catch (CloneNotSupportedException e) {
-//		    e.printStackTrace();
-//		}
-//		result[size].name = KEYWORD + "_" + this.encodeIndex(i, this.shift);
-//		size += 1;
-//	    }
-//	}
-//	
-//	return result;
-//    }
     
     /**
      * Return the current level as a comma separated 2D Array

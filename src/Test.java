@@ -123,7 +123,8 @@ public class Test {
 	// saveActions? actionFiles:null);
 	// }
 	
-	ArcadeMachine.generateRules(game, level1, "ruleGenerators.testing.RuleGenerator", gamesPath + "Rule_Testing.txt", 0);
-	ArcadeMachine.playOneGame(gamesPath + "Rule_Testing.txt", level1, recordActionsFile, seed);
+	// 7. Generate rules (Interaction and Terminations) for a fixed level
+	// ArcadeMachine.generateRules(game, level1, "ruleGenerators.testing.RuleGenerator", gamesPath + "Rule_Testing.txt", 0);
+	// ArcadeMachine.playOneGame(gamesPath + "Rule_Testing.txt", level1, recordActionsFile, seed);
     }
 }
