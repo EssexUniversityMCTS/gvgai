@@ -26,15 +26,19 @@ public class Test {
 	String sampleOLETSController = "controllers.singlePlayer.olets.Agent";
 	String repeatOLETS = "controllers.singlePlayer.repeatOLETS.Agent";
 
-	// Available Generators
+	// Available Level Generators
 	String randomLevelGenerator = "levelGenerators.randomLevelGenerator.LevelGenerator";
 	String geneticGenerator = "levelGenerators.geneticLevelGenerator.LevelGenerator";
 	String constructiveLevelGenerator = "levelGenerators.constructiveLevelGenerator.LevelGenerator";
 
+	// Available Rule Generator
+	String randomRuleGenerator = "ruleGenerators.randomRuleGenerator.RuleGenerator";
+	
 	// Available games:
 	String gamesPath = "examples/gridphysics/";
 	String games[] = new String[] {};
 	String generateLevelPath = "examples/gridphysics/";
+	String generateRulePath = "examples/gridphysics/";
 
 	// All public games
 	games = new String[] { "aliens", "angelsdemons", "assemblyline", "avoidgeorge", "bait", // 0-4
@@ -62,12 +66,13 @@ public class Test {
 	int seed = new Random().nextInt();
 
 	// Game and level to play
-	int gameIdx = 80;
+	int gameIdx = 1;
 	int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
 	String game = gamesPath + games[gameIdx] + ".txt";
 	String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
 
 	String recordLevelFile = generateLevelPath + games[gameIdx] + "_glvl.txt";
+	String recordGameFile = generateRulePath + games[gameIdx] + "_ggame.txt";
 	String recordActionsFile = null;// "actions_" + games[gameIdx] + "_lvl"
 					// + levelIdx + "_" + seed + ".txt";
 					// //where to record the actions
@@ -124,7 +129,7 @@ public class Test {
 	// }
 	
 	// 7. Generate rules (Interaction and Terminations) for a fixed level
-	// ArcadeMachine.generateRules(game, level1, "ruleGenerators.testing.RuleGenerator", gamesPath + "Rule_Testing.txt", 0);
-	// ArcadeMachine.playOneGame(gamesPath + "Rule_Testing.txt", level1, recordActionsFile, seed);
+	 ArcadeMachine.generateRules(game, level1, randomRuleGenerator, recordGameFile, 0);
+	 ArcadeMachine.playOneGame(recordGameFile, level1, recordActionsFile, seed);
     }
 }

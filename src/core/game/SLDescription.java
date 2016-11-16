@@ -161,9 +161,17 @@ public class SLDescription {
      * @return
      */
     public SpriteData[] getGameSprites(){
-	SpriteData[] result = this.gameSprites.clone();
+	SpriteData[] result = new SpriteData[this.gameSprites.length];
 	for(int i=0; i<result.length; i++){
-	    this.gameSprites[i].name = KEYWORD + "_" + this.encodeIndex(i, this.shift);
+	    try {
+		result[i] = (SpriteData) this.gameSprites[i].clone();
+	    } catch (CloneNotSupportedException e) {
+		e.printStackTrace();
+	    }
+	    result[i].name = KEYWORD + "_" + this.encodeIndex(i, this.shift);
+	    for(int j=0; j<result[i].sprites.size(); j++){
+		result[i].sprites.set(j, KEYWORD + "_" + this.encodeName(result[i].sprites.get(j), this.shift));
+	    }
 	}
 	
 	return result;
