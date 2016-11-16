@@ -47,6 +47,21 @@ public class CompetitionParameters
     public static int LEVEL_INITIALIZATION_TIME = 60000;
     
     /**
+     * Milliseconds allowed for the rule generator to generate rules
+     */
+    public static int RULE_ACTION_TIME = 1800000*10;
+    
+    /**
+     * Milliseconds allowed for the rule generator disqualification, if it returns rules after this time.
+     */
+    public static int RULE_ACTION_TIME_DISQ = 21600000;
+    
+    /**
+     * Milliseconds allowed for rule generator to initialize
+     */
+    public static int RULE_INITIALIZATION_TIME = 60000;
+    
+    /**
      * Number of repetition during the optimization operation
      */
     public static int OPTIMIZATION_REPEATITION = 1;
