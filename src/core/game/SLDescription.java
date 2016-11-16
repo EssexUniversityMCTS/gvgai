@@ -31,10 +31,6 @@ public class SLDescription {
      * the current encoded level
      */
     private String[][] currentLevel;
-    /**
-     * a decoding map for the encoded names
-     */
-    private HashMap<Integer, String> decodeMap;
     
     /**
      * the seed value to encode the names
@@ -68,7 +64,6 @@ public class SLDescription {
     public void reset(Game currentGame, String[] level) throws Exception{
 	this.currentGame = currentGame;
 	this.level = level;
-	this.decodeMap = new HashMap<Integer, String>();
 	if(this.currentGame == null){
 	    return;
 	}
@@ -135,14 +130,7 @@ public class SLDescription {
      * @return		encoded sprite index
      */
     private int encodeIndex(int index, int seed){
-	int result = (index + seed) % this.gameSprites.length;
-	while(result < 0){
-	    result += this.gameSprites.length;
-	}
-	while(result >= this.gameSprites.length){
-	    result -= this.gameSprites.length;
-	}
-	return result;
+	return index ^ seed;
     }
     
     /**
@@ -154,7 +142,6 @@ public class SLDescription {
 	for(int i=0; i<this.gameSprites.length; i++){
 	    if(this.gameSprites[i].name.toLowerCase().trim().equals(name.toLowerCase().trim())){
 		int result = encodeIndex(i, seed);
-		this.decodeMap.put(result, name);
 		return result;
 	    }
 	}
@@ -167,7 +154,7 @@ public class SLDescription {
      * @return		correct sprite name
      */
     private String decodeName(String name, int seed){
-	return this.decodeMap.get(Integer.parseInt(name.split("_")[1]));
+	return this.gameSprites[Integer.parseInt(name.split("_")[1]) ^ seed].name;
     }
     
     /**
