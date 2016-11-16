@@ -190,6 +190,15 @@ public class ArcadeMachine {
 	return toPlay.getFullResult();
     }
 
+    /**
+     * create a new game file using the new generated rules
+     * @param gameFile		current game file
+     * @param levelFile		current level file
+     * @param ruleGenerator	current rule generator
+     * @param modifiedFile	the resulted game file
+     * @param randomSeed	random seed used in encoding game sprites
+     * @return			true if everything worked fine, false otherwise
+     */
     public static boolean generateRules(String gameFile, String levelFile, String ruleGenerator, String modifiedFile, int randomSeed) {
 	VGDLFactory.GetInstance().init();
 	VGDLRegistry.GetInstance().init();
@@ -1097,6 +1106,13 @@ public class ArcadeMachine {
 	return generator;
     }
 
+    /**
+     * 
+     * @param ruleGenerator
+     * @param sl
+     * @return
+     * @throws RuntimeException
+     */
     protected static AbstractRuleGenerator createRuleGenerator(String ruleGenerator, SLDescription sl)
 	    throws RuntimeException {
 	AbstractRuleGenerator generator = null;
@@ -1194,6 +1210,13 @@ public class ArcadeMachine {
 	return level;
     }
 
+    /**
+     * run the generator to get new rules
+     * @param sl	current game sprites and level description object
+     * @param game	current game object
+     * @param generator	current rule generator
+     * @return		the new interaction rules and termination conditions
+     */
     private static String[][] getGeneratedRules(SLDescription sl, Game game, AbstractRuleGenerator generator) {
 	ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
 	ect.setMaxTimeMillis(CompetitionParameters.RULE_ACTION_TIME);
@@ -1249,6 +1272,12 @@ public class ArcadeMachine {
 	}
     }
 
+    /**
+     * Save the result of the rule generations
+     * @param gameFile		current game file
+     * @param modifiedFile	current new game file
+     * @param rules		the generated rules
+     */
     private static void saveGame(String gameFile, String modifiedFile, String[][] rules) {
 	try {
 	    if (modifiedFile != null) {

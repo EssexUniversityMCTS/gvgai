@@ -693,6 +693,9 @@ public abstract class Game {
 	return results;
     }
 
+    /**
+     * clear all the interactions and termination in the current game
+     */
     public void clearInteractionTerminationData(){
 	this.setStochastic(false);
 	this.terminations.clear();

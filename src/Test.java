@@ -75,11 +75,11 @@ public class Test {
 	String recordGameFile = generateRulePath + games[gameIdx] + "_ggame.txt";
 	String recordActionsFile = null;// "actions_" + games[gameIdx] + "_lvl"
 					// + levelIdx + "_" + seed + ".txt";
-					// //where to record the actions
+					// where to record the actions
 					// executed. null if not to save.
 
 	// 1. This starts a game, in a level, played by a human.
-//	ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
+	ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
 
 	// 2. This plays a game in a level by the controller.
 	// ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController,
@@ -129,7 +129,7 @@ public class Test {
 	// }
 	
 	// 7. Generate rules (Interaction and Terminations) for a fixed level
-	 ArcadeMachine.generateRules(game, level1, randomRuleGenerator, recordGameFile, 0);
-	 ArcadeMachine.playOneGame(recordGameFile, level1, recordActionsFile, seed);
+	// ArcadeMachine.generateRules(game, level1, randomRuleGenerator, recordGameFile, new Random().nextInt());
+	// ArcadeMachine.playOneGame(recordGameFile, level1, recordActionsFile, seed);
     }
 }

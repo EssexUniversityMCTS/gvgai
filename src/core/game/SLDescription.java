@@ -11,41 +11,42 @@ import core.game.GameDescription.SpriteData;
 
 public class SLDescription {
     /**
-     * 
+     * the keyword to encode the sprites in the game
      */
     private String KEYWORD = "sprite";
     
     /**
-     * 
+     * the current game object
      */
     private Game currentGame;
     /**
-     * 
+     * the current level
      */
     private String[] level;
     /**
-     * 
+     * the current game sprites
      */
     private SpriteData[] gameSprites;
     /**
-     * 
+     * the current encoded level
      */
     private String[][] currentLevel;
+    /**
+     * a decoding map for the encoded names
+     */
+    private HashMap<Integer, String> decodeMap;
     
     /**
-     * 
+     * the seed value to encode the names
      */
     private int shift;
-    /**
-     * 
-     */
-    private Random random;
     
     /**
-     * 
-     * @param currentGame
-     * @param level
-     * @throws Exception
+     * constructor for the SLDescription contains information about game sprites and the current level
+     * @param currentGame	the current game
+     * @param level		the current level
+     * @param shift		random seed to encode the sprites
+     * @throws Exception	if the level is empty
      */
     public SLDescription(Game currentGame, String[] level, int shift) throws Exception{
 	this.currentGame = currentGame;
@@ -54,23 +55,26 @@ public class SLDescription {
 	this.currentLevel = null;
 	
 	this.shift = shift;
-	this.random = new Random();
 	
 	this.reset(currentGame, level);
     }
     
     /**
-     * 
-     * @param currentGame
-     * @param level
-     * @throws Exception
+     * reset the current variables to a new current game and level
+     * @param currentGame	the new game
+     * @param level		the new level
+     * @throws Exception	if the level is empty
      */
     public void reset(Game currentGame, String[] level) throws Exception{
 	this.currentGame = currentGame;
 	this.level = level;
+	this.decodeMap = new HashMap<Integer, String>();
 	if(this.currentGame == null){
 	    return;
 	}
+	/**
+	 * get all the game sprites in the game
+	 */
 	ArrayList<SpriteData> list = this.currentGame.getSpriteData();
 	this.gameSprites = new SpriteData[list.size()];
 	for(int i=0; i<this.gameSprites.length; i++){
@@ -80,19 +84,25 @@ public class SLDescription {
 	if(this.level == null){
 	    throw new Exception("level can't be null while game is not");
 	}
+	/**
+	 * encode the level map
+	 */
 	HashMap<Character, ArrayList<String>> levelMapping = this.currentGame.getCharMapping();
 	this.currentLevel = new String[level.length][getWidth(level)];
 	for(int i=0; i<this.currentLevel.length; i++){
 	    for(int j=0; j<this.currentLevel[i].length; j++){
 		if(j >= this.currentLevel[i].length){
+		    //if the length of the line shorter than the maximum width
 		    this.currentLevel[i][j] = "";
 		}
 		else{
 		    ArrayList<String> tempSprites = levelMapping.get(level[i].charAt(j));
 		    if(tempSprites.size() == 0){
+			// empty location
 			this.currentLevel[i][j] = "";
 		    }
 		    else{
+			//encode the different sprites
 			this.currentLevel[i][j] = KEYWORD + "_" + this.encodeName(tempSprites.get(0), this.shift);
 			for(int k=1; k<tempSprites.size(); k++){
 			    this.currentLevel[i][j] += ", " + KEYWORD + "_" + this.encodeName(tempSprites.get(k), this.shift);
@@ -104,9 +114,9 @@ public class SLDescription {
     }
     
     /**
-     * 
-     * @param level
-     * @return
+     * get the width of the level
+     * @param level	current level
+     * @return		width of the level
      */
     private int getWidth(String[] level){
 	int width = 0;
@@ -120,45 +130,49 @@ public class SLDescription {
     }
     
     /**
-     * 
-     * @param index
-     * @return
+     * encode the current sprite index to a new index
+     * @param index	current sprite index
+     * @return		encoded sprite index
      */
     private int encodeIndex(int index, int seed){
-	return (index + seed) % this.gameSprites.length;
+	int result = (index + seed) % this.gameSprites.length;
+	while(result < 0){
+	    result += this.gameSprites.length;
+	}
+	while(result >= this.gameSprites.length){
+	    result -= this.gameSprites.length;
+	}
+	return result;
     }
     
     /**
-     * 
-     * @param name
-     * @return
+     * encode sprite name to an encoded index
+     * @param name	the current sprite name to be encoded
+     * @return		encoded index for a sprite name
      */
     private int encodeName(String name, int seed){
 	for(int i=0; i<this.gameSprites.length; i++){
 	    if(this.gameSprites[i].name.toLowerCase().trim().equals(name.toLowerCase().trim())){
-		return encodeIndex(i, seed);
+		int result = encodeIndex(i, seed);
+		this.decodeMap.put(result, name);
+		return result;
 	    }
 	}
 	return -1;
     }
     
     /**
-     * 
-     * @param name
-     * @return
+     * decode the sprite name
+     * @param name	current encoded sprite name
+     * @return		correct sprite name
      */
     private String decodeName(String name, int seed){
-	int index = Integer.parseInt(name.split("_")[1]);
-	int result = index - seed;
-	if(result < 0){
-	    result += this.gameSprites.length;
-	}
-	return this.gameSprites[result].name;
+	return this.decodeMap.get(Integer.parseInt(name.split("_")[1]));
     }
     
     /**
-     * 
-     * @return
+     * get an array of game sprites
+     * @return	array contain all the game sprites
      */
     public SpriteData[] getGameSprites(){
 	SpriteData[] result = new SpriteData[this.gameSprites.length];
@@ -186,11 +200,11 @@ public class SLDescription {
     }
     
     /**
-     * 
-     * @param rules
-     * @param wins
-     * @param seed
-     * @return
+     * Decode the rules and strings based on the seed
+     * @param rules	current interaction rules to decode
+     * @param wins	current termination rules to decode
+     * @param seed	current encoding seed
+     * @return		return decoded interaction and termination rules
      */
     public String[][] modifyRules(String[] rules, String[] wins, int seed){
 	String[] modifiedRules = new String[rules.length + 1];
@@ -230,10 +244,11 @@ public class SLDescription {
     }
     
     /**
-     * 
-     * @param rules
-     * @param wins
-     * @return
+     * get state observation based on the interaction rules and termination conditions
+     * @param rules	current interaction rules
+     * @param wins	current termination conditions
+     * @return		state observation of the current game using 
+     * 			the new interaction rules and termination conditions
      */
     public StateObservation testRules(String[] rules, String[] wins){
 	String[][] rw = this.modifyRules(rules, wins, this.shift);
