@@ -1050,7 +1050,6 @@ public class ArcadeMachine
         return generator;
     }
 
-
     /**
      * Generate a level for the described game using the supplied level generator.
      * @param gd		Abstract description of game elements
