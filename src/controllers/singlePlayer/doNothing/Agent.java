@@ -1,5 +1,6 @@
 package controllers.singlePlayer.doNothing;
 
+import core.game.SerializableStateObservation;
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
 import ontology.Types;
@@ -25,6 +26,12 @@ public class Agent extends AbstractPlayer{
 	 */
 	@Override
 	public ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
+
+		SerializableStateObservation sso = new SerializableStateObservation(stateObs);
+		System.out.println("Create object time: " + elapsedTimer);
+		sso.serialize("gsonState.json");
+		System.out.println("Serialize object time: " + elapsedTimer);
+
 		return Types.ACTIONS.ACTION_NIL;
 	}
 }

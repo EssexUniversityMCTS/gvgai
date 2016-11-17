@@ -308,6 +308,8 @@ public class GameDescription {
 		 */
 		public ArrayList<String> sprites;
 		
+		public boolean isSingleton;
+		
 		public boolean isAvatar;
 		public boolean isNPC;
 		public boolean isPortal;

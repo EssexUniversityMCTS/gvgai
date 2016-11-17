@@ -114,7 +114,27 @@ public class Types {
             else if (move.equals(RIGHT)) return ACTION_RIGHT;
             else return ACTION_NIL;
         }
+        
+        public static boolean isMoving(ACTIONS value){
+        	return value == ACTIONS.ACTION_UP || value == ACTIONS.ACTION_DOWN ||
+        			value == ACTIONS.ACTION_LEFT || value == ACTIONS.ACTION_RIGHT;
+        }
 
+        public static ACTIONS reverseACTION(ACTIONS value){
+        	if(value == ACTIONS.ACTION_DOWN){
+        		return ACTIONS.ACTION_UP;
+        	}
+        	if(value == ACTIONS.ACTION_UP){
+        		return ACTIONS.ACTION_DOWN;
+        	}
+        	if(value == ACTIONS.ACTION_RIGHT){
+        		return ACTIONS.ACTION_LEFT;
+        	}
+        	if(value == ACTIONS.ACTION_LEFT){
+        		return ACTIONS.ACTION_RIGHT;
+        	}
+        	return ACTIONS.ACTION_NIL;
+        }
 
         public static ACTIONS fromVector(Direction move) {
         	// Probably better to use .equals() instead of == to test for equality,

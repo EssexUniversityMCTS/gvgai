@@ -15,6 +15,8 @@ public class TestLearner {
   public static void main(String[] args) {
     //Available controllers:
     String sampleRandomController = "controllers.learner.sampleRandom.Agent";
+    String doNothingController = "controllers.singlePlayer.doNothing.Agent";
+
 
     String gamesPath = "examples/gridphysics/";
     String games[] = new String[]{};
@@ -52,6 +54,6 @@ public class TestLearner {
     String game = gamesPath + games[gameIdx] + ".txt";
     String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
 
-    ArcadeMachine.runOneGame(game, level1, visuals, sampleRandomController, null, seed, 0);
+    ArcadeMachine.runOneGame(game, level1, visuals, doNothingController, null, seed, 0);
   }
 }

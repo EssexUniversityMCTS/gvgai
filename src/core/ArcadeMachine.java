@@ -32,7 +32,7 @@ import tools.StatSummary;
  */
 public class ArcadeMachine
 {
-    public static boolean learningTrack = true;
+    public static boolean learningTrack = false;
     public static final boolean VERBOSE = false;
 
     /**
@@ -1049,7 +1049,6 @@ public class ArcadeMachine
 
         return generator;
     }
-
 
     /**
      * Generate a level for the described game using the supplied level generator.
