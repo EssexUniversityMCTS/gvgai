@@ -29,9 +29,9 @@ BasicGame key_handler=Pulse  square_size=50
         A > avatar white
         L > avatar blue
 
-        * > crate black
-        @ > crate white
-        $ > crate blue
+        * > crate inBlack
+        @ > crate inWhite
+        $ > crate inBlue
 
         t > target black
         u > target white
