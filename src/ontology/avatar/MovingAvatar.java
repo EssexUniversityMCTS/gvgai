@@ -145,7 +145,6 @@ public class MovingAvatar extends VGDLSprite {
 
     private void applyMovement(Game game, Direction action)
     {
-        System.out.println("MovingAvatar : applyMovement : " + action);
         lastMovementType = this.physics.activeMovement(this, action, this.speed);
     }
 

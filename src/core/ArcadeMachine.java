@@ -32,7 +32,7 @@ import tools.StatSummary;
  */
 public class ArcadeMachine
 {
-    public static boolean learningTrack = true;
+    public static boolean learningTrack = false;
     public static final boolean VERBOSE = false;
 
     /**
