@@ -11,6 +11,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeSet;
 
 /**
@@ -22,7 +23,6 @@ import java.util.TreeSet;
  */
 public class SerializableStateObservation {
 
-    public ArrayList<Types.ACTIONS> availableActions;
     public float gameScore;
     public int gameTick;
     public Types.WINNER gameWinner;
@@ -31,15 +31,17 @@ public class SerializableStateObservation {
     public int blockSize;
     public float avatarSpeed;
     public Vector2d avatarOrientation;
-    public HashMap<Integer, Integer> avatarResources;
     public Types.ACTIONS avatarLastAction;
     public int avatarType;
     public int avatarHealthPoints;
     public int avatarMaxHealthPoints;
     public int avatarLimitHealthPoints;
     public boolean isAvatarAlive;
+
+    public ArrayList<Types.ACTIONS> availableActions;
+    public HashMap<Integer, Integer> avatarResources;
     public ArrayList<Observation>[][] observationGrid;
-    public TreeSet<Event> eventsHistory;
+    //public TreeSet<Event> eventsHistory;
     public ArrayList<Observation>[] NPCPositions;
     public ArrayList<Observation>[] immovablePositions;
     public ArrayList<Observation>[] movablePositions;
@@ -66,7 +68,7 @@ public class SerializableStateObservation {
         avatarLimitHealthPoints = s.getAvatarLimitHealthPoints();
         isAvatarAlive = s.isAvatarAlive();
         observationGrid = s.getObservationGrid();
-        eventsHistory = s.getEventsHistory();
+        //eventsHistory = s.getEventsHistory();
         NPCPositions = s.getNPCPositions();
         immovablePositions = s.getImmovablePositions();
         movablePositions = s.getMovablePositions();
@@ -91,5 +93,199 @@ public class SerializableStateObservation {
         return gson;
     }
 
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+
+        //gameScore
+        sb.append("{\"gameScore\":");
+        sb.append(gameScore);
+        sb.append(",");
+        //gameTick
+        sb.append("\"gameTick\":");
+        sb.append(gameTick);
+        sb.append(",");
+        //gameWinner
+        sb.append("\"gameWinner\":");
+        sb.append(gameWinner);
+        sb.append(",");
+        //isGameOver
+        sb.append("\"isGameOver\":");
+        sb.append(isGameOver);
+        sb.append(",");
+        //worldDimension
+        sb.append("\"worldDimension\":");
+        sb.append(worldDimension);
+        sb.append(",");
+        //blockSize
+        sb.append("\"blockSize\":");
+        sb.append(blockSize);
+        sb.append(",");
+        //avatarSpeed
+        sb.append("\"avatarSpeed\":");
+        sb.append(avatarSpeed);
+        sb.append(",");
+        //avatarOrientation
+        sb.append("\"avatarOrientation\":");
+        sb.append(avatarOrientation);
+        sb.append(",");
+        //avatarLastAction
+        sb.append("\"avatarLastAction\":");
+        sb.append(avatarLastAction);
+        sb.append(",");
+        //avatarType
+        sb.append("\"avatarType\":");
+        sb.append(avatarType);
+        sb.append(",");
+        //avatarHealthPoints
+        sb.append("\"avatarHealthPoints\":");
+        sb.append(avatarHealthPoints);
+        sb.append(",");
+        //avatarMaxHealthPoints
+        sb.append("\"avatarMaxHealthPoints\":");
+        sb.append(avatarMaxHealthPoints);
+        sb.append(",");
+        //avatarLimitHealthPoints
+        sb.append("\"avatarLimitHealthPoints\":");
+        sb.append(avatarLimitHealthPoints);
+        sb.append(",");
+        //isAvatarAlive
+        sb.append("\"isAvatarAlive\":");
+        sb.append(isAvatarAlive);
+        sb.append(",");
+
+        //availableActions
+        sb.append("\"availableActions\":[");
+        for (Types.ACTIONS action :availableActions) {
+            sb.append("\""+action+"\",");
+        }
+        sb.append("],");
+
+//        HashMap<Integer,Integer> avatarResources;
+        //avatarResources
+        sb.append("\"avatarResources\":[");
+        if (avatarResources==null) {
+            sb.append("[]],");
+        } else {
+            String str = "";
+            for (Map.Entry<Integer, Integer> entry : avatarResources.entrySet()) {
+                Integer key = entry.getKey();
+                Integer value = entry.getValue();
+                str += "[" + key + "," + value + "],";
+            }
+            if (str.endsWith(",")) {
+                str = str.substring(0, str.length() - 1);
+            }
+            sb.append(str);
+            sb.append("],");
+        }
+        //NPCpositions
+        sb.append("\"NPCpositions\":[");
+        if (NPCPositions==null) {
+            sb.append("[]],");
+        } else {
+            String str = "";
+            for (int i = 0; i < this.NPCPositions.length; i++) {
+                for (Observation npc : NPCPositions[i]) {
+                    str += npc.toString() + ",";
+                }
+            }
+            if (str.endsWith(",")) {
+                str = str.substring(0, str.length() - 1);
+            }
+            sb.append(str);
+            sb.append("],");
+        }
+
+        //immovablePositions
+        sb.append("\"immovablePositions\":[");
+        if (immovablePositions==null) {
+            sb.append("[]],");
+        } else {
+            String str = "";
+            for (int i = 0; i < this.immovablePositions.length; i++) {
+                for (Observation npc : immovablePositions[i]) {
+                    str += npc.toString() + ",";
+                }
+            }
+            if (str.endsWith(",")) {
+                str = str.substring(0, str.length() - 1);
+            }
+            sb.append(str);
+            sb.append("],");
+        }
+
+        //movablePositions
+        sb.append("\"movablePositions\":[");
+        if (movablePositions==null) {
+            sb.append("[]],");
+        } else {
+            String str = "";
+            for (int i = 0; i < this.movablePositions.length; i++) {
+                for (Observation npc : movablePositions[i]) {
+                    str += npc.toString() + ",";
+                }
+            }
+            if (str.endsWith(",")) {
+                str = str.substring(0, str.length() - 1);
+            }
+            sb.append(str);
+            sb.append("],");
+        }
+
+        //resourcesPositions
+        sb.append("\"resourcesPositions\":[");
+        if (resourcesPositions==null) {
+            sb.append("[]],");
+        } else {
+            String str = "";
+            for (int i = 0; i < this.resourcesPositions.length; i++) {
+                for (Observation npc : resourcesPositions[i]) {
+                    str += npc.toString() + ",";
+                }
+            }
+            if (str.endsWith(",")) {
+                str = str.substring(0, str.length() - 1);
+            }
+            sb.append(str);
+            sb.append("],");
+        }
+
+        //portalsPositions
+        sb.append("\"portalsPositions\":[");
+        if (portalsPositions==null) {
+            sb.append("[]],");
+        } else {
+            String str = "";
+            for (int i = 0; i < this.portalsPositions.length; i++) {
+                for (Observation npc : portalsPositions[i]) {
+                    str += npc.toString() + ",";
+                }
+            }
+            if (str.endsWith(",")) {
+                str = str.substring(0, str.length() - 1);
+            }
+            sb.append(str);
+            sb.append("],");
+        }
+
+        //fromAvatarSpritesPositions
+        sb.append("\"fromAvatarSpritesPositions\":[");
+        if (fromAvatarSpritesPositions==null) {
+            sb.append("[]]}");
+        } else {
+            String str = "";
+            for (int i = 0; i < this.fromAvatarSpritesPositions.length; i++) {
+                for (Observation npc : fromAvatarSpritesPositions[i]) {
+                    str += npc.toString() + ",";
+                }
+            }
+            if (str.endsWith(",")) {
+                str = str.substring(0, str.length() - 1);
+            }
+            sb.append(str);
+            sb.append("]}");
+        }
+        return sb.toString();
+    }
 
 }

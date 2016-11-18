@@ -2,8 +2,8 @@
 
 BasicGame square_size=25
     SpriteSet
-        floor > Immovable img=oryx/backGrey
-        enemyground > Immovable img=newset/water
+        floor > Immovable img=oryx/backGrey hidden=True
+        enemyground > Immovable img=newset/water hidden=True
         avatar  > OngoingAvatar color=YELLOW img=oryx/spaceship1 speed=0.15
         powerblib > Passive img=oryx/diamond3
         powerblibturning > Flicker limit=8 img=oryx/sparkle4

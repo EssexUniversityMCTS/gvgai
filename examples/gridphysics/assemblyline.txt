@@ -1,6 +1,6 @@
 BasicGame key_handler=Pulse
     SpriteSet
-        floor > Immovable img=newset/floor2
+        floor > Immovable img=newset/floor2 hidden=True
 
         assembly > Immovable
             assembly1 > color=PINK

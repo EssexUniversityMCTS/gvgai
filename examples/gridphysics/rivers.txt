@@ -1,7 +1,7 @@
 BasicGame square_size=30 key_handler=Pulse
     SpriteSet
 
-        floor > Immovable img=oryx/backOBrown
+        floor > Immovable img=oryx/backOBrown hidden=True
         avatar  > ShootAvatar stype=shovel img=newset/man1
         shovel > OrientedFlicker limit=1 color=LIGHTGRAY img=oryx/axe2
 
