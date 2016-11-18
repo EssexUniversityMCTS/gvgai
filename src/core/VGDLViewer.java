@@ -130,7 +130,7 @@ public class VGDLViewer extends JComponent
      */
     public byte[] saveToByte() {
         Graphics2D graphics = mapImage.createGraphics();
-        System.out.println( mapImage.getWidth() + " " +  mapImage.getHeight());
+//        System.out.println( mapImage.getWidth() + " " +  mapImage.getHeight());
         this.paintComponent(graphics);
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

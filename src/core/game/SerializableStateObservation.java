@@ -2,6 +2,7 @@ package core.game;
 
 import com.google.gson.Gson;
 import ontology.Types;
+import tools.ElapsedCpuTimer;
 import tools.Vector2d;
 
 import java.awt.*;
@@ -86,6 +87,7 @@ public class SerializableStateObservation {
                 gson.toJson(this, new FileWriter(filename));
             }catch (Exception e){}
         }
+
         return gson;
     }
 

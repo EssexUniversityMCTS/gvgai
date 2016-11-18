@@ -1236,7 +1236,7 @@ public abstract class Game
 //      String gameObsStr = fwdModel.parseGameState(gameStateRGB);
       String gameObsStr = fwdModel.parseGameStateByBytes(gameStateBytes);
 
-      System.out.println("Game : parseGameState() : " + t);
+//      System.out.println("Game : parseGameState() : " + t);
 
         //Now, do all of the avatars.
         for (int i = 0; i < no_players; i++) {
@@ -1247,7 +1247,7 @@ public abstract class Game
               if (ArcadeMachine.learningTrack) {
                 ElapsedCpuTimer tu = new ElapsedCpuTimer();
                 avatars[i].update(this, gameObsStr);
-                System.out.println("Game : update() : " + tu);
+//                System.out.println("Game : update() : " + tu);
               } else {
                 avatars[i].update(this);
               }

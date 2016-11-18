@@ -215,8 +215,8 @@ public class MovingAvatar extends VGDLSprite {
         } else {
             action = this.player.act(game.getObservation(), ect.copy());
         }
-        System.out.println("MovingAvatar : requestPlayerInput(game) :" +
-            " this.player.act() : " + action);
+//        System.out.println("MovingAvatar : requestPlayerInput(game) :" +
+//            " this.player.act() : " + action);
         //System.out.println(action);
 
 
@@ -236,7 +236,7 @@ public class MovingAvatar extends VGDLSprite {
             action = Types.ACTIONS.ACTION_NIL;
         }
 
-        System.out.println(action);
+//        System.out.println(action);
 
         if(!actions.contains(action))
             action = Types.ACTIONS.ACTION_NIL;
