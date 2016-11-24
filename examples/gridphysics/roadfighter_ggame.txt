@@ -1,0 +1,39 @@
+BasicGame square_size=24
+   SpriteSet
+            floor > Immovable img=newset/highway2 hidden=True
+            street > Immovable img=newset/street3 hidden=True
+            moving >
+                avatar  > MovingAvatar speed=0.5 color=YELLOW  img=newset/car_red healthPoints=10 limitHealthPoints=20
+                cars >
+                    carSlow  > Missile orientation=DOWN speed=0.25 img=newset/tank_blue
+                    carFast  > Missile orientation=DOWN speed=0.5 img=newset/car_green
+                statics > 
+                    fuel > Missile orientation=DOWN speed=1 img=newset/fuel
+                    tree > Missile orientation=DOWN speed=1 img=newset/tree2
+            end    > Immovable invisible=True hidden=True
+            portal > SpawnPoint invisible=True
+                slowPortal   > stype=carSlow cooldown=50  total=16
+                fastPortal   > stype=carFast cooldown=100 total=8
+                fuelPortal   > stype=fuel    cooldown=25  total=32
+                treePortal   > stype=tree    cooldown=2   total=400
+    
+   InteractionSet
+      fuelPortal avatar > turnAround scoreChange=1 
+      slowPortal tree > reverseDirection scoreChange=1 
+      fuelPortal fastPortal > attractGaze scoreChange=1 
+      tree slowPortal > bounceForward scoreChange=2 
+      treePortal tree > reverseDirection scoreChange=2 
+      treePortal slowPortal > killIfFromAbove scoreChange=1 
+      tree treePortal > killSprite scoreChange=1 
+   LevelMapping
+            f > fuelPortal floor
+            A > avatar floor
+            x > tree street
+            t > treePortal street
+            s > slowPortal floor
+            c > fastPortal floor
+            . > floor
+            + > street
+    
+   TerminationSet
+      Timeout limit=1022 win=True 

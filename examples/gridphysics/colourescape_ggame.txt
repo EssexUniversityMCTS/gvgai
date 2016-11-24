@@ -1,0 +1,54 @@
+BasicGame key_handler=Pulse
+   SpriteSet
+            floor > Immovable img=oryx/floor3 hidden=True
+            exit > Door color=GREEN img=oryx/doorclosed1
+            hole   > Immovable color=DARKBLUE img=oryx/spike2 portal=True
+    
+            boxes   > Passive  shrinkfactor=0.8
+                box > img=newset/block2
+                bluebox > img=newset/blockB
+                redbox > img=newset/blockR
+                greenbox > img=newset/blockG
+    
+            switch > Immovable
+                 normalSwitch > img=newset/floor6
+                 blueSwitch > img=newset/tile1
+                 redSwitch > img=newset/tile3
+                 greenSwitch > img=newset/tile4
+    
+            avatar > MovingAvatar
+                 normalAvatar > img=newset/girl3
+                 blueAvatar > img=newset/girl2
+                 redAvatar > img=newset/girl5
+                 greenAvatar > img=newset/girl1
+    
+            wall > Immovable img=oryx/wall3 autotiling=True
+    
+   LevelMapping
+                A > normalAvatar floor
+                x > exit floor
+                h > hole floor
+    
+                1 > box floor
+                2 > bluebox floor
+                3 > redbox floor
+                4 > greenbox floor
+    
+                a > normalSwitch floor
+                b > blueSwitch floor
+                c > redSwitch floor
+                d > greenSwitch floor
+    
+                . > floor
+    
+   InteractionSet
+      normalAvatar wall > flipDirection scoreChange=2 
+      blueSwitch bluebox > stepBack scoreChange=2 
+      floor blueSwitch > attractGaze scoreChange=2 
+      bluebox hole > pullWithIt scoreChange=2 
+      wall floor > undoAll scoreChange=2 
+      bluebox wall > pullWithIt scoreChange=1 
+      hole wall > stepBack scoreChange=2 
+      hole floor > attractGaze scoreChange=1 
+   TerminationSet
+      Timeout limit=1183 win=True 

@@ -92,7 +92,7 @@ public class SLDescription {
 		}
 		else{
 		    ArrayList<String> tempSprites = levelMapping.get(level[i].charAt(j));
-		    if(tempSprites.size() == 0){
+		    if(tempSprites == null || tempSprites.size() == 0){
 			// empty location
 			this.currentLevel[i][j] = "";
 		    }

@@ -1,0 +1,46 @@
+BasicGame
+    
+   SpriteSet
+            sky > Immovable img=oryx/backLBlue
+            trunk   > Immovable    color=BROWN  img=newset/cloud1
+            cursed > Immovable    color=YELLOW img=newset/cursedman
+    
+            movable >
+                demon  > Bomber stype=bolt   img=oryx/devil1 prob=0.15  cooldown=6 speed=0.4 frameRate=8
+                angel  > Bomber stype=salvation   img=oryx/angel1 prob=0.05  cooldown=6 speed=0.45 frameRate=8
+                citizen > Chaser stype=output img=newset/man2 speed=0.4
+                blessed > Chaser stype=output img=newset/blessedman speed=0.4
+    
+            avatar > MovingAvatar img=newset/girl4 frameRate=10
+    
+            input > SpawnPoint stype=citizen  cooldown=16 img=oryx/dooropen1 portal=True
+            output > Immovable img=oryx/dooropen1 portal=True
+            box    > Passive img=newset/cloud2 shrinkfactor=0.8
+    
+            missile > Missile
+                bolt  > orientation=DOWN  color=RED speed=0.2 img=oryx/firedown1
+                salvation > orientation=DOWN  color=RED speed=0.2 img=oryx/icedown1
+    
+            wall > Immovable img=oryx/wall3 autotiling=True
+    
+   InteractionSet
+      sky trunk > stepBack scoreChange=2 
+      demon output > bounceForward scoreChange=1 
+      box avatar > collectResource scoreChange=1 
+      box input > flipDirection scoreChange=2 
+      wall output > bounceForward scoreChange=1 
+      box trunk > flipDirection scoreChange=1 
+      angel input > align scoreChange=2 
+   LevelMapping
+            d > sky demon
+            a > sky angel
+            t > sky trunk
+            x > sky box
+            i > sky input
+            o > sky output
+            . > sky
+            w > wall
+            A > sky avatar
+    
+   TerminationSet
+      Timeout limit=855 win=True 

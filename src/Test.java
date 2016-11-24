@@ -66,7 +66,7 @@ public class Test {
 	int seed = new Random().nextInt();
 
 	// Game and level to play
-	int gameIdx = 1;
+	int gameIdx = 80;
 	int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
 	String game = gamesPath + games[gameIdx] + ".txt";
 	String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
@@ -130,6 +130,7 @@ public class Test {
 	
 	// 7. Generate rules (Interaction and Terminations) for a fixed level
 	// ArcadeMachine.generateRules(game, level1, randomRuleGenerator, recordGameFile, new Random().nextInt());
-	// ArcadeMachine.playOneGame(recordGameFile, level1, recordActionsFile, seed);
+	// ArcadeMachine.runOneGame(recordGameFile, level1, false, sampleMCTSController, 
+	//	recordActionsFile, new Random().nextInt(), 0);
     }
 }

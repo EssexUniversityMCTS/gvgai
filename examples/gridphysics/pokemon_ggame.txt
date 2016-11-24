@@ -1,0 +1,50 @@
+BasicGame
+   SpriteSet
+    
+            floor > Immovable img=newset/floor6 hidden=True
+            avatar > ShootAvatar stype=attack img=newset/girl1
+    
+            bossAbility > Chaser stype=pokemon speed=0.9 img=oryx/explosion1 singleton=True
+                bossAbility0 >
+                bossAbility1 >
+                bossAbility2 >
+            pokemonAbility > speed=0.9
+                ability0 > Chaser img=oryx/sparkle1 stype=boss  singleton=True #does damage depending on boss type
+                ability1 > Chaser img=oryx/sparkle2 stype=boss  singleton=True #changes boss type
+                ability2 > Chaser img=oryx/sparkle3 singleton=True stype=pokemon0 #heals friendly pokemons
+                ability3 > Chaser img=oryx/sparkle3 singleton=True stype=pokemon1 #heals friendly pokemons
+                ability4 > Chaser img=oryx/sparkle4 stype=boss  singleton=True #all pokemons have access to this, damage to all boss types
+    
+            pokemon > BomberRandomMissile speed=0
+                pokemon0 > img=oryx/scorpion1 stypeMissile=ability0,ability4 prob=0.001 healthPoints=20 limitHealthPoints=20
+                pokemon1 > img=oryx/bat1 stypeMissile=ability1,ability4 prob=0.005 healthPoints=30 limitHealthPoints=30
+                pokemon2 > img=oryx/wolf1 stypeMissile=ability2,ability3,ability4 prob=0.01 healthPoints=10 limitHealthPoints=10
+    
+            boss > SpawnPoint prob=0.0001 healthPoints=100 limitHealthPoints=100
+                bossDragon > img=oryx/dragon1 stype=bossAbility0
+                bossWater > img=oryx/freak2 stype=bossAbility1
+                bossThunder > img=oryx/worm2 stype=bossAbility2
+    
+            attack > Flicker img=oryx/slash1 singleton=True
+    
+            wall > Immovable img=oryx/wall6
+    
+    
+   TerminationSet
+      Timeout limit=869 win=True 
+   InteractionSet
+      wall pokemon0 > attractGaze scoreChange=1 
+      pokemon2 pokemon0 > turnAround scoreChange=2 
+      wall pokemon0 > collectResource scoreChange=1 
+      avatar bossDragon > killIfFromAbove scoreChange=1 
+      pokemon2 floor > killSprite scoreChange=2 
+      pokemon2 floor > killIfFromAbove scoreChange=1 
+   LevelMapping
+            A > floor avatar
+            d > floor bossDragon
+            a > floor bossWater
+            t > floor bossThunder
+            0 > floor pokemon0
+            1 > floor pokemon1
+            2 > floor pokemon2
+            . > floor

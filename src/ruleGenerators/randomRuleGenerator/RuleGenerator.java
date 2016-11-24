@@ -14,7 +14,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
     private String[] interactions = new String[]{
 	    "killSprite", "killIfFromAbove", "stepBack", "undoAll", "flipDirection" , 
 	    "reverseDirection", "attractGaze", "align", "turnAround", "wrapAround", 
-	    "teleportToExit", "pullWithIt", "bounceForward", "collectResource"};
+	    "pullWithIt", "bounceForward", "collectResource"};
     /**
      * A list of all the useful sprites in the game
      */
@@ -49,7 +49,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 	    }
 	}
 	//Add End Of Screen as one of useful sprites
-	this.usefulSprites.add("EOS");
+//	this.usefulSprites.add("EOS");
     }
     
     /**

@@ -1,0 +1,36 @@
+BasicGame
+   SpriteSet
+        floor > Immovable img=oryx/backBlack
+        city  > Immovable color=GREEN img=newset/city1
+        bullet > Flicker limit=5 img=oryx/cspell5 shrinkfactor=0.7
+        movable >
+            avatar > ShootAvatar stype=bullet img=newset/humanShotgun
+            goalObjects >
+                enemy > Chaser stype=city
+                    enemy_slow  > color=ORANGE speed=0.1 img=newset/alienShotgun_0
+                    enemy_fast  > color=YELLOW speed=0.3 img=newset/alienShotgun_1
+                niceGuy > Chaser stype=city color=ORANGE speed=0.1 img=newset/niceGuy
+        death   > Immovable hidden=True invisible=True
+        portal  > SpawnPoint invisible=True hidden=True
+            enemySlowPortal > stype=enemy_slow   cooldown=100  total=2 
+            enemyFastPortal > stype=enemy_fast   cooldown=100  total=2 
+            niceGuyPortal   > stype=niceGuy      cooldown=100  total=2
+    
+        wall > Immovable img=newset/block2
+    
+   LevelMapping
+        c > city floor
+        m > enemySlowPortal floor
+        f > enemyFastPortal floor
+        n > niceGuyPortal floor
+        . > floor
+        A > avatar floor
+    
+   InteractionSet
+      avatar city > undoAll scoreChange=2 
+      niceGuyPortal city > wrapAround scoreChange=2 
+      avatar enemySlowPortal > reverseDirection scoreChange=1 
+      city wall > pullWithIt scoreChange=1 
+      avatar wall > wrapAround scoreChange=2 
+   TerminationSet
+      Timeout limit=911 win=True 

@@ -1,0 +1,43 @@
+BasicGame
+   SpriteSet
+            floor > Immovable img=oryx/backBiege
+    
+            bullet > color=RED img=oryx/bullet1
+                sitting  > Immovable
+                random   > RandomNPC speed=0.25 cons=1
+                straight > Missile   speed=0.5 img=oryx/bullet2
+                    vertical   > orientation=UP
+                    horizontal > orientation=LEFT
+            structure > Immovable
+                goal  > color=GREEN img=oryx/door2
+                portalentry > Portal img=oryx/circleEffect1
+                    entry1 > stype=exit1 color=LIGHTBLUE
+                    entry2 > stype=exit2 color=BLUE
+                portalexit  > color=BROWN img=oryx/explosion2
+                    exit1  >
+                    exit2  >
+            avatar > MovingAvatar img=oryx/mage1
+            wall > Immovable img=oryx/dirtwall autotiling=True
+   InteractionSet
+      wall horizontal > undoAll scoreChange=2 
+      entry1 goal > wrapAround scoreChange=2 
+      goal wall > pullWithIt scoreChange=1 
+      entry1 random > attractGaze scoreChange=2 
+      entry1 wall > turnAround scoreChange=2 
+      exit2 random > reverseDirection scoreChange=2 
+      goal horizontal > bounceForward scoreChange=2 
+   TerminationSet
+      Timeout limit=1012 win=True 
+   LevelMapping
+            h > floor horizontal
+            v > floor vertical
+            x > floor sitting
+            r > floor random
+            g > floor goal
+            i > floor entry1
+            2 > floor entry2
+            o > floor exit1
+            3 > floor exit2
+            w > floor wall
+            A > floor avatar
+            + > floor

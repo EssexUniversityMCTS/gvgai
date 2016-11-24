@@ -1,0 +1,42 @@
+BasicGame key_handler=Pulse
+   SpriteSet
+    
+            floor > Immovable img=oryx/floor3 hidden=True
+            hole   > Immovable color=DARKBLUE img=oryx/spike2 portal=True
+    
+            block > Immovable
+                blueblock > img=newset/blockB
+                redblock > img=newset/blockR
+                greenblock > img=newset/blockG
+    
+            box   > Passive shrinkfactor=0.8
+                bluebox > img=newset/blockB2
+                redbox > img=newset/blockR2
+                greenbox > img=newset/blockG2
+                brokenBox > img=newset/block3
+    
+            avatar > MovingAvatar img=oryx/knight1
+            wall > Immovable img=oryx/wall3 autotiling=True
+    
+   LevelMapping
+                A > avatar floor
+                h > hole floor
+    
+                1 > bluebox floor
+                2 > redbox floor
+                3 > greenbox floor
+    
+                a > blueblock floor
+                b > redblock floor
+                c > greenblock floor
+    
+                . > floor
+    
+    
+   InteractionSet
+      avatar wall > stepBack scoreChange=1 
+      wall blueblock > pullWithIt scoreChange=2 
+      redblock wall > killIfFromAbove scoreChange=2 
+      avatar wall > align scoreChange=1 
+   TerminationSet
+      Timeout limit=1013 win=True 

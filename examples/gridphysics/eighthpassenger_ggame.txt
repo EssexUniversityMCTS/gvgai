@@ -1,0 +1,49 @@
+BasicGame square_size=20 obs=wall,tunnel
+   SpriteSet
+    
+            moving >
+                switch > Immovable img=oryx/wall3_0
+                tunnel > Passive img=newset/wallBlue
+                alientunnel > Passive img=newset/wallRed
+                tunnelend > Passive invisible=True hidden=True
+                alientunnelend > Passive invisible=True hidden=True
+                exit > Door color=GREEN img=newset/exit2
+    
+                door > Door
+                    doorClosed > Immovable img=oryx/doorclosed1
+                    doorOpened > Immovable img=oryx/dooropen1
+    
+                alien > singleton=True
+                    pursuer > PathAltChaser stype1=standing stype2=crouching cooldown=2 img=oryx/ogre1
+                    pursuertunnel > PathAltChaser stype1=standing stype2=crouching cooldown=2 img=oryx/ogre2 invisible=True hidden=True
+                    wanderer > PathAltChaser stype1=tunnelend stype2=crouching cooldown=1 img=oryx/ogre2 randomTarget=True invisible=True hidden=True
+    
+                human > OrientedAvatar rotateInPlace=false
+                    standing  > img=oryx/rogue color=YELLOW  speed=0.5 frameRate=8
+                    crouching > img=oryx/ghost2 color=ORANGE  speed=0.5
+    
+                wall > Immovable img=oryx/wall1
+    
+    
+    
+   InteractionSet
+      tunnelend doorClosed > undoAll scoreChange=1 
+      exit alientunnel > collectResource scoreChange=1 
+      wall standing > killIfFromAbove scoreChange=1 
+      wall alientunnelend > reverseDirection scoreChange=1 
+      doorClosed pursuer > undoAll scoreChange=1 
+      tunnelend alientunnelend > flipDirection scoreChange=2 
+      doorClosed tunnelend > stepBack scoreChange=2 
+   LevelMapping
+            A > standing
+            a > pursuer
+            e > exit
+            t > tunnel
+            x > alientunnel
+            n > tunnelend
+            m > alientunnelend
+            s > switch
+            d > doorClosed
+    
+   TerminationSet
+      Timeout limit=905 win=True 

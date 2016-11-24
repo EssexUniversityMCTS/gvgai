@@ -1,0 +1,37 @@
+BasicGame key_handler=Pulse
+   SpriteSet
+            floor > Immovable img=oryx/backLBrown
+            hole   > Immovable color=DARKBLUE img=newset/hole1 portal=true
+            goal > Immovable img=newset/exit2 portal=true
+    
+            avatar > OrientedAvatar rotateInPlace=false img=oryx/yeti2
+            box    > Passive img=newset/block2
+            boulder > Missile
+                master > img=newset/blockR2
+                    masterBoulder > speed=0.0
+                    mboulderm > speed=1.0
+                targetBoulder > img=newset/block3
+                    normalBoulder > speed=0.0
+                    stoppingBoulder > speed=0.0
+                    boulderm > speed=1.0
+            wall > Immovable img=oryx/dirtwall autotiling=True
+    
+   LevelMapping
+            A > avatar floor
+            b > box floor
+            c > normalBoulder floor
+            m > masterBoulder floor
+            0 > hole floor
+            g > goal floor
+            . > floor
+    
+    
+   InteractionSet
+      box wall > killIfFromAbove scoreChange=2 
+      floor wall > collectResource scoreChange=1 
+      avatar box > stepBack scoreChange=2 
+      normalBoulder box > pullWithIt scoreChange=1 
+      normalBoulder hole > pullWithIt scoreChange=2 
+      normalBoulder wall > undoAll scoreChange=2 
+   TerminationSet
+      Timeout limit=937 win=True 

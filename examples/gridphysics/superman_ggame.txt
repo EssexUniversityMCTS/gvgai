@@ -1,0 +1,52 @@
+BasicGame
+   SpriteSet
+    
+            sky > Immovable hidden=True img=oryx/backGrey
+            building > Immovable img=newset/cloud2
+            street > Immovable img=newset/street3
+            emptyspace > Immovable invisible=True
+            jail > Immovable img=newset/jail
+    
+            portal  > SpawnPoint img=newset/jaildoor1 portal=True cooldown=50   total=20
+                portalLeft  > stype=bleft
+                portalRight  > stype=bright
+    
+            bandit > Bomber prob=0.1 cooldown=6 speed=0.5 img=newset/bandit1 stype=missile orientation=UP
+                bleft > spawnorientation=LEFT img=newset/bandit1h
+                bright > spawnorientation=RIGHT
+    
+            villain  > Resource color=GREEN limit=8 value=0
+            villaingang > Resource color=GREEN limit=1 value=0
+    
+            civilian >
+                standingcivilian > Missile orientation=DOWN color=GRAY speed=0.2 img=newset/man4
+                hurtcivilian > Immovable img=newset/cursedman
+                fallingcivilian > Missile orientation=DOWN color=GRAY speed=0.2 img=newset/man3
+    
+    
+            missile > Missile img=oryx/bullet1 speed=0.6
+    
+            avatar > MovingAvatar
+                superman > img=newset/superman frameRate=8
+    
+            wall > Immovable img=oryx/wall1
+    
+   InteractionSet
+      street portalRight > undoAll scoreChange=2 
+      wall sky > stepBack scoreChange=2 
+      sky building > stepBack scoreChange=2 
+      portalLeft standingcivilian > stepBack scoreChange=1 
+   LevelMapping
+            A > superman street
+            b > building sky
+            s > street
+            l > bleft sky
+            r > bright sky
+            c > standingcivilian sky
+            p > portalRight street
+            q > portalLeft street
+            j > jail
+            . > sky
+    
+   TerminationSet
+      Timeout limit=1237 win=True 

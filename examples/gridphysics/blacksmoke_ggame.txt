@@ -1,0 +1,38 @@
+BasicGame
+   SpriteSet
+    
+    
+            death > Immovable color=GRAY img=oryx/backBrown
+            ground > Immovable color=BLACK img=oryx/backLBrown
+            lock   > Immovable color=WHITE img=newset/lock1
+    
+            smoke   > SpawnPoint cooldown=2  total=6 stype=smokespawn img=oryx/smoke
+            smokespawn > RandomMissile color=ORANGE speed=0.25 invisible=True
+            exit > Door img=oryx/dooropen1
+    
+            box    > Immovable img=newset/block2
+            key > Resource limit=1 img=oryx/key2 singleton=True shrinkfactor=0.7
+    
+            shovel > Flicker color=LIGHTGRAY limit=1 singleton=True img=oryx/pickaxe shrinkfactor=0.5
+            avatar  > ShootAvatar stype=shovel img=oryx/axeman1
+    
+            wall > Immovable img=oryx/dirtwall autotiling=True
+    
+   InteractionSet
+      box exit > stepBack scoreChange=1 
+      death box > collectResource scoreChange=1 
+      box ground > turnAround scoreChange=1 
+      death wall > wrapAround scoreChange=1 
+      wall ground > flipDirection scoreChange=1 
+   LevelMapping
+            . > ground death
+            c > death
+            d > smoke death
+            e > exit ground
+            A > avatar ground death
+            k > key ground death
+            l > lock ground death
+            b > box ground death
+    
+   TerminationSet
+      Timeout limit=1152 win=True 

@@ -1,0 +1,45 @@
+BasicGame square_size=24
+   SpriteSet
+            background > Immovable img=oryx/backGrey hidden=True
+            goal  > Door color=GREEN img=oryx/dooropen1
+            bomberman > ShootAvatar stype=bomb_10 img=oryx/spelunky frameRate=8
+            enemy >
+                bat > RandomNPC cooldown=2 cons=6 img=oryx/bat1
+                spider > RandomNPC cooldown=4 cons=8 img=oryx/spider2
+                scorpion > RandomNPC cooldown=8 cons=12 img=oryx/scorpion1
+            bombs >
+                bomb_10 > Immovable img=newset/bomb
+                bomb_9 > Immovable img=newset/bomb
+                bomb_8 > Immovable img=newset/bomb
+                bomb_7 > Immovable img=newset/bomb
+                bomb_6 > Immovable img=newset/bomb
+                bomb_5 > Immovable img=newset/bomb
+                bomb_4 > Immovable img=newset/bomb
+                bomb_3 > Immovable img=newset/bomb
+                bomb_2 > Immovable img=newset/bomb
+                bomb_1 > Immovable img=newset/bomb
+                bomb > Immovable img=newset/bomb
+            explosion > OrientedFlicker limit=5 speed=0.5
+                explosionLeft > orientation=LEFT singleton=true img=oryx/fireleft1
+                explosionRight > orientation=RIGHT singleton=true img=oryx/fireright1
+                explosionUp > orientation=UP singleton=true img=oryx/fireup1
+                explosionDown > orientation=DOWN singleton=true img=oryx/firedown1
+            wall > Immovable img=oryx/wall1
+            wallBreak > Immovable img=newset/block3
+    
+   InteractionSet
+      goal bomberman > pullWithIt scoreChange=1 
+      spider goal > attractGaze scoreChange=1 
+      scorpion wall > bounceForward scoreChange=2 
+      spider wallBreak > attractGaze scoreChange=2 
+   LevelMapping
+            A > background bomberman
+            . > background
+            w > wall
+            q > background wallBreak
+            b > background bat
+            s > background spider
+            c > background scorpion
+            g > background goal wallBreak
+   TerminationSet
+      Timeout limit=1047 win=True 

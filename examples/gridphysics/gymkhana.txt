@@ -41,8 +41,8 @@ BasicGame square_size=30 key_handler=Pulse
         1 > background floor southfacing
         2 > background floor northfacing
         3 > background floor westfacing
-        r > forestR log
-        l > forestL log
+        r > forestR logR
+        l > forestL logL
         g > background floor goal
         A > background floor onground
         w > background floor wall
