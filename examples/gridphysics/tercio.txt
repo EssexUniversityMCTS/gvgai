@@ -25,9 +25,9 @@ BasicGame key_handler=Pulse  square_size=50
         - > blue
         g > grey
 
-        B > avatar black
-        A > avatar white
-        L > avatar blue
+        B > inBlack black
+        A > inWhite white
+        L > inBlue blue
 
         * > crate inBlack
         @ > crate inWhite
