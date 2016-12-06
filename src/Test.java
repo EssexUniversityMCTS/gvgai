@@ -33,6 +33,7 @@ public class Test {
 
 	// Available Rule Generator
 	String randomRuleGenerator = "ruleGenerators.randomRuleGenerator.RuleGenerator";
+	String constructiveRuleGenerator = "ruleGenerators.constructiveRuleGenerator.RuleGenerator";
 	
 	// Available games:
 	String gamesPath = "examples/gridphysics/";
@@ -66,7 +67,7 @@ public class Test {
 	int seed = new Random().nextInt();
 
 	// Game and level to play
-	int gameIdx = 80;
+	int gameIdx = 0;
 	int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
 	String game = gamesPath + games[gameIdx] + ".txt";
 	String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
@@ -129,8 +130,9 @@ public class Test {
 	// }
 	
 	// 7. Generate rules (Interaction and Terminations) for a fixed level
-	// ArcadeMachine.generateRules(game, level1, randomRuleGenerator, recordGameFile, new Random().nextInt());
-	// ArcadeMachine.runOneGame(recordGameFile, level1, false, sampleMCTSController, 
-	//	recordActionsFile, new Random().nextInt(), 0);
+	// ArcadeMachine.generateRules(game, level1, constructiveRuleGenerator, recordGameFile, seed);
+	// ArcadeMachine.playOneGame(recordGameFile, level1, recordActionsFile, seed);
+	// ArcadeMachine.runOneGame(recordGameFile, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
+	 
     }
 }
