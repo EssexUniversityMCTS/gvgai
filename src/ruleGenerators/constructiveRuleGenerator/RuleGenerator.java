@@ -9,32 +9,80 @@ import core.generator.AbstractRuleGenerator;
 import tools.ElapsedCpuTimer;
 import tools.LevelAnalyzer;
 
+/**
+ * This is a constructive rule generator it depends 
+ * @author AhmedKhalifa
+ */
 public class RuleGenerator extends AbstractRuleGenerator{
+    /**
+     * a Level Analyzer object used to analyze the game sprites
+     */
     private LevelAnalyzer la;
     
+    /**
+     * array of different interactions that movable objects (contains also npcs) can do when hitting the walls
+     */
     private String[] movableWallInteraction = new String[]{"stepBack", "flipDirection", "reverseDirection", 
 	    "turnAround", "wrapAround"};
     
+    /**
+     * percentages used to decide 
+     */
     private double wallPercentageProb = 0.5;
     private double spikeProb = 0.5;
     private double doubleNPCsProb = 0.5;
-    private double usefulMovableProb = 0.5;
+    private double harmfulMovableProb = 0.5;
     private double firewallProb = 0.1;
     private double scoreSpikeProb = 0.1;
     private double killScoreProb = 0.2;
+    private double randomNPCProb = 0.5;
+    private double spawnedProb = 0.5;
     
+    /**
+     * a list of suggested interactions for the generated game
+     */
     private ArrayList<String> interactions;
+    /**
+     * a list of suggested temination conditions for the generated game
+     */
     private ArrayList<String> terminations;
     
+    /**
+     * the sprite that the generator think is a wall sprite
+     */
     private SpriteData wall;
+    /**
+     * array of all door sprites
+     */
     private ArrayList<SpriteData> exit;
+    /**
+     * a certain unmovable object that is used as a collectible object
+     */
     private SpriteData score;
+    /**
+     * a certain unmovable object that is used as a spike object
+     */
     private SpriteData spike;
     
+    /**
+     * random object used in generating different games
+     */
     private Random random;
+    
+    /**
+     * Array of all different types of harmful objects (can kill the player)
+     */
     private ArrayList<String> harmfulObjects;
+    /**
+     * Array of all different types of fleeing NPCs
+     */
     private ArrayList<String> fleeingNPCs;
     
+    /**
+     * 
+     * @param sl
+     * @param time
+     */
     public RuleGenerator(SLDescription sl, ElapsedCpuTimer time){
 	la = new LevelAnalyzer(sl);
 	
@@ -108,6 +156,11 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	return array;
     }
     
+    /**
+     * 
+     * @param spriteName
+     * @return
+     */
     private boolean isAvatar(String spriteName){
 	SpriteData[] avatar = la.getAvatars(false);
 	for(int i=0; i<avatar.length; i++){
@@ -118,7 +171,9 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	return false;
     }
     
-    //DONE
+    /**
+     * 
+     */
     private void getWallInteractions(){
 	String wallName = "EOS";
 	if (wall != null) {
@@ -149,7 +204,9 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	}
     }
     
-    //DONE
+    /**
+     * 
+     */
     private void getResourceInteractions(){
 	SpriteData[] avatar = la.getAvatars(false);
 	SpriteData[] resources = la.getResources(0, 1, true);
@@ -161,22 +218,37 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	}
     }
     
-    //DONE
+    /**
+     * 
+     */
     private void getSpawnerInteractions(){
 	SpriteData[] avatar = la.getAvatars(false);
 	SpriteData[] spawners = la.getSpawners(0, 1, true);
 	
-	for(int i=0; i<avatar.length; i++){
-	    for(int j=0; j<spawners.length; j++){
-		for(int k=0; k<spawners[j].sprites.size(); k++){
-		    harmfulObjects.add(spawners[j].sprites.get(k));
-		    interactions.add(avatar[i].name + " " + spawners[j].sprites.get(k) + " > killSprite");
+	if(random.nextDouble() < spawnedProb){
+	    for (int i = 0; i < avatar.length; i++) {
+		for (int j = 0; j < spawners.length; j++) {
+		    for (int k = 0; k < spawners[j].sprites.size(); k++) {
+			harmfulObjects.add(spawners[j].sprites.get(k));
+			interactions.add(avatar[i].name + " " + spawners[j].sprites.get(k) + " > killSprite");
+		    }
+		}
+	    }
+	}
+	else{
+	    for (int i = 0; i < avatar.length; i++) {
+		for (int j = 0; j < spawners.length; j++) {
+		    for (int k = 0; k < spawners[j].sprites.size(); k++) {
+			interactions.add(spawners[j].sprites.get(k) + " " + avatar[i].name + " > killSprite scoreChange=1");
+		    }
 		}
 	    }
 	}
     }
     
-    //DONE
+    /**
+     * 
+     */
     private void getImmovableInteractions(){	
 	SpriteData[] avatar = la.getAvatars(false);
 	
@@ -201,7 +273,9 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	}
     }
     
-    //DONE
+    /**
+     * 
+     */
     private void getAvatarInteractions(){
 	SpriteData[] avatar = la.getAvatars(false);
 	
@@ -224,7 +298,9 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	}
     }
     
-    //DONE
+    /**
+     * 
+     */
     private void getPortalInteractions() {
 	SpriteData[] avatar = la.getAvatars(false);
 	SpriteData[] portals = la.getPortals(0, 1, true);
@@ -243,7 +319,9 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	}
     }
     
-    //DONE
+    /**
+     * 
+     */
     private void getNPCInteractions(){
 	SpriteData[] avatar = la.getAvatars(false);
 	SpriteData[] npc = la.getNPCs(0, 1, false);
@@ -286,15 +364,24 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		}
 	    } 
 	    else if (npc[i].type.equalsIgnoreCase("randomnpc")) {
-		for(int j=0; j<avatar.length; j++){
-		    harmfulObjects.add(npc[i].name);
-		    interactions.add(avatar[j].name + " " + npc[i].name + " > killSprite");
+		if(this.random.nextDouble() < randomNPCProb){
+		    for (int j = 0; j < avatar.length; j++) {
+			harmfulObjects.add(npc[i].name);
+			interactions.add(avatar[j].name + " " + npc[i].name + " > killSprite");
+		    }
+		}
+		else{
+		    for (int j = 0; j < avatar.length; j++) {
+			interactions.add(npc[i].name + " " + avatar[j].name + " > killSprite scoreChange=1");
+		    }
 		}
 	    }
 	}
     }
     
-    //DONE
+    /**
+     * 
+     */
     private void getMovableInteractions(){
 	SpriteData[] movables = la.getMovables(0, 1, false);
 	SpriteData[] avatar = la.getAvatars(false);
@@ -313,8 +400,9 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		}
 	    }
 	    if(!found){
-		if(random.nextDouble() < usefulMovableProb){
+		if(random.nextDouble() < harmfulMovableProb){
 		    for(int i=0; i<avatar.length; i++){
+			harmfulObjects.add(movables[j].name);
 			interactions.add(avatar[i].name + " " + movables[j].name + " > killSprite");
 		    }
 		}
@@ -327,9 +415,10 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	}
     }
     
-    //DONE
+    /**
+     * 
+     */
     private void getTerminations(){
-	SpriteData[] avatar = la.getAvatars(false);
 	if(exit.size() > 0){
 	    SpriteData door = null;
 	    for(int i=0; i<exit.size(); i++){
@@ -355,12 +444,19 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	}
 	
 	if(harmfulObjects.size() > 0){
-	    for(int i=0; i<avatar.length; i++){
-		terminations.add("SpriteCounter stype=" + avatar[i].name + " limit=0 win=False");
+	    SpriteData[] usefulAvatar = this.la.getAvatars(true);
+	    for(int i=0; i<usefulAvatar.length; i++){
+		terminations.add("SpriteCounter stype=" + usefulAvatar[i].name + " limit=0 win=False");
 	    }
 	}
     }
     
+    /**
+     * 
+     * @param sl
+     * @param time
+     * @return
+     */
     @Override
     public String[][] generateRules(SLDescription sl, ElapsedCpuTimer time) {
 	this.getResourceInteractions();

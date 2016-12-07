@@ -183,12 +183,12 @@ public class LevelAnalyzer {
     }
     
     /**
-     * 
-     * @param list
-     * @param lowThreshold
-     * @param highThreshold
-     * @param inMap
-     * @return
+     * Get an array of sprites that their percentage is between lowThreshold and highThreshold
+     * @param list		the list required to be searched
+     * @param lowThreshold	the minimum percentage that the searched sprite cover the map
+     * @param highThreshold	the maximum percentage that the searched sprite cover the map
+     * @param inMap		boolean to define if the sprite has to be in the defined level
+     * @return			array of the found sprites that satisfy the constraints
      */
     private SpriteData[] getSpriteData (ArrayList<SpriteData> list, double lowThreshold, double highThreshold, boolean inMap){
 	ArrayList<SpriteData> temp = new ArrayList<SpriteData>();
@@ -214,94 +214,94 @@ public class LevelAnalyzer {
     }
     
     /**
-     * 
-     * @param inMap
-     * @return
+     * Get avatar sprite data
+     * @param inMap	if he is defined in the map or not
+     * @return		array of all avatars that specify the input parameters
      */
     public SpriteData[] getAvatars(boolean inMap){
 	return getSpriteData(avatarSprites, 0, 1, inMap);
     }
     
     /**
-     * 
-     * @param lowThreshold
-     * @param highThreshold
-     * @param inMap
-     * @return
+     * get all npcs that are in between lowThreshold and highThreshold percentages
+     * @param lowThreshold	the lowest percentage
+     * @param highThreshold	the maximum percentage
+     * @param inMap		the sprite should be in the map
+     * @return			array of all npcs that specify the input parameters
      */
     public SpriteData[] getNPCs(double lowThreshold, double highThreshold, boolean inMap){
 	return getSpriteData(npcSprites, lowThreshold, highThreshold, inMap);
     }
     
     /**
-     * 
-     * @param lowThreshold
-     * @param highThreshold
-     * @param inMap
-     * @return
+     * get all immovables that are in between lowThreshold and highThreshold percentages
+     * @param lowThreshold	the lowest percentage
+     * @param highThreshold	the maximum percentage
+     * @param inMap		the sprite should be in the map
+     * @return			array of all immovables that specify the input parameters
      */
     public SpriteData[] getImmovables(double lowThreshold, double highThreshold, boolean inMap){
 	return getSpriteData(immovableSprites, lowThreshold, highThreshold, inMap);
     }
     
     /**
-     * 
-     * @param lowThreshold
-     * @param highThreshold
-     * @param inMap
-     * @return
+     * get all movables that are in between lowThreshold and highThreshold percentages
+     * @param lowThreshold	the lowest percentage
+     * @param highThreshold	the maximum percentage
+     * @param inMap		the sprite should be in the map
+     * @return			array of all movables that specify the input parameters
      */
     public SpriteData[] getMovables(double lowThreshold, double highThreshold, boolean inMap){
 	return getSpriteData(movableSprites, lowThreshold, highThreshold, inMap);
     }
     
     /**
-     * 
-     * @param lowThreshold
-     * @param highThreshold
-     * @param inMap
-     * @return
+     * get all portals that are in between lowThreshold and highThreshold percentages
+     * @param lowThreshold	the lowest percentage
+     * @param highThreshold	the maximum percentage
+     * @param inMap		the sprite should be in the map
+     * @return			array of all portals that specify the input parameters
      */
     public SpriteData[] getPortals(double lowThreshold, double highThreshold, boolean inMap){
 	return getSpriteData(portalsSprites, lowThreshold, highThreshold, inMap);
     }
     
     /**
-     * 
-     * @param lowThreshold
-     * @param highThreshold
-     * @param inMap
-     * @return
+     * get all resources that are in between lowThreshold and highThreshold percentages
+     * @param lowThreshold	the lowest percentage
+     * @param highThreshold	the maximum percentage
+     * @param inMap		the sprite should be in the map
+     * @return			array of all resources that specify the input parameters
      */
     public SpriteData[] getResources(double lowThreshold, double highThreshold, boolean inMap){
 	return getSpriteData(resourceSprites, lowThreshold, highThreshold, inMap);
     }
     
     /**
-     * 
-     * @param lowThreshold
-     * @param highThreshold
-     * @param inMap
-     * @return
+     * get all spawners that are in between lowThreshold and highThreshold percentages
+     * @param lowThreshold	the lowest percentage
+     * @param highThreshold	the maximum percentage
+     * @param inMap		the sprite should be in the map
+     * @return			array of all spawners that specify the input parameters
      */
     public SpriteData[] getSpawners(double lowThreshold, double highThreshold, boolean inMap){
 	return getSpriteData(spawnerSprites, lowThreshold, highThreshold, inMap);
     }
     
     /**
-     * 
-     * @param lowThreshold
-     * @param highThreshold
-     * @return
+     * get all border objects that are in between lowThreshold and highThreshold percentages
+     * @param lowThreshold	the lowest percentage
+     * @param highThreshold	the maximum percentage
+     * @return			array of all border sprites that specify the input parameters
      */
     public SpriteData[] getBorderObjects(double lowThreshold, double highThreshold){
 	return getSpriteData(borderSprites, lowThreshold, highThreshold, true);
     }
     
     /**
-     * 
-     * @param spriteName
-     * @return
+     * get the number of times a certain sprite appear in the map
+     * @param spriteName	the name of the sprite
+     * @return			number of times this spritename appear in the level
      */
     public double getNumberOfObjects(String spriteName){
 	if(numberOfSprites.containsKey(spriteName)){
@@ -312,9 +312,9 @@ public class LevelAnalyzer {
     }
     
     /**
-     * 
-     * @param spriteName
-     * @return
+     * get all the sprites that are on the same tile with a certain sprite
+     * @param spriteName	the name of the sprite
+     * @return			list of all sprites that share the same tile with the specified spritename
      */
     public SpriteData[] getSpritesOnSameTile(String spriteName){
 	return convertToArray(sameTileSprites.get(spriteName));
