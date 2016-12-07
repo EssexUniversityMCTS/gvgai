@@ -37,6 +37,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
     private double killScoreProb = 0.2;
     private double randomNPCProb = 0.5;
     private double spawnedProb = 0.5;
+    private double bomberProb = 0.5;
     
     /**
      * a list of suggested interactions for the generated game
@@ -79,11 +80,13 @@ public class RuleGenerator extends AbstractRuleGenerator{
     private ArrayList<String> fleeingNPCs;
     
     /**
-     * 
-     * @param sl
-     * @param time
+     * Constructor that initialize the constructive algorithm
+     * @param sl	SLDescription object contains information about the
+     * 			current game and level
+     * @param time	the amount of time allowed for initialization
      */
     public RuleGenerator(SLDescription sl, ElapsedCpuTimer time){
+	//Initialize everything
 	la = new LevelAnalyzer(sl);
 	
 	interactions = new ArrayList<String>();
@@ -93,6 +96,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	harmfulObjects = new ArrayList<String>();
 	fleeingNPCs = new ArrayList<String>();
 	
+	//Identify the wall object
 	wall = null;
 	SpriteData[] temp = la.getBorderObjects(
 		(2.0 * (la.getWidth() + la.getLength())) / (la.getLength() * la.getWidth()), this.wallPercentageProb);
@@ -105,6 +109,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	    }
 	}
 	
+	//identify the exit sprite
 	exit = new ArrayList<SpriteData>();
 	temp = la.getPortals(0, 1, true);
 	for(int i=0; i<temp.length; i++){
@@ -113,6 +118,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	    }
 	}
 	
+	//identify the score and spike sprites
 	ArrayList<SpriteData> tempList = new ArrayList<SpriteData>();
 	score = null;
 	spike = null;
@@ -157,9 +163,9 @@ public class RuleGenerator extends AbstractRuleGenerator{
     }
     
     /**
-     * 
-     * @param spriteName
-     * @return
+     * Check if this spritename is the avatar
+     * @param spriteName	the input sprite name
+     * @return			true if its the avatar or false otherwise
      */
     private boolean isAvatar(String spriteName){
 	SpriteData[] avatar = la.getAvatars(false);
@@ -172,15 +178,18 @@ public class RuleGenerator extends AbstractRuleGenerator{
     }
     
     /**
-     * 
+     * get the interactions of everything with wall sprites
      */
     private void getWallInteractions(){
 	String wallName = "EOS";
 	if (wall != null) {
 	    wallName = wall.name;
 	}
-	boolean isFireWall = this.random.nextDouble() < firewallProb;
+	//Is walls acts like fire (harmful for everyone)
+	boolean isFireWall = this.random.nextDouble() < firewallProb && 
+		wall != null && fleeingNPCs.size() == 0;
 	
+	//Avatar interaction with wall or EOS
 	String action = "stepBack";
 	if(isFireWall){
 	    action = "killSprite";
@@ -189,7 +198,8 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	for (int i = 0; i < temp.length; i++) {
 	    interactions.add(temp[i].name + " " + wallName + " > " + action);
 	}
-
+	
+	//Get the interaction between all movable objects (including npcs) with wall or EOS
 	action = movableWallInteraction[random.nextInt(movableWallInteraction.length)];
 	if(isFireWall){
 	    action = "killSprite";
@@ -205,12 +215,13 @@ public class RuleGenerator extends AbstractRuleGenerator{
     }
     
     /**
-     * 
+     * get the interactions of all sprites with resource sprites
      */
     private void getResourceInteractions(){
 	SpriteData[] avatar = la.getAvatars(false);
 	SpriteData[] resources = la.getResources(0, 1, true);
 	
+	//make the avatar collect the resources
 	for(int i=0; i<avatar.length; i++){
 	    for(int j=0; j<resources.length; j++){
 		interactions.add(resources[j].name + " " + avatar[i].name + " > collectResource");
@@ -219,12 +230,13 @@ public class RuleGenerator extends AbstractRuleGenerator{
     }
     
     /**
-     * 
+     * get the interactions of all sprites with spawner sprites
      */
     private void getSpawnerInteractions(){
 	SpriteData[] avatar = la.getAvatars(false);
 	SpriteData[] spawners = la.getSpawners(0, 1, true);
 	
+	//make the spawned object harmful to the avatar with a chance to be useful
 	if(random.nextDouble() < spawnedProb){
 	    for (int i = 0; i < avatar.length; i++) {
 		for (int j = 0; j < spawners.length; j++) {
@@ -247,17 +259,19 @@ public class RuleGenerator extends AbstractRuleGenerator{
     }
     
     /**
-     * 
+     * get the interactions of all sprites with immovable sprites
      */
     private void getImmovableInteractions(){	
 	SpriteData[] avatar = la.getAvatars(false);
 	
+	//If we have a score object make the avatar can collect it
 	if(score != null){
 	    for(int i=0; i<avatar.length; i++){
 		interactions.add(score.name + " " + avatar[i].name + " > killSprite scoreChange=1");
 	    }
 	}
 	
+	//If we have a spike object make it kill the avatar with a change to be a super collectible sprite
 	if (spike != null && !spike.name.equalsIgnoreCase(score.name)) {
 	    if (random.nextDouble() < spikeProb) {
 		harmfulObjects.add(spike.name);
@@ -274,11 +288,12 @@ public class RuleGenerator extends AbstractRuleGenerator{
     }
     
     /**
-     * 
+     * get the interactions of all sprites with avatar sprites
      */
     private void getAvatarInteractions(){
 	SpriteData[] avatar = la.getAvatars(false);
 	
+	//Kill the avatar bullet kill any harmful objects
 	for(int i=0; i<avatar.length; i++){
 	    for (int j = 0; j < harmfulObjects.size(); j++) {
 		for (int k = 0; k < avatar[i].sprites.size(); k++) {
@@ -288,6 +303,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	    }
 	}
 	
+	//If there is score object then make the player bullets can kill it
 	if(score != null && random.nextDouble() < killScoreProb){
 	    for (int i = 0; i < avatar.length; i++) {
 		for (int k = 0; k < avatar[i].sprites.size(); k++) {
@@ -299,17 +315,19 @@ public class RuleGenerator extends AbstractRuleGenerator{
     }
     
     /**
-     * 
+     * get the interactions of all sprites with portal sprites
      */
     private void getPortalInteractions() {
 	SpriteData[] avatar = la.getAvatars(false);
 	SpriteData[] portals = la.getPortals(0, 1, true);
-
+	
+	//make the exits die with collision of the player (going through them)
 	for (int i = 0; i < avatar.length; i++) {
 	    for (int j = 0; j < exit.size(); j++) {
 		interactions.add(exit.get(j).name + " " + avatar[i].name + " > killSprite");
 	    }
 	}
+	//If they are Portal type then u can teleport toward it
 	for (int i = 0; i < portals.length; i++) {
 	    for (int j = 0; j < avatar.length; j++) {
 		if (portals[i].type.equalsIgnoreCase("Portal")) {
@@ -320,13 +338,14 @@ public class RuleGenerator extends AbstractRuleGenerator{
     }
     
     /**
-     * 
+     * get the interactions of all sprites with npc sprites
      */
     private void getNPCInteractions(){
 	SpriteData[] avatar = la.getAvatars(false);
 	SpriteData[] npc = la.getNPCs(0, 1, false);
 	
 	for(int i=0; i<npc.length; i++){
+	    //If its fleeing object make it useful
 	    if (npc[i].type.equalsIgnoreCase("fleeing")) {
 		for(int j=0; j<npc[i].sprites.size(); j++){
 		    fleeingNPCs.add(npc[i].sprites.get(j));
@@ -334,17 +353,28 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		}
 	    } 
 	    else if (npc[i].type.equalsIgnoreCase("bomber") || npc[i].type.equalsIgnoreCase("randombomber")) {
+		//make the bomber harmful for the player
 		for(int j=0; j<avatar.length; j++){
 		    harmfulObjects.add(npc[i].name);
 		    interactions.add(avatar[j].name + " " + npc[i].name + " > killSprite");
 		}
-		for(int j=0; j<npc[i].sprites.size(); j++){
-		    harmfulObjects.add(npc[i].sprites.get(j));
-		    interactions.add(avatar[j].name + " " + npc[i].sprites.get(j) + " > killSprite");
+		//make the spawned object harmful
+		if(this.random.nextDouble() < bomberProb){
+		    for (int j = 0; j < npc[i].sprites.size(); j++) {
+			harmfulObjects.add(npc[i].sprites.get(j));
+			interactions.add(avatar[j].name + " " + npc[i].sprites.get(j) + " > killSprite");
+		    }
+		}
+		//make the spawned object useful
+		else{
+		    for (int j = 0; j < npc[i].sprites.size(); j++) {
+			interactions.add(npc[i].sprites.get(j) + " " + avatar[j].name + " > killSprite scoreChange=1");
+		    }
 		}
 	    } 
 	    else if (npc[i].type.equalsIgnoreCase("chaser") || npc[i].type.equalsIgnoreCase("AlternateChaser")
 		    || npc[i].type.equalsIgnoreCase("RandomAltChaser")) {
+		//make chasers harmful for the avatar
 		for(int j=0; j<npc[i].sprites.size(); j++){
 		    if(isAvatar(npc[i].sprites.get(j))){
 			for(int k=0; k<avatar.length; k++){
@@ -362,14 +392,16 @@ public class RuleGenerator extends AbstractRuleGenerator{
 			
 		    }
 		}
-	    } 
+	    }
 	    else if (npc[i].type.equalsIgnoreCase("randomnpc")) {
+		//random npc are harmful to the avatar
 		if(this.random.nextDouble() < randomNPCProb){
 		    for (int j = 0; j < avatar.length; j++) {
 			harmfulObjects.add(npc[i].name);
 			interactions.add(avatar[j].name + " " + npc[i].name + " > killSprite");
 		    }
 		}
+		//random npc are userful to the avatar
 		else{
 		    for (int j = 0; j < avatar.length; j++) {
 			interactions.add(npc[i].name + " " + avatar[j].name + " > killSprite scoreChange=1");
@@ -380,7 +412,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
     }
     
     /**
-     * 
+     * get the interactions of all sprites with movable sprites
      */
     private void getMovableInteractions(){
 	SpriteData[] movables = la.getMovables(0, 1, false);
@@ -388,6 +420,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	SpriteData[] spawners = la.getSpawners(0, 1, false);
 	
 	for(int j=0; j<movables.length; j++){
+	    //Check if the movable object is not avatar or spawned child
 	    boolean found = false;
 	    for(int i=0; i<avatar.length; i++){
 		if(avatar[i].sprites.contains(movables[j].name)){
@@ -400,6 +433,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		}
 	    }
 	    if(!found){
+		//Either make them harmful or useful
 		if(random.nextDouble() < harmfulMovableProb){
 		    for(int i=0; i<avatar.length; i++){
 			harmfulObjects.add(movables[j].name);
@@ -416,9 +450,10 @@ public class RuleGenerator extends AbstractRuleGenerator{
     }
     
     /**
-     * 
+     * get the termination condition for the generated game
      */
     private void getTerminations(){
+	//If you have a door object make it the winning condition
 	if(exit.size() > 0){
 	    SpriteData door = null;
 	    for(int i=0; i<exit.size(); i++){
@@ -427,22 +462,27 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		    break;
 		}
 	    }
+	    
 	    if(door != null){
 		terminations.add("SpriteCounter stype=" + door.name + " limit=0 win=True");
 	    }
+	    //otherwise pick any other exit object
 	    else{
 		terminations.add("SpriteCounter stype=" + exit.get(random.nextInt(exit.size())).name + " limit=0 win=True");
 	    }
 	}
 	else {
+	    //If we have feeling NPCs use them as winning condition
 	    if (fleeingNPCs.size() > 0) {
 		terminations.add("SpriteCounter stype=" + fleeingNPCs.get(0) + " limit=0 win=True");
 	    } 
+	    //Otherwise use timeout as winning condition
     	    else {
     		terminations.add("Timeout limit=" + (500 + random.nextInt(5) * 100) + " win=True");
     	    }
 	}
 	
+	//Add the losing condition which is the player dies
 	if(harmfulObjects.size() > 0){
 	    SpriteData[] usefulAvatar = this.la.getAvatars(true);
 	    for(int i=0; i<usefulAvatar.length; i++){
@@ -452,10 +492,12 @@ public class RuleGenerator extends AbstractRuleGenerator{
     }
     
     /**
-     * 
-     * @param sl
-     * @param time
-     * @return
+     * get the generated interaction rules and termination rules
+     * @param sl	SLDescription object contain information about the game
+     * 			sprites and the current level
+     * @param time	the amount of time allowed for the rule generator
+     * @return		two arrays the first contains the interaction rules
+     * 			while the second contains the termination rules
      */
     @Override
     public String[][] generateRules(SLDescription sl, ElapsedCpuTimer time) {
@@ -464,8 +506,8 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	this.getNPCInteractions();
 	this.getSpawnerInteractions();
 	this.getPortalInteractions();
-	this.getWallInteractions();
 	this.getMovableInteractions();
+	this.getWallInteractions();
 	this.getAvatarInteractions();
 	
 	this.getTerminations();
