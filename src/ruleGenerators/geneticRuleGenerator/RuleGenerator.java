@@ -18,7 +18,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 	/**
 	 * ArrayList that contains the population
 	 */
-	private ArrayList<AbstractRuleGenerator> population;
+	private ArrayList<Chromosome> population;
 	/**
 	 * Array contains all the simple interactions
 	 */
@@ -85,7 +85,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 		}
 
 		//Initialize the population
-		initPop();
+		initPop(sl, time);
 	}
 
 	/**
@@ -103,13 +103,16 @@ public class RuleGenerator extends AbstractRuleGenerator {
 	/**
 	 * Initializes the population with 100 RandomGenerators
 	 */
-	public void initPop() {
-		population = new ArrayList<AbstractRuleGenerator>();
+	public void initPop(SLDescription sl, ElapsedCpuTimer time) {
+		population = new ArrayList<Chromosome>();
+		randomGen = new ruleGenerators.randomRuleGenerator.RuleGenerator(sl, time);
+		constructGen = new ruleGenerators.constructiveRuleGenerator.RuleGenerator(sl, time);
+		Chromosome c;
 		for(int i = 0; i < POP_SIZE / 2; i++) {
-			randomGen = new ruleGenerators.randomRuleGenerator.RuleGenerator(sl, time);
-			population.add(randomGen);
-			constructGen = new ruleGenerators.constructiveRuleGenerator.RuleGenerator(sl, time);
-			population.add(constructGen);
+			c = new Chromosome(randomGen.generateRules(sl, time));
+			population.add(c);
+			c = new Chromosome(constructGen.generateRules(sl, time));
+			population.add(c);
 		}
 	}
 
@@ -144,4 +147,6 @@ public class RuleGenerator extends AbstractRuleGenerator {
 		}
 		return true;
 	}
+	
+	
 }
