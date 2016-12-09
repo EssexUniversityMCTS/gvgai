@@ -2,10 +2,13 @@ package ruleGenerators.geneticRuleGenerator;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import core.game.SLDescription;
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
+import levelGenerators.constraints.CombinedConstraints;
+import levelGenerators.geneticLevelGenerator.SharedData;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
 import tools.StepController;
@@ -16,6 +19,10 @@ public class Chromosome implements Comparable<Chromosome>{
 	 * current chromosome fitness if its a feasible
 	 */
 	private ArrayList<Double> fitness;
+	/**
+	 * Parameters to initialize constraints
+	 */
+	HashMap<String, Object> parameters;
 	/**
 	 * current chromosome fitness if its an infeasible
 	 */
@@ -57,6 +64,11 @@ public class Chromosome implements Comparable<Chromosome>{
 	 */
 	private int FEASIBILITY_STEP_LIMIT = 40;
 	
+	private int doNothingLength;
+	StateObservation doNothingState;
+	StateObservation bestState;
+	ArrayList<Types.ACTIONS> bestSol;
+	
 	/**
 	 * Chromosome constructor.  Holds the ruleset and initializes agents within
 	 * @param ruleset	the ruleset the chromosome contains
@@ -85,7 +97,7 @@ public class Chromosome implements Comparable<Chromosome>{
 	 * tests to make sure the game is playable, meaning a DoNothing AI won't die in the first 40 frames.
 	 */
 	public boolean feasibilityTest() {
-		int doNothingLength = Integer.MAX_VALUE;
+		doNothingLength = Integer.MAX_VALUE;
 		for(int i = 0; i < 100; i++) {
 			int temp = this.getNaivePlayerResult(getStateObservation().copy(), FEASIBILITY_STEP_LIMIT, this.naiveAgent);
 			if(temp < doNothingLength){
@@ -102,7 +114,30 @@ public class Chromosome implements Comparable<Chromosome>{
 	 * tests to make sure the game is playable, meaning that none of the rules will break the game.
 	 */
 	public void constraintsTest() {
+		//calculate the constrain fitness by applying all different constraints
+		//Updating parameters
+		parameters.put("solutionLength", bestSol.size());
+		parameters.put("minSolutionLength", SharedData.MIN_SOLUTION_LENGTH);
+		parameters.put("doNothingSteps", doNothingLength);
+		parameters.put("doNothingState", doNothingState.getGameWinner());
+		parameters.put("bestPlayer", bestState.getGameWinner());
+		parameters.put("minDoNothingSteps", SharedData.MIN_DOTHING_STEPS);
+		//parameters.put("coverPercentage", coverPercentage);
+		//parameters.put("minCoverPercentage", SharedData.MIN_COVER_PERCENTAGE);
+		//parameters.put("maxCoverPercentage", SharedData.MAX_COVER_PERCENTAGE);
+		//parameters.put("numOfObjects", calculateNumberOfObjects());
+		parameters.put("gameAnalyzer", SharedData.gameAnalyzer);
+		parameters.put("gameDescription", SharedData.gameDescription);
 		
+		CombinedConstraints constraint = new CombinedConstraints();
+		constraint.addConstraints(new String[]{"SolutionLengthConstraint", "DeathConstraint", 
+											   //"CoverPercentageConstraint", "SpriteNumberConstraint",
+											   "GoalConstraint", "AvatarNumberConstraint", "WinConstraint"});
+		constraint.setParameters(parameters);
+		constrainFitness = constraint.checkConstraint();
+		
+		//System.out.println("SolutionLength:" + bestSol.size() + " doNothingSteps:" + doNothingLength + " coverPercentage:" + coverPercentage + " bestPlayer:" + bestState.getGameWinner());
+
 	}
 	
 	/**
@@ -116,10 +151,10 @@ public class Chromosome implements Comparable<Chromosome>{
 		elapsedTimer.setMaxTimeMillis(time);
 		stepAgent.playGame(stateObs.copy(), elapsedTimer);
 		
-		StateObservation bestState = stepAgent.getFinalState();
-		ArrayList<Types.ACTIONS> bestSol = stepAgent.getSolution();
+		bestState = stepAgent.getFinalState();
+		bestSol = stepAgent.getSolution();
 		
-		StateObservation doNothingState = null;
+		doNothingState = null;
 		int doNothingLength = Integer.MAX_VALUE;
 		//playing the game using the donothing agent and naive agent
 		for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
