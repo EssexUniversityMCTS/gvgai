@@ -71,7 +71,7 @@ public class SerializableTransferedStateObservation {
     isAvatarAlive = s.isAvatarAlive();
     observationGrid = s.getObservationGrid();
     eventsHistory = s.getEventsHistory();
-    NPCPositions = s.getNPCPositions();
+//    NPCPositions = s.getNPCPositions();
     immovablePositions = s.getImmovablePositions();
     movablePositions = s.getMovablePositions();
     resourcesPositions = s.getResourcesPositions();

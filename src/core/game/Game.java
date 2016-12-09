@@ -9,7 +9,7 @@ import java.util.*;
 
 import javax.swing.JOptionPane;
 
-import com.google.gson.Gson;
+
 import core.*;
 import core.competition.CompetitionParameters;
 import core.content.Content;
@@ -1094,7 +1094,7 @@ public abstract class Game
             sb2 += "Player" + i + "-Score:" + avatars[i].getScore() + ", ";
         }
 
-        System.out.println("Result (1->win; 0->lose): " + sb1 + sb2 + "timesteps:" + this.getGameTick());
+        //System.out.println("Result (1->win; 0->lose): " + sb1 + sb2 + "timesteps:" + this.getGameTick());
         //System.out.println("Result (1->win; 0->lose):"+ winner.key() + ", Score:" + score + ", timesteps:" + this.getGameTick());
     }
 

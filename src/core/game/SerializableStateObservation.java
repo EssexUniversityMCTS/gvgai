@@ -65,7 +65,7 @@ public class SerializableStateObservation {
         avatarMaxHealthPoints = s.getAvatarMaxHealthPoints();
         avatarLimitHealthPoints = s.getAvatarLimitHealthPoints();
         isAvatarAlive = s.isAvatarAlive();
-        observationGrid = s.getObservationGrid();
+        observationGrid = null; //s.getObservationGrid();
         eventsHistory = s.getEventsHistory();
         NPCPositions = s.getNPCPositions();
         immovablePositions = s.getImmovablePositions();
