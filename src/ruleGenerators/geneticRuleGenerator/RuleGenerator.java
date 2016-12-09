@@ -39,7 +39,6 @@ public class RuleGenerator extends AbstractRuleGenerator {
 	 * Random object to help in generation
 	 */
 	private Random random;
-
 	/**
 	 * A constructor to help speed up the creation of random gens
 	 */
@@ -57,6 +56,19 @@ public class RuleGenerator extends AbstractRuleGenerator {
 	 * amount of time allowed
 	 */
 	private ElapsedCpuTimer time;
+	/**
+	 * chance of mutation
+	 */
+	private double MUTATION_CHANCE = 0.1;
+	/**
+	 * elitism coefficient
+	 */
+	private double ELITISM = 0.1;
+	/**
+	 * chance of crossover
+	 */
+	private double CROSSOVER_CHANCE = 0.1;
+	
 	/**
 	 * This is an evolutionary rule generator
 	 * @param sl	contains information about sprites and current level
@@ -83,9 +95,10 @@ public class RuleGenerator extends AbstractRuleGenerator {
 				}
 			}
 		}
-
 		//Initialize the population
 		initPop(sl, time);
+		
+		// iterate through population and mutate
 	}
 
 	/**
@@ -109,44 +122,53 @@ public class RuleGenerator extends AbstractRuleGenerator {
 		constructGen = new ruleGenerators.constructiveRuleGenerator.RuleGenerator(sl, time);
 		Chromosome c;
 		for(int i = 0; i < POP_SIZE / 2; i++) {
-			c = new Chromosome(randomGen.generateRules(sl, time));
+			c = new Chromosome(randomGen.generateRules(sl, time), sl, time);
 			population.add(c);
-			c = new Chromosome(constructGen.generateRules(sl, time));
+			c = new Chromosome(constructGen.generateRules(sl, time), sl, time);
 			population.add(c);
 		}
-	}
-
-	/**
-	 * Mutate random interaction rules and termination conditions
-	 * @param sl	contains information about sprites and current level
-	 * @param time	amount of time allowed
-	 */
-	@Override
-	public String[][] generateRules(SLDescription sl, ElapsedCpuTimer time) {
-
-	return null;
 	}
 	
 	/**
-	 * The first fitness function. If rules are feasible 
-	 * (and a do nothing agent can survive the first 40 moves) then this returns true
-	 * @param ruleset
-	 * @return
+	 * The first fitness function. This will eliminate games that are not feasible to play
 	 */
-	public boolean feasibleTest(SLDescription sl, String[][] ruleset) {
+	public void feasibilityTest() {
 		// test ruleset for robustness
-		
-		
-		// set elapsed time to 1 second.  If doNothing loses within a second, this is infeasible
-		ElapsedCpuTimer elapsedTimer = new ElapsedCpuTimer();
-		elapsedTimer.setMaxTimeMillis(1000);
-		StateObservation sO = sl.testRules(ruleset[0], ruleset[1]);
-		controllers.singlePlayer.doNothing.Agent doNothing = new controllers.singlePlayer.doNothing.Agent(sO, elapsedTimer);
-		if(sO.getGameWinner() == Types.WINNER.PLAYER_LOSES) {
-			return false;
+		for(Chromosome chrome : population) {
+			if(!chrome.feasibilityTest()){
+				population.remove(chrome);
+			}
 		}
-		return true;
 	}
+	
+	public ArrayList<Chromosome> saveElites() {
+		ArrayList<Chromosome> popCopy = (ArrayList<Chromosome>) population.clone();
+		ArrayList<Chromosome> elites = new ArrayList<Chromosome>();
+		int indexMax = 0;
+		double fitnessMax = 0;
+		for(int i = 0; i < ELITISM * 100; i++) {
+			for(int j = 0; i < popCopy.size(); i++) {
+				if(popCopy.get(i).getFitness() > fitnessMax) {
+					fitnessMax = popCopy.get(i).getFitness();
+					indexMax = i;
+				}
+			}
+			// add the biggest to elites, remove that from the copy
+			elites.add(popCopy.get(i));
+			popCopy.remove(popCopy.get(i));
+		}
+		return elites;
+	}
+
+	@Override
+	public String[][] generateRules(SLDescription sl, ElapsedCpuTimer time) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	/**
+	 * 
+	 */
 	
 	
 }
