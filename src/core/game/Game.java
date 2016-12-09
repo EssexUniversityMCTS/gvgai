@@ -1189,7 +1189,7 @@ public abstract class Game
      * received as a parameter is not null, it is assigned to it.
      * @param players the players that will play the game (only 1 in single player games).
      */
-    private void assignPlayer(Player[] players)
+    public void assignPlayer(Player[] players)
     {
         //iterate through all avatars and assign their players
         if (players.length == no_players) {
@@ -1975,6 +1975,11 @@ public abstract class Game
      * @param playerID the ID of the player.
      */
     public void setAvatarLastAction(Types.ACTIONS action, int playerID) { this.avatarLastAction[playerID] = action; }
+
+
+//    public Types.ACTIONS[] getAvatarLastAction() {
+//      return avatarLastAction;
+//    }
 
     /**
      * Indicates if the game is over, or if it is still being played.

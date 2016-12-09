@@ -1,6 +1,6 @@
 BasicGame
     SpriteSet
-        water > Immovable img=newset/water2
+        water > Immovable img=newset/water2 hidden=True
         holes > SpawnPoint color=LIGHTGRAY img=newset/whirlpool2 portal=True
             sharkhole  >  stype=shark  prob=0.025 total=1
             whalehole  >  stype=whale  prob=0.1 cooldown=10

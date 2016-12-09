@@ -2,7 +2,7 @@ BasicGame
     SpriteSet
 
         sky   > Immovable img=oryx/backLBlue
-        water > Immovable img=newset/water2
+        water > Immovable img=newset/water2 hidden=True
         saved > Immovable color=LIGHTGREEN
         holes > SpawnPoint color=LIGHTGRAY img=newset/whirlpool2 portal=True
             sharkhole  >  stype=shark  prob=0.01

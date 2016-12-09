@@ -1,6 +1,6 @@
 BasicGame
     SpriteSet
-        floor > Immovable img=oryx/floor3
+        floor > Immovable img=oryx/floor3 hidden=True
         flower > SpawnPoint stype=bee    prob=0.02 color=PINK img=oryx/cloak3
         hell   > 
             fastHell   > SpawnPoint stype=zombie prob=0.05 color=RED img=oryx/tombstone1

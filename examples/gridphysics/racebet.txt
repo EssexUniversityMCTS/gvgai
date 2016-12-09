@@ -16,7 +16,7 @@ BasicGame square_size=30
             winD > speed=0.25 img=newset/win4
 
         pit > Immovable
-            arena > color=LIGHTYELLOW img=newset/floor6
+            arena > color=LIGHTYELLOW img=newset/floor6  hidden=True
             pitA > color=LIGHTBLUE img=newset/tile1
             pitB > color=LIGHTGREEN img=newset/tile2
             pitC > color=LIGHTORANGE img=newset/tile3

@@ -1,6 +1,6 @@
 BasicGame
   SpriteSet
-    floor > Immovable img=oryx/backBlack
+    floor > Immovable img=oryx/backBlack hidden=True
     city  > Immovable color=GREEN img=newset/city1 randomtiling=0.5
     explosion > Flicker limit=5 img=oryx/circleEffect1 shrinkfactor=0.5
 

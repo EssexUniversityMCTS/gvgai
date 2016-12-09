@@ -1,6 +1,6 @@
 BasicGame square_size=20 obs=wall
     SpriteSet
-        floor > Immovable img=oryx/floor3
+        floor > Immovable img=oryx/floor3 hidden=true
         food > Immovable
             fruit > color=PINK img=newset/cherries2
             pellet > color=LIGHTYELLOW shrinkfactor=0.5 img=oryx/gold2

@@ -1,6 +1,6 @@
 BasicGame key_handler=Pulse square_size=40
     SpriteSet
-        floor > Immovable img=newset/floor2
+        floor > Immovable img=newset/floor2 hidden=True
         hole   > Immovable color=DARKBLUE img=oryx/cspell4
         avatar > MovingAvatar img=oryx/knight1
         box    > Passive img=newset/block1 shrinkfactor=0.8

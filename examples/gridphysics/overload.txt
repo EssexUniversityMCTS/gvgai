@@ -1,6 +1,6 @@
 BasicGame
     SpriteSet
-        floor > Immovable img=oryx/grass autotiling=True
+        floor > Immovable img=oryx/grass autotiling=True hidden=True
         castlef > Immovable img=oryx/floor3
         structure > Immovable
             marsh > color=BROWN img=oryx/tree1

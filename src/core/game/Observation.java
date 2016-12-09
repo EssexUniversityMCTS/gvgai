@@ -106,4 +106,10 @@ public class Observation implements Comparable<Observation>
         if(this.category != o.category) return false;
         return true;
     }
+
+    public String toString() {
+        String str = "[" + this.category + "," + this.itype + "," + this.obsID + "," +
+            this.position.x + "," + this.position.y + "]";
+        return str;
+    }
 }

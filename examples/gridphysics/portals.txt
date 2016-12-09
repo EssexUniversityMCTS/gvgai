@@ -1,6 +1,6 @@
 BasicGame
     SpriteSet
-        floor > Immovable img=oryx/backBiege
+        floor > Immovable img=oryx/backBiege hidden=True
 
         bullet > color=RED img=oryx/bullet1
             sitting  > Immovable

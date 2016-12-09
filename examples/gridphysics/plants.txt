@@ -1,6 +1,6 @@
 BasicGame
     SpriteSet
-        floor > Immovable img=oryx/backOBrown
+        floor > Immovable img=oryx/backOBrown hidden=True
         static > Immovable
             marsh > color=BROWN img=oryx/grass autotiling=True
             eatenBrains > color=RED img=oryx/eye1

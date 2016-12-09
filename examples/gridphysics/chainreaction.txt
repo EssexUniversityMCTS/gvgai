@@ -1,6 +1,6 @@
 BasicGame key_handler=Pulse
     SpriteSet
-        floor > Immovable img=oryx/backLBrown
+        floor > Immovable img=oryx/backLBrown hidden=True
         hole   > Immovable color=DARKBLUE img=newset/hole1 portal=true
         goal > Immovable img=newset/exit2 portal=true
 

@@ -8,7 +8,7 @@ import ontology.Types.ACTIONS;
 import tools.ElapsedCpuTimer;
 
 public class Agent extends AbstractPlayer{
-	SerializableStateObservation sso;
+
 
 	/**
 	 * initialize all variables for the agent
@@ -16,13 +16,14 @@ public class Agent extends AbstractPlayer{
      * @param elapsedTimer Timer when the action returned is due.
 	 */
 	public Agent(StateObservation stateObs, ElapsedCpuTimer elapsedTimer){
-		sso = new SerializableStateObservation(stateObs);
+		SerializableStateObservation sso = new SerializableStateObservation(stateObs);
 
 		for (int i=0; i<10; i++) {
-			System.out.println("Constructor: Create object time: " + elapsedTimer);
+//			System.out.println("Constructor: Create object time: " + elapsedTimer);
 			sso.serialize("gsonState.json");
-			System.out.println("Constructor: Serialize object time: " + elapsedTimer);
+//			System.out.println("Constructor: Serialize object time: " + elapsedTimer);
 		}
+//		System.out.println("In constructor : " + sso.toString());
 	}
 	
 	/**
@@ -33,12 +34,14 @@ public class Agent extends AbstractPlayer{
 	 */
 	@Override
 	public ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
+		SerializableStateObservation sso = new SerializableStateObservation(stateObs);
+//		System.out.println("Create object time: " + elapsedTimer);
+//		sso.serialize("gsonState.json");
+		sso.toString();
+		System.out.println(sso.gameTick + " " + elapsedTimer);
+//		System.out.println("Serialize object time: " + elapsedTimer);
 
-		sso = new SerializableStateObservation(stateObs);
-		System.out.println("Create object time: " + elapsedTimer);
-		sso.serialize("gsonState.json");
-		System.out.println("Serialize object time: " + elapsedTimer);
-
+//		System.out.println("At game tick "+sso.gameTick + " : " +sso.toString());
 		return Types.ACTIONS.ACTION_NIL;
 	}
 }

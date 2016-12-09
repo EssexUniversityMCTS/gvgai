@@ -1,6 +1,6 @@
 BasicGame
     SpriteSet
-        floor > Immovable img=oryx/backOBrown
+        floor > Immovable img=oryx/backOBrown hidden=True
         hole   > Immovable color=DARKBLUE img=newset/hole1 portal=True
         shovel > Flicker color=LIGHTGRAY limit=1 singleton=True img=oryx/pickaxe shrinkfactor=0.5
 

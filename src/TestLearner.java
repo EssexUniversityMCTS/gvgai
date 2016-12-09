@@ -49,11 +49,13 @@ public class TestLearner {
     int seed = new Random().nextInt();
 
     //Game and level to play
-    int gameIdx = 1;
-    int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
-    String game = gamesPath + games[gameIdx] + ".txt";
-    String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
+    for (int gameIdx = 0; gameIdx < games.length; gameIdx++) {
+//      int gameIdx = 58;
+      int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
+      String game = gamesPath + games[gameIdx] + ".txt";
+      String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
 
-    ArcadeMachine.runOneGame(game, level1, visuals, doNothingController, null, seed, 0);
+      ArcadeMachine.runOneGame(game, level1, false, doNothingController, null, seed, 0);
+    }
   }
 }

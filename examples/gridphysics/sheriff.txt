@@ -1,7 +1,7 @@
 BasicGame
     SpriteSet
 
-        floor > Immovable img=oryx/backBiege
+        floor > Immovable img=oryx/backBiege hidden=True
         base    > Immovable    color=WHITE img=oryx/wall4
         avatar  > ShootAvatar stype=bullet img=newset/sheriff1
         surround > Immovable    color=YELLOW img=dirt invisible=True

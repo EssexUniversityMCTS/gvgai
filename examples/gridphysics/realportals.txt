@@ -1,6 +1,6 @@
 BasicGame key_handler=Pulse
     SpriteSet
-        floor > Immovable img=oryx/backOBrown
+        floor > Immovable img=oryx/backOBrown hidden=True
 
         water > Immovable color=BLUE img=newset/water
         weaponToggle1 > Immovable color=RED img=oryx/staff3 shrinkfactor=0.6
