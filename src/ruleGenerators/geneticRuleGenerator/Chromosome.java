@@ -6,17 +6,16 @@ import java.util.ArrayList;
 import core.game.SLDescription;
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
-import levelGenerators.geneticLevelGenerator.SharedData;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
-import tools.LevelMapping;
+import tools.StepController;
 
-public class Chromosome {
+public class Chromosome implements Comparable<Chromosome>{
 	private ArrayList<String>[][] level;
 	/**
 	 * current chromosome fitness if its a feasible
 	 */
-	private double fitness;
+	private ArrayList<Double> fitness;
 	/**
 	 * current chromosome fitness if its an infeasible
 	 */
@@ -57,11 +56,6 @@ public class Chromosome {
 	 * amount of steps allowed for the naive agent to sit around
 	 */
 	private int FEASIBILITY_STEP_LIMIT = 40;
-	/**
-	 * amount of times to repeat the feasibility test
-	 */
-	private int REPITITON_AMOUNT = 100;
-	
 	
 	/**
 	 * Chromosome constructor.  Holds the ruleset and initializes agents within
@@ -73,7 +67,7 @@ public class Chromosome {
 	public Chromosome(String[][] ruleset, SLDescription sl, ElapsedCpuTimer time) {
 		this.ruleset = ruleset;
 		this.sl = sl;
-		this.fitness = 0;
+		this.fitness = new ArrayList<Double>();
 		this.calculated = false;
 		this.stateObs = null;
 		
@@ -113,9 +107,29 @@ public class Chromosome {
 	
 	/**
 	 * calculates the fitness, by comparing the scores of a naiveAI and a smart AI
+	 * @param time	how much time to evaluate the chromosome
 	 */
-	public void fitnessCalculation() {
+	public void calculateFitness(long time) {
+		//Play the game using the best agent
+		StepController stepAgent = new StepController(automatedAgent, SharedData.EVALUATION_STEP_TIME);
+		ElapsedCpuTimer elapsedTimer = new ElapsedCpuTimer();
+		elapsedTimer.setMaxTimeMillis(time);
+		stepAgent.playGame(stateObs.copy(), elapsedTimer);
 		
+		StateObservation bestState = stepAgent.getFinalState();
+		ArrayList<Types.ACTIONS> bestSol = stepAgent.getSolution();
+		
+		StateObservation doNothingState = null;
+		int doNothingLength = Integer.MAX_VALUE;
+		//playing the game using the donothing agent and naive agent
+		for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
+			StateObservation tempState = stateObs.copy();
+			int temp = getNaivePlayerResult(tempState, bestSol.size(), doNothingAgent);
+			if(temp < doNothingLength){
+				doNothingLength = temp;
+				doNothingState = tempState;
+			}
+		}
 	}
 	
 	/**
@@ -199,7 +213,99 @@ public class Chromosome {
 		return i;
 	}
 	
-	public double getFitness() {
+	public ArrayList<Double> getFitness() {
 		return fitness;
+	}
+	/**
+	 * Get constraint fitness for infeasible chromosome
+	 * @return	1 if its feasible and less than 1 if not
+	 */
+	public double getConstrainFitness(){
+		return constrainFitness;
+	}
+	/**
+	 * Compare two chromosome with each other based on their 
+	 * constrained fitness and normal fitness
+	 */
+	@Override
+	public int compareTo(Chromosome o) {
+		if(this.constrainFitness < 1 || o.constrainFitness < 1){
+			if(this.constrainFitness < o.constrainFitness){
+				return 1;
+			}
+			if(this.constrainFitness > o.constrainFitness){
+				return -1;
+			}
+			return 0;
+		}
+		
+		double firstFitness = 0;
+		double secondFitness = 0;
+		for(int i=0; i<this.fitness.size(); i++){
+			firstFitness += this.fitness.get(i);
+			secondFitness += o.fitness.get(i);
+		}
+		
+		if(firstFitness > secondFitness){
+			return -1;
+		}
+		
+		if(firstFitness < secondFitness){
+			return 1;
+		}
+		
+		return 0;
+	}
+	
+	/**
+	 * crossover the current chromosome with the input chromosome
+	 * @param c	the other chromosome to crossover with
+	 * @return	the current children from the crossover process
+	 */
+	public ArrayList<Chromosome> crossOverIteraction(Chromosome c){
+		ArrayList<Chromosome> children = new ArrayList<Chromosome>();
+		children.add(new Chromosome(ruleset.clone(), sl, time));
+		children.add(new Chromosome(ruleset.clone(), sl, time));
+
+		//crossover point
+		int pointY = SharedData.random.nextInt(ruleset.length);
+		int pointX = SharedData.random.nextInt(ruleset[0].length);
+		
+		//swap the two chromosomes around this point
+		for(int y = 0; y < ruleset[0].length; y++){
+			for(int x = 0; x < level[y].length; x++){
+				if(y < pointY){
+					children.get(0).level[y][x].addAll(this.level[y][x]);
+					children.get(1).level[y][x].addAll(c.level[y][x]);
+				}
+				else if(y == pointY){
+					if(x <= pointX){
+						children.get(0).level[y][x].addAll(this.level[y][x]);
+						children.get(1).level[y][x].addAll(c.level[y][x]);
+					}
+					else{
+						children.get(0).level[y][x].addAll(c.level[y][x]);
+						children.get(1).level[y][x].addAll(this.level[y][x]);
+					}
+				}
+				else{
+					children.get(0).level[y][x].addAll(c.level[y][x]);
+					children.get(1).level[y][x].addAll(this.level[y][x]);
+				}
+			}
+		}
+		return children;
+	}
+	
+	/**
+	 * Get the average value of the fitness
+	 * @return	average value of the fitness array
+	 */
+	public double getCombinedFitness(){
+		double result = 0;
+		for(double v: this.fitness){
+			result += v;
+		}
+		return result / this.fitness.size();
 	}
 }
