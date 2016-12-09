@@ -29,6 +29,10 @@ public abstract class Effect{
     public boolean count = true;
     public String counter = "0";
 
+    //Count something else
+    public boolean countElse = true;
+    public String counterElse = "0";
+
     //Probabilty for stochastic effects.
     public double prob = 1;
 
@@ -78,6 +82,11 @@ public abstract class Effect{
 
     public int getCounter(int idx) {
         String[] scores = counter.split(",");
+        return idx < scores.length ? Integer.parseInt(scores[idx]) : Integer.parseInt(scores[0]);
+    }
+
+    public int getCounterElse(int idx) {
+        String[] scores = counterElse.split(",");
         return idx < scores.length ? Integer.parseInt(scores[idx]) : Integer.parseInt(scores[0]);
     }
     
