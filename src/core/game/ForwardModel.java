@@ -826,7 +826,7 @@ public class ForwardModel extends Game
      */
     public Types.ACTIONS getAvatarLastAction(int playerID) {
         if(avatarLastAction[playerID] != null)
-            return avatarLastAction[0];
+            return avatarLastAction[playerID];
         else return Types.ACTIONS.ACTION_NIL;
     }
 
