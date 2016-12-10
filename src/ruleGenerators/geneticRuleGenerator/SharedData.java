@@ -13,7 +13,7 @@ public class SharedData {
 	/**
 	 * The amount of times used to check the one step look ahead and do nothing algorithm
 	 */
-	public static final int REPETITION_AMOUNT = 50;
+	public static final int REPETITION_AMOUNT = 20;
 	/**
 	 * the amount of time to evaluate a single level
 	 */
@@ -33,7 +33,7 @@ public class SharedData {
 	/**
 	 * number of the best chromosomes that are transfered from one generation to another
 	 */
-	public static final int ELITISM_NUMBER = 1;
+	public static final int ELITISM_NUMBER = 3;
 	/**
 	 * very small value
 	 */
@@ -44,13 +44,18 @@ public class SharedData {
 	 */
 	public static final int RANDOM_INIT_AMOUNT = 50;
 	/**
-	 * the probability of inserting a new sprite
+	 * the probability of inserting a new rule
 	 */
 	public static final double INSERTION_PROB = 0.3;
 	/**
-	 * the probability of deleting an exisiting sprite
+	 * the probability of deleting an exisiting rule
 	 */
 	public static final double DELETION_PROB = 0.3;
+	/**
+	 * the probability of changing an existing rule
+	 */
+	public static final double CHANGE_PROB = 0.4;
+	
 	/**
 	 * the amount of times the mutation has to be done on a single chromosome
 	 */

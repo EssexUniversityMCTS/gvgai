@@ -21,18 +21,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 	 * ArrayList that contains the population
 	 */
 	private ArrayList<Chromosome> population;
-	/**
-	 * Array contains all the simple interactions
-	 */
-	private String[] interactions = new String[]{
-			"killSprite", "killAll", "killIfHasMore", "killIfHasLess", "killIfFromAbove",
-			"killIfOtherHasMore", "transformToSingleton", "spawnBehind", "stepBack", 
-			"spawnIfHasMore", "spawnIfHasLess", "cloneSprite", "transformTo", "undoAll", 
-			"flipDirection", "transformIfCounts", "transformToRandomChild", "updateSpawnType", 
-			"removeScore", "addHealthPoints", "addHealthPointsToMax", "reverseDirection", 
-			"subtractHealthPoints", "increaseSpeedToAll", "decreaseSpeedToAll", "attractGaze", 
-			"align", "turnAround", "wrapAround", "pullWithIt", "bounceForward", "teleportToExit",
-			"collectResource", "setSpeedForAll", "undoAll", "reverseDirection", "changeResource"};
+
 	/**
 	 * A list of all the useful sprites in the game
 	 */
@@ -87,6 +76,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 	 */
 	private ArrayList<Integer> numOfInFeasible;
 	
+	
 	/**
 	 * This is an evolutionary rule generator
 	 * @param sl	contains information about sprites and current level
@@ -96,7 +86,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 		this.sl = sl;
 		this.time = time;
 		this.usefulSprites = new ArrayList<String>();
-		this.random = new Random();
+		SharedData.random = new Random();
 
 		String[][] currentLevel = sl.getCurrentLevel();
 		//Just get the useful sprites from the current level
@@ -113,9 +103,6 @@ public class RuleGenerator extends AbstractRuleGenerator {
 				}
 			}
 		}
-		//Initialize the population
-		initPop(sl, time);
-		
 		// iterate through population and mutate
 	}
 
@@ -136,15 +123,9 @@ public class RuleGenerator extends AbstractRuleGenerator {
 	 */
 	public void initPop(SLDescription sl, ElapsedCpuTimer time) {
 		population = new ArrayList<Chromosome>();
-		randomGen = new ruleGenerators.randomRuleGenerator.RuleGenerator(sl, time);
-		constructGen = new ruleGenerators.constructiveRuleGenerator.RuleGenerator(sl, time);
-		Chromosome c;
-		for(int i = 0; i < POP_SIZE / 2; i++) {
-			c = new Chromosome(randomGen.generateRules(sl, time), sl, time);
-			population.add(c);
-			c = new Chromosome(constructGen.generateRules(sl, time), sl, time);
-			population.add(c);
-		}
+
+		
+		
 	}
 	
 	/**
@@ -334,8 +315,103 @@ public class RuleGenerator extends AbstractRuleGenerator {
 	}
 	@Override
 	public String[][] generateRules(SLDescription sl, ElapsedCpuTimer time) {
-		// TODO Auto-generated method stub
-		return null;
+		//initialize the statistics objects
+		bestFitness = new ArrayList<Double>();
+		numOfFeasible = new ArrayList<Integer>();
+		numOfInFeasible = new ArrayList<Integer>();
+		
+		System.out.println("Generation #0: ");
+		ArrayList<Chromosome> fChromosomes = new ArrayList<Chromosome>();
+		ArrayList<Chromosome> iChromosomes = new ArrayList<Chromosome>();
+		
+		randomGen = new ruleGenerators.randomRuleGenerator.RuleGenerator(sl, time);
+		constructGen = new ruleGenerators.constructiveRuleGenerator.RuleGenerator(sl, time);
+//		for(int i = 0; i < SharedData.POPULATION_SIZE / 2; i++) {
+//			Chromosome c = new Chromosome(randomGen.generateRules(sl, time), sl, time, usefulSprites);
+//
+//			c.calculateFitness(SharedData.EVALUATION_TIME);
+//			if(c.getConstrainFitness() < 1){
+//				iChromosomes.add(c);
+//				System.out.println("\tChromosome #" + (i+1) + " Constrain Fitness: " + c.getConstrainFitness());
+//			}
+//			else{
+//				fChromosomes.add(c);
+//				System.out.println("\tChromosome #" + (i+1) + " Fitness: " + c.getFitness());
+//			}
+//			System.out.println("Here 1");
+//		}
+		for(int i = 0; i < SharedData.POPULATION_SIZE; i++) {
+			Chromosome c = new Chromosome(constructGen.generateRules(sl, time), sl, time, usefulSprites);
+
+			c.calculateFitness(SharedData.EVALUATION_TIME);
+			if(c.getConstrainFitness() < 1){
+				iChromosomes.add(c);
+				System.out.println("\tChromosome #" + (i+1) + " Constrain Fitness: " + c.getConstrainFitness());
+			}
+			else{
+				fChromosomes.add(c);
+				System.out.println("\tChromosome #" + (i+1) + " Fitness: " + c.getFitness());
+			}
+			System.out.println("Here 2");
+		}
+		
+		initPop(sl, time);
+
+		//some variables to make sure not getting out of time
+		double worstTime = SharedData.EVALUATION_TIME * SharedData.POPULATION_SIZE;
+		double avgTime = worstTime;
+		double totalTime = 0;
+		int numberOfIterations = 0;
+		System.out.println(time.remainingTimeMillis() + " avgTime: " + avgTime + " worstTime: " + worstTime);
+		while(time.remainingTimeMillis() > 2 * avgTime &&
+				time.remainingTimeMillis() > worstTime){
+			ElapsedCpuTimer timer = new ElapsedCpuTimer();
+			
+			System.out.println("Generation #" + (numberOfIterations + 2) + ": ");
+			
+
+			//get the new population and split it to a the feasible and infeasible populations
+			ArrayList<Chromosome> chromosomes = getNextPopulation(fChromosomes, iChromosomes);
+			fChromosomes.clear();
+			iChromosomes.clear();
+			for(Chromosome c:chromosomes){
+				if(c.getConstrainFitness() < 1){
+					iChromosomes.add(c);
+				}
+				else{
+					fChromosomes.add(c);
+				}
+			}
+			
+			numberOfIterations += 1;
+			totalTime += timer.elapsedMillis();
+			avgTime = totalTime / numberOfIterations;
+		}
+		
+
+		//return the best infeasible chromosome
+		if(fChromosomes.isEmpty()){
+			for(int i=0;i<iChromosomes.size();i++){
+				iChromosomes.get(i).calculateFitness(SharedData.EVALUATION_TIME);
+			}
+
+			Collections.sort(iChromosomes);
+			bestChromosomeRuleset = iChromosomes.get(0).getRuleset();
+			System.out.println("Best Fitness: " + iChromosomes.get(0).getConstrainFitness());
+			return iChromosomes.get(0).getRuleset();
+		}
+		
+		//return the best feasible chromosome otherwise and print some statistics
+		for(int i=0;i<fChromosomes.size();i++){
+			fChromosomes.get(i).calculateFitness(SharedData.EVALUATION_TIME);
+		}
+		Collections.sort(fChromosomes);
+		bestChromosomeRuleset = fChromosomes.get(0).getRuleset();
+		System.out.println("Best Chromosome Fitness: " + fChromosomes.get(0).getFitness());
+		System.out.println(bestFitness);
+		System.out.println(numOfFeasible);
+		System.out.println(numOfInFeasible);
+		return fChromosomes.get(0).getRuleset();
 	}
 	
 	/**
