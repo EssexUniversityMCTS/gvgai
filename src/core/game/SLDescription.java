@@ -150,11 +150,11 @@ public class SLDescription {
     
     /**
      * decode the sprite name
-     * @param name	current encoded sprite name
+     * @param value	current encoded sprite name
      * @return		correct sprite name
      */
-    private String decodeName(String name, int seed){
-	return this.gameSprites[Integer.parseInt(name.split("_")[1]) ^ seed].name;
+    private String decodeName(int value, int seed){
+	return this.gameSprites[value ^ seed].name;
     }
     
     /**
@@ -204,7 +204,7 @@ public class SLDescription {
 	    for(int j=0; j<parts.length; j++){
 		if(parts[j].toLowerCase().contains(KEYWORD + "_")){
 		    String[] temp = parts[j].split(KEYWORD + "_");
-		    modifiedRules[i] += temp[0] + this.decodeName(parts[j].trim().toLowerCase(), seed) + " ";
+		    modifiedRules[i] += temp[0] + this.decodeName(Integer.parseInt(temp[1]), seed) + " ";
 		}
 		else{
 		    modifiedRules[i] += parts[j] + " ";
@@ -219,7 +219,7 @@ public class SLDescription {
 	    for(int j=0; j<parts.length; j++){
 		if(parts[j].toLowerCase().contains(KEYWORD + "_")){
 		    String[] temp = parts[j].split(KEYWORD + "_");
-		    modifiedWins[i] += temp[0] + this.decodeName(parts[j].trim().toLowerCase(), seed) + " ";
+		    modifiedWins[i] += temp[0] + this.decodeName(Integer.parseInt(temp[1]), seed) + " ";
 		}
 		else{
 		    modifiedWins[i] += parts[j] + " ";
