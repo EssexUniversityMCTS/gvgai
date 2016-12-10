@@ -1,5 +1,8 @@
 package ruleGenerators.geneticRuleGenerator;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -86,7 +89,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 		this.sl = sl;
 		this.time = time;
 		this.usefulSprites = new ArrayList<String>();
-		SharedData.random = new Random();
+		SharedData.random = new Random(1234L);
 
 		String[][] currentLevel = sl.getCurrentLevel();
 		//Just get the useful sprites from the current level
@@ -189,7 +192,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			Chromosome child2 = parent2.clone();
 			//do cross over
 			if(SharedData.random.nextDouble() < SharedData.CROSSOVER_PROB){
-				ArrayList<Chromosome> children = parent1.crossOverIteraction(parent2);
+				ArrayList<Chromosome> children = parent1.crossover(parent2);
 				child1 = children.get(0);
 				child2 = children.get(1);
 				
@@ -213,8 +216,26 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			
 
 			//add the new children to the new population
+			try (FileWriter fw = new FileWriter(SharedData.filename, true);
+					BufferedWriter bw = new BufferedWriter(fw);
+					PrintWriter out = new PrintWriter(bw)) {
 			newPopulation.add(child1);
+			out.println("interactions 1");
+			for (String[] s : child1.getRuleset()) {
+				for (String q : s) {
+					out.println(q);
+				}
+			}
 			newPopulation.add(child2);
+			out.println("interactions 2");
+			for (String[] s : child1.getRuleset()) {
+				for (String q : s) {
+					out.println(q);
+				}
+			}
+			} catch (Exception ex) {
+				System.out.println(ex.getMessage());
+			}
 		}
 		
 
@@ -236,17 +257,33 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			newPopulation.remove(i);
 		}
 
+		try (FileWriter fw = new FileWriter(SharedData.filename, true);
+				BufferedWriter bw = new BufferedWriter(fw);
+				PrintWriter out = new PrintWriter(bw)) {
 		if(fPopulation.isEmpty()){
 			Collections.sort(iPopulation);
 			for(int i=0;i<SharedData.ELITISM_NUMBER;i++){
 				newPopulation.add(iPopulation.get(i));
+				for (String[] s : iPopulation.get(i).getRuleset()) {
+					for (String q : s) {
+						out.println(q);
+					}
+				}
 			}
 		}
 		else{
 			Collections.sort(fPopulation);
 			for(int i=0;i<SharedData.ELITISM_NUMBER;i++){
 				newPopulation.add(fPopulation.get(i));
+				for (String[] s : fPopulation.get(i).getRuleset()) {
+					for (String q : s) {
+						out.println(q);
+					}
+				}
 			}
+		}
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
 		}
 		
 		return newPopulation;
@@ -355,8 +392,6 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			System.out.println("Here 2");
 		}
 		
-		initPop(sl, time);
-
 		//some variables to make sure not getting out of time
 		double worstTime = SharedData.EVALUATION_TIME * SharedData.POPULATION_SIZE;
 		double avgTime = worstTime;

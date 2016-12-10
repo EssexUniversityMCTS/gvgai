@@ -9,8 +9,6 @@ import core.game.SLDescription;
 import core.game.StateObservation;
 import core.game.GameDescription.SpriteData;
 import core.player.AbstractPlayer;
-import levelGenerators.constraints.CombinedConstraints;
-import levelGenerators.geneticLevelGenerator.SharedData;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
 import tools.LevelAnalyzer;
@@ -113,16 +111,17 @@ public class Chromosome implements Comparable<Chromosome>{
 		this.stateObs = null;
 		this.usefulSprites = usefulSprites;
 	    this.levAl = new LevelAnalyzer(sl);
-
+	    this.parameters = new HashMap<String, Object>();
 		constructAgent();
 	}
 	/**
 	 * mutate the current chromosome interaction set
 	 */
 	public void mutateInteraction() {
-		ArrayList<SpriteData> allSprites = SharedData.gameDescription.getAllSpriteData();
-		ArrayList<String> interaction = (ArrayList<String>) Arrays.asList(ruleset[0]);
-		SpriteData[] resourceSpriteData = levAl.getResources(0, 1, false);
+		ArrayList<String> interaction = new ArrayList<>( Arrays.asList(ruleset[0]));
+		SpriteData[] resourceSpriteData = levAl.getResources(0, 1, true);
+		SpriteData[] spawnerSpriteData = levAl.getSpawners(0, 1, true);
+		SpriteData[] portalSpriteData = levAl.getPortals(0, 1, true);
 		for(int i = 0; i < SharedData.MUTATION_AMOUNT; i++)
 		{
 			int point = SharedData.random.nextInt(ruleset[0].length);
@@ -141,6 +140,11 @@ public class Chromosome implements Comparable<Chromosome>{
 				// the killIfHasMore, killIfHasLess, and KillIfOtherHasMore rules
 				if(nInteraction.equals("killIfHasMore") || nInteraction.equals("killIfHasLess")
 						|| nInteraction.equals("killIfOtherHasMore")) {
+					// lazy version of "if we have no resources, redo interaction selection loop"
+					if(resourceSpriteData.length == 0) {
+						i--;
+						continue;
+					}
 				    String resourceS = " resource=" + resourceSpriteData[SharedData.random.nextInt(resourceSpriteData.length)].name;
 				    officialInteraction += resourceS;
 				    String limit = " limit=" + SharedData.random.nextInt(10);
@@ -148,6 +152,11 @@ public class Chromosome implements Comparable<Chromosome>{
 				}
 				// the changeResource rule
 				else if(nInteraction.equals("changeResource")) {
+					// lazy version of "if we have no resources, redo interaction selection loop"
+					if(resourceSpriteData.length == 0) {
+						i--;
+						continue;
+					}
 				    String resourceS = " resource=" + resourceSpriteData[SharedData.random.nextInt(resourceSpriteData.length)].name;
 				    officialInteraction += resourceS;
 				    String value = " value=" + SharedData.random.nextInt(15);
@@ -156,6 +165,11 @@ public class Chromosome implements Comparable<Chromosome>{
 				// the spawnIfHasMore and spawnIfHasLess rules
 				else if(nInteraction.equals("spawnIfHasMore") || nInteraction.equals("spawnIfHasLess")) {
 				    int i3 = SharedData.random.nextInt(this.usefulSprites.size());
+				 // lazy version of "if we have no resources, redo interaction selection loop"
+					if(resourceSpriteData.length == 0) {
+						i--;
+						continue;
+					}
 				    String stype = " stype=" + usefulSprites.get(i3);
 				    officialInteraction += stype;
 				    String resourceS = " resource=" + resourceSpriteData[SharedData.random.nextInt(resourceSpriteData.length)].name;
@@ -196,18 +210,28 @@ public class Chromosome implements Comparable<Chromosome>{
 				}
 				// the updateSpawnType rule
 				else if(nInteraction.equals("updateSpawnType")) {
+					// lazy version of "if we have no resources, redo interaction selection loop"
+					if(spawnerSpriteData.length == 0) {
+						i--;
+						continue;
+					}
 					int i3 = SharedData.random.nextInt(this.usefulSprites.size());
 				    String stype = " stype=" + usefulSprites.get(i3);
 				    officialInteraction += stype;
-				    String spawnType = " spawnPoint=" + levAl.getSpawners(0, 1, false)[SharedData.random.nextInt(levAl.getSpawners(0, 1, false).length)].name;
+				    String spawnType = " spawnPoint=" + spawnerSpriteData[SharedData.random.nextInt(spawnerSpriteData.length)].name;
 				    officialInteraction += spawnType;
 				}
 				// teleportToExit rule
 				else if(nInteraction.equals("teleportToExit")) {
 					// second sprite needs to be a portal
-					i2 = SharedData.random.nextInt(levAl.getPortals(0, 1, true).length);
+					// lazy version of "if we have no resources, redo interaction selection loop"
+					if(portalSpriteData.length == 0) {
+						i--;
+						continue;
+					}
+					i2 = SharedData.random.nextInt(portalSpriteData.length);
 					officialInteraction = this.usefulSprites.get(i1) + " " +
-							levAl.getPortals(0, 1, true)[i2].name + " > " + nInteraction;
+							portalSpriteData[i2].name + " > " + nInteraction;
 				}
 				// the transformToSingleton rule
 				else if(nInteraction.equals("transformToSingleton")) {
@@ -228,24 +252,132 @@ public class Chromosome implements Comparable<Chromosome>{
 			//clear any random rule
 			else if(SharedData.random.nextDouble() < SharedData.INSERTION_PROB + SharedData.DELETION_PROB){
 				interaction.remove(point);
-				ruleset[0] = (String[]) interaction.toArray();
 			}
 			//change a random rule
 			else{
 				interaction.remove(point);
-				ruleset[0] = (String[]) interaction.toArray();
-
-			    int i1 = SharedData.random.nextInt(this.usefulSprites.size());
+				String nInteraction = interactions[SharedData.random.nextInt(interactions.length)];
+				String officialInteraction = nInteraction;
+				int i1 = SharedData.random.nextInt(this.usefulSprites.size());
 			    int i2 = (i1 + 1 + SharedData.random.nextInt(this.usefulSprites.size() - 1)) % this.usefulSprites.size();
-			    interaction = (ArrayList<String>) Arrays.asList(ruleset[0]);
-			    interaction.add(this.usefulSprites.get(i1) + " " +
-					    this.usefulSprites.get(i2) + " > " +
-					    this.interactions[SharedData.random.nextInt(this.interactions.length)] +
-					    " scoreChange=" + (SharedData.random.nextInt(2) + 1));
-			    // fold the interactions list back into the ruleset
-			}
-		    ruleset[0] = (String[]) interaction.toArray();
+			    officialInteraction = this.usefulSprites.get(i1) + " " +
+					    this.usefulSprites.get(i2) + " > " + nInteraction;
 
+				// the killIfHasMore, killIfHasLess, and KillIfOtherHasMore rules
+				if(nInteraction.equals("killIfHasMore") || nInteraction.equals("killIfHasLess")
+						|| nInteraction.equals("killIfOtherHasMore")) {
+					// lazy version of "if we have no resources, redo interaction selection loop"
+					if(resourceSpriteData.length == 0) {
+						i--;
+						continue;
+					}
+				    String resourceS = " resource=" + resourceSpriteData[SharedData.random.nextInt(resourceSpriteData.length)].name;
+				    officialInteraction += resourceS;
+				    String limit = " limit=" + SharedData.random.nextInt(10);
+				    officialInteraction += limit;
+				}
+				// the changeResource rule
+				else if(nInteraction.equals("changeResource")) {
+					// lazy version of "if we have no resources, redo interaction selection loop"
+					if(resourceSpriteData.length == 0) {
+						i--;
+						continue;
+					}
+				    String resourceS = " resource=" + resourceSpriteData[SharedData.random.nextInt(resourceSpriteData.length)].name;
+				    officialInteraction += resourceS;
+				    String value = " value=" + SharedData.random.nextInt(15);
+				    officialInteraction += value;
+				}
+				// the spawnIfHasMore and spawnIfHasLess rules
+				else if(nInteraction.equals("spawnIfHasMore") || nInteraction.equals("spawnIfHasLess")) {
+				    int i3 = SharedData.random.nextInt(this.usefulSprites.size());
+				 // lazy version of "if we have no resources, redo interaction selection loop"
+					if(resourceSpriteData.length == 0) {
+						i--;
+						continue;
+					}
+				    String stype = " stype=" + usefulSprites.get(i3);
+				    officialInteraction += stype;
+				    String resourceS = " resource=" + resourceSpriteData[SharedData.random.nextInt(resourceSpriteData.length)].name;
+				    officialInteraction += resourceS;
+				    String limit = " limit=" + SharedData.random.nextInt(25);
+				    officialInteraction += limit;
+				}
+				// the transformTo rule
+				else if(nInteraction.equals("transformTo")) {
+				    int i3 = SharedData.random.nextInt(this.usefulSprites.size());
+				    String stype = " stype=" + usefulSprites.get(i3);
+				    officialInteraction += stype;
+				    boolean force = SharedData.random.nextBoolean();
+				    String forceOrientation = " forceOrientation=" + force;
+				    officialInteraction += forceOrientation;
+				}
+				// the killAll, spawnBehind, and transformToRandomChild rules
+				else if(nInteraction.equals("killAll") || nInteraction.equals("spawnBehind")
+						|| nInteraction.equals("transformToRandomChild")) {
+				    int i3 = SharedData.random.nextInt(this.usefulSprites.size());
+				    String stype = " stype=" + usefulSprites.get(i3);
+				    officialInteraction += stype;
+				}
+				// addHealthPoints and addHealthPointsToMax rules
+				else if(nInteraction.equals("addHealthPoints") ||
+						nInteraction.equals("addHealthPointsToMax")) {
+					String value = " value=" + SharedData.random.nextInt(15);
+					officialInteraction += value;
+				}
+				// subtractHealthPoints, increaseSpeedToAll, decreaseSpeedToAll, and setSpeedForAll rules
+				else if(nInteraction.equals("subtractHealthPoints") || nInteraction.equals("increaseSpeedToAll") ||
+						nInteraction.equals("decreaseSpeedToAll") || nInteraction.equals("setSpeedForAll")) {
+					String value = " value=" + SharedData.random.nextInt(25);
+					officialInteraction += value;
+				    int i3 = SharedData.random.nextInt(this.usefulSprites.size());
+				    String stype = " stype=" + usefulSprites.get(i3);
+				    officialInteraction += stype;
+				}
+				// the updateSpawnType rule
+				else if(nInteraction.equals("updateSpawnType")) {
+					// lazy version of "if we have no resources, redo interaction selection loop"
+					if(spawnerSpriteData.length == 0) {
+						i--;
+						continue;
+					}
+					int i3 = SharedData.random.nextInt(this.usefulSprites.size());
+				    String stype = " stype=" + usefulSprites.get(i3);
+				    officialInteraction += stype;
+				    String spawnType = " spawnPoint=" + spawnerSpriteData[SharedData.random.nextInt(spawnerSpriteData.length)].name;
+				    officialInteraction += spawnType;
+				}
+				// teleportToExit rule
+				else if(nInteraction.equals("teleportToExit")) {
+					// second sprite needs to be a portal
+					// lazy version of "if we have no resources, redo interaction selection loop"
+					if(portalSpriteData.length == 0) {
+						i--;
+						continue;
+					}
+					i2 = SharedData.random.nextInt(portalSpriteData.length);
+					officialInteraction = this.usefulSprites.get(i1) + " " +
+							portalSpriteData[i2].name + " > " + nInteraction;
+				}
+				// the transformToSingleton rule
+				else if(nInteraction.equals("transformToSingleton")) {
+					int i3 = SharedData.random.nextInt(this.usefulSprites.size());
+					officialInteraction = " stype=" + usefulSprites.get(i3);
+				    int i4 = (i3 + 1 + SharedData.random.nextInt(this.usefulSprites.size() - 1)) % this.usefulSprites.size();
+					officialInteraction = " stype_other=" + usefulSprites.get(i4);
+				}
+				// simple rules that follow the same pattern dont have a special case
+				String score = "";
+				boolean isScore = SharedData.random.nextBoolean();
+				if(isScore) {
+					score = " scoreChange=" + (SharedData.random.nextInt(6) - 3);
+					officialInteraction += score;
+				}
+				interaction.add(officialInteraction);
+			}
+			interaction.removeIf(s -> s == null);
+			ruleset[0] = new String[interaction.size()];
+			ruleset[0] = interaction.toArray(ruleset[0]);
 		}
 
 	}
@@ -253,12 +385,10 @@ public class Chromosome implements Comparable<Chromosome>{
 	 * mutate the current chromosome interaction set
 	 */
 	public void mutateTermination(){
-		ArrayList<SpriteData> allSprites = SharedData.gameDescription.getAllSpriteData();
-
 		for(int i = 0; i < SharedData.MUTATION_AMOUNT; i++)
 		{
 			int point = SharedData.random.nextInt(ruleset[1].length);
-		    ArrayList<String> termination = (ArrayList<String>) Arrays.asList(ruleset[1]);
+			ArrayList<String> termination = new ArrayList<>( Arrays.asList(ruleset[1]));
 
 			//insert new random rule
 		    String nTermString = "";
@@ -275,7 +405,7 @@ public class Chromosome implements Comparable<Chromosome>{
 					} else {
 						win = "False";
 					}
-					nTermString = nTermination + " stype1=" + sprite1 + " limit=" + count + " win=" + win;
+					nTermString = nTermination + " stype=" + sprite1 + " limit=" + count + " win=" + win;
 				// SpriteCounterMore termination
 				} else if(nTermination.equals("SpriteCounterMore")) {
 					String sprite1 = usefulSprites.get(SharedData.random.nextInt(this.usefulSprites.size()));
@@ -287,7 +417,7 @@ public class Chromosome implements Comparable<Chromosome>{
 					} else {
 						win = "False";
 					}
-					nTermString = nTermination + " stype1=" + sprite1 + " limit=" + count + " win=" + win;
+					nTermString = nTermination + " stype=" + sprite1 + " limit=" + count + " win=" + win;
 				} else if(nTermination.equals("MultiSpriteCounter") || nTermination.equals("StopCounter")) {
 					String sprite1 = usefulSprites.get(SharedData.random.nextInt(this.usefulSprites.size()));
 					String sprite2 = usefulSprites.get(SharedData.random.nextInt(this.usefulSprites.size()));
@@ -431,7 +561,9 @@ public class Chromosome implements Comparable<Chromosome>{
 				termination.add(nTermString);
 			}
 		    // fold the interactions list back into the ruleset
-			ruleset[1] = (String[]) termination.toArray();
+			termination.removeIf(s -> s == null);
+			ruleset[1] = new String[termination.size()];
+			ruleset[1] = termination.toArray(ruleset[1]);
 
 		}
 
@@ -450,13 +582,15 @@ public class Chromosome implements Comparable<Chromosome>{
 	 */
 	public boolean feasibilityTest() {
 		doNothingLength = Integer.MAX_VALUE;
-		for(int i = 0; i < 100; i++) {
+		for(int i = 0; i < SharedData.REPETITION_AMOUNT; i++) {
 			int temp = this.getAgentResult(getStateObservation().copy(), FEASIBILITY_STEP_LIMIT, this.naiveAgent);
 			if(temp < doNothingLength){
 				doNothingLength = temp;
+				
 			}
 		}
-		if(doNothingLength < 39) {
+		System.out.println("doNothingLength: " + doNothingLength);
+		if(doNothingLength < 40) {
 			return false;
 		}
 		return true;
@@ -465,65 +599,74 @@ public class Chromosome implements Comparable<Chromosome>{
 	/**
 	 * tests to make sure the game is playable, meaning that none of the rules will break the game.
 	 */
-	public void constraintsTest() {
-		//calculate the constrain fitness by applying all different constraints
-		//Updating parameters
-		parameters.put("solutionLength", bestSol.size());
-		parameters.put("minSolutionLength", SharedData.MIN_SOLUTION_LENGTH);
-		parameters.put("doNothingSteps", doNothingLength);
-		parameters.put("doNothingState", doNothingState.getGameWinner());
-		parameters.put("bestPlayer", bestState.getGameWinner());
-		parameters.put("minDoNothingSteps", SharedData.MIN_DOTHING_STEPS);
-		//parameters.put("coverPercentage", coverPercentage);
-		//parameters.put("minCoverPercentage", SharedData.MIN_COVER_PERCENTAGE);
-		//parameters.put("maxCoverPercentage", SharedData.MAX_COVER_PERCENTAGE);
-		//parameters.put("numOfObjects", calculateNumberOfObjects());
-		parameters.put("gameAnalyzer", SharedData.gameAnalyzer);
-		parameters.put("gameDescription", SharedData.gameDescription);
-
-		CombinedConstraints constraint = new CombinedConstraints();
-		constraint.addConstraints(new String[]{"SolutionLengthConstraint", "DeathConstraint",
-											   //"CoverPercentageConstraint", "SpriteNumberConstraint",
-											   "GoalConstraint", "AvatarNumberConstraint", "WinConstraint"});
-		constraint.setParameters(parameters);
-		constrainFitness = constraint.checkConstraint();
-
-		//System.out.println("SolutionLength:" + bestSol.size() + " doNothingSteps:" + doNothingLength + " coverPercentage:" + coverPercentage + " bestPlayer:" + bestState.getGameWinner());
-
-	}
+//	public void constraintsTest() {
+//		//calculate the constrain fitness by applying all different constraints
+//		//Updating parameters
+////		parameters.put("solutionLength", bestSol.size());
+////		parameters.put("minSolutionLength", SharedData.MIN_SOLUTION_LENGTH);
+////		parameters.put("doNothingSteps", doNothingLength);
+////		parameters.put("doNothingState", doNothingState.getGameWinner());
+////		parameters.put("bestPlayer", bestState.getGameWinner());
+////		parameters.put("minDoNothingSteps", SharedData.MIN_DOTHING_STEPS);
+//		//parameters.put("coverPercentage", coverPercentage);
+//		//parameters.put("minCoverPercentage", SharedData.MIN_COVER_PERCENTAGE);
+//		//parameters.put("maxCoverPercentage", SharedData.MAX_COVER_PERCENTAGE);
+//		//parameters.put("numOfObjects", calculateNumberOfObjects());
+//		parameters.put("gameAnalyzer", SharedData.gameAnalyzer);
+//		parameters.put("gameDescription", SharedData.gameDescription);
+//
+//		//CombinedConstraints constraint = new CombinedConstraints();
+//		constraint.addConstraints(new String[]{"SolutionLengthConstraint", "DeathConstraint",
+//											   //"CoverPercentageConstraint", "SpriteNumberConstraint",
+//											   "GoalConstraint", "AvatarNumberConstraint", "WinConstraint"});
+//		constraint.setParameters(parameters);
+//		constrainFitness = constraint.checkConstraint();
+//
+//		//System.out.println("SolutionLength:" + bestSol.size() + " doNothingSteps:" + doNothingLength + " coverPercentage:" + coverPercentage + " bestPlayer:" + bestState.getGameWinner());
+//
+//	}
 
 	/**
 	 * calculates the fitness, by comparing the scores of a naiveAI and a smart AI
 	 * @param time	how much time to evaluate the chromosome
 	 */
 	public void calculateFitness(long time) {
-		//Play the game using the best agent
-		StepController stepAgent = new StepController(automatedAgent, SharedData.EVALUATION_STEP_TIME);
-		ElapsedCpuTimer elapsedTimer = new ElapsedCpuTimer();
-		elapsedTimer.setMaxTimeMillis(time);
-
-		stepAgent.playGame(stateObs.copy(), elapsedTimer);
-
-		bestState = stepAgent.getFinalState();
-		bestSol = stepAgent.getSolution();
-
-		StateObservation naiveState = null;
-		int naiveLength = Integer.MAX_VALUE;
-		//playing the game using the donothing agent and naive agent
-		for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
-			StateObservation tempState = stateObs.copy();
-			int temp = getAgentResult(tempState, bestSol.size(), naiveAgent);
-			if(temp < naiveLength){
-				naiveLength = temp;
-				naiveState = tempState;
+//		constraintsTest();
+	//	this.fitness.set(0, constrainFitness);
+		boolean isFeasible = false;
+//		if(constrainFitness == 1) {
+			isFeasible = feasibilityTest();
+			constrainFitness = 0;
+			this.fitness.set(0, 0.0);
+	//	}
+		if(isFeasible) {
+			this.fitness.set(0, 1.0);
+			constrainFitness = 1;
+			//Play the game using the best agent
+			StepController stepAgent = new StepController(automatedAgent, SharedData.EVALUATION_STEP_TIME);
+			ElapsedCpuTimer elapsedTimer = new ElapsedCpuTimer();
+			elapsedTimer.setMaxTimeMillis(time);
+	
+			stepAgent.playGame(stateObs.copy(), elapsedTimer);
+	
+			bestState = stepAgent.getFinalState();
+			bestSol = stepAgent.getSolution();
+	
+			StateObservation naiveState = null;
+			int naiveLength = Integer.MAX_VALUE;
+			//playing the game using the donothing agent and naive agent
+			for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
+				StateObservation tempState = stateObs.copy();
+				int temp = getAgentResult(tempState, bestSol.size(), naiveAgent);
+				if(temp < naiveLength){
+					naiveLength = temp;
+					naiveState = tempState;
+				}
 			}
+	
+			double difference = bestState.getGameScore() - naiveState.getGameScore();
+			this.fitness.set(1, difference);
 		}
-
-		double difference = bestState.getGameScore() - naiveState.getGameScore();
-		this.fitness.set(0, difference);
-		this.fitness.set(1, 1.0);
-		this.constrainFitness = 1;
-
 	}
 
 	/**
@@ -575,7 +718,9 @@ public class Chromosome implements Comparable<Chromosome>{
 	 */
 	public Chromosome clone(){
 		// copy ruleset into nRuleset. Two for loops, in case 2d array is jagged
-		String[][] nRuleset = new String[ruleset.length][ruleset.length];
+		String[][] nRuleset = new String[ruleset.length][];
+		nRuleset[0] = new String[ruleset[0].length];
+		nRuleset[1] = new String[ruleset[1].length];
 		for(int i = 0; i < ruleset[0].length; i++) {
 			nRuleset[0][i] = ruleset[0][i];
 		}
@@ -654,27 +799,35 @@ public class Chromosome implements Comparable<Chromosome>{
 	 * @param c	the other chromosome to crossover with
 	 * @return	the current children from the crossover process
 	 */
-	public ArrayList<Chromosome> crossOverIteraction(Chromosome c){
+	public ArrayList<Chromosome> crossover(Chromosome c){
 		ArrayList<Chromosome> children = new ArrayList<Chromosome>();
 		children.add(this.clone());
 		children.add(c.clone());
 
-		//crossover points
-		int pointOne = SharedData.random.nextInt(ruleset[0].length);
-		int pointTwo = SharedData.random.nextInt(c.getRuleset()[0].length);
+
 
 		// make new rulesets to represent the new rules
 		String[][] nRuleSetOne;
 		String[][] nRuleSetTwo;
 
+
+
+		// interaction set
+		//crossover points
+		int pointOne = SharedData.random.nextInt(ruleset[0].length);
+		int pointTwo = SharedData.random.nextInt(c.getRuleset()[0].length);
+		
 		// calculate new sizes of the rulesets
 		int nSizeOne = pointOne + (c.getRuleset()[0].length - pointTwo);
-		int nSizeTwo = pointTwo + (c.getRuleset()[1].length - pointOne);
+		int nSizeTwo = pointTwo + (ruleset[0].length - pointOne);
+		
+		// finalize construction
+		nRuleSetOne = new String[2][];
+		nRuleSetOne[0] = new String[nSizeOne];
+		nRuleSetTwo = new String[2][];
+		nRuleSetTwo[0] = new String[nSizeTwo];
 
-		nRuleSetOne = new String[2][nSizeOne];
-		nRuleSetTwo = new String[2][nSizeTwo];
-
-		// swapping for ruleset one
+		// swapping interaction for ruleset one
 		for(int i = 0; i < pointOne; i++) {
 			nRuleSetOne[0][i] = ruleset[0][i];
 		}
@@ -691,10 +844,41 @@ public class Chromosome implements Comparable<Chromosome>{
 		for(int i = pointTwo; i < nSizeTwo; i++) {
 			nRuleSetTwo[0][i] = ruleset[0][counter];
 		}
+		
+		// termination set
+		// crossover points
+		pointOne = SharedData.random.nextInt(ruleset[1].length);
+		pointTwo = SharedData.random.nextInt(c.getRuleset()[1].length);
+		
+		// calculate new sizes of the rulesets
+		nSizeOne = pointOne + (c.getRuleset()[1].length - pointTwo);
+		nSizeTwo = pointTwo + (ruleset[1].length - pointOne);
+		
+		// finalize construction
+		nRuleSetOne[1] = new String[nSizeOne];
+		nRuleSetTwo[1] = new String[nSizeTwo];
+		
 		// give the children their rulesets
 		children.get(0).setRuleset(nRuleSetOne);
 		children.get(1).setRuleset(nRuleSetTwo);
-
+		
+		// swapping terminations for ruleset one
+		for(int i = 0; i < pointOne; i++) {
+			nRuleSetOne[1][i] = ruleset[1][i];
+		}
+		counter = pointTwo;
+		for(int i = pointOne; i < nSizeOne; i++) {
+			nRuleSetOne[1][i] = c.getRuleset()[1][counter];
+			counter++;
+		}
+		// swapping for ruleset two
+		for(int i = 0; i < pointTwo; i++) {
+			nRuleSetTwo[1][i] = c.getRuleset()[1][i];
+		}
+		counter = pointOne;
+		for(int i = pointTwo; i < nSizeTwo; i++) {
+			nRuleSetTwo[1][i] = ruleset[1][counter];
+		}
 		return children;
 	}
 

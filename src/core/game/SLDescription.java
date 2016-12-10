@@ -154,6 +154,7 @@ public class SLDescription {
      * @return		correct sprite name
      */
     private String decodeName(String name, int seed){
+    System.out.println(name);
 	return this.gameSprites[Integer.parseInt(name.split("_")[1]) ^ seed].name;
     }
     
@@ -199,6 +200,11 @@ public class SLDescription {
 	
 	modifiedRules[0] = "InteractionSet";
 	for(int i=1; i<modifiedRules.length; i++){
+		if(rules == null) {
+			System.out.println("its null");
+			int x = 0;
+			x++;
+		}
 	    String[] parts = rules[i-1].split(" ");
 	    modifiedRules[i] = "   ";
 	    for(int j=0; j<parts.length; j++){

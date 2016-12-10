@@ -1,5 +1,6 @@
 package ruleGenerators.geneticRuleGenerator;
 
+import java.io.PrintWriter;
 import java.util.Random;
 
 import core.game.GameDescription;
@@ -9,15 +10,15 @@ public class SharedData {
 	/**
 	 * The size of the Genetic Algorithm Population
 	 */
-	public static final int POPULATION_SIZE = 50;
+	public static final int POPULATION_SIZE = 2;
 	/**
 	 * The amount of times used to check the one step look ahead and do nothing algorithm
 	 */
-	public static final int REPETITION_AMOUNT = 20;
+	public static final int REPETITION_AMOUNT = 5;
 	/**
 	 * the amount of time to evaluate a single level
 	 */
-	public static final long EVALUATION_TIME = 30000;
+	public static final long EVALUATION_TIME = 10000;
 	/**
 	 * The amount of time given for each time step
 	 */
@@ -25,15 +26,15 @@ public class SharedData {
 	/**
 	 * Crossover probability
 	 */
-	public static final double CROSSOVER_PROB = 0.7;
+	public static final double CROSSOVER_PROB = 1.0;
 	/**
 	 * Mutation probability
 	 */
-	public static final double MUTATION_PROB = 0.1;
+	public static final double MUTATION_PROB = 0.8;
 	/**
 	 * number of the best chromosomes that are transfered from one generation to another
 	 */
-	public static final int ELITISM_NUMBER = 3;
+	public static final int ELITISM_NUMBER = 1;
 	/**
 	 * very small value
 	 */
@@ -128,7 +129,11 @@ public class SharedData {
 	 */
 	public static Random random;
 	/**
-	 * constructive level generator to help in speeding up the level generation process
+	 * static file to write to
 	 */
-	public static levelGenerators.constructiveLevelGenerator.LevelGenerator constructiveGen;
+	public static String filename = "debugLog";
+	/**
+	 * Writer
+	 */
+	public static PrintWriter out;
 }
