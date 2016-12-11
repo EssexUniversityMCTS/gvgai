@@ -271,7 +271,9 @@ public class Chromosome implements Comparable<Chromosome>{
 			}
 			//clear any random rule
 			else if(SharedData.random.nextDouble() < SharedData.INSERTION_PROB + SharedData.DELETION_PROB){
-				interaction.remove(point);
+				if (interaction.size() > 1) {
+					interaction.remove(point);
+				}
 			}
 			//change a random rule
 			else{
