@@ -334,20 +334,20 @@ public class RuleGenerator extends AbstractRuleGenerator {
 		
 		randomGen = new ruleGenerators.randomRuleGenerator.RuleGenerator(sl, time);
 		constructGen = new ruleGenerators.constructiveRuleGenerator.RuleGenerator(sl, time);
-//		for(int i = 0; i < SharedData.POPULATION_SIZE / 2; i++) {
-//			Chromosome c = new Chromosome(randomGen.generateRules(sl, time), sl, time, usefulSprites);
-//
-//			c.calculateFitness(SharedData.EVALUATION_TIME);
-//			if(c.getConstrainFitness() < 1){
-//				iChromosomes.add(c);
-//				System.out.println("\tChromosome #" + (i+1) + " Constrain Fitness: " + c.getConstrainFitness());
-//			}
-//			else{
-//				fChromosomes.add(c);
-//				System.out.println("\tChromosome #" + (i+1) + " Fitness: " + c.getFitness());
-//			}
-//		}
-		for(int i = 0; i < SharedData.POPULATION_SIZE; i++) {
+		for(int i = 0; i < SharedData.POPULATION_SIZE * (.30); i++) {
+			Chromosome c = new Chromosome(randomGen.generateRules(sl, time), sl, time, usefulSprites);
+
+			c.calculateFitness(SharedData.EVALUATION_TIME);
+			if(c.getConstrainFitness() < 1){
+				iChromosomes.add(c);
+				System.out.println("\tChromosome #" + (i+1) + " Constrain Fitness: " + c.getConstrainFitness());
+			}
+			else{
+				fChromosomes.add(c);
+				System.out.println("\tChromosome #" + (i+1) + " Fitness: " + c.getFitness());
+			}
+		}
+		for(int i = 0; i < SharedData.POPULATION_SIZE * (.30); i++) {
 			Chromosome c = new Chromosome(constructGen.generateRules(sl, time), sl, time, usefulSprites);
 
 			c.calculateFitness(SharedData.EVALUATION_TIME);
