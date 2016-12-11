@@ -238,13 +238,14 @@ public class SLDescription {
      * 			the new interaction rules and termination conditions
      */
     public StateObservation testRules(String[] rules, String[] wins){
-	String[][] rw = this.modifyRules(rules, wins, this.shift);
-	
-	this.currentGame.clearInteractionTerminationData();
-	new VGDLParser().parseInteractionTermination(this.currentGame, rw[0], rw[1]);
-	
-	this.currentGame.reset();
-	this.currentGame.buildStringLevel(this.level, new Random().nextInt());
-	return this.currentGame.getObservation();
+//	String[][] rw = this.modifyRules(rules, wins, this.shift);
+//
+//	this.currentGame.clearInteractionTerminationData();
+//	new VGDLParser().parseInteractionTermination(this.currentGame, rw[0], rw[1]);
+//
+//	this.currentGame.reset();
+//	this.currentGame.buildStringLevel(this.level, new Random().nextInt());
+//	return this.currentGame.getObservation();
+		return null;
     }
 }
