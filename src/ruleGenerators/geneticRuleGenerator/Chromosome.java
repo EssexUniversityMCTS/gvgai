@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 import java.util.Arrays;
 
 import core.game.SLDescription;
@@ -379,8 +380,9 @@ public class Chromosome implements Comparable<Chromosome>{
 				interaction.add(officialInteraction);
 			}
 			interaction.removeIf(s -> s == null);
+			interaction = (ArrayList<String>) interaction.stream().distinct().collect(Collectors.toList());
 			ruleset[0] = new String[interaction.size()];
-			ruleset[0] = interaction.toArray(ruleset[0]);
+			ruleset[0] = interaction.toArray(ruleset[0]);		
 		}
 
 	}
@@ -478,7 +480,9 @@ public class Chromosome implements Comparable<Chromosome>{
 			}
 			//clear any random rule
 			else if(SharedData.random.nextDouble() < SharedData.INSERTION_PROB + SharedData.DELETION_PROB){
-				termination.remove(point);
+				if(termination.size() > 1){
+					termination.remove(point);
+				}
 			}
 			//change a random rule
 			else{

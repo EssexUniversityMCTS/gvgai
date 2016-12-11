@@ -221,7 +221,7 @@ public class ArcadeMachine {
 	    toPlay.handleResult();
 	    toPlay.printResult();
 	    System.out.println(e.getMessage());
-
+	    e.printStackTrace();
 	    return false;
 	}
 

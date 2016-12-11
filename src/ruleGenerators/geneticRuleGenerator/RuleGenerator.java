@@ -16,14 +16,6 @@ import tools.ElapsedCpuTimer;
 import tools.LevelMapping;
 
 public class RuleGenerator extends AbstractRuleGenerator {
-	/**
-	 * Defines how large the population will be
-	 */
-	private final int POP_SIZE = 100;
-	/**
-	 * ArrayList that contains the population
-	 */
-	private ArrayList<Chromosome> population;
 
 	/**
 	 * A list of all the useful sprites in the game
@@ -89,7 +81,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 		this.sl = sl;
 		this.time = time;
 		this.usefulSprites = new ArrayList<String>();
-		SharedData.random = new Random(1234L);
+		SharedData.random = new Random();
 
 		String[][] currentLevel = sl.getCurrentLevel();
 		//Just get the useful sprites from the current level
@@ -121,27 +113,6 @@ public class RuleGenerator extends AbstractRuleGenerator {
 		 }
 		 return array;
 	 }
-	/**
-	 * Initializes the population with 100 RandomGenerators
-	 */
-	public void initPop(SLDescription sl, ElapsedCpuTimer time) {
-		population = new ArrayList<Chromosome>();
-
-		
-		
-	}
-	
-	/**
-	 * The first fitness function. This will eliminate games that are not feasible to play
-	 */
-	public void feasibilityTest() {
-		// test ruleset for robustness
-		for(Chromosome chrome : population) {
-			if(!chrome.feasibilityTest()){
-				population.remove(chrome);
-			}
-		}
-	}
 	
 	/**
 	 * Get the next population based on the current feasible infeasible population
@@ -400,7 +371,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 				time.remainingTimeMillis() > worstTime){
 			ElapsedCpuTimer timer = new ElapsedCpuTimer();
 			
-			System.out.println("Generation #" + (numberOfIterations + 2) + ": ");
+			System.out.println("Generation #" + (numberOfIterations + 1) + ": ");
 			
 
 			//get the new population and split it to a the feasible and infeasible populations
