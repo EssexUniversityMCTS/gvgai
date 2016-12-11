@@ -971,11 +971,11 @@ public class Chromosome implements Comparable<Chromosome>{
 	 * Attempt to prevent games where avatar goes off screen
 	 */
 	public void resolveOffscreenConstraint(ArrayList<Vector2d> SOs, Dimension world) {
-		System.out.println(SOs.size());
+		//System.out.println(SOs.size());
 		Vector2d pos = SOs.get(SOs.size() - 2);
 		if (pos.x < 0 || pos.y > world.width ||
 			pos.y < 0 || pos.y > world.height) {
-			constrainFitness = 0;
+			constrainFitness *= 0.9;
 		}
 	}
 	
