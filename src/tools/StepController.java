@@ -53,6 +53,28 @@ public class StepController{
 			solution.add(action);
 		}
 	}
+	
+	/**
+	 * play the current game for a specific amount of time using the initialized player
+	 * @param stateObs		starting observation object
+	 * @param elapsedTimer	amount of time that can be spent in this function
+	 * @param SOs			List of stateobservations to be cached
+	 */
+	public void playGame(StateObservation stateObs, ElapsedCpuTimer elapsedTimer, ArrayList<Vector2d> SOs) {
+		solution = new ArrayList<Types.ACTIONS>();
+		finalState = stateObs;
+		
+		while(elapsedTimer.remainingTimeMillis() > stepTime && !finalState.isGameOver()){
+			ElapsedCpuTimer timer = new ElapsedCpuTimer();
+			timer.setMaxTimeMillis(stepTime);
+			Types.ACTIONS action = agent.act(finalState.copy(), timer);
+			finalState.advance(action);
+			if (finalState != null) {
+				SOs.add(new Vector2d(finalState.getAvatarPosition()));
+			}
+			solution.add(action);
+		}
+	}
 
 	/**
 	 * get list of action used during playing the game

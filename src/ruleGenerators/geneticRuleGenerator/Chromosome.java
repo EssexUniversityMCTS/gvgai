@@ -1,5 +1,6 @@
 package ruleGenerators.geneticRuleGenerator;
 
+import java.awt.Dimension;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -18,6 +19,7 @@ import ontology.Types;
 import tools.ElapsedCpuTimer;
 import tools.LevelAnalyzer;
 import tools.StepController;
+import tools.Vector2d;
 
 public class Chromosome implements Comparable<Chromosome>{
 	private ArrayList<String>[][] level;
@@ -728,8 +730,6 @@ public class Chromosome implements Comparable<Chromosome>{
 			ruleset[1] = new String[termination.size()];
 			ruleset[1] = termination.toArray(ruleset[1]);
 		}
-		// Resolving potential constraints if mutations make malformed sets
-		resolveDeathConstraint();
 	}
 	/**
 	 * runs the mutation methods on this chromosome
@@ -737,6 +737,8 @@ public class Chromosome implements Comparable<Chromosome>{
 	public void mutate() {
 		mutateInteraction();
 		mutateTermination();
+		// Resolving potential constraints if mutations make malformed sets
+		resolveDeathConstraint();
 	}
 
 
@@ -809,7 +811,8 @@ public class Chromosome implements Comparable<Chromosome>{
 			ElapsedCpuTimer elapsedTimer = new ElapsedCpuTimer();
 			elapsedTimer.setMaxTimeMillis(time);
 	
-			stepAgent.playGame(stateObs.copy(), elapsedTimer);
+			ArrayList<Vector2d> SOs = new ArrayList<>();
+			stepAgent.playGame(stateObs.copy(), elapsedTimer, SOs);
 	
 			bestState = stepAgent.getFinalState();
 			bestSol = stepAgent.getSolution();
@@ -828,6 +831,7 @@ public class Chromosome implements Comparable<Chromosome>{
 	
 			double difference = bestState.getGameScore() - naiveState.getGameScore();
 			this.fitness.set(1, difference);
+			resolveOffscreenConstraint(SOs, bestState.getWorldDimension());
 		}
 	}
 
@@ -962,6 +966,19 @@ public class Chromosome implements Comparable<Chromosome>{
 		}
 
 	}
+	
+	/**
+	 * Attempt to prevent games where avatar goes off screen
+	 */
+	public void resolveOffscreenConstraint(ArrayList<Vector2d> SOs, Dimension world) {
+		System.out.println(SOs.size());
+		Vector2d pos = SOs.get(SOs.size() - 2);
+		if (pos.x < 0 || pos.y > world.width ||
+			pos.y < 0 || pos.y > world.height) {
+			constrainFitness = 0;
+		}
+	}
+	
 	/**
 	 * Get constraint fitness for infeasible chromosome
 	 * @return	1 if its feasible and less than 1 if not
