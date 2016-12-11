@@ -18,7 +18,7 @@ public class SharedData {
 	/**
 	 * the amount of time to evaluate a single level
 	 */
-	public static final long EVALUATION_TIME = 10000;
+	public static final long EVALUATION_TIME = 30000;
 	/**
 	 * The amount of time given for each time step
 	 */

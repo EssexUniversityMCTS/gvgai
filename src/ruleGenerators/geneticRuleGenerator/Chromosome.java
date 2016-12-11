@@ -128,6 +128,9 @@ public class Chromosome implements Comparable<Chromosome>{
 		ArrayList<String> tempSprites = (ArrayList<String>) usefulSprites.clone();
 		
 		tempSprites.remove(levAl.getImmovables(0.8, 1, true)[0].name);
+		for(SpriteData sd : levAl.getSpawners(0, 1, true)) {
+			tempSprites.remove(sd.name);
+		}
 		SpriteData[] resourceSpriteData = levAl.getResources(0, 1, true);
 		SpriteData[] spawnerSpriteData = levAl.getSpawners(0, 1, true);
 		SpriteData[] portalSpriteData = levAl.getPortals(0, 1, true);
@@ -500,10 +503,11 @@ public class Chromosome implements Comparable<Chromosome>{
 					}
 					// the transformToSingleton rule
 					else if(nInteraction.equals("transformToSingleton")) {
-						int i3 = SharedData.random.nextInt(this.usefulSprites.size());
-						officialInteraction = " stype=" + usefulSprites.get(i3);
-					    int i4 = (i3 + 1 + SharedData.random.nextInt(this.usefulSprites.size() - 1)) % this.usefulSprites.size();
-						officialInteraction = " stype_other=" + usefulSprites.get(i4);
+						tempSprites.remove(levAl.getAvatars(true)[0].name);
+						int i3 = SharedData.random.nextInt(tempSprites.size());
+						officialInteraction = " stype=" + tempSprites.get(i3);
+					    int i4 = (i3 + 1 + SharedData.random.nextInt(tempSprites.size() - 1)) % this.usefulSprites.size();
+						officialInteraction = " stype_other=" + tempSprites.get(i4);
 					}
 					// simple rules that follow the same pattern dont have a special case
 					String score = "";
