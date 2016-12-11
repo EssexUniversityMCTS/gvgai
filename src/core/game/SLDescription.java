@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Random;
 
 import core.VGDLParser;
-import core.VGDLRegistry;
-import core.game.GameDescription.InteractionData;
 import core.game.GameDescription.SpriteData;
 
 public class SLDescription {
@@ -38,6 +36,11 @@ public class SLDescription {
     private int shift;
     
     /**
+     * random object for random seeds
+     */
+    private Random random;
+    
+    /**
      * constructor for the SLDescription contains information about game sprites and the current level
      * @param currentGame	the current game
      * @param level		the current level
@@ -51,6 +54,7 @@ public class SLDescription {
 	this.currentLevel = null;
 	
 	this.shift = shift;
+	this.random = new Random(this.shift);
 	
 	this.reset(currentGame, level);
     }
@@ -150,11 +154,11 @@ public class SLDescription {
     
     /**
      * decode the sprite name
-     * @param name	current encoded sprite name
+     * @param value	current encoded sprite name
      * @return		correct sprite name
      */
-    private String decodeName(String name, int seed){
-	return this.gameSprites[Integer.parseInt(name.split("_")[1]) ^ seed].name;
+    private String decodeName(int value, int seed){
+	return this.gameSprites[value ^ seed].name;
     }
     
     /**
@@ -204,7 +208,7 @@ public class SLDescription {
 	    for(int j=0; j<parts.length; j++){
 		if(parts[j].toLowerCase().contains(KEYWORD + "_")){
 		    String[] temp = parts[j].split(KEYWORD + "_");
-		    modifiedRules[i] += temp[0] + this.decodeName(parts[j].trim().toLowerCase(), seed) + " ";
+		    modifiedRules[i] += temp[0] + this.decodeName(Integer.parseInt(temp[1]), seed) + " ";
 		}
 		else{
 		    modifiedRules[i] += parts[j] + " ";
@@ -219,7 +223,7 @@ public class SLDescription {
 	    for(int j=0; j<parts.length; j++){
 		if(parts[j].toLowerCase().contains(KEYWORD + "_")){
 		    String[] temp = parts[j].split(KEYWORD + "_");
-		    modifiedWins[i] += temp[0] + this.decodeName(parts[j].trim().toLowerCase(), seed) + " ";
+		    modifiedWins[i] += temp[0] + this.decodeName(Integer.parseInt(temp[1]), seed) + " ";
 		}
 		else{
 		    modifiedWins[i] += parts[j] + " ";
@@ -238,14 +242,13 @@ public class SLDescription {
      * 			the new interaction rules and termination conditions
      */
     public StateObservation testRules(String[] rules, String[] wins){
-//	String[][] rw = this.modifyRules(rules, wins, this.shift);
-//
-//	this.currentGame.clearInteractionTerminationData();
-//	new VGDLParser().parseInteractionTermination(this.currentGame, rw[0], rw[1]);
-//
-//	this.currentGame.reset();
-//	this.currentGame.buildStringLevel(this.level, new Random().nextInt());
-//	return this.currentGame.getObservation();
-		return null;
+	String[][] rw = this.modifyRules(rules, wins, this.shift);
+	
+	this.currentGame.clearInteractionTerminationData();
+	new VGDLParser().parseInteractionTermination(this.currentGame, rw[0], rw[1]);
+	
+	this.currentGame.reset();
+	this.currentGame.buildStringLevel(this.level, this.random.nextInt());
+	return this.currentGame.getObservation();
     }
 }

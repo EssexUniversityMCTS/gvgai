@@ -49,7 +49,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 	    }
 	}
 	//Add End Of Screen as one of useful sprites
-//	this.usefulSprites.add("EOS");
+	//this.usefulSprites.add("EOS");
     }
     
     /**

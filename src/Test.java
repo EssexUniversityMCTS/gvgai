@@ -33,6 +33,7 @@ public class Test {
 
 	// Available Rule Generator
 	String randomRuleGenerator = "ruleGenerators.randomRuleGenerator.RuleGenerator";
+	String constructiveRuleGenerator = "ruleGenerators.constructiveRuleGenerator.RuleGenerator";
 	
 	// Available games:
 	String gamesPath = "examples/gridphysics/";
@@ -82,7 +83,7 @@ public class Test {
 	ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
 
 	// 2. This plays a game in a level by the controller.
-//	 ArcadeMachine.runOneGame(game, level1, visuals, sampleRandomController, recordActionsFile, seed, 0);
+	// ArcadeMachine.runOneGame(game, level1, visuals, sampleRandomController, recordActionsFile, seed, 0);
 
 	// 3. This replays a game from an action file previously recorded
 	// String readActionsFile = recordActionsFile;
@@ -128,8 +129,9 @@ public class Test {
 	// }
 	
 	// 7. Generate rules (Interaction and Terminations) for a fixed level
-	// ArcadeMachine.generateRules(game, level1, randomRuleGenerator, recordGameFile, new Random().nextInt());
-	// ArcadeMachine.runOneGame(recordGameFile, level1, false, sampleMCTSController, 
-	//	recordActionsFile, new Random().nextInt(), 0);
+	// ArcadeMachine.generateRules(game, level1, randomRuleGenerator, recordGameFile, seed);
+	// ArcadeMachine.playOneGame(recordGameFile, level1, recordActionsFile, seed);
+	// ArcadeMachine.runOneGame(recordGameFile, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
+	 
     }
 }
