@@ -156,10 +156,10 @@ public class Chromosome implements Comparable<Chromosome>{
 			if(SharedData.random.nextDouble() < SharedData.INSERTION_PROB){
 				String nInteraction = tempInteractions.get(SharedData.random.nextInt(tempInteractions.size()));
 				String officialInteraction = nInteraction;
-				int i1 = SharedData.random.nextInt(this.usefulSprites.size());
-			    int i2 = (i1 + 1 + SharedData.random.nextInt(this.usefulSprites.size() - 1)) % this.usefulSprites.size();
-			    officialInteraction = this.usefulSprites.get(i1) + " " +
-					    this.usefulSprites.get(i2) + " > " + nInteraction;
+				int i1 = SharedData.random.nextInt(tempSprites.size());
+			    int i2 = (i1 + 1 + SharedData.random.nextInt(tempSprites.size() - 1)) % tempSprites.size();
+			    officialInteraction = tempSprites.get(i1) + " " +
+					    tempSprites.get(i2) + " > " + nInteraction;
 
 				// the killIfHasMore, killIfHasLess, and KillIfOtherHasMore rules
 				if(nInteraction.equals("killIfHasMore") || nInteraction.equals("killIfHasLess")
@@ -188,13 +188,13 @@ public class Chromosome implements Comparable<Chromosome>{
 				}
 				// the spawnIfHasMore and spawnIfHasLess rules
 				else if(nInteraction.equals("spawnIfHasMore") || nInteraction.equals("spawnIfHasLess")) {
-				    int i3 = SharedData.random.nextInt(this.usefulSprites.size());
+				    int i3 = SharedData.random.nextInt(tempSprites.size());
 				 // lazy version of "if we have no resources, redo interaction selection loop"
 					if(resourceSpriteData.length == 0) {
 						i--;
 						continue;
 					}
-				    String stype = " stype=" + usefulSprites.get(i3);
+				    String stype = " stype=" + tempSprites.get(i3);
 				    officialInteraction += stype;
 				    String resourceS = " resource=" + resourceSpriteData[SharedData.random.nextInt(resourceSpriteData.length)].name;
 				    officialInteraction += resourceS;
@@ -206,7 +206,7 @@ public class Chromosome implements Comparable<Chromosome>{
 					tempSprites.remove(levAl.getAvatars(true)[0].name);
 				    int i3 = SharedData.random.nextInt(tempSprites.size());
 				    
-				    String stype = " stype=" + usefulSprites.get(i3);
+				    String stype = " stype=" + tempSprites.get(i3);
 				    officialInteraction += stype;
 				    boolean force = SharedData.random.nextBoolean();
 				    String forceOrientation = " forceOrientation=" + force;
@@ -233,8 +233,8 @@ public class Chromosome implements Comparable<Chromosome>{
 						nInteraction.equals("decreaseSpeedToAll") || nInteraction.equals("setSpeedForAll")) {
 					String value = " value=" + SharedData.random.nextInt(25);
 					officialInteraction += value;
-				    int i3 = SharedData.random.nextInt(this.usefulSprites.size());
-				    String stype = " stype=" + usefulSprites.get(i3);
+				    int i3 = SharedData.random.nextInt(tempSprites.size());
+				    String stype = " stype=" + tempSprites.get(i3);
 				    officialInteraction += stype;
 				}
 				// the updateSpawnType rule
@@ -244,8 +244,8 @@ public class Chromosome implements Comparable<Chromosome>{
 						i--;
 						continue;
 					}
-					int i3 = SharedData.random.nextInt(this.usefulSprites.size());
-				    String stype = " stype=" + usefulSprites.get(i3);
+					int i3 = SharedData.random.nextInt(tempSprites.size());
+				    String stype = " stype=" + tempSprites.get(i3);
 				    officialInteraction += stype;
 				    String spawnType = " spawnPoint=" + spawnerSpriteData[SharedData.random.nextInt(spawnerSpriteData.length)].name;
 				    officialInteraction += spawnType;
@@ -259,7 +259,7 @@ public class Chromosome implements Comparable<Chromosome>{
 						continue;
 					}
 					i2 = SharedData.random.nextInt(portalSpriteData.length);
-					officialInteraction = this.usefulSprites.get(i1) + " " +
+					officialInteraction = tempSprites.get(i1) + " " +
 							portalSpriteData[i2].name + " > " + nInteraction;
 				}
 				// the transformToSingleton rule
@@ -292,16 +292,16 @@ public class Chromosome implements Comparable<Chromosome>{
 				String officialInteraction = "";
 				// change the first sprite of a rule
 				if(choice == 0) {
-					int i1 = SharedData.random.nextInt(this.usefulSprites.size());
-					changeMe[0] = this.usefulSprites.get(i1);
+					int i1 = SharedData.random.nextInt(tempSprites.size());
+					changeMe[0] = tempSprites.get(i1);
 					for(int a = 0; a < changeMe.length; a++) { 
 						officialInteraction += changeMe[a] + " ";
 					}
 				}
 				// change the second sprite of a rule
 				else if(choice == 1) {
-					int i1 = SharedData.random.nextInt(this.usefulSprites.size());
-					changeMe[1] = this.usefulSprites.get(i1);
+					int i1 = SharedData.random.nextInt(tempSprites.size());
+					changeMe[1] = tempSprites.get(i1);
 					for(int a = 0; a < changeMe.length; a++) { 
 						officialInteraction += changeMe[a] + " ";
 					}
@@ -337,13 +337,13 @@ public class Chromosome implements Comparable<Chromosome>{
 					}
 					// the spawnIfHasMore and spawnIfHasLess rules
 					else if(nInteraction.equals("spawnIfHasMore") || nInteraction.equals("spawnIfHasLess")) {
-					    int i3 = SharedData.random.nextInt(this.usefulSprites.size());
+					    int i3 = SharedData.random.nextInt(tempSprites.size());
 					 // lazy version of "if we have no resources, redo interaction selection loop"
 						if(resourceSpriteData.length == 0) {
 							i--;
 							continue;
 						}
-					    String stype = " stype=" + usefulSprites.get(i3);
+					    String stype = " stype=" + tempSprites.get(i3);
 					    officialInteraction += stype;
 					    String resourceS = " resource=" + resourceSpriteData[SharedData.random.nextInt(resourceSpriteData.length)].name;
 					    officialInteraction += resourceS;
@@ -381,8 +381,8 @@ public class Chromosome implements Comparable<Chromosome>{
 							nInteraction.equals("decreaseSpeedToAll") || nInteraction.equals("setSpeedForAll")) {
 						String value = " value=" + SharedData.random.nextInt(25);
 						officialInteraction += value;
-					    int i3 = SharedData.random.nextInt(this.usefulSprites.size());
-					    String stype = " stype=" + usefulSprites.get(i3);
+					    int i3 = SharedData.random.nextInt(tempSprites.size());
+					    String stype = " stype=" + tempSprites.get(i3);
 					    officialInteraction += stype;
 					}
 					// the updateSpawnType rule
@@ -392,8 +392,8 @@ public class Chromosome implements Comparable<Chromosome>{
 							i--;
 							continue;
 						}
-						int i3 = SharedData.random.nextInt(this.usefulSprites.size());
-					    String stype = " stype=" + usefulSprites.get(i3);
+						int i3 = SharedData.random.nextInt(tempSprites.size());
+					    String stype = " stype=" + tempSprites.get(i3);
 					    officialInteraction += stype;
 					    String spawnType = " spawnPoint=" + spawnerSpriteData[SharedData.random.nextInt(spawnerSpriteData.length)].name;
 					    officialInteraction += spawnType;
@@ -448,8 +448,8 @@ public class Chromosome implements Comparable<Chromosome>{
 					}
 					// the spawnIfHasMore and spawnIfHasLess rules
 					else if(nInteraction.equals("spawnIfHasMore") || nInteraction.equals("spawnIfHasLess")) {
-					    int i3 = SharedData.random.nextInt(this.usefulSprites.size());
-					    String stype = " stype=" + usefulSprites.get(i3);
+					    int i3 = SharedData.random.nextInt(tempSprites.size());
+					    String stype = " stype=" + tempSprites.get(i3);
 					    officialInteraction += stype;
 					    String resourceS = " resource=" + resourceSpriteData[SharedData.random.nextInt(resourceSpriteData.length)].name;
 					    officialInteraction += resourceS;
@@ -458,8 +458,8 @@ public class Chromosome implements Comparable<Chromosome>{
 					}
 					// the transformTo rule
 					else if(nInteraction.equals("transformTo")) {
-					    int i3 = SharedData.random.nextInt(this.usefulSprites.size());
-					    String stype = " stype=" + usefulSprites.get(i3);
+					    int i3 = SharedData.random.nextInt(tempSprites.size());
+					    String stype = " stype=" + tempSprites.get(i3);
 					    officialInteraction += stype;
 					    boolean force = SharedData.random.nextBoolean();
 					    String forceOrientation = " forceOrientation=" + force;
@@ -468,8 +468,8 @@ public class Chromosome implements Comparable<Chromosome>{
 					// the killAll, spawnBehind, and transformToRandomChild rules
 					else if(nInteraction.equals("killAll") || nInteraction.equals("spawnBehind")
 							|| nInteraction.equals("transformToRandomChild")) {
-					    int i3 = SharedData.random.nextInt(this.usefulSprites.size());
-					    String stype = " stype=" + usefulSprites.get(i3);
+					    int i3 = SharedData.random.nextInt(tempSprites.size());
+					    String stype = " stype=" + tempSprites.get(i3);
 					    officialInteraction += stype;
 					}
 					// addHealthPoints and addHealthPointsToMax rules
@@ -483,14 +483,14 @@ public class Chromosome implements Comparable<Chromosome>{
 							nInteraction.equals("decreaseSpeedToAll") || nInteraction.equals("setSpeedForAll")) {
 						String value = " value=" + SharedData.random.nextInt(25);
 						officialInteraction += value;
-					    int i3 = SharedData.random.nextInt(this.usefulSprites.size());
-					    String stype = " stype=" + usefulSprites.get(i3);
+					    int i3 = SharedData.random.nextInt(tempSprites.size());
+					    String stype = " stype=" + tempSprites.get(i3);
 					    officialInteraction += stype;
 					}
 					// the updateSpawnType rule
 					else if(nInteraction.equals("updateSpawnType")) {
-						int i3 = SharedData.random.nextInt(this.usefulSprites.size());
-					    String stype = " stype=" + usefulSprites.get(i3);
+						int i3 = SharedData.random.nextInt(tempSprites.size());
+					    String stype = " stype=" + tempSprites.get(i3);
 					    officialInteraction += stype;
 					    String spawnType = " spawnPoint=" + spawnerSpriteData[SharedData.random.nextInt(spawnerSpriteData.length)].name;
 					    officialInteraction += spawnType;
@@ -506,7 +506,7 @@ public class Chromosome implements Comparable<Chromosome>{
 						tempSprites.remove(levAl.getAvatars(true)[0].name);
 						int i3 = SharedData.random.nextInt(tempSprites.size());
 						officialInteraction = " stype=" + tempSprites.get(i3);
-					    int i4 = (i3 + 1 + SharedData.random.nextInt(tempSprites.size() - 1)) % this.usefulSprites.size();
+					    int i4 = (i3 + 1 + SharedData.random.nextInt(tempSprites.size() - 1)) % tempSprites.size();
 						officialInteraction = " stype_other=" + tempSprites.get(i4);
 					}
 					// simple rules that follow the same pattern dont have a special case
@@ -544,7 +544,7 @@ public class Chromosome implements Comparable<Chromosome>{
 				
 				// SpriteCounter termination
 				if(nTermination.equals("SpriteCounter")) {
-					String sprite1 =  usefulSprites.get(SharedData.random.nextInt(this.usefulSprites.size()));
+					String sprite1 =  tempSprites.get(SharedData.random.nextInt(tempSprites.size()));
 					// special case where sprite1 is the avatar
 					int count = SharedData.random.nextInt(25);
 					if(sprite1.equals(levAl.getAvatars(true)[0].name)) {
@@ -572,9 +572,9 @@ public class Chromosome implements Comparable<Chromosome>{
 					}
 					nTermString = nTermination + " stype=" + sprite1 + " limit=" + count + " win=" + win;
 				} else if(nTermination.equals("MultiSpriteCounter") || nTermination.equals("StopCounter")) {
-					String sprite1 = usefulSprites.get(SharedData.random.nextInt(this.usefulSprites.size()));
-					String sprite2 = usefulSprites.get(SharedData.random.nextInt(this.usefulSprites.size()));
-					String sprite3 = usefulSprites.get(SharedData.random.nextInt(this.usefulSprites.size()));
+					String sprite1 = tempSprites.get(SharedData.random.nextInt(tempSprites.size()));
+					String sprite2 = tempSprites.get(SharedData.random.nextInt(tempSprites.size()));
+					String sprite3 = tempSprites.get(SharedData.random.nextInt(tempSprites.size()));
 
 					int count = SharedData.random.nextInt(1000);
 					boolean isWin = SharedData.random.nextBoolean();
@@ -588,7 +588,7 @@ public class Chromosome implements Comparable<Chromosome>{
 					nTermString = nTermination + " stype1=" + sprite1 + " stype2=" + sprite2 + " stype3="
 							+ sprite3 + " limit=" + count + " win=" + win;
 				} else if(nTermination.equals("MultiSpriteCounterSubTypes")) {
-					String sprite1 = usefulSprites.get(SharedData.random.nextInt(this.usefulSprites.size()));
+					String sprite1 = tempSprites.get(SharedData.random.nextInt(tempSprites.size()));
 					String sprite2 = "";
 					String sprite3 = "";
 
@@ -596,11 +596,11 @@ public class Chromosome implements Comparable<Chromosome>{
 
 					boolean moreSprites = SharedData.random.nextBoolean();
 					if(moreSprites) {
-						sprite2 = usefulSprites.get(SharedData.random.nextInt(this.usefulSprites.size()));
+						sprite2 = tempSprites.get(SharedData.random.nextInt(tempSprites.size()));
 						nTermString += " stype2=" + sprite2;
 						moreSprites = SharedData.random.nextBoolean();
 						if(moreSprites) {
-							sprite3 = usefulSprites.get(SharedData.random.nextInt(this.usefulSprites.size()));
+							sprite3 = tempSprites.get(SharedData.random.nextInt(tempSprites.size()));
 							nTermString += " stype3=" + sprite3;
 						}
 					}
@@ -640,7 +640,7 @@ public class Chromosome implements Comparable<Chromosome>{
 				String nTermination = terminations[SharedData.random.nextInt(this.terminations.length)];
 				// SpriteCounter termination
 				if(nTermination.equals("SpriteCounter")) {
-					String sprite1 = usefulSprites.get(SharedData.random.nextInt(this.usefulSprites.size()));
+					String sprite1 = tempSprites.get(SharedData.random.nextInt(tempSprites.size()));
 					int count = SharedData.random.nextInt(25);
 					// special case where sprite1 is the avatar
 					if(sprite1.equals(levAl.getAvatars(true)[0].name)) {
@@ -668,9 +668,9 @@ public class Chromosome implements Comparable<Chromosome>{
 					}
 					nTermString = nTermination + " stype=" + sprite1 + " limit=" + count + " win=" + win;
 				} else if(nTermination.equals("MultiSpriteCounter") || nTermination.equals("StopCounter")) {
-					String sprite1 = usefulSprites.get(SharedData.random.nextInt(this.usefulSprites.size()));
-					String sprite2 = usefulSprites.get(SharedData.random.nextInt(this.usefulSprites.size()));
-					String sprite3 = usefulSprites.get(SharedData.random.nextInt(this.usefulSprites.size()));
+					String sprite1 = tempSprites.get(SharedData.random.nextInt(tempSprites.size()));
+					String sprite2 = tempSprites.get(SharedData.random.nextInt(tempSprites.size()));
+					String sprite3 = tempSprites.get(SharedData.random.nextInt(tempSprites.size()));
 
 					int count = SharedData.random.nextInt(1000);
 					boolean isWin = SharedData.random.nextBoolean();
@@ -684,7 +684,7 @@ public class Chromosome implements Comparable<Chromosome>{
 					nTermString = nTermination + " stype1=" + sprite1 + " stype2=" + sprite2 + " stype3="
 							+ sprite3 + " limit=" + count + " win=" + win;
 				} else if(nTermination.equals("MultiSpriteCounterSubTypes")) {
-					String sprite1 = usefulSprites.get(SharedData.random.nextInt(this.usefulSprites.size()));
+					String sprite1 = tempSprites.get(SharedData.random.nextInt(tempSprites.size()));
 					String sprite2 = "";
 					String sprite3 = "";
 					int count = SharedData.random.nextInt(25);
@@ -693,11 +693,11 @@ public class Chromosome implements Comparable<Chromosome>{
 
 					boolean moreSprites = SharedData.random.nextBoolean();
 					if(moreSprites) {
-						sprite2 = usefulSprites.get(SharedData.random.nextInt(this.usefulSprites.size()));
+						sprite2 = tempSprites.get(SharedData.random.nextInt(tempSprites.size()));
 						nTermString += " stype2=" + sprite2;
 						moreSprites = SharedData.random.nextBoolean();
 						if(moreSprites) {
-							sprite3 = usefulSprites.get(SharedData.random.nextInt(this.usefulSprites.size()));
+							sprite3 = tempSprites.get(SharedData.random.nextInt(tempSprites.size()));
 							nTermString += " stype3=" + sprite3;
 						}
 					}

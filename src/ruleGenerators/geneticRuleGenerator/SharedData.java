@@ -18,7 +18,7 @@ public class SharedData {
 	/**
 	 * the amount of time to evaluate a single level
 	 */
-	public static final long EVALUATION_TIME = 30000;
+	public static final long EVALUATION_TIME = 10000;
 	/**
 	 * The amount of time given for each time step
 	 */
@@ -26,11 +26,11 @@ public class SharedData {
 	/**
 	 * Crossover probability
 	 */
-	public static final double CROSSOVER_PROB = 1.0;
+	public static final double CROSSOVER_PROB = 0.8;
 	/**
 	 * Mutation probability
 	 */
-	public static final double MUTATION_PROB = 0.8;
+	public static final double MUTATION_PROB = 0.1;
 	/**
 	 * number of the best chromosomes that are transfered from one generation to another
 	 */
@@ -47,15 +47,15 @@ public class SharedData {
 	/**
 	 * the probability of inserting a new rule
 	 */
-	public static final double INSERTION_PROB = 0.3;
+	public static final double INSERTION_PROB = 0.25;
 	/**
 	 * the probability of deleting an exisiting rule
 	 */
-	public static final double DELETION_PROB = 0.3;
+	public static final double DELETION_PROB = 0.25;
 	/**
 	 * the probability of changing an existing rule
 	 */
-	public static final double CHANGE_PROB = 0.4;
+	public static final double CHANGE_PROB = 0.5;
 	
 	/**
 	 * the amount of times the mutation has to be done on a single chromosome

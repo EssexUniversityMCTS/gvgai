@@ -373,7 +373,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 		}
 		for(int i = 0; i < SharedData.POPULATION_SIZE * (.40); i++) {
 			Chromosome c = allChromosomes.get(SharedData.random.nextInt(allChromosomes.size()));
-			for(int j = 0; j < SharedData.random.nextInt(5); i++) {
+			for(int j = 0; j < SharedData.random.nextInt(3); j++) {
 				c.mutate();
 			}
 			c.calculateFitness(SharedData.EVALUATION_TIME);
@@ -418,6 +418,9 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			numberOfIterations += 1;
 			totalTime += timer.elapsedMillis();
 			avgTime = totalTime / numberOfIterations;
+			Collections.sort(fChromosomes);
+			System.out.println("Best Chromosome Fitness: " + fChromosomes.get(0).getFitness());
+			System.out.println(bestFitness);
 		}
 		
 
