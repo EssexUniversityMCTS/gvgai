@@ -331,7 +331,8 @@ public class RuleGenerator extends AbstractRuleGenerator {
 		System.out.println("Generation #0: ");
 		ArrayList<Chromosome> fChromosomes = new ArrayList<Chromosome>();
 		ArrayList<Chromosome> iChromosomes = new ArrayList<Chromosome>();
-		
+		ArrayList<Chromosome> allChromosomes = new ArrayList<Chromosome>();
+		int counter = 1;
 		randomGen = new ruleGenerators.randomRuleGenerator.RuleGenerator(sl, time);
 		constructGen = new ruleGenerators.constructiveRuleGenerator.RuleGenerator(sl, time);
 		for(int i = 0; i < SharedData.POPULATION_SIZE * (.30); i++) {
@@ -340,12 +341,14 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			c.calculateFitness(SharedData.EVALUATION_TIME);
 			if(c.getConstrainFitness() < 1){
 				iChromosomes.add(c);
-				System.out.println("\tChromosome #" + (i+1) + " Constrain Fitness: " + c.getConstrainFitness());
+				System.out.println("\tChromosome #" + (counter) + " Constrain Fitness: " + c.getConstrainFitness());
 			}
 			else{
 				fChromosomes.add(c);
-				System.out.println("\tChromosome #" + (i+1) + " Fitness: " + c.getFitness());
+				System.out.println("\tChromosome #" + (counter) + " Fitness: " + c.getFitness());
 			}
+			counter++;
+			allChromosomes.add(c);
 		}
 		for(int i = 0; i < SharedData.POPULATION_SIZE * (.30); i++) {
 			Chromosome c = new Chromosome(constructGen.generateRules(sl, time), sl, time, usefulSprites);
@@ -353,12 +356,31 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			c.calculateFitness(SharedData.EVALUATION_TIME);
 			if(c.getConstrainFitness() < 1){
 				iChromosomes.add(c);
-				System.out.println("\tChromosome #" + (i+1) + " Constrain Fitness: " + c.getConstrainFitness());
+				System.out.println("\tChromosome #" + (counter) + " Constrain Fitness: " + c.getConstrainFitness());
 			}
 			else{
 				fChromosomes.add(c);
-				System.out.println("\tChromosome #" + (i+1) + " Fitness: " + c.getFitness());
+				System.out.println("\tChromosome #" + (counter) + " Fitness: " + c.getFitness());
 			}
+			allChromosomes.add(c);
+			counter++;
+		}
+		for(int i = 0; i < SharedData.POPULATION_SIZE * (.40); i++) {
+			Chromosome c = allChromosomes.get(SharedData.random.nextInt(allChromosomes.size()));
+			for(int j = 0; j < SharedData.random.nextInt(5); i++) {
+				c.mutate();
+			}
+			c.calculateFitness(SharedData.EVALUATION_TIME);
+			if(c.getConstrainFitness() < 1){
+				iChromosomes.add(c);
+				System.out.println("\tChromosome #" + (counter) + " Constrain Fitness: " + c.getConstrainFitness());
+			}
+			else{
+				fChromosomes.add(c);
+				System.out.println("\tChromosome #" + (counter) + " Fitness: " + c.getFitness());
+			}
+			allChromosomes.add(c);
+			counter++;
 		}
 		
 		//some variables to make sure not getting out of time

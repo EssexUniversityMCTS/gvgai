@@ -91,7 +91,7 @@ public class Chromosome implements Comparable<Chromosome>{
 			"killSprite", "killAll", "killIfHasMore", "killIfHasLess", "killIfFromAbove",
 			"killIfOtherHasMore", "transformToSingleton", "spawnBehind", "stepBack",
 			"spawnIfHasMore", "spawnIfHasLess", "cloneSprite", "transformTo", "undoAll",
-			"flipDirection", "transformIfCounts", "transformToRandomChild", "updateSpawnType",
+			"flipDirection", "transformToRandomChild", "updateSpawnType",
 			"removeScore", "addHealthPoints", "addHealthPointsToMax", "reverseDirection",
 			"subtractHealthPoints", "increaseSpeedToAll", "decreaseSpeedToAll", "attractGaze",
 			"align", "turnAround", "wrapAround", "pullWithIt", "bounceForward", "teleportToExit",
@@ -125,6 +125,8 @@ public class Chromosome implements Comparable<Chromosome>{
 	public void mutateInteraction() {
 		ArrayList<String> interaction = new ArrayList<>( Arrays.asList(ruleset[0]));
 		ArrayList<String> tempInteractions = new ArrayList<> ( Arrays.asList(interactions));
+		ArrayList<String> tempSprites = (ArrayList<String>) usefulSprites.clone();
+		
 		SpriteData[] resourceSpriteData = levAl.getResources(0, 1, true);
 		SpriteData[] spawnerSpriteData = levAl.getSpawners(0, 1, true);
 		SpriteData[] portalSpriteData = levAl.getPortals(0, 1, true);
@@ -200,7 +202,9 @@ public class Chromosome implements Comparable<Chromosome>{
 				}
 				// the transformTo rule
 				else if(nInteraction.equals("transformTo")) {
-				    int i3 = SharedData.random.nextInt(this.usefulSprites.size());
+					tempSprites.remove(levAl.getAvatars(true)[0].name);
+				    int i3 = SharedData.random.nextInt(tempSprites.size());
+				    
 				    String stype = " stype=" + usefulSprites.get(i3);
 				    officialInteraction += stype;
 				    boolean force = SharedData.random.nextBoolean();
@@ -210,8 +214,11 @@ public class Chromosome implements Comparable<Chromosome>{
 				// the killAll, spawnBehind, and transformToRandomChild rules
 				else if(nInteraction.equals("killAll") || nInteraction.equals("spawnBehind")
 						|| nInteraction.equals("transformToRandomChild")) {
-				    int i3 = SharedData.random.nextInt(this.usefulSprites.size());
-				    String stype = " stype=" + usefulSprites.get(i3);
+					if(nInteraction.equals("transformToRandomChild")){
+						tempSprites.remove(levAl.getAvatars(true)[0].name);
+					}
+				    int i3 = SharedData.random.nextInt(tempSprites.size());
+				    String stype = " stype=" + tempSprites.get(i3);
 				    officialInteraction += stype;
 				}
 				// addHealthPoints and addHealthPointsToMax rules
@@ -256,10 +263,11 @@ public class Chromosome implements Comparable<Chromosome>{
 				}
 				// the transformToSingleton rule
 				else if(nInteraction.equals("transformToSingleton")) {
-					int i3 = SharedData.random.nextInt(this.usefulSprites.size());
-					officialInteraction += " stype=" + usefulSprites.get(i3);
-				    int i4 = (i3 + 1 + SharedData.random.nextInt(this.usefulSprites.size() - 1)) % this.usefulSprites.size();
-					officialInteraction += " stype_other=" + usefulSprites.get(i4);
+					tempSprites.remove(levAl.getAvatars(true)[0].name);
+					int i3 = SharedData.random.nextInt(tempSprites.size());
+					officialInteraction += " stype=" + tempSprites.get(i3);
+				    int i4 = (i3 + 1 + SharedData.random.nextInt(tempSprites.size() - 1)) % tempSprites.size();
+					officialInteraction += " stype_other=" + tempSprites.get(i4);
 				}
 				// simple rules that follow the same pattern dont have a special case
 				String score = "";
@@ -343,8 +351,9 @@ public class Chromosome implements Comparable<Chromosome>{
 					}
 					// the transformTo rule
 					else if(nInteraction.equals("transformTo")) {
-					    int i3 = SharedData.random.nextInt(this.usefulSprites.size());
-					    String stype = " stype=" + usefulSprites.get(i3);
+						tempSprites.remove(levAl.getAvatars(true)[0].name);
+					    int i3 = SharedData.random.nextInt(tempSprites.size());
+					    String stype = " stype=" + tempSprites.get(i3);
 					    officialInteraction += stype;
 					    boolean force = SharedData.random.nextBoolean();
 					    String forceOrientation = " forceOrientation=" + force;
@@ -353,8 +362,11 @@ public class Chromosome implements Comparable<Chromosome>{
 					// the killAll, spawnBehind, and transformToRandomChild rules
 					else if(nInteraction.equals("killAll") || nInteraction.equals("spawnBehind")
 							|| nInteraction.equals("transformToRandomChild")) {
-					    int i3 = SharedData.random.nextInt(this.usefulSprites.size());
-					    String stype = " stype=" + usefulSprites.get(i3);
+						if(nInteraction.equals("transformToRandomChild")) {
+							tempSprites.remove(levAl.getAvatars(true)[0].name);
+						}
+					    int i3 = SharedData.random.nextInt(tempSprites.size());
+					    String stype = " stype=" + tempSprites.get(i3);
 					    officialInteraction += stype;
 					}
 					// addHealthPoints and addHealthPointsToMax rules
@@ -399,10 +411,11 @@ public class Chromosome implements Comparable<Chromosome>{
 					}
 					// the transformToSingleton rule
 					else if(nInteraction.equals("transformToSingleton")) {
-						int i3 = SharedData.random.nextInt(this.usefulSprites.size());
-						officialInteraction += " stype=" + usefulSprites.get(i3);
-					    int i4 = (i3 + 1 + SharedData.random.nextInt(this.usefulSprites.size() - 1)) % this.usefulSprites.size();
-						officialInteraction += " stype_other=" + usefulSprites.get(i4);
+						tempSprites.remove(levAl.getAvatars(true)[0].name);
+						int i3 = SharedData.random.nextInt(tempSprites.size());
+						officialInteraction += " stype=" + tempSprites.get(i3);
+					    int i4 = (i3 + 1 + SharedData.random.nextInt(tempSprites.size() - 1)) % tempSprites.size();
+						officialInteraction += " stype_other=" + tempSprites.get(i4);
 					}
 					// simple rules that follow the same pattern dont have a special case
 					String score = "";
