@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 import java.util.Arrays;
+import java.util.Collection;
 
 import core.game.SLDescription;
 import core.game.StateObservation;
@@ -709,9 +710,9 @@ public class Chromosome implements Comparable<Chromosome>{
 			termination.removeIf(s -> s == null);
 			ruleset[1] = new String[termination.size()];
 			ruleset[1] = termination.toArray(ruleset[1]);
-
 		}
-
+		// Resolving potential constraints if mutations make malformed sets
+		resolveDeathConstraint();
 	}
 	/**
 	 * runs the mutation methods on this chromosome
@@ -911,6 +912,38 @@ public class Chromosome implements Comparable<Chromosome>{
 
 	public ArrayList<Double> getFitness() {
 		return fitness;
+	}
+	
+	/**
+	 * Attempts to resolve rules that kill off the avatar
+	 * so that we will have a termination that ensures the game
+	 * ends at that point.
+	 */
+	public void resolveDeathConstraint() {
+		String avatarName = levAl.getAvatars(true)[0].name;
+		String endGameIfAvatarDead = "SpriteCounter stype=" + avatarName + " limit=0";
+		ArrayList<String> killList = 
+				new ArrayList<>(Arrays.asList(ruleset[0]));
+		killList = new ArrayList<>(
+				killList.stream().filter(s->s.contains("kill")).collect(Collectors.toList())
+				);
+		ArrayList<String> endCountList =
+				new ArrayList<>(Arrays.asList(ruleset[1]));
+		endCountList = new ArrayList<>(
+				endCountList.stream().filter(s->s.contains(endGameIfAvatarDead)).collect(Collectors.toList())
+				);
+		for (String t : killList) {
+			if (t.contains(avatarName) &&
+				t.indexOf(avatarName) == 0 &&
+				endCountList.isEmpty()
+				) {
+				killList = new ArrayList<>(Arrays.asList(ruleset[1]));
+				killList.add(endGameIfAvatarDead + " win=False");
+				ruleset[1] = killList.toArray(new String[0]);
+				break;
+			}
+		}
+
 	}
 	/**
 	 * Get constraint fitness for infeasible chromosome
