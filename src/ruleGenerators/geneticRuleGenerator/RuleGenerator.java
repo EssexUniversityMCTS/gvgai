@@ -82,6 +82,12 @@ public class RuleGenerator extends AbstractRuleGenerator {
 		this.time = time;
 		this.usefulSprites = new ArrayList<String>();
 		SharedData.random = new Random();
+		
+		try (PrintWriter out = new PrintWriter(SharedData.filename)) {
+    		out.print("");
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    	}
 
 		String[][] currentLevel = sl.getCurrentLevel();
 		//Just get the useful sprites from the current level
