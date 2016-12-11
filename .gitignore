@@ -8,3 +8,5 @@ src/tools/.DS_Store
 .settings/org.eclipse.jdt.core.prefs
 *.DS_Store
 /bin/
+
+debugLog
