@@ -1,5 +1,8 @@
 package ruleGenerators.geneticRuleGenerator;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -236,9 +239,9 @@ public class Chromosome implements Comparable<Chromosome>{
 				// the transformToSingleton rule
 				else if(nInteraction.equals("transformToSingleton")) {
 					int i3 = SharedData.random.nextInt(this.usefulSprites.size());
-					officialInteraction = " stype=" + usefulSprites.get(i3);
+					officialInteraction += " stype=" + usefulSprites.get(i3);
 				    int i4 = (i3 + 1 + SharedData.random.nextInt(this.usefulSprites.size() - 1)) % this.usefulSprites.size();
-					officialInteraction = " stype_other=" + usefulSprites.get(i4);
+					officialInteraction += " stype_other=" + usefulSprites.get(i4);
 				}
 				// simple rules that follow the same pattern dont have a special case
 				String score = "";
@@ -492,7 +495,7 @@ public class Chromosome implements Comparable<Chromosome>{
 					} else {
 						win = "False";
 					}
-					nTermString = nTermination + " stype1=" + sprite1 + " limit=" + count + " win=" + win;
+					nTermString = nTermination + " stype=" + sprite1 + " limit=" + count + " win=" + win;
 				// SpriteCounterMore termination
 				} else if(nTermination.equals("SpriteCounterMore")) {
 					String sprite1 = usefulSprites.get(SharedData.random.nextInt(this.usefulSprites.size()));
@@ -589,7 +592,6 @@ public class Chromosome implements Comparable<Chromosome>{
 				
 			}
 		}
-		System.out.println("doNothingLength: " + doNothingLength);
 		if(doNothingLength < 40) {
 			return false;
 		}
@@ -706,6 +708,21 @@ public class Chromosome implements Comparable<Chromosome>{
 	 * @return	StateObservation for the current level
 	 */
 	private StateObservation getStateObservation(){
+		try (FileWriter fw = new FileWriter(SharedData.filename, true);
+				BufferedWriter bw = new BufferedWriter(fw);
+				PrintWriter out = new PrintWriter(bw)) {
+			out.println("StateObservations");
+			out.println("Interaction");
+			for (int i = 0; i < ruleset[0].length; ++i) {
+				out.println(ruleset[0][i]);
+			}
+			out.println("Termination");
+			for (int i = 0; i < ruleset[1].length; ++i) {
+				out.println(ruleset[1][i]);
+			}
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+		}
 		if(stateObs != null){
 			return stateObs;
 		}

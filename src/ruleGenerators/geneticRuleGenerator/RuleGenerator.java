@@ -375,7 +375,6 @@ public class RuleGenerator extends AbstractRuleGenerator {
 //				fChromosomes.add(c);
 //				System.out.println("\tChromosome #" + (i+1) + " Fitness: " + c.getFitness());
 //			}
-//			System.out.println("Here 1");
 //		}
 		for(int i = 0; i < SharedData.POPULATION_SIZE; i++) {
 			Chromosome c = new Chromosome(constructGen.generateRules(sl, time), sl, time, usefulSprites);
@@ -389,7 +388,6 @@ public class RuleGenerator extends AbstractRuleGenerator {
 				fChromosomes.add(c);
 				System.out.println("\tChromosome #" + (i+1) + " Fitness: " + c.getFitness());
 			}
-			System.out.println("Here 2");
 		}
 		
 		//some variables to make sure not getting out of time
