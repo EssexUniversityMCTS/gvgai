@@ -81,8 +81,12 @@ public class Test {
 					// executed. null if not to save.
 
 	// 1. This starts a game, in a level, played by a human.
+<<<<<<< HEAD
 	// ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
 
+=======
+	ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
+>>>>>>> amidos2006/master
 
 	// 2. This plays a game in a level by the controller.
 	// ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController,
@@ -132,9 +136,14 @@ public class Test {
 	// }
 	
 	// 7. Generate rules (Interaction and Terminations) for a fixed level
+<<<<<<< HEAD
 	ArcadeMachine.generateRules(game, level1, geneticRuleGenerator, recordGameFile, 1234);//seed);
 //	ArcadeMachine.playOneGame(recordGameFile, level1, recordActionsFile, seed);
 
+=======
+	// ArcadeMachine.generateRules(game, level1, randomRuleGenerator, recordGameFile, seed);
+	// ArcadeMachine.playOneGame(recordGameFile, level1, recordActionsFile, seed);
+>>>>>>> amidos2006/master
 	// ArcadeMachine.runOneGame(recordGameFile, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
 	 
     }

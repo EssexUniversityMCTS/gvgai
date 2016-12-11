@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Random;
 
 import core.VGDLParser;
-import core.VGDLRegistry;
-import core.game.GameDescription.InteractionData;
 import core.game.GameDescription.SpriteData;
 
 public class SLDescription {
@@ -249,7 +247,7 @@ public class SLDescription {
 	new VGDLParser().parseInteractionTermination(this.currentGame, rw[0], rw[1]);
 	
 	this.currentGame.reset();
-	this.currentGame.buildStringLevel(this.level, new Random().nextInt());
+	this.currentGame.buildStringLevel(this.level, this.shift);
 	return this.currentGame.getObservation();
     }
 }
