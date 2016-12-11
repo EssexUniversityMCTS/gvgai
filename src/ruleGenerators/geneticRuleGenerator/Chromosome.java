@@ -544,6 +544,7 @@ public class Chromosome implements Comparable<Chromosome>{
 					nTermString = nTermination + " stype=" + sprite1 + " limit=" + count + " win=" + win;
 				// SpriteCounterMore termination
 				} else if(nTermination.equals("SpriteCounterMore")) {
+					tempSprites.remove(levAl.getImmovables(0.8, 1.0, true)[0].name);
 					String sprite1 = tempSprites.get(SharedData.random.nextInt(tempSprites.size()));
 					int count = SharedData.random.nextInt(25);
 					boolean isWin = SharedData.random.nextBoolean();
@@ -639,6 +640,7 @@ public class Chromosome implements Comparable<Chromosome>{
 					nTermString = nTermination + " stype=" + sprite1 + " limit=" + count + " win=" + win;
 				// SpriteCounterMore termination
 				} else if(nTermination.equals("SpriteCounterMore")) {
+					tempSprites.remove(levAl.getImmovables(0.8, 1.0, true)[0].name);
 					String sprite1 = tempSprites.get(SharedData.random.nextInt(tempSprites.size()));
 					int count = SharedData.random.nextInt(25);
 					boolean isWin = SharedData.random.nextBoolean();
@@ -648,7 +650,7 @@ public class Chromosome implements Comparable<Chromosome>{
 					} else {
 						win = "False";
 					}
-					nTermString = nTermination + " stype1=" + sprite1 + " limit=" + count + " win=" + win;
+					nTermString = nTermination + " stype=" + sprite1 + " limit=" + count + " win=" + win;
 				} else if(nTermination.equals("MultiSpriteCounter") || nTermination.equals("StopCounter")) {
 					String sprite1 = usefulSprites.get(SharedData.random.nextInt(this.usefulSprites.size()));
 					String sprite2 = usefulSprites.get(SharedData.random.nextInt(this.usefulSprites.size()));
