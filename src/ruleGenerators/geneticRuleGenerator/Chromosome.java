@@ -127,6 +127,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		ArrayList<String> tempInteractions = new ArrayList<> ( Arrays.asList(interactions));
 		ArrayList<String> tempSprites = (ArrayList<String>) usefulSprites.clone();
 		
+		tempSprites.remove(levAl.getImmovables(0.8, 1, true)[0].name);
 		SpriteData[] resourceSpriteData = levAl.getResources(0, 1, true);
 		SpriteData[] spawnerSpriteData = levAl.getSpawners(0, 1, true);
 		SpriteData[] portalSpriteData = levAl.getPortals(0, 1, true);
@@ -148,9 +149,6 @@ public class Chromosome implements Comparable<Chromosome>{
 		for(int i = 0; i < SharedData.MUTATION_AMOUNT; i++)
 		{
 			int point = SharedData.random.nextInt(ruleset[0].length);
-
-//			int pointX = SharedData.random.nextInt(level[0].length - solidFrame) + solidFrame / 2;
-//			int pointY = SharedData.random.nextInt(level.length - solidFrame) + solidFrame / 2;
 			//insert new random rule
 			if(SharedData.random.nextDouble() < SharedData.INSERTION_PROB){
 				String nInteraction = tempInteractions.get(SharedData.random.nextInt(tempInteractions.size()));

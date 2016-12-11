@@ -49,8 +49,8 @@ public class CompetitionParameters
     /**
      * Milliseconds allowed for the rule generator to generate rules
      */
-    public static int RULE_ACTION_TIME = 1800000*10;
-    
+    //public static int RULE_ACTION_TIME = 1800000*10;
+    public static int RULE_ACTION_TIME = 1800000;
     /**
      * Milliseconds allowed for the rule generator disqualification, if it returns rules after this time.
      */

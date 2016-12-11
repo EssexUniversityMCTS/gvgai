@@ -10,7 +10,7 @@ public class SharedData {
 	/**
 	 * The size of the Genetic Algorithm Population
 	 */
-	public static final int POPULATION_SIZE = 10;
+	public static final int POPULATION_SIZE = 50;
 	/**
 	 * The amount of times used to check the one step look ahead and do nothing algorithm
 	 */
