@@ -10,7 +10,3 @@ src/tools/.DS_Store
 /bin/
 
 debugLog
-
-examples/gridphysics/aliens.txt
-
-debugLog
