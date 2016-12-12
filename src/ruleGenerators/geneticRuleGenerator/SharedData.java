@@ -28,7 +28,7 @@ public class SharedData {
 	/**
 	 * Crossover probability
 	 */
-	public static final double CROSSOVER_PROB = 0.8;
+	public static final double CROSSOVER_PROB = 0.5;
 	/**
 	 * Mutation probability
 	 */
@@ -62,8 +62,11 @@ public class SharedData {
 	/**
 	 * the amount of times the mutation has to be done on a single chromosome
 	 */
-	public static final int MUTATION_AMOUNT = 2;
-	
+	public static final int MUTATION_AMOUNT = 1;
+	/**
+	 * the initial amount of mutations in the init pop
+	 */
+	public static final int INIT_MUTATION_AMOUNT = 7;
 	/**
 	 * used for calculating the minimum required score for the generated level
 	 */
@@ -125,7 +128,7 @@ public class SharedData {
 	/**
 	 * Protects the fitness function from looping forever
 	 */
-	public static final int PROTECTION_COUNTER = 10;
+	public static final int PROTECTION_COUNTER = 5;
 	/**
 	 * The game description object
 	 */

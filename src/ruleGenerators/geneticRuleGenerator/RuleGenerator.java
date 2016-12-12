@@ -430,7 +430,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 		}
 		for(int i = 0; i < SharedData.POPULATION_SIZE * (.40); i++) {
 			Chromosome c = allChromosomes.get(SharedData.random.nextInt(allChromosomes.size()));
-			for(int j = 0; j < SharedData.random.nextInt(3); j++) {
+			for(int j = 0; j < SharedData.INIT_MUTATION_AMOUNT; j++) {
 				c.mutate();
 			}
 			c.calculateFitness(SharedData.EVALUATION_TIME);
@@ -474,6 +474,13 @@ public class RuleGenerator extends AbstractRuleGenerator {
 
 		//System.out.println(time.remainingTimeMillis() + " avgTime: " + avgTime + " worstTime: " + worstTime);
 		System.out.println("Average Fitness: " + avgFitness);
+		try (FileWriter fw = new FileWriter(SharedData.filename, true);
+				BufferedWriter bw = new BufferedWriter(fw);
+				PrintWriter out = new PrintWriter(bw)) { 
+			out.println("Average Fitness: " + avgFitness);
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+		}
 		while(time.remainingTimeMillis() > 2 * avgTime &&
 				time.remainingTimeMillis() > worstTime){
 			ElapsedCpuTimer timer = new ElapsedCpuTimer();
@@ -514,7 +521,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			try (FileWriter fw = new FileWriter(SharedData.filename, true);
 					BufferedWriter bw = new BufferedWriter(fw);
 					PrintWriter out = new PrintWriter(bw)) { 
-				out.println("\n\nGeneration : " + (numberOfIterations + 1) + " Avg Fitness: " + avgFitness);
+				out.println("\n\nGeneration : " + (numberOfIterations) + " Avg Fitness: " + avgFitness);
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
 			}
