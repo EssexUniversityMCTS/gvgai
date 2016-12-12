@@ -216,20 +216,6 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			else{
 				System.out.println("\tChromosome #" + (i+1) + " Fitness: " + newPopulation.get(i).getFitness());
 			}
-			try (FileWriter fw = new FileWriter(SharedData.filename, true);
-					BufferedWriter bw = new BufferedWriter(fw);
-					PrintWriter out = new PrintWriter(bw)) {
-				out.println("*****");
-				out.println("Chromosome " + (i+1) + ":");
-				for (String[] s : newPopulation.get(i).getRuleset()) {
-					out.println(" ");
-					for (String q : s) {
-						out.println(q);
-					}
-				}
-			} catch (Exception ex) {
-				System.out.println(ex.getMessage());
-			}
 		}
 		
 			//add the best chromosome(s) from old population to the new population
@@ -251,6 +237,22 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			}
 		}
 		
+		for(int i=0;i<newPopulation.size();i++){
+			try (FileWriter fw = new FileWriter(SharedData.filename, true);
+					BufferedWriter bw = new BufferedWriter(fw);
+					PrintWriter out = new PrintWriter(bw)) {
+				out.println("*****");
+				out.println("Chromosome " + (i+1) + " : Fitness = " + newPopulation.get(i).getFitness());
+				for (String[] s : newPopulation.get(i).getRuleset()) {
+					out.println(" ");
+					for (String q : s) {
+						out.println(q);
+					}
+				}
+			} catch (Exception ex) {
+				System.out.println(ex.getMessage());
+			}
+		}
 		return newPopulation;
 	}
 	
