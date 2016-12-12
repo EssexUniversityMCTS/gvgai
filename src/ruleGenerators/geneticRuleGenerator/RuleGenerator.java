@@ -171,8 +171,8 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			
 
 			//select the parents using roulettewheel selection
-			Chromosome parent1 = rouletteWheelSelection(population);
-			Chromosome parent2 = rouletteWheelSelection(population);
+			Chromosome parent1 = rankSelection(population);//rouletteWheelSelection(population);
+			Chromosome parent2 = rankSelection(population);//rouletteWheelSelection(population);
 			Chromosome child1 = parent1.clone();
 			Chromosome child2 = parent2.clone();
 			//do cross over
@@ -200,27 +200,10 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			}
 			
 
+
 			//add the new children to the new population
-			try (FileWriter fw = new FileWriter(SharedData.filename, true);
-					BufferedWriter bw = new BufferedWriter(fw);
-					PrintWriter out = new PrintWriter(bw)) {
-				newPopulation.add(child1);
-				out.println("interactions 1");
-				for (String[] s : child1.getRuleset()) {
-					for (String q : s) {
-						out.println(q);
-					}
-				}
-				newPopulation.add(child2);
-				out.println("interactions 2");
-				for (String[] s : child1.getRuleset()) {
-					for (String q : s) {
-						out.println(q);
-					}
-				}
-			} catch (Exception ex) {
-				System.out.println(ex.getMessage());
-			}
+			newPopulation.add(child1);
+			newPopulation.add(child2);
 		}
 		
 
@@ -233,45 +216,66 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			else{
 				System.out.println("\tChromosome #" + (i+1) + " Fitness: " + newPopulation.get(i).getFitness());
 			}
+			try (FileWriter fw = new FileWriter(SharedData.filename, true);
+					BufferedWriter bw = new BufferedWriter(fw);
+					PrintWriter out = new PrintWriter(bw)) {
+				out.println("*****");
+				out.println("Chromosome " + (i+1) + ":");
+				for (String[] s : newPopulation.get(i).getRuleset()) {
+					out.println(" ");
+					for (String q : s) {
+						out.println(q);
+					}
+				}
+			} catch (Exception ex) {
+				System.out.println(ex.getMessage());
+			}
 		}
 		
-		try (FileWriter fw = new FileWriter(SharedData.filename, true);
-				BufferedWriter bw = new BufferedWriter(fw);
-				PrintWriter out = new PrintWriter(bw)) {
 			//add the best chromosome(s) from old population to the new population
-			Collections.sort(newPopulation);
-			for(int i=SharedData.POPULATION_SIZE - SharedData.ELITISM_NUMBER;i<newPopulation.size();){
-				newPopulation.remove(i);
+		Collections.sort(newPopulation);
+		for(int i=SharedData.POPULATION_SIZE - SharedData.ELITISM_NUMBER;i<newPopulation.size();){
+			newPopulation.remove(i);
+		}
+
+		if(fPopulation.isEmpty()){
+			Collections.sort(iPopulation);
+			for(int i=0;i<SharedData.ELITISM_NUMBER;i++){
+				newPopulation.add(iPopulation.get(i));
 			}
-	
-			if(fPopulation.isEmpty()){
-				Collections.sort(iPopulation);
-				for(int i=0;i<SharedData.ELITISM_NUMBER;i++){
-					newPopulation.add(iPopulation.get(i));
-					for (String[] s : iPopulation.get(i).getRuleset()) {
-						for (String q : s) {
-							out.println(q);
-						}
-					}
-				}
+		}
+		else{
+			Collections.sort(fPopulation);
+			for(int i=0;i<SharedData.ELITISM_NUMBER;i++){
+				newPopulation.add(fPopulation.get(i));
 			}
-			else{
-				Collections.sort(fPopulation);
-				for(int i=0;i<SharedData.ELITISM_NUMBER;i++){
-					newPopulation.add(fPopulation.get(i));
-					for (String[] s : fPopulation.get(i).getRuleset()) {
-						for (String q : s) {
-							out.println(q);
-						}
-					}
-				}
-			}
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
 		}
 		
 		return newPopulation;
 	}
+	
+	private Chromosome rankSelection(ArrayList<Chromosome> population) {
+		
+		double[] probabilities = new double[population.size()];
+		double sum = 0.0;
+		probabilities[0] = 1.0;
+		for(int i = 1; i < population.size(); i++) {
+			probabilities[i] = probabilities[i-1] + i;
+		}
+		for(int i = 0; i < probabilities.length; i++) {
+			probabilities[i] = probabilities[i] / probabilities[probabilities.length - 1];
+		}
+		
+		double chosen = SharedData.random.nextDouble();
+		for(int i = 0; i < probabilities.length; i++) {
+			if(chosen < probabilities[i]) {
+				return population.get(i);
+			}
+		}
+		return population.get(0);
+		
+	}
+	
 	/**
 	 * Roullete wheel selection for the infeasible population
 	 * @param population	array of chromosomes surviving in this population
@@ -417,7 +421,14 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			
 			System.out.println("Generation #" + (numberOfIterations + 1) + ": ");
 			
-
+			try (FileWriter fw = new FileWriter(SharedData.filename, true);
+					BufferedWriter bw = new BufferedWriter(fw);
+					PrintWriter out = new PrintWriter(bw)) { 
+				out.println("### Generation : " + (numberOfIterations + 1) + " ###");
+			} catch (Exception ex) {
+				System.out.println(ex.getMessage());
+			}
+			
 			//get the new population and split it to a the feasible and infeasible populations
 			ArrayList<Chromosome> chromosomes = getNextPopulation(fChromosomes, iChromosomes);
 			fChromosomes.clear();
@@ -437,7 +448,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			totalTime += timer.elapsedMillis();
 			avgTime = totalTime / numberOfIterations;
 			Collections.sort(chromosomes);
-			System.out.println("Best Chromosome Fitness: " + chromosomes.get(0).getFitness());
+			//System.out.println("Best Chromosome Fitness: " + chromosomes.get(0).getFitness());
 			//System.out.println(fChromosomes.get(0).getRuleset());
 			
 			System.out.println("Average Fitness: " + avgFitness);

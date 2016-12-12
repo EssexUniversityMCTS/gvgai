@@ -20,7 +20,7 @@ public class SharedData {
 	/**
 	 * the amount of time to evaluate a single level
 	 */
-	public static final long EVALUATION_TIME = 10000;
+	public static final long EVALUATION_TIME = 30000;
 	/**
 	 * The amount of time given for each time step
 	 */
@@ -32,7 +32,7 @@ public class SharedData {
 	/**
 	 * Mutation probability
 	 */
-	public static final double MUTATION_PROB = 0.2;
+	public static final double MUTATION_PROB = 0.1;
 	/**
 	 * number of the best chromosomes that are transfered from one generation to another
 	 */

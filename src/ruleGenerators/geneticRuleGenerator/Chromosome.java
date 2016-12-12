@@ -842,6 +842,9 @@ public class Chromosome implements Comparable<Chromosome>{
 			if(bestState.getGameScore() == 0 && naiveState.getGameScore() == 0) {
 				difference = -50;
 			}
+			if(bestState.getGameWinner() != Types.WINNER.PLAYER_WINS) {
+				difference += Math.abs(difference) * 1/2;
+			}
 			this.fitness.set(1, difference);
 			resolveOffscreenConstraint(SOs, bestState.getWorldDimension());
 		}
@@ -884,21 +887,21 @@ public class Chromosome implements Comparable<Chromosome>{
 	 * @return	StateObservation for the current level
 	 */
 	private StateObservation getStateObservation(){
-		try (FileWriter fw = new FileWriter(SharedData.filename, true);
-				BufferedWriter bw = new BufferedWriter(fw);
-				PrintWriter out = new PrintWriter(bw)) {
-			out.println("StateObservations");
-			out.println("Interaction");
-			for (int i = 0; i < ruleset[0].length; ++i) {
-				out.println(ruleset[0][i]);
-			}
-			out.println("Termination");
-			for (int i = 0; i < ruleset[1].length; ++i) {
-				out.println(ruleset[1][i]);
-			}
-		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
-		}
+//		try (FileWriter fw = new FileWriter(SharedData.filename, true);
+//				BufferedWriter bw = new BufferedWriter(fw);
+//				PrintWriter out = new PrintWriter(bw)) {
+//			out.println("StateObservations");
+//			out.println("Interaction");
+//			for (int i = 0; i < ruleset[0].length; ++i) {
+//				out.println(ruleset[0][i]);
+//			}
+//			out.println("Termination");
+//			for (int i = 0; i < ruleset[1].length; ++i) {
+//				out.println(ruleset[1][i]);
+//			}
+//		} catch (Exception ex) {
+//			System.out.println(ex.getMessage());
+//		}
 		if(stateObs != null){
 			return stateObs;
 		}
@@ -1118,6 +1121,18 @@ public class Chromosome implements Comparable<Chromosome>{
 		for(int i = pointTwo; i < nSizeTwo; i++) {
 			nRuleSetTwo[1][i] = ruleset[1][counter];
 		}
+		for(int i = 0; i < nRuleSetOne.length; i++) {
+			ArrayList<String> temp = new ArrayList<> (Arrays.asList(nRuleSetOne[i]));
+			temp = (ArrayList<String>) temp.stream().distinct().collect(Collectors.toList());
+			nRuleSetOne[i] = new String[temp.size()];
+			nRuleSetOne[i] = temp.toArray(nRuleSetOne[i]);
+			
+			temp = new ArrayList<> (Arrays.asList(nRuleSetTwo[i]));
+			temp = (ArrayList<String>) temp.stream().distinct().collect(Collectors.toList());
+			nRuleSetTwo[i] = new String[temp.size()];
+			nRuleSetTwo[i] = temp.toArray(nRuleSetTwo[i]);		
+			}
+		
 		return children;
 	}
 
