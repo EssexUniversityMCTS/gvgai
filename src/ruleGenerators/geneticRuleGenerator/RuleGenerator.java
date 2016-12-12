@@ -337,7 +337,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 	@Override
 	public String[][] generateRules(SLDescription sl, ElapsedCpuTimer time) {
 		//initialize the statistics objects
-		bestFitness = new ArrayList<Double>();
+ 		bestFitness = new ArrayList<Double>();
 		numOfFeasible = new ArrayList<Integer>();
 		numOfInFeasible = new ArrayList<Integer>();
 		
@@ -409,7 +409,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 		int numberOfIterations = 0;
 		avgFitness = avgFitness / 50;
 
-		System.out.println(time.remainingTimeMillis() + " avgTime: " + avgTime + " worstTime: " + worstTime);
+		//System.out.println(time.remainingTimeMillis() + " avgTime: " + avgTime + " worstTime: " + worstTime);
 		System.out.println("Average Fitness: " + avgFitness);
 		while(time.remainingTimeMillis() > 2 * avgTime &&
 				time.remainingTimeMillis() > worstTime){
@@ -436,8 +436,8 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			numberOfIterations += 1;
 			totalTime += timer.elapsedMillis();
 			avgTime = totalTime / numberOfIterations;
-			Collections.sort(fChromosomes);
-			System.out.println("Best Chromosome Fitness: " + fChromosomes.get(0).getFitness());
+			Collections.sort(chromosomes);
+			System.out.println("Best Chromosome Fitness: " + chromosomes.get(0).getFitness());
 			//System.out.println(fChromosomes.get(0).getRuleset());
 			
 			System.out.println("Average Fitness: " + avgFitness);

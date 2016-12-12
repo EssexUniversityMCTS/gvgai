@@ -839,6 +839,9 @@ public class Chromosome implements Comparable<Chromosome>{
 			}
 	
 			double difference = bestState.getGameScore() - naiveState.getGameScore();
+			if(bestState.getGameScore() == 0 && naiveState.getGameScore() == 0) {
+				difference = -50;
+			}
 			this.fitness.set(1, difference);
 			resolveOffscreenConstraint(SOs, bestState.getWorldDimension());
 		}
