@@ -278,6 +278,9 @@ public class Chromosome implements Comparable<Chromosome>{
 					officialInteraction += " stype_other=" + tempSprites.get(i4);
 				}
 				// simple rules that follow the same pattern dont have a special case
+				else {
+					String fffff = "";
+				}
 				String score = "";
 				boolean isScore = SharedData.random.nextBoolean();
 				if(isScore) {
@@ -429,6 +432,9 @@ public class Chromosome implements Comparable<Chromosome>{
 						officialInteraction += " stype_other=" + tempSprites.get(i4);
 					}
 					// simple rules that follow the same pattern dont have a special case
+					else {
+						String fff = "";
+					}
 					String score = "";
 					boolean isScore = SharedData.random.nextBoolean();
 					if(isScore) {
@@ -439,25 +445,23 @@ public class Chromosome implements Comparable<Chromosome>{
 				}
 				// change the parameters for the rule
 				else if(choice == 3) {
-					nInteraction = tempInteractions.get(SharedData.random.nextInt(tempInteractions.size()));
-
 					officialInteraction = changeMe[0] + " " + changeMe[1] + " > " + changeMe[3]; 
-					if(nInteraction.equals("killIfHasMore") || nInteraction.equals("killIfHasLess")
-							|| nInteraction.equals("killIfOtherHasMore")) {
+					if(changeMe[3].equals("killIfHasMore") || changeMe[3].equals("killIfHasLess")
+							|| changeMe[3].equals("killIfOtherHasMore")) {
 					    String resourceS = " resource=" + resourceSpriteData[SharedData.random.nextInt(resourceSpriteData.length)].name;
 					    officialInteraction += resourceS;
 					    String limit = " limit=" + SharedData.random.nextInt(10);
 					    officialInteraction += limit;
 					}
 					// the changeResource rule
-					else if(nInteraction.equals("changeResource")) {
+					else if(changeMe[3].equals("changeResource")) {
 					    String resourceS = " resource=" + resourceSpriteData[SharedData.random.nextInt(resourceSpriteData.length)].name;
 					    officialInteraction += resourceS;
 					    String value = " value=" + SharedData.random.nextInt(15);
 					    officialInteraction += value;
 					}
 					// the spawnIfHasMore and spawnIfHasLess rules
-					else if(nInteraction.equals("spawnIfHasMore") || nInteraction.equals("spawnIfHasLess")) {
+					else if(changeMe[3].equals("spawnIfHasMore") || changeMe[3].equals("spawnIfHasLess")) {
 					    int i3 = SharedData.random.nextInt(tempSprites.size());
 					    String stype = " stype=" + tempSprites.get(i3);
 					    officialInteraction += stype;
@@ -467,7 +471,7 @@ public class Chromosome implements Comparable<Chromosome>{
 					    officialInteraction += limit;
 					}
 					// the transformTo rule
-					else if(nInteraction.equals("transformTo")) {
+					else if(changeMe[3].equals("transformTo")) {
 					    int i3 = SharedData.random.nextInt(tempSprites.size());
 					    String stype = " stype=" + tempSprites.get(i3);
 					    officialInteraction += stype;
@@ -476,21 +480,21 @@ public class Chromosome implements Comparable<Chromosome>{
 					    officialInteraction += forceOrientation;
 					}
 					// the killAll, spawnBehind, and transformToRandomChild rules
-					else if(nInteraction.equals("killAll") || nInteraction.equals("spawnBehind")
-							|| nInteraction.equals("transformToRandomChild")) {
+					else if(changeMe[3].equals("killAll") || changeMe[3].equals("spawnBehind")
+							|| changeMe[3].equals("transformToRandomChild")) {
 					    int i3 = SharedData.random.nextInt(tempSprites.size());
 					    String stype = " stype=" + tempSprites.get(i3);
 					    officialInteraction += stype;
 					}
 					// addHealthPoints and addHealthPointsToMax rules
-					else if(nInteraction.equals("addHealthPoints") ||
-							nInteraction.equals("addHealthPointsToMax")) {
+					else if(changeMe[3].equals("addHealthPoints") ||
+							changeMe[3].equals("addHealthPointsToMax")) {
 						String value = " value=" + SharedData.random.nextInt(15);
 						officialInteraction += value;
 					}
 					// subtractHealthPoints, increaseSpeedToAll, decreaseSpeedToAll, and setSpeedForAll rules
-					else if(nInteraction.equals("subtractHealthPoints") || nInteraction.equals("increaseSpeedToAll") ||
-							nInteraction.equals("decreaseSpeedToAll") || nInteraction.equals("setSpeedForAll")) {
+					else if(changeMe[3].equals("subtractHealthPoints") || changeMe[3].equals("increaseSpeedToAll") ||
+							changeMe[3].equals("decreaseSpeedToAll") || changeMe[3].equals("setSpeedForAll")) {
 						for(SpriteData sd : SharedData.la.getPortals(0, 1, true)) {
 							tempSprites.remove(sd.name);
 						}
@@ -501,7 +505,7 @@ public class Chromosome implements Comparable<Chromosome>{
 					    officialInteraction += stype;
 					}
 					// the updateSpawnType rule
-					else if(nInteraction.equals("updateSpawnType")) {
+					else if(changeMe[3].equals("updateSpawnType")) {
 						int i3 = SharedData.random.nextInt(tempSprites.size());
 					    String stype = " stype=" + tempSprites.get(i3);
 					    officialInteraction += stype;
@@ -509,20 +513,23 @@ public class Chromosome implements Comparable<Chromosome>{
 					    officialInteraction += spawnType;
 					}
 					// teleportToExit rule
-					else if(nInteraction.equals("teleportToExit")) {
+					else if(changeMe[3].equals("teleportToExit")) {
 						int i5 = SharedData.random.nextInt(portalSpriteData.length);
 						officialInteraction = changeMe[0] + " " +
-								portalSpriteData[i5].name + " > " + nInteraction;
+								portalSpriteData[i5].name + " > " + changeMe[3];
 					}
 					// the transformToSingleton rule
-					else if(nInteraction.equals("transformToSingleton")) {
+					else if(changeMe[3].equals("transformToSingleton")) {
 						tempSprites.remove(levAl.getAvatars(true)[0].name);
 						int i3 = SharedData.random.nextInt(tempSprites.size());
-						officialInteraction = " stype=" + tempSprites.get(i3);
+						officialInteraction += " stype=" + tempSprites.get(i3);
 					    int i4 = (i3 + 1 + SharedData.random.nextInt(tempSprites.size() - 1)) % tempSprites.size();
-						officialInteraction = " stype_other=" + tempSprites.get(i4);
+						officialInteraction += " stype_other=" + tempSprites.get(i4);
 					}
 					// simple rules that follow the same pattern dont have a special case
+					else {
+						String fff = "";
+					}
 					String score = "";
 					boolean isScore = SharedData.random.nextBoolean();
 					if(isScore) {
