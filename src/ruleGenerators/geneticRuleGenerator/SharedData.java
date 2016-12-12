@@ -12,7 +12,7 @@ public class SharedData {
 	/**
 	 * The size of the Genetic Algorithm Population
 	 */
-	public static final int POPULATION_SIZE = 10;
+	public static final int POPULATION_SIZE = 50;
 	/**
 	 * The amount of times used to check the one step look ahead and do nothing algorithm
 	 */
@@ -20,7 +20,7 @@ public class SharedData {
 	/**
 	 * the amount of time to evaluate a single level
 	 */
-	public static final long EVALUATION_TIME = 100;
+	public static final long EVALUATION_TIME = 20000;
 	/**
 	 * The amount of time given for each time step
 	 */
@@ -32,7 +32,7 @@ public class SharedData {
 	/**
 	 * Mutation probability
 	 */
-	public static final double MUTATION_PROB = 0.8;
+	public static final double MUTATION_PROB = 0.2;
 	/**
 	 * number of the best chromosomes that are transfered from one generation to another
 	 */
