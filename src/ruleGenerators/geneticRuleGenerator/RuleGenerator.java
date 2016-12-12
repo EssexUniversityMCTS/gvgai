@@ -348,6 +348,8 @@ public class RuleGenerator extends AbstractRuleGenerator {
 		int counter = 1;
 		randomGen = new ruleGenerators.randomRuleGenerator.RuleGenerator(sl, time);
 		constructGen = new ruleGenerators.constructiveRuleGenerator.RuleGenerator(sl, time);
+		double avgFitness = 0.0;
+
 		for(int i = 0; i < SharedData.POPULATION_SIZE * (.30); i++) {
 			Chromosome c = new Chromosome(randomGen.generateRules(sl, time), sl, time, usefulSprites);
 
@@ -360,6 +362,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 				fChromosomes.add(c);
 				System.out.println("\tChromosome #" + (counter) + " Fitness: " + c.getFitness());
 			}
+			avgFitness += c.getFitness().get(1);
 			counter++;
 			allChromosomes.add(c);
 		}
@@ -375,6 +378,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 				fChromosomes.add(c);
 				System.out.println("\tChromosome #" + (counter) + " Fitness: " + c.getFitness());
 			}
+			avgFitness += c.getFitness().get(1);
 			allChromosomes.add(c);
 			counter++;
 		}
@@ -392,16 +396,21 @@ public class RuleGenerator extends AbstractRuleGenerator {
 				fChromosomes.add(c);
 				System.out.println("\tChromosome #" + (counter) + " Fitness: " + c.getFitness());
 			}
+			avgFitness += c.getFitness().get(1);
 			allChromosomes.add(c);
 			counter++;
 		}
+		
 		
 		//some variables to make sure not getting out of time
 		double worstTime = SharedData.EVALUATION_TIME * SharedData.POPULATION_SIZE;
 		double avgTime = worstTime;
 		double totalTime = 0;
 		int numberOfIterations = 0;
+		avgFitness = avgFitness / 50;
+
 		System.out.println(time.remainingTimeMillis() + " avgTime: " + avgTime + " worstTime: " + worstTime);
+		System.out.println("Average Fitness: " + avgFitness);
 		while(time.remainingTimeMillis() > 2 * avgTime &&
 				time.remainingTimeMillis() > worstTime){
 			ElapsedCpuTimer timer = new ElapsedCpuTimer();
@@ -413,6 +422,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			ArrayList<Chromosome> chromosomes = getNextPopulation(fChromosomes, iChromosomes);
 			fChromosomes.clear();
 			iChromosomes.clear();
+			avgFitness = 0.0;
 			for(Chromosome c:chromosomes){
 				if(c.getConstrainFitness() < 1){
 					iChromosomes.add(c);
@@ -420,14 +430,18 @@ public class RuleGenerator extends AbstractRuleGenerator {
 				else{
 					fChromosomes.add(c);
 				}
+				avgFitness += c.getFitness().get(1);
 			}
-			
+			avgFitness = avgFitness / 50;
 			numberOfIterations += 1;
 			totalTime += timer.elapsedMillis();
 			avgTime = totalTime / numberOfIterations;
 			Collections.sort(fChromosomes);
 			System.out.println("Best Chromosome Fitness: " + fChromosomes.get(0).getFitness());
-			System.out.println(fChromosomes.get(0).getRuleset());
+			//System.out.println(fChromosomes.get(0).getRuleset());
+			
+			System.out.println("Average Fitness: " + avgFitness);
+			
 		}
 		
 
