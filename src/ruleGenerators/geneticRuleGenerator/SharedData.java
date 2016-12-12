@@ -20,7 +20,7 @@ public class SharedData {
 	/**
 	 * the amount of time to evaluate a single level
 	 */
-	public static final long EVALUATION_TIME = 20000;
+	public static final long EVALUATION_TIME = 10000;
 	/**
 	 * The amount of time given for each time step
 	 */
@@ -62,7 +62,7 @@ public class SharedData {
 	/**
 	 * the amount of times the mutation has to be done on a single chromosome
 	 */
-	public static final int MUTATION_AMOUNT = 1;
+	public static final int MUTATION_AMOUNT = 2;
 	
 	/**
 	 * used for calculating the minimum required score for the generated level
