@@ -114,10 +114,18 @@ public class SharedData {
 	 */
 	public static final String NAIVE_AGENT_NAME = "controllers.singlePlayer.sampleonesteplookahead.Agent";
 	/**
+	 * The name of the random agent
+	 */
+	public static final String RANDOM_AGENT_NAME = "controllers.singlePlayer.sampleRandom.Agent";
+	/**
 	 * The name of the do nothing agent
 	 */
 	public static final String DO_NOTHING_AGENT_NAME = "controllers.singlePlayer.doNothing.Agent";
 	
+	/**
+	 * Protects the fitness function from looping forever
+	 */
+	public static final int PROTECTION_COUNTER = 10;
 	/**
 	 * The game description object
 	 */
