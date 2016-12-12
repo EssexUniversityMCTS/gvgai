@@ -428,7 +428,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			avgTime = totalTime / numberOfIterations;
 			Collections.sort(fChromosomes);
 			System.out.println("Best Chromosome Fitness: " + fChromosomes.get(0).getFitness());
-			fChromosomes.get(0).getRuleset();
+			System.out.println(fChromosomes.get(0).getRuleset());
 		}
 		
 

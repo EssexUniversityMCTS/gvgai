@@ -91,7 +91,7 @@ public class Chromosome implements Comparable<Chromosome>{
 	 */
 	private String[] interactions = new String[]{
 			"killSprite", "killAll", "killIfHasMore", "killIfHasLess", "killIfFromAbove",
-			"killIfOtherHasMore", "transformToSingleton", "spawnBehind", "stepBack",
+			"killIfOtherHasMore", "spawnBehind", "stepBack",
 			"spawnIfHasMore", "spawnIfHasLess", "cloneSprite", "transformTo", "undoAll",
 			"flipDirection", "transformToRandomChild", "updateSpawnType",
 			"removeScore", "addHealthPoints", "addHealthPointsToMax", "reverseDirection",
@@ -99,7 +99,7 @@ public class Chromosome implements Comparable<Chromosome>{
 			"align", "turnAround", "wrapAround", "pullWithIt", "bounceForward", "teleportToExit",
 			"collectResource", "setSpeedForAll", "undoAll", "reverseDirection", "changeResource"};
 	private String[] terminations = new String[] {
-		"SpriteCounter", "SpriteCounterMore", "MultiSpriteCounter","MultiSpriteCounterSubTypes",
+		"SpriteCounter", "SpriteCounterMore", "MultiSpriteCounter",
 		"StopCounter", "Timeout"};
 	/**
 	 * Chromosome constructor.  Holds the ruleset and initializes agents within
@@ -129,13 +129,13 @@ public class Chromosome implements Comparable<Chromosome>{
 		ArrayList<String> tempInteractions = new ArrayList<> ( Arrays.asList(interactions));
 		ArrayList<String> tempSprites = (ArrayList<String>) SharedData.usefulSprites.clone();
 		
-		tempSprites.remove(levAl.getImmovables(0.8, 1, true)[0].name);
+		tempSprites.remove(SharedData.la.getImmovables(0.8, 1, false)[0].name);
 		for(SpriteData sd : levAl.getSpawners(0, 1, true)) {
 			tempSprites.remove(sd.name);
 		}
-		SpriteData[] resourceSpriteData = levAl.getResources(0, 1, true);
-		SpriteData[] spawnerSpriteData = levAl.getSpawners(0, 1, true);
-		SpriteData[] portalSpriteData = levAl.getPortals(0, 1, true);
+		SpriteData[] resourceSpriteData = levAl.getResources(0, 1, false);
+		SpriteData[] spawnerSpriteData = levAl.getSpawners(0, 1, false);
+		SpriteData[] portalSpriteData = levAl.getPortals(0, 1, false);
 		// remove resource-dependent interactions from the choices
 		if(resourceSpriteData.length == 0) {
 			tempInteractions.remove("killIfHasMore");
@@ -154,9 +154,10 @@ public class Chromosome implements Comparable<Chromosome>{
 		for(int i = 0; i < SharedData.MUTATION_AMOUNT; i++)
 		{
 			int point = SharedData.random.nextInt(ruleset[0].length);
+			String nInteraction = "";
 			//insert new random rule
 			if(SharedData.random.nextDouble() < SharedData.INSERTION_PROB){
-				String nInteraction = tempInteractions.get(SharedData.random.nextInt(tempInteractions.size()));
+				nInteraction = tempInteractions.get(SharedData.random.nextInt(tempInteractions.size()));
 				String officialInteraction = nInteraction;
 				int i1 = SharedData.random.nextInt(tempSprites.size());
 			    int i2 = (i1 + 1 + SharedData.random.nextInt(tempSprites.size() - 1)) % tempSprites.size();
@@ -206,7 +207,7 @@ public class Chromosome implements Comparable<Chromosome>{
 				}
 				// the transformTo rule
 				else if(nInteraction.equals("transformTo")) {
-					tempSprites.remove(levAl.getAvatars(true)[0].name);
+					tempSprites.remove(levAl.getAvatars(false)[0].name);
 				    int i3 = SharedData.random.nextInt(tempSprites.size());
 				    
 				    String stype = " stype=" + tempSprites.get(i3);
@@ -234,6 +235,9 @@ public class Chromosome implements Comparable<Chromosome>{
 				// subtractHealthPoints, increaseSpeedToAll, decreaseSpeedToAll, and setSpeedForAll rules
 				else if(nInteraction.equals("subtractHealthPoints") || nInteraction.equals("increaseSpeedToAll") ||
 						nInteraction.equals("decreaseSpeedToAll") || nInteraction.equals("setSpeedForAll")) {
+					for(SpriteData sd : SharedData.la.getPortals(0, 1, false)) {
+						tempSprites.remove(sd.name);
+					}
 					String value = " value=" + SharedData.random.nextInt(25);
 					officialInteraction += value;
 				    int i3 = SharedData.random.nextInt(tempSprites.size());
@@ -311,7 +315,7 @@ public class Chromosome implements Comparable<Chromosome>{
 				}
 				// change the rule and its parameters
 				else if(choice == 2) {
-					String nInteraction = tempInteractions.get(SharedData.random.nextInt(tempInteractions.size()));
+					nInteraction = tempInteractions.get(SharedData.random.nextInt(tempInteractions.size()));
 
 					officialInteraction = changeMe[0] + " " + changeMe[1] + " > " + nInteraction; 
 					if(nInteraction.equals("killIfHasMore") || nInteraction.equals("killIfHasLess")
@@ -382,6 +386,9 @@ public class Chromosome implements Comparable<Chromosome>{
 					// subtractHealthPoints, increaseSpeedToAll, decreaseSpeedToAll, and setSpeedForAll rules
 					else if(nInteraction.equals("subtractHealthPoints") || nInteraction.equals("increaseSpeedToAll") ||
 							nInteraction.equals("decreaseSpeedToAll") || nInteraction.equals("setSpeedForAll")) {
+						for(SpriteData sd : SharedData.la.getPortals(0, 1, true)) {
+							tempSprites.remove(sd.name);
+						}
 						String value = " value=" + SharedData.random.nextInt(25);
 						officialInteraction += value;
 					    int i3 = SharedData.random.nextInt(tempSprites.size());
@@ -432,7 +439,7 @@ public class Chromosome implements Comparable<Chromosome>{
 				}
 				// change the parameters for the rule
 				else if(choice == 3) {
-					String nInteraction = tempInteractions.get(SharedData.random.nextInt(tempInteractions.size()));
+					nInteraction = tempInteractions.get(SharedData.random.nextInt(tempInteractions.size()));
 
 					officialInteraction = changeMe[0] + " " + changeMe[1] + " > " + changeMe[3]; 
 					if(nInteraction.equals("killIfHasMore") || nInteraction.equals("killIfHasLess")
@@ -484,6 +491,9 @@ public class Chromosome implements Comparable<Chromosome>{
 					// subtractHealthPoints, increaseSpeedToAll, decreaseSpeedToAll, and setSpeedForAll rules
 					else if(nInteraction.equals("subtractHealthPoints") || nInteraction.equals("increaseSpeedToAll") ||
 							nInteraction.equals("decreaseSpeedToAll") || nInteraction.equals("setSpeedForAll")) {
+						for(SpriteData sd : SharedData.la.getPortals(0, 1, true)) {
+							tempSprites.remove(sd.name);
+						}
 						String value = " value=" + SharedData.random.nextInt(25);
 						officialInteraction += value;
 					    int i3 = SharedData.random.nextInt(tempSprites.size());
@@ -521,7 +531,14 @@ public class Chromosome implements Comparable<Chromosome>{
 					}
 				}				
 				interaction.add(officialInteraction);
+				if(officialInteraction.contains("pullWithIt stype=")) {
+					int flag = 0;
+				}
+				if(officialInteraction.contains("attractGaze=") || officialInteraction.contains("forceOrientation=") || officialInteraction.contains("stepBack") || officialInteraction.contains("killSprite")) {
+					int flag = 0;
+				}
 			}
+			
 			interaction.removeIf(s -> s == null);
 			interaction = (ArrayList<String>) interaction.stream().distinct().collect(Collectors.toList());
 			ruleset[0] = new String[interaction.size()];
@@ -563,7 +580,7 @@ public class Chromosome implements Comparable<Chromosome>{
 					nTermString = nTermination + " stype=" + sprite1 + " limit=" + count + " win=" + win;
 				// SpriteCounterMore termination
 				} else if(nTermination.equals("SpriteCounterMore")) {
-					tempSprites.remove(levAl.getImmovables(0.8, 1.0, true)[0].name);
+					tempSprites.remove(levAl.getImmovables(0.8, 1.0, false)[0].name);
 					String sprite1 = tempSprites.get(SharedData.random.nextInt(tempSprites.size()));
 					int count = SharedData.random.nextInt(25);
 					boolean isWin = SharedData.random.nextBoolean();
@@ -591,6 +608,12 @@ public class Chromosome implements Comparable<Chromosome>{
 					nTermString = nTermination + " stype1=" + sprite1 + " stype2=" + sprite2 + " stype3="
 							+ sprite3 + " limit=" + count + " win=" + win;
 				} else if(nTermination.equals("MultiSpriteCounterSubTypes")) {
+					for(SpriteData sd : SharedData.la.getPortals(0, 1, true)) {
+						tempSprites.remove(sd.name);
+					}
+					for(SpriteData sd : SharedData.la.getSpawners(0, 1, true)) {
+						tempSprites.remove(sd.name);
+					}
 					String sprite1 = tempSprites.get(SharedData.random.nextInt(tempSprites.size()));
 					String sprite2 = "";
 					String sprite3 = "";
@@ -659,7 +682,7 @@ public class Chromosome implements Comparable<Chromosome>{
 					nTermString = nTermination + " stype=" + sprite1 + " limit=" + count + " win=" + win;
 				// SpriteCounterMore termination
 				} else if(nTermination.equals("SpriteCounterMore")) {
-					tempSprites.remove(levAl.getImmovables(0.8, 1.0, true)[0].name);
+					tempSprites.remove(levAl.getImmovables(0.8, 1.0, false)[0].name);
 					String sprite1 = tempSprites.get(SharedData.random.nextInt(tempSprites.size()));
 					int count = SharedData.random.nextInt(25);
 					boolean isWin = SharedData.random.nextBoolean();
@@ -687,6 +710,12 @@ public class Chromosome implements Comparable<Chromosome>{
 					nTermString = nTermination + " stype1=" + sprite1 + " stype2=" + sprite2 + " stype3="
 							+ sprite3 + " limit=" + count + " win=" + win;
 				} else if(nTermination.equals("MultiSpriteCounterSubTypes")) {
+					for(SpriteData sd : SharedData.la.getPortals(0, 1, false)) {
+						tempSprites.remove(sd.name);
+					}
+					for(SpriteData sd : SharedData.la.getSpawners(0, 1, false)) {
+						tempSprites.remove(sd.name);
+					}
 					String sprite1 = tempSprites.get(SharedData.random.nextInt(tempSprites.size()));
 					
 					String sprite2 = "";
@@ -713,7 +742,7 @@ public class Chromosome implements Comparable<Chromosome>{
 					} else {
 						win = "False";
 					}
-					nTermString = " limit=" + count + " win=" + win;
+					nTermString += " limit=" + count + " win=" + win;
 				} else {
 					int count = SharedData.random.nextInt(25);
 					boolean isWin = SharedData.random.nextBoolean();
@@ -726,6 +755,9 @@ public class Chromosome implements Comparable<Chromosome>{
 					nTermString = nTermination + " limit=" + count + " win=" + win;;
 				}
 				termination.add(nTermString);
+				if(nTermString.contains(" limit=")) {
+					int flag = 1;
+				}
 			}
 		    // fold the interactions list back into the ruleset
 			termination.removeIf(s -> s == null);
@@ -762,49 +794,17 @@ public class Chromosome implements Comparable<Chromosome>{
 		return true;
 	}
 
-	/**
-	 * tests to make sure the game is playable, meaning that none of the rules will break the game.
-	 */
-//	public void constraintsTest() {
-//		//calculate the constrain fitness by applying all different constraints
-//		//Updating parameters
-////		parameters.put("solutionLength", bestSol.size());
-////		parameters.put("minSolutionLength", SharedData.MIN_SOLUTION_LENGTH);
-////		parameters.put("doNothingSteps", doNothingLength);
-////		parameters.put("doNothingState", doNothingState.getGameWinner());
-////		parameters.put("bestPlayer", bestState.getGameWinner());
-////		parameters.put("minDoNothingSteps", SharedData.MIN_DOTHING_STEPS);
-//		//parameters.put("coverPercentage", coverPercentage);
-//		//parameters.put("minCoverPercentage", SharedData.MIN_COVER_PERCENTAGE);
-//		//parameters.put("maxCoverPercentage", SharedData.MAX_COVER_PERCENTAGE);
-//		//parameters.put("numOfObjects", calculateNumberOfObjects());
-//		parameters.put("gameAnalyzer", SharedData.gameAnalyzer);
-//		parameters.put("gameDescription", SharedData.gameDescription);
-//
-//		//CombinedConstraints constraint = new CombinedConstraints();
-//		constraint.addConstraints(new String[]{"SolutionLengthConstraint", "DeathConstraint",
-//											   //"CoverPercentageConstraint", "SpriteNumberConstraint",
-//											   "GoalConstraint", "AvatarNumberConstraint", "WinConstraint"});
-//		constraint.setParameters(parameters);
-//		constrainFitness = constraint.checkConstraint();
-//
-//		//System.out.println("SolutionLength:" + bestSol.size() + " doNothingSteps:" + doNothingLength + " coverPercentage:" + coverPercentage + " bestPlayer:" + bestState.getGameWinner());
-//
-//	}
 
 	/**
 	 * calculates the fitness, by comparing the scores of a naiveAI and a smart AI
 	 * @param time	how much time to evaluate the chromosome
 	 */
 	public void calculateFitness(long time) {
-//		constraintsTest();
-	//	this.fitness.set(0, constrainFitness);
+
 		boolean isFeasible = false;
-//		if(constrainFitness == 1) {
-			isFeasible = feasibilityTest();
-			constrainFitness = 0;
-			this.fitness.set(0, 0.0);
-	//	}
+		isFeasible = feasibilityTest();
+		constrainFitness = 0;
+		this.fitness.set(0, 0.0);
 		if(isFeasible) {
 			this.fitness.set(0, 1.0);
 			constrainFitness = 1;
