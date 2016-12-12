@@ -984,7 +984,8 @@ public class Chromosome implements Comparable<Chromosome>{
 		Vector2d pos = SOs.get(SOs.size() - 2);
 		if (pos.x < 0 || pos.y > world.width ||
 			pos.y < 0 || pos.y > world.height) {
-			constrainFitness *= 0.9;
+			//constrainFitness *= 0.9;
+			fitness.set(1, fitness.get(1) * (4.0/5.0));
 		}
 	}
 	
