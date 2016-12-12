@@ -36,7 +36,7 @@ public class SharedData {
 	/**
 	 * number of the best chromosomes that are transfered from one generation to another
 	 */
-	public static final int ELITISM_NUMBER = 1;
+	public static final int ELITISM_NUMBER = 10;
 	/**
 	 * very small value
 	 */

@@ -144,25 +144,25 @@ BasicGame key_handler=Pulse no_players=2 no_counters=2
         blockA9ON hit > transformTo stype=blockA9OFF counter=-1,0 killSecond=True
         hit blockA9OFF > transformTo stype=blockA9ON counter=1,0 killSecond=True
 
-        blockB1ON hit > transformIfCount stype=blockB1OFF estype=blockB1OFF stypeCount=blockA1ON geq=1 counter=0,-1 killSecond=True
-        blockB2ON hit > transformIfCount stype=blockB2OFF estype=blockB2OFF stypeCount=blockA2ON geq=1 counter=0,-1 killSecond=True
-        blockB3ON hit > transformIfCount stype=blockB3OFF estype=blockB3OFF stypeCount=blockA3ON geq=1 counter=0,-1 killSecond=True
-        blockB4ON hit > transformIfCount stype=blockB4OFF estype=blockB4OFF stypeCount=blockA4ON geq=1 counter=0,-1 killSecond=True
-        blockB5ON hit > transformIfCount stype=blockB5OFF estype=blockB5OFF stypeCount=blockA5ON geq=1 counter=0,-1 killSecond=True
-        blockB6ON hit > transformIfCount stype=blockB6OFF estype=blockB6OFF stypeCount=blockA6ON geq=1 counter=0,-1 killSecond=True
-        blockB7ON hit > transformIfCount stype=blockB7OFF estype=blockB7OFF stypeCount=blockA7ON geq=1 counter=0,-1 killSecond=True
-        blockB8ON hit > transformIfCount stype=blockB8OFF estype=blockB8OFF stypeCount=blockA8ON geq=1 counter=0,-1 killSecond=True
-        blockB9ON hit > transformIfCount stype=blockB9OFF estype=blockB9OFF stypeCount=blockA9ON geq=1 counter=0,-1 killSecond=True
+        blockB1ON hit > transformIfCount stype=blockB1OFF estype=blockB1OFF stypeCount=blockA1ON geq=1 counter=0,-1 counterElse=0,1 killSecond=True
+        blockB2ON hit > transformIfCount stype=blockB2OFF estype=blockB2OFF stypeCount=blockA2ON geq=1 counter=0,-1 counterElse=0,1 killSecond=True
+        blockB3ON hit > transformIfCount stype=blockB3OFF estype=blockB3OFF stypeCount=blockA3ON geq=1 counter=0,-1 counterElse=0,1 killSecond=True
+        blockB4ON hit > transformIfCount stype=blockB4OFF estype=blockB4OFF stypeCount=blockA4ON geq=1 counter=0,-1 counterElse=0,1 killSecond=True
+        blockB5ON hit > transformIfCount stype=blockB5OFF estype=blockB5OFF stypeCount=blockA5ON geq=1 counter=0,-1 counterElse=0,1 killSecond=True
+        blockB6ON hit > transformIfCount stype=blockB6OFF estype=blockB6OFF stypeCount=blockA6ON geq=1 counter=0,-1 counterElse=0,1 killSecond=True
+        blockB7ON hit > transformIfCount stype=blockB7OFF estype=blockB7OFF stypeCount=blockA7ON geq=1 counter=0,-1 counterElse=0,1 killSecond=True
+        blockB8ON hit > transformIfCount stype=blockB8OFF estype=blockB8OFF stypeCount=blockA8ON geq=1 counter=0,-1 counterElse=0,1 killSecond=True
+        blockB9ON hit > transformIfCount stype=blockB9OFF estype=blockB9OFF stypeCount=blockA9ON geq=1 counter=0,-1 counterElse=0,1 killSecond=True
 
-        hit blockB1OFF > transformIfCount stype=blockB1OK estype=blockB1NOT stypeCount=blockA1ON geq=1 counter=0,1 killSecond=True
-        hit blockB2OFF > transformIfCount stype=blockB2OK estype=blockB2NOT stypeCount=blockA2ON geq=1 counter=0,1 killSecond=True
-        hit blockB3OFF > transformIfCount stype=blockB3OK estype=blockB3NOT stypeCount=blockA3ON geq=1 counter=0,1 killSecond=True
-        hit blockB4OFF > transformIfCount stype=blockB4OK estype=blockB4NOT stypeCount=blockA4ON geq=1 counter=0,1 killSecond=True
-        hit blockB5OFF > transformIfCount stype=blockB5OK estype=blockB5NOT stypeCount=blockA5ON geq=1 counter=0,1 killSecond=True
-        hit blockB6OFF > transformIfCount stype=blockB6OK estype=blockB6NOT stypeCount=blockA6ON geq=1 counter=0,1 killSecond=True
-        hit blockB7OFF > transformIfCount stype=blockB7OK estype=blockB7NOT stypeCount=blockA7ON geq=1 counter=0,1 killSecond=True
-        hit blockB8OFF > transformIfCount stype=blockB8OK estype=blockB8NOT stypeCount=blockA8ON geq=1 counter=0,1 killSecond=True
-        hit blockB9OFF > transformIfCount stype=blockB9OK estype=blockB9NOT stypeCount=blockA9ON geq=1 counter=0,1 killSecond=True
+        hit blockB1OFF > transformIfCount stype=blockB1OK estype=blockB1NOT stypeCount=blockA1ON geq=1 counter=0,1 counterElse=0,-1 killSecond=True
+        hit blockB2OFF > transformIfCount stype=blockB2OK estype=blockB2NOT stypeCount=blockA2ON geq=1 counter=0,1 counterElse=0,-1 killSecond=True
+        hit blockB3OFF > transformIfCount stype=blockB3OK estype=blockB3NOT stypeCount=blockA3ON geq=1 counter=0,1 counterElse=0,-1 killSecond=True
+        hit blockB4OFF > transformIfCount stype=blockB4OK estype=blockB4NOT stypeCount=blockA4ON geq=1 counter=0,1 counterElse=0,-1 killSecond=True
+        hit blockB5OFF > transformIfCount stype=blockB5OK estype=blockB5NOT stypeCount=blockA5ON geq=1 counter=0,1 counterElse=0,-1 killSecond=True
+        hit blockB6OFF > transformIfCount stype=blockB6OK estype=blockB6NOT stypeCount=blockA6ON geq=1 counter=0,1 counterElse=0,-1 killSecond=True
+        hit blockB7OFF > transformIfCount stype=blockB7OK estype=blockB7NOT stypeCount=blockA7ON geq=1 counter=0,1 counterElse=0,-1 killSecond=True
+        hit blockB8OFF > transformIfCount stype=blockB8OK estype=blockB8NOT stypeCount=blockA8ON geq=1 counter=0,1 counterElse=0,-1 killSecond=True
+        hit blockB9OFF > transformIfCount stype=blockB9OK estype=blockB9NOT stypeCount=blockA9ON geq=1 counter=0,1 counterElse=0,-1 killSecond=True
 
 
     TerminationSet

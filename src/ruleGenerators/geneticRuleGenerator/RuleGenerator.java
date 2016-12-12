@@ -204,20 +204,20 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			try (FileWriter fw = new FileWriter(SharedData.filename, true);
 					BufferedWriter bw = new BufferedWriter(fw);
 					PrintWriter out = new PrintWriter(bw)) {
-			newPopulation.add(child1);
-			out.println("interactions 1");
-			for (String[] s : child1.getRuleset()) {
-				for (String q : s) {
-					out.println(q);
+				newPopulation.add(child1);
+				out.println("interactions 1");
+				for (String[] s : child1.getRuleset()) {
+					for (String q : s) {
+						out.println(q);
+					}
 				}
-			}
-			newPopulation.add(child2);
-			out.println("interactions 2");
-			for (String[] s : child1.getRuleset()) {
-				for (String q : s) {
-					out.println(q);
+				newPopulation.add(child2);
+				out.println("interactions 2");
+				for (String[] s : child1.getRuleset()) {
+					for (String q : s) {
+						out.println(q);
+					}
 				}
-			}
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
 			}
@@ -235,38 +235,37 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			}
 		}
 		
-
-		//add the best chromosome(s) from old population to the new population
-		Collections.sort(newPopulation);
-		for(int i=SharedData.POPULATION_SIZE - SharedData.ELITISM_NUMBER;i<newPopulation.size();i++){
-			newPopulation.remove(i);
-		}
-
 		try (FileWriter fw = new FileWriter(SharedData.filename, true);
 				BufferedWriter bw = new BufferedWriter(fw);
 				PrintWriter out = new PrintWriter(bw)) {
-		if(fPopulation.isEmpty()){
-			Collections.sort(iPopulation);
-			for(int i=0;i<SharedData.ELITISM_NUMBER;i++){
-				newPopulation.add(iPopulation.get(i));
-				for (String[] s : iPopulation.get(i).getRuleset()) {
-					for (String q : s) {
-						out.println(q);
+			//add the best chromosome(s) from old population to the new population
+			Collections.sort(newPopulation);
+			for(int i=SharedData.POPULATION_SIZE - SharedData.ELITISM_NUMBER;i<newPopulation.size();){
+				newPopulation.remove(i);
+			}
+	
+			if(fPopulation.isEmpty()){
+				Collections.sort(iPopulation);
+				for(int i=0;i<SharedData.ELITISM_NUMBER;i++){
+					newPopulation.add(iPopulation.get(i));
+					for (String[] s : iPopulation.get(i).getRuleset()) {
+						for (String q : s) {
+							out.println(q);
+						}
 					}
 				}
 			}
-		}
-		else{
-			Collections.sort(fPopulation);
-			for(int i=0;i<SharedData.ELITISM_NUMBER;i++){
-				newPopulation.add(fPopulation.get(i));
-				for (String[] s : fPopulation.get(i).getRuleset()) {
-					for (String q : s) {
-						out.println(q);
+			else{
+				Collections.sort(fPopulation);
+				for(int i=0;i<SharedData.ELITISM_NUMBER;i++){
+					newPopulation.add(fPopulation.get(i));
+					for (String[] s : fPopulation.get(i).getRuleset()) {
+						for (String q : s) {
+							out.println(q);
+						}
 					}
 				}
 			}
-		}
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}

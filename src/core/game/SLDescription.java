@@ -36,6 +36,11 @@ public class SLDescription {
     private int shift;
     
     /**
+     * random object for random seeds
+     */
+    private Random random;
+    
+    /**
      * constructor for the SLDescription contains information about game sprites and the current level
      * @param currentGame	the current game
      * @param level		the current level
@@ -49,6 +54,7 @@ public class SLDescription {
 	this.currentLevel = null;
 	
 	this.shift = shift;
+	this.random = new Random(this.shift);
 	
 	this.reset(currentGame, level);
     }
@@ -247,7 +253,7 @@ public class SLDescription {
 	new VGDLParser().parseInteractionTermination(this.currentGame, rw[0], rw[1]);
 	
 	this.currentGame.reset();
-	this.currentGame.buildStringLevel(this.level, this.shift);
+	this.currentGame.buildStringLevel(this.level, this.random.nextInt());
 	return this.currentGame.getObservation();
     }
 }

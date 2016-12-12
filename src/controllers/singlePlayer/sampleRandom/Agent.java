@@ -127,19 +127,19 @@ public class Agent extends AbstractPlayer {
      */
     public void draw(Graphics2D g)
     {
-        int half_block = (int) (block_size*0.5);
-        for(int j = 0; j < grid[0].length; ++j)
-        {
-            for(int i = 0; i < grid.length; ++i)
-            {
-                if(grid[i][j].size() > 0)
-                {
-                    Observation firstObs = grid[i][j].get(0); //grid[i][j].size()-1
-                    //Three interesting options:
-                    int print = firstObs.category; //firstObs.itype; //firstObs.obsID;
-                    g.drawString(print + "", i*block_size+half_block,j*block_size+half_block);
-                }
-            }
-        }
+//        int half_block = (int) (block_size*0.5);
+//        for(int j = 0; j < grid[0].length; ++j)
+//        {
+//            for(int i = 0; i < grid.length; ++i)
+//            {
+//                if(grid[i][j].size() > 0)
+//                {
+//                    Observation firstObs = grid[i][j].get(0); //grid[i][j].size()-1
+//                    //Three interesting options:
+//                    int print = firstObs.category; //firstObs.itype; //firstObs.obsID;
+//                    g.drawString(print + "", i*block_size+half_block,j*block_size+half_block);
+//                }
+//            }
+//        }
     }
 }
