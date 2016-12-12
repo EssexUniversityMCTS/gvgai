@@ -127,7 +127,7 @@ public class Chromosome implements Comparable<Chromosome>{
 	public void mutateInteraction() {
 		ArrayList<String> interaction = new ArrayList<>( Arrays.asList(ruleset[0]));
 		ArrayList<String> tempInteractions = new ArrayList<> ( Arrays.asList(interactions));
-		ArrayList<String> tempSprites = (ArrayList<String>) usefulSprites.clone();
+		ArrayList<String> tempSprites = (ArrayList<String>) SharedData.usefulSprites.clone();
 		
 		tempSprites.remove(levAl.getImmovables(0.8, 1, true)[0].name);
 		for(SpriteData sd : levAl.getSpawners(0, 1, true)) {
@@ -160,6 +160,7 @@ public class Chromosome implements Comparable<Chromosome>{
 				String officialInteraction = nInteraction;
 				int i1 = SharedData.random.nextInt(tempSprites.size());
 			    int i2 = (i1 + 1 + SharedData.random.nextInt(tempSprites.size() - 1)) % tempSprites.size();
+			    
 			    officialInteraction = tempSprites.get(i1) + " " +
 					    tempSprites.get(i2) + " > " + nInteraction;
 
@@ -537,7 +538,7 @@ public class Chromosome implements Comparable<Chromosome>{
 			int point = SharedData.random.nextInt(ruleset[1].length);
 			ArrayList<String> termination = new ArrayList<>( Arrays.asList(ruleset[1]));
 			// a sprite list where the avatar is not included
-			ArrayList<String> tempSprites = (ArrayList<String>) usefulSprites.clone();
+			ArrayList<String> tempSprites = (ArrayList<String>) SharedData.usefulSprites.clone();
 			tempSprites.remove(levAl.getAvatars(true)[0].name);
 			//insert new random rule
 		    String nTermString = "";
@@ -687,6 +688,7 @@ public class Chromosome implements Comparable<Chromosome>{
 							+ sprite3 + " limit=" + count + " win=" + win;
 				} else if(nTermination.equals("MultiSpriteCounterSubTypes")) {
 					String sprite1 = tempSprites.get(SharedData.random.nextInt(tempSprites.size()));
+					
 					String sprite2 = "";
 					String sprite3 = "";
 					int count = SharedData.random.nextInt(25);
@@ -816,7 +818,7 @@ public class Chromosome implements Comparable<Chromosome>{
 	
 			bestState = stepAgent.getFinalState();
 			bestSol = stepAgent.getSolution();
-	
+
 			StateObservation naiveState = null;
 			int naiveLength = Integer.MAX_VALUE;
 			//playing the game using the donothing agent and naive agent

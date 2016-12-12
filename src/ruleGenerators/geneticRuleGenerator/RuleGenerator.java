@@ -10,9 +10,11 @@ import java.util.Random;
 import core.ArcadeMachine;
 import core.game.SLDescription;
 import core.game.StateObservation;
+import core.game.GameDescription.SpriteData;
 import core.generator.AbstractRuleGenerator;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
+import tools.LevelAnalyzer;
 import tools.LevelMapping;
 
 public class RuleGenerator extends AbstractRuleGenerator {
@@ -81,6 +83,8 @@ public class RuleGenerator extends AbstractRuleGenerator {
 		this.sl = sl;
 		this.time = time;
 		this.usefulSprites = new ArrayList<String>();
+		SharedData.usefulSprites = new ArrayList<String>();
+		SharedData.la = new LevelAnalyzer(sl);
 		SharedData.random = new Random();
 		
 		try (PrintWriter out = new PrintWriter(SharedData.filename)) {
@@ -91,19 +95,23 @@ public class RuleGenerator extends AbstractRuleGenerator {
 
 		String[][] currentLevel = sl.getCurrentLevel();
 		//Just get the useful sprites from the current level
-		for (int y = 0; y < currentLevel.length; y++) {
-			for (int x = 0; x < currentLevel[y].length; x++) {
-				String[] parts = currentLevel[y][x].split(",");
-				for (int i = 0; i < parts.length; i++) {
-					if (parts[i].trim().length() > 0) {
-						//Add the sprite if it doesn't exisit
-						if (!usefulSprites.contains(parts[i].trim())) {
-							usefulSprites.add(parts[i].trim());
-						}
-					}
-				}
-			}
+		for(SpriteData sd : sl.getGameSprites()) {
+			SharedData.usefulSprites.add(sd.name);
 		}
+//		for (int y = 0; y < currentLevel.length; y++) {
+//			for (int x = 0; x < currentLevel[y].length; x++) {
+//				String[] parts = currentLevel[y][x].split(",");
+//				for (int i = 0; i < parts.length; i++) {
+//					if (parts[i].trim().length() > 0) {
+//						//Add the sprite if it doesn't exisit
+//						if (!usefulSprites.contains(parts[i].trim())) {
+//							usefulSprites.add(parts[i].trim());
+//							SharedData.usefulSprites.add(parts[i].trim());
+//						}
+//					}
+//				}
+//			}
+//		}
 		// iterate through population and mutate
 	}
 
@@ -420,7 +428,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			avgTime = totalTime / numberOfIterations;
 			Collections.sort(fChromosomes);
 			System.out.println("Best Chromosome Fitness: " + fChromosomes.get(0).getFitness());
-			System.out.println(bestFitness);
+			fChromosomes.get(0).getRuleset();
 		}
 		
 

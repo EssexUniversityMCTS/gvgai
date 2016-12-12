@@ -1,10 +1,12 @@
 package ruleGenerators.geneticRuleGenerator;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Random;
 
 import core.game.GameDescription;
 import tools.GameAnalyzer;
+import tools.LevelAnalyzer;
 
 public class SharedData {
 	/**
@@ -136,4 +138,12 @@ public class SharedData {
 	 * Writer
 	 */
 	public static PrintWriter out;
+	/**
+	 * useful sprites in the game
+	 */
+	public static ArrayList<String> usefulSprites;
+	/**
+	 * the analyzer of this level
+	 */
+	public static LevelAnalyzer la;
 }
