@@ -820,7 +820,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		constrainFitness = 0;
 		this.fitness.set(0, 0.0);
 		if(isFeasible) {
-			// unique events that occured in all the game simluations
+			// unique events that occurred in all the game simulations
 			Set<String> events = new HashSet<String>();
 
 			this.fitness.set(0, 1.0);
@@ -846,13 +846,13 @@ public class Chromosome implements Comparable<Chromosome>{
 					break;
 				}
 			}
-			
 			TreeSet s = bestState.getEventsHistory();
 			Iterator<Event> iter = s.iterator();
 			while(iter.hasNext()) {
 				Event e = iter.next();
 				events.add(e.activeTypeId + "" + e.passiveTypeId);
 			}
+			
 			// Random Agent
 			StateObservation randomState = null;
 			int randomLength = Integer.MAX_VALUE;
@@ -922,7 +922,8 @@ public class Chromosome implements Comparable<Chromosome>{
 				Iterator<Event> iter1 = s.iterator();
 				while(iter.hasNext()) {
 					Event e = iter.next();
-					events.add(e.activeTypeId + "" + e.passiveTypeId);				}
+					events.add(e.activeTypeId + "" + e.passiveTypeId);				
+					}
 			}
 			
 			// calc difference between best agent and the best naive score

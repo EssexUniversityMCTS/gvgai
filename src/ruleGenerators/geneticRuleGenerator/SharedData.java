@@ -12,7 +12,20 @@ public class SharedData {
 	/**
 	 * The size of the Genetic Algorithm Population
 	 */
-	public static final int POPULATION_SIZE = 10;
+	public static final int POPULATION_SIZE = 50;
+	/**
+	 * The percentage of the initial population that is randomly generated
+	 */
+	public static final double INIT_RANDOM_PERCENT = 0.3;
+	/**
+	 * The percentage of the initial population that is constructively generated
+	 */
+	public static final double INIT_CONSTRUCT_PERCENT = 0.2;
+	/**
+	 * The percentage of the initial population that is mutationally generated based
+	 * off what already exists (random and constructive) in the population
+	 */
+	public static final double INIT_MUT_PERCENT = 0.5;
 	/**
 	 * The amount of times used to check the one step look ahead and do nothing algorithm
 	 */
@@ -41,7 +54,6 @@ public class SharedData {
 	 * very small value
 	 */
 	public static final double EIPSLON = 1e-6;
-	
 	/**
 	 * the amount of mutations done on a chromosome to start as random
 	 */

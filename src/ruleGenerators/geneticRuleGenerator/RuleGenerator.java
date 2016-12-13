@@ -340,6 +340,11 @@ public class RuleGenerator extends AbstractRuleGenerator {
 		
 		return population.get(0);
 	}
+	/**
+	 * Generates the rules using evolution
+	 * @param sl	the SL description
+	 * @param time	the time allowed for the generator to loop
+	 */
 	@Override
 	public String[][] generateRules(SLDescription sl, ElapsedCpuTimer time) {
 		//initialize the statistics objects
@@ -362,7 +367,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 		}
-		for(int i = 0; i < SharedData.POPULATION_SIZE * (.30); i++) {
+		for(int i = 0; i < SharedData.POPULATION_SIZE * SharedData.INIT_RANDOM_PERCENT; i++) {
 			Chromosome c = new Chromosome(randomGen.generateRules(sl, time), sl, time, usefulSprites);
 
 			c.calculateFitness(SharedData.EVALUATION_TIME);
@@ -395,7 +400,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			counter++;
 			allChromosomes.add(c);
 		}
-		for(int i = 0; i < SharedData.POPULATION_SIZE * (.30); i++) {
+		for(int i = 0; i < SharedData.POPULATION_SIZE * SharedData.INIT_CONSTRUCT_PERCENT; i++) {
 			Chromosome c = new Chromosome(constructGen.generateRules(sl, time), sl, time, usefulSprites);
 
 			c.calculateFitness(SharedData.EVALUATION_TIME);
@@ -428,7 +433,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 			allChromosomes.add(c);
 			counter++;
 		}
-		for(int i = 0; i < SharedData.POPULATION_SIZE * (.40); i++) {
+		for(int i = 0; i < SharedData.POPULATION_SIZE * SharedData.INIT_MUT_PERCENT; i++) {
 			Chromosome c = allChromosomes.get(SharedData.random.nextInt(allChromosomes.size()));
 			for(int j = 0; j < SharedData.INIT_MUTATION_AMOUNT; j++) {
 				c.mutate();
