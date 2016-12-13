@@ -1100,8 +1100,13 @@ public class Chromosome implements Comparable<Chromosome>{
 		if (pos.x < 0 || pos.y > world.width ||
 			pos.y < 0 || pos.y > world.height) {
 			//constrainFitness *= 0.9;
-			fitness.set(1, fitness.get(1) * (4.0/5.0));
+			double cf = this.constrainFitness * SharedData.CONSTRAINT_COUNT;
+			cf -= 1;
+			cf = cf / SharedData.CONSTRAINT_COUNT;
+			constrainFitness = cf;
+			fitness.set(0, constrainFitness);
 		}
+		
 	}
 	
 	/**

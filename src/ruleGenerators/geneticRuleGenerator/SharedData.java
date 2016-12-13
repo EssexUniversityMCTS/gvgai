@@ -104,13 +104,10 @@ public class SharedData {
 	 */
 	public static final double MIN_DOTHING_STEPS = 40;
 	/**
-	 * minimum acceptable cover percentage of sprites
+	 * amount of constraints that should be taken into account when calculating constrain fitness
 	 */
-	public static final double MIN_COVER_PERCENTAGE = 0.05;
-	/**
-	 * maximum acceptable cover percentage of sprites
-	 */
-	public static final double MAX_COVER_PERCENTAGE = 0.3;
+	public static final double CONSTRAINT_COUNT = 2;
+	
 	/**
 	 * minimum amount of unique rules that should be applied
 	 */
