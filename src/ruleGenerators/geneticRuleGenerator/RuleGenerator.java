@@ -182,7 +182,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
 				child2 = children.get(1);
 				
 
-				//do muation to the children
+				//do mutation to the children
 				if(SharedData.random.nextDouble() < SharedData.MUTATION_PROB){
 					child1.mutate();
 				}

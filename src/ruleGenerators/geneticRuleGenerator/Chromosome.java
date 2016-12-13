@@ -829,37 +829,47 @@ public class Chromosome implements Comparable<Chromosome>{
 			double score = -200;
 			ArrayList<Vector2d> SOs = new ArrayList<>();
 			// protects the fitness evaluation from looping forever
-			int protectionCounter = 0;
 
 			// Best Agent
-			while(score < -100) {
+			double agentBestScore = Double.NEGATIVE_INFINITY;
+			
+			for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
+				int protectionCounter = 0;
 				StepController stepAgent = new StepController(automatedAgent, SharedData.EVALUATION_STEP_TIME);
-				ElapsedCpuTimer elapsedTimer = new ElapsedCpuTimer();
-				elapsedTimer.setMaxTimeMillis(time);
-		
-				stepAgent.playGame(stateObs.copy(), elapsedTimer, SOs);
-				bestState = stepAgent.getFinalState();
-				bestSol = stepAgent.getSolution();
-				score = bestState.getGameScore();
-				protectionCounter++;
-				if(protectionCounter > SharedData.PROTECTION_COUNTER) {
-					break;
+				while(score < -100) {
+					ElapsedCpuTimer elapsedTimer = new ElapsedCpuTimer();
+					elapsedTimer.setMaxTimeMillis(time);
+			
+					stepAgent.playGame(stateObs.copy(), elapsedTimer, SOs);
+					if(stepAgent.getFinalState().getGameScore() > agentBestScore) {
+						agentBestScore = stepAgent.getFinalState().getGameScore();
+						bestState = stepAgent.getFinalState();
+						bestSol = stepAgent.getSolution();
+					}
+
+					score = stepAgent.getFinalState().getGameScore();
+					protectionCounter++;
+					if(protectionCounter > SharedData.PROTECTION_COUNTER) {
+						break;
+					}
 				}
-			}
-			TreeSet s = bestState.getEventsHistory();
-			Iterator<Event> iter = s.iterator();
-			while(iter.hasNext()) {
-				Event e = iter.next();
-				events.add(e.activeTypeId + "" + e.passiveTypeId);
+				TreeSet s1 = stepAgent.getFinalState().getEventsHistory();
+				Iterator<Event> iter1 = s1.iterator();
+				while(iter1.hasNext()) {
+					Event e = iter1.next();
+					events.add(e.activeTypeId + "" + e.passiveTypeId);
+				}
+				score = -200;
+
 			}
 			
 			// Random Agent
 			StateObservation randomState = null;
 			int randomLength = Integer.MAX_VALUE;
-			double bestRandomScore = Double.MIN_VALUE;
+			double bestRandomScore = Double.NEGATIVE_INFINITY;
 			score = -200;
-			protectionCounter = 0;
 			for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
+				int protectionCounter = 0;
 				while(score < -100) {
 					StateObservation tempState = stateObs.copy();
 					
@@ -888,19 +898,21 @@ public class Chromosome implements Comparable<Chromosome>{
 				}
 				// gather all unique interactions between objects in the naive agent
 				TreeSet s1 = randomState.getEventsHistory();
-				Iterator<Event> iter1 = s.iterator();
-				while(iter.hasNext()) {
-					Event e = iter.next();
-					events.add(e.activeTypeId + "" + e.passiveTypeId);				}
+				Iterator<Event> iter1 = s1.iterator();
+				while(iter1.hasNext()) {
+					Event e = iter1.next();
+					events.add(e.activeTypeId + "" + e.passiveTypeId);				
+				}
+				score = -200;
 			}
 			// Naive agent
 			score = -200;
 			StateObservation naiveState = null;
 			int naiveLength = Integer.MAX_VALUE;
-			double bestNaiveScore = Double.MIN_VALUE;
-			protectionCounter = 0;
+			double bestNaiveScore = Double.NEGATIVE_INFINITY;
 			//playing the game using the donothing agent and naive agent
 			for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
+				int protectionCounter = 0;
 				while(score < -100) {
 					StateObservation tempState = stateObs.copy();
 					int temp = getAgentResult(tempState, bestSol.size(), naiveAgent);
@@ -919,11 +931,12 @@ public class Chromosome implements Comparable<Chromosome>{
 				}
 				// gather all unique interactions between objects in the naive agent
 				TreeSet s1 = naiveState.getEventsHistory();
-				Iterator<Event> iter1 = s.iterator();
-				while(iter.hasNext()) {
-					Event e = iter.next();
+				Iterator<Event> iter1 = s1.iterator();
+				while(iter1.hasNext()) {
+					Event e = iter1.next();
 					events.add(e.activeTypeId + "" + e.passiveTypeId);				
 					}
+				score = -200;
 			}
 			
 			// calc difference between best agent and the best naive score
