@@ -31,13 +31,13 @@ public class Agent extends AbstractMultiPlayer {
 
     private static double RECPROB = 0.1;
     private double MUT = (1.0 / SIMULATION_DEPTH);
-    private final int[] N_ACTIONS;
+    private int[] N_ACTIONS;
 
     private ElapsedCpuTimer timer;
 
     private int genome[][][][];
-    private final HashMap<Integer, Types.ACTIONS>[] action_mapping;
-    private final HashMap<Types.ACTIONS, Integer>[] r_action_mapping;
+    private HashMap<Integer, Types.ACTIONS>[] action_mapping;
+    private HashMap<Types.ACTIONS, Integer>[] r_action_mapping;
     protected Random randomGenerator;
 
     private int numSimulations;
@@ -56,6 +56,13 @@ public class Agent extends AbstractMultiPlayer {
         no_players = stateObs.getNoPlayers();
 
         randomGenerator = new Random();
+
+        initActions(stateObs);
+        initGenome(stateObs);
+    }
+
+    private void initActions(StateObservationMulti stateObs)
+    {
         N_ACTIONS = new int[no_players];
 
         action_mapping = new HashMap[no_players];
@@ -72,8 +79,6 @@ public class Agent extends AbstractMultiPlayer {
 
             N_ACTIONS[j] = stateObs.getAvailableActions(j).size();
         }
-
-        initGenome(stateObs);
     }
 
 
@@ -237,6 +242,13 @@ public class Agent extends AbstractMultiPlayer {
      * @return An action for the current state
      */
     public Types.ACTIONS act(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer) {
+
+        if(action_mapping[id].size() != stateObs.getAvailableActions(id).size() ||
+           action_mapping[oppID].size() != stateObs.getAvailableActions(oppID).size())
+        {
+            this.initActions(stateObs);
+            this.initGenome(stateObs);
+        }
 
         this.timer = elapsedTimer;
         numSimulations = 0;
