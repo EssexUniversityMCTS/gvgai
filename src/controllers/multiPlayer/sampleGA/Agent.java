@@ -22,6 +22,7 @@ import tools.Utils;
  * Time: 15:17
  * This is a Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
+
 public class Agent extends AbstractMultiPlayer {
 
     private static double GAMMA = 0.90;
@@ -50,6 +51,7 @@ public class Agent extends AbstractMultiPlayer {
      * @param stateObs     state observation of the current game.
      * @param elapsedTimer Timer for the controller creation.
      */
+    @SuppressWarnings("unchecked")
     public Agent(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer, int playerID) {
         id = playerID;
         oppID = (id + 1) % stateObs.getNoPlayers();
