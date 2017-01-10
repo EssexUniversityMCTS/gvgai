@@ -1960,6 +1960,29 @@ public abstract class Game
      */
     public abstract boolean isGameOver();
 
+
+    /**
+     * clear all the interactions and termination in the current game
+     */
+    public void clearInteractionTerminationData(){
+        this.setStochastic(false);
+        this.terminations.clear();
+
+        this.definedEffects.clear();
+            for(int i=0; i<this.collisionEffects.length; i++){
+                for(int j=0; j<this.collisionEffects[i].length; j++){
+                    this.collisionEffects[i][j].clear();
+                }
+            }
+
+        this.definedEOSEffects.clear();
+        for(int i=0; i<this.eosEffects.length; i++){
+            this.eosEffects[i].clear();
+        }
+        
+        this.timeEffects.clear();
+    }
+
     /**
      * Retuns the observation of this state.
      * @return the observation.
