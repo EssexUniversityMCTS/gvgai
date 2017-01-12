@@ -712,7 +712,6 @@ public abstract class VGDLSprite {
             trans.translate(r.x, r.y);
             trans.scale(scale,scale);
             trans.rotate(rotation,w/2.0,h/2.0);
-            //System.out.println("yasy");
             g.drawImage(image, trans, null);
             
         }

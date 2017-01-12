@@ -1433,8 +1433,12 @@ public abstract class Game
                 this.counter[i] += ef.getCounter(i);
             }
         }
-
-
+        
+        if(ef.countElse) {
+        	for (int i = 0; i < no_counters; i++) {		
+        	this.counter[i] += ef.getCounterElse(i);		
+        	}		
+        }		
     }
 
     private void addEvent(VGDLSprite s1, VGDLSprite s2)

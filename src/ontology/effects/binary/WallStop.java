@@ -27,7 +27,6 @@ public class WallStop extends Effect
         lastGameTime = -1;
         spritesThisCycle = new ArrayList<VGDLSprite>();
         this.parseParameters(cnt);
-        sequential = true;
     }
 
     @Override

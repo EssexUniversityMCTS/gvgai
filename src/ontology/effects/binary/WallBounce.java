@@ -25,7 +25,6 @@ public class WallBounce extends Effect
     {
         pixelPerfect = false;
         this.parseParameters(cnt);
-        sequential=true;
     }
 
     @Override
