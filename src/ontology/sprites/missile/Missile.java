@@ -19,7 +19,6 @@ public class Missile extends VGDLSprite
 
     public Missile(Vector2d position, Dimension size, SpriteContent cnt)
     {
-        //Init the sprite
         this.init(position, size);
 
         //Specific class default parameter values.

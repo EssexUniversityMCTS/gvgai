@@ -1,0 +1,46 @@
+BasicGame
+    SpriteSet    
+        avatar > FlakAvatar stype=bullet physicstype_id=1 friction=0.02 img=oryx/spider3
+        bullet > Missile speed=25 singleton=True orientation=DUP physicstype_id=1 img=oryx/bullet1
+        bubble > Missile physicstype_id=1 gravity=0.5
+        	bubble1 > speed=4 shrinkfactor=1.2 img=oryx/orb1
+        		bubble1a > orientation=DLEFT
+        		bubble1b > orientation=DRIGHT
+        	bubble2 > speed=7 img=oryx/orb2
+        		bubble2a > orientation=DLEFT
+        		bubble2b > orientation=DRIGHT
+        	bubble3 > speed=10 shrinkfactor=0.8 img=oryx/orb3
+        		bubble3a > orientation=DLEFT
+        		bubble3b > orientation=DRIGHT
+            
+    TerminationSet
+        SpriteCounter stype=bubble    win=True
+        SpriteCounter stype=avatar win=False
+           
+    InteractionSet
+        bullet wall > killSprite 
+        bubble bullet > killSprite
+        
+        bullet bubble3 > killSprite scoreChange=1
+        
+        bullet bubble2 > spawn stype=bubble3a
+        bullet bubble2 > spawn stype=bubble3b
+        bullet bubble2 > killSprite scoreChange=1
+        
+        bullet bubble1 > spawn stype=bubble2a
+        bullet bubble1 > spawn stype=bubble2b
+        bullet bubble1 > killSprite scoreChange=1
+        
+        avatar wall > wallStop
+        avatar EOS > stepBack
+        bullet EOS > killSprite
+        bubble wall > wallBounce
+        avatar bubble > killSprite 
+
+    LevelMapping
+        b > bubble1a
+        c > bubble1b
+        d > bubble2a
+        e > bubble2b
+        f > bubble3a
+        g > bubble3b

@@ -1,0 +1,39 @@
+BasicGame
+    SpriteSet    
+        pad    > Immovable img=oryx/devil1
+        bouncey    > Immovable img=oryx/floorTileOrange
+        avatar > AimedAvatar stype=bullet img=newset/lasercannon_1
+        bullet > Missile physicstype_id=1 gravity=0.5 friction=0.02 speed=25 singleton=True img=oryx/bullet1 shrinkfactor=4
+        box    > Missile img=newset/cloud2 shrinkfactor=0.8 physicstype_id=1 gravity=0.5 friction=0.02
+        breakable > Immovable img=oryx/backBrown
+            
+    TerminationSet
+        SpriteCounter stype=pad    win=True
+        SpriteCounter stype=avatar win=False
+           
+    InteractionSet
+        breakable bullet > killSprite 
+        bullet breakable > killSprite
+        bullet wall > killSprite
+        bullet bouncey > wallBounce
+        pad bullet > killSprite scoreChange=1
+        avatar wall > stepBack
+        avatar EOS > stepBack
+        bullet EOS > killSprite
+        box wall > halfSpeed
+        box wall > wallBounce
+        pad box > killSprite
+        breakable box > killSprite
+        box breakable > halfSpeed
+        box breakable > wallBounce
+        box bullet > bounceForward
+        box box > wallBounce
+        box avatar > wallBounce
+        bullet box > killSprite
+        
+
+    LevelMapping
+        G > pad
+        B > bouncey
+        b > box
+        d > breakable

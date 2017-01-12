@@ -4,6 +4,8 @@ import java.awt.Dimension;
 
 import core.VGDLSprite;
 import core.content.SpriteContent;
+import core.game.Game;
+import tools.Direction;
 import tools.Vector2d;
 
 /**
@@ -31,6 +33,22 @@ public class WalkerJumper extends Walker
         this.parseParameters(cnt);
     }
 
+    public void update(Game game)
+    {
+    	super.updatePassive();
+    	
+    	if (this.lastDirection().x == 0)
+    	{
+    		if (this.probability > Math.random())
+    		{
+    			Direction dd = new Direction(0,-this.strength);
+    			this.physics.activeMovement(this, dd, this.speed);
+    		}
+    	}
+    	super.update(game);
+    	
+    }
+    
     protected void loadDefaults()
     {
         super.loadDefaults();

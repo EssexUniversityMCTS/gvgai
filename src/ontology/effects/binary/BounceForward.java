@@ -38,6 +38,11 @@ public class BounceForward extends Effect
 
         //Rectangle r = new Rectangle(sprite1.rect);
         sprite1.physics.activeMovement(sprite1, new Direction(dir.x, dir.y), sprite2.speed);
+        
+        if (sprite1.speed == 0){
+        	sprite1.speed = sprite2.speed;
+        }
+        
         //sprite1.lastrect = r;
         sprite1.orientation = new Direction(dir.x, dir.y);
         game._updateCollisionDict(sprite1);

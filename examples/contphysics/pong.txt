@@ -1,0 +1,25 @@
+BasicGame
+    SpriteSet
+        goal > Immovable color=GREEN
+            othergoal > 
+            mygoal    >
+        racket > VerticalAvatar speed=0.25
+            avatar      > alternate_keys=True img=oryx/floor3
+            otheravatar > color=BLUE img=oryx/floor2 
+        ball > Missile orientation=LEFT speed=15 physicstype_id=1 img=oryx/bullet1 shrinkfactor=4
+            
+    TerminationSet # from the perspective of player 1 (on the left)
+        SpriteCounter stype=othergoal limit=6 win=True     
+        SpriteCounter stype=mygoal    limit=6 win=False     
+           
+    InteractionSet
+        goal ball   > killSprite
+        ball racket > bounceDirection
+        ball wall   > wallBounce
+        racket wall > stepBack
+        
+    LevelMapping
+        - > mygoal
+        + > othergoal
+        a > otheravatar
+        o > ball

@@ -40,15 +40,16 @@ public class TransformTo extends Effect {
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
-        VGDLSprite newSprite = game.addSprite(itype, sprite1.getPosition());
-        transformTo(newSprite, sprite1,  sprite2,  game);
+    	if (!sprite1.is_disabled()){
+    		VGDLSprite newSprite = game.addSprite(itype, sprite1.getPosition());
+    		transformTo(newSprite, sprite1,  sprite2,  game);
+    	}
     }
 
     protected void transformTo(VGDLSprite newSprite, VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
         if(newSprite != null)
         {
-            //System.out.println(game.getGameTick() + " " + sprite1 + " --> " + newSprite) ;
             //Orientation
             if(forceOrientation || newSprite.is_oriented && sprite1.is_oriented && newSprite.orientation.equals(Types.DNONE))
             {

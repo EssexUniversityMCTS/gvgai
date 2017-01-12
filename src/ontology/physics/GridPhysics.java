@@ -65,9 +65,10 @@ public class GridPhysics implements Physics {
     @Override
     public Types.MOVEMENT activeMovement(VGDLSprite sprite, Direction action, double speed)
     {
+    	
         if(speed == 0)
         {
-            if(sprite.speed == 0)
+            if(sprite.speed == -1)
                 speed = 1;
             else
                 speed = sprite.speed;

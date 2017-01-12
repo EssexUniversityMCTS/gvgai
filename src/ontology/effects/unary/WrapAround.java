@@ -42,6 +42,5 @@ public class WrapAround extends Effect {
         }
 
         sprite1.lastmove = 0;
-        sprite1.updateBucket();
     }
 }
