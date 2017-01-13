@@ -32,7 +32,7 @@ public class RuleGenerator extends AbstractRuleGenerator {
     /**
      * Parameter used to fix the number of interations in the game
      */
-    private int FIXED = -1;
+    private int FIXED = 3;
 
     /**
      * This is a random rule generator
@@ -118,11 +118,17 @@ public class RuleGenerator extends AbstractRuleGenerator {
      * @return		True if its a valid interaction and False otherwise
      */
     private boolean isValidInteraction(SLDescription sl, SpriteData s1, SpriteData s2, String interact){
+	if(s2 == null && (interact.equalsIgnoreCase("collectResource") || interact.equalsIgnoreCase("teleportToExit") ||
+		interact.equalsIgnoreCase("attractGaze") || interact.equalsIgnoreCase("killIfFromAbove") ||
+		interact.equalsIgnoreCase("align") || interact.equalsIgnoreCase("pullWithIt") ||
+		interact.equalsIgnoreCase("spawnBehind") || interact.equalsIgnoreCase("bounceForward"))){
+	    return false;
+	}
 	if(interact.equalsIgnoreCase("collectResource")){
 	    return s1.isResource;
 	}
 	if(interact.equalsIgnoreCase("teleportToExit")){
-	    return s2.isPortal;
+	    return s2.isPortal && s2.type.equalsIgnoreCase("portal");
 	}
 	if(interact.equalsIgnoreCase("cloneSprite")){
 	    return !s1.isAvatar;
