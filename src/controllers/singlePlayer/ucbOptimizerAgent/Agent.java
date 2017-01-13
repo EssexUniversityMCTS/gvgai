@@ -6,6 +6,7 @@ import java.util.Random;
 import core.game.Observation;
 import core.game.StateObservation;
 import core.optimization.ucbOptimization.UCBEquation;
+import core.optimization.ucbOptimization.UCBOptimization;
 import core.player.AbstractPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
@@ -49,7 +50,7 @@ public class Agent extends AbstractPlayer {
         NUM_ACTIONS = actions.length;
 
         //Create the player.
-        mctsPlayer = new SingleMCTSPlayer(new Random());
+        mctsPlayer = new SingleMCTSPlayer(new Random(UCBOptimization.RANDOM_OBJ));
     }
 
 
