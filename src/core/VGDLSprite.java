@@ -78,6 +78,11 @@ public abstract class VGDLSprite {
      * Scalar speed of this sprite.
      */
     public double speed;
+    
+    /**
+     * identifies whether this sprite should move (if an Avatar)
+     */
+    public boolean stationary;
 
     /**
      * Mass of this sprite (for Continuous physics).
@@ -321,6 +326,7 @@ public abstract class VGDLSprite {
         friction = 0.0;
         image = null;
         speed = 0;
+        stationary = false;
         cooldown = 0;
         color = null;
         only_active = false;
@@ -961,6 +967,7 @@ public abstract class VGDLSprite {
         toSprite.is_stochastic = this.is_stochastic;
         toSprite.cooldown = this.cooldown;
         toSprite.speed = this.speed;
+        toSprite.stationary = this.stationary;
         toSprite.mass = this.mass;
         toSprite.gravity = this.gravity;
         toSprite.friction = this.friction;
@@ -1032,6 +1039,7 @@ public abstract class VGDLSprite {
         if(other.is_stochastic != this.is_stochastic) return false;
         if(other.cooldown != this.cooldown) return false;
         if(other.speed != this.speed) return false;
+        if(other.stationary != this.stationary) return false;
         if(other.mass != this.mass) return false;
         if(other.physicstype_id != this.physicstype_id) return false;
         if(other.gravity != this.gravity) return false;		

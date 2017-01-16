@@ -65,27 +65,28 @@ public class GridPhysics implements Physics {
     @Override
     public Types.MOVEMENT activeMovement(VGDLSprite sprite, Direction action, double speed)
     {
-    	
-        if(speed == 0)
-        {
-            if(sprite.speed == -1)
-                speed = 1;
-            else
-                speed = sprite.speed;
-        }
-
-        if(speed != 0 && action != null && !(action.equals(Types.DNONE)))
-        {
-            if(sprite.rotateInPlace)
-            {
-                boolean change = sprite._updateOrientation(action);
-                if(change)
-                    return Types.MOVEMENT.ROTATE;
-            }
-
-            if(sprite._updatePos(action, (int) (speed * this.gridsize.width)))
-                return Types.MOVEMENT.MOVE;
-        }
+    	if(!sprite.stationary){
+	        if(speed == 0)
+	        {
+	            if(sprite.speed <= 0)
+	                speed = 1;
+	            else
+	                speed = sprite.speed;
+	        }
+	
+	        if(speed != 0 && action != null && !(action.equals(Types.DNONE)))
+	        {
+	            if(sprite.rotateInPlace)
+	            {
+	                boolean change = sprite._updateOrientation(action);
+	                if(change)
+	                    return Types.MOVEMENT.ROTATE;
+	            }
+	
+	            if(sprite._updatePos(action, (int) (speed * this.gridsize.width)))
+	                return Types.MOVEMENT.MOVE;
+	        }
+    	}
         return Types.MOVEMENT.STILL;
     }
 

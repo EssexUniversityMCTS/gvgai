@@ -44,6 +44,7 @@ public class AimedAvatar extends ShootAvatar
     {
         super.loadDefaults();
         speed=0;
+        stationary = true;
     }
 
     /**
