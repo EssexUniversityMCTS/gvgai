@@ -1,0 +1,16 @@
+BasicGame
+    SpriteSet 
+        pad    > Passive color=BLUE 
+        avatar > OrientedAvatar physicstype_id=1 gravity=0.5 img=oryx/spaceship1
+            
+    TerminationSet
+        SpriteCounter stype=pad limit=4 win=True     
+        SpriteCounter stype=avatar      win=False     
+           
+    InteractionSet
+        avatar wall > killSprite 
+        avatar EOS > killSprite 
+        pad avatar  > killIfSlow
+        
+    LevelMapping
+        G > pad

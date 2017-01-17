@@ -22,13 +22,16 @@ public abstract class Effect{
     //Indicates if this effect has some random element.
     public boolean is_stochastic = false;
 
+    // indicates whether the interactions of this effect should be carried out sequentially or simultaneously
+    public boolean sequential = false;
+
     //Change of the score this effect makes.
     public String scoreChange = "0";
 
     //Count something
     public boolean count = true;
     public String counter = "0";
-
+    
     //Count something else
     public boolean countElse = true;
     public String counterElse = "0";
@@ -84,10 +87,10 @@ public abstract class Effect{
         String[] scores = counter.split(",");
         return idx < scores.length ? Integer.parseInt(scores[idx]) : Integer.parseInt(scores[0]);
     }
-
-    public int getCounterElse(int idx) {
-        String[] scores = counterElse.split(",");
-        return idx < scores.length ? Integer.parseInt(scores[idx]) : Integer.parseInt(scores[0]);
+    
+    public int getCounterElse(int idx) {		
+    	String[] scores = counterElse.split(",");		
+    	return idx < scores.length ? Integer.parseInt(scores[idx]) : Integer.parseInt(scores[0]);		
     }
     
     public ArrayList<String> getEffectSprites(){

@@ -1,0 +1,19 @@
+BasicGame
+    SpriteSet    
+        pad    > Immovable img=oryx/orb2
+        inertial > physicstype_id=1 friction=0.02
+            avatar > OrientedAvatar img=oryx/alien1
+            bullet > RandomNPC  img=oryx/alien2
+            
+    TerminationSet
+        SpriteCounter stype=pad    win=True     
+        SpriteCounter stype=avatar win=False     
+           
+    InteractionSet
+        inertial wall > wallStop
+        avatar bullet > killSprite
+        pad avatar    > killSprite scoreChange=1
+        
+    LevelMapping
+        G > pad
+        1 > bullet

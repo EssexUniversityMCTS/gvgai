@@ -56,7 +56,7 @@ public class TransformIfCount extends TransformTo {
         } else if (estype != null) {
             VGDLSprite newSprite = game.addSprite(eitype, sprite1.getPosition(), true);
             super.transformTo(newSprite, sprite1, sprite2, game);
-            this.countElse = true;
+            this.countElse=true;
         }
     }
     

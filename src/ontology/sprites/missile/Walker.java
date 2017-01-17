@@ -1,9 +1,12 @@
 package ontology.sprites.missile;
 
 import java.awt.Dimension;
+import java.util.Random;
 
 import core.VGDLSprite;
 import core.content.SpriteContent;
+import core.game.Game;
+import tools.Direction;
 import tools.Vector2d;
 
 /**
@@ -29,6 +32,33 @@ public class Walker extends Missile
 
         //Parse the arguments.
         this.parseParameters(cnt);
+    }
+    
+    public static int getRandom(int[] array) {
+        int rnd = new Random().nextInt(array.length);
+        return array[rnd];
+    }
+    
+    public void update(Game game)
+    {
+    	super.updatePassive();
+    	
+    	double d;
+    	if (this.airsteering || this.lastDirection().x == 0){
+    		if (this.orientation.x() > 0){
+    			d = 1;
+    		}
+    		else if (this.orientation.x() < 0){
+    			d = -1;
+    		}
+    		else{
+    			d = getRandom(new int[]{-1,1});
+    		}
+    		Direction dir = new Direction(d,0);
+    		this.physics.activeMovement(this, dir, this.speed);
+    	}
+    	//super.update(game);
+    	
     }
 
     protected void loadDefaults()

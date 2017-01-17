@@ -1,0 +1,22 @@
+BasicGame
+    SpriteSet 
+        avatar > physicstype_id=1 gravity=1.0 BirdAvatar img=newset/chickenr_0
+        evil   >  Immovable color=RED
+        goal > Immovable color=GREEN
+        coin > Immovable img=oryx/gold2
+            
+    TerminationSet
+        SpriteCounter stype=goal  limit=11 win=True
+        SpriteCounter stype=avatar    win=False
+           
+    InteractionSet
+        avatar EOS  > killSprite
+        goal avatar > killSprite
+        avatar wall > wallStop
+        avatar evil > killSprite
+        coin avatar > killSprite scoreChange=1
+        
+    LevelMapping
+        G > goal
+        1 > evil
+        c > coin

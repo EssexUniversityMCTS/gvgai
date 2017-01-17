@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,9 +24,7 @@ import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
 import ontology.physics.ContinuousPhysics;
-import ontology.physics.GravityPhysics;
 import ontology.physics.GridPhysics;
-import ontology.physics.NoFrictionPhysics;
 import ontology.physics.Physics;
 import tools.Direction;
 import tools.Utils;
@@ -79,6 +78,11 @@ public abstract class VGDLSprite {
      * Scalar speed of this sprite.
      */
     public double speed;
+    
+    /**
+     * identifies whether this sprite should move (if an Avatar)
+     */
+    public boolean stationary;
 
     /**
      * Mass of this sprite (for Continuous physics).
@@ -99,6 +103,16 @@ public abstract class VGDLSprite {
      * Reference to the physics object this sprite belongs to.
      */
     public Physics physics;
+    
+    /**
+     * The amount of gravity force that pushes down on the sprite
+     */
+    public double gravity;
+    
+    /**
+     * The amount of friction this sprite has when moving.
+     */
+    public double friction;
 
     /**
      * Scale factor to draw this sprite.
@@ -287,6 +301,16 @@ public abstract class VGDLSprite {
      * If ttl > -1, when it gets to 0, the sprite gets killed.
      */
     public int timeToLive = -1;
+    
+    /**
+     * The sprites rotation
+     */
+    public double rotation;
+    
+    /**
+     * The sprites size
+     */
+    public Dimension size;
 
     /**
      * Initializes the sprite, giving its position and dimensions.
@@ -298,8 +322,11 @@ public abstract class VGDLSprite {
         this.lastrect = new Rectangle(rect);
         physicstype_id = Types.PHYSICS_GRID;
         physics = null;
+        gravity = 0.0;
+        friction = 0.0;
         image = null;
         speed = 0;
+        stationary = false;
         cooldown = 0;
         color = null;
         only_active = false;
@@ -327,6 +354,9 @@ public abstract class VGDLSprite {
         limitHealthPoints = 1000;
         resources = new TreeMap<Integer, Integer>();
         itypes = new ArrayList<Integer>();
+        rotation = 0.0;
+        
+        this.size = size;
 
         determinePhysics(physicstype_id, size);
         setRandomColor();
@@ -372,6 +402,8 @@ public abstract class VGDLSprite {
 
         VGDLFactory factory = VGDLFactory.GetInstance();
         factory.parseParameters(content,this);
+        
+        determinePhysics(physicstype_id, size);
 
         //post-process. Some sprites may need to do something interesting (i.e. SpawnPoint) once their
         // parameters have been defined.
@@ -392,12 +424,6 @@ public abstract class VGDLSprite {
                 break;
             case Types.PHYSICS_CONT:
                 physics = new ContinuousPhysics();
-                break;
-            case Types.PHYSICS_NON_FRICTION:
-                physics = new NoFrictionPhysics();
-                break;
-            case Types.PHYSICS_GRAVITY:
-                physics = new GravityPhysics();
                 break;
         }
         return physics;
@@ -486,12 +512,23 @@ public abstract class VGDLSprite {
         }
 
         if (cooldown <= lastmove && (Math.abs(orientation.x()) + Math.abs(orientation.y()) != 0)) {
-            rect.translate((int) orientation.x() * speed, (int) orientation.y() * speed);
-            updateBucket();
+        	rect.translate((int) (orientation.x() * speed), (int) (orientation.y() * speed));
+        	updateBucket();
             lastmove = 0;
             return true;
         }
         return false;
+    }
+    
+    /**
+     * 
+     * @param rot the rotation of the sprite
+     * @return true if rotation could be changed
+     */
+    public boolean _updateRotation(double rot)
+    {
+        rotation = rot;
+        return true;
     }
 
     public void updateBucket()
@@ -587,6 +624,46 @@ public abstract class VGDLSprite {
         {
             Rectangle r = new Rectangle(rect);
 
+            if (!is_avatar || !is_oriented)
+            {
+	            if(image != null)
+	                _drawImage(gphx, game, r);
+	            else
+	                _draw(gphx, game, r);
+	
+	            if(resources.size() > 0)
+	            {
+	                _drawResources(gphx, game, r);
+	            }
+	
+	            if(healthPoints > 0)
+	            {
+	                _drawHealthBar(gphx, game, r);
+	            }
+            }
+
+            else{
+                _drawOriented(gphx, r);
+	            if(resources.size() > 0)
+	            {
+	                _drawResources(gphx, game, r);
+	            }
+	
+	            if(healthPoints > 0)
+	            {
+	                _drawHealthBar(gphx, game, r);
+	            }
+            }
+        }
+    }
+    
+    /*
+    public void draw(Graphics2D gphx, Game game) {
+
+        if(!invisible && !disabled)
+        {
+            Rectangle r = new Rectangle(rect);
+
             if(image != null)
                 _drawImage(gphx, game, r);
             else
@@ -606,6 +683,7 @@ public abstract class VGDLSprite {
                 _drawOriented(gphx, r);
         }
     }
+    */
 
     /**
      * In case this sprite is oriented and has an arrow to draw, it draws it.
@@ -613,7 +691,7 @@ public abstract class VGDLSprite {
      */
     public void _drawOriented(Graphics2D g, Rectangle r)
     {
-        if(draw_arrow)
+    	if(draw_arrow)
         {
             Color arrowColor = new Color(color.getRed(), 255-color.getGreen(), color.getBlue());
             Polygon p = Utils.triPoints(r, orientation);
@@ -621,6 +699,27 @@ public abstract class VGDLSprite {
             g.setColor(arrowColor);
             //g.drawPolygon(p);
             g.fillPolygon(p);
+
+            // Rotation information
+            
+            if(shrinkfactor != 1)
+            {
+                r.width *= shrinkfactor;
+                r.height *= shrinkfactor;
+                r.x += (rect.width-r.width)/2;
+                r.y += (rect.height-r.height)/2;
+            }
+
+            int w = image.getWidth(null);
+            int h = image.getHeight(null);
+            float scale = (float)r.width/w; //assume all sprites are quadratic.
+
+            AffineTransform trans = new AffineTransform();
+            trans.translate(r.x, r.y);
+            trans.scale(scale,scale);
+            trans.rotate(rotation,w/2.0,h/2.0);
+            g.drawImage(image, trans, null);
+            
         }
     }
 
@@ -868,7 +967,10 @@ public abstract class VGDLSprite {
         toSprite.is_stochastic = this.is_stochastic;
         toSprite.cooldown = this.cooldown;
         toSprite.speed = this.speed;
+        toSprite.stationary = this.stationary;
         toSprite.mass = this.mass;
+        toSprite.gravity = this.gravity;
+        toSprite.friction = this.friction;
         toSprite.physicstype_id = this.physicstype_id;
         toSprite.physics = this.physics; //Object reference, but should be ok.
         toSprite.shrinkfactor = this.shrinkfactor;
@@ -904,6 +1006,7 @@ public abstract class VGDLSprite {
         toSprite.maxHealthPoints = this.maxHealthPoints;
         toSprite.limitHealthPoints = this.limitHealthPoints;
         toSprite.timeToLive = this.timeToLive;
+        toSprite.rotation = this.rotation;
 
         toSprite.itypes = new ArrayList<Integer>();
         for(Integer it : this.itypes)
@@ -936,8 +1039,11 @@ public abstract class VGDLSprite {
         if(other.is_stochastic != this.is_stochastic) return false;
         if(other.cooldown != this.cooldown) return false;
         if(other.speed != this.speed) return false;
+        if(other.stationary != this.stationary) return false;
         if(other.mass != this.mass) return false;
         if(other.physicstype_id != this.physicstype_id) return false;
+        if(other.gravity != this.gravity) return false;		
+        if(other.friction != this.friction) return false;
         if(other.shrinkfactor != this.shrinkfactor) return false;
         if(other.is_oriented != this.is_oriented) return false;
         if(!other.orientation.equals(this.orientation)) return false;
