@@ -5,13 +5,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
-import core.content.Content;
-import core.content.GameContent;
-import core.content.InteractionContent;
-import core.content.SpriteContent;
-import core.content.TerminationContent;
+import core.content.*;
 import core.game.BasicGame;
 import core.game.Game;
+import core.game.GameSpace;
 import core.termination.*;
 import ontology.Types;
 import ontology.avatar.*;
@@ -156,7 +153,7 @@ public class VGDLFactory
     {
         registeredGames = new HashMap<String, Class>();
         registeredGames.put("BasicGame", BasicGame.class);
-
+        registeredGames.put("GameSpace", GameSpace.class);
 
         registeredSprites = new HashMap<String, Class>();
         for(int i = 0;  i < spriteStrings.length; ++i)
@@ -215,13 +212,17 @@ public class VGDLFactory
 
     /**
      * Creates a new sprite with a given dimension in a certain position. Parameters are passed as SpriteContent.
+     * @param game Game that is creating the sprite.
      * @param content parameters for the sprite, including its class.
      * @param position position of the object.
      * @param dim dimensions of the sprite on the world.
      * @return the new sprite, created and initialized, ready for play!
      */
-    public VGDLSprite createSprite(SpriteContent content, Vector2d position, Dimension dim)
+    public VGDLSprite createSprite(Game game, SpriteContent content, Vector2d position, Dimension dim)
     {
+
+        decorateContent(game, content);
+
         try{
             Class spriteClass = registeredSprites.get(content.referenceClass);
             Constructor spriteConstructor = spriteClass.getConstructor
@@ -241,14 +242,34 @@ public class VGDLFactory
         return null;
     }
 
+    private void decorateContent(Game game, Content content)
+    {
+        try{
+            HashMap<String, ParameterContent> paramsGameSpaceContent = game.getParameters();
+            if(paramsGameSpaceContent != null)
+            {
+                content.decorate(paramsGameSpaceContent);
+            }
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+            System.out.println("Error Parametrizing Content " + content.identifier);
+        }
+    }
+
 
     /**
      * Creates a new effect, with parameters passed as InteractionContent.
      * @param content parameters for the effect, including its class.
      * @return the new effect, created and initialized, ready to be triggered!
      */
-    public Effect createEffect(InteractionContent content)
+    public Effect createEffect(Game game, InteractionContent content)
     {
+        if(game == null)
+            System.out.println("Decoration not supported for Effect: " + content.identifier + " " + content.function);
+        else
+            decorateContent(game, content);
+
         try{
             Class effectClass = registeredEffects.get(content.function);
             Constructor effectConstructor = effectClass.getConstructor

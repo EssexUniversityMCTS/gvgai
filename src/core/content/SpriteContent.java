@@ -120,4 +120,9 @@ public class SpriteContent extends Content
         return line;
     }
 
+
+    @Override
+    public void decorate(HashMap<String, ParameterContent> pcs) {
+        super._decorate(pcs);
+    }
 }

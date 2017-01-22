@@ -2,12 +2,7 @@ package core;
 
 import java.util.ArrayList;
 
-import core.content.Content;
-import core.content.GameContent;
-import core.content.InteractionContent;
-import core.content.MappingContent;
-import core.content.SpriteContent;
-import core.content.TerminationContent;
+import core.content.*;
 import ontology.Types;
 import tools.Utils;
 
@@ -82,6 +77,9 @@ public class Node
 
             case Types.VGDL_TERMINATION_SET:
                 return new TerminationContent(line);
+
+            case Types.VGDL_PARAMETER_SET:
+                return new ParameterContent(line);
         }
         return null;
     }

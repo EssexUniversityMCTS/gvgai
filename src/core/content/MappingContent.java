@@ -62,4 +62,9 @@ public class MappingContent extends Content
     }
 
 
+    @Override
+    public void decorate(HashMap<String, ParameterContent> pcs) {
+        //Nothing to do here.
+    }
+
 }

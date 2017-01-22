@@ -6,16 +6,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import core.content.GameContent;
-import core.content.InteractionContent;
-import core.content.MappingContent;
-import core.content.SpriteContent;
-import core.content.TerminationContent;
+import core.content.*;
 import core.game.Game;
 import core.game.GameDescription;
 import core.game.GameDescription.InteractionData;
 import core.game.GameDescription.SpriteData;
 import core.game.GameDescription.TerminationData;
+import core.game.GameSpace;
 import core.termination.Termination;
 import ontology.Types;
 import ontology.effects.Effect;
@@ -91,7 +88,17 @@ public class VGDLParser
             game = VGDLFactory.GetInstance().createGame((GameContent) rootNode.content);
             game.initMulti();
 
-            //Parse here blocks of VGDL.
+
+            //We parse the parameter set first:
+            for(Node n : rootNode.children)
+            {
+                if(n.content.identifier.equals("ParameterSet"))
+                {
+                    parseParameterSet(n.children);
+                }
+            }
+
+            //Parse here the normal blocks of VGDL.
             for(Node n : rootNode.children)
             {
                 if(n.content.identifier.equals("SpriteSet"))
@@ -120,12 +127,12 @@ public class VGDLParser
      * @param terminations	the current termination set as in the VGDL file
      */
     public void parseInteractionTermination(Game currentGame, String[] rules, String[] terminations){
-	this.game = currentGame;
-	
-	Node rulesNode = indentTreeParser(rules);
-	Node terNode = indentTreeParser(terminations);
-	parseInteractionSet(rulesNode.children);
-	parseTerminationSet(terNode.children);
+        this.game = currentGame;
+
+        Node rulesNode = indentTreeParser(rules);
+        Node terNode = indentTreeParser(terminations);
+        parseInteractionSet(rulesNode.children);
+        parseTerminationSet(terNode.children);
     }
 
     /**
@@ -180,6 +187,8 @@ public class VGDLParser
             currentSet = Types.VGDL_LEVEL_MAPPING;
         if(line.equalsIgnoreCase("TerminationSet"))
             currentSet = Types.VGDL_TERMINATION_SET;
+        if(line.equalsIgnoreCase("ParameterSet"))
+            currentSet = Types.VGDL_PARAMETER_SET;
     }
 
     /**
@@ -310,7 +319,7 @@ public class VGDLParser
             InteractionContent ic = (InteractionContent)n.content;
             if(ic.is_definition) // === contains ">"
             {
-                Effect ef = VGDLFactory.GetInstance().createEffect(ic);
+                Effect ef = VGDLFactory.GetInstance().createEffect(game, ic);
 
                 //Get the identifiers of the first sprite taking part in the effect.
                 int obj1 = VGDLRegistry.GetInstance().getRegisteredSpriteValue(ic.object1);
@@ -373,6 +382,20 @@ public class VGDLParser
                 System.out.println("[PARSE ERROR] bad format interaction entry: " + ic.line);
             }
         }
+    }
+
+    /**
+     * Parses the level mapping.
+     * @param elements all mapping units.
+     */
+    private void parseParameterSet(ArrayList<Node> elements)
+    {
+        for(Node n : elements)
+        {
+            ParameterContent pc = (ParameterContent)n.content;
+            ((GameSpace)game).addParameterContent(pc);
+        }
+
     }
 
     /**

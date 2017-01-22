@@ -40,9 +40,9 @@ public class ArcadeMachine {
      *            file with the level to be played.
      */
     public static double[] playOneGame(String game_file, String level_file, String actionFile, int randomSeed) {
-	String agentName = "controllers.singlePlayer.human.Agent";
-	boolean visuals = true;
-	return runOneGame(game_file, level_file, visuals, agentName, actionFile, randomSeed, 0);
+		String agentName = "controllers.singlePlayer.human.Agent";
+		boolean visuals = true;
+		return runOneGame(game_file, level_file, visuals, agentName, actionFile, randomSeed, 0);
     }
 
     /**
