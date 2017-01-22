@@ -1,0 +1,52 @@
+GameSpace square_size=25
+    SpriteSet
+        background > Immovable img=oryx/space1 hidden=True
+        base    > Immovable    color=WHITE img=oryx/planet
+        avatar  > FlakAvatar   stype=sam img=oryx/spaceship1
+        missile > Missile
+            sam  > orientation=UP    color=BLUE speed=_SSPEED singleton=True img=oryx/bullet1
+            bomb > orientation=DOWN  color=RED  speed=_BSPEED img=oryx/bullet2
+        alien   > Bomber       stype=bomb   prob=_APROB  cooldown=_ACOOL speed=_ASPEED
+            alienGreen > img=oryx/alien3
+            alienBlue > img=oryx/alien1
+        portal  > invisible=True hidden=True
+        	portalSlow  > SpawnPoint   stype=alienBlue  cooldown=_PCOOL   total=_PTOTAL img=portal
+        	# portalFast  > SpawnPoint   stype=alienGreen  cooldown=12   total=20 img=portal
+    
+    LevelMapping
+        . > background
+        0 > background base
+        1 > background portalSlow
+        # 2 > background portalFast
+        A > background avatar
+
+    TerminationSet
+        SpriteCounter      stype=avatar               limit=0 win=False
+        MultiSpriteCounter stype1=portal stype2=alien limit=0 win=True
+        
+    InteractionSet
+        avatar  EOS  > stepBack
+        alien   EOS  > turnAround
+        missile EOS  > killSprite
+
+        base bomb > killBoth
+        base sam > killBoth scoreChange=_SC_BASESAM
+
+        base   alien > killSprite
+        avatar alien > killSprite scoreChange=_SC_AVALIEN
+        avatar bomb  > killSprite scoreChange=_SC_AVBOMB
+        alien  sam   > killSprite scoreChange=_SC_ALSAM
+
+    ParameterSet
+        #{Name of the parameter} > {values(min, inc, max)} {descriptive string}
+        _SSPEED      > values=0.1:0.1:1.0     string=Sam_Speed
+        _BSPEED      > values=0.1:0.1:1.0     string=Bomb_Speed
+        _APROB       > values=0.01:0.01:0.5   string=Alien_Bomb Probability
+        _ACOOL       > values=1:1:10          string=Alien_Cooldown
+        _ASPEED      > values=0.1:0.1:1.0     string=Alien_Speed
+        _PCOOL       > values=1:1:10          string=Alien_Portal_Cooldown
+        _PTOTAL      > values=8:2:80          string=Alien_Portal_Total
+        _SC_BASESAM  > values=-5:1:5          string=Score_Base-Sam
+        _SC_AVALIEN  > values=-5:1:5          string=Score_Avatar-Alien
+        _SC_AVBOMB   > values=-5:1:5          string=Score_Avatar-Bomb
+        _SC_ALSAM    > values=-5:1:5          string=Score_Alien-Sam
