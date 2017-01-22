@@ -421,7 +421,7 @@ public class VGDLParser
         for(Node n : elements)
         {
             TerminationContent tc = (TerminationContent)n.content;
-            Termination ter = VGDLFactory.GetInstance().createTermination(tc);
+            Termination ter = VGDLFactory.GetInstance().createTermination(game, tc);
             game.getTerminations().add(ter);
         }
 

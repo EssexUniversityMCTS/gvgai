@@ -57,13 +57,13 @@ public abstract class Content
                 ParameterContent pc = pcs.get(value);
 
                 double dValue = pc.getValue();
-                String parametrizedValue = "";
+                String parameterizedValue = "";
                 if(pc.isInt)
-                    parametrizedValue = ((int)dValue) + "";
+                    parameterizedValue = ((int)dValue) + "";
                 else
-                    parametrizedValue = dValue + "";
+                    parameterizedValue = dValue + "";
 
-                this.parameters.put(parameter, parametrizedValue);
+                this.parameters.put(parameter, parameterizedValue);
             }
         }
     }

@@ -303,8 +303,10 @@ public class VGDLFactory
      * @param content parameters for the termination condition, including its class.
      * @return the new termination, created and initialized, ready to be checked!
      */
-    public Termination createTermination(TerminationContent content)
+    public Termination createTermination(Game game, TerminationContent content)
     {
+        decorateContent(game, content);
+
         try{
             Class terminationClass = registeredTerminations.get(content.identifier);
             Constructor terminationConstructor = terminationClass.getConstructor
