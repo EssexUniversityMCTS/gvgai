@@ -1,0 +1,19 @@
+BasicGame
+    SpriteSet 
+        pad    > Passive color=BLUE 
+        avatar > SpaceshipAvatar stype=bullet physicstype_id=1 img=oryx/spaceship3 angle_diff=0.2
+        bullet > Missile physicstype_id=1 speed=25 singleton=True img=oryx/bullet2
+            
+    TerminationSet
+        SpriteCounter stype=pad limit=4 win=True     
+        SpriteCounter stype=avatar      win=False     
+           
+    InteractionSet
+        avatar wall > killSprite 
+        avatar EOS > killSprite 
+        bullet wall > killSprite
+        bullet EOS > killSprite
+        pad avatar  > killIfSlow
+        
+    LevelMapping
+        G > pad

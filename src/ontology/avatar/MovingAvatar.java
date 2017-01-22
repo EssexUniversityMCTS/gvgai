@@ -115,7 +115,6 @@ public class MovingAvatar extends VGDLSprite {
      * @param actionMask action to apply.
      */
     public void move(Game game, boolean[] actionMask) {
-
         //Apply action supplied (active movement). USE is checked up in the hierarchy.
         Direction action = Utils.processMovementActionKeys(actionMask, getPlayerID());
         applyMovement(game, action);
