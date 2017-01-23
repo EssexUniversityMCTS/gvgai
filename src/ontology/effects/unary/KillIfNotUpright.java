@@ -14,10 +14,10 @@ import tools.Vector2d;
  * Time: 15:57
  * This is a Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
-public class KillIfSlow extends Effect
+public class KillIfNotUpright extends Effect
 {
 	
-    public KillIfSlow(InteractionContent cnt)
+    public KillIfNotUpright(InteractionContent cnt)
     {
         is_kill_effect = true;
         this.parseParameters(cnt);
@@ -26,25 +26,10 @@ public class KillIfSlow extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
-    	double relspeed = 0.0;
-    	double limspeed = 6.0;
-    	if (sprite1.is_static){
-    		relspeed = sprite2.speed;
-    	}
-    	else if (sprite2.is_static){
-    		relspeed = sprite1.speed;
-    	}
-    	else{
-    		double vvx = sprite1.orientation.x() - sprite2.orientation.x();
-    		double vvy = sprite1.orientation.y() - sprite2.orientation.y();
-    		Vector2d vv = new Vector2d(vvx,vvy);
-    		relspeed = vv.mag();
-    		}
-    	if (relspeed < limspeed){
+    	double current_rotation = ((sprite1.rotation+2*Math.PI)%(2*Math.PI));
+    	if (!(current_rotation < 5.0 && current_rotation > 4.4)){
+    		System.out.println("wrong angle");
     		game.killSprite(sprite1, false);
-    	}
-    	else{
-    		System.out.println("too fast");
     	}
     }
 }
