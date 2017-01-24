@@ -36,18 +36,18 @@ public class TestPhysics
         String generateLevelPath = "examples/contphysics/";
 
         //All public games
-        games = new String[]{"pong", "artillery", "ptsp", 					  
-                			 "lander", "mario", "bubble",
-                			 "bird", "asteroids", "racing",
-                			 "candy", "lander2"};
+        games = new String[]{"artillery", "asteroids", "bird", "bubble", "candy",   //0 - 4
+                             "lander", "mario", "pong", "ptsp", "racing"};          //5 - 9
+
+
 
         //Other settings
         boolean visuals = true;
         int seed = new Random().nextInt();
 
         //Game and level to play
-        int gameIdx = 10;
-        int levelIdx = 3; //level names from 0 to 4 (game_lvlN.txt).
+        int gameIdx = 0;
+        int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
 
