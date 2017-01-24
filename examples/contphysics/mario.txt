@@ -1,12 +1,12 @@
 BasicGame
     SpriteSet 
         elevator > Missile orientation=UP speed=0.1 img=newset/floor3
-        float    > Passive img=newset/cloud2 physicstype_id=1 gravity=0.5 friction=0.02
-        moving > physicstype_id=1 gravity=0.5 friction=0.02
+        float    > Passive img=newset/cloud2 physicstype_id=1 gravity=1.0 friction=0.02
+        moving > physicstype_id=1 gravity=1.0 friction=0.02
             avatar > MarioAvatar img=newset/man1
             evil   >  orientation=LEFT
                 goomba     > Walker img=newset/zombie
-                paratroopa > WalkerJumper img=newset/shark2
+                paratroopa > WalkerJumper img=newset/shark2 gravity=0.5
         goal > Immovable img=oryx/mushroom2
         water > Immovable img=oryx/fire1
         coin > Immovable img=oryx/gold1
