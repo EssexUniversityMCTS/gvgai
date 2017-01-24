@@ -43,8 +43,5 @@ public class KillIfSlow extends Effect
     	if (relspeed < limspeed){
     		game.killSprite(sprite1, false);
     	}
-    	else{
-    		System.out.println("too fast");
-    	}
     }
 }
