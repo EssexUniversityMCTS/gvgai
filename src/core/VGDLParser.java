@@ -109,7 +109,8 @@ public class VGDLParser
                 }
             }
         }
-
+        //TODO if there is anything other than these, "Error, [line number] 'Undefined VGDL Block'"
+        //TODO if we find that not having an interaction or termination set causes problems, make it an error
         return game;
     }
     
