@@ -24,7 +24,7 @@ public class SingleMCTSPlayer
      */
     public Random m_rnd;
 
-    public static int iters = 0, num = 0;
+    public int iters = 0, num = 0;
 
     public int num_actions;
 
@@ -64,7 +64,7 @@ public class SingleMCTSPlayer
         //Do the search within the available time.
         m_root.mctsSearch(elapsedTimer);
 
-        iters += SingleTreeNode.totalIters;
+        //iters += SingleTreeNode.totalIters;
         num ++;
 
         //Determine the best action to take and return it.

@@ -27,7 +27,7 @@ public class SingleTreeNode
     public int ROLLOUT_DEPTH = 10;
     public double K = Math.sqrt(2);
 
-    public static StateObservation rootState;
+    public StateObservation rootState;
 
     public SingleTreeNode(Random rnd, int num_actions, Types.ACTIONS[] actions) {
         this(null, -1, rnd, num_actions, actions);

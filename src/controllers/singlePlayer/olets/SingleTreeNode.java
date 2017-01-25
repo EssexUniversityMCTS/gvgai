@@ -7,18 +7,23 @@ package controllers.singlePlayer.olets;
  */
 
 public class SingleTreeNode {
+
+    /**
+     * Constant used in exploration part of UCB formulas
+     */
+    public final double K = Math.sqrt(2.);
     /**
      * A negative constant used to approximate minus infinity
      */
-    private static final double HUGE_NEGATIVE = -10000000.0;
+    private final double HUGE_NEGATIVE = -10000000.0;
     /**
      * A constant used for the epsilon-greedy exploration/exploitation policy
      */
-    private static final double egreedyEpsilon = 0.05;
+    private final double egreedyEpsilon = 0.05;
     /**
      * A constant used to add some exploration in the expectimax exploration/exploitation policy
      */
-    private static final double eMaxGreedyEpsilon = 0.05;
+    private final double eMaxGreedyEpsilon = 0.05;
     /**
      * The parent node (is null for the root node of a tree)
      */
@@ -75,10 +80,20 @@ public class SingleTreeNode {
     private double adjEmax;
 
     /**
+     * Epsilon used for breaking ties
+     */
+    public double epsilon = 0.0001;
+
+    /**
+     * Number of actions in this node.
+     */
+    public int num_actions;
+
+    /**
      * Public constructor for nodes with no declared parent node (eg. for a root node)
      */
-    public SingleTreeNode() {
-        this(null, 0, -1, 0.0);
+    public SingleTreeNode(int num_actions) {
+        this(null, 0, -1, 0.0, num_actions);
         nbGenerated = 0;
         nbExitsHere = 0;
         totalValueOnExit = 0.0;
@@ -93,9 +108,9 @@ public class SingleTreeNode {
      * @param actionIndex   the index of the action that was chosen immediately before creating this node
      * @param tabooBias     the location bias of this node, computed based on the avatar location
      */
-    public SingleTreeNode(SingleTreeNode parent, int depth, int actionIndex, double tabooBias) {
+    public SingleTreeNode(SingleTreeNode parent, int depth, int actionIndex, double tabooBias, int num_actions) {
         this.parent = parent;
-        children = new SingleTreeNode[Agent.NUM_ACTIONS];
+        children = new SingleTreeNode[num_actions];
         totValue = 0.0;
         expectimax = 0.0;
         nbGenerated = 0;
@@ -106,6 +121,7 @@ public class SingleTreeNode {
         totalValueOnExit = 0.0;
         childrenMaxAdjEmax = 0.0;
         adjEmax = 0.0;
+        this.num_actions = num_actions;
 
     }
 
@@ -250,7 +266,7 @@ public class SingleTreeNode {
      * @return  the weighted expectimax with location bias
      */
     private double getAdjustedEmaxScore() {
-        return (adjEmax + Agent.K * Math.sqrt(Math.log(parent.nVisits + 1) / (nVisits + SingleMCTSPlayer.epsilon)) - tabooBias);
+        return (adjEmax + K * Math.sqrt(Math.log(parent.nVisits + 1) / (nVisits + epsilon)) - tabooBias);
     }
 
     /**
@@ -347,7 +363,7 @@ public class SingleTreeNode {
                 else if (first != children[i].nVisits) {
                     allEqual = false;
                 }
-                double challengerValue = children[i].nVisits + SingleMCTSPlayer.randomGenerator.nextDouble() * SingleMCTSPlayer.epsilon;
+                double challengerValue = children[i].nVisits + SingleMCTSPlayer.randomGenerator.nextDouble() * epsilon;
                 if (challengerValue > bestValue) {
                     bestValue = challengerValue;
                     selected = i;
@@ -373,7 +389,7 @@ public class SingleTreeNode {
         int selected = -1;
         double bestValue = -Double.MAX_VALUE;
         for (int i = 0; i < children.length; i++) {
-            if (children[i] != null && children[i].totValue + SingleMCTSPlayer.randomGenerator.nextDouble() * SingleMCTSPlayer.epsilon > bestValue) {
+            if (children[i] != null && children[i].totValue + SingleMCTSPlayer.randomGenerator.nextDouble() * epsilon > bestValue) {
                 bestValue = children[i].totValue;
                 selected = i;
             }
