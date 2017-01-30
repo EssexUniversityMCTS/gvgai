@@ -21,8 +21,640 @@ BasicGame square_size=32
             A > background avatar
     
    TerminationSet
-      Timeout limit=1032 win=True 
+      Timeout limit=500 win=True 
+      SpriteCounter stype=avatar limit=0 win=False 
+      Timeout limit=500 win=True 
+      SpriteCounter stype=avatar limit=0 win=False 
+      Timeout limit=800 win=True 
+      SpriteCounter stype=avatar limit=0 win=False 
+      Timeout limit=700 win=True 
+      SpriteCounter stype=avatar limit=0 win=False 
+      Timeout limit=700 win=True 
+      SpriteCounter stype=avatar limit=0 win=False 
+      Timeout limit=900 win=True 
+      SpriteCounter stype=avatar limit=0 win=False 
+      Timeout limit=900 win=True 
+      SpriteCounter stype=avatar limit=0 win=False 
+      Timeout limit=700 win=True 
+      SpriteCounter stype=avatar limit=0 win=False 
+      Timeout limit=800 win=True 
+      SpriteCounter stype=avatar limit=0 win=False 
+      Timeout limit=900 win=True 
+      SpriteCounter stype=avatar limit=0 win=False 
    InteractionSet
-      background base > attractGaze scoreChange=2 
-      avatar base > flipDirection scoreChange=2 
-      avatar background > bounceForward scoreChange=2 
+      portalSlow avatar > killSprite scoreChange=1 
+      avatar alienGreen > killSprite 
+      bomb avatar > killSprite scoreChange=1 
+      avatar alienBlue > killSprite 
+      bomb avatar > killSprite scoreChange=1 
+      avatar alienBlue > killSprite 
+      avatar bomb > killSprite 
+      avatar EOS > stepBack 
+      sam EOS > stepBack 
+      bomb EOS > stepBack 
+      alienGreen EOS > stepBack 
+      alienBlue EOS > stepBack 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      portalSlow avatar > killSprite scoreChange=1 
+      avatar alienGreen > killSprite 
+      avatar bomb > killSprite 
+      avatar alienBlue > killSprite 
+      avatar bomb > killSprite 
+      alienBlue avatar > killSprite scoreChange=1 
+      avatar bomb > killSprite 
+      avatar EOS > stepBack 
+      sam EOS > reverseDirection 
+      bomb EOS > reverseDirection 
+      alienGreen EOS > reverseDirection 
+      alienBlue EOS > reverseDirection 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      portalSlow avatar > killSprite scoreChange=1 
+      avatar alienGreen > killSprite 
+      bomb avatar > killSprite scoreChange=1 
+      avatar alienBlue > killSprite 
+      avatar bomb > killSprite 
+      avatar alienBlue > killSprite 
+      avatar bomb > killSprite 
+      avatar EOS > stepBack 
+      sam EOS > flipDirection 
+      bomb EOS > flipDirection 
+      alienGreen EOS > flipDirection 
+      alienBlue EOS > flipDirection 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      portalSlow avatar > killSprite scoreChange=1 
+      avatar alienGreen > killSprite 
+      avatar bomb > killSprite 
+      avatar alienBlue > killSprite 
+      bomb avatar > killSprite scoreChange=1 
+      alienBlue avatar > killSprite scoreChange=1 
+      avatar bomb > killSprite 
+      avatar EOS > stepBack 
+      sam EOS > reverseDirection 
+      bomb EOS > reverseDirection 
+      alienGreen EOS > reverseDirection 
+      alienBlue EOS > reverseDirection 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      portalSlow avatar > killSprite scoreChange=1 
+      avatar alienGreen > killSprite 
+      avatar bomb > killSprite 
+      avatar alienBlue > killSprite 
+      bomb avatar > killSprite scoreChange=1 
+      alienBlue avatar > killSprite scoreChange=1 
+      avatar bomb > killSprite 
+      avatar EOS > stepBack 
+      sam EOS > wrapAround 
+      bomb EOS > wrapAround 
+      alienGreen EOS > wrapAround 
+      alienBlue EOS > wrapAround 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      portalSlow sam > killSprite scoreChange=1 
+      sam portalSlow > killSprite 
+      portalSlow avatar > killSprite scoreChange=1 
+      avatar alienGreen > killSprite 
+      avatar bomb > killSprite 
+      avatar alienBlue > killSprite 
+      avatar bomb > killSprite 
+      avatar alienBlue > killSprite 
+      bomb avatar > killSprite scoreChange=1 
+      avatar EOS > stepBack 
+      sam EOS > wrapAround 
+      bomb EOS > wrapAround 
+      alienGreen EOS > wrapAround 
+      alienBlue EOS > wrapAround 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      portalSlow avatar > killSprite scoreChange=1 
+      avatar alienGreen > killSprite 
+      avatar bomb > killSprite 
+      avatar alienBlue > killSprite 
+      bomb avatar > killSprite scoreChange=1 
+      avatar alienBlue > killSprite 
+      avatar bomb > killSprite 
+      avatar EOS > stepBack 
+      sam EOS > stepBack 
+      bomb EOS > stepBack 
+      alienGreen EOS > stepBack 
+      alienBlue EOS > stepBack 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      portalSlow avatar > killSprite scoreChange=1 
+      avatar alienGreen > killSprite 
+      bomb avatar > killSprite scoreChange=1 
+      avatar alienBlue > killSprite 
+      bomb avatar > killSprite scoreChange=1 
+      avatar alienBlue > killSprite 
+      avatar bomb > killSprite 
+      avatar EOS > stepBack 
+      sam EOS > reverseDirection 
+      bomb EOS > reverseDirection 
+      alienGreen EOS > reverseDirection 
+      alienBlue EOS > reverseDirection 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      portalSlow avatar > killSprite scoreChange=1 
+      avatar alienGreen > killSprite 
+      bomb avatar > killSprite scoreChange=1 
+      avatar alienBlue > killSprite 
+      avatar bomb > killSprite 
+      avatar alienBlue > killSprite 
+      bomb avatar > killSprite scoreChange=1 
+      avatar EOS > stepBack 
+      sam EOS > turnAround 
+      bomb EOS > turnAround 
+      alienGreen EOS > turnAround 
+      alienBlue EOS > turnAround 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      portalSlow sam > killSprite scoreChange=1 
+      sam portalSlow > killSprite 
+      portalSlow avatar > killSprite scoreChange=1 
+      avatar alienGreen > killSprite 
+      bomb avatar > killSprite scoreChange=1 
+      avatar alienBlue > killSprite 
+      avatar bomb > killSprite 
+      alienBlue avatar > killSprite scoreChange=1 
+      avatar bomb > killSprite 
+      avatar EOS > stepBack 
+      sam EOS > reverseDirection 
+      bomb EOS > reverseDirection 
+      alienGreen EOS > reverseDirection 
+      alienBlue EOS > reverseDirection 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      alienGreen sam > killSprite scoreChange=1 
+      sam alienGreen > killSprite 
+      alienBlue sam > killSprite scoreChange=1 
+      sam alienBlue > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 
+      bomb sam > killSprite scoreChange=1 
+      sam bomb > killSprite 

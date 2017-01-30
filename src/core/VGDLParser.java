@@ -23,6 +23,7 @@ import ontology.effects.TimeEffect;
 import tools.IO;
 import tools.Pair;
 import tools.Vector2d;
+import logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -63,7 +64,11 @@ public class VGDLParser
      * Set to true to print out debug information about parsing.
      */
     private static boolean VERBOSE_PARSER = false;
-
+    
+    /**
+     * private Logger which logs warnings and errors
+     */
+    private Logger logger;
     /**
      * Default constructor.
      */
@@ -73,6 +78,7 @@ public class VGDLParser
         spriteOrderTmp = new ArrayList<Integer>();
         singletonTmp = new ArrayList<Integer>();
         constructors = new HashMap<Integer, SpriteContent>();
+        logger = Logger.getInstance();
     }
 
     /**
@@ -121,12 +127,12 @@ public class VGDLParser
      * @param terminations	the current termination set as in the VGDL file
      */
     public void parseInteractionTermination(Game currentGame, String[] rules, String[] terminations){
-	this.game = currentGame;
-	
-	Node rulesNode = indentTreeParser(rules);
-	Node terNode = indentTreeParser(terminations);
-	parseInteractionSet(rulesNode.children);
-	parseTerminationSet(terNode.children);
+		this.game = currentGame;
+		
+		Node rulesNode = indentTreeParser(rules);
+		Node terNode = indentTreeParser(terminations);
+		parseInteractionSet(rulesNode.children);
+		parseTerminationSet(terNode.children);
     }
 
     /**
@@ -139,9 +145,12 @@ public class VGDLParser
         //By default, let's make tab as four spaces
         String tabTemplate = "    ";
         Node last = null;
-
+        
+        // set the overall line number at 0
+        int lineNumber = 0;
         for(String line : lines)
         {
+        	System.out.println("Line: " + lineNumber);
             line.replaceAll("\t",tabTemplate);
             line.replace('(',' ');
             line.replace(')',' ');
@@ -160,8 +169,9 @@ public class VGDLParser
                 char firstChar = content.charAt(0);
                 //figure out the indent of the line.
                 int indent = line.indexOf(firstChar);
-                last = new Node(content, indent, last, currentSet);
+                last = new Node(content, indent, last, currentSet, lineNumber);
             }
+            lineNumber++;
         }
 
         return last.getRoot();
@@ -354,6 +364,7 @@ public class VGDLParser
    		        //unknown sprite other than an EOS or TIME effect is an error
                         }else {
                             System.out.println("[PARSE ERROR] interaction entry references unknown sprite: " + ic.line);
+                            
                         }
                     }
 

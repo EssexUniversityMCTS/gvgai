@@ -33,6 +33,9 @@ public class Logger {
 		System.out.println("*** Logged Messages End ***");
 		flushMessages();
 	}
+	public int getMessageCount() {
+		return messages.size();
+	}
 	/**
 	 * Adds a message to the messages list
 	 * @param m the message to be added to messages
