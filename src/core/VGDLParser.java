@@ -24,6 +24,7 @@ import tools.IO;
 import tools.Pair;
 import tools.Vector2d;
 import logging.Logger;
+import logging.Message;
 
 /**
  * Created with IntelliJ IDEA.
@@ -101,19 +102,35 @@ public class VGDLParser
             for(Node n : rootNode.children)
             {
                 if(n.content.identifier.equals("SpriteSet"))
-                {
-                    parseSpriteSet(n.children);
+                {	try{
+                    	parseSpriteSet(n.children);
+                	} catch(Exception e) {
+                		logger.addMessage(new Message(1, "Sprite Set Error: " + e.toString()));
+                	}
                 }else if(n.content.identifier.equals("InteractionSet"))
                 {
-                    parseInteractionSet(n.children);
+                	try{
+                		parseInteractionSet(n.children);
+                	} catch(Exception e) {
+                		logger.addMessage(new Message(1, "Interaction Set Error: " + e.toString()));
+                	}
                 }else if(n.content.identifier.equals("LevelMapping"))
                 {
-                    parseLevelMapping(n.children);
+                	try{
+                		parseLevelMapping(n.children);
+                	} catch(Exception e) {
+                		logger.addMessage(new Message(1, "Level Mapping Error: " + e.toString()));
+                	}
                 }else if(n.content.identifier.equals("TerminationSet"))
                 {
+                	try{
                     parseTerminationSet(n.children);
+                	} catch(Exception e) {
+                		logger.addMessage(new Message(1, "Termination Set Error: " + e.toString()));
+                	}
                 }
             }
+            logger.printMessages();
         }
         //TODO if there is anything other than these, "Error, [line number] 'Undefined VGDL Block'"
         //TODO if we find that not having an interaction or termination set causes problems, make it an error
@@ -126,13 +143,17 @@ public class VGDLParser
      * @param rules		the current interaction set as in the VGDL file
      * @param terminations	the current termination set as in the VGDL file
      */
-    public void parseInteractionTermination(Game currentGame, String[] rules, String[] terminations){
+    public void parseInteractionTermination(Game currentGame, String[] rules, String[] terminations) throws Exception{
 		this.game = currentGame;
 		
 		Node rulesNode = indentTreeParser(rules);
 		Node terNode = indentTreeParser(terminations);
-		parseInteractionSet(rulesNode.children);
-		parseTerminationSet(terNode.children);
+		try{
+			parseInteractionSet(rulesNode.children);
+			parseTerminationSet(terNode.children);
+		} catch(Exception e) {
+			logger.addMessage(new Message(1, "[PARSE ERROR]"));
+		}
     }
 
     /**
@@ -313,12 +334,14 @@ public class VGDLParser
     /**
      * Parses the interaction set.
      * @param elements all interactions defined for the game.
+     * @throws Exception 
      */
-    private void parseInteractionSet(ArrayList<Node> elements)
+    private void parseInteractionSet(ArrayList<Node> elements) throws Exception
     {
         for(Node n : elements)
         {
             InteractionContent ic = (InteractionContent)n.content;
+            ic.lineNumber = n.lineNumber;
             if(ic.is_definition) // === contains ">"
             {
                 Effect ef = VGDLFactory.GetInstance().createEffect(ic);
@@ -364,7 +387,8 @@ public class VGDLParser
    		        //unknown sprite other than an EOS or TIME effect is an error
                         }else {
                             System.out.println("[PARSE ERROR] interaction entry references unknown sprite: " + ic.line);
-                            
+                            // TODO throw exception here 
+                            throw new Exception("[PARSE ERROR] interaction entry references unknown sprite. Line: " + ic.lineNumber + " : " + ic.line);
                         }
                     }
 
@@ -383,6 +407,7 @@ public class VGDLParser
 
             }else{
                 System.out.println("[PARSE ERROR] bad format interaction entry: " + ic.line);
+                throw new Exception("[PARSE ERROR] bad format interaction entry. Line: " + ic.lineNumber + " : " + ic.line);
             }
         }
     }
