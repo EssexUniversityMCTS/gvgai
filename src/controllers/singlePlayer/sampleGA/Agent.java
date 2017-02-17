@@ -23,12 +23,12 @@ import tools.Utils;
  */
 public class Agent extends AbstractPlayer {
 
-    private static double GAMMA = 0.90;
-    private static long BREAK_MS = 5;
-    private static int SIMULATION_DEPTH = 7;
-    private static int POPULATION_SIZE = 5;
+    private double GAMMA = 0.90;
+    private long BREAK_MS = 5;
+    private int SIMULATION_DEPTH = 7;
+    private int POPULATION_SIZE = 5;
 
-    private static double RECPROB = 0.1;
+    private double RECPROB = 0.1;
     private double MUT = (1.0 / SIMULATION_DEPTH);
     private final int N_ACTIONS;
 

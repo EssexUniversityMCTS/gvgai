@@ -19,8 +19,8 @@ import java.util.Random;
  */
 public class Agent extends AbstractPlayer {
 
-    public static double epsilon = 1e-6;
-    public static Random m_rnd;
+    public double epsilon = 1e-6;
+    public Random m_rnd;
 
     public Agent(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
 

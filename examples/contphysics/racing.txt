@@ -1,0 +1,19 @@
+BasicGame
+    SpriteSet    
+        pad    > Immovable color=BLUE 
+        inertial > physicstype_id=1 friction=0.02
+            avatar > CarAvatar img=newset/car_redR
+        fire > Immovable color=RED
+            
+    TerminationSet
+        SpriteCounter stype=pad    win=True     
+        SpriteCounter stype=avatar win=False     
+           
+    InteractionSet
+        inertial wall > wallStop
+        pad avatar    > killSprite scoreChange=1
+        avatar fire > killSprite
+        
+    LevelMapping
+        G > pad
+        F > fire

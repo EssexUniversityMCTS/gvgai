@@ -1,4 +1,4 @@
-BasicGame square_size=30
+BasicGame square_size=25
     SpriteSet
         floor > Immovable img=oryx/backBiege hidden=True
         goal  > Door color=GREEN img=newset/exit2

@@ -1,0 +1,33 @@
+BasicGame
+    SpriteSet
+        elevator > Missile orientation=UP speed=0.1 color=BLUE
+        bullet > Immovable singleton=False img=newset/blockB
+        moving > physicstype_id=1 gravity=1.0 friction=0.02
+            avatar > WizardAvatar color=YELLOW stype=bullet img=newset/chef
+            box    > Passive img=newset/cloud2 shrinkfactor=0.8
+            evil   >  orientation=LEFT
+                goomba     > Walker img=oryx/rat2
+                paratroopa > WalkerJumper color=RED
+        goal > Immovable color=GREEN img=newset/cheese
+        switch > Immovable color=GREEN
+        water > Immovable color=BLUE
+        coin > Immovable img=newset/egg
+            
+    TerminationSet
+        SpriteCounter stype=goal  win=True
+        SpriteCounter stype=avatar    win=False
+           
+    InteractionSet
+        evil avatar > killIfFromAbove scoreChange=1
+        avatar evil > killIfAlive
+        moving EOS  > killSprite
+        goal avatar > killSprite
+        moving wall > wallStop
+        moving bullet > wallStop
+        coin avatar > killSprite scoreChange=1
+        bullet bullet > killSprite
+
+    LevelMapping
+        G > goal
+        1 > goomba
+        c > coin

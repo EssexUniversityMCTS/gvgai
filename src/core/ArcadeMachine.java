@@ -391,182 +391,182 @@ public class ArcadeMachine {
      *
      */
     public static double[] replayGame(String game_file, String level_file, boolean visuals, String actionFile) {
-	VGDLFactory.GetInstance().init(); // This always first thing to do.
-	VGDLRegistry.GetInstance().init();
+		VGDLFactory.GetInstance().init(); // This always first thing to do.
+		VGDLRegistry.GetInstance().init();
 
-	// First, we create the game to be played..
-	Game toPlay = new VGDLParser().parseGame(game_file);
-	toPlay.buildLevel(level_file, 0);
+		// First, we create the game to be played..
+		Game toPlay = new VGDLParser().parseGame(game_file);
+		toPlay.buildLevel(level_file, 0);
 
-	String agentName;
-	if (toPlay.getNoPlayers() > 1) {
-	    // multi player
-	    agentName = "controllers.multiPlayer.replayer.Agent";
-	} else {
-	    // single player
-	    agentName = "controllers.singlePlayer.replayer.Agent";
-	}
-
-	// Second, create the player. Note: null as action_file and -1 as
-	// sampleRandom seed
-	// (we don't want to record anything from this execution).
-	Player[] players;
-	int no_players = toPlay.getNoPlayers();
-	if (no_players > 1) {
-	    // multi player games
-	    players = new AbstractMultiPlayer[no_players];
-	} else {
-	    // single player games
-	    players = new AbstractPlayer[no_players];
-	}
-
-	for (int i = 0; i < no_players; i++) {
-	    if (no_players > 1) {
-		// multi player
-		players[i] = ArcadeMachine.createMultiPlayer(agentName, null, toPlay.getObservationMulti(), -1, i,
-			false);
-	    } else {
-		// single player
-		players[i] = ArcadeMachine.createPlayer(agentName, null, toPlay.getObservation(), -1, false);
-	    }
-
-	    if (players[i] == null) {
-		// Something went wrong in the constructor, controller
-		// disqualified
-		if (no_players > 1) {
-		    // multi player
-		    toPlay.getAvatars()[i].disqualify(true);
+		String agentName;
+		if (toPlay.getNoPlayers() > 1) {
+			// multi player
+			agentName = "controllers.multiPlayer.replayer.Agent";
 		} else {
-		    // single player
-		    toPlay.disqualify();
+			// single player
+			agentName = "controllers.singlePlayer.replayer.Agent";
 		}
 
-		// Get the score for the result.
+		// Second, create the player. Note: null as action_file and -1 as
+		// sampleRandom seed
+		// (we don't want to record anything from this execution).
+		Player[] players;
+		int no_players = toPlay.getNoPlayers();
+		if (no_players > 1) {
+			// multi player games
+			players = new AbstractMultiPlayer[no_players];
+		} else {
+			// single player games
+			players = new AbstractPlayer[no_players];
+		}
+
+		for (int i = 0; i < no_players; i++) {
+			if (no_players > 1) {
+			// multi player
+			players[i] = ArcadeMachine.createMultiPlayer(agentName, null, toPlay.getObservationMulti(), -1, i,
+				false);
+			} else {
+			// single player
+			players[i] = ArcadeMachine.createPlayer(agentName, null, toPlay.getObservation(), -1, false);
+			}
+
+			if (players[i] == null) {
+			// Something went wrong in the constructor, controller
+			// disqualified
+			if (no_players > 1) {
+				// multi player
+				toPlay.getAvatars()[i].disqualify(true);
+			} else {
+				// single player
+				toPlay.disqualify();
+			}
+
+			// Get the score for the result.
+			double result[] = toPlay.handleResult();
+			toPlay.printResult();
+			return result;
+			}
+		}
+
+		int seed = 0;
+		int[] win = new int[no_players];
+		double[] loggedScore = new double[no_players];
+		int timesteps = 0;
+		ArrayList<Types.ACTIONS> actions = new ArrayList<Types.ACTIONS>();
+
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(actionFile));
+
+			// First line should be the sampleRandom seed, winner, score and
+			// timesteps.
+			if (no_players < 2) {
+			// Single player file
+			String[] firstLine = br.readLine().split(" ");
+			seed = Integer.parseInt(firstLine[0]);
+			win[0] = Integer.parseInt(firstLine[1]);
+			loggedScore[0] = Double.parseDouble(firstLine[2]);
+			timesteps = Integer.parseInt(firstLine[3]);
+
+			System.out.println("Replaying game in " + game_file + ", " + level_file + " with seed " + seed
+				+ " expecting player to win = " + (win[0] == 1) + "; score: " + loggedScore + "; timesteps: "
+				+ timesteps);
+
+			// The rest are the actions:
+			String line = br.readLine();
+			while (line != null) {
+				Types.ACTIONS nextAction = Types.ACTIONS.fromString(line);
+				actions.add(nextAction);
+
+				// next!
+				line = br.readLine();
+			}
+
+			// Assign the actions to the player. playerID used is 0, default
+			// for single player games
+			((controllers.singlePlayer.replayer.Agent) players[0]).setActions(actions);
+
+			} else {
+			// Multi player file
+
+				// first line contains the sampleRandom seed and the timesteps.
+				String[] firstLine = br.readLine().split(" ");
+				seed = Integer.parseInt(firstLine[0]);
+				timesteps = Integer.parseInt(firstLine[1]);
+
+				// next line contain scores for all players, in order.
+				String secondLine = br.readLine();
+				String[] scores = secondLine.split(" ");
+				for (int i = 0; i < no_players; i++) {
+					if (scores.length > i)
+					loggedScore[i] = Double.parseDouble(scores[i]);
+					else
+					loggedScore[i] = 0;
+				}
+
+				// next line contains win state for all players, in order.
+				String thirdLine = br.readLine();
+				String[] wins = thirdLine.split(" ");
+				for (int i = 0; i < no_players; i++) {
+					if (wins.length > i)
+					win[i] = Integer.parseInt(wins[i]);
+					else
+					win[i] = 0;
+				}
+
+				// display information
+				System.out.println("Replaying game in " + game_file + ", " + level_file + " with seed " + seed
+					+ " expecting players' win states = " + thirdLine + "; scores: " + secondLine + "; timesteps: "
+					+ timesteps);
+
+				// next lines contain players actions, one line per game tick,
+				// actions for players in order,
+				// separated by spaces.
+				ArrayList<ArrayList<Types.ACTIONS>> act = new ArrayList<>();
+				for (int i = 0; i < no_players; i++) {
+					act.add(new ArrayList<Types.ACTIONS>());
+				}
+				String line = br.readLine();
+				while (line != null) {
+					String[] acts = line.split(" ");
+						for (int i = 0; i < no_players; i++) {
+						Types.ACTIONS nextAction = acts.length > i ? Types.ACTIONS.fromString(acts[i])
+							: Types.ACTIONS.ACTION_NIL;
+						act.get(i).add(nextAction);
+					}
+					// next!
+					line = br.readLine();
+				}
+
+				// Assign the actions to the players.
+				for (int i = 0; i < no_players; i++) {
+					((controllers.multiPlayer.replayer.Agent) players[i]).setActions(act.get(i));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		// Then, (re-)play the game.
+		double[] score;
+		if (visuals)
+			score = toPlay.playGame(players, seed, false, 0);
+		else
+			score = toPlay.runGame(players, seed);
+
+		// Finally, when the game is over, we need to tear the player down.
+		// Actually in this case this might never do anything.
+		ArcadeMachine.tearPlayerDown(toPlay, players, actionFile, seed, false);
+
+		for (int i = 0; i < toPlay.getNoPlayers(); i++) {
+			int actualWinner = (toPlay.getWinner(i) == Types.WINNER.PLAYER_WINS ? 1 : 0);
+			if (actualWinner != win[i] || score[i] != loggedScore[i] || timesteps != toPlay.getGameTick())
+				throw new RuntimeException("ERROR: Game Replay Failed.");
+		}
+
 		double result[] = toPlay.handleResult();
 		toPlay.printResult();
 		return result;
-	    }
-	}
-
-	int seed = 0;
-	int[] win = new int[no_players];
-	double[] loggedScore = new double[no_players];
-	int timesteps = 0;
-	ArrayList<Types.ACTIONS> actions = new ArrayList<Types.ACTIONS>();
-
-	try {
-	    BufferedReader br = new BufferedReader(new FileReader(actionFile));
-
-	    // First line should be the sampleRandom seed, winner, score and
-	    // timesteps.
-	    if (no_players < 2) {
-		// Single player file
-		String[] firstLine = br.readLine().split(" ");
-		seed = Integer.parseInt(firstLine[0]);
-		win[0] = Integer.parseInt(firstLine[1]);
-		loggedScore[0] = Double.parseDouble(firstLine[2]);
-		timesteps = Integer.parseInt(firstLine[3]);
-
-		System.out.println("Replaying game in " + game_file + ", " + level_file + " with seed " + seed
-			+ " expecting player to win = " + (win[0] == 1) + "; score: " + loggedScore + "; timesteps: "
-			+ timesteps);
-
-		// The rest are the actions:
-		String line = br.readLine();
-		while (line != null) {
-		    Types.ACTIONS nextAction = Types.ACTIONS.fromString(line);
-		    actions.add(nextAction);
-
-		    // next!
-		    line = br.readLine();
-		}
-
-		// Assign the actions to the player. playerID used is 0, default
-		// for single player games
-		((controllers.singlePlayer.replayer.Agent) players[0]).setActions(actions);
-
-	    } else {
-		// Multi player file
-
-		// first line contains the sampleRandom seed and the timesteps.
-		String[] firstLine = br.readLine().split(" ");
-		seed = Integer.parseInt(firstLine[0]);
-		timesteps = Integer.parseInt(firstLine[1]);
-
-		// next line contain scores for all players, in order.
-		String secondLine = br.readLine();
-		String[] scores = secondLine.split(" ");
-		for (int i = 0; i < no_players; i++) {
-		    if (scores.length > i)
-			loggedScore[i] = Double.parseDouble(scores[i]);
-		    else
-			loggedScore[i] = 0;
-		}
-
-		// next line contains win state for all players, in order.
-		String thirdLine = br.readLine();
-		String[] wins = thirdLine.split(" ");
-		for (int i = 0; i < no_players; i++) {
-		    if (wins.length > i)
-			win[i] = Integer.parseInt(wins[i]);
-		    else
-			win[i] = 0;
-		}
-
-		// display information
-		System.out.println("Replaying game in " + game_file + ", " + level_file + " with seed " + seed
-			+ " expecting players' win states = " + thirdLine + "; scores: " + secondLine + "; timesteps: "
-			+ timesteps);
-
-		// next lines contain players actions, one line per game tick,
-		// actions for players in order,
-		// separated by spaces.
-		ArrayList<ArrayList<Types.ACTIONS>> act = new ArrayList<>();
-		for (int i = 0; i < no_players; i++) {
-		    act.add(new ArrayList<Types.ACTIONS>());
-		}
-		String line = br.readLine();
-		while (line != null) {
-		    String[] acts = line.split(" ");
-		    for (int i = 0; i < no_players; i++) {
-			Types.ACTIONS nextAction = acts.length > i ? Types.ACTIONS.fromString(acts[i])
-				: Types.ACTIONS.ACTION_NIL;
-			act.get(i).add(nextAction);
-		    }
-		    // next!
-		    line = br.readLine();
-		}
-
-		// Assign the actions to the players.
-		for (int i = 0; i < no_players; i++) {
-		    ((controllers.multiPlayer.replayer.Agent) players[i]).setActions(act.get(i));
-		}
-	    }
-	} catch (Exception e) {
-	    e.printStackTrace();
-	    System.exit(1);
-	}
-
-	// Then, (re-)play the game.
-	double[] score;
-	if (visuals)
-	    score = toPlay.playGame(players, seed, false, 0);
-	else
-	    score = toPlay.runGame(players, seed);
-
-	// Finally, when the game is over, we need to tear the player down.
-	// Actually in this case this might never do anything.
-	ArcadeMachine.tearPlayerDown(toPlay, players, actionFile, seed, false);
-
-	for (int i = 0; i < toPlay.getNoPlayers(); i++) {
-	    int actualWinner = (toPlay.getWinner(i) == Types.WINNER.PLAYER_WINS ? 1 : 0);
-	    if (actualWinner != win[i] || score[i] != loggedScore[i] || timesteps != toPlay.getGameTick())
-		throw new RuntimeException("ERROR: Game Replay Failed.");
-	}
-
-	double result[] = toPlay.handleResult();
-	toPlay.printResult();
-	return result;
     }
 
     /**
@@ -659,12 +659,12 @@ public class ArcadeMachine {
 		    }
 		    score[j] = -1;
 		    if (players[j] == null) {
-			// Something went wrong in the constructor, controller
-			// disqualified
-			// toPlay.disqualify(j);
-			toPlay.getAvatars()[j].disqualify(true);
+				// Something went wrong in the constructor, controller
+				// disqualified
+				// toPlay.disqualify(j);
+				toPlay.getAvatars()[j].disqualify(true);
 
-			disqCount++;
+				disqCount++;
 		    }
 		}
 
@@ -673,7 +673,7 @@ public class ArcadeMachine {
 		// Get array of scores back.
 		if ((no_players - disqCount) >= toPlay.no_players) {
 		    score = toPlay.runGame(players, randomSeed);
-		    // score = toPlay.playGame(players, randomSeed, false, 0);
+		    //score = toPlay.playGame(players, randomSeed, false, 0);
 		    toPlay.printResult();
 		} else {
 		    // Get the score for the result.
@@ -712,8 +712,8 @@ public class ArcadeMachine {
 		sc += ", ";
 	    }
 	}
-	System.out.println("Results in game " + game_file + ", " + vict + " | " + sc);
-	// + "," + performance.mean());
+	System.out.println("Results in game " + game_file + ", " + vict + " , " + sc);
+	 	//+ " , " + performance.mean());
     }
 
     /**

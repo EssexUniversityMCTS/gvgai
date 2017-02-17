@@ -143,7 +143,7 @@ public abstract class Game
     /**
      * List of sprites killed in the game.
      */
-    protected ArrayList<VGDLSprite> kill_list;
+    public ArrayList<VGDLSprite> kill_list;
 
     /**
      * Limit number of each resource type
@@ -1345,145 +1345,69 @@ public abstract class Game
                         continue;
                 }
 
+                ArrayList<VGDLSprite> firstx =  new ArrayList<VGDLSprite>();
+                ArrayList<VGDLSprite> secondx =  new ArrayList<VGDLSprite>();
 
-                for (int i = 0; i < bucketList.length; i++) {
-                    bucketList[i].clear();
-                    noSprites[i] = false;
+                ArrayList<Integer> allTypes1 = iSubTypes[p.first];
+                for (int i : allTypes1){
+                    firstx.addAll(getSprites(i));
                 }
+                ArrayList<Integer> allTypes2 = iSubTypes[p.second];
+                for (int j : allTypes2){
+                    secondx.addAll(getSprites(j));
+                }
+                
+            
+                
+                ArrayList<VGDLSprite> new_secondx = new ArrayList<VGDLSprite>();
 
-                // Consider the two types to populate the array bucketList, that encloses the sprites
-                // of both types that could take part in any interaction.
-                int[] types = (getNumSprites(p.first) < getNumSprites(p.second)) ? new int[]{p.first, p.second} : new int[]{p.second, p.first};
-                
-                // store all sprites of the type that we have the lowest number of sprites of in bucketList
-                int intId = types[0];
-                
-                // we'll mark here the rows of the map that could possibly collide with rows of the map
-                // where we find sprites of the first type. Sprites of the second type will only be added
-                // to buckets that have been marked as important, or are outside of the map bounds
-                boolean[] importantBuckets = new boolean[size.height + 1];
-                if(!noSprites[intId] && bucketList[intId].size() == 0)
+                for (VGDLSprite s1 : firstx)
                 {
-                	//Take all the subtypes in the hierarchy of this sprite.
-                	ArrayList<Integer> allTypes = iSubTypes[intId];
-                	for(Integer itype : allTypes)
-                	{
-                		//Add all sprites of this subtype to the list of sprites
-                		Collection<VGDLSprite> sprites = this.getSprites(itype);
-                		for(VGDLSprite sp : sprites)
-                		{
-                			bucketList[intId].add(sp);
-                			
-                			int spBucket = sp.bucket;
-                			if(spBucket >= 0 && spBucket < importantBuckets.length)
-                			{
-                				importantBuckets[spBucket] = true;
-                			}
-                			
-                			if(sp.bucketSharp)
-                			{
-                				if(spBucket - 1 >= 0 && spBucket - 1 < importantBuckets.length)
-                				{
-                					importantBuckets[spBucket - 1] = true;
-                				}
-                			}
-                			else
-                			{
-                				if(spBucket + 1 >= 0 && spBucket + 1 < importantBuckets.length)
-                				{
-                					importantBuckets[spBucket + 1] = true;
-                				}
-                			}
-                		}
-                	}
+                	new_secondx = new ArrayList<VGDLSprite>();
                 	
-                	//If no sprites were added here, mark it in the array.
-                    if(bucketList[intId].size() == 0)
-                        noSprites[intId] = true;
-                }
-                
-                // if we have found sprites for the first type, also search for sprites of the second type
-                if(!noSprites[intId])
-                {
-                	intId = types[1];
-                	if(!noSprites[intId] && bucketList[intId].size() == 0)
+                	for (VGDLSprite s2 : secondx)
                 	{
-                		//Take all the subtypes in the hierarchy of this sprite.
-                    	ArrayList<Integer> allTypes = iSubTypes[intId];
-                    	for(Integer itype : allTypes)
-                    	{
-                    		Collection<VGDLSprite> sprites = this.getSprites(itype);
-                    		for(VGDLSprite sp : sprites)
-                    		{
-                    			// only add this sprite if he's outside the map bounds, or if he is in an important
-                    			// bucket (one that could possibly collide with sprites added of the first type)
-                    			int bucket = sp.bucket;
-                    			if(bucket < 0 || bucket >= importantBuckets.length || importantBuckets[bucket])
-                    			{
-                    				bucketList[intId].add(sp);
-                    			}
-                    		}
-                    	}
-                	}
-                }
+                        if ( (s1 != s2 && s1.rect.intersects(s2.rect))) {
+                        	new_secondx.add(s2);
+                        }
+                    }
 
-                //Take the collections of sprites, one for each type, of the two sprite types of this effect.
-                HashMap<Integer, ArrayList<VGDLSprite>> first = bucketList[p.first].getSpriteList();
-                HashMap<Integer, ArrayList<VGDLSprite>> second = bucketList[p.second].getSpriteList();
-
-                if(first.size() == 0 || second.size() == 0)
-                    break;
-
-                for(Integer bucket1 : first.keySet())
-                {
-                    //For each bucket with sprites of this collision pair, get the sprites of p.first.
-                    ArrayList<VGDLSprite> sprites1nBucket1 = first.get(bucket1);
-
-                    //For every sprite:
-                    if(sprites1nBucket1!=null)
-                        for(VGDLSprite s1 : sprites1nBucket1)
+                    for (int a = 0; a < new_secondx.size(); a++)
+                    {
+                        for (int b = 0; b < new_secondx.size(); b++)
                         {
-                            if (!s1.is_disabled()) {
-                                //Decide in what buckets to look.
-                                int[] buckets;
-                                if (s1.bucketSharp) buckets = new int[]{s1.bucket - 1, s1.bucket};
-                                else buckets = new int[]{s1.bucket, s1.bucket + 1};
+                        	if (a < b)
+                        	{
+                                if (Math.sqrt(
+                                    ( (s1.getPosition().x - new_secondx.get(a).getPosition().x) *
+                                    (s1.getPosition().x - new_secondx.get(a).getPosition().x) ) +
 
+                                    ((s1.getPosition().y - new_secondx.get(a).getPosition().y) *
+                                            (s1.getPosition().y - new_secondx.get(a).getPosition().y) ) ) >
+                                    Math.sqrt(
+                                            ( (s1.getPosition().x - new_secondx.get(b).getPosition().x) *
+                                            (s1.getPosition().x - new_secondx.get(b).getPosition().x) ) +
 
-                                for (int bucketId : buckets) {
-                                    //On each bucket, take the sprites if the p.second sprite type.
-                                    ArrayList<VGDLSprite> spritesInBucket2 = second.get(bucketId);
-                                    if (spritesInBucket2 != null && !kill_list.contains(s1)) {
-                                        int numSprites2 = spritesInBucket2.size();
-                                        s2loop:
-                                        for (int idx2 = 0; idx2 < numSprites2; idx2++) {
-                                            //Take each sprite of p.second and check for collision
-                                            VGDLSprite s2 = spritesInBucket2.get(idx2);
-
-                                            if (!s2.is_disabled()) {
-                                                if (s1 != s2 && s1.rect.intersects(s2.rect)) {
-                                                    executeEffect(ef, s1, s2);
-
-                                                    if (kill_list.contains(s1))
-                                                        break s2loop; //Stop checking sprite 1 if it was killed.
-
-                                                }
-                                            }
-
-                                        } //end FOR sprites s2.
-
-                                    }
-
-                                } //end FOR buckets p.second.
+                                            ((s1.getPosition().y - new_secondx.get(b).getPosition().y) *
+                                                    (s1.getPosition().y - new_secondx.get(b).getPosition().y) ) ) ) 
+                                {
+                                	new_secondx.add(a,new_secondx.get(b));
+                                	new_secondx.remove(b+1);
+                                }
                             }
-
-                        }//end FOR sprites s1
-
-                }//end FOR buckets p.first
-
-            }//end FOR each effect registered between p.first and p.second
-
-        }//end FOR all effects in game.
+                        }
+                    }
+                    
+                    for (int i = 0; i < new_secondx.size(); i++)
+                    {
+                    	if (!kill_list.contains(s1) && s1 != new_secondx.get(i) && s1.rect.intersects(new_secondx.get(i).rect)) 
+                    	{
+                    		executeEffect(ef, s1, new_secondx.get(i));
+                        }
+                    }
+                }
+            }
+        }
 
     }
 
@@ -1509,12 +1433,12 @@ public abstract class Game
                 this.counter[i] += ef.getCounter(i);
             }
         }
-
+        
         if(ef.countElse) {
-            for (int i = 0; i < no_counters; i++) {
-                this.counter[i] += ef.getCounterElse(i);
-            }
-        }
+        	for (int i = 0; i < no_counters; i++) {		
+        	this.counter[i] += ef.getCounterElse(i);		
+        	}		
+        }		
     }
 
     private void addEvent(VGDLSprite s1, VGDLSprite s2)

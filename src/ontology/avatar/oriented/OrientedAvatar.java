@@ -56,9 +56,11 @@ public class OrientedAvatar extends MovingAvatar
         //the orientation in the direction of the move.
         if(lastMovementType == Types.MOVEMENT.MOVE)
         {
-            Vector2d dir = lastDirection();
-            dir.normalise();
-            orientation = new Direction(dir.x, dir.y);
+        	if (physicstype_id == 0){
+        		Vector2d dir = lastDirection();
+        		dir.normalise();
+        		orientation = new Direction(dir.x, dir.y);
+        	}
         }
         //Otherwise, orientation is already updated, no need to change anything.
     }
@@ -74,12 +76,13 @@ public class OrientedAvatar extends MovingAvatar
 
         //If the last thing the avatar did is to move (displacement), then update
         //the orientation in the direction of the move.
-        if(lastMovementType == Types.MOVEMENT.MOVE)
+        if (lastMovementType == Types.MOVEMENT.MOVE)
         {
-            Vector2d dir = lastDirection();
-            dir.normalise();
-            orientation = new Direction(dir.x, dir.y);
+	        Vector2d dir = lastDirection();
+	        dir.normalise();
+	        orientation = new Direction(dir.x, dir.y);
         }
+        
         //Otherwise, orientation is already updated, no need to change anything.
     }
 

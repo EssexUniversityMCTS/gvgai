@@ -96,7 +96,7 @@ public class ShootAvatar extends OrientedAvatar
         }
     }
 
-    private void shoot(Game game, int idx)
+    protected void shoot(Game game, int idx)
     {
         Vector2d dir = this.orientation.getVector();
         dir.normalise();
@@ -113,7 +113,7 @@ public class ShootAvatar extends OrientedAvatar
         }
     }
 
-    private boolean hasAmmo(int idx) {
+    protected boolean hasAmmo(int idx) {
         if (ammo == null || idx >= ammos.length)
             return true; //no ammo defined, I can shoot.
 
@@ -122,7 +122,7 @@ public class ShootAvatar extends OrientedAvatar
 
     }
 
-    private void reduceAmmo(int idx)
+    protected void reduceAmmo(int idx)
     {
         if(ammo != null && idx < ammos.length && resources.containsKey(ammoId[idx]))
         {

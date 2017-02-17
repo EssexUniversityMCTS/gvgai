@@ -1,0 +1,40 @@
+BasicGame
+    SpriteSet 
+        elevator > Missile orientation=UP speed=0.1 img=newset/floor3
+        float    > Passive img=newset/cloud2 physicstype_id=1 gravity=1.0 friction=0.02
+        moving > physicstype_id=1 gravity=1.0 friction=0.02
+            avatar > MarioAvatar img=newset/man1
+            evil   >  orientation=LEFT
+                goomba     > Walker img=newset/zombie
+                paratroopa > WalkerJumper img=newset/shark2 gravity=0.5
+        goal > Immovable img=oryx/mushroom2
+        water > Immovable img=oryx/fire1
+        coin > Immovable img=oryx/gold1
+            
+    TerminationSet
+        SpriteCounter stype=goal  win=True
+        SpriteCounter stype=avatar    win=False
+           
+    InteractionSet
+        evil avatar > killIfFromAbove scoreChange=1
+        avatar evil > killIfAlive
+        moving EOS  > killSprite
+        goal avatar > killSprite
+        moving elevator > pullWithIt 
+        moving wall > wallStop
+        elevator EOS > wrapAround
+        float avatar > bounceForward
+        float water > wallStop
+        float wall > wallStop
+        avatar float > wallStop
+        coin avatar > killSprite scoreChange=1
+        avatar water > killSprite
+        
+    LevelMapping
+        G > goal
+        1 > goomba
+        2 > paratroopa
+        = > elevator
+        f > float
+        W > water
+        c > coin

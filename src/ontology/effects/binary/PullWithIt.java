@@ -63,17 +63,18 @@ public class PullWithIt extends Effect
         {
             GridPhysics gp = (GridPhysics)(sprite1.physics);
             gridsize = gp.gridsize.width;
-        }else if(sprite1.physicstype_id == Types.PHYSICS_CONT)
+        }else
         {
-            GridPhysics gp = (ContinuousPhysics)(sprite1.physics);
+            ContinuousPhysics gp = (ContinuousPhysics)(sprite1.physics);
             gridsize = gp.gridsize.width;
         }
 
         sprite1._updatePos(new Direction(v.x, v.y), (int) (sprite2.speed*gridsize));
-        if(sprite1.physicstype_id == Types.PHYSICS_CONT)
-        {
-            sprite1.speed = sprite2.speed;
-            sprite1.orientation = sprite2.orientation;
+        
+        if(sprite1.physicstype_id != Types.PHYSICS_GRID)
+        {	
+        	sprite1.rect.y = sprite2.rect.y-sprite2.rect.height;
+        	sprite1.orientation = new Direction(sprite1.orientation.x(),0.0);
         }
 
         sprite1.lastrect = new Rectangle(r);

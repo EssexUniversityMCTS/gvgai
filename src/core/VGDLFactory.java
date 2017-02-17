@@ -51,7 +51,8 @@ public class VGDLFactory
              "Bomber", "RandomBomber", "Portal", "SpawnPoint", "SpriteProducer", "Door",
              "FlakAvatar", "HorizontalAvatar", "VerticalAvatar", "MovingAvatar","MissileAvatar",
              "OrientedAvatar","ShootAvatar", "OngoingAvatar", "OngoingTurningAvatar", "BomberRandomMissile",
-             "OngoingShootAvatar", "NullAvatar"};
+             "OngoingShootAvatar", "NullAvatar", "AimedAvatar", "MarioAvatar", "BirdAvatar",
+             "SpaceshipAvatar", "CarAvatar", "WizardAvatar", "LanderAvatar"};
 
 
     /**
@@ -65,7 +66,8 @@ public class VGDLFactory
              Bomber.class, RandomBomber.class, Portal.class, SpawnPoint.class, SpriteProducer.class, Door.class,
              FlakAvatar.class, HorizontalAvatar.class, VerticalAvatar.class, MovingAvatar.class,MissileAvatar.class,
              OrientedAvatar.class,ShootAvatar.class, OngoingAvatar.class, OngoingTurningAvatar.class, BomberRandomMissile.class,
-             OngoingShootAvatar.class, NullAvatar.class};
+             OngoingShootAvatar.class, NullAvatar.class, AimedAvatar.class, MarioAvatar.class, BirdAvatar.class,
+             SpaceshipAvatar.class, CarAvatar.class, WizardAvatar.class, LanderAvatar.class};
 
     /**
      * Available effects for VGDL.
@@ -79,7 +81,8 @@ public class VGDLFactory
                 "teleportToExit", "bounceForward", "attractGaze", "align", "subtractHealthPoints", "addHealthPoints",
                     "transformToAll", "addTimer", "killIfFrontal", "killIfNotFrontal", "spawnBehind",
                     "updateSpawnType", "removeScore", "increaseSpeedToAll", "decreaseSpeedToAll", "setSpeedForAll", "transformToRandomChild",
-                    "addHealthPointsToMax", "spawnIfCounterSubTypes"
+                    "addHealthPointsToMax", "spawnIfCounterSubTypes", "bounceDirection", "wallBounce", "killIfSlow", "killIfAlive", 
+                    "waterPhysics", "halfSpeed", "killIfNotUpright"
             };
 
     /**
@@ -94,7 +97,8 @@ public class VGDLFactory
                 TeleportToExit.class, BounceForward.class, AttractGaze.class, Align.class, SubtractHealthPoints.class, AddHealthPoints.class,
                     TransformToAll.class, AddTimer.class, KillIfFrontal.class, KillIfNotFrontal.class, SpawnBehind.class, UpdateSpawnType.class,
                     RemoveScore.class, IncreaseSpeedToAll.class, DecreaseSpeedToAll.class, SetSpeedForAll.class, TransformToRandomChild.class,
-                    AddHealthPointsToMax.class, SpawnIfCounterSubTypes.class
+                    AddHealthPointsToMax.class, SpawnIfCounterSubTypes.class, BounceDirection.class, WallBounce.class, KillIfSlow.class, 
+                    KillIfAlive.class, WaterPhysics.class, HalfSpeed.class, KillIfNotUpright.class
             };
 
 

@@ -16,40 +16,30 @@ import tools.Vector2d;
  */
 public class ContinuousPhysics extends GridPhysics
 {
-    /**
-     * Gravity of the physics
-     */
-    public double gravity;
-
-    /**
-     * Friction applicable in this physics system.
-     */
-    public double friction;
-
-    /**
-     * Default constructor.
-     */
-    public ContinuousPhysics()
-    {
-        gravity = 0;
-        friction = 0.02;
-    }
 
     @Override
     public Types.MOVEMENT passiveMovement(VGDLSprite sprite)
     {
+    	
+    	if(sprite.isFirstTick)
+        {
+            sprite.isFirstTick = false;
+            return Types.MOVEMENT.STILL;
+        }
+
         //This needs to be thoroughly tested when continuous physics are added
         //Specially the returned type.
-        if(sprite.speed != 0 && sprite.is_oriented)
+    	
+        if(sprite.speed != 0)
         {
             sprite._updatePos(sprite.orientation, (int) sprite.speed);
-            if(this.gravity > 0 && sprite.mass > 0)
-            {
-                Direction gravityAction = new Direction(0, this.gravity * sprite.mass);
-                this.activeMovement(sprite, gravityAction, 0);
-            }else return Types.MOVEMENT.STILL;
-            sprite.speed *= (1-this.friction);
 
+            if(sprite.gravity > 0 && sprite.mass > 0)
+            {
+            	Direction gravityAction = new Direction(0, sprite.gravity * sprite.mass);
+                this.activeMovement(sprite, gravityAction, 0);
+            }
+            sprite.speed *= (1-sprite.friction);
             return Types.MOVEMENT.MOVE;
         }
         return Types.MOVEMENT.STILL;
@@ -61,12 +51,13 @@ public class ContinuousPhysics extends GridPhysics
     {
         //Here the assumption is that the controls determine the direction of
         //acceleration of the sprite.
+    	
         if(speed == 0)
             speed = sprite.speed;
-
-        if(speed == 0)
-            return Types.MOVEMENT.STILL;
-
+        
+        if(speed == -1)
+            speed = sprite.speed;
+    	
         double v1 = (action.x() / (float)sprite.mass) + (sprite.orientation.x() * speed);
         double v2 = (action.y() / (float)sprite.mass) + (sprite.orientation.y() * speed);
 
@@ -74,10 +65,6 @@ public class ContinuousPhysics extends GridPhysics
         double speedD = dir.mag();
         dir.normalise();
         Direction d = new Direction(dir.x, dir.y);
-
-        /*Vector2d unitDir = dir.unitVector();
-        sprite.orientation = unitDir;
-        sprite.speed = dir.mag() / sprite.orientation.mag(); */
 
         sprite.orientation = d;
         sprite.speed = speedD;
