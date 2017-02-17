@@ -66,12 +66,14 @@ public class SingleMCTSPlayer
     {
         //Do the search within the available time.
         m_root.mctsSearch(elapsedTimer);
+        System.out.println(elapsedTimer.remainingTimeMillis());
 
         iters += SingleTreeNode.totalIters;
         num ++;
 
         //Determine the best action to take and return it.
         int action = m_root.mostVisitedAction();
+        System.out.println(elapsedTimer.remainingTimeMillis());
         //int action = m_root.bestAction();
         return action;
     }

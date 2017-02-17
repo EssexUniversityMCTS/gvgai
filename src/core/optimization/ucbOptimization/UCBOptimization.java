@@ -3,6 +3,7 @@ package core.optimization.ucbOptimization;
 import java.util.Random;
 
 import core.ArcadeMachine;
+import core.competition.CompetitionParameters;
 import core.optimization.OptimizationObjective;
 
 /**
@@ -10,6 +11,23 @@ import core.optimization.OptimizationObjective;
  * @author AhmedKhalifa
  */
 public class UCBOptimization implements OptimizationObjective {
+        /**
+         * Weights for Score wrt to Wins in the optimization problem
+         */
+        public static double SCORE_WIN = 0.1;
+        /**
+         * sigmoid width for score
+         */
+        public static double SIGMOID_WIDTH = 10;
+        /**
+         * sigmoid shift for negative scores
+         */
+        public static double SIGMOID_SHIFT = 1;
+        /**
+         * this is a unified random object to be used
+         */
+        public static int RANDOM_OBJ = -1;
+    
 	/**
 	 * all games paths require to test against
 	 */
@@ -29,11 +47,11 @@ public class UCBOptimization implements OptimizationObjective {
 	
 	/**
 	 * Constructor for the current ucb optimization objective
-	 * @param gamePaths		all game paths require to test against
+	 * @param gamePaths	all game paths require to test against
 	 * @param levelPaths	all level paths associated with the games
 	 * @param repetition	number of repetition to play each game
 	 * @param evaluation	the maximum number of calls allowed for the evaluation function
-	 * @param ucb			the current ucb equation to optimize
+	 * @param ucb		the current ucb equation to optimize
 	 */
 	public UCBOptimization(String[] gamePaths, String[] levelPaths, int repetition, int evaluation, UCBEquation ucb){
 		this.gamePaths = gamePaths;
@@ -59,12 +77,16 @@ public class UCBOptimization implements OptimizationObjective {
 	public int getNumberOfObjectives() {
 		return this.gamePaths.length;
 	}
+	
+	private double sigmoid(double score, double width, double shift){
+	    return 1 / (1 + Math.exp(-4*(score/width - shift)));
+	}
 
 	/**
 	 * evaluate the current parameters against the target objectives
 	 * @param parameters	the current set of parameters to test
-	 * @return				array of fitness against all objectives (the higher the better), 
-	 * 						null if you exceed the number of allowed evaluations
+	 * @return		array of fitness against all objectives (the higher the better), 
+	 * 			null if you exceed the number of allowed evaluations
 	 */
 	@Override
 	public double[] evaluate(double[] parameters) {
@@ -83,13 +105,15 @@ public class UCBOptimization implements OptimizationObjective {
 				double[] gameResults = null;
 				do{
 					gameResults = ArcadeMachine.runOneGame(this.gamePaths[i], this.levelPaths[i], false, 
-							"controllers.singlePlayer.ucbOptimizerAgent.Agent", null, new Random().nextInt(), 0);
+							"controllers.singlePlayer.ucbOptimizerAgent.Agent", null, 
+							RANDOM_OBJ, 0);
 				}while(gameResults[0] < -10);
 				
 				totalWins += Math.max(gameResults[0], 0);
 				totalScore += gameResults[1];
 			}
-			results[i] = 1000 * totalWins / this.repetition + totalScore / this.repetition;
+			results[i] = (1 - SCORE_WIN) * (totalWins / this.repetition) + 
+				SCORE_WIN * this.sigmoid(totalScore / this.repetition, SIGMOID_WIDTH, SIGMOID_SHIFT);
 		}
 		
 		return results;

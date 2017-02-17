@@ -63,6 +63,7 @@ public class SingleTreeNode
         int numIters = 0;
 
         int remainingLimit = 5;
+        System.out.println(elapsedTimer.remainingTimeMillis());
         while(remaining > 2*avgTimeTaken && remaining > remainingLimit){
             ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
             SingleTreeNode selected = treePolicy();
@@ -70,13 +71,15 @@ public class SingleTreeNode
             backUp(selected, delta);
 
             numIters++;
+            System.out.println("+"  + elapsedTimerIteration.elapsedMillis() + "," + remaining);
+
             acumTimeTaken += (elapsedTimerIteration.elapsedMillis()) ;
 
             avgTimeTaken  = acumTimeTaken/numIters;
             remaining = elapsedTimer.remainingTimeMillis();
             //System.out.println(elapsedTimerIteration.elapsedMillis() + " --> " + acumTimeTaken + " (" + remaining + ")");
         }
-        //System.out.println("-- " + numIters + " -- ( " + avgTimeTaken + ")");
+       System.out.println("-- " + numIters + " -- ( " + avgTimeTaken + ") " + elapsedTimer.remainingTimeMillis() + "," + remaining);
         totalIters = numIters;
 
         //ArcadeMachine.performance.add(numIters);

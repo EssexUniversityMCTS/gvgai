@@ -92,7 +92,7 @@ public class CompetitionParameters
     /**
      * Max time a game can run
      */
-    public static int MAX_TIMESTEPS = 1000;
+    public static int MAX_TIMESTEPS = 250;
 
     /**
      * Terminates the program when the playing window is closed
@@ -119,7 +119,7 @@ public class CompetitionParameters
     /**
      * Indicates the type of timer the framework should use.
      */
-    public static ElapsedCpuTimer.TimerType TIMER_TYPE = ElapsedCpuTimer.TimerType.CPU_TIME;
+    public static ElapsedCpuTimer.TimerType TIMER_TYPE = ElapsedCpuTimer.TimerType.WALL_TIME;
 
     /**
      * Key input type. We set the default here, but this will be set by the game in VGDL.

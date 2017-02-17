@@ -18,9 +18,11 @@ public class TestMultiPlayer {
 	String sampleGAController = "controllers.multiPlayer.sampleGA.Agent";
 	String humanController = "controllers.multiPlayer.human.Agent";
 
+		String test = "Dani_100315290.Agent";
+
 	// Set here the controllers used in the games (need 2 separated by
 	// space).
-	String controllers = doNothingController + " " + doNothingController;
+	String controllers = test + " " + humanController;
 	// String controllers = sampleOLMCTSController + " " +
 	// sampleOLMCTSController;
 
@@ -38,20 +40,20 @@ public class TestMultiPlayer {
 		"teamescape", "thebridge", "trainride", "treasuremap", "tron", // 30-34
 		"upgrade-x", "uphigh", "warzone", "watchout", "wheelme" }; // 35-39
 
-	// Training Set 1
-	games = new String[] { "akkaarrh", "asteroids", "captureflag", "copsNrobbers", "gotcha", // 0-4
-		"klax", "samaritan", "sokoban", "steeplechase", "tron" }; // 5-9
-
-	// Test set CIG 2016
-	games = new String[] { "egghunt", "fatty", "isawsanta", "mimic", "reflection", // 0-4
-		"trainride", "treasuremap", "upgrade-x", "warzone", "wheelme" }; // 5-9
+//	// Training Set 1
+//	games = new String[] { "akkaarrh", "asteroids", "captureflag", "copsNrobbers", "gotcha", // 0-4
+//		"klax", "samaritan", "sokoban", "steeplechase", "tron" }; // 5-9
+//
+//	// Test set CIG 2016
+//	games = new String[] { "egghunt", "fatty", "isawsanta", "mimic", "reflection", // 0-4
+//		"trainride", "treasuremap", "upgrade-x", "warzone", "wheelme" }; // 5-9
 
 	// Other settings
 	boolean visuals = true;
 	int seed = new Random().nextInt();
 
 	// Game and level to play
-	int gameIdx = 9;
+	int gameIdx =  0;
 	int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
 	String game = gamesPath + games[gameIdx] + ".txt";
 	String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
@@ -62,13 +64,12 @@ public class TestMultiPlayer {
 					// executed. null if not to save.
 
 	// 1. This starts a game, in a level, played by two humans.
-	ArcadeMachine.playOneGameMulti(game, level1, recordActionsFile, seed);
+	//ArcadeMachine.playOneGameMulti(game, level1, recordActionsFile, seed);
 
 	// 2. This plays a game in a level by the controllers. If one of the
 	// players is human, change the playerID passed
 	// to the runOneGame method to be that of the human player (0 or 1).
-	// ArcadeMachine.runOneGame(game, level1, visuals, controllers,
-	// recordActionsFile, seed, 0);
+	ArcadeMachine.runOneGame(game, level1, visuals, controllers, recordActionsFile, seed, 0);
 
 	// 3. This replays a game from an action file previously recorded
 	// String readActionsFile = recordActionsFile;
