@@ -13,10 +13,17 @@ public class RuleGenerator extends AbstractRuleGenerator {
      * Array contains all the simple interactions
      */
     private String[] interactions = new String[]{
-	    "killSprite", "killIfFromAbove", "stepBack", "undoAll", "flipDirection" , 
-	    "reverseDirection", "attractGaze", "align", "turnAround", "wrapAround", 
-	    "pullWithIt", "bounceForward", "killAll", "spawnBehind", "transformTo",
-	    "teleportToExit", "collectResource", "cloneSprite"};
+			"killSprite", "killAll", "killIfHasMore", "killIfHasLess", "killIfFromAbove",
+			"killIfOtherHasMore", "spawnBehind", "stepBack",
+			"spawnIfHasMore", "spawnIfHasLess", "cloneSprite", "transformTo", "undoAll",
+			"flipDirection", "transformToRandomChild", "updateSpawnType",
+			"removeScore", "addHealthPoints", "addHealthPointsToMax", "reverseDirection",
+			"subtractHealthPoints", "increaseSpeedToAll", "decreaseSpeedToAll", "attractGaze",
+			"align", "turnAround", "wrapAround", "pullWithIt", "bounceForward", "teleportToExit",
+			"collectResource", "setSpeedForAll", "undoAll", "reverseDirection", "changeResource"};
+	private String[] terminations = new String[] {
+			"SpriteCounter", "SpriteCounterMore", "MultiSpriteCounter",
+			"StopCounter", "Timeout"};
     /**
      * A list of all the useful sprites in the game without the avatar
      */
@@ -39,29 +46,29 @@ public class RuleGenerator extends AbstractRuleGenerator {
      * @param sl	contains information about sprites and current level
      * @param time	amount of time allowed
      */
-    public RuleGenerator(SLDescription sl, ElapsedCpuTimer time) {
-	this.usefulSprites = new ArrayList<String>();
-	this.random = new Random();
-	String[][] currentLevel = sl.getCurrentLevel();
-	
-	//Just get the useful sprites from the current level
-	for (int y = 0; y < currentLevel.length; y++) {
-	    for (int x = 0; x < currentLevel[y].length; x++) {
-		String[] parts = currentLevel[y][x].split(",");
-		for (int i = 0; i < parts.length; i++) {
-		    if (parts[i].trim().length() > 0) {
-			//Add the sprite if it doesn't exisit
-			if (!usefulSprites.contains(parts[i].trim())) {
-			    usefulSprites.add(parts[i].trim());
-			}
-		    }
-		}
-	    }
+  public RuleGenerator(SLDescription sl, ElapsedCpuTimer time) {
+    this.usefulSprites = new ArrayList<String>();
+    this.random = new Random();
+    String[][] currentLevel = sl.getCurrentLevel();
+
+    //Just get the useful sprites from the current level
+    for (int y = 0; y < currentLevel.length; y++) {
+        for (int x = 0; x < currentLevel[y].length; x++) {
+        String[] parts = currentLevel[y][x].split(",");
+        for (int i = 0; i < parts.length; i++) {
+          if (parts[i].trim().length() > 0) {
+          //Add the sprite if it doesn't exisit
+          if (!usefulSprites.contains(parts[i].trim())) {
+            usefulSprites.add(parts[i].trim());
+          }
+        }
+      }
+    }
 	}
 	//save the avatar separately
 	this.avatar = this.getAvatar(sl);
 	this.usefulSprites.remove(this.avatar);
-    }
+}
     
     /**
      * convert the arraylist of string to a normal array of string

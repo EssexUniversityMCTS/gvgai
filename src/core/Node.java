@@ -40,6 +40,10 @@ public class Node
      */
     public ArrayList<Node> children;
 
+    /**
+     * The line number of the node's contents
+     */
+    public int lineNumber;
 
     /**
      * Constructor of the node.
@@ -57,7 +61,18 @@ public class Node
         else
             parent.insert(this);
     }
-
+    
+    public Node(String contentLine, int indent, Node parent, int set, int lineNumber) {
+        children = new ArrayList<Node>();
+        this.content = createContent(contentLine, set);
+        this.indent = indent;
+        if(parent == null)
+            this.parent = null;
+        else
+            parent.insert(this);
+        
+        this.lineNumber = lineNumber;
+    }
     /**
      * Creates a content for later creation of objects
      * @param line line in VGDL format.

@@ -158,7 +158,7 @@ public class SLDescription {
      * @return		correct sprite name
      */
     private String decodeName(int value, int seed){
-	return this.gameSprites[value ^ seed].name;
+    	return this.gameSprites[value ^ seed].name;
     }
     
     /**
@@ -203,6 +203,11 @@ public class SLDescription {
 	
 	modifiedRules[0] = "InteractionSet";
 	for(int i=1; i<modifiedRules.length; i++){
+		if(rules == null) {
+			System.out.println("its null");
+			int x = 0;
+			x++;
+		}
 	    String[] parts = rules[i-1].split(" ");
 	    modifiedRules[i] = "   ";
 	    for(int j=0; j<parts.length; j++){
@@ -245,7 +250,12 @@ public class SLDescription {
 	String[][] rw = this.modifyRules(rules, wins, this.shift);
 	
 	this.currentGame.clearInteractionTerminationData();
-	new VGDLParser().parseInteractionTermination(this.currentGame, rw[0], rw[1]);
+	try {
+		new VGDLParser().parseInteractionTermination(this.currentGame, rw[0], rw[1]);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	
 	this.currentGame.reset();
 	this.currentGame.buildStringLevel(this.level, this.random.nextInt());

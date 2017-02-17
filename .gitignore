@@ -5,4 +5,8 @@ examples/.DS_Store
 *.jar
 *.class
 src/tools/.DS_Store
+.settings/org.eclipse.jdt.core.prefs
+*.DS_Store
+/bin/
+debugLog
 .DS_Store
