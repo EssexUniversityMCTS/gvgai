@@ -74,16 +74,16 @@ public class Test {
 
 	String recordLevelFile = generateLevelPath + games[gameIdx] + "_glvl.txt";
 	String recordGameFile = generateRulePath + games[gameIdx] + "_ggame.txt";
-	String recordActionsFile = null;// "actions_" + games[gameIdx] + "_lvl"
+	String recordActionsFile = "test_level.txt"; //null;// "actions_" + games[gameIdx] + "_lvl"
 					// + levelIdx + "_" + seed + ".txt";
 					// where to record the actions
 					// executed. null if not to save.
 
 	// 1. This starts a game, in a level, played by a human.
-	ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
+//	ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
 
 	// 2. This plays a game in a level by the controller.
-//	ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
+	ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
 
 	// 3. This replays a game from an action file previously recorded
 //	 String readActionsFile = recordActionsFile;
