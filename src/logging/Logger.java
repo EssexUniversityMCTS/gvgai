@@ -31,7 +31,7 @@ public class Logger {
 			System.out.println(((Message) msg).getContent());
 		}
 		System.out.println("*** Logged Messages End ***");
-		flushMessages();
+//		flushMessages();
 	}
 	public int getMessageCount() {
 		return messages.size();

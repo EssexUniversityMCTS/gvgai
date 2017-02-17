@@ -250,7 +250,12 @@ public class SLDescription {
 	String[][] rw = this.modifyRules(rules, wins, this.shift);
 	
 	this.currentGame.clearInteractionTerminationData();
-	new VGDLParser().parseInteractionTermination(this.currentGame, rw[0], rw[1]);
+	try {
+		new VGDLParser().parseInteractionTermination(this.currentGame, rw[0], rw[1]);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	
 	this.currentGame.reset();
 	this.currentGame.buildStringLevel(this.level, this.random.nextInt());

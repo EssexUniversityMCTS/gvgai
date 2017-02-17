@@ -6,6 +6,7 @@ import core.VGDLParser;
 import core.VGDLRegistry;
 import core.game.Game;
 import core.game.SLDescription;
+import logging.Logger;
 import tools.IO;
 
 /**
@@ -130,8 +131,11 @@ public class Test {
 	// }
 	
 	// 7. Generate rules (Interaction and Terminations) for a fixed level
-	ArcadeMachine.generateRules(game, level1, geneticRuleGenerator, recordGameFile, seed);
-//	ArcadeMachine.playOneGame(recordGameFile, level1, recordActionsFile, seed);
+	ArcadeMachine.generateRules(game, level1, randomRuleGenerator, recordGameFile, seed);
+	Logger log = Logger.getInstance();
+	if(log.getMessageCount() == 0) {
+		ArcadeMachine.playOneGame(recordGameFile, level1, recordActionsFile, seed);
+	}
 	// ArcadeMachine.runOneGame(recordGameFile, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
 	 
     }

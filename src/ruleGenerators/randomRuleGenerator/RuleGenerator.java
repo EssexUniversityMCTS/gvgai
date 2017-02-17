@@ -12,9 +12,21 @@ public class RuleGenerator extends AbstractRuleGenerator {
      * Array contains all the simple interactions
      */
     private String[] interactions = new String[]{
-	    "killSprite", "killIfFromAbove", "stepBack", "undoAll", "flipDirection" , 
-	    "reverseDirection", "attractGaze", "align", "turnAround", "wrapAround", 
-	    "pullWithIt", "bounceForward", "collectResource"};
+			"killSprite", "killAll", "killIfHasMore", "killIfHasLess", "killIfFromAbove",
+			"killIfOtherHasMore", "spawnBehind", "stepBack",
+			"spawnIfHasMore", "spawnIfHasLess", "cloneSprite", "transformTo", "undoAll",
+			"flipDirection", "transformToRandomChild", "updateSpawnType",
+			"removeScore", "addHealthPoints", "addHealthPointsToMax", "reverseDirection",
+			"subtractHealthPoints", "increaseSpeedToAll", "decreaseSpeedToAll", "attractGaze",
+			"align", "turnAround", "wrapAround", "pullWithIt", "bounceForward", "teleportToExit",
+			"collectResource", "setSpeedForAll", "undoAll", "reverseDirection", "changeResource"};
+	private String[] terminations = new String[] {
+			"SpriteCounter", "SpriteCounterMore", "MultiSpriteCounter",
+			"StopCounter", "Timeout"};
+//    		{
+//	    "killSprite", "killIfFromAbove", "stepBack", "undoAll", "flipDirection" , 
+//	    "reverseDirection", "attractGaze", "align", "turnAround", "wrapAround", 
+//	    "pullWithIt", "bounceForward", "collectResource"};
     /**
      * A list of all the useful sprites in the game
      */
@@ -77,7 +89,8 @@ public class RuleGenerator extends AbstractRuleGenerator {
 	ArrayList<String> termination = new ArrayList<String>();
 	
 	//number of interactions in the game based on the number of sprites
-	int numberOfInteractions = (int) (this.usefulSprites.size() * (0.5 + 0.5 * this.random.nextDouble()));
+	int numberOfInteractions = 20;
+//			(int) (this.usefulSprites.size() * (0.5 + 0.5 * this.random.nextDouble()));
 	for (int i = 0; i < numberOfInteractions; i++) {
 	    //get two random indeces for the two sprites in the interaction
 	    int i1 = this.random.nextInt(this.usefulSprites.size());

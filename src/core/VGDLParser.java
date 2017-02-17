@@ -112,7 +112,7 @@ public class VGDLParser
                 	try{
                 		parseInteractionSet(n.children);
                 	} catch(Exception e) {
-                		logger.addMessage(new Message(1, "Interaction Set Error: " + e.toString()));
+                		logger.addMessage(new Message(1, "Interaction Set Error: " + e.getMessage()));
                 	}
                 }else if(n.content.identifier.equals("LevelMapping"))
                 {
@@ -130,7 +130,7 @@ public class VGDLParser
                 	}
                 }
             }
-            logger.printMessages();
+            //logger.printMessages();
         }
         //TODO if there is anything other than these, "Error, [line number] 'Undefined VGDL Block'"
         //TODO if we find that not having an interaction or termination set causes problems, make it an error
@@ -142,6 +142,7 @@ public class VGDLParser
      * @param currentGame	the current game object
      * @param rules		the current interaction set as in the VGDL file
      * @param terminations	the current termination set as in the VGDL file
+     * @throws Exception
      */
     public void parseInteractionTermination(Game currentGame, String[] rules, String[] terminations) throws Exception{
 		this.game = currentGame;
@@ -429,8 +430,9 @@ public class VGDLParser
     /**
      * Parses the termination set.
      * @param elements all terminations defined for the game.
+     * @throws Exception 
      */
-    private void parseTerminationSet(ArrayList<Node> elements)
+    private void parseTerminationSet(ArrayList<Node> elements) throws Exception
     {
         for(Node n : elements)
         {
