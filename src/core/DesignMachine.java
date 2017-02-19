@@ -82,7 +82,10 @@ public class DesignMachine {
      */
     public double[] runOneGame(int[] parameters, String level_file, boolean visuals, String agentNames, String actionFile, int randomSeed, int playerID) {
 
-        //First, build the game with these parameters.
+        //First, we don't know if this game has been played before, so we'll reset just in case.
+        toPlay.reset();
+
+        //Second, build the game with these parameters.
         for(int i = 0; i < parameters.length; ++i)
         {
             int value = parameters[i];
