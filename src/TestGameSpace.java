@@ -52,9 +52,7 @@ public class TestGameSpace {
 
         int[] individual = new int[dm.getNumDimensions()];
         for(int i = 0; i < individual.length; ++i)
-        {
             individual[i] = new Random().nextInt(dm.getDimSize(i));
-        }
 
         dm.printDimensions();
 

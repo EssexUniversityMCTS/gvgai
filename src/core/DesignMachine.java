@@ -198,8 +198,8 @@ public class DesignMachine {
         {
             spaceSize *= getDimSize(i);
             System.out.println( "\t(" + parameterContents[i].getValue() + ")\t" + getDimSize(i) +
-                    " values \t ([" + parameterContents[i].getMinValue() + "," +
-                    parameterContents[i].getMaxValue() + "])" + "\t" + parameterStrings[i] );
+                    " values \t [" + parameterContents[i].getMinValue() + "," +
+                    parameterContents[i].getMaxValue() + "]" + "\t" + parameterStrings[i] );
         }
         DecimalFormat df = new DecimalFormat("0.000E0");
         System.out.println("Search Space Size: " + df.format(spaceSize));
