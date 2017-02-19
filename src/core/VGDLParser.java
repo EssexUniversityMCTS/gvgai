@@ -394,6 +394,7 @@ public class VGDLParser
         {
             ParameterContent pc = (ParameterContent)n.content;
             ((GameSpace)game).addParameterContent(pc);
+            pc.init();
         }
 
     }

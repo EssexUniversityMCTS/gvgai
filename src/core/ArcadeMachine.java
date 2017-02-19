@@ -878,7 +878,7 @@ public class ArcadeMachine {
      * @return the player, created and initialized, ready to start playing the
      *         game.
      */
-    private static AbstractPlayer createPlayer(String playerName, String actionFile, StateObservation so,
+    public static AbstractPlayer createPlayer(String playerName, String actionFile, StateObservation so,
 	    int randomSeed, boolean isHuman) {
 	AbstractPlayer player = null;
 
@@ -921,7 +921,7 @@ public class ArcadeMachine {
      * @return the player, created and initialized, ready to start playing the
      *         game.
      */
-    private static AbstractMultiPlayer createMultiPlayer(String playerName, String actionFile, StateObservationMulti so,
+    public static AbstractMultiPlayer createMultiPlayer(String playerName, String actionFile, StateObservationMulti so,
 	    int randomSeed, int id, boolean isHuman) {
 	AbstractMultiPlayer player = null;
 
@@ -1505,7 +1505,7 @@ public class ArcadeMachine {
      *            boolean, true if actions should be recorded, false otherwise
      * @return false if there was a timeout from the players. true otherwise.
      */
-    private static boolean tearPlayerDown(Game toPlay, Player[] players, String actionFile, int randomSeed,
+    public static boolean tearPlayerDown(Game toPlay, Player[] players, String actionFile, int randomSeed,
 	    boolean record) {
 	// This is finished, no more actions, close the writer.
 	if (toPlay.no_players > 1) {
@@ -1587,11 +1587,11 @@ public class ArcadeMachine {
 	return true;
     }
 
-    private static final boolean isHuman(String agentName) {
-	if (agentName.equalsIgnoreCase("controllers.multiPlayer.human.Agent")
-		|| agentName.equalsIgnoreCase("controllers.singlePlayer.human.Agent"))
-	    return true;
-	return false;
-    }
+    public static final boolean isHuman(String agentName) {
+		if (agentName.equalsIgnoreCase("controllers.multiPlayer.human.Agent")
+			|| agentName.equalsIgnoreCase("controllers.singlePlayer.human.Agent"))
+			return true;
+		return false;
+	}
 
 }
