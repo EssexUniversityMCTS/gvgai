@@ -54,12 +54,43 @@ public class TestGameSpace {
         for(int i = 0; i < individual.length; ++i)
             individual[i] = new Random().nextInt(dm.getDimSize(i));
 
-        dm.printDimensions();
 
         //1. Play as a human.
-        //dm.playGame(individual, level1, seed);
+        dm.playGame(individual, level1, seed);
 
         //2. Play with a controller.
-        dm.runOneGame(individual, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
+//        dm.runOneGame(individual, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
+
+        dm.printDimensions();
+
+        //Random Search Test.
+//        int NUM_TRIALS = 4;
+//        int[] individual = new int[dm.getNumDimensions()];
+//        int[] best = new int[dm.getNumDimensions()];
+//        double bestFit = -Integer.MAX_VALUE;
+//        visuals = false;
+//        for(int count = 0; count < NUM_TRIALS; ++count)
+//        {
+//            for(int i = 0; i < individual.length; ++i)
+//                individual[i] = new Random().nextInt(dm.getDimSize(i));
+//
+//
+//            double[] result = dm.runOneGame(individual, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
+//            double fit = 1000.0 * result[0] + result[1]; //win + score
+//
+//            if(fit > bestFit)
+//            {
+//                bestFit = fit;
+//                System.arraycopy(individual, 0, best, 0, dm.getNumDimensions());
+//            }
+//
+//        }
+//
+//        visuals = true;
+//        System.out.println("##########################");
+//        System.out.println("Best individual with fitness " + bestFit);
+//        System.out.println("##########################");
+//        dm.runOneGame(individual, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
+//        dm.printDimensions();
     }
 }

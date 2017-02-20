@@ -23,16 +23,17 @@ GameSpace square_size=25
     TerminationSet
         SpriteCounter      stype=avatar               limit=0           win=False
         MultiSpriteCounter stype1=portal stype2=alien limit=LIM_ALIEN   win=True
+        Timeout limit=1500 win=True
         
     InteractionSet
         avatar  EOS  > stepBack
         alien   EOS  > turnAround
         missile EOS  > killSprite
 
-        base bomb > killBoth
+        base bomb > killBoth enabled=True
         base sam > killBoth scoreChange=SC_BASESAM
 
-        base   alien > killSprite
+        base   alien > killSprite enabled=True
         avatar alien > killSprite scoreChange=SC_AVALIEN
         avatar bomb  > killSprite scoreChange=SC_AVBOMB
         alien  sam   > killSprite scoreChange=SC_ALSAM

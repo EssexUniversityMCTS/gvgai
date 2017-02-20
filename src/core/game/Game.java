@@ -1265,45 +1265,47 @@ public abstract class Game
         while (timeEffects.size() > 0 && timeEffects.first().nextExecution <= gameTick)
         {
             TimeEffect ef = timeEffects.pollFirst();
-            int intId = ef.itype;
-            boolean exec = false;
+            if(ef.enabled) {
+                int intId = ef.itype;
+                boolean exec = false;
 
-            //if intId==-1, we have no sprite
-            if(intId == -1)
-            {
-                //With no sprite, the effect is independent from particular sprites.
-                ef.execute(null,null,this);
-                exec = true;
+                //if intId==-1, we have no sprite
+                if (intId == -1) {
+                    //With no sprite, the effect is independent from particular sprites.
+                    ef.execute(null, null, this);
+                    exec = true;
 
-                //Affect score for all players:
-                if(ef.applyScore) {
-                    for (int i = 0; i < no_players; i++) {
-                        avatars[i].addScore(ef.getScoreChange(i));
+                    //Affect score for all players:
+                    if (ef.applyScore) {
+                        for (int i = 0; i < no_players; i++) {
+                            avatars[i].addScore(ef.getScoreChange(i));
+                        }
+                    }
+
+                } else {
+
+                    ArrayList<Integer> allTypes = iSubTypes[intId];
+                    for (Integer itype : allTypes) {
+                        //Find all sprites of this subtype.
+                        Collection<VGDLSprite> sprites = this.getSprites(itype);
+                        for (VGDLSprite sp : sprites) {
+                            //Check that they are not dead (could happen in this same cycle).
+                            if (!kill_list.contains(sp) && !sp.is_disabled()) {
+                                executeEffect(ef, sp, null);
+                                exec = true;
+                            }
+                        }
                     }
                 }
 
-            }else {
-            	
-            	ArrayList<Integer> allTypes = iSubTypes[intId];
-            	for(Integer itype : allTypes){
-            		//Find all sprites of this subtype.
-            		Collection<VGDLSprite> sprites = this.getSprites(itype);
-            		for(VGDLSprite sp : sprites){
-            			//Check that they are not dead (could happen in this same cycle).
-            			if(!kill_list.contains(sp) && !sp.is_disabled()){
-            				executeEffect(ef, sp, null);
-                            exec = true;
-            			}
-            		}
-            	}
+                //If the time effect is repetitive, need to reinsert in the list of effects
+                if(ef.repeating)
+                {
+                    if(!exec) ef.planExecution(this);
+                    this.addTimeEffect(ef);
+                }
             }
 
-            //If the time effect is repetitive, need to reinsert in the list of effects
-            if(ef.repeating)
-            {
-                if(!exec) ef.planExecution(this);
-                this.addTimeEffect(ef);
-            }
 
         }
 
@@ -1317,7 +1319,7 @@ public abstract class Game
             {
             	//Take all the subtypes in the hierarchy of this sprite.
             	ArrayList<Integer> allTypes = iSubTypes[intId];
-            	for(Integer itype : allTypes)
+            	if(ef.enabled) for(Integer itype : allTypes)
             	{
             		//Add all sprites of this subtype to the list of sprites.
                     //These are sprites that could potentially collide with EOS
@@ -1345,70 +1347,63 @@ public abstract class Game
             // two sprites could have defined between them.
             for(Effect ef : collisionEffects[p.first][p.second])
             {
+                if(ef.enabled) {
 
-                if(shieldedEffects[p.first].size() > 0) {
-                    if (shieldedEffects[p.first].contains(new Pair(p.second, ef.hashCode)))
-                        continue;
-                }
-
-                ArrayList<VGDLSprite> firstx =  new ArrayList<VGDLSprite>();
-                ArrayList<VGDLSprite> secondx =  new ArrayList<VGDLSprite>();
-
-                ArrayList<Integer> allTypes1 = iSubTypes[p.first];
-                for (int i : allTypes1){
-                    firstx.addAll(getSprites(i));
-                }
-                ArrayList<Integer> allTypes2 = iSubTypes[p.second];
-                for (int j : allTypes2){
-                    secondx.addAll(getSprites(j));
-                }
-                
-            
-                
-                ArrayList<VGDLSprite> new_secondx = new ArrayList<VGDLSprite>();
-
-                for (VGDLSprite s1 : firstx)
-                {
-                	new_secondx = new ArrayList<VGDLSprite>();
-                	
-                	for (VGDLSprite s2 : secondx)
-                	{
-                        if ( (s1 != s2 && s1.rect.intersects(s2.rect))) {
-                        	new_secondx.add(s2);
-                        }
+                    if (shieldedEffects[p.first].size() > 0) {
+                        if (shieldedEffects[p.first].contains(new Pair(p.second, ef.hashCode)))
+                            continue;
                     }
 
-                    for (int a = 0; a < new_secondx.size(); a++)
-                    {
-                        for (int b = 0; b < new_secondx.size(); b++)
-                        {
-                        	if (a < b)
-                        	{
-                                if (Math.sqrt(
-                                    ( (s1.getPosition().x - new_secondx.get(a).getPosition().x) *
-                                    (s1.getPosition().x - new_secondx.get(a).getPosition().x) ) +
+                    ArrayList<VGDLSprite> firstx = new ArrayList<VGDLSprite>();
+                    ArrayList<VGDLSprite> secondx = new ArrayList<VGDLSprite>();
 
-                                    ((s1.getPosition().y - new_secondx.get(a).getPosition().y) *
-                                            (s1.getPosition().y - new_secondx.get(a).getPosition().y) ) ) >
-                                    Math.sqrt(
-                                            ( (s1.getPosition().x - new_secondx.get(b).getPosition().x) *
-                                            (s1.getPosition().x - new_secondx.get(b).getPosition().x) ) +
+                    ArrayList<Integer> allTypes1 = iSubTypes[p.first];
+                    for (int i : allTypes1) {
+                        firstx.addAll(getSprites(i));
+                    }
+                    ArrayList<Integer> allTypes2 = iSubTypes[p.second];
+                    for (int j : allTypes2) {
+                        secondx.addAll(getSprites(j));
+                    }
 
-                                            ((s1.getPosition().y - new_secondx.get(b).getPosition().y) *
-                                                    (s1.getPosition().y - new_secondx.get(b).getPosition().y) ) ) ) 
-                                {
-                                	new_secondx.add(a,new_secondx.get(b));
-                                	new_secondx.remove(b+1);
+
+                    ArrayList<VGDLSprite> new_secondx = new ArrayList<VGDLSprite>();
+
+                    for (VGDLSprite s1 : firstx) {
+                        new_secondx = new ArrayList<VGDLSprite>();
+
+                        for (VGDLSprite s2 : secondx) {
+                            if ((s1 != s2 && s1.rect.intersects(s2.rect))) {
+                                new_secondx.add(s2);
+                            }
+                        }
+
+                        for (int a = 0; a < new_secondx.size(); a++) {
+                            for (int b = 0; b < new_secondx.size(); b++) {
+                                if (a < b) {
+                                    if (Math.sqrt(
+                                            ((s1.getPosition().x - new_secondx.get(a).getPosition().x) *
+                                                    (s1.getPosition().x - new_secondx.get(a).getPosition().x)) +
+
+                                                    ((s1.getPosition().y - new_secondx.get(a).getPosition().y) *
+                                                            (s1.getPosition().y - new_secondx.get(a).getPosition().y))) >
+                                            Math.sqrt(
+                                                    ((s1.getPosition().x - new_secondx.get(b).getPosition().x) *
+                                                            (s1.getPosition().x - new_secondx.get(b).getPosition().x)) +
+
+                                                            ((s1.getPosition().y - new_secondx.get(b).getPosition().y) *
+                                                                    (s1.getPosition().y - new_secondx.get(b).getPosition().y)))) {
+                                        new_secondx.add(a, new_secondx.get(b));
+                                        new_secondx.remove(b + 1);
+                                    }
                                 }
                             }
                         }
-                    }
-                    
-                    for (int i = 0; i < new_secondx.size(); i++)
-                    {
-                    	if (!kill_list.contains(s1) && s1 != new_secondx.get(i) && s1.rect.intersects(new_secondx.get(i).rect)) 
-                    	{
-                    		executeEffect(ef, s1, new_secondx.get(i));
+
+                        for (int i = 0; i < new_secondx.size(); i++) {
+                            if (!kill_list.contains(s1) && s1 != new_secondx.get(i) && s1.rect.intersects(new_secondx.get(i).rect)) {
+                                executeEffect(ef, s1, new_secondx.get(i));
+                            }
                         }
                     }
                 }
