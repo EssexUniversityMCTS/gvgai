@@ -79,7 +79,7 @@ public class Node
                 return new TerminationContent(line);
 
             case Types.VGDL_PARAMETER_SET:
-                return new ParameterContent(line);
+                return ParameterContent.create(line);
         }
         return null;
     }

@@ -14,60 +14,24 @@ import java.util.Random;
 public class ParameterContent extends Content
 {
 
-    /**
-     * Minimum value that this parameter can take.
-     */
-    private double minValue;
 
-    /**
-     * Maximum value that this parameter can take.
-     */
-    private double maxValue;
-
-    /**
-     * Value for this parameter.
-     */
-    private double incValue;
+    public boolean isInt;
+    protected boolean isBoolean;
 
     /**
      * Number of points that can be sampled from minValue
      */
-    private int nPoints;
-
-    /**
-     * Is the parameter an integer
-     */
-    public boolean isInt;
-
-    /**
-     * Is the parameter an integer
-     */
-    public boolean isBoolean;
-
-    /**
-     * Boolean values
-     */
-    public boolean[] bValues;
-
-    /**
-     * Final boolean value
-     */
-    public boolean finalBooleanValue;
-
-    /**
-     * Final value
-     */
-    private double finalValue;
+    protected int nPoints;
 
     /**
      * Is final value set
      */
-    private boolean isFinalValueSet;
+    protected boolean isFinalValueSet;
 
     /**
      * Debug only: Shows the values given to parameters.
      */
-    private boolean VERBOSE = false;
+    protected boolean VERBOSE = false;
 
     /**
      * Default constructor.
@@ -119,129 +83,41 @@ public class ParameterContent extends Content
 
     }
 
-    /**
-     * Init this parameter content to determine min, max, inc and number of possible points in this space.
-     */
-    public void init()
+
+    public static ParameterContent create(String line)
     {
-        //Process this:
-        String[] valuesToRead = (parameters.get("values")).split(":");
+        ParameterContent pc = new ParameterContent(line);
+        if(pc.parameters.size() == 0)
+            return pc; //This happens when parsing lines like "ParameterSet"
+
+        String[] valuesToRead = (pc.parameters.get("values")).split(":");
 
         if(valuesToRead.length == 3)
         {
-            //Definition of min, inc, max.
             if(valuesToRead[0].contains(".") || valuesToRead[1].contains(".") || valuesToRead[2].contains(".")) {
-                this.isInt = false;
+                return new ParameterDoubleContent(pc, line);
             }
-
-            minValue = Double.parseDouble(valuesToRead[0]);
-            incValue = Double.parseDouble(valuesToRead[1]);
-            maxValue = Double.parseDouble(valuesToRead[2]);
-
-            nPoints = 1 + (int)((maxValue - minValue) / incValue);
+            return new ParameterIntContent(pc, line);
         }else{
             //Assuming it's a definition True, False.
             if((valuesToRead[0].equalsIgnoreCase("true") || valuesToRead[0].equalsIgnoreCase("false")) &&
-               (valuesToRead[1].equalsIgnoreCase("true") || valuesToRead[1].equalsIgnoreCase("false"))){
-                this.isBoolean = true;
+                    (valuesToRead[1].equalsIgnoreCase("true") || valuesToRead[1].equalsIgnoreCase("false"))){
+                return new ParameterBoolContent(pc, line);
             }
-            bValues = new boolean[]{valuesToRead[0].equalsIgnoreCase("true"), valuesToRead[1].equalsIgnoreCase("true")};
-            if(bValues[0] != bValues[1])
-                nPoints = 2;
-            else nPoints = 1;
         }
-
-        isFinalValueSet = false;
+        return null;
     }
-
-    /**
-     * Returns a value that this Parameter Content allows. If a value is defined in a parameter 'value',
-     * or it's has been set by other means, it returns that value. If not, samples from the defined possibilities.
-     * @return a value for a parameter.
-     */
-    public double getValue()
-    {
-        if(parameters.containsKey("value"))
-            return Double.parseDouble(parameters.get("value"));
-
-        if(isFinalValueSet)
-            return finalValue;
-
-        //We might have not worked through the range values
-        if(nPoints == -1)
-        {
-            init();
-        }
-
-        //We DO NOT assign the value, only return it.
-        int samplePoint = new Random().nextInt(nPoints);
-        double randomValue = minValue + samplePoint*incValue;
-
-        //if(VERBOSE)
-        //    System.out.println("PARAMETER " + this + " set to a sampled value: " + randomValue);
-
-        return randomValue;
-    }
-
-
-    /**
-     * Returns a value that this Parameter Content allows. If a value is defined in a parameter 'value',
-     * or it's has been set by other means, it returns that value. If not, samples from the defined possibilities.
-     * @return a value for a parameter.
-     */
-    public boolean getBooleanValue()
-    {
-        if(parameters.containsKey("value"))
-            return Boolean.parseBoolean(parameters.get("value"));
-
-        if(isFinalValueSet)
-            return finalBooleanValue;
-
-        //We might have not worked through the range values
-        if(nPoints == -1)
-        {
-            init();
-        }
-
-        //We DO NOT assign the value, only return it.
-        int samplePoint = new Random().nextInt(nPoints);
-        boolean randomValue = bValues[samplePoint];
-
-        //if(VERBOSE)
-        //    System.out.println("PARAMETER " + this + " set to a sampled value: " + randomValue);
-
-        return randomValue;
-    }
-
-
-    public void setRunningValue(int value)
-    {
-        if(isBoolean)
-        {
-            finalBooleanValue = (value == 1);
-            if(VERBOSE)
-                System.out.println("PARAMETER " + this + " set to a FINAL value: " + finalBooleanValue);
-        }
-        else
-        {
-            finalValue = minValue + value * incValue;
-            if(VERBOSE)
-                System.out.println("PARAMETER " + this + " set to a FINAL value: " + finalValue);
-        }
-
-        isFinalValueSet = true;
-
-    }
-
 
     @Override
     public void decorate(HashMap<String, ParameterContent> pcs) {
         //Nothing to do here (too recursive to be true :-))
     }
 
-    public double getMinValue() {return minValue;}
-    public double getMaxValue() {return maxValue;}
+    public void init() { }
+    public void setRunningValue(int value) { }
     public int getnPoints() {return nPoints;}
+    public String getStValue() {return "";}
+
     public String toString()
     {
         if(parameters.containsKey("string"))
@@ -249,6 +125,11 @@ public class ParameterContent extends Content
 
         return "Undefined";
     }
+    public String values()
+    {
+        if(parameters.containsKey("values"))
+            return parameters.get("values");
 
-
+        return "Undefined-values";
+    }
 }

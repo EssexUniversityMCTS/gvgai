@@ -193,22 +193,14 @@ public class DesignMachine {
     {
         long spaceSize = 1;
         System.out.println("Individual length: " + getNumDimensions());
-        System.out.println("\t(Value)\tDim. Size\t\tRange\t\tDescription");
+        System.out.printf("%-20.20s  %-15.15s %-20.20s %-20.20s \n", "Value", "Dim. Size", "Range", "Description");
         for(int i = 0; i < getNumDimensions(); ++i)
         {
             ParameterContent pc = parameterContents[i];
-
-            String val = "";
-            if(pc.isBoolean)
-                val += pc.getBooleanValue();
-            else
-                val += pc.getValue();
-
-
+            String val = pc.getStValue();
             spaceSize *= getDimSize(i);
-            System.out.println( "\t(" + val + ")\t" + getDimSize(i) +
-                    " values \t [" + pc.getMinValue() + "," +
-                    pc.getMaxValue() + "]" + "\t" + parameterStrings[i] );
+            System.out.printf("%-20.20s  %-15.15s %-20.20s %-20.20s \n", val, getDimSize(i), pc.values(), parameterStrings[i]);
+
         }
         DecimalFormat df = new DecimalFormat("0.000E0");
         System.out.println("Search Space Size: " + df.format(spaceSize));

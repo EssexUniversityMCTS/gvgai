@@ -46,6 +46,7 @@ public abstract class Content
      */
     public abstract void decorate (HashMap<String, ParameterContent> pcs);
 
+
     protected void _decorate(HashMap<String, ParameterContent> pcs)
     {
         for (String parameter : this.parameters.keySet()) {
@@ -54,20 +55,7 @@ public abstract class Content
             if(pcs.containsKey(value))
             {
                 ParameterContent pc = pcs.get(value);
-                String parameterizedValue = "";
-
-                if(pc.isBoolean)
-                {
-                    boolean bValue = pc.getBooleanValue();
-                    parameterizedValue += bValue;
-                }else {
-                    double dValue = pc.getValue();
-                    if (pc.isInt)
-                        parameterizedValue += ((int) dValue);
-                    else
-                        parameterizedValue += dValue;
-                }
-                this.parameters.put(parameter, parameterizedValue);
+                this.parameters.put(parameter, pc.getStValue());
             }
         }
     }
