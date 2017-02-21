@@ -29,7 +29,7 @@ public class TestGameSpace {
 
 
         // All public games
-        games = new String[] { "aliens" }; 				// 0
+        games = new String[] { "aliens", "seaquest" }; 				// 0
         gameRules = new String[] { "aliensRules" };     // 0
 
 
@@ -38,7 +38,7 @@ public class TestGameSpace {
         int seed = new Random().nextInt();
 
         // Game and level to play
-        int gameIdx = 0;
+        int gameIdx = 1;
         int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
 
 

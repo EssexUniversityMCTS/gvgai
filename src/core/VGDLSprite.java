@@ -876,6 +876,9 @@ public abstract class VGDLSprite {
         if(maxHealthPoints == 0)
             maxHealthPoints = healthPoints;
 
+        if(healthPoints > maxHealthPoints)
+            healthPoints = maxHealthPoints;
+
         //Safety checks:
         if(cooldown < 1)
             cooldown = 1; //Minimum possible value.
