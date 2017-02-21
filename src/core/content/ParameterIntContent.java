@@ -30,7 +30,6 @@ public class ParameterIntContent extends ParameterContent {
 
 
     public ParameterIntContent(ParameterContent pc, String line) {
-        this.isInt = true;
         this.line = line;
         this.parameters = pc.parameters;
         this.identifier = pc.identifier;

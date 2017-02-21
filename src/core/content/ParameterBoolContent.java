@@ -21,7 +21,6 @@ public class ParameterBoolContent extends ParameterContent {
 
 
     public ParameterBoolContent(ParameterContent pc, String line) {
-        this.isBoolean = true;
         this.line = line;
         this.parameters = pc.parameters;
         this.identifier = pc.identifier;

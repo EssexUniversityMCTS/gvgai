@@ -30,7 +30,6 @@ public class ParameterDoubleContent extends ParameterContent {
 
 
     public ParameterDoubleContent(ParameterContent pc, String line) {
-        this.isInt = false;
         this.line = line;
         this.parameters = pc.parameters;
         this.identifier = pc.identifier;

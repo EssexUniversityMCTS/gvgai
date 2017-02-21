@@ -13,11 +13,6 @@ import java.util.Random;
  */
 public class ParameterContent extends Content
 {
-
-
-    public boolean isInt;
-    protected boolean isBoolean;
-
     /**
      * Number of points that can be sampled from minValue
      */
@@ -46,7 +41,6 @@ public class ParameterContent extends Content
     public ParameterContent(String line)
     {
         this.nPoints = -1;
-        this.isInt = true;
         this.line = line;
 
         //Init structures of node content.
