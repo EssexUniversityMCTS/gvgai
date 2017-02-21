@@ -196,10 +196,19 @@ public class DesignMachine {
         System.out.println("\t(Value)\tDim. Size\t\tRange\t\tDescription");
         for(int i = 0; i < getNumDimensions(); ++i)
         {
+            ParameterContent pc = parameterContents[i];
+
+            String val = "";
+            if(pc.isBoolean)
+                val += pc.getBooleanValue();
+            else
+                val += pc.getValue();
+
+
             spaceSize *= getDimSize(i);
-            System.out.println( "\t(" + parameterContents[i].getValue() + ")\t" + getDimSize(i) +
-                    " values \t [" + parameterContents[i].getMinValue() + "," +
-                    parameterContents[i].getMaxValue() + "]" + "\t" + parameterStrings[i] );
+            System.out.println( "\t(" + val + ")\t" + getDimSize(i) +
+                    " values \t [" + pc.getMinValue() + "," +
+                    pc.getMaxValue() + "]" + "\t" + parameterStrings[i] );
         }
         DecimalFormat df = new DecimalFormat("0.000E0");
         System.out.println("Search Space Size: " + df.format(spaceSize));

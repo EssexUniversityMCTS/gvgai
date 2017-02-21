@@ -25,9 +25,13 @@ public class TestGameSpace {
         // Available games:
         String gamesPath = "examples/gameDesign/";
         String games[] = new String[] {};
+        String gameRules[] = new String[] {};
+
 
         // All public games
         games = new String[] { "aliens" }; 				// 0
+        gameRules = new String[] { "aliensRules" };     // 0
+
 
         // Other settings
         boolean visuals = true;
@@ -36,7 +40,12 @@ public class TestGameSpace {
         // Game and level to play
         int gameIdx = 0;
         int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
+
+
         String game = gamesPath + games[gameIdx] + ".txt";
+//        String game = gamesPath + gameRules[gameIdx] + ".txt";
+
+
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
 
         String recordActionsFile = null;// "actions_" + games[gameIdx] + "_lvl"

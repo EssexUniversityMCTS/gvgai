@@ -40,6 +40,21 @@ public class ParameterContent extends Content
     public boolean isInt;
 
     /**
+     * Is the parameter an integer
+     */
+    public boolean isBoolean;
+
+    /**
+     * Boolean values
+     */
+    public boolean[] bValues;
+
+    /**
+     * Final boolean value
+     */
+    public boolean finalBooleanValue;
+
+    /**
      * Final value
      */
     private double finalValue;
@@ -112,15 +127,30 @@ public class ParameterContent extends Content
         //Process this:
         String[] valuesToRead = (parameters.get("values")).split(":");
 
-        if(valuesToRead[0].contains(".") || valuesToRead[1].contains(".") || valuesToRead[2].contains(".")) {
-            this.isInt = false;
+        if(valuesToRead.length == 3)
+        {
+            //Definition of min, inc, max.
+            if(valuesToRead[0].contains(".") || valuesToRead[1].contains(".") || valuesToRead[2].contains(".")) {
+                this.isInt = false;
+            }
+
+            minValue = Double.parseDouble(valuesToRead[0]);
+            incValue = Double.parseDouble(valuesToRead[1]);
+            maxValue = Double.parseDouble(valuesToRead[2]);
+
+            nPoints = 1 + (int)((maxValue - minValue) / incValue);
+        }else{
+            //Assuming it's a definition True, False.
+            if((valuesToRead[0].equalsIgnoreCase("true") || valuesToRead[0].equalsIgnoreCase("false")) &&
+               (valuesToRead[1].equalsIgnoreCase("true") || valuesToRead[1].equalsIgnoreCase("false"))){
+                this.isBoolean = true;
+            }
+            bValues = new boolean[]{valuesToRead[0].equalsIgnoreCase("true"), valuesToRead[1].equalsIgnoreCase("true")};
+            if(bValues[0] != bValues[1])
+                nPoints = 2;
+            else nPoints = 1;
         }
 
-        minValue = Double.parseDouble(valuesToRead[0]);
-        incValue = Double.parseDouble(valuesToRead[1]);
-        maxValue = Double.parseDouble(valuesToRead[2]);
-
-        nPoints = 1 + (int)((maxValue - minValue) / incValue);
         isFinalValueSet = false;
     }
 
@@ -137,13 +167,13 @@ public class ParameterContent extends Content
         if(isFinalValueSet)
             return finalValue;
 
-        //ELSE: Need to sample. We might have not worked through the range values
+        //We might have not worked through the range values
         if(nPoints == -1)
         {
             init();
         }
 
-        //We DO NOT assign the value, only return it. So, if it's not specified in VGDL, it's random ALWAYS.
+        //We DO NOT assign the value, only return it.
         int samplePoint = new Random().nextInt(nPoints);
         double randomValue = minValue + samplePoint*incValue;
 
@@ -153,13 +183,54 @@ public class ParameterContent extends Content
         return randomValue;
     }
 
+
+    /**
+     * Returns a value that this Parameter Content allows. If a value is defined in a parameter 'value',
+     * or it's has been set by other means, it returns that value. If not, samples from the defined possibilities.
+     * @return a value for a parameter.
+     */
+    public boolean getBooleanValue()
+    {
+        if(parameters.containsKey("value"))
+            return Boolean.parseBoolean(parameters.get("value"));
+
+        if(isFinalValueSet)
+            return finalBooleanValue;
+
+        //We might have not worked through the range values
+        if(nPoints == -1)
+        {
+            init();
+        }
+
+        //We DO NOT assign the value, only return it.
+        int samplePoint = new Random().nextInt(nPoints);
+        boolean randomValue = bValues[samplePoint];
+
+        //if(VERBOSE)
+        //    System.out.println("PARAMETER " + this + " set to a sampled value: " + randomValue);
+
+        return randomValue;
+    }
+
+
     public void setRunningValue(int value)
     {
-        finalValue = minValue + value*incValue;
+        if(isBoolean)
+        {
+            finalBooleanValue = (value == 1);
+            if(VERBOSE)
+                System.out.println("PARAMETER " + this + " set to a FINAL value: " + finalBooleanValue);
+        }
+        else
+        {
+            finalValue = minValue + value * incValue;
+            if(VERBOSE)
+                System.out.println("PARAMETER " + this + " set to a FINAL value: " + finalValue);
+        }
+
         isFinalValueSet = true;
 
-        if(VERBOSE)
-            System.out.println("PARAMETER " + this + " set to a FINAL value: " + finalValue);
     }
 
 
