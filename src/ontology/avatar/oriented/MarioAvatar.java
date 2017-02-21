@@ -23,6 +23,8 @@ import tools.Vector2d;
 public class MarioAvatar extends MovingAvatar
 {
 	public boolean on_ground;
+	public double ground_speedup_factor;
+    public double air_slowdown_factor;
 	
     public MarioAvatar(){}
 
@@ -43,8 +45,10 @@ public class MarioAvatar extends MovingAvatar
     {
         super.loadDefaults();
         draw_arrow = false;
-        strength = 10;
+        strength = 15;
         on_ground = false;
+        ground_speedup_factor = 2.0;
+        air_slowdown_factor = 2.0;
     }
 
 
@@ -108,6 +112,20 @@ public class MarioAvatar extends MovingAvatar
     public void move(Game game, boolean[] actionMask)
     {
         super.move(game, actionMask);
+    }
+    
+    public void applyMovement(Game game, Direction action)
+    {
+    	//this.physics.passiveMovement(this);
+    	if (physicstype_id != 0)
+    		super.updatePassive();
+    	if (action.x()!=0.0 || action.y()!=0.0){
+    		Direction new_action = new Direction(action.x()*ground_speedup_factor, action.y());
+    		if (!on_ground){
+    			new_action = new Direction(action.x()/air_slowdown_factor, action.y());
+    		}
+    		lastMovementType = this.physics.activeMovement(this, new_action, speed);
+    	}
     }
 
 

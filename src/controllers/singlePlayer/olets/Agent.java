@@ -19,19 +19,15 @@ public class Agent extends AbstractPlayer {
     /**
      * Number of feasible actions (usually from 2 to 5)
      */
-    public static int NUM_ACTIONS;
+    public int NUM_ACTIONS;
     /**
      * Feasible actions array, of length NUM_ACTIONS
      */
-    public static Types.ACTIONS[] actions;
+    public Types.ACTIONS[] actions;
     /**
      * The Monte Carlo Tree Search agent - the core of the algorithm
      */
     private final SingleMCTSPlayer mctsPlayer;
-    /**
-     * Constant used in exploration part of UCB formulas
-     */
-    public static final double K = Math.sqrt(2.);
 
     /**
      * Public constructor with state observation and time due.
@@ -49,7 +45,7 @@ public class Agent extends AbstractPlayer {
         NUM_ACTIONS = actions.length;
 
         //Create the player.
-        mctsPlayer = new SingleMCTSPlayer(new Random());
+        mctsPlayer = new SingleMCTSPlayer(new Random(), this);
     }
 
 

@@ -51,27 +51,28 @@ public class SingleMCTSPlayer {
      * Index used to know where to write the next location/orientation.
      */
     private int memoryIndex;
-    /**
-     * Epsilon used for breaking ties
-     */
-    public static double epsilon;
 
+    /**
+     * Reference to this agent
+     */
+    private Agent agent;
 
     /**
      * Public constructor with a sampleRandom generator object.
      *
      * @param randomGenerator sampleRandom generator object.
      */
-    public SingleMCTSPlayer(Random randomGenerator) {
+    public SingleMCTSPlayer(Random randomGenerator, Agent agent) {
         SingleMCTSPlayer.randomGenerator = randomGenerator;
         this.MCTSRolloutDepth = 5;
-        this.rootNode = new SingleTreeNode();
+        this.agent = agent;
+        this.rootNode = new SingleTreeNode(agent.NUM_ACTIONS);
         this.salvagedTree = null;
         memoryLength = 15;
         this.pastAvatarPositions = new Vector2d[memoryLength];
         this.pastAvatarOrientations = new Vector2d[memoryLength];
         this.memoryIndex = 0;
-        epsilon = 0.0001;
+
 
     }
 
@@ -84,7 +85,7 @@ public class SingleMCTSPlayer {
         rootObservation = gameState;
         //Set the game observation to a newly root node.
         if (salvagedTree == null) { //if there is nothing saved from a previous time step, initialize an empty tree node
-            rootNode = new SingleTreeNode();
+            rootNode = new SingleTreeNode(agent.NUM_ACTIONS);
         } else {    //else, initialize the tree with the node that was chosen, and update the memory index for past position arrays
             rootNode = salvagedTree;
             pastAvatarPositions[memoryIndex] = rootObservation.getAvatarPosition();
@@ -168,7 +169,7 @@ public class SingleMCTSPlayer {
                 return expand(currentNode, currentObservation);
             } else {
                 SingleTreeNode next = currentNode.selectChild();
-                currentObservation.advance(Agent.actions[next.getActionIndex()]);
+                currentObservation.advance(agent.actions[next.getActionIndex()]);
 
                 currentNode = next;
                 if (currentNode.getNbGenerated() == 0) {
@@ -210,7 +211,7 @@ public class SingleMCTSPlayer {
                 bestValue = x;
             }
         }
-        currentObservation.advance(Agent.actions[bestAction]);
+        currentObservation.advance(agent.actions[bestAction]);
         int newDepth = fatherNode.nodeDepth + 1;
         double _tabooBias = 0.0;
         int i = 0;
@@ -225,7 +226,7 @@ public class SingleMCTSPlayer {
             i++;
         }
 
-        SingleTreeNode tn = new SingleTreeNode(fatherNode, newDepth, bestAction, _tabooBias);
+        SingleTreeNode tn = new SingleTreeNode(fatherNode, newDepth, bestAction, _tabooBias, agent.NUM_ACTIONS);
         fatherNode.children[bestAction] = tn;
         return tn;
     }
@@ -262,8 +263,8 @@ public class SingleMCTSPlayer {
     {
         int rolloutDepth = 0;
         while (!finishRollout(_currentObservation,rolloutDepth)) {
-            int action = randomGenerator.nextInt(Agent.NUM_ACTIONS);
-            _currentObservation.advance(Agent.actions[action]);
+            int action = randomGenerator.nextInt(agent.NUM_ACTIONS);
+            _currentObservation.advance(agent.actions[action]);
             rolloutDepth++;
         }
 

@@ -28,7 +28,7 @@ public class SingleTreeNode
     public int ROLLOUT_DEPTH = 10;
     public double K = Math.sqrt(2);
 
-    public static int totalIters = 0;
+    //public static int totalIters = 0;
 
     public SingleTreeNode(Random rnd, int num_actions, Types.ACTIONS[] actions) {
         this(null, null, rnd, num_actions, actions);
@@ -72,7 +72,7 @@ public class SingleTreeNode
             //System.out.println(elapsedTimerIteration.elapsedMillis() + " --> " + acumTimeTaken + " (" + remaining + ")");
         }
         //System.out.println("-- " + numIters + " -- ( " + avgTimeTaken + ")");
-        totalIters = numIters;
+        //totalIters = numIters;
 
         //ArcadeMachine.performance.add(numIters);
     }

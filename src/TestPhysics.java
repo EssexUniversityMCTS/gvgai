@@ -36,10 +36,10 @@ public class TestPhysics
         String generateLevelPath = "examples/contphysics/";
 
         //All public games
-        games = new String[]{"pong", "artillery", "ptsp", 					  
-                			 "lander", "mario", "bubble",
-                			 "bird", "asteroids", "racing",
-                			 "candy"};
+        games = new String[]{"artillery", "asteroids", "bird", "bubble", "candy",   //0 - 4
+                             "lander", "mario", "pong", "ptsp", "racing"};          //5 - 9
+
+
 
         //Other settings
         boolean visuals = true;
