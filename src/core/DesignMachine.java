@@ -156,7 +156,7 @@ public class DesignMachine {
 			}
 		}
 
-        System.out.println(" ** Playing game " + level_file + " **");
+        //System.out.println(" ** Playing game " + level_file + " **");
 
 		// Then, play the game.
 		double[] score;

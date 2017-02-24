@@ -69,7 +69,7 @@ public class CompetitionParameters
     /**
      * Indicates if the overspend should be taken into account or not.
      */
-    public static boolean TIME_CONSTRAINED = false;
+    public static boolean TIME_CONSTRAINED = true;
 
     /**
      * Max number of evaluations that can be done
@@ -123,7 +123,7 @@ public class CompetitionParameters
     /**
      * Indicates the type of timer the framework should use.
      */
-    public static ElapsedCpuTimer.TimerType TIMER_TYPE = ElapsedCpuTimer.TimerType.WALL_TIME;
+    public static ElapsedCpuTimer.TimerType TIMER_TYPE = ElapsedCpuTimer.TimerType.CPU_TIME;
 
     /**
      * Key input type. We set the default here, but this will be set by the game in VGDL.
