@@ -21,8 +21,8 @@ GameSpace square_size=25
         A > background avatar
 
     TerminationSet
-        SpriteCounter      stype=avatar               limit=0           win=False
-        MultiSpriteCounter stype1=portal stype2=alien limit=LIM_ALIEN   win=True
+        SpriteCounter      stype=avatar               limit=0   win=False
+        MultiSpriteCounter stype1=portal stype2=alien limit=0   win=True
         Timeout limit=1500 win=IS_GW_TIME
         
     InteractionSet
@@ -52,7 +52,6 @@ GameSpace square_size=25
         SC_AVALIEN  > values=-5:1:5          string=Score_Avatar-Alien
         SC_AVBOMB   > values=-5:1:5          string=Score_Avatar-Bomb
         SC_ALSAM    > values=-5:1:5          string=Score_Alien-Sam
-        LIM_ALIEN   > values=0:0:0           string=Limit_Alien_End
 
         IS_SAM_SINGLE  > values=True:False     string=Is_Sam_Singleton
         IS_GW_TIME     > values=True:False     string=Is_GameWon_OnTimeOut
