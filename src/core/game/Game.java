@@ -2014,6 +2014,11 @@ public abstract class Game
     {
         return parameters;
     }
+
+    public void setParameters(HashMap<String, ParameterContent> parameters)
+    {
+        this.parameters = parameters;
+    }
     
     /**
      * Class for helping collision detection.

@@ -88,37 +88,83 @@ public class VGDLParser
             game = VGDLFactory.GetInstance().createGame((GameContent) rootNode.content);
             game.initMulti();
 
+            //Parse the parameter nodes first, if any.
+            parseParameterNodes(rootNode);
 
-            //We parse the parameter set first:
-            for(Node n : rootNode.children)
-            {
-                if(n.content.identifier.equals("ParameterSet"))
-                {
-                    parseParameterSet(n.children);
-                }
-            }
-
-            //Parse here the normal blocks of VGDL.
-            for(Node n : rootNode.children)
-            {
-                if(n.content.identifier.equals("SpriteSet"))
-                {
-                    parseSpriteSet(n.children);
-                }else if(n.content.identifier.equals("InteractionSet"))
-                {
-                    parseInteractionSet(n.children);
-                }else if(n.content.identifier.equals("LevelMapping"))
-                {
-                    parseLevelMapping(n.children);
-                }else if(n.content.identifier.equals("TerminationSet"))
-                {
-                    parseTerminationSet(n.children);
-                }
-            }
+            //Parse the nodes.
+            parseNodes(rootNode);
         }
 
         return game;
     }
+
+    /**
+     * Parses a game passed whose file is passed by parameter.
+     * @param gamedesc_file filename of the file containing the game
+     * @return the game created
+     */
+    public Game parseGameWithParameters(String gamedesc_file, HashMap<String, ParameterContent> parameters)
+    {
+        String[] desc_lines = new IO().readFile(gamedesc_file);
+        if(desc_lines != null)
+        {
+            Node rootNode = indentTreeParser(desc_lines);
+
+            //Parse here game and arguments of the first line
+            game = VGDLFactory.GetInstance().createGame((GameContent) rootNode.content);
+            game.initMulti();
+            game.setParameters(parameters);
+
+            //Parse the normal nodes, but not the parameters.
+            parseNodes(rootNode);
+        }
+
+        return game;
+    }
+
+    /**
+     * Parses the parameter nodes in VGDL description for game spaces.
+     * @param rootNode the root VGDL node.
+     */
+    private void parseParameterNodes(Node rootNode)
+    {
+        //We parse the parameter set first:
+        for(Node n : rootNode.children)
+        {
+            if(n.content.identifier.equals("ParameterSet"))
+            {
+                parseParameterSet(n.children);
+            }
+        }
+
+    }
+
+    /**
+     * Parses the nodes in VGDL description.
+     * @param rootNode the root VGDL node.
+     */
+    private void parseNodes(Node rootNode)
+    {
+        //Parse here the normal blocks of VGDL.
+        for(Node n : rootNode.children)
+        {
+            if(n.content.identifier.equals("SpriteSet"))
+            {
+                parseSpriteSet(n.children);
+            }else if(n.content.identifier.equals("InteractionSet"))
+            {
+                parseInteractionSet(n.children);
+            }else if(n.content.identifier.equals("LevelMapping"))
+            {
+                parseLevelMapping(n.children);
+            }else if(n.content.identifier.equals("TerminationSet"))
+            {
+                parseTerminationSet(n.children);
+            }
+        }
+    }
+
+
     
     /**
      * parse both rules and termination and add them to the current game object

@@ -31,6 +31,8 @@ public class DesignMachine {
     public String[] parameterStrings;
     public GameSpace toPlay;
 
+    public Player[] players;
+
     /**
      * Creates a Game Space for the game passed as parameter.
      * @param game_file game to create the game space for.
@@ -60,11 +62,11 @@ public class DesignMachine {
         }
     }
 
-    public double[] playGame(int[] parameters, String level_file, int randomSeed)
+    public double[] playGame(int[] parameters, String game_file, String level_file, int randomSeed)
     {
         String agentName = "controllers.singlePlayer.human.Agent";
         boolean visuals = true;
-        return runOneGame(parameters, level_file, visuals, agentName, null, randomSeed, 0);
+        return runOneGame(parameters, game_file, level_file, visuals, agentName, null, randomSeed, 0);
     }
 
 
@@ -80,10 +82,7 @@ public class DesignMachine {
      * @param randomSeed sampleRandom seed for the sampleRandom generator.
      * @param playerID ID of the human player
      */
-    public double[] runOneGame(int[] parameters, String level_file, boolean visuals, String agentNames, String actionFile, int randomSeed, int playerID) {
-
-        //First, we don't know if this game has been played before, so we'll reset just in case.
-        toPlay.reset();
+    public double[] runOneGame(int[] parameters, String game_file, String level_file, boolean visuals, String agentNames, String actionFile, int randomSeed, int playerID) {
 
         //Second, build the game with these parameters.
         for(int i = 0; i < parameters.length; ++i)
@@ -92,6 +91,9 @@ public class DesignMachine {
             ParameterContent pc = parameterContents[i];
             pc.setRunningValue(value);
         }
+
+        //Parse the game with the new parameters.
+        toPlay = (GameSpace) (new VGDLParser().parseGameWithParameters(game_file, toPlay.getParameters()));
 
         //Now it's time to build the level.
 		toPlay.buildLevel(level_file, randomSeed);
@@ -116,7 +118,6 @@ public class DesignMachine {
 
 		// System.out.println("Number of players: " + no_players);
 
-		Player[] players;
 		if (no_players > 1) {
 			// multi player games
 			players = new AbstractMultiPlayer[no_players];
@@ -156,8 +157,6 @@ public class DesignMachine {
 			}
 		}
 
-        //System.out.println(" ** Playing game " + level_file + " **");
-
 		// Then, play the game.
 		double[] score;
 		if (visuals)
@@ -170,7 +169,7 @@ public class DesignMachine {
 
 		// This, the last thing to do in this method, always:
 		toPlay.handleResult();
-		toPlay.printResult();
+		//toPlay.printResult();
 
 		return toPlay.getFullResult();
     }
@@ -191,7 +190,28 @@ public class DesignMachine {
 
     /** DEBUG FUNCTIONS **/
 
+    public void printValues(int[] parameters)
+    {
+        //First, we don't know if this game has been played before, so we'll reset just in case.
+        toPlay.reset();
+
+        //Second, build the game with these parameters.
+        for(int i = 0; i < parameters.length; ++i)
+        {
+            int value = parameters[i];
+            ParameterContent pc = parameterContents[i];
+            pc.setRunningValue(value);
+        }
+
+        printDimensions(parameterContents);
+    }
+
     public void printDimensions()
+    {
+        printDimensions(parameterContents);
+    }
+
+    private void printDimensions(ParameterContent[] params)
     {
         long spaceSize = 1;
         System.out.println("Individual length: " + getNumDimensions());
