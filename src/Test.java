@@ -45,11 +45,11 @@ public class Test
                 "eighthpassenger", "eggomania", "enemycitadel", "escape", "factorymanager",   //30-34
                 "firecaster",  "fireman", "firestorms", "freeway", "frogs",                   //35-39
                 "garbagecollector", "gymkhana", "hungrybirds", "iceandfire", "ikaruga",       //40-44
-                "infection", "intersection", "islands", "jaws", "killbillVol1",               //45-49
+                "infection", "intersection", "islands", "jaws", "killBillVol1",               //45-49
                 "labyrinth", "labyrinthdual", "lasers", "lasers2", "lemmings",                //50-54
                 "missilecommand", "modality", "overload", "pacman", "painter",                //55-59
-                "pokemon", "plants", "plaqueattack", "portals", "racebet",                    //60-64
-                "raceBet2", "realportals", "realsokoban", "rivers", "roadfighter",            //65-69
+                "pokemon", "plants", "plaqueattack", "portals", "raceBet",                    //60-64
+                "racebet2", "realportals", "realsokoban", "rivers", "roadfighter",            //65-69
                 "roguelike", "run", "seaquest", "sheriff", "shipwreck",                       //70-74
                 "sokoban", "solarfox" ,"superman", "surround", "survivezombies",              //75-79
                 "tercio", "thecitadel", "thesnowman",  "waitforbreakfast", "watergame",       //80-84
@@ -62,7 +62,7 @@ public class Test
         int seed = new Random().nextInt();
 
         //Game and level to play
-        int gameIdx = 61;
+        int gameIdx = 58;
         int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
@@ -72,10 +72,10 @@ public class Test
 
         // 1. This starts a game, in a level, played by a human.
 //        ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
-        ArcadeMachine.learningTrack = false;
-        ArcadeMachine.runOneGame(game, level1, visuals, sampleRandomController, null, seed, 0);
+//        ArcadeMachine.learningTrack = false;
+//        ArcadeMachine.runOneGame(game, level1, visuals, sampleRandomController, null, seed, 0);
         
-        // 2. This plays a game in a level by the controller.
+//         2. This plays a game in a level by the controller.
 //        ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
 
         // 3. This replays a game from an action file previously recorded
@@ -98,20 +98,20 @@ public class Test
         //}
         
         //6. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
-//        int N = 82, L = 5, M = 1;
-//        boolean saveActions = false;
-//        String[] levels = new String[L];
-//        String[] actionFiles = new String[L*M];
-//        for(int i = 0; i < N; ++i)
-//        {
-//            int actionIdx = 0;
-//            game = gamesPath + games[i] + ".txt";
-//            for(int j = 0; j < L; ++j){
-//                levels[j] = gamesPath + games[i] + "_lvl" + j +".txt";
-//                if(saveActions) for(int k = 0; k < M; ++k)
-//                    actionFiles[actionIdx++] = "actions_game_" + i + "_level_" + j + "_" + k + ".txt";
-//            }
-//            ArcadeMachine.runGames(game, levels, M, sampleMCTSController, saveActions? actionFiles:null);
-//        }
+        int N = games.length, L = 5, M = 10;
+        boolean saveActions = false;
+        String[] levels = new String[L];
+        String[] actionFiles = new String[L*M];
+        for(int i = 64; i < N; ++i)
+        {
+            int actionIdx = 0;
+            game = gamesPath + games[i] + ".txt";
+            for(int j = 0; j < L; ++j){
+                levels[j] = gamesPath + games[i] + "_lvl" + j +".txt";
+                if(saveActions) for(int k = 0; k < M; ++k)
+                    actionFiles[actionIdx++] = "actions_game_" + i + "_level_" + j + "_" + k + ".txt";
+            }
+            ArcadeMachine.runGames(game, levels, M, sampleMCTSController, saveActions? actionFiles:null);
+        }
     }
 }
