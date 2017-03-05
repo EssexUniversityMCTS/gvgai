@@ -1099,12 +1099,13 @@ public abstract class Game
      */
     public double[] getFullResult()
     {
-        double[] allRes = new double[no_players * 3];
+        int result_dims = 3;
+        double[] allRes = new double[no_players * result_dims];
         for (int i = 0; i < no_players; i++) {
 
-            allRes[i*no_players] = avatars[i].getWinState().key();
-            allRes[i*no_players + 1] = avatars[i].getScore();
-            allRes[i*no_players + 2] = this.getGameTick();
+            allRes[i*result_dims] = avatars[i].getWinState().key();
+            allRes[i*result_dims + 1] = avatars[i].getScore();
+            allRes[i*result_dims + 2] = this.getGameTick();
         }
         return allRes;
     }
