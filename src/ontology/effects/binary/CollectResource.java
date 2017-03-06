@@ -33,10 +33,12 @@ public class CollectResource extends Effect
             Resource r = (Resource) sprite1;
             applyScore=false;
             int numResources = sprite2.getAmountResource(r.resource_type);
-            if(numResources + r.value <= game.getResourceLimit(r.resource_type))
+
+            if(numResources < game.getResourceLimit(r.resource_type))
             {
+                int topup = Math.min(r.value, game.getResourceLimit(r.resource_type) - numResources);
                 applyScore=true;
-                sprite2.modifyResource(r.resource_type, r.value);
+                sprite2.modifyResource(r.resource_type, topup);
 
                 if(killResource)
                     //boolean variable set to false to indicate the sprite was not transformed
