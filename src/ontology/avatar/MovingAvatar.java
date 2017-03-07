@@ -176,7 +176,7 @@ public class MovingAvatar extends VGDLSprite {
 
             if(ect.elapsedMillis() > CompetitionParameters.ACTION_TIME_DISQ)
             {
-                //The agent took too long to replay. The game is over and the agent is disqualified
+                //The agent took too long to reply. The game is over and the agent is disqualified
                 System.out.println("Too long: " + playerID + "(exceeding "+(exceeded)+"ms): controller disqualified.");
                 game.disqualify(playerID);
             }else{
