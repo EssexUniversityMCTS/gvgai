@@ -246,7 +246,6 @@ public class VGDLParser
         int lineNumber = 0;
         for(String line : lines)
         {
-        	System.out.println("Line: " + lineNumber);
             line.replaceAll("\t",tabTemplate);
             line.replace('(',' ');
             line.replace(')',' ');
