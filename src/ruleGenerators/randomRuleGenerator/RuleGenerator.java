@@ -6,7 +6,6 @@ import java.util.Random;
 import core.game.GameDescription.SpriteData;
 import core.game.SLDescription;
 import core.generator.AbstractRuleGenerator;
-import logging.Logger;
 import tools.ElapsedCpuTimer;
 
 public class RuleGenerator extends AbstractRuleGenerator {
@@ -143,15 +142,14 @@ public class RuleGenerator extends AbstractRuleGenerator {
 	    // get two random indeces for the two sprites in the interaction
 	    int i1 = this.random.nextInt(this.usefulSprites.size());
 	    int i2 = (i1 + 1 + this.random.nextInt(this.usefulSprites.size() - 1)) % this.usefulSprites.size();
-	    // add the new random interaction
+	    // add the new random interaction that doesn't produce errors
 	    interaction.add(this.usefulSprites.get(i1) + " " + this.usefulSprites.get(i2) + " > " + 
 		    this.interactions[this.random.nextInt(this.interactions.length)]);
 	    sl.testRules(getArray(interaction), getArray(termination));
-	    while(Logger.getInstance().getMessageCount(1) > 0){
+	    while(sl.getErrors().size() > 0){
 		interaction.remove(i);
 		interaction.add(this.usefulSprites.get(i1) + " " + this.usefulSprites.get(i2) + " > " + 
 			    this.interactions[this.random.nextInt(this.interactions.length)]);
-		Logger.getInstance().flushMessages();
 		sl.testRules(getArray(interaction), getArray(termination));
 	    }
 	}

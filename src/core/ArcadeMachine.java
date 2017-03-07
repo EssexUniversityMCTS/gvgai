@@ -219,10 +219,10 @@ public class ArcadeMachine {
 	    SLDescription sl = new SLDescription(toPlay, lines, randomSeed);
 	    AbstractRuleGenerator generator = createRuleGenerator(ruleGenerator, sl);
 	    String[][] rules = getGeneratedRules(sl, toPlay, generator);
-	    rules = sl.modifyRules(rules[0], rules[1], randomSeed);
 	    if (rules.length < 2) {
 		System.out.println("Missing either interaction rules or termination rules.");
 	    }
+	    rules = sl.modifyRules(rules[0], rules[1], randomSeed);
 	    saveGame(gameFile, modifiedFile, rules);
 	} catch (Exception e) {
 	    toPlay.disqualify();
