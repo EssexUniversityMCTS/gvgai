@@ -6,6 +6,8 @@ import java.util.Random;
 
 import core.VGDLParser;
 import core.game.GameDescription.SpriteData;
+import logging.Logger;
+import logging.Message;
 
 public class SLDescription {
     /**
@@ -245,20 +247,30 @@ public class SLDescription {
      * @param wins	current termination conditions
      * @return		state observation of the current game using 
      * 			the new interaction rules and termination conditions
+     * 			return null when there is errors
      */
     public StateObservation testRules(String[] rules, String[] wins){
 	String[][] rw = this.modifyRules(rules, wins, this.shift);
 	
 	this.currentGame.clearInteractionTerminationData();
-	try {
-		new VGDLParser().parseInteractionTermination(this.currentGame, rw[0], rw[1]);
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+	new VGDLParser().parseInteractionTermination(this.currentGame, rw[0], rw[1]);
 	
 	this.currentGame.reset();
 	this.currentGame.buildStringLevel(this.level, this.random.nextInt());
+	if(Logger.getInstance().getMessageCount(1) > 0){
+	    return null;
+	}
 	return this.currentGame.getObservation();
+    }
+    
+    /**
+     * get list of errors and warnings from the system
+     * 
+     * @return a list of errors and warnings
+     * 		type 0: warnings
+     * 		type 1: errors
+     */
+    public ArrayList<Message> getErrors(){
+	return Logger.getInstance().getMessages();
     }
 }

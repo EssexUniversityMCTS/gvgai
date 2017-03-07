@@ -24,6 +24,15 @@ public class Logger {
     }
 
     /**
+     * Returns the list of errors and warnings
+     * 
+     * @return list of errors and warnings
+     */
+    public ArrayList<Message> getMessages(){
+	return this.messages;
+    }
+    
+    /**
      * Sends all messages to the console in one batch Flushes the message log
      * after this is done to prepare for a new game
      */

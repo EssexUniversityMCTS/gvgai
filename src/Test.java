@@ -117,7 +117,7 @@ public class Test {
 	// }
 
 	// 7. Generate rules (Interaction and Terminations) for a fixed level
-	 ArcadeMachine.generateRules(game, level1, randomRuleGenerator, recordGameFile, seed);
-	 ArcadeMachine.runOneGame(recordGameFile, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
+	// ArcadeMachine.generateRules(game, level1, randomRuleGenerator, recordGameFile, seed);
+	// ArcadeMachine.runOneGame(recordGameFile, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
     }
 }
