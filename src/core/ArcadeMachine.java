@@ -24,6 +24,8 @@ import tools.ElapsedCpuTimer;
 import tools.IO;
 import tools.StatSummary;
 
+import logging.Logger;
+
 /**
  * Created with IntelliJ IDEA. User: Diego Date: 06/11/13 Time: 11:24 This is a
  * Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
@@ -111,6 +113,12 @@ public class ArcadeMachine {
 
 	// First, we create the game to be played..
 	Game toPlay = new VGDLParser().parseGame(game_file);
+	Logger logger = Logger.getInstance();
+	if(logger.getMessageCount() > 0) {
+		System.out.println("Errors/Warnings exist in the game");
+		logger.printMessages();
+		return null;
+	}
 	toPlay.buildLevel(level_file, randomSeed);
 
 	// Warm the game up.
@@ -221,7 +229,7 @@ public class ArcadeMachine {
 	    toPlay.handleResult();
 	    toPlay.printResult();
 	    System.out.println(e.getMessage());
-
+	    e.printStackTrace();
 	    return false;
 	}
 

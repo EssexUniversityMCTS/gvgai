@@ -1,12 +1,6 @@
 import java.util.Random;
 
 import core.ArcadeMachine;
-import core.VGDLFactory;
-import core.VGDLParser;
-import core.VGDLRegistry;
-import core.game.Game;
-import core.game.SLDescription;
-import tools.IO;
 
 /**
  * Created with IntelliJ IDEA. User: Diego Date: 04/10/13 Time: 16:29 This is a
@@ -34,6 +28,7 @@ public class Test {
 	// Available Rule Generator
 	String randomRuleGenerator = "ruleGenerators.randomRuleGenerator.RuleGenerator";
 	String constructiveRuleGenerator = "ruleGenerators.constructiveRuleGenerator.RuleGenerator";
+	String geneticRuleGenerator = "ruleGenerators.geneticRuleGenerator.RuleGenerator";
 	
 	// Available games:
 	String gamesPath = "examples/gridphysics/";
@@ -67,7 +62,7 @@ public class Test {
 	int seed = new Random().nextInt();
 
 	// Game and level to play
-	int gameIdx = 0;
+	int gameIdx = 90;
 	int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
 	String game = gamesPath + games[gameIdx] + ".txt";
 	String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
@@ -80,52 +75,49 @@ public class Test {
 					// executed. null if not to save.
 
 	// 1. This starts a game, in a level, played by a human.
-//	ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
+	// ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
 
 	// 2. This plays a game in a level by the controller.
-	ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
-
+	// ArcadeMachine.runOneGame(game, level1, visuals, sampleRandomController, recordActionsFile, seed, 0);
 
 	// 3. This replays a game from an action file previously recorded
-//	 String readActionsFile = recordActionsFile;
-//	 ArcadeMachine.replayGame(game, level1, visuals, readActionsFile);
+	// String readActionsFile = recordActionsFile;
+	// ArcadeMachine.replayGame(game, level1, visuals, readActionsFile);
 
 	// 4. This plays a single game, in N levels, M times :
-//	String level2 = gamesPath + games[gameIdx] + "_lvl" + 1 +".txt";
-//	int M = 10;
-//	for(int i=0; i<games.length; i++){
-//		game = gamesPath + games[i] + ".txt";
-//		level1 = gamesPath + games[i] + "_lvl" + levelIdx +".txt";
-//		ArcadeMachine.runGames(game, new String[]{level1}, M, sampleMCTSController, null);
-//	}
+	// String level2 = gamesPath + games[gameIdx] + "_lvl" + 1 +".txt";
+	// int M = 10;
+	// for(int i=0; i<games.length; i++){
+	//	game = gamesPath + games[i] + ".txt";
+	//	level1 = gamesPath + games[i] + "_lvl" + levelIdx +".txt";
+	//	ArcadeMachine.runGames(game, new String[]{level1}, M, sampleMCTSController, null);
+	// }
 
 	// 5. This starts a game, in a generated level created by a specific level generator
-//	 if(ArcadeMachine.generateOneLevel(game, randomLevelGenerator, recordLevelFile)){
-//		 ArcadeMachine.playOneGeneratedLevel(game, recordActionsFile,
-//		 recordLevelFile, seed);
-//	 }
+	// if(ArcadeMachine.generateOneLevel(game, randomLevelGenerator, recordLevelFile)){
+	//	 ArcadeMachine.playOneGeneratedLevel(game, recordActionsFile,
+	//	 recordLevelFile, seed);
+	// }
 
 	//6. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
-//	int N = 92, L = 5, M = 10;
-//	boolean saveActions = false;
-//	String[] levels = new String[L];
-//	String[] actionFiles = new String[L*M];
-//	for(int i = 0; i < N; ++i)
-//	{
-//		int actionIdx = 0;
-//		game = gamesPath + games[i] + ".txt";
-//		for(int j = 0; j < L; ++j){
-//			levels[j] = gamesPath + games[i] + "_lvl" + j +".txt";
-//			if(saveActions) for(int k = 0; k < M; ++k)
-//			actionFiles[actionIdx++] = "actions_game_" + i + "_level_" + j + "_" + k + ".txt";
-//		}
-//		ArcadeMachine.runGames(game, levels, M, sampleMCTSController, saveActions? actionFiles:null);
-//	}
+	// int N = 92, L = 5, M = 10;
+	// boolean saveActions = false;
+	// String[] levels = new String[L];
+	// String[] actionFiles = new String[L*M];
+	// for(int i = 0; i < N; ++i)
+	// {
+	//	int actionIdx = 0;
+	//	game = gamesPath + games[i] + ".txt";
+	//	for(int j = 0; j < L; ++j){
+	//		levels[j] = gamesPath + games[i] + "_lvl" + j +".txt";
+	//		if(saveActions) for(int k = 0; k < M; ++k)
+	//		actionFiles[actionIdx++] = "actions_game_" + i + "_level_" + j + "_" + k + ".txt";
+	//	}
+	//	ArcadeMachine.runGames(game, levels, M, sampleMCTSController, saveActions? actionFiles:null);
+	// }
 
 	// 7. Generate rules (Interaction and Terminations) for a fixed level
-	// ArcadeMachine.generateRules(game, level1, randomRuleGenerator, recordGameFile, seed);
-	// ArcadeMachine.playOneGame(recordGameFile, level1, recordActionsFile, seed);
-	// ArcadeMachine.runOneGame(recordGameFile, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
-	 
+	 ArcadeMachine.generateRules(game, level1, randomRuleGenerator, recordGameFile, seed);
+	 ArcadeMachine.runOneGame(recordGameFile, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
     }
 }

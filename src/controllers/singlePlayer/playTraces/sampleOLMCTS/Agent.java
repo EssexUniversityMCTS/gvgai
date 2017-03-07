@@ -1,12 +1,10 @@
-package controllers.singlePlayer.ucbOptimizerAgent;
+package controllers.singlePlayer.playTraces.sampleOLMCTS;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import core.game.Observation;
+import controllers.singlePlayer.playTraces.CommonData;
 import core.game.StateObservation;
-import core.optimization.ucbOptimization.UCBEquation;
-import core.optimization.ucbOptimization.UCBOptimization;
 import core.player.AbstractPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
@@ -20,18 +18,12 @@ import tools.ElapsedCpuTimer;
  */
 public class Agent extends AbstractPlayer {
 
-    public static int NUM_ACTIONS;
-    public static int ROLLOUT_DEPTH = 10;
-    public static double K = Math.sqrt(2);
-    public static Types.ACTIONS[] actions;
-    public static UCBEquation ucb;
-    public static double[] parameters;
-    public static double safetyMargin = 0;
+    public static int MCTS_ITERATIONS = 100;
+    public static double REWARD_DISCOUNT = 1.00;
+    public int num_actions;
+    public Types.ACTIONS[] actions;
 
-    /**
-     * Random generator for the agent.
-     */
-    private SingleMCTSPlayer mctsPlayer;
+    protected SingleMCTSPlayer mctsPlayer;
 
     /**
      * Public constructor with state observation and time due.
@@ -47,10 +39,15 @@ public class Agent extends AbstractPlayer {
         {
             actions[i] = act.get(i);
         }
-        NUM_ACTIONS = actions.length;
+        num_actions = actions.length;
 
         //Create the player.
-        mctsPlayer = new SingleMCTSPlayer(new Random(UCBOptimization.RANDOM_OBJ));
+
+        mctsPlayer = getPlayer(so, elapsedTimer);
+    }
+
+    public SingleMCTSPlayer getPlayer(StateObservation so, ElapsedCpuTimer elapsedTimer) {
+        return new SingleMCTSPlayer(new Random(), num_actions, actions);
     }
 
 
@@ -63,31 +60,15 @@ public class Agent extends AbstractPlayer {
      */
     public Types.ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
 
-        ArrayList<Observation> obs[] = stateObs.getFromAvatarSpritesPositions();
-        ArrayList<Observation> grid[][] = stateObs.getObservationGrid();
-
         //Set the state observation object as the new root of the tree.
         mctsPlayer.init(stateObs);
 
         //Determine the action using MCTS...
         int action = mctsPlayer.run(elapsedTimer);
-
+        
+        CommonData.saveData(stateObs, actions[action]);
         //... and return it.
         return actions[action];
     }
-
-    /**
-     * Function called when the game is over. This method must finish before CompetitionParameters.TEAR_DOWN_TIME,
-     *  or the agent will be DISQUALIFIED
-     * @param stateObservation the game state at the end of the game
-     * @param elapsedCpuTimer timer when this method is meant to finish.
-     */
-    public void result(StateObservation stateObservation, ElapsedCpuTimer elapsedCpuTimer)
-    {
-//        System.out.println("MCTS avg iters: " + SingleMCTSPlayer.iters / SingleMCTSPlayer.num);
-        //Include your code here to know how it all ended.
-        //System.out.println("Game over? " + stateObservation.isGameOver());
-    }
-
 
 }
