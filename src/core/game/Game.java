@@ -1996,6 +1996,11 @@ public abstract class Game
         return new StateObservation(fwdModel);
     }
 
+    public SerializableStateObservation getSerializableObservation(StateObservation observation)
+    {
+        return new SerializableStateObservation(observation);
+    }
+
     public StateObservationMulti getObservationMulti() {
         return new StateObservationMulti(fwdModel);
     }

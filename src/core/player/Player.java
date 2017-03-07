@@ -59,6 +59,11 @@ public abstract class Player {
     private boolean isHuman;
 
     /**
+     * Indicates if this controller is created for the learning version.
+     */
+    protected boolean isLearner;
+
+    /**
      * Picks an action. This function is called every game step to request an
      * action from the player. The action returned must be contained in the
      * actions accessible from stateObs.getAvailableActions(), or no action
@@ -199,4 +204,6 @@ public abstract class Player {
         //Overwrite this method in your controller to draw on the screen.
         //This method should be left empty in this class.
     }
+
+    public boolean isLearner() { return isLearner; }
 }
