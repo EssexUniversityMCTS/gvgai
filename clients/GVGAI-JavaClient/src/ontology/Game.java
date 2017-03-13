@@ -20,7 +20,7 @@ public class Game
     public boolean gameOver = false;
     public Dimension worldDim = new Dimension(0,0);
     public int blockSize = 0;
-    public int remMillis = 0;
+    public long remMillis = 0;
 
     public HashMap<Integer, BitGrid> grid = new HashMap<Integer, BitGrid>();
 

@@ -1,4 +1,5 @@
 import com.google.gson.Gson;
+import core.game.SerializableStateObservation;
 import ontology.Avatar;
 import ontology.BitGrid;
 import ontology.Game;
@@ -51,6 +52,11 @@ public class ClientComm {
      */
     public Avatar avatar;
 
+    /**
+     * Avatar information
+     */
+    public SerializableStateObservation sso;
+
 
     /**
      * Indicates if the current game is a training game
@@ -85,6 +91,7 @@ public class ClientComm {
 
     private void listen() throws IOException {
         String line = "start";
+
         int messageIdx = 0;
         while (line != null) {
             line = input.readLine();
@@ -148,104 +155,42 @@ public class ClientComm {
 
     public COMM_STATE processCommandLine(String commLine)
     {
-        if(commLine.contains("INIT-END"))
+        Gson gson = new Gson();
+        SerializableStateObservation sso = gson.fromJson(commLine, SerializableStateObservation.class);
+
+        if(sso.gameState == SerializableStateObservation.State.INIT_STATE)
         {
-            String[] splitLine = commLine.split(" ");
-            game.remMillis = Integer.parseInt(splitLine[1]);
+            game.remMillis = sso.elapsedTimer;
             return COMM_STATE.INIT_END;
 
-        }else if(commLine.contains("ACT-END")){
-            String[] splitLine = commLine.split(" ");
-            game.remMillis = Integer.parseInt(splitLine[1]);
+        }else if(sso.gameState == SerializableStateObservation.State.ACT_STATE){
+            game.remMillis = sso.elapsedTimer;;
             return COMM_STATE.ACT_END;
 
-        }else if(commLine.contains("ENDGAME-END")){
-            String[] splitLine = commLine.split(" ");
-            game.remMillis = Integer.parseInt(splitLine[1]);
+        }else if(commLine.contains("ENDGAME-END")) {
+            game.remMillis = sso.elapsedTimer;
             return COMM_STATE.ENDED_END;
-
-        }else if(commLine.contains("INIT")){
-            numGames++;
-            String[] splitLine = commLine.split(" ");
-            isTraining = (splitLine[1].equalsIgnoreCase("true"));
-            return COMM_STATE.INIT;
-
-        }else if(commLine.contains("ACT")){
-            return COMM_STATE.ACT;
-
-        }else if(commLine.contains("ENDGAME")){
-            return COMM_STATE.ENDED;
-
         }
+
         return commState;
     }
 
-    public void processLine(String line)
+    public void processLine(String json)
     {
         Gson gson = new Gson();
-        String json = gson.fromJson(line, String.class);
-
-        if(splitLine[0].equalsIgnoreCase("Game"))
-        {
-            game.score = Double.parseDouble(splitLine[1]);
-            game.gameTick = Integer.parseInt(splitLine[2]);
-            game.gameWinner = splitLine[3];
-            game.gameOver = (splitLine[4].equalsIgnoreCase("true"));
-
-            if(splitLine.length > 6) // It will only be >6 in the init case.
-            {
-                game.worldDim = new Dimension( Integer.parseInt(splitLine[5]),
-                        Integer.parseInt(splitLine[6]));
-                game.blockSize = Integer.parseInt(splitLine[7]);
-            }
-
-        }else if(splitLine[0].equalsIgnoreCase("Actions"))
-        {
-            String[] actions = splitLine[1].split(",");
-            for (String act : actions)
-                avatar.actionList.add(act);
-
-        }else if(splitLine[0].equalsIgnoreCase("Avatar"))
-        {
-            avatar.position[0] = Double.parseDouble(splitLine[1]);
-            avatar.position[1] = Double.parseDouble(splitLine[2]);
-            avatar.orientation[0] = Double.parseDouble(splitLine[3]);
-            avatar.orientation[1] = Double.parseDouble(splitLine[4]);
-            avatar.speed = Double.parseDouble(splitLine[5]);
-            avatar.lastAction = splitLine[6];
-
-            if(splitLine.length > 7)
-            {
-                //We have resources
-                String resources[] = splitLine[7].split(";");
-                for (String r : resources)
-                {
-                    int key = Integer.parseInt(r.split(",")[0]);
-                    int val = Integer.parseInt(r.split(",")[1]);
-                    avatar.resources.put(key, val);
-                }
-            }
-
-        }else if(splitLine[0].charAt(0) == 's') //Observation grid.
-        {
-            int spriteID = Integer.parseInt(lineType.substring(1));
-            String[] bitData = splitLine[1].split(",");
-
-            int nRows = bitData.length;
-            int nColumns = bitData[0].length();
-
-            BitGrid g = new BitGrid(nRows, nColumns);
-            for(int r = 0; r < nRows; ++r)
-            {
-                String row = bitData[r];
-                for (int c = 0; c < nColumns; ++c)
-                {
-                    g.grid[r][c] = (row.charAt(c) == '1');
-                }
-            }
-            game.grid.put(spriteID, g);
-        }
-
+        this.sso = gson.fromJson(json, SerializableStateObservation.class);
+//        String data = gson.fromJson(gson, String.class);
+//
+//        for (String act : availableActions)
+//            avatar.actionList.add(act);
+//
+//        for (String r : avatarResources)
+//        {
+//            int key = Integer.parseInt(r.split(",")[0]);
+//            int val = Integer.parseInt(r.split(",")[1]);
+//            avatar.resources.put(key, val);
+//        }
     }
 
 }
+

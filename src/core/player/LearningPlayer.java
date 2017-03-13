@@ -191,7 +191,7 @@ public class LearningPlayer extends Player {
      *
      * @param msg message to send.
      */
-    public void commSend(Gson msg) throws IOException {
+    public void commSend(String msg) throws IOException {
 
         output.write(msg + lineSep);
         output.flush();

@@ -84,20 +84,22 @@ public class SerializableStateObservation {
         fromAvatarSpritesPositions = s.getFromAvatarSpritesPositions();
     }
 
-    public Gson serialize(String filename)
+    public String serialize(String filename)
     {
         Gson gson;
+        String message = "";
         gson = new Gson();
         if(filename == null)
         {
-            gson.toJson(this);
+            message = gson.toJson(this);
         }else{
             try{
+                message = gson.toJson(this);
                 gson.toJson(this, new FileWriter(filename));
             }catch (Exception e){}
         }
 
-        return gson;
+        return message;
     }
 
     public String toString() {
