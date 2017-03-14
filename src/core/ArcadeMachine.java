@@ -40,7 +40,7 @@ public class ArcadeMachine {
      *            file with the level to be played.
      */
     public static double[] playOneGame(String game_file, String level_file, String actionFile, int randomSeed) {
-		String agentName = "controllers.singlePlayer.human.Agent";
+		String agentName = "controllers.singlePlayer.tools.human.Agent";
 		boolean visuals = true;
 		return runOneGame(game_file, level_file, visuals, agentName, actionFile, randomSeed, 0);
     }
@@ -75,7 +75,7 @@ public class ArcadeMachine {
      *            a file to save the generated level
      */
     public static double playOneGeneratedLevel(String gameFile, String actionFile, String levelFile, int randomSeed) {
-	String agentName = "controllers.singlePlayer.human.Agent";
+	String agentName = "controllers.singlePlayer.tools.human.Agent";
 	boolean visuals = true;
 	return runOneGeneratedLevel(gameFile, visuals, agentName, actionFile, levelFile, randomSeed, true);
     }
@@ -396,7 +396,7 @@ public class ArcadeMachine {
 			agentName = "controllers.multiPlayer.replayer.Agent";
 		} else {
 			// single player
-			agentName = "controllers.singlePlayer.replayer.Agent";
+			agentName = "controllers.singlePlayer.tools.replayer.Agent";
 		}
 
 		// Second, create the player. Note: null as action_file and -1 as
@@ -475,7 +475,7 @@ public class ArcadeMachine {
 
 			// Assign the actions to the player. playerID used is 0, default
 			// for single player games
-			((controllers.singlePlayer.replayer.Agent) players[0]).setActions(actions);
+			((controllers.singlePlayer.tools.replayer.Agent) players[0]).setActions(actions);
 
 			} else {
 			// Multi player file
@@ -777,7 +777,7 @@ public class ArcadeMachine {
      *            indicates if the level will be played by a human or a bot.
      */
     public static void playGeneratedLevels(String gameFile, String[] actionFile, String[] levelFile, boolean isHuman) {
-	String agentName = "controllers.singlePlayer.human.Agent";
+	String agentName = "controllers.singlePlayer.tools.human.Agent";
 
 	VGDLFactory.GetInstance().init(); // This always first thing to do.
 	VGDLRegistry.GetInstance().init();
@@ -1589,7 +1589,7 @@ public class ArcadeMachine {
 
     public static final boolean isHuman(String agentName) {
 		if (agentName.equalsIgnoreCase("controllers.multiPlayer.human.Agent")
-			|| agentName.equalsIgnoreCase("controllers.singlePlayer.human.Agent"))
+			|| agentName.equalsIgnoreCase("controllers.singlePlayer.tools.human.Agent"))
 			return true;
 		return false;
 	}

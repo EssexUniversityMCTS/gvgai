@@ -36,8 +36,8 @@ public class GVGExecutor {
         System.out.println("\t-ag Agent name to execute.\n" +
                 "\t\t[Mandatory]\n" +
                 "\t\t[Only one agent]\n" +
-                "\t\t[Ex: -ag controllers.singlePlayer.sampleMCTS.Agent]" +
-                "\t\t[Ex for HUMANS: -ag controllers.singlePlayer.human.Agent]");
+                "\t\t[Ex: -ag controllers.singlePlayer.deprecated.sampleMCTS.Agent]" +
+                "\t\t[Ex for HUMANS: -ag controllers.singlePlayer.tools.human.Agent]");
         System.out.println("\t-res Output results file.\n" +
                 "\t\t[Optional]\n" +
                 "\t\t[Games separated by ':'. A file per game, or all games the same common file ('output.txt' as default). Number of games must match the one from '-g']\n" +
@@ -55,14 +55,14 @@ public class GVGExecutor {
                 "\t\t[Default: 1 repetition.]\n" +
                 "\t\t[Ex: -rep 5]\n");
         System.out.printf("\tComplete example:\n" +
-                "\t\tjava GVGExecutor -g examples/gridphysics/aliens.txt:examples/gridphysics/sokoban.txt -l examples/gridphysics/aliens_lvl0.txt;examples/gridphysics/aliens_lvl1.txt:examples/gridphysics/sokoban_lvl0.txt;examples/gridphysics/sokoban_lvl1.txt;examples/gridphysics/sokoban_lvl2.txt -ag controllers.singlePlayer.sampleMCTS.Agent -res output_game1.txt:output_game2.txt -seed 1342:3513 -vis 1 -rep 5");
+                "\t\tjava GVGExecutor -g examples/gridphysics/aliens.txt:examples/gridphysics/sokoban.txt -l examples/gridphysics/aliens_lvl0.txt;examples/gridphysics/aliens_lvl1.txt:examples/gridphysics/sokoban_lvl0.txt;examples/gridphysics/sokoban_lvl1.txt;examples/gridphysics/sokoban_lvl2.txt -ag controllers.singlePlayer.deprecated.sampleMCTS.Agent -res output_game1.txt:output_game2.txt -seed 1342:3513 -vis 1 -rep 5");
 
         //Other examples:
-        // -g examples/gridphysics/aliens.txt -l examples/gridphysics/aliens_lvl0.txt -ag controllers.singlePlayer.sampleMCTS.Agent -res output_game1.txt -sds 1342 -vis 1 -rep 1
-        // -g examples/gridphysics/aliens.txt -l examples/gridphysics/aliens_lvl0.txt:examples/gridphysics/aliens_lvl1.txt -ag controllers.singlePlayer.sampleMCTS.Agent -res output_game1.txt -sds 1342 -vis 1 -rep 2
-        // -g examples/gridphysics/aliens.txt -l examples/gridphysics/aliens_lvl0.txt -ag controllers.singlePlayer.sampleMCTS.Agent -res output_game1.txt -vis 0 -rep 1
-        // -g examples/gridphysics/aliens.txt:examples/gridphysics/camelRace.txt -l examples/gridphysics/aliens_lvl0.txt:examples/gridphysics/aliens_lvl1.txt;examples/gridphysics/camelRace_lvl0.txt -ag controllers.singlePlayer.sampleMCTS.Agent -res o1.txt:o2.txt -sds 1342:111 -vis 1 -rep 2
-        // -g examples/gridphysics/aliens.txt:examples/gridphysics/camelRace.txt -l examples/gridphysics/aliens_lvl0.txt:examples/gridphysics/aliens_lvl1.txt;examples/gridphysics/camelRace_lvl0.txt -ag controllers.singlePlayer.sampleMCTS.Agent -res o1.txt:o2.txt -vis 0 -rep 2
+        // -g examples/gridphysics/aliens.txt -l examples/gridphysics/aliens_lvl0.txt -ag controllers.singlePlayer.deprecated.sampleMCTS.Agent -res output_game1.txt -sds 1342 -vis 1 -rep 1
+        // -g examples/gridphysics/aliens.txt -l examples/gridphysics/aliens_lvl0.txt:examples/gridphysics/aliens_lvl1.txt -ag controllers.singlePlayer.deprecated.sampleMCTS.Agent -res output_game1.txt -sds 1342 -vis 1 -rep 2
+        // -g examples/gridphysics/aliens.txt -l examples/gridphysics/aliens_lvl0.txt -ag controllers.singlePlayer.deprecated.sampleMCTS.Agent -res output_game1.txt -vis 0 -rep 1
+        // -g examples/gridphysics/aliens.txt:examples/gridphysics/camelRace.txt -l examples/gridphysics/aliens_lvl0.txt:examples/gridphysics/aliens_lvl1.txt;examples/gridphysics/camelRace_lvl0.txt -ag controllers.singlePlayer.deprecated.sampleMCTS.Agent -res o1.txt:o2.txt -sds 1342:111 -vis 1 -rep 2
+        // -g examples/gridphysics/aliens.txt:examples/gridphysics/camelRace.txt -l examples/gridphysics/aliens_lvl0.txt:examples/gridphysics/aliens_lvl1.txt;examples/gridphysics/camelRace_lvl0.txt -ag controllers.singlePlayer.deprecated.sampleMCTS.Agent -res o1.txt:o2.txt -vis 0 -rep 2
     }
 
     public static void parseParameter(String arg1, String arg2)

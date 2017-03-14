@@ -64,7 +64,7 @@ public class DesignMachine {
 
     public double[] playGame(int[] parameters, String game_file, String level_file, int randomSeed)
     {
-        String agentName = "controllers.singlePlayer.human.Agent";
+        String agentName = "controllers.singlePlayer.tools.human.Agent";
         boolean visuals = true;
         return runOneGame(parameters, game_file, level_file, visuals, agentName, null, randomSeed, 0);
     }

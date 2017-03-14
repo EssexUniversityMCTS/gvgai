@@ -15,15 +15,15 @@ public class TestPhysics
     public static void main(String[] args)
     {
         //Available controllers:
-    	String sampleRandomController = "controllers.singlePlayer.sampleRandom.Agent";
-    	String doNothingController = "controllers.singlePlayer.doNothing.Agent";
-        String sampleOneStepController = "controllers.singlePlayer.sampleonesteplookahead.Agent";
-        String sampleMCTSController = "controllers.singlePlayer.sampleMCTS.Agent";
-        String sampleFlatMCTSController = "controllers.singlePlayer.sampleFlatMCTS.Agent";
-        String sampleOLMCTSController = "controllers.singlePlayer.sampleOLMCTS.Agent";
-        String sampleGAController = "controllers.singlePlayer.sampleGA.Agent";
-        String sampleOLETSController = "controllers.singlePlayer.olets.Agent";
-        String repeatOLETS = "controllers.singlePlayer.repeatOLETS.Agent";
+    	String sampleRandomController = "controllers.singlePlayer.simple.sampleRandom.Agent";
+    	String doNothingController = "controllers.singlePlayer.simple.doNothing.Agent";
+        String sampleOneStepController = "controllers.singlePlayer.simple.sampleonesteplookahead.Agent";
+        String sampleMCTSController = "controllers.singlePlayer.deprecated.sampleMCTS.Agent";
+        String sampleFlatMCTSController = "controllers.singlePlayer.simple.sampleFlatMCTS.Agent";
+        String sampleOLMCTSController = "controllers.singlePlayer.advanced.sampleMCTS.Agent";
+        String sampleGAController = "controllers.singlePlayer.deprecated.sampleGA.Agent";
+        String sampleOLETSController = "controllers.singlePlayer.advanced.olets.Agent";
+        String repeatOLETS = "controllers.singlePlayer.tools.repeatOLETS.Agent";
 
         //Available Generators
         String randomLevelGenerator = "levelGenerators.randomLevelGenerator.LevelGenerator";

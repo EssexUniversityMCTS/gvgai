@@ -266,8 +266,6 @@ public class VGDLFactory
     public Effect createEffect(Game game, InteractionContent content)
     {
         if(game != null)
-//            System.err.println("Decoration not supported for Effect: " + content.identifier + " " + content.function);
-//        else
             decorateContent(game, content);
 
         try{

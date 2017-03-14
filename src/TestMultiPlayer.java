@@ -14,7 +14,7 @@ public class TestMultiPlayer {
 	String randomController = "controllers.multiPlayer.sampleRandom.Agent";
 	String oneStepController = "controllers.multiPlayer.sampleOneStepLookAhead.Agent";
 	String sampleMCTSController = "controllers.multiPlayer.sampleMCTS.Agent";
-	String sampleOLMCTSController = "controllers.multiPlayer.sampleOLMCTS.Agent";
+	String sampleOLMCTSController = "controllers.multiPlayer.sampleMCTS.Agent";
 	String sampleGAController = "controllers.multiPlayer.sampleGA.Agent";
 	String humanController = "controllers.multiPlayer.human.Agent";
 

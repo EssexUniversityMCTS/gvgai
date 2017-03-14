@@ -2,7 +2,6 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import core.competition.CompetitionParameters;
 import core.optimization.OptimizationObjective;
@@ -60,7 +59,7 @@ public class OptEvaluateJar {
 		CompetitionParameters.OPTIMIZATION_EVALUATION = Integer.parseInt(value);
 		break;
 	    case "safetymargin":
-		controllers.singlePlayer.ucbOptimizerAgent.Agent.safetyMargin = Integer.parseInt(value);
+		controllers.singlePlayer.tools.ucbOptimizerAgent.Agent.safetyMargin = Integer.parseInt(value);
 		break;
 	    }
 	}
