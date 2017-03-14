@@ -10,16 +10,16 @@ public class TestMultiGameSpace {
 
     public static void main(String[] args) {
         // Available controllers:
-        String doNothingController = "controllers.multiPlayer.doNothing.Agent";
-        String randomController = "controllers.multiPlayer.sampleRandom.Agent";
-        String oneStepController = "controllers.multiPlayer.sampleOneStepLookAhead.Agent";
-        String sampleMCTSController = "controllers.multiPlayer.sampleMCTS.Agent";
-        String sampleOLMCTSController = "controllers.multiPlayer.sampleMCTS.Agent";
-        String sampleGAController = "controllers.multiPlayer.sampleGA.Agent";
-        String humanController = "controllers.multiPlayer.human.Agent";
+        String doNothingController = "controllers.multiPlayer.simple.doNothing.Agent";
+        String randomController = "controllers.multiPlayer.simple.sampleRandom.Agent";
+        String oneStepController = "controllers.multiPlayer.simple.sampleOneStepLookAhead.Agent";
+        String sampleMCTSController = "controllers.multiPlayer.deprecated.sampleMCTS.Agent";
+        String sampleOLMCTSController = "controllers.multiPlayer.deprecated.sampleMCTS.Agent";
+        String sampleGAController = "controllers.multiPlayer.deprecated.sampleGA.Agent";
+        String humanController = "controllers.multiPlayer.tools.human.Agent";
 
-        String sampleRHEA = "controllers.multiPlayer.sampleRHEA.Agent";
-        String sampleRS = "controllers.multiPlayer.sampleRS.Agent";
+        String sampleRHEA = "controllers.multiPlayer.advanced.sampleRHEA.Agent";
+        String sampleRS = "controllers.multiPlayer.advanced.sampleRS.Agent";
 
 
         // Available games:

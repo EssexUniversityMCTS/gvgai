@@ -58,7 +58,7 @@ public class ArcadeMachine {
      *            for the game to be played.
      */
     public static double[] playOneGameMulti(String game_file, String level_file, String actionFile, int randomSeed) {
-	String agentName = "controllers.multiPlayer.human.Agent";
+	String agentName = "controllers.multiPlayer.tools.human.Agent";
 	boolean visuals = true;
 	return runOneGame(game_file, level_file, visuals, agentName, actionFile, randomSeed, 0);
     }
@@ -124,7 +124,7 @@ public class ArcadeMachine {
 	    String[] newNames = new String[no_players];
 	    System.arraycopy(names, 0, newNames, 0, names.length);
 	    for (int i = names.length; i < no_players; ++i)
-		newNames[i] = "controllers.multiPlayer.human.Agent";
+		newNames[i] = "controllers.multiPlayer.tools.human.Agent";
 	    names = newNames;
 	}
 
@@ -393,7 +393,7 @@ public class ArcadeMachine {
 		String agentName;
 		if (toPlay.getNoPlayers() > 1) {
 			// multi player
-			agentName = "controllers.multiPlayer.replayer.Agent";
+			agentName = "controllers.multiPlayer.tools.replayer.Agent";
 		} else {
 			// single player
 			agentName = "controllers.singlePlayer.tools.replayer.Agent";
@@ -531,7 +531,7 @@ public class ArcadeMachine {
 
 				// Assign the actions to the players.
 				for (int i = 0; i < no_players; i++) {
-					((controllers.multiPlayer.replayer.Agent) players[i]).setActions(act.get(i));
+					((controllers.multiPlayer.tools.replayer.Agent) players[i]).setActions(act.get(i));
 				}
 			}
 		} catch (Exception e) {
@@ -1588,7 +1588,7 @@ public class ArcadeMachine {
     }
 
     public static final boolean isHuman(String agentName) {
-		if (agentName.equalsIgnoreCase("controllers.multiPlayer.human.Agent")
+		if (agentName.equalsIgnoreCase("controllers.multiPlayer.tools.human.Agent")
 			|| agentName.equalsIgnoreCase("controllers.singlePlayer.tools.human.Agent"))
 			return true;
 		return false;

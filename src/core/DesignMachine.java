@@ -109,7 +109,7 @@ public class DesignMachine {
 			String[] newNames = new String[no_players];
 			System.arraycopy(names, 0, newNames, 0, names.length);
 			for (int i = names.length; i < no_players; ++i)
-			newNames[i] = "controllers.multiPlayer.human.Agent";
+			newNames[i] = "controllers.multiPlayer.tools.human.Agent";
 			names = newNames;
 		}
 

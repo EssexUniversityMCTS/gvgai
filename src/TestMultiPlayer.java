@@ -10,13 +10,13 @@ public class TestMultiPlayer {
 
     public static void main(String[] args) {
 	// Available controllers:
-	String doNothingController = "controllers.multiPlayer.doNothing.Agent";
-	String randomController = "controllers.multiPlayer.sampleRandom.Agent";
-	String oneStepController = "controllers.multiPlayer.sampleOneStepLookAhead.Agent";
-	String sampleMCTSController = "controllers.multiPlayer.sampleMCTS.Agent";
-	String sampleOLMCTSController = "controllers.multiPlayer.sampleMCTS.Agent";
-	String sampleGAController = "controllers.multiPlayer.sampleGA.Agent";
-	String humanController = "controllers.multiPlayer.human.Agent";
+	String doNothingController = "controllers.multiPlayer.simple.doNothing.Agent";
+	String randomController = "controllers.multiPlayer.simple.sampleRandom.Agent";
+	String oneStepController = "controllers.multiPlayer.simple.sampleOneStepLookAhead.Agent";
+	String sampleMCTSController = "controllers.multiPlayer.deprecated.sampleMCTS.Agent";
+	String sampleOLMCTSController = "controllers.multiPlayer.deprecated.sampleMCTS.Agent";
+	String sampleGAController = "controllers.multiPlayer.deprecated.sampleGA.Agent";
+	String humanController = "controllers.multiPlayer.tools.human.Agent";
 
 		//String test = "Dani_100315290.Agent";
 
