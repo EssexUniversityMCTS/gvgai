@@ -1,0 +1,68 @@
+GameSpace no_players=2 key_handler=Pulse
+    SpriteSet
+        ground > Immovable hidden=True img=oryx/backGrey
+
+        door > Door
+            doorOpen > img=oryx/dooropen1
+            doorClosed > img=oryx/doorclosed1
+
+        ingredient > Resource img=newset/flour shrinkfactor=0.5
+            eat > value=EATVALUE limit=4
+            bake > value=BAKEVALUE limit=LIMITMUMBAKE
+
+        structures > Immovable
+            oven > color=GRAY img=newset/city1_fire
+            bed > color=BLUE img=newset/street2
+            blank > hidden=True invisible=True
+            cake > color=PINK img=newset/logm
+
+        avatar > MovingAvatar frameRate=16
+            child > speed=CSPEED img=newset/man4 shrinkfactor=0.7
+            mum > speed=MSPEED img=newset/girl3
+
+        wall > Immovable img=oryx/wall3 autotiling=True
+        
+    InteractionSet
+        avatar avatar wall > stepBack pixelPerfect=True
+        mum bed > stepBack pixelPerfect=True
+        child oven doorClosed > stepBack pixelPerfect=True
+
+        eat child > collectResource killResource=True scoreChange=2,0
+        bake child > killSprite
+        child eat > killIfHasMore resource=eat limit=4
+        child bed > spawnIfHasMore limit=3 resource=eat spend=3 stype=blank
+        child bed > transformToAll stype=doorOpen stypeTo=doorClosed
+        child bed > addTimer timer=TCHILDBED ftype=transformToAll stype=doorClosed stypeTo=doorOpen
+        blank bed > killSprite
+
+        eat mum > killSprite
+        bake mum > collectResource killResource=True
+
+        mum oven > spawnIfHasMore limit=LIMITMUMBAKE resource=bake spend=5 stype=cake scoreChange=0,20
+
+    TerminationSet
+        MultiSpriteCounter stype1=cake limit=1 win=False,True
+        SpriteCounter stype=child win=False,True
+        SpriteCounter stype=ingredient win=True,False
+        Timeout limit=10 win=True,False
+    
+    LevelMapping
+        A > child ground
+        B > mum ground
+        x > eat bake ground
+        b > bed ground
+        o > oven ground
+        . > ground
+        d > doorOpen ground
+
+
+    ParameterSet
+        #{Name of the parameter} > {values(min, inc, max)/(boolean)} {descriptive string}
+
+        CSPEED      > values=0.1:0.1:1.0     string=Child_Speed
+        MSPEED      > values=0.1:0.1:1.0     string=Mum_Speed
+        EATVALUE    > values=1:1:4           string=Eat_Value
+        BAKEVALUE   > values=1:2:20          string=Bake_Value
+        LIMITMUMBAKE > values=1:2:20         string=Limit_Mum_Bake
+        TCHILDBED    > values=10:20:200      string=Timer_Child_Bed
+        TIMEOUT     > values=500:100:1500    string=Game_Timeout
