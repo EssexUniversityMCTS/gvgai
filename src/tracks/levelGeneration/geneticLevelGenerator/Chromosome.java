@@ -1,4 +1,4 @@
-package tracks.levelGenerators.geneticLevelGenerator;
+package tracks.levelGeneration.geneticLevelGenerator;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import core.game.GameDescription.SpriteData;
 import core.game.GameDescription.TerminationData;
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
-import tracks.levelGenerators.constraints.CombinedConstraints;
+import tracks.levelGeneration.constraints.CombinedConstraints;
 import ontology.Types;
 import ontology.Types.WINNER;
 import tools.ElapsedCpuTimer;

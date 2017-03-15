@@ -1,4 +1,4 @@
-package tracks.levelGenerators.randomLevelGenerator;
+package tracks.levelGeneration.randomLevelGenerator;
 
 import java.util.ArrayList;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package tracks.ruleGenerators.randomRuleGenerator;
+package tracks.ruleGeneration.randomRuleGenerator;
 
 import java.util.ArrayList;
 import java.util.Random;

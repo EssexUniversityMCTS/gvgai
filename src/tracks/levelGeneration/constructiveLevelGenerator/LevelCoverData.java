@@ -1,4 +1,4 @@
-package tracks.levelGenerators.constructiveLevelGenerator;
+package tracks.levelGeneration.constructiveLevelGenerator;
 
 
 /**

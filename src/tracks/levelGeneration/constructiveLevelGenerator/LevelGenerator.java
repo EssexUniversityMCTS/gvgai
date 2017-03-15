@@ -1,4 +1,4 @@
-package tracks.levelGenerators.constructiveLevelGenerator;
+package tracks.levelGeneration.constructiveLevelGenerator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +10,7 @@ import core.game.GameDescription;
 import core.game.GameDescription.SpriteData;
 import core.game.GameDescription.TerminationData;
 import core.generator.AbstractLevelGenerator;
-import tracks.levelGenerators.constructiveLevelGenerator.LevelData.Point;
+import tracks.levelGeneration.constructiveLevelGenerator.LevelData.Point;
 import tools.ElapsedCpuTimer;
 import tools.GameAnalyzer;
 import tools.Utils;

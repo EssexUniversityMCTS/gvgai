@@ -1,4 +1,4 @@
-package tracks.levelGenerators.geneticLevelGenerator;
+package tracks.levelGeneration.geneticLevelGenerator;
 
 import java.util.Random;
 
@@ -126,6 +126,6 @@ public class SharedData {
 	/**
 	 * constructive level generator to help in speeding up the level generation process
 	 */
-	public static tracks.levelGenerators.constructiveLevelGenerator.LevelGenerator constructiveGen;
+	public static tracks.levelGeneration.constructiveLevelGenerator.LevelGenerator constructiveGen;
 	
 }

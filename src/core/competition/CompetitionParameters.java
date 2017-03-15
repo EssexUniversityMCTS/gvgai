@@ -69,7 +69,8 @@ public class CompetitionParameters
     /**
      * Indicates if the overspend should be taken into account or not.
      */
-    public static boolean TIME_CONSTRAINED = true;
+    public static boolean TIME_CONSTRAINED = ! System.getProperty("os.name").contains("Windows");
+    //true;
 
     /**
      * Max number of evaluations that can be done
@@ -119,11 +120,6 @@ public class CompetitionParameters
     public static final long WARMUP_TIME = 5000;
     public static final long WARMUP_CP = 100;
     public static final long WARMUP_ADV = 1000;
-
-    /**
-     * Indicates the type of timer the framework should use.
-     */
-    public static ElapsedCpuTimer.TimerType TIMER_TYPE = ElapsedCpuTimer.TimerType.CPU_TIME;
 
     /**
      * Key input type. We set the default here, but this will be set by the game in VGDL.

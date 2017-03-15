@@ -1,4 +1,4 @@
-package tracks.levelGenerators.geneticLevelGenerator;
+package tracks.levelGeneration.geneticLevelGenerator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +39,7 @@ public class LevelGenerator extends AbstractLevelGenerator{
 		SharedData.random = new Random();
 		SharedData.gameDescription = game;
 		SharedData.gameAnalyzer = new GameAnalyzer(game);
-		SharedData.constructiveGen = new tracks.levelGenerators.constructiveLevelGenerator.LevelGenerator(game, null);
+		SharedData.constructiveGen = new tracks.levelGeneration.constructiveLevelGenerator.LevelGenerator(game, null);
 		bestChromosomeLevelMapping = null;
 		bestFitness = null;
 		numOfFeasible = null;

@@ -1,4 +1,4 @@
-package tracks.levelGenerators.constraints;
+package tracks.levelGeneration.constraints;
 
 import ontology.Types;
 import ontology.Types.WINNER;

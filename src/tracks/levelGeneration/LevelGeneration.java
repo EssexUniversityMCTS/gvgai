@@ -1,13 +1,13 @@
-package tracks.levelGenerators;
+package tracks.levelGeneration;
 
 import core.ArcadeMachine;
 
 public class LevelGeneration {
     public static void main(String[] args) {
 
-	String levelGenerator = "tracks.levelGenerators." + args[0] + ".LevelGenerator";
+	String levelGenerator = "tracks.levelGeneration." + args[0] + ".LevelGenerator";
 	int numberOfLevels = 5;
-	tracks.levelGenerators.randomLevelGenerator.LevelGenerator.includeBorders = true;
+	tracks.levelGeneration.randomLevelGenerator.LevelGenerator.includeBorders = true;
 
 	String[] folderName = levelGenerator.split("\\.");
 	String gamesPath = "examples/gridphysics/";

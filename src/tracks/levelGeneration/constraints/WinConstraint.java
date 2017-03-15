@@ -1,6 +1,6 @@
-package tracks.levelGenerators.constraints;
+package tracks.levelGeneration.constraints;
 
-import tracks.levelGenerators.geneticLevelGenerator.SharedData;
+import tracks.levelGeneration.geneticLevelGenerator.SharedData;
 import ontology.Types;
 import ontology.Types.WINNER;
 

@@ -1,4 +1,4 @@
-package tracks.levelGenerators.constraints;
+package tracks.levelGeneration.constraints;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class CombinedConstraints extends AbstractConstraint{
 	public void addConstraints(String[] conStrings){
 		for(String c:conStrings){
 			try{
-				Class constrainClass = Class.forName("tracks.levelGenerators.constraints." + c);
+				Class constrainClass = Class.forName("tracks.levelGeneration.constraints." + c);
 				Constructor constrainConstructor = constrainClass.getConstructor();
 				AbstractConstraint constraint = (AbstractConstraint) constrainConstructor.newInstance();
 				constraints.add(constraint);

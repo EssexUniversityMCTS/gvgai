@@ -1,4 +1,4 @@
-package tracks.levelGenerators.constraints;
+package tracks.levelGeneration.constraints;
 
 public class CoverPercentageConstraint extends AbstractConstraint{
 

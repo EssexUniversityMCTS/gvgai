@@ -1,4 +1,4 @@
-package tracks.levelGenerators.constraints;
+package tracks.levelGeneration.constraints;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

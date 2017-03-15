@@ -1,4 +1,4 @@
-package tracks.levelGenerators.constructiveLevelGenerator;
+package tracks.levelGeneration.constructiveLevelGenerator;
 
 import java.util.ArrayList;
 import java.util.HashMap;

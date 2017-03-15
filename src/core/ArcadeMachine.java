@@ -109,6 +109,11 @@ public class ArcadeMachine {
 	if (VERBOSE)
 	    System.out.println(" ** Playing game " + game_file + ", level " + level_file + " **");
 
+	if (!CompetitionParameters.TIME_CONSTRAINED)
+	{
+		System.out.println(" * WARNING: Time limitations disabled on Windows * ");
+	}
+
 	// First, we create the game to be played..
 	Game toPlay = new VGDLParser().parseGame(game_file);
 	toPlay.buildLevel(level_file, randomSeed);
@@ -960,7 +965,7 @@ public class ArcadeMachine {
 	try {
 
 	    // Determine the time due for the controller creation.
-	    ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
+	    ElapsedCpuTimer ect = new ElapsedCpuTimer();
 	    ect.setMaxTimeMillis(CompetitionParameters.INITIALIZATION_TIME);
 
 	    if (so.getNoPlayers() < 2) { // single player
@@ -1057,7 +1062,7 @@ public class ArcadeMachine {
 	    Constructor controllerArgsConstructor = controllerClass.getConstructor(gameArgClass);
 
 	    // Determine the time due for the controller creation.
-	    ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
+	    ElapsedCpuTimer ect = new ElapsedCpuTimer();
 	    ect.setMaxTimeMillis(CompetitionParameters.LEVEL_INITIALIZATION_TIME);
 
 	    // Call the constructor with the appropriate parameters.
@@ -1125,7 +1130,7 @@ public class ArcadeMachine {
 	    Constructor controllerArgsConstructor = controllerClass.getConstructor(gameArgClass);
 
 	    // Determine the time due for the controller creation.
-	    ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
+	    ElapsedCpuTimer ect = new ElapsedCpuTimer();
 	    ect.setMaxTimeMillis(CompetitionParameters.RULE_INITIALIZATION_TIME);
 
 	    // Call the constructor with the appropriate parameters.
@@ -1188,7 +1193,7 @@ public class ArcadeMachine {
      *         Description File string.
      */
     private static String getGeneratedLevel(GameDescription gd, Game game, AbstractLevelGenerator generator) {
-	ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
+	ElapsedCpuTimer ect = new ElapsedCpuTimer();
 	ect.setMaxTimeMillis(CompetitionParameters.LEVEL_ACTION_TIME);
 
 	String level = generator.generateLevel(gd, ect.copy());
@@ -1218,7 +1223,7 @@ public class ArcadeMachine {
      * @return		the new interaction rules and termination conditions
      */
     private static String[][] getGeneratedRules(SLDescription sl, Game game, AbstractRuleGenerator generator) {
-	ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
+	ElapsedCpuTimer ect = new ElapsedCpuTimer();
 	ect.setMaxTimeMillis(CompetitionParameters.RULE_ACTION_TIME);
 
 	String[][] rules = generator.generateRules(sl, ect.copy());
@@ -1385,7 +1390,7 @@ public class ArcadeMachine {
      *            milliseconds).
      */
     public static void warmUp(Game toPlay, long howLong) {
-	ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
+	ElapsedCpuTimer ect = new ElapsedCpuTimer();
 	ect.setMaxTimeMillis(howLong);
 	int playoutLength = 10;
 	int copyStats = 0;
@@ -1559,7 +1564,7 @@ public class ArcadeMachine {
 
 	for (Player p : players) {
 	    // Determine the time due for the controller close up.
-	    ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
+	    ElapsedCpuTimer ect = new ElapsedCpuTimer();
 	    ect.setMaxTimeMillis(CompetitionParameters.TEAR_DOWN_TIME);
 
 	    // Inform about the result and the final game state.

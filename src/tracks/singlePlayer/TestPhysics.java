@@ -28,9 +28,9 @@ public class TestPhysics
         String repeatOLETS = "tracks.singlePlayer.tools.repeatOLETS.Agent";
 
         //Available Generators
-        String randomLevelGenerator = "tracks.levelGenerators.randomLevelGenerator.LevelGenerator";
-        String geneticGenerator = "tracks.levelGenerators.geneticLevelGenerator.LevelGenerator";
-        String constructiveLevelGenerator = "tracks.levelGenerators.constructiveLevelGenerator.LevelGenerator";
+        String randomLevelGenerator = "tracks.levelGeneration.randomLevelGenerator.LevelGenerator";
+        String geneticGenerator = "tracks.levelGeneration.geneticLevelGenerator.LevelGenerator";
+        String constructiveLevelGenerator = "tracks.levelGeneration.constructiveLevelGenerator.LevelGenerator";
         
         //Available games:
         String gamesPath = "examples/contphysics/";
