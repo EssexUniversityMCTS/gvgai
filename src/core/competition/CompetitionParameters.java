@@ -68,6 +68,8 @@ public class CompetitionParameters
 
     /**
      * Indicates if the overspend should be taken into account or not.
+     *  Time limits are disabled on Windows, because CPU TIME is not accurate enough
+     *  at the level of milliseconds on this OS.
      */
     public static boolean TIME_CONSTRAINED = ! System.getProperty("os.name").contains("Windows");
     //true;
