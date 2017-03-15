@@ -1,11 +1,11 @@
 
-controllers.Heuristics
-controllers.human
-controllers.replayer
-controllers.sampleGA
-controllers.sampleMCTS
-controllers.sampleRandom
-controllers.sampleonesteplookahead
+tracks.Heuristics
+tracks.human
+tracks.replayer
+tracks.sampleGA
+tracks.sampleMCTS
+tracks.sampleRandom
+tracks.sampleonesteplookahead
 core
 core.competition
 core.content

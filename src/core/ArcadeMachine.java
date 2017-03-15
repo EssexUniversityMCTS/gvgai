@@ -40,7 +40,7 @@ public class ArcadeMachine {
      *            file with the level to be played.
      */
     public static double[] playOneGame(String game_file, String level_file, String actionFile, int randomSeed) {
-		String agentName = "controllers.singlePlayer.tools.human.Agent";
+		String agentName = "tracks.singlePlayer.tools.human.Agent";
 		boolean visuals = true;
 		return runOneGame(game_file, level_file, visuals, agentName, actionFile, randomSeed, 0);
     }
@@ -58,7 +58,7 @@ public class ArcadeMachine {
      *            for the game to be played.
      */
     public static double[] playOneGameMulti(String game_file, String level_file, String actionFile, int randomSeed) {
-	String agentName = "controllers.multiPlayer.tools.human.Agent";
+	String agentName = "tracks.multiPlayer.tools.human.Agent";
 	boolean visuals = true;
 	return runOneGame(game_file, level_file, visuals, agentName, actionFile, randomSeed, 0);
     }
@@ -75,7 +75,7 @@ public class ArcadeMachine {
      *            a file to save the generated level
      */
     public static double playOneGeneratedLevel(String gameFile, String actionFile, String levelFile, int randomSeed) {
-	String agentName = "controllers.singlePlayer.tools.human.Agent";
+	String agentName = "tracks.singlePlayer.tools.human.Agent";
 	boolean visuals = true;
 	return runOneGeneratedLevel(gameFile, visuals, agentName, actionFile, levelFile, randomSeed, true);
     }
@@ -91,7 +91,7 @@ public class ArcadeMachine {
      * @param visuals
      *            true to show the graphics, false otherwise.
      * @param agentNames
-     *            names (inc. package) where the controllers are otherwise.
+     *            names (inc. package) where the tracks are otherwise.
      *            Names separated by space.
      * @param actionFile
      *            filename of the files where the actions of these players, for
@@ -124,7 +124,7 @@ public class ArcadeMachine {
 	    String[] newNames = new String[no_players];
 	    System.arraycopy(names, 0, newNames, 0, names.length);
 	    for (int i = names.length; i < no_players; ++i)
-		newNames[i] = "controllers.multiPlayer.tools.human.Agent";
+		newNames[i] = "tracks.multiPlayer.tools.human.Agent";
 	    names = newNames;
 	}
 
@@ -393,10 +393,10 @@ public class ArcadeMachine {
 		String agentName;
 		if (toPlay.getNoPlayers() > 1) {
 			// multi player
-			agentName = "controllers.multiPlayer.tools.replayer.Agent";
+			agentName = "tracks.multiPlayer.tools.replayer.Agent";
 		} else {
 			// single player
-			agentName = "controllers.singlePlayer.tools.replayer.Agent";
+			agentName = "tracks.singlePlayer.tools.replayer.Agent";
 		}
 
 		// Second, create the player. Note: null as action_file and -1 as
@@ -475,7 +475,7 @@ public class ArcadeMachine {
 
 			// Assign the actions to the player. playerID used is 0, default
 			// for single player games
-			((controllers.singlePlayer.tools.replayer.Agent) players[0]).setActions(actions);
+			((tracks.singlePlayer.tools.replayer.Agent) players[0]).setActions(actions);
 
 			} else {
 			// Multi player file
@@ -531,7 +531,7 @@ public class ArcadeMachine {
 
 				// Assign the actions to the players.
 				for (int i = 0; i < no_players; i++) {
-					((controllers.multiPlayer.tools.replayer.Agent) players[i]).setActions(act.get(i));
+					((tracks.multiPlayer.tools.replayer.Agent) players[i]).setActions(act.get(i));
 				}
 			}
 		} catch (Exception e) {
@@ -777,7 +777,7 @@ public class ArcadeMachine {
      *            indicates if the level will be played by a human or a bot.
      */
     public static void playGeneratedLevels(String gameFile, String[] actionFile, String[] levelFile, boolean isHuman) {
-	String agentName = "controllers.singlePlayer.tools.human.Agent";
+	String agentName = "tracks.singlePlayer.tools.human.Agent";
 
 	VGDLFactory.GetInstance().init(); // This always first thing to do.
 	VGDLRegistry.GetInstance().init();
@@ -1588,8 +1588,8 @@ public class ArcadeMachine {
     }
 
     public static final boolean isHuman(String agentName) {
-		if (agentName.equalsIgnoreCase("controllers.multiPlayer.tools.human.Agent")
-			|| agentName.equalsIgnoreCase("controllers.singlePlayer.tools.human.Agent"))
+		if (agentName.equalsIgnoreCase("tracks.multiPlayer.tools.human.Agent")
+			|| agentName.equalsIgnoreCase("tracks.singlePlayer.tools.human.Agent"))
 			return true;
 		return false;
 	}

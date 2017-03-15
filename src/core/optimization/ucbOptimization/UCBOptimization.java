@@ -40,7 +40,7 @@ public class UCBOptimization implements OptimizationObjective {
 		this.levelPaths = levelPaths;
 		this.repetition = repetition;
 		this.numberOfEvaluation = evaluation;
-		controllers.singlePlayer.tools.ucbOptimizerAgent.Agent.ucb = ucb;
+		tracks.singlePlayer.tools.ucbOptimizerAgent.Agent.ucb = ucb;
 	}
 	
 	/**
@@ -48,7 +48,7 @@ public class UCBOptimization implements OptimizationObjective {
 	 */
 	@Override
 	public int getNumberOfParameters() {
-		return controllers.singlePlayer.tools.ucbOptimizerAgent.Agent.ucb.lengthParameters();
+		return tracks.singlePlayer.tools.ucbOptimizerAgent.Agent.ucb.lengthParameters();
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class UCBOptimization implements OptimizationObjective {
 		}
 		this.numberOfEvaluation -= 1;
 		
-		controllers.singlePlayer.tools.ucbOptimizerAgent.Agent.parameters = parameters;
+		tracks.singlePlayer.tools.ucbOptimizerAgent.Agent.parameters = parameters;
 		
 		double[] results = new double[this.getNumberOfObjectives()];
 		for(int i=0; i<this.gamePaths.length; i++){
@@ -83,7 +83,7 @@ public class UCBOptimization implements OptimizationObjective {
 				double[] gameResults = null;
 				do{
 					gameResults = ArcadeMachine.runOneGame(this.gamePaths[i], this.levelPaths[i], false, 
-							"controllers.singlePlayer.tools.ucbOptimizerAgent.Agent", null, new Random().nextInt(), 0);
+							"tracks.singlePlayer.tools.ucbOptimizerAgent.Agent", null, new Random().nextInt(), 0);
 				}while(gameResults[0] < -10);
 				
 				totalWins += Math.max(gameResults[0], 0);

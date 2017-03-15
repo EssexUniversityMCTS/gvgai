@@ -883,7 +883,7 @@ public abstract class Game
         //Determine the delay for playing with a good fps.
         double delay = CompetitionParameters.LONG_DELAY;
         for (Player player : players)
-            if(player instanceof controllers.singlePlayer.tools.human.Agent) {
+            if(player instanceof tracks.singlePlayer.tools.human.Agent) {
                 delay = 1000.0 / CompetitionParameters.DELAY; //in milliseconds
                 break;
             }

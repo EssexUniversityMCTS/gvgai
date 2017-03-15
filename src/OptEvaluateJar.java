@@ -59,7 +59,7 @@ public class OptEvaluateJar {
 		CompetitionParameters.OPTIMIZATION_EVALUATION = Integer.parseInt(value);
 		break;
 	    case "safetymargin":
-		controllers.singlePlayer.tools.ucbOptimizerAgent.Agent.safetyMargin = Integer.parseInt(value);
+		tracks.singlePlayer.tools.ucbOptimizerAgent.Agent.safetyMargin = Integer.parseInt(value);
 		break;
 	    }
 	}

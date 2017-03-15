@@ -1,6 +1,6 @@
 package core.optimization.ucbOptimization;
 
-import controllers.singlePlayer.tools.ucbOptimizerAgent.Helper;
+import tracks.singlePlayer.tools.ucbOptimizerAgent.Helper;
 
 /**
  * implementation of the evolved ucb equations from

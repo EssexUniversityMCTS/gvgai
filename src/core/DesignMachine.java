@@ -64,7 +64,7 @@ public class DesignMachine {
 
     public double[] playGame(int[] parameters, String game_file, String level_file, int randomSeed)
     {
-        String agentName = "controllers.singlePlayer.tools.human.Agent";
+        String agentName = "tracks.singlePlayer.tools.human.Agent";
         boolean visuals = true;
         return runOneGame(parameters, game_file, level_file, visuals, agentName, null, randomSeed, 0);
     }
@@ -77,7 +77,7 @@ public class DesignMachine {
      * @param parameters parameters for the game space
      * @param level_file file with the level to be played.
      * @param visuals true to show the graphics, false otherwise.
-     * @param agentNames names (inc. package) where the controllers are otherwise.  Names separated by space.
+     * @param agentNames names (inc. package) where the tracks are otherwise.  Names separated by space.
      * @param actionFile filename of the files where the actions of these players, for this game, should be recorded.
      * @param randomSeed sampleRandom seed for the sampleRandom generator.
      * @param playerID ID of the human player
@@ -109,7 +109,7 @@ public class DesignMachine {
 			String[] newNames = new String[no_players];
 			System.arraycopy(names, 0, newNames, 0, names.length);
 			for (int i = names.length; i < no_players; ++i)
-			newNames[i] = "controllers.multiPlayer.tools.human.Agent";
+			newNames[i] = "tracks.multiPlayer.tools.human.Agent";
 			names = newNames;
 		}
 
