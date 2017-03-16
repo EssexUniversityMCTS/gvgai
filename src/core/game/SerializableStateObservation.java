@@ -32,10 +32,10 @@ public class SerializableStateObservation {
     public int gameTick;
     public Types.WINNER gameWinner;
     public boolean isGameOver;
-    public Dimension worldDimension;
+    public double[] worldDimension;
     public int blockSize;
     public float avatarSpeed;
-    public Vector2d avatarOrientation;
+    public double[] avatarOrientation;
     public Types.ACTIONS avatarLastAction;
     public int avatarType;
     public int avatarHealthPoints;
@@ -64,10 +64,16 @@ public class SerializableStateObservation {
         gameTick = s.getGameTick();
         gameWinner = s.getGameWinner();
         isGameOver = s.isGameOver();
-        worldDimension = s.getWorldDimension();
+
+        worldDimension[0] = s.getWorldDimension().getWidth();
+        worldDimension[1] = s.getWorldDimension().getHeight();
+
         blockSize = s.getBlockSize();
         avatarSpeed = (float) s.getAvatarSpeed();
-        avatarOrientation = s.getAvatarOrientation();
+
+        avatarOrientation[0] = s.getAvatarOrientation().x;
+        avatarOrientation[1] = s.getAvatarOrientation().y;
+
         avatarResources = s.getAvatarResources();
         avatarLastAction = s.getAvatarLastAction();
         avatarType = s.getAvatarType();
