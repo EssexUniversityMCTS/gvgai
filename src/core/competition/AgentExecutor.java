@@ -2,7 +2,7 @@ package core.competition;
 
 import java.util.Random;
 
-import core.ArcadeMachine;
+import tracks.ArcadeMachine;
 
 /**
  * Created with IntelliJ IDEA.

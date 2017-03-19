@@ -3,7 +3,7 @@ package ontology.effects.binary;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-import core.VGDLSprite;
+import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
 import ontology.Types;

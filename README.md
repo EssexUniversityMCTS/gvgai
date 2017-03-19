@@ -15,7 +15,7 @@ First of all, your controller ```Agent.java``` and any auxiliary files you creat
 	|- Agent.java
 	|- MyAdditionalFile1.java
 	|- MyAdditionalFile2.java
-- controllers
+- tracks
 - core
 - ontology
 - tools

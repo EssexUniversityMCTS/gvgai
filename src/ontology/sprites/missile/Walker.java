@@ -3,7 +3,7 @@ package ontology.sprites.missile;
 import java.awt.Dimension;
 import java.util.Random;
 
-import core.VGDLSprite;
+import core.vgdl.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
 import tools.Direction;

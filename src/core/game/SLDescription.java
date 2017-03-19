@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import core.VGDLParser;
+import core.vgdl.VGDLParser;
 import core.game.GameDescription.SpriteData;
 
 public class SLDescription {

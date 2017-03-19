@@ -67,7 +67,14 @@ public class CompetitionParameters
     public static int OPTIMIZATION_REPEATITION = 1;
 
     /**
+     * Indicates if the OS is Windows.
+     */
+    public static boolean OS_WIN = System.getProperty("os.name").contains("Windows");
+
+    /**
      * Indicates if the overspend should be taken into account or not.
+     *  Time limits are WALL TIME on Windows, because CPU TIME is not accurate enough
+     *  at the level of milliseconds on this OS.
      */
     public static boolean TIME_CONSTRAINED = true;
 
@@ -119,11 +126,6 @@ public class CompetitionParameters
     public static final long WARMUP_TIME = 5000;
     public static final long WARMUP_CP = 100;
     public static final long WARMUP_ADV = 1000;
-
-    /**
-     * Indicates the type of timer the framework should use.
-     */
-    public static ElapsedCpuTimer.TimerType TIMER_TYPE = ElapsedCpuTimer.TimerType.CPU_TIME;
 
     /**
      * Key input type. We set the default here, but this will be set by the game in VGDL.

@@ -1,13 +1,9 @@
 package ontology.effects;
 
-import core.VGDLFactory;
-import core.VGDLRegistry;
-import core.VGDLSprite;
+import core.vgdl.VGDLRegistry;
+import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
-
-import java.sql.Time;
-import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.

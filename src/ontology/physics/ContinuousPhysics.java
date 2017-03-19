@@ -2,7 +2,7 @@ package ontology.physics;
 
 import java.awt.Rectangle;
 
-import core.VGDLSprite;
+import core.vgdl.VGDLSprite;
 import ontology.Types;
 import tools.Direction;
 import tools.Vector2d;

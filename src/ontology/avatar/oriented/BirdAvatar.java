@@ -1,14 +1,11 @@
 package ontology.avatar.oriented;
 
 import java.awt.Dimension;
-import java.awt.Rectangle;
 
-import core.VGDLSprite;
+import core.vgdl.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
-import ontology.avatar.HorizontalAvatar;
-import ontology.avatar.MovingAvatar;
 import tools.Direction;
 import tools.Utils;
 import tools.Vector2d;
