@@ -1,7 +1,5 @@
 package tracks.levelGeneration;
 
-import tracks.ArcadeMachine;
-
 import java.util.Random;
 
 public class TestLevelGeneration {
