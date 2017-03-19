@@ -1,4 +1,4 @@
-package tracks.singlePlayer.simple.sampleFlatMCTS;
+package tracks.singlePlayer.simple.greedyTreeSearch;
 
 import java.util.Random;
 

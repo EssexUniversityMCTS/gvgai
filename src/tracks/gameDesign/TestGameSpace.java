@@ -16,7 +16,7 @@ public class TestGameSpace {
         String doNothingController = "tracks.singlePlayer.simple.doNothing.Agent";
         String sampleOneStepController = "tracks.singlePlayer.simple.sampleonesteplookahead.Agent";
         String sampleMCTSController = "tracks.singlePlayer.deprecated.sampleMCTS.Agent";
-        String sampleFlatMCTSController = "tracks.singlePlayer.simple.sampleFlatMCTS.Agent";
+        String sampleFlatMCTSController = "tracks.singlePlayer.simple.greedyTreeSearch.Agent";
         String sampleOLMCTSController = "tracks.singlePlayer.advanced.sampleMCTS.Agent";
         String sampleGAController = "tracks.singlePlayer.deprecated.sampleGA.Agent";
         String sampleOLETSController = "tracks.singlePlayer.advanced.olets.Agent";

@@ -13,7 +13,7 @@ import tools.ElapsedCpuTimer;
  * User: ssamot
  * Date: 14/11/13
  * Time: 21:45
- * This is a Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
+ * This is an implementation of MCTS UCT
  */
 public class Agent extends AbstractPlayer {
 
