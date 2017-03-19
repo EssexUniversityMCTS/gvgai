@@ -3,7 +3,7 @@ package core.content;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import core.VGDLRegistry;
+import core.vgdl.VGDLRegistry;
 
 /**
  * Created with IntelliJ IDEA.

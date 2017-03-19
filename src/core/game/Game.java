@@ -7,11 +7,11 @@ import java.util.*;
 
 import javax.swing.JOptionPane;
 
-import core.SpriteGroup;
-import core.VGDLFactory;
-import core.VGDLRegistry;
-import core.VGDLSprite;
-import core.VGDLViewer;
+import core.vgdl.SpriteGroup;
+import core.vgdl.VGDLFactory;
+import core.vgdl.VGDLRegistry;
+import core.vgdl.VGDLSprite;
+import core.vgdl.VGDLViewer;
 import core.competition.CompetitionParameters;
 import core.content.Content;
 import core.content.GameContent;

@@ -2,8 +2,8 @@ package ontology.effects;
 
 import java.util.ArrayList;
 
-import core.VGDLFactory;
-import core.VGDLSprite;
+import core.vgdl.VGDLFactory;
+import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
 

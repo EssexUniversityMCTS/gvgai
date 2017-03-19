@@ -1,4 +1,4 @@
-package core;
+package core.vgdl;
 
 import java.awt.Dimension;
 import java.lang.reflect.Constructor;

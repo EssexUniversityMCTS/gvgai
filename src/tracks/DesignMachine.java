@@ -1,15 +1,14 @@
 package tracks;
 
-import core.VGDLFactory;
-import core.VGDLParser;
-import core.VGDLRegistry;
+import core.vgdl.VGDLFactory;
+import core.vgdl.VGDLParser;
+import core.vgdl.VGDLRegistry;
 import core.competition.CompetitionParameters;
 import core.content.ParameterContent;
 import core.game.*;
 import core.player.AbstractMultiPlayer;
 import core.player.AbstractPlayer;
 import core.player.Player;
-import tracks.ArcadeMachine;
 
 import java.text.DecimalFormat;
 import java.util.*;

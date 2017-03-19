@@ -1,8 +1,8 @@
 package tracks.ruleGeneration;
 
-import core.VGDLFactory;
-import core.VGDLParser;
-import core.VGDLRegistry;
+import core.vgdl.VGDLFactory;
+import core.vgdl.VGDLParser;
+import core.vgdl.VGDLRegistry;
 import core.competition.CompetitionParameters;
 import core.game.Game;
 import core.game.SLDescription;

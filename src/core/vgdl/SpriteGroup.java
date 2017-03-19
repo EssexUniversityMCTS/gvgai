@@ -1,9 +1,8 @@
-package core;
+package core.vgdl;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Diego on 18/03/14.

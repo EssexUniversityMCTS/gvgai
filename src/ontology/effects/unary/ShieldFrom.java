@@ -1,17 +1,10 @@
 package ontology.effects.unary;
 
-import core.VGDLRegistry;
-import core.VGDLSprite;
+import core.vgdl.VGDLRegistry;
+import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
-import ontology.Types;
-import ontology.avatar.MovingAvatar;
 import ontology.effects.Effect;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.

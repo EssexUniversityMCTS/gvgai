@@ -2,7 +2,7 @@ package ontology.avatar;
 
 import java.awt.Dimension;
 
-import core.VGDLSprite;
+import core.vgdl.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;

@@ -1,10 +1,9 @@
 package ontology.avatar;
 
 import java.awt.Dimension;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-import core.VGDLSprite;
+import core.vgdl.VGDLSprite;
 import core.competition.CompetitionParameters;
 import core.content.SpriteContent;
 import core.game.Game;
