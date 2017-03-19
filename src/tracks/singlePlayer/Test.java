@@ -2,8 +2,7 @@ package tracks.singlePlayer;
 
 import java.util.Random;
 
-import core.ArcadeMachine;
-import tools.ElapsedCpuTimer;
+import tracks.ArcadeMachine;
 
 /**
  * Created with IntelliJ IDEA. User: Diego Date: 04/10/13 Time: 16:29 This is a

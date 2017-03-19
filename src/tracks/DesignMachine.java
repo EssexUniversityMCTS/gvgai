@@ -1,21 +1,16 @@
-package core;
+package tracks;
 
+import core.VGDLFactory;
+import core.VGDLParser;
+import core.VGDLRegistry;
 import core.competition.CompetitionParameters;
 import core.content.ParameterContent;
 import core.game.*;
-import core.generator.AbstractLevelGenerator;
-import core.generator.AbstractRuleGenerator;
 import core.player.AbstractMultiPlayer;
 import core.player.AbstractPlayer;
 import core.player.Player;
-import ontology.Types;
-import tools.ElapsedCpuTimer;
-import tools.IO;
-import tools.StatSummary;
+import tracks.ArcadeMachine;
 
-import java.io.*;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.Map.Entry;

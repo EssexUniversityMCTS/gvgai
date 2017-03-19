@@ -1,7 +1,6 @@
 package tracks.gameDesign;
 
-import core.DesignMachine;
-import core.game.GameSpace;
+import tracks.DesignMachine;
 
 import java.util.Random;
 

@@ -4,6 +4,8 @@ package tools;
  * Created by diego on 26/02/14.
  */
 
+import core.competition.CompetitionParameters;
+
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
 
@@ -69,11 +71,15 @@ public class ElapsedCpuTimer {
 
     private long getCpuTime() {
 
+        if(CompetitionParameters.OS_WIN)
+            return System.nanoTime();
+
         if (bean.isCurrentThreadCpuTimeSupported()) {
             return bean.getCurrentThreadCpuTime();
         } else {
-        	throw new RuntimeException("CpuTime NOT Supported");
+            throw new RuntimeException("CpuTime NOT Supported");
         }
+
     }
 
     public void setMaxTimeMillis(long time) {

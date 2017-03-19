@@ -2,7 +2,7 @@ package tracks.multiPlayer;
 
 import java.util.Random;
 
-import core.ArcadeMachine;
+import tracks.ArcadeMachine;
 
 /**
  * Created with IntelliJ IDEA. User: Raluca Date: 12/04/16 This is a Java port

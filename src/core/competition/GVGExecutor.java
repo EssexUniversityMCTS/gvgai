@@ -1,6 +1,6 @@
 package core.competition;
 
-import core.ArcadeMachine;
+import tracks.ArcadeMachine;
 
 import java.io.BufferedWriter;
 import java.io.File;

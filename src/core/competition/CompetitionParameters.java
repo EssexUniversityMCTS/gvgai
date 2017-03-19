@@ -67,12 +67,16 @@ public class CompetitionParameters
     public static int OPTIMIZATION_REPEATITION = 1;
 
     /**
+     * Indicates if the OS is Windows.
+     */
+    public static boolean OS_WIN = System.getProperty("os.name").contains("Windows");
+
+    /**
      * Indicates if the overspend should be taken into account or not.
-     *  Time limits are disabled on Windows, because CPU TIME is not accurate enough
+     *  Time limits are WALL TIME on Windows, because CPU TIME is not accurate enough
      *  at the level of milliseconds on this OS.
      */
-    public static boolean TIME_CONSTRAINED = ! System.getProperty("os.name").contains("Windows");
-    //true;
+    public static boolean TIME_CONSTRAINED = true;
 
     /**
      * Max number of evaluations that can be done

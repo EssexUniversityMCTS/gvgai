@@ -2,7 +2,7 @@ package core.optimization.ucbOptimization;
 
 import java.util.Random;
 
-import core.ArcadeMachine;
+import tracks.ArcadeMachine;
 import core.optimization.OptimizationObjective;
 
 /**
