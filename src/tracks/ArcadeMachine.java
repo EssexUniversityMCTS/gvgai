@@ -382,20 +382,14 @@ public class ArcadeMachine {
      * levels to play and how many times. Filenames for saving actions can be
      * specified. Graphics always off.
      * 
-     * @param game_file
-     *            game description file.
-     * @param level_files
-     *            array of level file names to play.
-     * @param level_times
-     *            how many times each level has to be played.
-     * @param actionFiles
-     *            names of the files where the actions of this player, for this
-     *            game, should be recorded. Accepts null if no recording is
-     *            desired. If not null, this array must contain as much String
-     *            objects as level_files.length*level_times.
+     * @param game_file   game description file.
+     * @param level_files  array of level file names to play.
+     * @param level_times   how many times each level has to be played.
+     * @param actionFiles names of the files where the actions of this player, for this
+     *   game, should be recorded. Accepts null if no recording is desired. If not null,
+     *   this array must contain as much String objects as level_files.length*level_times.
      */
-    public static void runGames(String game_file, String[] level_files, int level_times, String agentName,
-	    String[] actionFiles) {
+    public static void runGames(String game_file, String[] level_files, int level_times, String agentName, String[] actionFiles) {
 	VGDLFactory.GetInstance().init(); // This always first thing to do.
 	VGDLRegistry.GetInstance().init();
 
