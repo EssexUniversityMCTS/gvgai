@@ -15,18 +15,17 @@ public class TestMultiPlayer {
 	String doNothingController = "tracks.multiPlayer.simple.doNothing.Agent";
 	String randomController = "tracks.multiPlayer.simple.sampleRandom.Agent";
 	String oneStepController = "tracks.multiPlayer.simple.sampleOneStepLookAhead.Agent";
-	String sampleMCTSController = "tracks.multiPlayer.deprecated.sampleMCTS.Agent";
-	String sampleOLMCTSController = "tracks.multiPlayer.deprecated.sampleMCTS.Agent";
-	String sampleGAController = "tracks.multiPlayer.deprecated.sampleGA.Agent";
+
+	String sampleMCTSController = "tracks.multiPlayer.advanced.sampleMCTS.Agent";
+	String sampleRSController = "tracks.multiPlayer.advanced.sampleRS.Agent";
+	String sampleRHEAController = "tracks.multiPlayer.advanced.sampleRHEA.Agent";
+
 	String humanController = "tracks.multiPlayer.tools.human.Agent";
 
-		//String test = "Dani_100315290.Agent";
 
-	// Set here the tracks used in the games (need 2 separated by
-	// space).
+	// Set here the tracks used in the games (need 2 separated by space).
 	String controllers = humanController + " " + humanController;
-	// String tracks = sampleOLMCTSController + " " +
-	// sampleOLMCTSController;
+	// String tracks = sampleMCTSController + " " + sampleMCTSController;
 
 	// Available games:
 	String gamesPath = "examples/2player/";
@@ -42,13 +41,6 @@ public class TestMultiPlayer {
 		"teamescape", "thebridge", "trainride", "treasuremap", "tron", // 30-34
 		"upgrade-x", "uphigh", "warzone", "watchout", "wheelme" }; // 35-39
 
-//	// Training Set 1
-//	games = new String[] { "akkaarrh", "asteroids", "captureflag", "copsNrobbers", "gotcha", // 0-4
-//		"klax", "samaritan", "sokoban", "steeplechase", "tron" }; // 5-9
-//
-//	// tracks.singlePlayer.Test set CIG 2016
-//	games = new String[] { "egghunt", "fatty", "isawsanta", "mimic", "reflection", // 0-4
-//		"trainride", "treasuremap", "upgrade-x", "warzone", "wheelme" }; // 5-9
 
 	// Other settings
 	boolean visuals = true;

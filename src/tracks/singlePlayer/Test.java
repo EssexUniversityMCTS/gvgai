@@ -16,48 +16,49 @@ public class Test {
 		String sampleRandomController = "tracks.singlePlayer.simple.sampleRandom.Agent";
 		String doNothingController = "tracks.singlePlayer.simple.doNothing.Agent";
 		String sampleOneStepController = "tracks.singlePlayer.simple.sampleonesteplookahead.Agent";
-		String sampleMCTSController = "tracks.singlePlayer.deprecated.sampleMCTS.Agent";
 		String sampleFlatMCTSController = "tracks.singlePlayer.simple.sampleFlatMCTS.Agent";
-		String sampleOLMCTSController = "tracks.singlePlayer.advanced.sampleMCTS.Agent";
-		String sampleGAController = "tracks.singlePlayer.deprecated.sampleGA.Agent";
+
+		String sampleMCTSController = "tracks.singlePlayer.advanced.sampleMCTS.Agent";
+        String sampleRSController = "tracks.singlePlayer.advanced.sampleRS.Agent";
+        String sampleRHEAController = "tracks.singlePlayer.advanced.sampleRHEA.Agent";
 		String sampleOLETSController = "tracks.singlePlayer.advanced.olets.Agent";
-		String repeatOLETS = "tracks.singlePlayer.tools.repeatOLETS.Agent";
-
-		// Available Level Generators
-		String randomLevelGenerator = "tracks.levelGeneration.randomLevelGenerator.LevelGenerator";
-		String geneticGenerator = "tracks.levelGeneration.geneticLevelGenerator.LevelGenerator";
-		String constructiveLevelGenerator = "tracks.levelGeneration.constructiveLevelGenerator.LevelGenerator";
-
-		// Available Rule Generator
-		String randomRuleGenerator = "tracks.ruleGeneration.randomRuleGenerator.RuleGenerator";
-		String constructiveRuleGenerator = "tracks.ruleGeneration.constructiveRuleGenerator.RuleGenerator";
 
 		// Available games:
-		String gamesPath = "examples/gridphysics/";
-		String games[] = new String[] {};
-		String generateLevelPath = "examples/gridphysics/";
-		String generateRulePath = "examples/gridphysics/";
+		String gridGamesPath = "examples/gridphysics/";
+        String contGamesPath = "examples/contphysics/";
+        String gamesPath;
+		String games[];
+        boolean GRID_PHYSICS = true;
 
-		// All public games
-		games = new String[] { "aliens", "angelsdemons", "assemblyline", "avoidgeorge", "bait", // 0-4
-			"beltmanager", "blacksmoke", "boloadventures", "bomber", "bomberman", // 5-9
-			"boulderchase", "boulderdash", "brainman", "butterflies", "cakybaky", // 10-14
-			"camelRace", "catapults", "chainreaction", "chase", "chipschallenge", // 15-19
-			"clusters", "colourescape", "chopper", "cookmepasta", "cops", // 20-24
-			"crossfire", "defem", "defender", "digdug", "dungeon", // 25-29
-			"eighthpassenger", "eggomania", "enemycitadel", "escape", "factorymanager", // 30-34
-			"firecaster", "fireman", "firestorms", "freeway", "frogs", // 35-39
-			"garbagecollector", "gymkhana", "hungrybirds", "iceandfire", "ikaruga", // 40-44
-			"infection", "intersection", "islands", "jaws", "killBillVol1", // 45-49
-			"labyrinth", "labyrinthdual", "lasers", "lasers2", "lemmings", // 50-54
-			"missilecommand", "modality", "overload", "pacman", "painter", // 55-59
-			"pokemon", "plants", "plaqueattack", "portals", "raceBet", // 60-64
-			"raceBet2", "realportals", "realsokoban", "rivers", "roadfighter", // 65-69
-			"roguelike", "run", "seaquest", "sheriff", "shipwreck", // 70-74
-			"sokoban", "solarfox", "superman", "surround", "survivezombies", // 75-79
-			"tercio", "thecitadel", "thesnowman", "waitforbreakfast", "watergame", // 80-84
-			"waves", "whackamole", "wildgunman", "witnessprotection", "wrapsokoban", // 85-89
-			"zelda", "zenpuzzle" }; // 90, 91
+        // All public games (gridphysics)
+		if(GRID_PHYSICS) {
+		    gamesPath = gridGamesPath;
+            games = new String[]{"aliens", "angelsdemons", "assemblyline", "avoidgeorge", "bait", // 0-4
+                    "beltmanager", "blacksmoke", "boloadventures", "bomber", "bomberman", // 5-9
+                    "boulderchase", "boulderdash", "brainman", "butterflies", "cakybaky", // 10-14
+                    "camelRace", "catapults", "chainreaction", "chase", "chipschallenge", // 15-19
+                    "clusters", "colourescape", "chopper", "cookmepasta", "cops", // 20-24
+                    "crossfire", "defem", "defender", "digdug", "dungeon", // 25-29
+                    "eighthpassenger", "eggomania", "enemycitadel", "escape", "factorymanager", // 30-34
+                    "firecaster", "fireman", "firestorms", "freeway", "frogs", // 35-39
+                    "garbagecollector", "gymkhana", "hungrybirds", "iceandfire", "ikaruga", // 40-44
+                    "infection", "intersection", "islands", "jaws", "killBillVol1", // 45-49
+                    "labyrinth", "labyrinthdual", "lasers", "lasers2", "lemmings", // 50-54
+                    "missilecommand", "modality", "overload", "pacman", "painter", // 55-59
+                    "pokemon", "plants", "plaqueattack", "portals", "raceBet", // 60-64
+                    "raceBet2", "realportals", "realsokoban", "rivers", "roadfighter", // 65-69
+                    "roguelike", "run", "seaquest", "sheriff", "shipwreck", // 70-74
+                    "sokoban", "solarfox", "superman", "surround", "survivezombies", // 75-79
+                    "tercio", "thecitadel", "thesnowman", "waitforbreakfast", "watergame", // 80-84
+                    "waves", "whackamole", "wildgunman", "witnessprotection", "wrapsokoban", // 85-89
+                    "zelda", "zenpuzzle"}; // 90, 91
+
+        }else{
+            gamesPath = contGamesPath;
+            games = new String[]{"artillery", "asteroids", "bird", "bubble", "candy",   //0 - 4
+                    "lander", "mario", "pong", "ptsp", "racing"};                       //5 - 9
+        }
+
 
 		// Other settings
 		boolean visuals = true;
@@ -69,9 +70,7 @@ public class Test {
 		String game = gamesPath + games[gameIdx] + ".txt";
 		String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
 
-		String recordLevelFile = generateLevelPath + games[gameIdx] + "_glvl.txt";
-		String recordGameFile = generateRulePath + games[gameIdx] + "_ggame.txt";
-		String recordActionsFile = "test_level.txt"; //null;// "actions_" + games[gameIdx] + "_lvl"
+		String recordActionsFile = null;// "actions_" + games[gameIdx] + "_lvl"
 						// + levelIdx + "_" + seed + ".txt";
 						// where to record the actions
 						// executed. null if not to save.
@@ -96,13 +95,7 @@ public class Test {
 	//		ArcadeMachine.runGames(game, new String[]{level1}, M, sampleMCTSController, null);
 	//	}
 
-		// 5. This starts a game, in a generated level created by a specific level generator
-	//	 if(ArcadeMachine.generateOneLevel(game, randomLevelGenerator, recordLevelFile)){
-	//		 ArcadeMachine.playOneGeneratedLevel(game, recordActionsFile,
-	//		 recordLevelFile, seed);
-	//	 }
-
-		//6. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
+		//5. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
 	//	int N = 92, L = 5, M = 10;
 	//	boolean saveActions = false;
 	//	String[] levels = new String[L];
@@ -119,10 +112,6 @@ public class Test {
 	//		ArcadeMachine.runGames(game, levels, M, sampleMCTSController, saveActions? actionFiles:null);
 	//	}
 
-		// 7. Generate rules (Interaction and Terminations) for a fixed level
-		// ArcadeMachine.generateRules(game, level1, randomRuleGenerator, recordGameFile, seed);
-		// ArcadeMachine.playOneGame(recordGameFile, level1, recordActionsFile, seed);
-		// ArcadeMachine.runOneGame(recordGameFile, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
 
     }
 }
