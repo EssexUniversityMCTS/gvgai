@@ -7,7 +7,6 @@ public class Individual implements Comparable{
     protected int[] actions; // actions in individual. length of individual = actions.length
     protected int n; // number of legal actions
     protected double value;
-    protected double lastValue;
     private Random gen;
 
     private boolean MUT_BIAS = false;
@@ -35,20 +34,23 @@ public class Individual implements Comparable{
         b.setActions(actions);
 
         int count = 0;
-        while (count < MUT) {
 
-            int a; // index of action to mutate
+        if (n > 1) { // make sure you can actually mutate
+            while (count < MUT) {
 
-            // random mutation of one action
-            a = gen.nextInt(b.actions.length);
+                int a; // index of action to mutate
 
-            int s;
-            do {
-                s = gen.nextInt(n); // find new action, different than the previous one
-            } while (s == b.actions[a]);
-            b.actions[a] = s;
+                // random mutation of one action
+                a = gen.nextInt(b.actions.length);
 
-            count++;
+                int s;
+                do {
+                    s = gen.nextInt(n); // find new action, different than the previous one
+                } while (s == b.actions[a]);
+                b.actions[a] = s;
+
+                count++;
+            }
         }
 
 
@@ -103,7 +105,6 @@ public class Individual implements Comparable{
     public Individual copy () {
         Individual a = new Individual(this.actions.length, this.n, this.gen);
         a.value = this.value;
-        a.lastValue = this.lastValue;
         a.setActions(this.actions);
 
         return a;
