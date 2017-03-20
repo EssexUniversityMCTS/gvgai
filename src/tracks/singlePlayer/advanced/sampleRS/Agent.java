@@ -1,11 +1,11 @@
 package tracks.singlePlayer.advanced.sampleRS;
 
-import tracks.singlePlayer.tools.Heuristics.StateHeuristic;
-import tracks.singlePlayer.tools.Heuristics.WinScoreHeuristic;
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
+import tracks.singlePlayer.tools.Heuristics.StateHeuristic;
+import tracks.singlePlayer.tools.Heuristics.WinScoreHeuristic;
 
 import java.util.*;
 
@@ -18,8 +18,6 @@ public class Agent extends AbstractPlayer {
     // constants
     private final long BREAK_MS = 10;
     public static final double epsilon = 1e-6;
-    static final int POINT1_CROSS = 0;
-    static final int UNIFORM_CROSS = 1;
 
     private ArrayList<Individual> population;
     private int NUM_INDIVIDUALS;
@@ -129,15 +127,16 @@ public class Agent extends AbstractPlayer {
      */
     private void init_pop(StateObservation stateObs) {
 
-        double remaining = timer.remainingTimeMillis();
+        double remaining;
 
-        N_ACTIONS = stateObs.getAvailableActions().size();
+        N_ACTIONS = stateObs.getAvailableActions().size() + 1;
         action_mapping = new HashMap<>();
         int k = 0;
         for (Types.ACTIONS action : stateObs.getAvailableActions()) {
             action_mapping.put(k, action);
             k++;
         }
+        action_mapping.put(k, Types.ACTIONS.ACTION_NIL);
 
         NUM_INDIVIDUALS = 0;
 

@@ -1,5 +1,4 @@
 package tracks.singlePlayer.advanced.sampleRS;
-
 import java.util.Random;
 
 public class Individual implements Comparable{
@@ -7,10 +6,7 @@ public class Individual implements Comparable{
     protected int[] actions; // actions in individual. length of individual = actions.length
     protected int n; // number of legal actions
     protected double value;
-    protected double lastValue;
     private Random gen;
-
-    private boolean MUT_BIAS = false;
 
     public Individual(int L, int n, Random gen) {
         actions = new int[L];
@@ -23,60 +19,6 @@ public class Individual implements Comparable{
 
     public void setActions (int[] a) {
         System.arraycopy(a, 0, actions, 0, a.length);
-    }
-
-    /**
-     * Returns new individual
-     * @param MUT
-     * @return
-     */
-    public Individual mutate (int MUT) {
-        Individual b = this.copy();
-        b.setActions(actions);
-
-        int count = 0;
-        while (count < MUT) {
-
-            int a; // index of action to mutate
-
-            // random mutation of one action
-            a = gen.nextInt(b.actions.length);
-
-            int s;
-            do {
-                s = gen.nextInt(n); // find new action, different than the previous one
-            } while (s == b.actions[a]);
-            b.actions[a] = s;
-
-            count++;
-        }
-
-
-        return b;
-    }
-
-    /**
-     * Modifies individual
-     * @param cross
-     * @param CROSSOVER_TYPE
-     */
-    public void crossover (Individual[] cross, int CROSSOVER_TYPE) {
-        if (CROSSOVER_TYPE == Agent.POINT1_CROSS) {
-            // 1-point
-            int p = gen.nextInt(actions.length - 3) + 1;
-            for ( int i = 0; i < actions.length; i++) {
-                if (i < p)
-                    actions[i] = cross[0].actions[i];
-                else
-                    actions[i] = cross[1].actions[i];
-            }
-
-        } else if (CROSSOVER_TYPE == Agent.UNIFORM_CROSS) {
-            // uniform
-            for (int i = 0; i < actions.length; i++) {
-                actions[i] = cross[gen.nextInt(cross.length)].actions[i];
-            }
-        }
     }
 
     @Override
@@ -103,7 +45,6 @@ public class Individual implements Comparable{
     public Individual copy () {
         Individual a = new Individual(this.actions.length, this.n, this.gen);
         a.value = this.value;
-        a.lastValue = this.lastValue;
         a.setActions(this.actions);
 
         return a;

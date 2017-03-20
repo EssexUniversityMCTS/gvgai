@@ -1,11 +1,11 @@
 package tracks.singlePlayer.advanced.sampleRHEA;
-
-import tracks.singlePlayer.tools.Heuristics.StateHeuristic;
-import tracks.singlePlayer.tools.Heuristics.WinScoreHeuristic;
 import core.game.StateObservation;
 import core.player.AbstractPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
+import tracks.singlePlayer.tools.Heuristics.StateHeuristic;
+import tracks.singlePlayer.tools.Heuristics.WinScoreHeuristic;
+
 import java.util.*;
 
 public class Agent extends AbstractPlayer {
@@ -73,7 +73,6 @@ public class Agent extends AbstractPlayer {
 
         // INITIALISE POPULATION
         init_pop(stateObs);
-
 
         // RUN EVOLUTION
         remaining = timer.remainingTimeMillis();
@@ -191,12 +190,13 @@ public class Agent extends AbstractPlayer {
     private Individual crossover(Individual[] pop, Individual newind) {
         if (NUM_INDIVIDUALS > 1) {
             Individual[] tournament = new Individual[TOURNAMENT_SIZE];
-            if (NUM_INDIVIDUALS > 2) {
+            if (NUM_INDIVIDUALS > TOURNAMENT_SIZE) {
                 ArrayList<Individual> list = new ArrayList<>();
                 list.addAll(Arrays.asList(pop).subList(1, NUM_INDIVIDUALS));
                 Collections.shuffle(list);
                 for (int i = 0; i < TOURNAMENT_SIZE; i++) {
                     tournament[i] = list.get(i);
+                    list.remove(i);
                 }
             } else {
                 tournament[0] = pop[0];
@@ -227,13 +227,14 @@ public class Agent extends AbstractPlayer {
 
         double remaining = timer.remainingTimeMillis();
 
-        N_ACTIONS = stateObs.getAvailableActions().size();
+        N_ACTIONS = stateObs.getAvailableActions().size() + 1;
         action_mapping = new HashMap<>();
         int k = 0;
         for (Types.ACTIONS action : stateObs.getAvailableActions()) {
             action_mapping.put(k, action);
             k++;
         }
+        action_mapping.put(k, Types.ACTIONS.ACTION_NIL);
 
         population = new Individual[POPULATION_SIZE];
         nextPop = new Individual[POPULATION_SIZE];

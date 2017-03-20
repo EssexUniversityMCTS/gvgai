@@ -1,11 +1,11 @@
 package tracks.multiPlayer.advanced.sampleRS;
 
-import tracks.multiPlayer.tools.heuristics.StateHeuristicMulti;
-import tracks.multiPlayer.tools.heuristics.WinScoreHeuristic;
 import core.game.StateObservationMulti;
 import core.player.AbstractMultiPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
+import tracks.multiPlayer.tools.heuristics.StateHeuristicMulti;
+import tracks.multiPlayer.tools.heuristics.WinScoreHeuristic;
 
 import java.util.*;
 
@@ -18,8 +18,6 @@ public class Agent extends AbstractMultiPlayer {
     // constants
     private final long BREAK_MS = 10;
     public static final double epsilon = 1e-6;
-    static final int POINT1_CROSS = 0;
-    static final int UNIFORM_CROSS = 1;
 
     private ArrayList<Individual> population;
     private int NUM_INDIVIDUALS;
@@ -146,19 +144,20 @@ public class Agent extends AbstractMultiPlayer {
      */
     private void init_pop(StateObservationMulti stateObs) {
 
-        double remaining = timer.remainingTimeMillis();
+        double remaining;
 
         N_ACTIONS = new int[noPlayers];
         action_mapping = new HashMap[noPlayers];
         for (int i = 0; i < noPlayers; i++) {
             ArrayList<Types.ACTIONS> actions = stateObs.getAvailableActions(i);
-            N_ACTIONS[i] = actions.size();
+            N_ACTIONS[i] = actions.size() + 1;
             action_mapping[i] = new HashMap<>();
             int k = 0;
             for (Types.ACTIONS action : actions) {
                 action_mapping[i].put(k, action);
                 k++;
             }
+            action_mapping[i].put(k, Types.ACTIONS.ACTION_NIL);
         }
 
         NUM_INDIVIDUALS = 0;

@@ -1,11 +1,11 @@
 package tracks.multiPlayer.advanced.sampleRHEA;
 
-import tracks.multiPlayer.tools.heuristics.StateHeuristicMulti;
-import tracks.multiPlayer.tools.heuristics.WinScoreHeuristic;
 import core.game.StateObservationMulti;
 import core.player.AbstractMultiPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
+import tracks.multiPlayer.tools.heuristics.StateHeuristicMulti;
+import tracks.multiPlayer.tools.heuristics.WinScoreHeuristic;
 
 import java.util.*;
 
@@ -210,7 +210,7 @@ public class Agent extends AbstractMultiPlayer {
     private Individual crossover(Individual[] pop, Individual newind) {
         if (NUM_INDIVIDUALS > 1) {
             Individual[] tournament = new Individual[TOURNAMENT_SIZE];
-            if (NUM_INDIVIDUALS > 2) {
+            if (NUM_INDIVIDUALS > TOURNAMENT_SIZE) {
                 ArrayList<Individual> list = new ArrayList<>();
                 list.addAll(Arrays.asList(pop).subList(1, NUM_INDIVIDUALS));
                 Collections.shuffle(list);
@@ -250,13 +250,14 @@ public class Agent extends AbstractMultiPlayer {
         action_mapping = new HashMap[noPlayers];
         for (int i = 0; i < noPlayers; i++) {
             ArrayList<Types.ACTIONS> actions = stateObs.getAvailableActions(i);
-            N_ACTIONS[i] = actions.size();
+            N_ACTIONS[i] = actions.size() + 1;
             action_mapping[i] = new HashMap<>();
             int k = 0;
             for (Types.ACTIONS action : actions) {
                 action_mapping[i].put(k, action);
                 k++;
             }
+            action_mapping[i].put(k, Types.ACTIONS.ACTION_NIL);
         }
 
         population = new Individual[POPULATION_SIZE];
