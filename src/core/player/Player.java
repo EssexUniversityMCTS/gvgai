@@ -34,7 +34,7 @@ public abstract class Player {
     private BufferedWriter writer;
 
     /**
-     * Set this variable to FALSE to avoid logging the actions to a file.
+     * Set this variable to FALSE to avoid core.logging the actions to a file.
      */
     private static final boolean SHOULD_LOG = true;
 

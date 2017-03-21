@@ -14,8 +14,8 @@ import ontology.effects.Effect;
 import ontology.effects.TimeEffect;
 import tools.IO;
 import tools.Pair;
-import logging.Logger;
-import logging.Message;
+import core.logging.Logger;
+import core.logging.Message;
 
 
 /**

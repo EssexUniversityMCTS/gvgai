@@ -6,8 +6,8 @@ import java.util.Random;
 
 import core.vgdl.VGDLParser;
 import core.game.GameDescription.SpriteData;
-import logging.Logger;
-import logging.Message;
+import core.logging.Logger;
+import core.logging.Message;
 
 public class SLDescription {
     /**

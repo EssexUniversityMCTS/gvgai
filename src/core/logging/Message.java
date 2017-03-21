@@ -1,4 +1,4 @@
-package logging;
+package core.logging;
 
 public class Message {
     // 0 is warning, 1 is error
