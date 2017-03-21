@@ -4,10 +4,9 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Random;
 
-import core.VGDLFactory;
-import core.VGDLRegistry;
-import core.VGDLSprite;
-import core.competition.CompetitionParameters;
+import core.vgdl.VGDLFactory;
+import core.vgdl.VGDLRegistry;
+import core.vgdl.VGDLSprite;
 import core.content.GameContent;
 import tools.IO;
 import tools.Vector2d;

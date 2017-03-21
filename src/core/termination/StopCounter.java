@@ -1,6 +1,6 @@
 package core.termination;
 
-import core.VGDLRegistry;
+import core.vgdl.VGDLRegistry;
 import core.content.TerminationContent;
 import core.game.Game;
 

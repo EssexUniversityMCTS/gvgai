@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import core.VGDLRegistry;
+
 import logging.Logger;
 import logging.Message;
+
+import core.vgdl.VGDLRegistry;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
 

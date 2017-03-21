@@ -2,11 +2,9 @@ package core.game;
 
 import java.awt.Dimension;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
-import core.SpriteGroup;
-import core.VGDLSprite;
-import core.competition.CompetitionParameters;
+import core.vgdl.SpriteGroup;
+import core.vgdl.VGDLSprite;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.TimeEffect;

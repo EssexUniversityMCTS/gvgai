@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import core.VGDLParser;
+import core.vgdl.VGDLParser;
 import core.game.GameDescription.SpriteData;
 import logging.Logger;
 import logging.Message;

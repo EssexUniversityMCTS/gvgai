@@ -1,19 +1,13 @@
 package ontology.effects.binary;
 
-import core.VGDLRegistry;
-import core.VGDLSprite;
+import core.vgdl.VGDLRegistry;
+import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
-import ontology.Types;
-import ontology.avatar.MovingAvatar;
-import ontology.effects.Effect;
 import ontology.effects.unary.TransformTo;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.

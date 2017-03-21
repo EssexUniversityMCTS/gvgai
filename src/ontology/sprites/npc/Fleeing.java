@@ -2,7 +2,7 @@ package ontology.sprites.npc;
 
 import java.awt.Dimension;
 
-import core.VGDLSprite;
+import core.vgdl.VGDLSprite;
 import core.content.SpriteContent;
 import tools.Vector2d;
 
