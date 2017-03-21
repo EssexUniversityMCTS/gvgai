@@ -21,7 +21,6 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class RuleGenMachine
 {
-
     /**
      * create a new game file using the new generated rules
      * @param gameFile		current game file

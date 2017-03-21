@@ -1,7 +1,5 @@
 package core.competition;
 
-import tools.ElapsedCpuTimer;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Diego
@@ -34,8 +32,9 @@ public class CompetitionParameters
     /**
      * Milliseconds allowed for the level generator to generate a level
      */
-    public static int LEVEL_ACTION_TIME = 1800000*10;
-    
+    //public static int LEVEL_ACTION_TIME = 1800000*10;
+    //public static int LEVEL_ACTION_TIME = 28800000;
+    public static int LEVEL_ACTION_TIME = 3600000;
     /**
      * Milliseconds allowed for the level generator disqualification, if it returns a level after this time.
      */

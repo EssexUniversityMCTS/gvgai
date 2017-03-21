@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+
+import logging.Logger;
+import logging.Message;
+
 import core.vgdl.VGDLRegistry;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
@@ -161,6 +165,7 @@ public class GameDescription {
      *            a string of characters that are supplied in the character
      *            mapping
      * @return StateObservation object that can be used to simulate the game.
+     * 				return null when there is errors
      */
     public StateObservation testLevel(String level) {
 	return testLevel(level, null);
@@ -174,8 +179,11 @@ public class GameDescription {
      *            a string of characters that are supplied in the character
      *            mapping
      * @return StateObservation object that can be used to simulate the game.
+     * 				return null when there is errors
      */
     public StateObservation testLevel(String level, HashMap<Character, ArrayList<String>> charMapping) {
+	Logger.getInstance().flushMessages();
+	
 	if (charMapping != null) {
 	    currentGame.setCharMapping(charMapping);
 	}
@@ -183,8 +191,22 @@ public class GameDescription {
 	currentGame.reset();
 	currentGame.buildStringLevel(lines, new Random().nextInt());
 	currentGame.setCharMapping(this.charMapping);
-
+	
+	if(Logger.getInstance().getMessageCount(1) > 0){
+	    return null;
+	}
 	return currentGame.getObservation();
+    }
+    
+    /**
+     * get list of errors and warnings from the system
+     * 
+     * @return a list of errors and warnings
+     * 		type 0: warnings
+     * 		type 1: errors
+     */
+    public ArrayList<Message> getErrors(){
+	return Logger.getInstance().getMessages();
     }
 
     /**

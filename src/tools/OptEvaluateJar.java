@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import core.competition.CompetitionParameters;
 import core.optimization.OptimizationObjective;
@@ -22,7 +23,7 @@ public class OptEvaluateJar {
 	PrintWriter writer = new PrintWriter(outputPath + "output" + currentRuns + ".txt", "UTF-8");
 	writer.println("TRUE");
 	for (int i = 0; i < values.length; i++) {
-	    writer.println(values[i]);
+	    writer.println(1 - values[i]);
 	}
 	writer.close();
     }
@@ -63,6 +64,22 @@ public class OptEvaluateJar {
 	    case "safetymargin":
 		tracks.singlePlayer.tools.ucbOptimizerAgent.Agent.safetyMargin = Integer.parseInt(value);
 		break;
+	    case "scoretowin":
+		UCBOptimization.SCORE_WIN = Double.parseDouble(value);
+		break;
+	    case "sigmoidwidth":
+		UCBOptimization.SIGMOID_WIDTH = Double.parseDouble(value);
+		break;
+	    case "sigmoidshift":
+		UCBOptimization.SIGMOID_SHIFT = Double.parseDouble(value);
+		break;
+	    case "randomseed":
+		int temp = Integer.parseInt(value);
+		if(temp < 0){
+		    temp = new Random().nextInt();
+		}
+		UCBOptimization.RANDOM_OBJ = temp;
+		break;
 	    }
 	}
 
@@ -82,7 +99,7 @@ public class OptEvaluateJar {
 	// run optimization process on ucb equation for an MCTS player
 	double[] parameters = new double[args.length];
 	for (int i = 0; i < args.length; i++) {
-	    parameters[i] = Double.parseDouble(args[i]);
+	    parameters[i] = 2 * Double.parseDouble(args[i]) - 1;
 	}
 
 	String[] tempGames = new String[games.size()];
@@ -95,6 +112,10 @@ public class OptEvaluateJar {
 	OptimizationObjective obj = new UCBOptimization(tempGames, tempLevels,
 		CompetitionParameters.OPTIMIZATION_REPEATITION, CompetitionParameters.OPTIMIZATION_EVALUATION,
 		new UCBEvoEquation());
+	if(parameters.length < obj.getNumberOfParameters()){
+	    writeOuputs(outputPath, currentRuns, null);
+	    return;
+	}
 	double[] results = obj.evaluate(parameters);
 	ArrayList<Double> correctResults = new ArrayList<Double>();
 	int index = 0;
@@ -107,7 +128,7 @@ public class OptEvaluateJar {
 	}
 	results = new double[uniqueGames.size()];
 	for (int i = 0; i < results.length; i++) {
-	    results[i] = correctResults.get(i).doubleValue() / 1000.0;
+	    results[i] = correctResults.get(i).doubleValue();
 	}
 	writeOuputs(outputPath, currentRuns, results);
     }

@@ -262,8 +262,9 @@ public class VGDLFactory
      * Creates a new effect, with parameters passed as InteractionContent.
      * @param content parameters for the effect, including its class.
      * @return the new effect, created and initialized, ready to be triggered!
+     * @throws Exception 
      */
-    public Effect createEffect(Game game, InteractionContent content)
+    public Effect createEffect(Game game, InteractionContent content) throws Exception
     {
         if(game != null)
             decorateContent(game, content);
@@ -282,17 +283,23 @@ public class VGDLFactory
 
         }catch (NoSuchMethodException e)
         {
-            e.printStackTrace();
-            System.out.println("Error creating effect " + content.function + " between "
-                    + content.object1 + " and " + content.object2);
+            String message = "Error creating effect " + content.function + " between "
+            		+ content.object1 + " and ";
+            for(String obj : content.object2) {
+            	message += obj + " ";
+            }
+            message += "\n** Line: " + content.lineNumber + " ** " + content.line;
+            throw new Exception(message);
         }catch (Exception e)
         {
-            e.printStackTrace();
-            System.out.println("Error creating effect " + content.function + " between "
-                    + content.object1 + " and " + content.object2);
+            String message = "Error creating effect " + content.function + " between "
+            		+ content.object1 + " and ";
+            for(String obj : content.object2) {
+            	message += obj + " ";
+            }
+            message += "\n** Line: " + content.lineNumber + " ** " + content.line;
+            throw new Exception(message);
         }
-
-        return null;
     }
 
 
@@ -300,8 +307,9 @@ public class VGDLFactory
      * Creates a new termination, with parameters passed as TerminationContent.
      * @param content parameters for the termination condition, including its class.
      * @return the new termination, created and initialized, ready to be checked!
+     * @throws Exception 
      */
-    public Termination createTermination(Game game, TerminationContent content)
+    public Termination createTermination(Game game, TerminationContent content) throws Exception
     {
         decorateContent(game, content);
 
@@ -316,13 +324,13 @@ public class VGDLFactory
         {
             e.printStackTrace();
             System.out.println("Error creating termination condition " + content.identifier);
+            throw new Exception("Line: " + content.lineNumber + " Error creating termination condition " + content.identifier);
         }catch (Exception e)
         {
             e.printStackTrace();
             System.out.println("Error creating termination condition " + content.identifier);
+            throw new Exception("Line: " + content.lineNumber + " Error creating termination condition " + content.identifier);
         }
-
-        return null;
     }
 
     /**

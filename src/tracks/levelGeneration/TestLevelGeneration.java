@@ -44,7 +44,6 @@ public class TestLevelGeneration {
 										// executed. null if not to save.
 
 		// Other settings
-		boolean visuals = true;
 		int seed = new Random().nextInt();
 		int gameIdx = 0;
 		String recordLevelFile = generateLevelPath + games[gameIdx] + "_glvl.txt";
@@ -52,24 +51,24 @@ public class TestLevelGeneration {
 
 
 		// 1. This starts a game, in a generated level created by a specific level generator
-		if(LevelGenMachine.generateOneLevel(game, randomLevelGenerator, recordLevelFile)){
-			LevelGenMachine.playOneGeneratedLevel(game, recordActionsFile, recordLevelFile, seed);
+		if(LevelGenMachine.generateOneLevel(game, constructiveLevelGenerator, recordLevelFile)){
+		    LevelGenMachine.playOneGeneratedLevel(game, recordActionsFile, recordLevelFile, seed);
 		}
 
 
 		// 2. This generates numberOfLevels levels.
-		String levelGenerator = "tracks.levelGeneration." + args[0] + ".LevelGenerator";
-		int numberOfLevels = 5;
-		tracks.levelGeneration.randomLevelGenerator.LevelGenerator.includeBorders = true;
+		// String levelGenerator = "tracks.levelGeneration." + args[0] + ".LevelGenerator";
+		// int numberOfLevels = 5;
+		// tracks.levelGeneration.randomLevelGenerator.LevelGenerator.includeBorders = true;
 
-		String[] folderName = levelGenerator.split("\\.");
-		generateLevelPath = "examples/generatedLevels/" + folderName[1] + "/";
+		// String[] folderName = levelGenerator.split("\\.");
+		// generateLevelPath = "examples/generatedLevels/" + folderName[1] + "/";
 
-		game = gamesPath + args[1] + ".txt";
-		for (int i = 0; i < numberOfLevels; i++) {
-			recordLevelFile = generateLevelPath + args[1] + "_lvl" + i + ".txt";
-			LevelGenMachine.generateOneLevel(game, levelGenerator, recordLevelFile);
-		}
+		// game = gamesPath + args[1] + ".txt";
+		// for (int i = 0; i < numberOfLevels; i++) {
+		// 	recordLevelFile = generateLevelPath + args[1] + "_lvl" + i + ".txt";
+		// 	LevelGenMachine.generateOneLevel(game, levelGenerator, recordLevelFile);
+		//}
 
 
     }

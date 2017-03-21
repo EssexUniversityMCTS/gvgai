@@ -24,7 +24,7 @@ public class AddTimer extends TimeEffect
 
     public AddTimer() {}
 
-    public AddTimer(InteractionContent cnt)
+    public AddTimer(InteractionContent cnt) throws Exception
     {
         this.parseParameters(cnt);
 

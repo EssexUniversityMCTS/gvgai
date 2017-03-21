@@ -14,6 +14,9 @@ import ontology.effects.Effect;
 import ontology.effects.TimeEffect;
 import tools.IO;
 import tools.Pair;
+import logging.Logger;
+import logging.Message;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -54,7 +57,11 @@ public class VGDLParser
      * Set to true to print out debug information about parsing.
      */
     private static boolean VERBOSE_PARSER = false;
-
+    
+    /**
+     * private Logger which logs warnings and errors
+     */
+    private Logger logger;
     /**
      * Default constructor.
      */
@@ -64,6 +71,7 @@ public class VGDLParser
         spriteOrderTmp = new ArrayList<Integer>();
         singletonTmp = new ArrayList<Integer>();
         constructors = new HashMap<Integer, SpriteContent>();
+        logger = Logger.getInstance();
     }
 
     /**
@@ -86,7 +94,12 @@ public class VGDLParser
             parseParameterNodes(rootNode);
 
             //Parse the nodes.
-            parseNodes(rootNode);
+            try{
+        	parseNodes(rootNode);
+            }
+            catch(Exception e){
+        	//TODO: Mike
+            }
         }
 
         return game;
@@ -110,7 +123,12 @@ public class VGDLParser
             game.setParameters(parameters);
 
             //Parse the normal nodes, but not the parameters.
-            parseNodes(rootNode);
+            try{
+        	parseNodes(rootNode);
+            }
+            catch(Exception e){
+        	//TODO: Mike
+            }
         }
 
         return game;
@@ -128,16 +146,44 @@ public class VGDLParser
             if(n.content.identifier.equals("ParameterSet"))
             {
                 parseParameterSet(n.children);
+                if(n.content.identifier.equals("SpriteSet"))
+                {	try{
+                    	parseSpriteSet(n.children);
+                	} catch(Exception e) {
+                		logger.addMessage(new Message(1, "Sprite Set Error: " + e.toString()));
+                	}
+                }else if(n.content.identifier.equals("InteractionSet"))
+                {
+                	try{
+                		parseInteractionSet(n.children);
+                	} catch(Exception e) {
+                		logger.addMessage(new Message(1, "Interaction Set Error: " + e.getMessage()));
+                	}
+                }else if(n.content.identifier.equals("LevelMapping"))
+                {
+                	try{
+                		parseLevelMapping(n.children);
+                	} catch(Exception e) {
+                		logger.addMessage(new Message(1, "Level Mapping Error: " + e.toString()));
+                	}
+                }else if(n.content.identifier.equals("TerminationSet"))
+                {
+                	try{
+                    parseTerminationSet(n.children);
+                	} catch(Exception e) {
+                		logger.addMessage(new Message(1, "Termination Set Error: " + e.toString()));
+                	}
+                }
             }
+            //logger.printMessages();
         }
-
     }
 
     /**
      * Parses the nodes in VGDL description.
      * @param rootNode the root VGDL node.
      */
-    private void parseNodes(Node rootNode)
+    private void parseNodes(Node rootNode) throws Exception
     {
         //Parse here the normal blocks of VGDL.
         for(Node n : rootNode.children)
@@ -165,14 +211,19 @@ public class VGDLParser
      * @param currentGame	the current game object
      * @param rules		the current interaction set as in the VGDL file
      * @param terminations	the current termination set as in the VGDL file
+     * @throws Exception
      */
     public void parseInteractionTermination(Game currentGame, String[] rules, String[] terminations){
-        this.game = currentGame;
-
-        Node rulesNode = indentTreeParser(rules);
-        Node terNode = indentTreeParser(terminations);
-        parseInteractionSet(rulesNode.children);
-        parseTerminationSet(terNode.children);
+		this.game = currentGame;
+		
+		Node rulesNode = indentTreeParser(rules);
+		Node terNode = indentTreeParser(terminations);
+		try{
+			parseInteractionSet(rulesNode.children);
+			parseTerminationSet(terNode.children);
+		} catch(Exception e) {
+			logger.addMessage(new Message(1, "[PARSE ERROR]"));
+		}
     }
 
     /**
@@ -185,7 +236,9 @@ public class VGDLParser
         //By default, let's make tab as four spaces
         String tabTemplate = "    ";
         Node last = null;
-
+        
+        // set the overall line number at 0
+        int lineNumber = 0;
         for(String line : lines)
         {
             line.replaceAll("\t",tabTemplate);
@@ -206,8 +259,9 @@ public class VGDLParser
                 char firstChar = content.charAt(0);
                 //figure out the indent of the line.
                 int indent = line.indexOf(firstChar);
-                last = new Node(content, indent, last, currentSet);
+                last = new Node(content, indent, last, currentSet, lineNumber);
             }
+            lineNumber++;
         }
 
         return last.getRoot();
@@ -351,12 +405,14 @@ public class VGDLParser
     /**
      * Parses the interaction set.
      * @param elements all interactions defined for the game.
+     * @throws Exception 
      */
-    private void parseInteractionSet(ArrayList<Node> elements)
+    private void parseInteractionSet(ArrayList<Node> elements) throws Exception
     {
         for(Node n : elements)
         {
             InteractionContent ic = (InteractionContent)n.content;
+            ic.lineNumber = n.lineNumber;
             if(ic.is_definition) // === contains ">"
             {
                 Effect ef = VGDLFactory.GetInstance().createEffect(game, ic);
@@ -402,6 +458,8 @@ public class VGDLParser
    		        //unknown sprite other than an EOS or TIME effect is an error
                         }else {
                             System.out.println("[PARSE ERROR] interaction entry references unknown sprite: " + ic.line);
+                            // TODO throw exception here 
+                            throw new Exception("[PARSE ERROR] interaction entry references unknown sprite. Line: " + ic.lineNumber + " : " + ic.line);
                         }
                     }
 
@@ -420,6 +478,7 @@ public class VGDLParser
 
             }else{
                 System.out.println("[PARSE ERROR] bad format interaction entry: " + ic.line);
+                throw new Exception("[PARSE ERROR] bad format interaction entry. Line: " + ic.lineNumber + " : " + ic.line);
             }
         }
     }
@@ -456,8 +515,9 @@ public class VGDLParser
     /**
      * Parses the termination set.
      * @param elements all terminations defined for the game.
+     * @throws Exception 
      */
-    private void parseTerminationSet(ArrayList<Node> elements)
+    private void parseTerminationSet(ArrayList<Node> elements) throws Exception
     {
         for(Node n : elements)
         {

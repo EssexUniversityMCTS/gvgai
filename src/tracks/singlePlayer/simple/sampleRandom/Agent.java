@@ -71,7 +71,7 @@ public class Agent extends AbstractPlayer {
         printDebug(portalPositions,"por");
         System.out.println();               */
 
-        Types.ACTIONS action = null;
+        Types.ACTIONS action = Types.ACTIONS.ACTION_NIL;
         StateObservation stCopy = stateObs.copy();
 
         double avgTimeTaken = 0;
