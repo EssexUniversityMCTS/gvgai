@@ -4,6 +4,8 @@ package tools;
  * Created by diego on 26/02/14.
  */
 
+import core.competition.CompetitionParameters;
+
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
 
@@ -14,24 +16,14 @@ public class ElapsedCpuTimer {
     long oldTime;
     long maxTime;
 
-    public enum TimerType {
-        WALL_TIME, CPU_TIME, USER_TIME
-    };
-
-    public TimerType type = TimerType.WALL_TIME;
-
-    public ElapsedCpuTimer(TimerType type) {
-        this.type = type;
-        oldTime = getTime();
-    }
-
     public ElapsedCpuTimer() {
         oldTime = getTime();
     }
 
+
     public ElapsedCpuTimer copy()
     {
-        ElapsedCpuTimer newCpuTimer = new ElapsedCpuTimer(this.type);
+        ElapsedCpuTimer newCpuTimer = new ElapsedCpuTimer();
         newCpuTimer.maxTime = this.maxTime;
         newCpuTimer.oldTime = this.oldTime;
         newCpuTimer.bean = this.bean;
@@ -74,40 +66,18 @@ public class ElapsedCpuTimer {
     }
 
     private long getTime() {
-        switch (type) {
-            case WALL_TIME:
-                return getWallTime();
-
-            case CPU_TIME:
-                return getCpuTime();
-
-            case USER_TIME:
-                return getUserTime();
-
-            default:
-                break;
-        }
         return getCpuTime();
-    }
-
-    private long getWallTime() {
-        return System.nanoTime();
     }
 
     private long getCpuTime() {
 
+        if(CompetitionParameters.OS_WIN)
+            return System.nanoTime();
+
         if (bean.isCurrentThreadCpuTimeSupported()) {
             return bean.getCurrentThreadCpuTime();
         } else {
-        	throw new RuntimeException("CpuTime NOT Supported");
-        }
-    }
-
-    private long getUserTime() {
-        if (bean.isCurrentThreadCpuTimeSupported()) {
-            return bean.getCurrentThreadUserTime();
-        } else {
-        	throw new RuntimeException("UserTime NOT Supported");
+            throw new RuntimeException("CpuTime NOT Supported");
         }
 
     }

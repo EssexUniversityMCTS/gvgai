@@ -2,8 +2,8 @@ package ontology.effects.binary;
 
 import java.util.Collection;
 
-import core.VGDLFactory;
-import core.VGDLSprite;
+import core.vgdl.VGDLFactory;
+import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
 import ontology.effects.Effect;
@@ -31,8 +31,7 @@ public class TeleportToExit extends Effect
 
         Collection<VGDLSprite> sprites = game.getSprites(destinationId);
 
-        if(sprites.size() > 0)
-        {
+        if(sprites.size() > 0){
             VGDLSprite destination = (VGDLSprite) Utils.choice(sprites.toArray(), game.getRandomGenerator());
             sprite1.setRect(destination.rect);
             sprite1.lastmove = 0;

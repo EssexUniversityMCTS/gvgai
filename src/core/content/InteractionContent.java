@@ -111,4 +111,10 @@ public class InteractionContent extends Content
         }
         this.hashCode = this.function.hashCode();
     }
+
+
+    @Override
+    public void decorate(HashMap<String, ParameterContent> pcs) {
+        super._decorate(pcs);
+    }
 }

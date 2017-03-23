@@ -1,13 +1,11 @@
 package ontology.effects.binary;
 
-import core.VGDLSprite;
+import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
 import ontology.effects.Effect;
 import tools.Direction;
 import tools.Vector2d;
-
-import java.awt.*;
 
 /**
  * Created with IntelliJ IDEA.

@@ -1,0 +1,57 @@
+GameSpace square_size=25
+    SpriteSet
+        background > Immovable img=oryx/space1 hidden=True
+        base    > Immovable    color=WHITE img=oryx/planet
+        avatar  > FlakAvatar   stype=sam img=oryx/spaceship1
+        missile > Missile
+            sam  > orientation=UP    color=BLUE speed=SSPEED singleton=IS_SAM_SINGLE img=oryx/bullet1
+            bomb > orientation=DOWN  color=RED  speed=BSPEED img=oryx/bullet2
+        alien   > Bomber       stype=bomb   prob=APROB  cooldown=ACOOL speed=ASPEED
+            alienGreen > img=oryx/alien3
+            alienBlue > img=oryx/alien1
+        portal  > invisible=True hidden=True
+        	portalSlow  > SpawnPoint   stype=alienBlue  cooldown=PCOOL   total=PTOTAL img=portal
+        	# portalFast  > SpawnPoint   stype=alienGreen  cooldown=12   total=20 img=portal
+    
+    LevelMapping
+        . > background
+        0 > background base
+        1 > background portalSlow
+        # 2 > background portalFast
+        A > background avatar
+
+    TerminationSet
+        SpriteCounter      stype=avatar               limit=0   win=False
+        MultiSpriteCounter stype1=portal stype2=alien limit=0   win=True
+        Timeout limit=1500 win=IS_GW_TIME
+        
+    InteractionSet
+        avatar  EOS  > stepBack
+        alien   EOS  > turnAround
+        missile EOS  > killSprite
+
+        base bomb > killBoth
+        base sam > killBoth scoreChange=SC_BASESAM
+
+        base   alien > killSprite
+        avatar alien > killSprite scoreChange=SC_AVALIEN
+        avatar bomb  > killSprite scoreChange=SC_AVBOMB
+        alien  sam   > killSprite scoreChange=SC_ALSAM
+
+    ParameterSet
+        #{Name of the parameter} > {values(min, inc, max)/(boolean)} {descriptive string}
+
+        SSPEED      > values=0.1:0.1:1.0     string=Sam_Speed
+        BSPEED      > values=0.1:0.1:1.0     string=Bomb_Speed
+        APROB       > values=0.01:0.02:0.5   string=Alien_Bomb_Probability
+        ACOOL       > values=1:1:10          string=Alien_Cooldown
+        ASPEED      > values=0.1:0.1:1.0     string=Alien_Speed
+        PCOOL       > values=1:1:10          string=Alien_Portal_Cooldown
+        PTOTAL      > values=8:2:60          string=Alien_Portal_Total
+        SC_BASESAM  > values=-5:1:5          string=Score_Base-Sam
+        SC_AVALIEN  > values=-5:1:5          string=Score_Avatar-Alien
+        SC_AVBOMB   > values=-5:1:5          string=Score_Avatar-Bomb
+        SC_ALSAM    > values=-5:1:5          string=Score_Alien-Sam
+
+        IS_SAM_SINGLE  > values=True:False     string=Is_Sam_Singleton
+        IS_GW_TIME     > values=True:False     string=Is_GameWon_OnTimeOut

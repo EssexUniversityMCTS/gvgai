@@ -7,7 +7,15 @@ Google group - https://groups.google.com/forum/#!forum/the-general-video-game-co
 
 ## FAQs / Troubleshooting
 
-**1. How do I upload my controller? What files or folder structure do I need? 
+**3. Where are the Test methods? Due to the explosion of GVGAI competition tracks, we have distributed the main methods in different classes across the code hierarchy:
+
+ - Single Player Planning track: tracks.singlePlayer.Test.java
+ - 2-Player Planning track: tracks.multiPlayer.TestMultiPlayer.java
+ - Level Generation track: tracks.levelGeneration.TestLevelGeneration.java
+ - Rule Generation track: tracks.ruleGeneration.TestRuleGeneration.java
+
+
+**2. How do I upload my controller? What files or folder structure do I need? 
 First of all, your controller ```Agent.java``` and any auxiliary files you create should be in a single package folder with your username. For example, if your username is "abc", you should have a package folder named "abc" in the project. Your entire project layout should look something like this:
 
 ```groovy
@@ -15,7 +23,7 @@ First of all, your controller ```Agent.java``` and any auxiliary files you creat
 	|- Agent.java
 	|- MyAdditionalFile1.java
 	|- MyAdditionalFile2.java
-- controllers
+- tracks
 - core
 - ontology
 - tools
@@ -24,7 +32,7 @@ First of all, your controller ```Agent.java``` and any auxiliary files you creat
 Then, all you need to do is to zip and upload the "abc" folder. No other folders/files are necessary.
 
 
-**2. I am getting the error `javac1.8 class not found` when running Eclipse and ANT on build.xml**
+**3. I am getting the error `javac1.8 class not found` when running Eclipse and ANT on build.xml**
 This is likely because the ANT version that is installed with your version of Eclipse is old. You can easily fix this problem by doing the following:
 
 - Download the archive of the [latest version of ANT](http://ant.apache.org/bindownload.cgi) (Tested with  Ant 1.9.4)

@@ -1,0 +1,76 @@
+GameSpace
+    SpriteSet
+
+        sky   > Immovable img=oryx/backLBlue
+        water > Immovable img=newset/water2
+        saved > Immovable color=LIGHTGREEN
+        holes > SpawnPoint color=LIGHTGRAY img=newset/whirlpool2 portal=True
+            sharkhole  >  stype=shark  prob=SHPROB
+            whalehole  >  stype=whale  prob=WHPROB
+            diverhole  >  stype=diver
+                normaldiverhole > prob=DHPROB
+                oftendiverhole  > prob=DHPROB
+
+        moving >
+            avatar  > ShootAvatar color=YELLOW  stype=torpedo img=newset/submarine healthPoints=HP limitHealthPoints=MHP
+            torpedo > Missile color=YELLOW img=oryx/bullet1
+            fish >
+                shark  > Missile orientation=LEFT  speed=SSPEED color=ORANGE img=newset/shark2
+                whale  > Bomber  orientation=RIGHT  speed=WSPEED color=BROWN stype=pirana prob=WSPROB img=newset/whale
+                pirana > Missile orientation=RIGHT speed=PSPEED color=RED shrinkfactor=0.6 img=newset/piranha2
+            diver > RandomNPC color=GREEN speed=DSPEED img=newset/diver1 cons=DCONS
+
+        crew  > Resource color=GREEN limit=CRLIMIT
+
+    InteractionSet
+
+        avatar TIME > subtractHealthPoints timer=TIMERHPLOSS repeating=True
+
+        EOS avatar diver sky   > stepBack
+        fish EOS  > killSprite #Note that from vgdl 2.0, EOS can be the first or the second sprite.
+
+        fish torpedo > killBoth scoreChange=SCFISHTORPEDO
+        avatar fish  > killSprite
+
+        avatar sky > addHealthPoints value=HPPLUS
+        avatar sky > spawnIfHasMore resource=crew stype=saved limit=CRLIMIT spend=CRLIMIT
+        saved  sky > killSprite scoreChange=SCSAVEDBUNCH
+
+        avatar diver > changeResource resource=crew
+        diver avatar > killSprite
+
+    LevelMapping
+        a > sky
+        A > water avatar
+        1 > water sharkhole
+        2 > water whalehole
+        3 > water normaldiverhole
+        4 > water oftendiverhole
+        . > water
+
+    TerminationSet
+        SpriteCounter      stype=avatar               limit=0 win=False
+        Timeout limit=1000 win=True
+
+
+    ParameterSet
+        #{Name of the parameter} > {values(min, inc, max)/(boolean)} {descriptive string}
+
+        SHPROB      > values=0.01:0.01:0.2       string=SharkHole_SpawnProb
+        WHPROB      > values=0.005:0.005:0.1     string=WhaleHole_SpawnProb
+        DHPROB      > values=0.005:0.005:0.1     string=DiverHole_SpawnProb
+        HP          > values=1:2:40              string=Initial_Health_Points
+        MHP         > values=1:5:40              string=Max_Health_Points
+        HPPLUS      > values=1:1:4               string=Health_Points_Plus
+        SSPEED      > values=0.05:0.05:0.5       string=Shark_Speed
+        WSPEED      > values=0.05:0.05:0.5       string=Whale_Speed
+        PSPEED      > values=0.05:0.05:0.5       string=Pirana_Speed
+        DSPEED      > values=0.1:0.1:1.0         string=Diver_Speed
+        WSPROB      > values=0.01:0.01:0.2       string=Whale_Spawn_Prob
+        DCONS       > values=1:1:6               string=Consecutive_Moves_Diver
+        CRLIMIT     > values=1:1:8               string=Crew_Limit
+        DCONS       > values=1:1:6               string=Consecutive_Moves_Diver
+        TIMERHPLOSS > values=5:5:50              string=Is_GameWon_OnTimeOut
+
+        SCFISHTORPEDO  > values=-5:1:5           string=Score_Fish_Torpedo
+        SCSAVEDBUNCH   > values=-5:1:5           string=Score_Saved_Bunch

@@ -43,4 +43,26 @@ public abstract class Content
      */
     public String toString() {  return line; }
 
+
+    /**
+     * Takes a ParameterContent object to decorate the current Content object.
+     * @param pcs ParameterContent hashmap that defines values for variables specified in a GameSpace.
+     */
+    public abstract void decorate (HashMap<String, ParameterContent> pcs);
+
+
+    protected void _decorate(HashMap<String, ParameterContent> pcs)
+    {
+        for (String parameter : this.parameters.keySet()) {
+            String value = this.parameters.get(parameter);
+
+            if(pcs.containsKey(value))
+            {
+                ParameterContent pc = pcs.get(value);
+                this.parameters.put(parameter, pc.getStValue());
+            }
+        }
+    }
+
+
 }

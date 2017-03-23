@@ -1,7 +1,7 @@
 package ontology.avatar.oriented;
 
-import core.VGDLRegistry;
-import core.VGDLSprite;
+import core.vgdl.VGDLRegistry;
+import core.vgdl.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;

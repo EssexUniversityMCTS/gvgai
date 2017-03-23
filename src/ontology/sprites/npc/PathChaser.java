@@ -1,12 +1,11 @@
 package ontology.sprites.npc;
 
-import core.VGDLRegistry;
-import core.VGDLSprite;
+import core.vgdl.VGDLRegistry;
+import core.vgdl.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;
 import tools.Direction;
-import tools.Utils;
 import tools.Vector2d;
 import tools.pathfinder.Node;
 

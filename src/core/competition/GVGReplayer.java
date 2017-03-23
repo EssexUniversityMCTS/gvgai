@@ -1,12 +1,6 @@
 package core.competition;
 
-import core.ArcadeMachine;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.Random;
+import tracks.ArcadeMachine;
 
 /**
  * Created by dperez on 24/05/16.

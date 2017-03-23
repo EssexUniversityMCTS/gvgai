@@ -3,7 +3,7 @@ package core.content;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import core.VGDLRegistry;
+import core.vgdl.VGDLRegistry;
 
 /**
  * Created with IntelliJ IDEA.
@@ -120,4 +120,9 @@ public class SpriteContent extends Content
         return line;
     }
 
+
+    @Override
+    public void decorate(HashMap<String, ParameterContent> pcs) {
+        super._decorate(pcs);
+    }
 }

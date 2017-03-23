@@ -2,11 +2,9 @@ package core.game;
 
 import java.awt.Dimension;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
-import core.SpriteGroup;
-import core.VGDLSprite;
-import core.competition.CompetitionParameters;
+import core.vgdl.SpriteGroup;
+import core.vgdl.VGDLSprite;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.TimeEffect;
@@ -437,6 +435,7 @@ public class ForwardModel extends Game
         this.spriteOrder = a_gameState.spriteOrder;
         this.singletons = a_gameState.singletons;
         this.classConst = a_gameState.classConst;
+        this.parameters = a_gameState.parameters;
         this.templateSprites = a_gameState.templateSprites;
         this.collisionEffects = a_gameState.collisionEffects;
         this.definedEffects = a_gameState.definedEffects;

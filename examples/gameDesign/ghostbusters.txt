@@ -1,0 +1,66 @@
+GameSpace key_handler=Pulse square_size=50 no_players=2
+    SpriteSet
+        ground > Immovable img=oryx/grass autotiling=True hidden=True
+        moving > 
+            avatar >
+                ghost > OrientedAvatar speed=SPGHOST  img=oryx/ghost1
+                hunter > ShootAvatar stype=missile speed=SPHUNT img=newset/humanShotgun
+            enemy > RandomBomber
+                enemy0 > speed=SPE0 stype=missileA prob=PE0 img=newset/shooter1
+                enemy1 > speed=SPE1 stype=missileB prob=PE1 img=newset/bandit1
+        missile > Missile img=oryx/orb1 shrinkfactor=0.4 timeToLive=TTLMIS speed=SPMIS
+        missileE > RandomMissile shrinkfactor=0.4 speed=SPMISA
+            missileA > img=oryx/orb3 speed=SPMISA
+            missileB > img=oryx/orb2 speed=SPMISB
+        wall > Immovable img=oryx/wall1
+
+    LevelMapping
+        . > ground
+        A > ghost ground
+        B > hunter ground
+        0 > enemy0 ground
+        1 > enemy1 ground
+        w > wall ground
+
+    InteractionSet
+        hunter wall > stepBack pixelPerfect=True
+        ghost EOS > wrapAround
+        enemy wall > stepBack pixelPerfect=True
+
+        ghost missile > killBoth scoreChange=SC_GHMIS_A0,SC_GHMIS_B0
+        hunter ghost > killSprite scoreChange=SC_GHMIS_B1,SC_GHMIS_A1
+        ghost missileA > killBoth scoreChange=SC_GHMISA_A0,SC_GHMISA_B0
+        hunter missileB > killBoth scoreChange=SC_GHMISA_B1,SC_GHMISA_A1
+        missileE wall EOS > killSprite
+
+        missile enemy > killSprite
+        missile EOS > wrapAround
+
+    TerminationSet
+        SpriteCounter stype=ghost limit=0 win=False,True
+        SpriteCounter stype=hunter limit=0 win=True,False
+        Timeout limit=1500 win=True,False
+
+    ParameterSet
+        #{Name of the parameter} > {values(min, inc, max)/(boolean)} {descriptive string}
+
+        SPHUNT      > values=0.1:0.1:1.5     string=Hunter_Speed
+        SPGHOST     > values=0.1:0.1:1.0     string=Ghost_Speed
+        SPE0        > values=0.1:0.1:1.0     string=Enemy0_Speed
+        SPE1        > values=0.1:0.1:1.0     string=Enemy1_Speed
+        PE0         > values=0.01:0.01:0.1   string=Enemy0_prob
+        PE1         > values=0.01:0.01:0.1   string=Enemy1_prob
+        TTLMIS      > values=1:5:30          string=Missile_TimeToLive
+        SPMIS       > values=0.1:0.1:1.0     string=Missile_Speed
+        SPMISA      > values=0.1:0.1:1.0     string=MissileA_Speed
+        SPMISB      > values=0.1:0.1:1.0     string=MissileB_Speed
+
+        SC_GHMIS_A0 > values=-1:1:1          string=Score_Ghost-Missile-A0
+        SC_GHMIS_A1 > values=-1:1:1          string=Score_Ghost-Missile-A1
+        SC_GHMIS_B0 > values=50:10:150       string=Score_Ghost-Missile-B0
+        SC_GHMIS_B1 > values=50:10:150       string=Score_Ghost-Missile-B1
+
+        SC_GHMISA_A0 > values=-30:5:-5       string=Score_Ghost-MissileA-A0
+        SC_GHMISA_A1 > values=-30:5:-5       string=Score_Ghost-MissileA-A1
+        SC_GHMISA_B0 > values=-30:5:-5       string=Score_Ghost-MissileA-B0
+        SC_GHMISA_B1 > values=-30:5:-5       string=Score_Ghost-MissileA-B1

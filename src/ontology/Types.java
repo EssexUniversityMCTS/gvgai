@@ -26,6 +26,7 @@ public class Types {
     public static final int VGDL_INTERACTION_SET = 2;
     public static final int VGDL_LEVEL_MAPPING = 3;
     public static final int VGDL_TERMINATION_SET = 4;
+    public static final int VGDL_PARAMETER_SET = 5;
 
     public static final Vector2d NIL = new Vector2d(-1, -1);
     public static final Vector2d NONE = new Vector2d(0, 0);

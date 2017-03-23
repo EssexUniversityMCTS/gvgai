@@ -1,10 +1,9 @@
 package ontology.avatar;
 
 import java.awt.Dimension;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-import core.VGDLSprite;
+import core.vgdl.VGDLSprite;
 import core.competition.CompetitionParameters;
 import core.content.SpriteContent;
 import core.game.Game;
@@ -135,7 +134,7 @@ public class MovingAvatar extends VGDLSprite {
      */
     protected void requestPlayerInput(Game game)
     {
-        ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
+        ElapsedCpuTimer ect = new ElapsedCpuTimer();
         ect.setMaxTimeMillis(CompetitionParameters.ACTION_TIME);
 
         Types.ACTIONS action;
@@ -145,7 +144,7 @@ public class MovingAvatar extends VGDLSprite {
             action = this.player.act(game.getObservation(), ect.copy());
         }
         
-        if(ect.exceededMaxTime())
+        if(CompetitionParameters.TIME_CONSTRAINED && ect.exceededMaxTime())
         {
             long exceeded =  - ect.remainingTimeMillis();
 

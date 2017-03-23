@@ -1,11 +1,9 @@
 package ontology.effects.unary;
 
-import core.VGDLRegistry;
-import core.VGDLSprite;
+import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
 import ontology.effects.Effect;
-import tools.Vector2d;
 
 /**
  * Created with IntelliJ IDEA.

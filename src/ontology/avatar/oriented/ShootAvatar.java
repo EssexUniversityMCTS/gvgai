@@ -4,8 +4,8 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import core.VGDLRegistry;
-import core.VGDLSprite;
+import core.vgdl.VGDLRegistry;
+import core.vgdl.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
 import ontology.Types;

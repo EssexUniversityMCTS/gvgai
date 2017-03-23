@@ -60,4 +60,9 @@ public class GameContent extends Content
     }
 
 
+    @Override
+    public void decorate(HashMap<String, ParameterContent> pcs) {
+        //Nothing to do here, for the moment.
+    }
+
 }

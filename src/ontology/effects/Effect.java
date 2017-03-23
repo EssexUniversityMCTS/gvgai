@@ -2,8 +2,8 @@ package ontology.effects;
 
 import java.util.ArrayList;
 
-import core.VGDLFactory;
-import core.VGDLSprite;
+import core.vgdl.VGDLFactory;
+import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
 
@@ -52,6 +52,10 @@ public abstract class Effect{
      */
     public long hashCode;
 
+    /**
+     * Indicates if this effect is enabled or not (default: true)
+     */
+    public boolean enabled;
 
     /**
      * Executes the effect
@@ -68,6 +72,8 @@ public abstract class Effect{
     }
 
     public void parseParameters(InteractionContent content) {
+
+        enabled=true;
         //parameters from the object.
         VGDLFactory.GetInstance().parseParameters(content, this);
         hashCode = content.hashCode;
