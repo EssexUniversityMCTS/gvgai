@@ -1,4 +1,4 @@
-package ruleGenerators.geneticRuleGenerator;
+package tracks.ruleGeneration.geneticRuleGenerator;
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-import core.ArcadeMachine;
 import core.game.SLDescription;
 import core.game.StateObservation;
 import core.game.GameDescription.SpriteData;
@@ -25,9 +24,9 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	/** Random object to help in generation **/
 	private Random random;
 	/** A constructor to help speed up the creation of random generators **/
-	private static ruleGenerators.randomRuleGenerator.RuleGenerator randomGen;
+	private static tracks.ruleGeneration.randomRuleGenerator.RuleGenerator randomGen;
 	/** A constructor to help speed up the creation of constructive generators */
-	private static ruleGenerators.constructiveRuleGenerator.RuleGenerator constructGen;
+	private static tracks.ruleGeneration.constructiveRuleGenerator.RuleGenerator constructGen;
 	/** contains info about sprites and current level **/
 	private SLDescription sl;
 	/** amount of time allowed **/

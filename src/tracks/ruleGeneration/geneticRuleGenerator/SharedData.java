@@ -1,4 +1,4 @@
-package ruleGenerators.geneticRuleGenerator;
+package tracks.ruleGeneration.geneticRuleGenerator;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
