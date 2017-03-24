@@ -51,6 +51,10 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		SharedData.usefulSprites = new ArrayList<String>();
 		SharedData.random = new Random();
 		SharedData.la = new LevelAnalyzer(sl);
+		
+		randomGen = new tracks.ruleGeneration.randomRuleGenerator.RuleGenerator(sl, time);
+		constructGen = new tracks.ruleGeneration.constructiveRuleGenerator.RuleGenerator(sl, time);
+		
 		try {
 			SharedData.output = new PrintWriter(SharedData.filename);
 		} catch (FileNotFoundException e) {
@@ -66,6 +70,10 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	@Override
 	public String[][] generateRules(SLDescription sl, ElapsedCpuTimer time) {
 		// TODO Auto-generated method stub
+		String[][] test = randomGen.generateRules(sl, time);
+		Chromosome test1 = new Chromosome(test, sl, time);
+		// try a mutation on interaction
+		test1.mutateInteraction();
 		return null;
 	}
 

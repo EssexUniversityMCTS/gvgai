@@ -120,7 +120,7 @@ public class Chromosome implements Comparable<Chromosome>{
 	 * @param time		elapsed time
 	 */
 
-	public Chromosome(String[][] ruleset, SLDescription sl, ElapsedCpuTimer time, ArrayList<String> usefulSprites) {
+	public Chromosome(String[][] ruleset, SLDescription sl, ElapsedCpuTimer time) {
 		this.ruleset = ruleset;
 		this.sl = sl;
 		this.fitness = new ArrayList<Double>();
@@ -128,7 +128,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		fitness.add(0.0);
 		this.calculated = false;
 		this.stateObs = null;
-		this.usefulSprites = usefulSprites;
+		this.usefulSprites = SharedData.usefulSprites;
 	    this.levAl = new LevelAnalyzer(sl);
 	    this.parameters = new HashMap<String, Object>();
 		constructAgent();
@@ -156,6 +156,7 @@ public class Chromosome implements Comparable<Chromosome>{
 	public void mutateInteraction() {
 		ArrayList<String> interactionSet = new ArrayList<>( Arrays.asList(ruleset[0]));
 		double mutationType = SharedData.random.nextDouble();
+		// we do an insertion
 		if(mutationType < SharedData.INSERTION_PROB) {
 			// roll dice to see if we will insert a new rule altogether or a new parameter into an existing rule
 			double roll = SharedData.random.nextDouble();
@@ -190,7 +191,16 @@ public class Chromosome implements Comparable<Chromosome>{
 			    String officialInteraction = usefulSprites.get(i1) + " " + usefulSprites.get(i2) + " > " + nInteraction;
 			    // roll to see if you insert a parameter into this interaction
 			}
+		// we do a deletion
 		} else if(mutationType < SharedData.DELETION_PROB + SharedData.INSERTION_PROB) {
+			// roll dice to see if we will insert a new rule altogether or a new parameter into an existing rule
+			double roll = SharedData.random.nextDouble();
+			// insert a new param onto an exisitng rule
+			if(roll < SharedData.DELETE_PARAM_PROB) {
+				int point = SharedData.random.nextInt(interactionSet.size());
+				String deleteFromMe = interactionSet.get(point);
+				//
+			}
 			int point = SharedData.random.nextInt(interactionSet.size());
 			if (interactionSet.size() > 1) {
 				interactionSet.remove(point);
@@ -219,7 +229,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		for(int i = 0; i < ruleset[1].length; i++) {
 			nRuleset[1][i] = ruleset[1][i];
 		}
-		Chromosome c = new Chromosome(nRuleset, sl, time, usefulSprites);
+		Chromosome c = new Chromosome(nRuleset, sl, time);
 		return c;
 	}
 	/**
