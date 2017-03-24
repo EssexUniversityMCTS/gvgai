@@ -223,9 +223,8 @@ public class SLDescription {
      * @return return decoded interaction and termination rules
      */
     public String[][] modifyRules(String[] rules, String[] wins, int seed) {
-	String[] modifiedRules = new String[rules.length + 1];
-	modifiedRules[0] = "InteractionSet";
-	for (int i = 1; i < modifiedRules.length; i++) {
+	String[] modifiedRules = new String[rules.length];
+	for (int i = 0; i < modifiedRules.length; i++) {
 	    String[] parts = rules[i - 1].split(" ");
 	    modifiedRules[i] = "   ";
 	    for (int j = 0; j < parts.length; j++) {
@@ -238,9 +237,8 @@ public class SLDescription {
 	    }
 	}
 
-	String[] modifiedWins = new String[wins.length + 1];
-	modifiedWins[0] = "TerminationSet";
-	for (int i = 1; i < modifiedWins.length; i++) {
+	String[] modifiedWins = new String[wins.length];
+	for (int i = 0; i < modifiedWins.length; i++) {
 	    String[] parts = wins[i - 1].split(" ");
 	    modifiedWins[i] = "   ";
 	    for (int j = 0; j < parts.length; j++) {

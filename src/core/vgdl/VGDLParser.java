@@ -231,7 +231,7 @@ public class VGDLParser
      * @param lines array with the lines read from the game description file.
      * @return the root of the final game tree
      */
-    private Node indentTreeParser(String[] lines)
+    public Node indentTreeParser(String[] lines)
     {
         //By default, let's make tab as four spaces
         String tabTemplate = "    ";

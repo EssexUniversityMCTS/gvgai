@@ -1,9 +1,12 @@
 package tracks.ruleGeneration;
 
+import core.vgdl.Node;
 import core.vgdl.VGDLFactory;
 import core.vgdl.VGDLParser;
 import core.vgdl.VGDLRegistry;
 import core.competition.CompetitionParameters;
+import core.content.InteractionContent;
+import core.content.TerminationContent;
 import core.game.Game;
 import core.game.SLDescription;
 import core.generator.AbstractRuleGenerator;
@@ -161,6 +164,38 @@ public class RuleGenMachine
     }
 
     /**
+     * Recursive function to save game tree and replace the old rules with the new rules
+     * @param n			current Node that need to be printed
+     * @param level		current level in the tree
+     * @param w			current writer object
+     * @param rules		array of interaction rules or terminations
+     * @throws IOException	thrown when a problem happens during writing
+     */
+    private static void saveTree(Node n, int level, BufferedWriter w, String[][] rules) throws IOException{
+	String template = "    ";
+	String message = "";
+	for(int i=0; i<level; i++){
+	    message += template;
+	}
+	w.write(message + n.content.line.trim() + "\n");
+	if(n.content instanceof InteractionContent){
+	    for(int i=1; i<rules[0].length; i++){
+		w.write(message + template + rules[0][i].trim() + "\n");
+	    }
+	}
+	else if(n.content instanceof TerminationContent){
+	    for(int i=1; i<rules[1].length; i++){
+		w.write(message + template + rules[1][i].trim() + "\n");
+	    }
+	}
+	else{
+	    for (int i = 0; i < n.children.size(); i++) {
+		saveTree(n.children.get(i), level + 1, w, rules);
+	    }
+	}
+    }
+    
+    /**
      * Save the result of the rule generations
      * @param gameFile		current game file
      * @param modifiedFile	current new game file
@@ -171,43 +206,8 @@ public class RuleGenMachine
             if (modifiedFile != null) {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(modifiedFile));
                 String[] gameLines = new tools.IO().readFile(gameFile);
-                String state = "none";
-                for(String line:gameLines){
-                    if(line.contains("BasicGame")){
-                        state = "none";
-                        writer.write(line.trim() + "\n");
-                        continue;
-                    }
-                    if(line.contains("InteractionSet")){
-                        state="interaction";
-                        for(int i=0; i<rules[0].length; i++){
-                            writer.write("   " + rules[0][i] + "\n");
-                        }
-                        continue;
-                    }
-                    if(line.contains("TerminationSet")){
-                        state="termination";
-                        for(int i=0; i<rules[1].length; i++){
-                            writer.write("   " + rules[1][i] + "\n");
-                        }
-                        continue;
-                    }
-                    if(line.contains("SpriteSet") || line.contains("LevelMapping")){
-                        state = "none";
-                        writer.write("   " + line.trim() + "\n");
-                        continue;
-                    }
-
-                    switch(state){
-                        case "interaction":
-                            continue;
-                        case "termination":
-                            continue;
-                        case "none":
-                            writer.write("    " + line + "\n");
-                            break;
-                    }
-                }
+                Node n = new VGDLParser().indentTreeParser(gameLines);
+                saveTree(n, 0, writer, rules);
                 writer.close();
             }
         } catch (IOException e) {
