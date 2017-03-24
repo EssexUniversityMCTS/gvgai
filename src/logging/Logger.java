@@ -3,15 +3,21 @@ package logging;
 import java.util.ArrayList;
 
 public class Logger {
-
+    
     private static final Logger instance = new Logger();
     private ArrayList<Message> messages;
+    
+    /**
+     * To disable and enable logger
+     */
+    public boolean active;
 
     /**
      * Private constructor to enforce singleton pattern
      */
     private Logger() {
 	messages = new ArrayList<Message>();
+	active = true;
     }
 
     /**
@@ -74,7 +80,9 @@ public class Logger {
      *            the message to be added to messages
      */
     public void addMessage(Message m) {
-	messages.add(m);
+	if(active){
+	    messages.add(m);
+	}
     }
 
     /**

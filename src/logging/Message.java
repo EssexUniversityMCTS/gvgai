@@ -1,6 +1,9 @@
 package logging;
 
 public class Message {
+    public static int WARNING = 0;
+    public static int ERROR = 1;
+    
     // 0 is warning, 1 is error
     private int type;
     // the string content of the message to print

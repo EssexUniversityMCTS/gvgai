@@ -12,6 +12,8 @@ import core.vgdl.VGDLFactory;
 import core.vgdl.VGDLRegistry;
 import core.vgdl.VGDLSprite;
 import core.vgdl.VGDLViewer;
+import logging.Logger;
+import logging.Message;
 import core.competition.CompetitionParameters;
 import core.content.Content;
 import core.content.GameContent;
@@ -1176,7 +1178,7 @@ public abstract class Game
                 }
             }
         } else {
-            System.out.println("No avatars found.");
+            Logger.getInstance().addMessage(new Message(Message.WARNING, "No avatars found."));
         }
     }
     /**
@@ -1584,7 +1586,7 @@ public abstract class Game
     {
         if(num_sprites > MAX_SPRITES)
         {
-            System.out.println("Sprite limit reached");
+            Logger.getInstance().addMessage(new Message(Message.WARNING, "Sprite limit reached."));
             return null;
         }
 
@@ -1634,6 +1636,7 @@ public abstract class Game
             return newSprite;
         }
 
+        Logger.getInstance().addMessage(new Message(Message.WARNING, "You can't have multiple objects of singleton."));
         return null;
     }
 
