@@ -28,7 +28,7 @@ public class Test {
         String contGamesPath = "examples/contphysics/";
         String gamesPath;
 		String games[];
-        boolean GRID_PHYSICS = true;
+        boolean GRID_PHYSICS = false;
 
         // All public games (gridphysics)
 		if(GRID_PHYSICS) {
@@ -79,7 +79,7 @@ public class Test {
 	//	ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
 
 		// 2. This plays a game in a level by the controller.
-		ArcadeMachine.runOneGame(game, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
+		ArcadeMachine.runOneGame(game, level1, visuals, sampleRHEAController, recordActionsFile, seed, 0);
 
 
 		// 3. This replays a game from an action file previously recorded
@@ -96,21 +96,21 @@ public class Test {
 	//	}
 
 		//5. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
-	//	int N = 92, L = 5, M = 10;
-	//	boolean saveActions = false;
-	//	String[] levels = new String[L];
-	//	String[] actionFiles = new String[L*M];
-	//	for(int i = 0; i < N; ++i)
-	//	{
-	//		int actionIdx = 0;
-	//		game = gamesPath + games[i] + ".txt";
-	//		for(int j = 0; j < L; ++j){
-	//			levels[j] = gamesPath + games[i] + "_lvl" + j +".txt";
-	//			if(saveActions) for(int k = 0; k < M; ++k)
-	//			actionFiles[actionIdx++] = "actions_game_" + i + "_level_" + j + "_" + k + ".txt";
-	//		}
-	//		ArcadeMachine.runGames(game, levels, M, sampleMCTSController, saveActions? actionFiles:null);
-	//	}
+//		int N = games.length, L = 1, M = 1;
+//		boolean saveActions = false;
+//		String[] levels = new String[L];
+//		String[] actionFiles = new String[L*M];
+//		for(int i = 0; i < N; ++i)
+//		{
+//			int actionIdx = 0;
+//			game = gamesPath + games[i] + ".txt";
+//			for(int j = 0; j < L; ++j){
+//				levels[j] = gamesPath + games[i] + "_lvl" + j +".txt";
+//				if(saveActions) for(int k = 0; k < M; ++k)
+//				actionFiles[actionIdx++] = "actions_game_" + i + "_level_" + j + "_" + k + ".txt";
+//			}
+//			ArcadeMachine.runGames(game, levels, M, sampleRHEAController, saveActions? actionFiles:null);
+//		}
 
 
     }

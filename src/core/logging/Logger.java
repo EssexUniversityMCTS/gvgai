@@ -1,4 +1,4 @@
-package logging;
+package core.logging;
 
 import java.util.ArrayList;
 

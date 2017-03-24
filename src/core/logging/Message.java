@@ -1,4 +1,4 @@
-package logging;
+package core.logging;
 
 public class Message {
     public static int WARNING = 0;

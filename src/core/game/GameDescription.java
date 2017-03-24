@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Random;
 
 
-import logging.Logger;
-import logging.Message;
+import core.logging.Logger;
+import core.logging.Message;
 
 import core.vgdl.VGDLRegistry;
 import ontology.Types;
