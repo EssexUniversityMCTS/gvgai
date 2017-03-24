@@ -4,7 +4,6 @@ import tracks.ArcadeMachine;
 import core.vgdl.VGDLFactory;
 import core.vgdl.VGDLParser;
 import core.vgdl.VGDLRegistry;
-import logging.Logger;
 import core.competition.CompetitionParameters;
 import core.game.Game;
 import core.game.GameDescription;

@@ -455,8 +455,10 @@ public class ForwardModel extends Game
         System.arraycopy(a_gameState.avatarLastAction, 0, avatarLastAction, 0, no_players);
         this.avatars = new MovingAvatar[no_players];
         for (int i = 0; i < no_players; i++) {
-            avatars[i] = (MovingAvatar) a_gameState.avatars[i].copy();
-            avatars[i].setKeyHandler(a_gameState.avatars[i].getKeyHandler());
+            if(a_gameState.avatars[i] != null){
+        	avatars[i] = (MovingAvatar) a_gameState.avatars[i].copy();
+                avatars[i].setKeyHandler(a_gameState.avatars[i].getKeyHandler());
+            }
         }
         this.counter = new int[no_counters];
         System.arraycopy(a_gameState.counter, 0, this.counter, 0, no_counters);
@@ -772,7 +774,7 @@ public class ForwardModel extends Game
      * @param playerID ID of the player to query.
      */
     public ArrayList<Types.ACTIONS> getAvatarActions(int playerID, boolean includeNIL) {
-        if(isEnded)
+        if(isEnded || avatars[playerID] == null)
             return new ArrayList<Types.ACTIONS>();
         if(includeNIL)
             return avatars[playerID].actionsNIL;

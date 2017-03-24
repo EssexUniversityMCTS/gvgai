@@ -7,9 +7,8 @@ import java.util.Random;
 import core.vgdl.VGDLFactory;
 import core.vgdl.VGDLRegistry;
 import core.vgdl.VGDLSprite;
-import logging.Logger;
-import logging.Message;
-import ontology.avatar.MovingAvatar;
+import core.logging.Logger;
+import core.logging.Message;
 import core.content.GameContent;
 import tools.IO;
 import tools.Vector2d;
@@ -173,7 +172,7 @@ public class BasicGame extends Game {
 			}
 		    }
 		}
-		else{
+		else if(c != ' '){
 		    Logger.getInstance().addMessage(new Message(Message.WARNING, "\"" + c + "\" isnot defined in the level mapping."));
 		}
 	    }
