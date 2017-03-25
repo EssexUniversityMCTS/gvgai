@@ -225,8 +225,8 @@ public class SLDescription {
     public String[][] modifyRules(String[] rules, String[] wins, int seed) {
 	String[] modifiedRules = new String[rules.length];
 	for (int i = 0; i < modifiedRules.length; i++) {
-	    String[] parts = rules[i - 1].split(" ");
-	    modifiedRules[i] = "   ";
+	    String[] parts = rules[i].split(" ");
+	    modifiedRules[i] = "";
 	    for (int j = 0; j < parts.length; j++) {
 		if (parts[j].toLowerCase().contains(KEYWORD + "_")) {
 		    String[] temp = parts[j].split(KEYWORD + "_");
@@ -239,8 +239,8 @@ public class SLDescription {
 
 	String[] modifiedWins = new String[wins.length];
 	for (int i = 0; i < modifiedWins.length; i++) {
-	    String[] parts = wins[i - 1].split(" ");
-	    modifiedWins[i] = "   ";
+	    String[] parts = wins[i].split(" ");
+	    modifiedWins[i] = "";
 	    for (int j = 0; j < parts.length; j++) {
 		if (parts[j].toLowerCase().contains(KEYWORD + "_")) {
 		    String[] temp = parts[j].split(KEYWORD + "_");
