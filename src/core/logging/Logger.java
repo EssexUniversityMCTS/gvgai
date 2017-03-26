@@ -44,8 +44,8 @@ public class Logger {
      */
     public void printMessages() {
 	System.out.println("*** Logged Messages ***");
-	for (Object msg : messages) {
-	    System.out.println(((Message) msg).getContent());
+	for (Message msg : messages) {
+	    System.out.println(msg.toString());
 	}
 	System.out.println("*** Logged Messages End ***");
     }

@@ -3,6 +3,8 @@ package ontology.effects.binary;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.logging.Logger;
+import core.logging.Message;
 import ontology.effects.Effect;
 
 import java.awt.*;
@@ -25,6 +27,10 @@ public class Align extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
+	if(sprite1 == null || sprite2 == null){
+	    Logger.getInstance().addMessage(new Message(Message.WARNING, "Neither 1st not 2nd sprite can be EOS with Align interaction."));
+	    return;
+	}
         sprite1.orientation = sprite2.orientation.copy();
         sprite1.rect = new Rectangle(sprite2.rect.x, sprite2.rect.y,
                 sprite1.rect.width, sprite1.rect.height);

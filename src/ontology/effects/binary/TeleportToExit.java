@@ -6,6 +6,8 @@ import core.vgdl.VGDLFactory;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.logging.Logger;
+import core.logging.Message;
 import ontology.effects.Effect;
 import tools.Utils;
 
@@ -29,7 +31,14 @@ public class TeleportToExit extends Effect
     {
         int destinationId = VGDLFactory.GetInstance().requestFieldValueInt(sprite2, "itype");
 
-        Collection<VGDLSprite> sprites = game.getSprites(destinationId);
+        Collection<VGDLSprite> sprites = null;
+        if(destinationId != -1){
+            sprites = game.getSprites(destinationId);
+        }
+        else{
+            Logger.getInstance().addMessage(new Message(Message.WARNING, "Ignoring TeleportToExit effect as " + sprite2.name + " isn't of type portal."));
+            return;
+        }
 
         if(sprites.size() > 0){
             VGDLSprite destination = (VGDLSprite) Utils.choice(sprites.toArray(), game.getRandomGenerator());
