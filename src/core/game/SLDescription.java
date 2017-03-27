@@ -112,10 +112,9 @@ public class SLDescription {
 			this.currentLevel[i][j] = "";
 		    } else {
 			// encode the different sprites
-			this.currentLevel[i][j] = KEYWORD + "_" + this.encodeName(tempSprites.get(0), this.shift);
+			this.currentLevel[i][j] = this.encodeName(tempSprites.get(0), this.shift);
 			for (int k = 1; k < tempSprites.size(); k++) {
-			    this.currentLevel[i][j] += ", " + KEYWORD + "_"
-				    + this.encodeName(tempSprites.get(k), this.shift);
+			    this.currentLevel[i][j] += ", " + this.encodeName(tempSprites.get(k), this.shift);
 			}
 		    }
 		}
@@ -159,14 +158,14 @@ public class SLDescription {
      *            the current sprite name to be encoded
      * @return encoded index for a sprite name
      */
-    private int encodeName(String name, int seed) {
+    private String encodeName(String name, int seed) {
 	for (int i = 0; i < this.gameSprites.length; i++) {
 	    if (this.gameSprites[i].name.toLowerCase().trim().equals(name.toLowerCase().trim())) {
 		int result = encodeIndex(i, seed);
-		return result;
+		return KEYWORD + "_" + result;
 	    }
 	}
-	return -1;
+	return "";
     }
 
     /**
@@ -196,9 +195,9 @@ public class SLDescription {
 	    } catch (CloneNotSupportedException e) {
 		e.printStackTrace();
 	    }
-	    result[i].name = KEYWORD + "_" + this.encodeIndex(i, this.shift);
+	    result[i].name = this.encodeName(this.gameSprites[i].name, this.shift);
 	    for (int j = 0; j < result[i].sprites.size(); j++) {
-		result[i].sprites.set(j, KEYWORD + "_" + this.encodeName(result[i].sprites.get(j), this.shift));
+		result[i].sprites.set(j, this.encodeName(result[i].sprites.get(j), this.shift));
 	    }
 	}
 
