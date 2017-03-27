@@ -109,7 +109,6 @@ public class LearningPlayer extends Player {
      * @param elapsedTimer Timer when the initialization is due to finish.
      */
     public void init(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer) {
-
         Gson serializer = new Gson();
 
         try {
@@ -145,7 +144,7 @@ public class LearningPlayer extends Player {
             sso.gameState = SerializableStateObservation.State.ACT_STATE;
             sso.elapsedTimer = elapsedTimer.remainingTimeMillis();
             commSend(sso.serialize(null));
-
+            // TODO: 27/03/2017 Daniel: what if received ABORT ?
             String response = commRecv(elapsedTimer, "ACT");
             logger.fine("Received ACTION: " + response + "; ACT Response time: "
                     + elapsedTimer.elapsedMillis() + " ms.");
@@ -174,15 +173,18 @@ public class LearningPlayer extends Player {
     }
 
 
+    // TODO: 27/03/2017 Daniel: check the following two methods, why client side ?
     public void finishGame(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer) throws IOException {
         initBuffers();
 
+        // TODO: 27/03/2017 Daniel: is the game stopped correctly ?
         // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
         sso.gameState = SerializableStateObservation.State.END_STATE;
         sso.elapsedTimer = elapsedTimer.remainingTimeMillis();
         commSend(sso.serialize(null));
 
-        String response = commRecv(elapsedTimer, "ENDGAME");
+        String response = commRecv(elapsedTimer, "GAME_DONE");
+        // TODO: 27/03/2017 Daniel: not finished yet. What should happen?
         logger.fine("Received: " + response);
     }
 
@@ -205,6 +207,7 @@ public class LearningPlayer extends Player {
      * @param idStr        String identifier of the phase the communication is in.
      * @return the response got from the client, or null if no response was received after due time.
      */
+    // TODO: 27/03/2017 Daniel: check the whole method
     public static String commRecv(ElapsedCpuTimer elapsedTimer, String idStr) throws IOException {
         String ret = null;
 

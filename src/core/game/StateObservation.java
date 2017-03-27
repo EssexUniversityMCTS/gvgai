@@ -136,6 +136,7 @@ public class StateObservation {
      */
     public boolean isGameOver()
     {
+        // TODO: 27/03/2017 Daniel: check the SSO state (ABORT) 
         return model.isGameOver();
     }
 

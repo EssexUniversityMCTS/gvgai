@@ -106,6 +106,7 @@ public class ClientComm {
 
             }else if(commState == COMM_STATE.ACT_END)
             {
+                // TODO: 27/03/2017 Daniel: no agent for the moment
                 //This is the place to think and return what action to take.
                 int rndActionIdx = new Random().nextInt(avatar.actionList.size());
                 String rndAction = avatar.actionList.get(rndActionIdx);
@@ -113,6 +114,7 @@ public class ClientComm {
 
             }else if(commState == COMM_STATE.ENDED_END)
             {
+                // TODO: 27/03/2017 Daniel: is the game stopped ?
                 //We can study what happened in the game here.
                 //For debug, print here game and avatar info:
                 game.printToFile(numGames);
@@ -121,6 +123,7 @@ public class ClientComm {
                 game = new Game();
                 avatar = new Avatar();
 
+                // TODO: 27/03/2017 Daniel:  after stopped, start another game ???
                 writeToServer("GAME_DONE");
             }
 

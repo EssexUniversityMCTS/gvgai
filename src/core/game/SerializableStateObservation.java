@@ -24,6 +24,7 @@ import java.util.TreeSet;
 public class SerializableStateObservation {
 
     public enum State{
+        // TODO: 27/03/2017 Daniel: ABORT state ?
         INIT_STATE, ACT_STATE, END_STATE
     }
 
