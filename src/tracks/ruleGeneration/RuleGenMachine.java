@@ -179,12 +179,12 @@ public class RuleGenMachine
 	}
 	w.write(message + n.content.line.trim() + "\n");
 	if(n.content instanceof InteractionContent){
-	    for(int i=1; i<rules[0].length; i++){
+	    for(int i=0; i<rules[0].length; i++){
 		w.write(message + template + rules[0][i].trim() + "\n");
 	    }
 	}
 	else if(n.content instanceof TerminationContent){
-	    for(int i=1; i<rules[1].length; i++){
+	    for(int i=0; i<rules[1].length; i++){
 		w.write(message + template + rules[1][i].trim() + "\n");
 	    }
 	}
