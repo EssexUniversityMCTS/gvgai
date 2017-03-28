@@ -142,14 +142,19 @@ public class RuleGenerator extends AbstractRuleGenerator {
 	    // get two random indeces for the two sprites in the interaction
 	    int i1 = this.random.nextInt(this.usefulSprites.size());
 	    int i2 = (i1 + 1 + this.random.nextInt(this.usefulSprites.size() - 1)) % this.usefulSprites.size();
+	    // add score change parameter for interactions
+	    String scoreChange = "";
+	    if(this.random.nextBoolean()){
+		scoreChange += "scoreChange=" + (this.random.nextInt(5) - 2);
+	    }
 	    // add the new random interaction that doesn't produce errors
 	    interaction.add(this.usefulSprites.get(i1) + " " + this.usefulSprites.get(i2) + " > " + 
-		    this.interactions[this.random.nextInt(this.interactions.length)]);
+		    this.interactions[this.random.nextInt(this.interactions.length)] + " " + scoreChange);
 	    sl.testRules(getArray(interaction), getArray(termination));
 	    while(sl.getErrors().size() > 0){
 		interaction.remove(i);
 		interaction.add(this.usefulSprites.get(i1) + " " + this.usefulSprites.get(i2) + " > " + 
-			    this.interactions[this.random.nextInt(this.interactions.length)]);
+			    this.interactions[this.random.nextInt(this.interactions.length)] + " " + scoreChange);
 		sl.testRules(getArray(interaction), getArray(termination));
 	    }
 	}
