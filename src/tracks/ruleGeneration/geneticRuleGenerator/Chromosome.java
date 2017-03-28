@@ -107,12 +107,14 @@ public class Chromosome implements Comparable<Chromosome>{
 		"SpriteCounter", "SpriteCounterMore", "MultiSpriteCounter",
 		"StopCounter", "Timeout"};
 	/**
-	 * Array contains all possible parameter types
+	 * Array contains all possible interaction parameter types
 	 */
-	private String[] params = new String[] {
-			"scoreChange", "stype", "limit", "resource", "stype_other", "forceOrientation", "spawnPoint",
-			"value", "geq", "leq"};
-	
+	private String[] interactionParams = new String[] {
+		"scoreChange", "stype", "limit", "resource", "stype_other", "forceOrientation", "spawnPoint",
+		"value", "geq", "leq"};
+	private String[] terminationParams = new String[] {
+		"stype", "stype1", "stype2", "stype3"
+	};
 	/**
 	 * Chromosome constructor.  Holds the ruleset and initializes agents within
 	 * @param ruleset	the ruleset the chromosome contains
@@ -138,7 +140,8 @@ public class Chromosome implements Comparable<Chromosome>{
 	 */
 	public void mutate() {
 		// loop through as many times as we want to mutate
-		for(int i = 0; i < SharedData.MUTATION_AMOUNT; i++) {
+		int mutationCount = SharedData.random.nextInt(SharedData.MUTATION_AMOUNT);
+		for(int i = 0; i < mutationCount; i++) {
 			int mutateR = SharedData.random.nextInt(2);
 			if(mutateR == 0){
 				//mutate interaction set
@@ -152,6 +155,8 @@ public class Chromosome implements Comparable<Chromosome>{
 	/**
 	 * performs a mutation on a random interaction in the set
 	 * 4 types of mutation: insert a new rule, delete an old rule, change a rule, and change rule parameters (but keep the rule)
+	 * the interaction ruleset will shift back and forth between an array and an arraylist depending on the circumstances
+	 * according to what is easiest to manipulate at the time
 	 */
 	public void mutateInteraction() {
 		ArrayList<String> interactionSet = new ArrayList<>( Arrays.asList(ruleset[0]));
@@ -160,26 +165,28 @@ public class Chromosome implements Comparable<Chromosome>{
 		if(mutationType < SharedData.INSERTION_PROB) {
 			// roll dice to see if we will insert a new rule altogether or a new parameter into an existing rule
 			double roll = SharedData.random.nextDouble();
-			// insert a new param onto an exisitng rule
+			// insert a new parameter onto an existing rule
 			if(roll < SharedData.INSERT_PARAM_PROB) {
 				// grab a random existing rule
 				int point = SharedData.random.nextInt(interactionSet.size());
 				String addToMe = interactionSet.get(point);
-				// insert a new param into it
-				String nParam = params[SharedData.random.nextInt(params.length)];
+				// insert a new parameter into it
+				String nParam = interactionParams[SharedData.random.nextInt(interactionParams.length)];
 				nParam += "=";
-				// add either a number or a sprite to the param
-				double roll2 = SharedData.random.nextDouble();
+				// add either a number or a sprite to the parameter
+				double roll1 = SharedData.random.nextDouble();
 				// insert a sprite
-				if(roll2 < SharedData.PARAM_NUM_OR_SPRITE_PROB) {
+				if(roll1 < SharedData.PARAM_NUM_OR_SPRITE_PROB) {
 					String nSprite = usefulSprites.get(SharedData.random.nextInt(usefulSprites.size()));
 					nParam += nSprite;
 				}
 				// insert a numerical value
 				else {
-					int val = SharedData.random.nextInt(SharedData.NUMBERICAL_VALUE_PARAM);
+					int val = SharedData.random.nextInt(SharedData.NUMERICAL_VALUE_PARAM);
 					nParam += val;
 				}
+				addToMe += " " + nParam;
+				// replace the old rule with the modified one
 				ruleset[0][point] = addToMe;
 			}
 			// insert an entirely new rule, possibly with a parameter in it
@@ -188,32 +195,414 @@ public class Chromosome implements Comparable<Chromosome>{
 				int i1 = SharedData.random.nextInt(usefulSprites.size());
 			    int i2 = (i1 + 1 + SharedData.random.nextInt(usefulSprites.size() - 1)) % usefulSprites.size();
 			    
-			    String officialInteraction = usefulSprites.get(i1) + " " + usefulSprites.get(i2) + " > " + nInteraction;
+			    String newInteraction = usefulSprites.get(i1) + " " + usefulSprites.get(i2) + " > " + nInteraction;
 			    // roll to see if you insert a parameter into this interaction
+			    roll = SharedData.random.nextDouble();
+			    
+			    if(roll < SharedData.INSERT_PARAM_PROB) {
+			    	String nParam = interactionParams[SharedData.random.nextInt(interactionParams.length)];
+					nParam += "=";
+					// add either a number or a sprite to the parameter
+					double roll1 = SharedData.random.nextDouble();
+					// insert a sprite
+					if(roll1 < SharedData.PARAM_NUM_OR_SPRITE_PROB) {
+						String nSprite = usefulSprites.get(SharedData.random.nextInt(usefulSprites.size()));
+						nParam += nSprite;
+					}
+					// insert a numerical value
+					else {
+						int val = SharedData.random.nextInt(SharedData.NUMERICAL_VALUE_PARAM);
+						nParam += val;
+					}
+					newInteraction += " " + nParam;
+			    }
+			    // add the new interaction to the interaction set
+			    interactionSet.add(newInteraction);
+			    // remove weird space from the arrayList
+			    interactionSet.removeIf(s -> s == null);
+			    // stream the list back into itself to avoid duplicate rules from having been created
+				interactionSet = (ArrayList<String>) interactionSet.stream().distinct().collect(Collectors.toList());
+				// redefine the interaction array with the interaction array list
+				ruleset[0] = new String[interactionSet.size()];
+				ruleset[0] = interactionSet.toArray(ruleset[0]);
 			}
+		} 
 		// we do a deletion
-		} else if(mutationType < SharedData.DELETION_PROB + SharedData.INSERTION_PROB) {
-			// roll dice to see if we will insert a new rule altogether or a new parameter into an existing rule
+		else if(mutationType < SharedData.DELETION_PROB + SharedData.INSERTION_PROB) {
+			// roll dice to see if we will delete a rule altogether or a parameter of an existing rule
 			double roll = SharedData.random.nextDouble();
-			// insert a new param onto an exisitng rule
+			// delete a parameter from an existing rule
 			if(roll < SharedData.DELETE_PARAM_PROB) {
 				int point = SharedData.random.nextInt(interactionSet.size());
 				String deleteFromMe = interactionSet.get(point);
-				//
+				// find all parameters for this rule, note: there may be none.  In that case we do nothing.
+				String[] splitDeleteFromMe = deleteFromMe.split("\\s+");
+				ArrayList<String> params = new ArrayList<String>();
+				for(String param : splitDeleteFromMe) {
+					// we can assume that if one of the split strings contains an = sign that it is a parameter
+					if(param.contains("=")){
+						params.add(param);
+					}
+				}
+				// if no params do nothing
+				if(params.size() == 0) {
+					
+				} 
+				// if one param, remove it
+				else if(params.size() == 1) {
+					String fixedRule = "";
+					for(String part : splitDeleteFromMe) {
+						if(!part.contains("=")) {
+							fixedRule += part;
+						}
+					}
+					interactionSet.set(point, fixedRule);
+				}
+				else {
+					// pick one of the rules and don't include it, but include the others
+					int rule = SharedData.random.nextInt(params.size());
+					String fixedRule = "";
+					for(String part : splitDeleteFromMe) {
+						if(!part.equals(params.get(rule))) {
+							fixedRule += part + " ";
+						}
+					}
+					interactionSet.set(point, fixedRule);
+				}
+			    // remove weird space from the arrayList
+			    interactionSet.removeIf(s -> s == null);
+			    // stream the list back into itself to avoid duplicate rules from having been created
+				interactionSet = (ArrayList<String>) interactionSet.stream().distinct().collect(Collectors.toList());
+				// redefine the interaction array with the interaction array list
+				ruleset[0] = new String[interactionSet.size()];
+				ruleset[0] = interactionSet.toArray(ruleset[0]);
 			}
+			// delete an entire rule from the interaction set
+			else{
+				int point = SharedData.random.nextInt(interactionSet.size());
+				// dont try to delete from an empty interaction set
+				if (interactionSet.size() > 1) {
+					interactionSet.remove(point);
+				}
+			    // remove weird space from the arrayList
+			    interactionSet.removeIf(s -> s == null);
+			    // stream the list back into itself to avoid duplicate rules from having been created
+				interactionSet = (ArrayList<String>) interactionSet.stream().distinct().collect(Collectors.toList());
+				// redefine the interaction array with the interaction array list
+				ruleset[0] = new String[interactionSet.size()];
+				ruleset[0] = interactionSet.toArray(ruleset[0]);
+			}
+		} 
+		// modify a rule from the interaction set by changing its parameters
+		else if (mutationType < SharedData.MODIFY_RULE_PROB + SharedData.DELETION_PROB + SharedData.INSERTION_PROB) {
+			// pick our modified rule
 			int point = SharedData.random.nextInt(interactionSet.size());
-			if (interactionSet.size() > 1) {
-				interactionSet.remove(point);
+			
+			// roll to see what kind of modification, either a rule change or a parameter change
+			double roll = SharedData.random.nextDouble();
+			// modify a parameter of a rule completely
+			if(roll < SharedData.MODIFY_PARAM_PROB) {
+				String modifyFromMe = interactionSet.get(point);
+				// find all parameters for this rule, note: there may be none.  In that case we do nothing.
+				String[] splitModifyFromMe = modifyFromMe.split("\\s+");
+				ArrayList<String> ps = new ArrayList<String>();
+				for(String param : splitModifyFromMe) {
+					// we can assume that if one of the split strings contains an = sign that it is a parameter
+					if(param.contains("=")){
+						ps.add(param);
+					}
+				}
+				// if no params do nothing
+				if(ps.size() == 0) {
+					
+				} else {
+					// pick one of the rules and don't include it, but include the others
+					int rule = SharedData.random.nextInt(ps.size());
+					String fixedRule = "";
+					for(String part : splitModifyFromMe) {
+						if(!part.equals(ps.get(rule))) {
+							fixedRule += part + " ";
+						} 
+						// we are on the parameter we want to replace
+						else {
+							interactionSet.set(point, fixedRule);
+							String nParam = interactionParams[SharedData.random.nextInt(interactionParams.length)];
+							nParam += "=";
+							// add either a number or a sprite to the parameter
+							double roll1 = SharedData.random.nextDouble();
+							// insert a sprite
+							if(roll1 < SharedData.PARAM_NUM_OR_SPRITE_PROB) {
+								String nSprite = usefulSprites.get(SharedData.random.nextInt(usefulSprites.size()));
+								nParam += nSprite;
+							}
+							// insert a numerical value
+							else {
+								int val = SharedData.random.nextInt(SharedData.NUMERICAL_VALUE_PARAM);
+								nParam += val;
+							}
+							fixedRule += nParam;
+						}
+					}
+				}
+			    // remove weird space from the arrayList
+			    interactionSet.removeIf(s -> s == null);
+			    // stream the list back into itself to avoid duplicate rules from having been created
+				interactionSet = (ArrayList<String>) interactionSet.stream().distinct().collect(Collectors.toList());
+				// redefine the interaction array with the interaction array list
+				ruleset[0] = new String[interactionSet.size()];
+				ruleset[0] = interactionSet.toArray(ruleset[0]);
+			} 
+			// modify a rule, but leave the parameters and sprites
+			else {
+				String newRule = interactions[SharedData.random.nextInt(interactions.length)];
+				String modRule = ruleset[0][point];
+				
+				String[] splitModRule = modRule.split("\\s+");
+				// replace old rule with new one
+				splitModRule[3] = newRule;
+				newRule = splitModRule[0];
+				for(String part : splitModRule) {
+					newRule += part + " ";
+				}
+				ruleset[0][point] = newRule;
 			}
-		} else if (mutationType < SharedData.MODIFY_RULE_PROB + SharedData.DELETION_PROB + SharedData.INSERTION_PROB) {
-			
-		} else {
-			
+		} 
+		// we should never ever reach this point
+		else {
+			System.err.println("What?! Howd we even get here!?");
 		}
 	}
-	
+	/**
+	 * performs a mutation on a random termination in the set
+	 * 4 types of mutation: insert a new rule, delete an old rule, change a rule, and change rule parameters (but keep the rule)
+	 * the termination ruleset will shift back and forth between an array and an arraylist depending on the circumstances
+	 * according to what is easiest to manipulate at the time. 
+	 */
 	public void mutateTermination() {
-		
+		ArrayList<String> terminationSet = new ArrayList<>( Arrays.asList(ruleset[1]));
+		double mutationType = SharedData.random.nextDouble();
+		// we do an insertion
+		if(mutationType < SharedData.INSERTION_PROB) {
+			// roll dice to see if we will insert a new rule altogether or a new parameter into an existing rule
+			double roll = SharedData.random.nextDouble();
+			// insert a new parameter onto an existing rule
+			if(roll < SharedData.INSERT_PARAM_PROB) {
+				// grab a random existing rule
+				int point = SharedData.random.nextInt(terminationSet.size());
+				String addToMe = terminationSet.get(point);
+				// insert a new parameter into it
+				String nParam = terminationParams[SharedData.random.nextInt(terminationParams.length)];
+				nParam += "=";
+				// add either a number or a sprite to the parameter
+				double roll1 = SharedData.random.nextDouble();
+				// insert a sprite
+				if(roll1 < SharedData.PARAM_NUM_OR_SPRITE_PROB) {
+					String nSprite = usefulSprites.get(SharedData.random.nextInt(usefulSprites.size()));
+					nParam += nSprite;
+				}
+				// insert a numerical value
+				else {
+					int val = SharedData.random.nextInt(SharedData.NUMERICAL_VALUE_PARAM);
+					nParam += val;
+				}
+				addToMe += " " + nParam;
+				// replace the old rule with the modified one
+				ruleset[1][point] = addToMe;
+			}
+			// insert an entirely new rule, possibly with a parameter in it
+			else {
+				String nInteraction = terminations[SharedData.random.nextInt(terminations.length)];
+				int i1 = SharedData.random.nextInt(usefulSprites.size());
+			    int i2 = (i1 + 1 + SharedData.random.nextInt(usefulSprites.size() - 1)) % usefulSprites.size();
+			    
+			    String newInteraction = usefulSprites.get(i1) + " " + usefulSprites.get(i2) + " > " + nInteraction;
+
+			    
+			    // since all termination rules have at least one param from the set, we will include one
+			    String nParam = interactionParams[SharedData.random.nextInt(interactionParams.length)];
+				nParam += "=";
+				// add either a number or a sprite to the parameter
+				double roll1 = SharedData.random.nextDouble();
+				// insert a sprite
+				if(roll1 < SharedData.PARAM_NUM_OR_SPRITE_PROB) {
+					String nSprite = usefulSprites.get(SharedData.random.nextInt(usefulSprites.size()));
+					nParam += nSprite;
+				}
+				// insert a numerical value
+				else {
+					int val = SharedData.random.nextInt(SharedData.NUMERICAL_VALUE_PARAM);
+					nParam += val;
+				}
+				newInteraction += " " + nParam;
+				
+				// add win and limit
+				newInteraction += " win=";
+				
+				double roll2 = SharedData.random.nextDouble();
+				if(roll2 < SharedData.WIN_PARAM_PROB){
+					newInteraction += "True";
+				} else {
+					newInteraction += "False";
+				}
+				
+				newInteraction += " limit=";
+				
+				
+			    // add the new interaction to the interaction set
+			    terminationSet.add(newInteraction);
+			    // remove weird space from the arrayList
+			    terminationSet.removeIf(s -> s == null);
+			    // stream the list back into itself to avoid duplicate rules from having been created
+				terminationSet = (ArrayList<String>) terminationSet.stream().distinct().collect(Collectors.toList());
+				// redefine the interaction array with the interaction array list
+				ruleset[0] = new String[terminationSet.size()];
+				ruleset[0] = terminationSet.toArray(ruleset[0]);
+			}
+		} 
+		// we do a deletion
+		else if(mutationType < SharedData.DELETION_PROB + SharedData.INSERTION_PROB) {
+			// roll dice to see if we will delete a rule altogether or a parameter of an existing rule
+			double roll = SharedData.random.nextDouble();
+			// delete a parameter from an existing rule
+			if(roll < SharedData.DELETE_PARAM_PROB) {
+				int point = SharedData.random.nextInt(terminationSet.size());
+				String deleteFromMe = terminationSet.get(point);
+				// find all parameters for this rule, note: there may be none.  In that case we do nothing.
+				String[] splitDeleteFromMe = deleteFromMe.split("\\s+");
+				ArrayList<String> params = new ArrayList<String>();
+				for(String param : splitDeleteFromMe) {
+					// we can assume that if one of the split strings contains an = sign that it is a parameter
+					if(param.contains("=")){
+						params.add(param);
+					}
+				}
+				// if no params do nothing
+				if(params.size() == 0) {
+					
+				} 
+				// if one param, remove it
+				else if(params.size() == 1) {
+					String fixedRule = "";
+					for(String part : splitDeleteFromMe) {
+						if(!part.contains("=")) {
+							fixedRule += part;
+						}
+					}
+					terminationSet.set(point, fixedRule);
+				}
+				else {
+					// pick one of the rules and don't include it, but include the others
+					int rule = SharedData.random.nextInt(params.size());
+					String fixedRule = "";
+					for(String part : splitDeleteFromMe) {
+						if(!part.equals(params.get(rule))) {
+							fixedRule += part + " ";
+						}
+					}
+					terminationSet.set(point, fixedRule);
+				}
+			    // remove weird space from the arrayList
+				terminationSet.removeIf(s -> s == null);
+			    // stream the list back into itself to avoid duplicate rules from having been created
+				terminationSet = (ArrayList<String>) terminationSet.stream().distinct().collect(Collectors.toList());
+				// redefine the interaction array with the interaction array list
+				ruleset[0] = new String[terminationSet.size()];
+				ruleset[0] = terminationSet.toArray(ruleset[0]);
+			}
+			// delete an entire rule from the interaction set
+			else{
+				int point = SharedData.random.nextInt(terminationSet.size());
+				// dont try to delete from an empty interaction set
+				if (terminationSet.size() > 1) {
+					terminationSet.remove(point);
+				}
+			    // remove weird space from the arrayList
+				terminationSet.removeIf(s -> s == null);
+			    // stream the list back into itself to avoid duplicate rules from having been created
+				terminationSet = (ArrayList<String>) terminationSet.stream().distinct().collect(Collectors.toList());
+				// redefine the interaction array with the interaction array list
+				ruleset[0] = new String[terminationSet.size()];
+				ruleset[0] = terminationSet.toArray(ruleset[0]);
+			}
+		} 
+		// modify a rule from the interaction set by changing its parameters
+		else if (mutationType < SharedData.MODIFY_RULE_PROB + SharedData.DELETION_PROB + SharedData.INSERTION_PROB) {
+			// pick our modified rule
+			int point = SharedData.random.nextInt(terminationSet.size());
+			
+			// roll to see what kind of modification, either a rule change or a parameter change
+			double roll = SharedData.random.nextDouble();
+			// modify a parameter of a rule completely
+			if(roll < SharedData.MODIFY_PARAM_PROB) {
+				String modifyFromMe = terminationSet.get(point);
+				// find all parameters for this rule, note: there may be none.  In that case we do nothing.
+				String[] splitModifyFromMe = modifyFromMe.split("\\s+");
+				ArrayList<String> ps = new ArrayList<String>();
+				for(String param : splitModifyFromMe) {
+					// we can assume that if one of the split strings contains an = sign that it is a parameter
+					if(param.contains("=")){
+						ps.add(param);
+					}
+				}
+				// if no params do nothing
+				if(ps.size() == 0) {
+					
+				} else {
+					// pick one of the rules and don't include it, but include the others
+					int rule = SharedData.random.nextInt(ps.size());
+					String fixedRule = "";
+					for(String part : splitModifyFromMe) {
+						if(!part.equals(ps.get(rule))) {
+							fixedRule += part + " ";
+						} 
+						// we are on the parameter we want to replace
+						else {
+							terminationSet.set(point, fixedRule);
+							String nParam = interactionParams[SharedData.random.nextInt(interactionParams.length)];
+							nParam += "=";
+							// add either a number or a sprite to the parameter
+							double roll1 = SharedData.random.nextDouble();
+							// insert a sprite
+							if(roll1 < SharedData.PARAM_NUM_OR_SPRITE_PROB) {
+								String nSprite = usefulSprites.get(SharedData.random.nextInt(usefulSprites.size()));
+								nParam += nSprite;
+							}
+							// insert a numerical value
+							else {
+								int val = SharedData.random.nextInt(SharedData.NUMERICAL_VALUE_PARAM);
+								nParam += val;
+							}
+							fixedRule += nParam;
+						}
+					}
+				}
+			    // remove weird space from the arrayList
+				terminationSet.removeIf(s -> s == null);
+			    // stream the list back into itself to avoid duplicate rules from having been created
+				terminationSet = (ArrayList<String>) terminationSet.stream().distinct().collect(Collectors.toList());
+				// redefine the interaction array with the interaction array list
+				ruleset[0] = new String[terminationSet.size()];
+				ruleset[0] = terminationSet.toArray(ruleset[0]);
+			} 
+			// modify a rule, but leave the parameters and sprites
+			else {
+				String newRule = interactions[SharedData.random.nextInt(interactions.length)];
+				String modRule = ruleset[0][point];
+				
+				String[] splitModRule = modRule.split("\\s+");
+				// replace old rule with new one
+				splitModRule[3] = newRule;
+				newRule = splitModRule[0];
+				for(String part : splitModRule) {
+					newRule += part + " ";
+				}
+				ruleset[0][point] = newRule;
+			}
+		} 
+		// we should never ever reach this point
+		else {
+			System.err.println("What?! Howd we even get here!?");
+		}
 	}
 	/**
 	 * clone the chromosome data

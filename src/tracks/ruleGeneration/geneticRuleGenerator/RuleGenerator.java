@@ -74,7 +74,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		Chromosome test1 = new Chromosome(test, sl, time);
 		// try a mutation on interaction
 		test1.mutateInteraction();
-		return null;
+		return test1.getRuleset();
 	}
 
 }
