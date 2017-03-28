@@ -101,6 +101,9 @@ public class SharedData {
 	 */
 	public static final int NUMERICAL_VALUE_PARAM = 100;
 	
+	/**
+	 * The upper bound on a numerical value for a termination limit parameter insertion
+	 */
 	public static final int TERMINATION_LIMIT_PARAM = 30000;
 
 }

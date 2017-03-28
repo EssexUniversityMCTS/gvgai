@@ -325,7 +325,6 @@ public class Chromosome implements Comparable<Chromosome>{
 						} 
 						// we are on the parameter we want to replace
 						else {
-							interactionSet.set(point, fixedRule);
 							String nParam = interactionParams[SharedData.random.nextInt(interactionParams.length)];
 							nParam += "=";
 							// add either a number or a sprite to the parameter
@@ -340,9 +339,10 @@ public class Chromosome implements Comparable<Chromosome>{
 								int val = SharedData.random.nextInt(SharedData.NUMERICAL_VALUE_PARAM);
 								nParam += val;
 							}
-							fixedRule += nParam;
+							fixedRule += nParam + " ";
 						}
 					}
+					interactionSet.set(point, fixedRule);
 				}
 			    // remove weird space from the arrayList
 			    interactionSet.removeIf(s -> s == null);
@@ -369,7 +369,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		} 
 		// we should never ever reach this point
 		else {
-			System.err.println("What?! Howd we even get here!?");
+			System.err.println("What?! How did we even get here!?");
 		}
 	}
 	/**
@@ -411,52 +411,50 @@ public class Chromosome implements Comparable<Chromosome>{
 			}
 			// insert an entirely new rule, possibly with a parameter in it
 			else {
-				String nInteraction = terminations[SharedData.random.nextInt(terminations.length)];
-				int i1 = SharedData.random.nextInt(usefulSprites.size());
-			    int i2 = (i1 + 1 + SharedData.random.nextInt(usefulSprites.size() - 1)) % usefulSprites.size();
-			    
-			    String newInteraction = usefulSprites.get(i1) + " " + usefulSprites.get(i2) + " > " + nInteraction;
-
-			    
-			    // since all termination rules have at least one param from the set, we will include one
-			    String nParam = interactionParams[SharedData.random.nextInt(interactionParams.length)];
-				nParam += "=";
-				// add either a number or a sprite to the parameter
-				double roll1 = SharedData.random.nextDouble();
-				// insert a sprite
-				if(roll1 < SharedData.PARAM_NUM_OR_SPRITE_PROB) {
-					String nSprite = usefulSprites.get(SharedData.random.nextInt(usefulSprites.size()));
-					nParam += nSprite;
-				}
-				// insert a numerical value
-				else {
-					int val = SharedData.random.nextInt(SharedData.NUMERICAL_VALUE_PARAM);
-					nParam += val;
-				}
-				newInteraction += " " + nParam;
+				String nTermination = terminations[SharedData.random.nextInt(terminations.length)];    
 				
+				
+				// roll to see if we include a parameter from the termination parameter set
+				double roll1 = SharedData.random.nextDouble();
+				if(roll < SharedData.INSERT_PARAM_PROB) {
+					String nParam = terminationParams[SharedData.random.nextInt(terminationParams.length)];
+					nParam += "=";
+					// add either a number or a sprite to the parameter
+					double roll2 = SharedData.random.nextDouble();
+					// insert a sprite
+					if(roll2 < SharedData.PARAM_NUM_OR_SPRITE_PROB) {
+						String nSprite = usefulSprites.get(SharedData.random.nextInt(usefulSprites.size()));
+						nParam += nSprite;
+					}
+					// insert a numerical value
+					else {
+						int val = SharedData.random.nextInt(SharedData.NUMERICAL_VALUE_PARAM);
+						nParam += val;
+					}
+					nTermination+= " " + nParam;
+				}
 				// add win and limit
-				newInteraction += " win=";
+				nTermination += " win=";
 				
 				double roll2 = SharedData.random.nextDouble();
 				if(roll2 < SharedData.WIN_PARAM_PROB){
-					newInteraction += "True";
+					nTermination += "True";
 				} else {
-					newInteraction += "False";
+					nTermination += "False";
 				}
 				
-				newInteraction += " limit=";
+				double val = SharedData.random.nextInt(SharedData.TERMINATION_LIMIT_PARAM);
+				nTermination += " limit="+val;
 				
-				
-			    // add the new interaction to the interaction set
-			    terminationSet.add(newInteraction);
+			    // add the new termination to the termination set
+			    terminationSet.add(nTermination);
 			    // remove weird space from the arrayList
 			    terminationSet.removeIf(s -> s == null);
 			    // stream the list back into itself to avoid duplicate rules from having been created
 				terminationSet = (ArrayList<String>) terminationSet.stream().distinct().collect(Collectors.toList());
-				// redefine the interaction array with the interaction array list
-				ruleset[0] = new String[terminationSet.size()];
-				ruleset[0] = terminationSet.toArray(ruleset[0]);
+				// redefine the termination array with the termination array list
+				ruleset[1] = new String[terminationSet.size()];
+				ruleset[1] = terminationSet.toArray(ruleset[1]);
 			}
 		} 
 		// we do a deletion
@@ -472,7 +470,8 @@ public class Chromosome implements Comparable<Chromosome>{
 				ArrayList<String> params = new ArrayList<String>();
 				for(String param : splitDeleteFromMe) {
 					// we can assume that if one of the split strings contains an = sign that it is a parameter
-					if(param.contains("=")){
+					// the extra rule here is that it is not a "limit" or a "win" param. We cannot remove those!
+					if(param.contains("=") && !param.contains("limit") && !param.contains("win")){
 						params.add(param);
 					}
 				}
@@ -480,16 +479,6 @@ public class Chromosome implements Comparable<Chromosome>{
 				if(params.size() == 0) {
 					
 				} 
-				// if one param, remove it
-				else if(params.size() == 1) {
-					String fixedRule = "";
-					for(String part : splitDeleteFromMe) {
-						if(!part.contains("=")) {
-							fixedRule += part;
-						}
-					}
-					terminationSet.set(point, fixedRule);
-				}
 				else {
 					// pick one of the rules and don't include it, but include the others
 					int rule = SharedData.random.nextInt(params.size());
@@ -506,8 +495,8 @@ public class Chromosome implements Comparable<Chromosome>{
 			    // stream the list back into itself to avoid duplicate rules from having been created
 				terminationSet = (ArrayList<String>) terminationSet.stream().distinct().collect(Collectors.toList());
 				// redefine the interaction array with the interaction array list
-				ruleset[0] = new String[terminationSet.size()];
-				ruleset[0] = terminationSet.toArray(ruleset[0]);
+				ruleset[1] = new String[terminationSet.size()];
+				ruleset[1] = terminationSet.toArray(ruleset[1]);
 			}
 			// delete an entire rule from the interaction set
 			else{
@@ -521,8 +510,8 @@ public class Chromosome implements Comparable<Chromosome>{
 			    // stream the list back into itself to avoid duplicate rules from having been created
 				terminationSet = (ArrayList<String>) terminationSet.stream().distinct().collect(Collectors.toList());
 				// redefine the interaction array with the interaction array list
-				ruleset[0] = new String[terminationSet.size()];
-				ruleset[0] = terminationSet.toArray(ruleset[0]);
+				ruleset[1] = new String[terminationSet.size()];
+				ruleset[1] = terminationSet.toArray(ruleset[1]);
 			}
 		} 
 		// modify a rule from the interaction set by changing its parameters
@@ -540,6 +529,7 @@ public class Chromosome implements Comparable<Chromosome>{
 				ArrayList<String> ps = new ArrayList<String>();
 				for(String param : splitModifyFromMe) {
 					// we can assume that if one of the split strings contains an = sign that it is a parameter
+					// we can change limit and win parameters now (but this will cause us to have special rules)!
 					if(param.contains("=")){
 						ps.add(param);
 					}
@@ -555,43 +545,51 @@ public class Chromosome implements Comparable<Chromosome>{
 						if(!part.equals(ps.get(rule))) {
 							fixedRule += part + " ";
 						} 
-						// we are on the parameter we want to replace
+						// we are on the parameter we want to modify
 						else {
-							terminationSet.set(point, fixedRule);
-							String nParam = interactionParams[SharedData.random.nextInt(interactionParams.length)];
-							nParam += "=";
-							// add either a number or a sprite to the parameter
-							double roll1 = SharedData.random.nextDouble();
-							// insert a sprite
-							if(roll1 < SharedData.PARAM_NUM_OR_SPRITE_PROB) {
+							String nParam = ""; 
+							if(part.contains("win")) {
+								nParam = "win=";
+								// roll dice to see if true or false
+								double roll2 = SharedData.random.nextDouble();
+								if(roll2 < SharedData.WIN_PARAM_PROB) {
+									nParam += "True";
+								} else {
+									nParam += "False";
+								}
+							} else if(part.contains("limit")) {
+								nParam = "limit=";
+								// roll dice to see how high the new limit is
+								int roll2 = SharedData.random.nextInt(SharedData.TERMINATION_LIMIT_PARAM);
+								nParam += roll2;
+							} else {
+								// pick a new parameter
+								nParam = terminationParams[SharedData.random.nextInt(terminationParams.length)] + "=";
+								// insert a sprite
 								String nSprite = usefulSprites.get(SharedData.random.nextInt(usefulSprites.size()));
 								nParam += nSprite;
 							}
-							// insert a numerical value
-							else {
-								int val = SharedData.random.nextInt(SharedData.NUMERICAL_VALUE_PARAM);
-								nParam += val;
-							}
-							fixedRule += nParam;
+							fixedRule += nParam + " ";
 						}
 					}
+					terminationSet.set(point, fixedRule);
 				}
 			    // remove weird space from the arrayList
 				terminationSet.removeIf(s -> s == null);
 			    // stream the list back into itself to avoid duplicate rules from having been created
 				terminationSet = (ArrayList<String>) terminationSet.stream().distinct().collect(Collectors.toList());
 				// redefine the interaction array with the interaction array list
-				ruleset[0] = new String[terminationSet.size()];
-				ruleset[0] = terminationSet.toArray(ruleset[0]);
+				ruleset[1] = new String[terminationSet.size()];
+				ruleset[1] = terminationSet.toArray(ruleset[1]);
 			} 
 			// modify a rule, but leave the parameters and sprites
 			else {
-				String newRule = interactions[SharedData.random.nextInt(interactions.length)];
-				String modRule = ruleset[0][point];
+				String newRule = terminations[SharedData.random.nextInt(terminations.length)];
+				String modRule = ruleset[1][point];
 				
 				String[] splitModRule = modRule.split("\\s+");
 				// replace old rule with new one
-				splitModRule[3] = newRule;
+				splitModRule[0] = newRule;
 				newRule = splitModRule[0];
 				for(String part : splitModRule) {
 					newRule += part + " ";
