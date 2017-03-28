@@ -170,7 +170,7 @@ public class LevelGenMachine
      */
     public static double runOneGeneratedLevel(String gameFile, boolean visuals, String agentName, String actionFile,
                                               String levelFile, int randomSeed, boolean isHuman) {
-	VGDLFactory.GetInstance().init(); // This always first thing to do.
+        VGDLFactory.GetInstance().init(); // This always first thing to do.
         VGDLRegistry.GetInstance().init();
 
         System.out.println(" ** Playing game " + gameFile + ", using generate level file " + levelFile + " **");
@@ -249,7 +249,7 @@ public class LevelGenMachine
         }
 
         StatSummary scores = new StatSummary();
-        
+
         Game toPlay = new VGDLParser().parseGame(gameFile);
         int levelIdx = 0;
         for (String file : levelFile) {

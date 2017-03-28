@@ -45,7 +45,7 @@ public class TestLevelGeneration {
 
 		// Other settings
 		int seed = new Random().nextInt();
-		int gameIdx = 38;
+		int gameIdx = 0;
 		String recordLevelFile = generateLevelPath + games[gameIdx] + "_glvl.txt";
 		String game = generateLevelPath + games[gameIdx] + ".txt";
 
@@ -54,6 +54,7 @@ public class TestLevelGeneration {
 		if(LevelGenMachine.generateOneLevel(game, constructiveLevelGenerator, recordLevelFile)){
 		    LevelGenMachine.playOneGeneratedLevel(game, recordActionsFile, recordLevelFile, seed);
 		}
+
 
 		// 2. This generates numberOfLevels levels.
 		// String levelGenerator = "tracks.levelGeneration." + args[0] + ".LevelGenerator";

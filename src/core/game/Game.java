@@ -1358,13 +1358,18 @@ public abstract class Game {
 			// These are sprites that could potentially collide with
 			// EOS
 			Collection<VGDLSprite> sprites = this.getSprites(itype);
-			for (VGDLSprite sp : sprites) {
-			    // Check if they are at the edge to trigger the
-			    // effect. Also check that they
-			    // are not dead (could happen in this same cycle).
-			    if (isAtEdge(sp.rect) && !kill_list.contains(sp) && !sp.is_disabled()) {
-				executeEffect(ef, sp, null);
-			    }
+			try{
+        			for (VGDLSprite sp : sprites) {
+        			    // Check if they are at the edge to trigger the
+        			    // effect. Also check that they
+        			    // are not dead (could happen in this same cycle).
+        			    if (isAtEdge(sp.rect) && !kill_list.contains(sp) && !sp.is_disabled()) {
+        				executeEffect(ef, sp, null);
+        			    }
+        			}
+			}
+			catch(ConcurrentModificationException e){
+			    Logger.getInstance().addMessage(new Message(Message.WARNING, "you can't spawn sprites outside of the screen."));
 			}
 		    }
 	    }
