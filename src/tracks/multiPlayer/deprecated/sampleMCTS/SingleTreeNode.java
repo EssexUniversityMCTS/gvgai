@@ -71,7 +71,7 @@ public class SingleTreeNode
             backUp(selected, delta);
 
             numIters++;
-            System.out.println("+"  + elapsedTimerIteration.elapsedMillis() + "," + remaining);
+//            System.out.println("+"  + elapsedTimerIteration.elapsedMillis() + "," + remaining);
 
             acumTimeTaken += (elapsedTimerIteration.elapsedMillis()) ;
 
@@ -79,7 +79,7 @@ public class SingleTreeNode
             remaining = elapsedTimer.remainingTimeMillis();
             //System.out.println(elapsedTimerIteration.elapsedMillis() + " --> " + acumTimeTaken + " (" + remaining + ")");
         }
-       System.out.println("-- " + numIters + " -- ( " + avgTimeTaken + ") " + elapsedTimer.remainingTimeMillis() + "," + remaining);
+//       System.out.println("-- " + numIters + " -- ( " + avgTimeTaken + ") " + elapsedTimer.remainingTimeMillis() + "," + remaining);
         totalIters = numIters;
 
         //ArcadeMachine.performance.add(numIters);

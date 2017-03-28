@@ -79,7 +79,7 @@ public class SingleTreeNode
             remaining = elapsedTimer.remainingTimeMillis();
         }
 
-        System.out.println("-- " + numIters + " -- ( " + avgTimeTaken + ")");
+//        System.out.println("-- " + numIters + " -- ( " + avgTimeTaken + ")");
     }
 
     public SingleTreeNode treePolicy(StateObservationMulti state) {

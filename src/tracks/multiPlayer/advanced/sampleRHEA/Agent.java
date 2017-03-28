@@ -12,8 +12,8 @@ import java.util.*;
 public class Agent extends AbstractMultiPlayer {
 
     // variable
-    private int POPULATION_SIZE = 10;
-    private int SIMULATION_DEPTH = 10;
+    private int POPULATION_SIZE = 5;
+    private int SIMULATION_DEPTH = 5;
     private int CROSSOVER_TYPE = UNIFORM_CROSS;
     private double DISCOUNT = 1; //0.99;
 
@@ -71,6 +71,8 @@ public class Agent extends AbstractMultiPlayer {
 
     @Override
     public Types.ACTIONS act(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer) {
+//        System.out.println("start act: " + elapsedTimer.remainingTimeMillis());
+
         this.timer = elapsedTimer;
         avgTimeTaken = 0;
         acumTimeTaken = 0;
@@ -80,6 +82,7 @@ public class Agent extends AbstractMultiPlayer {
         remaining = timer.remainingTimeMillis();
         NUM_INDIVIDUALS = 0;
         keepIterating = true;
+//        System.out.println("start init pop: " + elapsedTimer.remainingTimeMillis());
 
         // INITIALISE POPULATION
         init_pop(stateObs);
@@ -87,11 +90,14 @@ public class Agent extends AbstractMultiPlayer {
 
         // RUN EVOLUTION
         remaining = timer.remainingTimeMillis();
+//        System.out.println("start optimisation: " + elapsedTimer.remainingTimeMillis());
+        int nbIter = 0;
         while (remaining > avgTimeTaken && remaining > BREAK_MS && keepIterating) {
             runIteration(stateObs);
             remaining = timer.remainingTimeMillis();
+            nbIter++;
         }
-
+//        System.out.println("finish optimisation: " + elapsedTimer.remainingTimeMillis() + " using nbIter="+nbIter);
         // RETURN ACTION
         Types.ACTIONS best = get_best_action(population);
         return best;

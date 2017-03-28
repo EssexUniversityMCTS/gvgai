@@ -19,12 +19,13 @@ public class TestMultiPlayer {
 	String sampleMCTSController = "tracks.multiPlayer.advanced.sampleMCTS.Agent";
 	String sampleRSController = "tracks.multiPlayer.advanced.sampleRS.Agent";
 	String sampleRHEAController = "tracks.multiPlayer.advanced.sampleRHEA.Agent";
+		String sampleGAController = "tracks.multiPlayer.deprecated.sampleGA.Agent";
 
 	String humanController = "tracks.multiPlayer.tools.human.Agent";
-
+	String rhgaController = "tracks.multiPlayer.deprecated.shiftBufferRHGA.Agent";
 
 	// Set here the tracks used in the games (need 2 separated by space).
-	String controllers = humanController + " " + humanController;
+	String controllers = rhgaController + " " + sampleMCTSController;
 	// String tracks = sampleMCTSController + " " + sampleMCTSController;
 
 	// Available games:
@@ -49,22 +50,27 @@ public class TestMultiPlayer {
 	// Game and level to play
 	int gameIdx = 0;
 	int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
-	String game = gamesPath + games[gameIdx] + ".txt";
-	String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
+//	String game = gamesPath + games[gameIdx] + ".txt";
+//	String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
 
-	String recordActionsFile = null;// "actions_" + games[gameIdx] + "_lvl"
+//	String recordActionsFile = null;// "actions_" + games[gameIdx] + "_lvl"
 					// + levelIdx + "_" + seed + ".txt";
 					// //where to record the actions
 					// executed. null if not to save.
+	for (gameIdx=0; gameIdx<games.length;gameIdx++) {
+		String game = gamesPath + games[gameIdx] + ".txt";
+		String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
 
-	// 1. This starts a game, in a level, played by two humans.
-	ArcadeMachine.playOneGameMulti(game, level1, recordActionsFile, seed);
+		String recordActionsFile = null;// "actions_" + games[gameIdx] + "_lvl"
+		// + levelIdx + "_" + seed + ".txt";
+		// 1. This starts a game, in a level, played by two humans.
+//		ArcadeMachine.playOneGameMulti(game, level1, recordActionsFile, seed);
 
 	// 2. This plays a game in a level by the tracks. If one of the
 	// players is human, change the playerID passed
 	// to the runOneGame method to be that of the human player (0 or 1).
-//	ArcadeMachine.runOneGame(game, level1, visuals, controllers, recordActionsFile, seed, 0);
-
+		ArcadeMachine.runOneGame(game, level1, visuals, controllers, recordActionsFile, seed, 0);
+	}
 	// 3. This replays a game from an action file previously recorded
 	// String readActionsFile = recordActionsFile;
 	// ArcadeMachine.replayGame(game, level1, visuals, readActionsFile);

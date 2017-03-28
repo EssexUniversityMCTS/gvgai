@@ -26,7 +26,7 @@ public class Agent extends AbstractMultiPlayer {
 
     private static double GAMMA = 0.90;
     private static long BREAK_MS = 5;
-    private static int SIMULATION_DEPTH = 7;
+    private static int SIMULATION_DEPTH = 5;
     private static int POPULATION_SIZE = 5;
 
     private static double RECPROB = 0.1;
@@ -188,6 +188,8 @@ public class Agent extends AbstractMultiPlayer {
                 maxScores[i][j] = Double.NEGATIVE_INFINITY;
             }
         }
+        System.out.println("start optimisation: " + timer.remainingTimeMillis());
+        int nbIter = 0;
 
         outerloop:
         for (int i = 0; i < iterations; i++) {
@@ -225,7 +227,11 @@ public class Agent extends AbstractMultiPlayer {
                 }
 
             }
+            nbIter++;
         }
+        System.out.println("finish optimisation: " + timer.remainingTimeMillis() + " using nbIter="+nbIter);
+
+
 
         Types.ACTIONS maxAction = this.action_mapping[id].get(Utils.argmax(maxScores[id]));
 
@@ -243,6 +249,7 @@ public class Agent extends AbstractMultiPlayer {
      * @return An action for the current state
      */
     public Types.ACTIONS act(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer) {
+        System.out.println("start act: " + elapsedTimer.remainingTimeMillis());
 
         if(action_mapping[id].size() != stateObs.getAvailableActions(id).size() ||
            action_mapping[oppID].size() != stateObs.getAvailableActions(oppID).size())
@@ -253,6 +260,7 @@ public class Agent extends AbstractMultiPlayer {
 
         this.timer = elapsedTimer;
         numSimulations = 0;
+        System.out.println("start microbial: " + elapsedTimer.remainingTimeMillis());
 
         Types.ACTIONS lastGoodAction = microbial(stateObs, SIMULATION_DEPTH, new WinScoreHeuristic(stateObs), 100);
 
