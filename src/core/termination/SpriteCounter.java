@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import core.vgdl.VGDLRegistry;
 import core.content.TerminationContent;
 import core.game.Game;
+import core.logging.Logger;
+import core.logging.Message;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,8 +35,8 @@ public class SpriteCounter extends Termination
         boolean ended = super.isFinished(game);
         if(ended)
             return true;
-
-        if(game.getNumSprites(itype) - game.getNumDisabledSprites(itype) <= limit && canEnd) {
+        
+        if(itype == -1 && game.getNumSprites(itype) - game.getNumDisabledSprites(itype) <= limit && canEnd) {
             countScore(game);
             return true;
         }
