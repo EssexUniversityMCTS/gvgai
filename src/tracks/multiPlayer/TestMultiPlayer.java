@@ -22,7 +22,7 @@ public class TestMultiPlayer {
 		String sampleGAController = "tracks.multiPlayer.deprecated.sampleGA.Agent";
 
 	String humanController = "tracks.multiPlayer.tools.human.Agent";
-	String rhgaController = "tracks.multiPlayer.deprecated.shiftBufferRHGA.Agent";
+	String rhgaController = "shiftBufferRHGA.Agent";
 
 	// Set here the tracks used in the games (need 2 separated by space).
 	String controllers = rhgaController + " " + sampleMCTSController;
