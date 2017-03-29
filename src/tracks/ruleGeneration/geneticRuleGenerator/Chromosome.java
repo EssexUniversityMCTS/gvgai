@@ -6,7 +6,6 @@ import core.game.StateObservation;
 import core.game.Event;
 import core.game.GameDescription.SpriteData;
 import core.player.AbstractPlayer;
-import logging.Logger;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
 import tools.LevelAnalyzer;
@@ -646,12 +645,10 @@ public class Chromosome implements Comparable<Chromosome>{
 	 * @return
 	 */
 	private boolean feasibilityTest() {
-		Logger log = Logger.getInstance();
 		sl.testRules(this.getRuleset()[0], this.getRuleset()[1]);
-		errorCount = log.getMessageCount();
-		if(log.getMessageCount() > 0) {
+		errorCount = sl.getErrors().size();
+		if(errorCount > 0) {
 			// then there must have been an error
-			log.flushMessages();
 			return false;
 		}
 		doNothingLength = Integer.MAX_VALUE;

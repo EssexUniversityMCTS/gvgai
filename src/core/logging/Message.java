@@ -1,6 +1,9 @@
-package logging;
+package core.logging;
 
 public class Message {
+    public static int WARNING = 0;
+    public static int ERROR = 1;
+    
     // 0 is warning, 1 is error
     private int type;
     // the string content of the message to print
@@ -37,5 +40,13 @@ public class Message {
      */
     public String getContent() {
 	return content;
+    }
+    
+    /**
+     * return a string that explains the message
+     * @return a string explaining the whole error/warning
+     */
+    public String toString() {
+	return (this.type == Message.ERROR? "Error: ": "Warning: ") + this.content;
     }
 }

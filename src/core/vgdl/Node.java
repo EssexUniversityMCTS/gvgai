@@ -3,6 +3,8 @@ package core.vgdl;
 import java.util.ArrayList;
 
 import core.content.*;
+import core.logging.Logger;
+import core.logging.Message;
 import ontology.Types;
 import tools.Utils;
 
@@ -112,7 +114,7 @@ public class Node
             if(this.children.size() > 0)
             {
                 if(this.children.get(0).indent != node.indent)
-                    throw new RuntimeException("children indentations must match");
+                    Logger.getInstance().addMessage(new Message(Message.ERROR, "children indentations must match."));
             }
             this.children.add(node);
             node.parent = this;

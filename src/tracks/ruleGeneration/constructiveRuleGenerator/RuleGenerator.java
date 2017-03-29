@@ -98,8 +98,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	
 	//Identify the wall object
 	wall = null;
-	SpriteData[] temp = la.getBorderObjects(
-		(2.0 * (la.getWidth() + la.getLength())) / (la.getLength() * la.getWidth()), this.wallPercentageProb);
+	SpriteData[] temp = la.getBorderObjects((1.0 * la.getPerimeter()) / la.getArea(), this.wallPercentageProb);
 	if(temp.length > 0){
 	    wall = temp[0];
 	    for(int i=0; i<temp.length; i++){
@@ -111,7 +110,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	
 	//identify the exit sprite
 	exit = new ArrayList<SpriteData>();
-	temp = la.getPortals(0, 1, true);
+	temp = la.getPortals(true);
 	for(int i=0; i<temp.length; i++){
 	    if(!temp[i].type.equalsIgnoreCase("portal")){
 		exit.add(temp[i]);
@@ -122,7 +121,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	ArrayList<SpriteData> tempList = new ArrayList<SpriteData>();
 	score = null;
 	spike = null;
-	temp = la.getImmovables(0, scoreSpikeProb, true);
+	temp = la.getImmovables(1, (int)(scoreSpikeProb * la.getArea()));
 	if (temp.length > 0) {
 	    if (wall == null) {
 		score = temp[random.nextInt(temp.length)];
@@ -146,20 +145,6 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		spike = tempList.get(random.nextInt(tempList.size()));
 	    }
 	}
-    }
-    
-    /**
-     * convert the arraylist of string to a normal array of string
-     * @param list	input arraylist
-     * @return		string array
-     */
-    private String[] convertToStringArray(ArrayList<String> list){
-	String[] array = new String[list.size()];
-	for(int i=0; i<list.size(); i++){
-	    array[i] = list.get(i);
-	}
-	
-	return array;
     }
     
     /**
@@ -204,11 +189,15 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	if(isFireWall){
 	    action = "killSprite";
 	}
-	temp = la.getMovables(0, 1, false);
+	temp = la.getMovables(false);
 	for (int i = 0; i < temp.length; i++) {
 	    interactions.add(temp[i].name + " " + wallName + " > " + action);
 	}
-	temp = la.getNPCs(0, 1, false);
+	action = movableWallInteraction[random.nextInt(movableWallInteraction.length)];
+	if(isFireWall){
+	    action = "killSprite";
+	}
+	temp = la.getNPCs(false);
 	for (int i = 0; i < temp.length; i++) {
 	    interactions.add(temp[i].name + " " + wallName + " > " + action);
 	}
@@ -219,7 +208,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
      */
     private void getResourceInteractions(){
 	SpriteData[] avatar = la.getAvatars(false);
-	SpriteData[] resources = la.getResources(0, 1, true);
+	SpriteData[] resources = la.getResources(true);
 	
 	//make the avatar collect the resources
 	for(int i=0; i<avatar.length; i++){
@@ -234,7 +223,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
      */
     private void getSpawnerInteractions(){
 	SpriteData[] avatar = la.getAvatars(false);
-	SpriteData[] spawners = la.getSpawners(0, 1, true);
+	SpriteData[] spawners = la.getSpawners(true);
 	
 	//make the spawned object harmful to the avatar with a chance to be useful
 	if(random.nextDouble() < spawnedProb){
@@ -319,7 +308,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
      */
     private void getPortalInteractions() {
 	SpriteData[] avatar = la.getAvatars(false);
-	SpriteData[] portals = la.getPortals(0, 1, true);
+	SpriteData[] portals = la.getPortals(true);
 	
 	//make the exits die with collision of the player (going through them)
 	for (int i = 0; i < avatar.length; i++) {
@@ -342,7 +331,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
      */
     private void getNPCInteractions(){
 	SpriteData[] avatar = la.getAvatars(false);
-	SpriteData[] npc = la.getNPCs(0, 1, false);
+	SpriteData[] npc = la.getNPCs(false);
 	
 	for(int i=0; i<npc.length; i++){
 	    //If its fleeing object make it useful
@@ -415,9 +404,9 @@ public class RuleGenerator extends AbstractRuleGenerator{
      * get the interactions of all sprites with movable sprites
      */
     private void getMovableInteractions(){
-	SpriteData[] movables = la.getMovables(0, 1, false);
+	SpriteData[] movables = la.getMovables(false);
 	SpriteData[] avatar = la.getAvatars(false);
-	SpriteData[] spawners = la.getSpawners(0, 1, false);
+	SpriteData[] spawners = la.getSpawners(false);
 	
 	for(int j=0; j<movables.length; j++){
 	    //Check if the movable object is not avatar or spawned child
@@ -512,7 +501,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	
 	this.getTerminations();
 	
-	return new String[][]{convertToStringArray(interactions), convertToStringArray(terminations)};
+	return new String[][]{interactions.toArray(new String[interactions.size()]), terminations.toArray(new String[terminations.size()])};
     }
 
 }

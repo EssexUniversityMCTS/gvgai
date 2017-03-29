@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.logging.Logger;
+import core.logging.Message;
 import ontology.Types;
 import ontology.effects.Effect;
 import ontology.physics.ContinuousPhysics;
@@ -39,6 +41,10 @@ public class PullWithIt extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
+	if(sprite1 == null || sprite2 == null){
+	    Logger.getInstance().addMessage(new Message(Message.WARNING, "Neither the 1st nor 2nd sprite can be EOS with PullWithIt interaction."));
+	    return;
+	}
         //Keep in the list, for the current cycle, the sprites that have triggered this event.
         int currentGameTime = game.getGameTick();
         if(currentGameTime > lastGameTime)
