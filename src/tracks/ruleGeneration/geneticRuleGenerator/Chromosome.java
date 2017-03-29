@@ -720,7 +720,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		score = -200;
 		for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
 			int protectionCounter = 0;
-			while(score < -100) {
+//			while(score < -100) {
 				StateObservation tempState = stateObs.copy();
 
 				StepController stepAgent = new StepController(randomAgent, SharedData.EVALUATION_STEP_TIME);
@@ -742,10 +742,10 @@ public class Chromosome implements Comparable<Chromosome>{
 				if(score > bestRandomScore) {
 					bestRandomScore = score;
 				}
-				if(protectionCounter > SharedData.PROTECTION_COUNTER) {
-					break;
-				}
-			}
+//				if(protectionCounter > SharedData.PROTECTION_COUNTER) {
+//					break;
+//				}
+//			}
 			// gather all unique interactions between objects in the naive agent
 			TreeSet s1 = randomState.getEventsHistory();
 			Iterator<Event> iter1 = s1.iterator();

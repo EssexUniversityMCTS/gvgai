@@ -54,6 +54,7 @@ public class RuleGenMachine
             toPlay.disqualify();
             toPlay.handleResult();
             toPlay.printResult();
+            System.out.println(e.getStackTrace());
             System.out.println(e.getMessage());
 
             return false;

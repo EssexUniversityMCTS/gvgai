@@ -229,15 +229,6 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	 */
 	@Override
 	public String[][] generateRules(SLDescription sl, ElapsedCpuTimer time) {
-//		// TODO Auto-generated method stub
-//		String[][] test = randomGen.generateRules(sl, time);
-//		Chromosome test1 = new Chromosome(test, sl, time);
-//		// try a mutation on interaction
-//		for(int i = 0; i < 20; i++) {
-//			test1.mutateInteraction();
-//			test1.mutateTermination();
-//		}
-//		return test1.getRuleset();
 		
 		//initialize the statistics objects
  		bestFitness = new ArrayList<Double>();
@@ -252,17 +243,19 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		randomGen = new tracks.ruleGeneration.randomRuleGenerator.RuleGenerator(sl, time);
 		constructGen = new tracks.ruleGeneration.constructiveRuleGenerator.RuleGenerator(sl, time);
 		double avgFitness = 0.0;
-		try (FileWriter fw = new FileWriter(SharedData.filename, true);
-				BufferedWriter bw = new BufferedWriter(fw);
-				PrintWriter out = new PrintWriter(bw)) {
-			out.println("### Generation : 0 ###");
-		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
-		}
-		for(int i = 0; i < SharedData.POPULATION_SIZE * SharedData.INIT_RANDOM_PERCENT; i++) {
+		
+		int count = (int) (SharedData.POPULATION_SIZE * SharedData.INIT_RANDOM_PERCENT);
+		for(int i = 0; i < count; i++) {
 			Chromosome c = new Chromosome(randomGen.generateRules(sl, time), sl, time);
-
-			c.calculateFitness(SharedData.EVALUATION_TIME);
+			
+			for(int q = 0; q < c.getRuleset().length; q++) {
+				System.out.println("=====");
+				for(int w = 0; w < c.getRuleset()[q].length; w++) {
+					System.out.println(c.getRuleset()[q][w]);
+				}
+			}
+			
+			c.runFitness(SharedData.EVALUATION_TIME);
 			if(c.getConstrainFitness() < 1){
 				iChromosomes.add(c);
 				System.out.println("\tChromosome #" + (counter) + " Constrain Fitness: " + c.getConstrainFitness());
@@ -270,32 +263,16 @@ public class RuleGenerator extends AbstractRuleGenerator{
 			else{
 				fChromosomes.add(c);
 				System.out.println("\tChromosome #" + (counter) + " Fitness: " + c.getFitness());
-			}
-			try (FileWriter fw = new FileWriter(SharedData.filename, true);
-					BufferedWriter bw = new BufferedWriter(fw);
-					PrintWriter out = new PrintWriter(bw)) {
-				out.println("*****");
-				out.println("Chromosome " + (counter) + " : Fitness = " + c.getFitness());
-				out.println(" ");
-				// print out chromosome
-				for (String[] q : c.getRuleset()) {
-					out.println(" ");
-					for(String s : q) {
-						out.println(s);
-					}
-				}
-
-			} catch (Exception ex) {
-				System.out.println(ex.getMessage());
 			}
 			avgFitness += c.getFitness().get(1);
 			counter++;
 			allChromosomes.add(c);
 		}
+		System.out.println("Stop!");
 		for(int i = 0; i < SharedData.POPULATION_SIZE * SharedData.INIT_CONSTRUCT_PERCENT; i++) {
 			Chromosome c = new Chromosome(constructGen.generateRules(sl, time), sl, time);
 
-			c.calculateFitness(SharedData.EVALUATION_TIME);
+			c.runFitness(SharedData.EVALUATION_TIME);
 			if(c.getConstrainFitness() < 1){
 				iChromosomes.add(c);
 				System.out.println("\tChromosome #" + (counter) + " Constrain Fitness: " + c.getConstrainFitness());
@@ -303,23 +280,6 @@ public class RuleGenerator extends AbstractRuleGenerator{
 			else{
 				fChromosomes.add(c);
 				System.out.println("\tChromosome #" + (counter) + " Fitness: " + c.getFitness());
-			}
-			try (FileWriter fw = new FileWriter(SharedData.filename, true);
-					BufferedWriter bw = new BufferedWriter(fw);
-					PrintWriter out = new PrintWriter(bw)) {
-				out.println("*****");
-				out.println("Chromosome " + (counter) + " : Fitness = " + c.getFitness());
-				out.println(" ");
-				// print out chromosome
-				for (String[] q : c.getRuleset()) {
-					out.println(" ");
-					for(String s : q) {
-						out.println(s);
-					}
-				}
-
-			} catch (Exception ex) {
-				System.out.println(ex.getMessage());
 			}
 			avgFitness += c.getFitness().get(1);
 			allChromosomes.add(c);
@@ -330,7 +290,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 			for(int j = 0; j < SharedData.INIT_MUTATION_AMOUNT; j++) {
 				c.mutate();
 			}
-			c.calculateFitness(SharedData.EVALUATION_TIME);
+			c.runFitness(SharedData.EVALUATION_TIME);
 			if(c.getConstrainFitness() < 1){
 				iChromosomes.add(c);
 				System.out.println("\tChromosome #" + (counter) + " Constrain Fitness: " + c.getConstrainFitness());
@@ -338,23 +298,6 @@ public class RuleGenerator extends AbstractRuleGenerator{
 			else{
 				fChromosomes.add(c);
 				System.out.println("\tChromosome #" + (counter) + " Fitness: " + c.getFitness());
-			}
-			try (FileWriter fw = new FileWriter(SharedData.filename, true);
-					BufferedWriter bw = new BufferedWriter(fw);
-					PrintWriter out = new PrintWriter(bw)) {
-				out.println("*****");
-				out.println("Chromosome " + (counter) + " : Fitness = " + c.getFitness());
-				out.println(" ");
-				// print out chromosome
-				for (String[] q : c.getRuleset()) {
-					out.println(" ");
-					for(String s : q) {
-						out.println(s);
-					}
-				}
-
-			} catch (Exception ex) {
-				System.out.println(ex.getMessage());
 			}
 			avgFitness += c.getFitness().get(1);
 			allChromosomes.add(c);
@@ -371,26 +314,11 @@ public class RuleGenerator extends AbstractRuleGenerator{
 
 		//System.out.println(time.remainingTimeMillis() + " avgTime: " + avgTime + " worstTime: " + worstTime);
 		System.out.println("Average Fitness: " + avgFitness);
-		try (FileWriter fw = new FileWriter(SharedData.filename, true);
-				BufferedWriter bw = new BufferedWriter(fw);
-				PrintWriter out = new PrintWriter(bw)) {
-			out.println("Average Fitness: " + avgFitness);
-		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
-		}
 		while(time.remainingTimeMillis() > 2 * avgTime &&
 				time.remainingTimeMillis() > worstTime){
 			ElapsedCpuTimer timer = new ElapsedCpuTimer();
 
 			System.out.println("Generation #" + (numberOfIterations + 1) + ": ");
-
-			try (FileWriter fw = new FileWriter(SharedData.filename, true);
-					BufferedWriter bw = new BufferedWriter(fw);
-					PrintWriter out = new PrintWriter(bw)) {
-				out.println("### Generation : " + (numberOfIterations + 1) + " ###");
-			} catch (Exception ex) {
-				System.out.println(ex.getMessage());
-			}
 
 			//get the new population and split it to a the feasible and infeasible populations
 			ArrayList<Chromosome> chromosomes = getNextPopulation(fChromosomes, iChromosomes);
@@ -413,15 +341,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 			Collections.sort(chromosomes);
 			//System.out.println("Best Chromosome Fitness: " + chromosomes.get(0).getFitness());
 			//System.out.println(fChromosomes.get(0).getRuleset());
-
 			System.out.println("Average Fitness: " + avgFitness);
-			try (FileWriter fw = new FileWriter(SharedData.filename, true);
-					BufferedWriter bw = new BufferedWriter(fw);
-					PrintWriter out = new PrintWriter(bw)) {
-				out.println("\n\nGeneration : " + (numberOfIterations) + " Avg Fitness: " + avgFitness);
-			} catch (Exception ex) {
-				System.out.println(ex.getMessage());
-			}
 		}
 
 
