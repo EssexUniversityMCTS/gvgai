@@ -22,6 +22,44 @@ public class SharedData {
 	 * the analyzer of this level
 	 */
 	public static LevelAnalyzer la;
+	
+	/**
+	 * the amount of time to evaluate a single level
+	 */
+	public static final long EVALUATION_TIME = 10000;
+	
+	/**
+	 * number of the best chromosomes that are transfered from one generation to another
+	 */
+	public static final int ELITISM_NUMBER = 1;
+	
+	/**
+	 * Crossover probability
+	 */
+	public static final double CROSSOVER_PROB = 0.5;
+	
+	/**
+	 * Mutation probability
+	 */
+	public static final double MUTATION_PROB = 0.1;
+	/**
+	 * The percentage of the initial population that is randomly generated
+	 */
+	public static final double INIT_RANDOM_PERCENT = 0.3;
+	/**
+	 * The percentage of the initial population that is constructively generated
+	 */
+	public static final double INIT_CONSTRUCT_PERCENT = 0.2;
+	/**
+	 * The percentage of the initial population that is mutationally generated based
+	 * off what already exists (random and constructive) in the population
+	 */
+	public static final double INIT_MUT_PERCENT = 0.5;
+	
+	/**
+	 * the initial amount of mutations in the init pop
+	 */
+	public static final int INIT_MUTATION_AMOUNT = 7;
 	/**
 	 * random object to help in choosing random stuff
 	 */
@@ -67,19 +105,19 @@ public class SharedData {
 	/**
 	 * the probability of inserting a new rule
 	 */
-	public static final double INSERTION_PROB = 0.0;
+	public static final double INSERTION_PROB = 0.33;
 	/**
 	 * the probability of performing a deletion an exisiting rule
 	 */
-	public static final double DELETION_PROB = 0.0;
+	public static final double DELETION_PROB = 0.33;
 	/**
 	 * the probability of performing a modify on an existing rule
 	 */
-	public static final double MODIFY_RULE_PROB = 1.0;
+	public static final double MODIFY_RULE_PROB = .34;
 	/**
 	 * the probablity of changing a parameter of an existing rule
 	 */
-	public static final double MODIFY_PARAM_PROB = 0.0;
+	public static final double MODIFY_PARAM_PROB = 0.5;
 	/**
 	 * The probability to insert a new parameter into an existing rule
 	 */
@@ -105,5 +143,10 @@ public class SharedData {
 	 * The upper bound on a numerical value for a termination limit parameter insertion
 	 */
 	public static final int TERMINATION_LIMIT_PARAM = 30000;
+	
+	/**
+	 * Protects the fitness function from looping forever
+	 */
+	public static final int PROTECTION_COUNTER = 5;
 
 }

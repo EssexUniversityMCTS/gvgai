@@ -33,6 +33,11 @@ public class Chromosome implements Comparable<Chromosome>{
 	 * current chromosome fitness if its an infeasible
 	 */
 	private double constrainFitness;
+	
+	/*
+	 * contains how many errors came out of the build test
+	 */
+	private int errorCount;
 	/**
 	 * if the fitness is calculated before (no need to recalculate)
 	 */
@@ -594,7 +599,7 @@ public class Chromosome implements Comparable<Chromosome>{
 				for(String part : splitModRule) {
 					newRule += part + " ";
 				}
-				ruleset[0][point] = newRule;
+				ruleset[1][point] = newRule;
 			}
 		} 
 		// we should never ever reach this point
@@ -626,7 +631,13 @@ public class Chromosome implements Comparable<Chromosome>{
 	public void calculateFitness(long time) {
 		boolean isFeasible = false;
 		isFeasible = feasibilityTest();
-		constrainFitness = 0;
+		if(!isFeasible) {
+			constrainFitness = 1.0f / (errorCount + 1.0f);	
+		} else {
+			constrainFitness = 1;
+			
+		}
+		
 	}
 	/**
 	 * first checks to see if there are no build errors, if there are, this is infeasible. 
@@ -637,6 +648,7 @@ public class Chromosome implements Comparable<Chromosome>{
 	private boolean feasibilityTest() {
 		Logger log = Logger.getInstance();
 		sl.testRules(this.getRuleset()[0], this.getRuleset()[1]);
+		errorCount = log.getMessageCount();
 		if(log.getMessageCount() > 0) {
 			// then there must have been an error
 			log.flushMessages();
@@ -655,6 +667,150 @@ public class Chromosome implements Comparable<Chromosome>{
 		return true;
 	}
 	
+	
+	/**
+	 * calculates the fitness, by comparing the scores of a naiveAI and a smart AI
+	 * @param time	how much time to evaluate the chromosome
+	 */
+	public void runFitness(long time) {
+		// unique events that occurred in all the game simulations
+		Set<String> events = new HashSet<String>();
+
+		this.fitness.set(0, 1.0);
+		constrainFitness = 1;
+		//Play the game using the best agent
+		double score = -200;
+		ArrayList<Vector2d> SOs = new ArrayList<>();
+		// protects the fitness evaluation from looping forever
+
+		// Best Agent
+		double agentBestScore = Double.NEGATIVE_INFINITY;
+
+		for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
+			int protectionCounter = 0;
+			StepController stepAgent = new StepController(automatedAgent, SharedData.EVALUATION_STEP_TIME);
+			while(score < -100) {
+				ElapsedCpuTimer elapsedTimer = new ElapsedCpuTimer();
+				elapsedTimer.setMaxTimeMillis(time);
+
+				stepAgent.playGame(stateObs.copy(), elapsedTimer, SOs);
+				if(stepAgent.getFinalState().getGameScore() > agentBestScore) {
+					agentBestScore = stepAgent.getFinalState().getGameScore();
+					bestState = stepAgent.getFinalState();
+					bestSol = stepAgent.getSolution();
+				}
+
+				score = stepAgent.getFinalState().getGameScore();
+				protectionCounter++;
+				if(protectionCounter > SharedData.PROTECTION_COUNTER) {
+					break;
+				}
+			}
+			TreeSet s1 = stepAgent.getFinalState().getEventsHistory();
+			Iterator<Event> iter1 = s1.iterator();
+			while(iter1.hasNext()) {
+				Event e = iter1.next();
+				events.add(e.activeTypeId + "" + e.passiveTypeId);
+			}
+			score = -200;
+
+		}
+
+		// Random Agent
+		StateObservation randomState = null;
+		int randomLength = Integer.MAX_VALUE;
+		double bestRandomScore = Double.NEGATIVE_INFINITY;
+		score = -200;
+		for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
+			int protectionCounter = 0;
+			while(score < -100) {
+				StateObservation tempState = stateObs.copy();
+
+				StepController stepAgent = new StepController(randomAgent, SharedData.EVALUATION_STEP_TIME);
+				ElapsedCpuTimer elapsedTimer = new ElapsedCpuTimer();
+				elapsedTimer.setMaxTimeMillis(time);
+				if(elapsedTimer.remainingTimeMillis() < 0) {
+					System.out.println("Problem");
+				}
+				stepAgent.playGame(stateObs.copy(), elapsedTimer, SOs);
+
+				tempState = stepAgent.getFinalState();
+				int temp = stepAgent.getSolution().size();
+
+				if(temp < randomLength){
+					randomLength = temp;
+					randomState = tempState;
+				}
+				score = randomState.getGameScore();
+				if(score > bestRandomScore) {
+					bestRandomScore = score;
+				}
+				if(protectionCounter > SharedData.PROTECTION_COUNTER) {
+					break;
+				}
+			}
+			// gather all unique interactions between objects in the naive agent
+			TreeSet s1 = randomState.getEventsHistory();
+			Iterator<Event> iter1 = s1.iterator();
+			while(iter1.hasNext()) {
+				Event e = iter1.next();
+				events.add(e.activeTypeId + "" + e.passiveTypeId);
+			}
+			score = -200;
+		}
+		// Naive agent
+		score = -200;
+		StateObservation naiveState = null;
+		int naiveLength = Integer.MAX_VALUE;
+		double bestNaiveScore = Double.NEGATIVE_INFINITY;
+		//playing the game using the donothing agent and naive agent
+		for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
+			int protectionCounter = 0;
+			while(score < -100) {
+				StateObservation tempState = stateObs.copy();
+				int temp = getAgentResult(tempState, bestSol.size(), naiveAgent);
+				if(temp < naiveLength){
+					naiveLength = temp;
+					naiveState = tempState;
+				}
+				score = naiveState.getGameScore();
+				if(score > bestNaiveScore) {
+					bestNaiveScore = score;
+				}
+				protectionCounter++;
+				if(protectionCounter > SharedData.PROTECTION_COUNTER) {
+					break;
+				}
+			}
+			// gather all unique interactions between objects in the naive agent
+			TreeSet s1 = naiveState.getEventsHistory();
+			Iterator<Event> iter1 = s1.iterator();
+			while(iter1.hasNext()) {
+				Event e = iter1.next();
+				events.add(e.activeTypeId + "" + e.passiveTypeId);
+				}
+			score = -200;
+		}
+
+		// calc difference between best agent and the best naive score
+		double difference = (bestState.getGameScore() - bestNaiveScore);
+		double fit = difference;
+		// penalize the fitness if both agents score 0
+		if(bestState.getGameScore() == 0 && naiveState.getGameScore() == 0) {
+			fit += -50;
+		}
+
+		// reward the fitness if smart agent wins the game
+		if(bestState.getGameWinner() != Types.WINNER.PLAYER_WINS) {
+			fit += Math.abs(difference) * 1/2;
+		}
+		this.fitness.set(1, difference);
+
+		// reward fitness for each unique interaction triggered
+		int uniqueCount = events.size();
+		fit += uniqueCount * 2;
+		this.fitness.set(1, fit);
+	}
 	/**
 	 * Play the current level using the naive player
 	 * @param stateObs	the current stateObservation object that represent the level
@@ -675,6 +831,107 @@ public class Chromosome implements Comparable<Chromosome>{
 		}
 		return i;
 	}
+	
+	/**
+	 * crossover the current chromosome with the input chromosome
+	 * @param c	the other chromosome to crossover with
+	 * @return	the current children from the crossover process
+	 */
+	public ArrayList<Chromosome> crossover(Chromosome c){
+		ArrayList<Chromosome> children = new ArrayList<Chromosome>();
+		children.add(this.clone());
+		children.add(c.clone());
+
+
+
+		// make new rulesets to represent the new rules
+		String[][] nRuleSetOne;
+		String[][] nRuleSetTwo;
+
+
+
+		// interaction set
+		//crossover points
+		int pointOne = SharedData.random.nextInt(ruleset[0].length);
+		int pointTwo = SharedData.random.nextInt(c.getRuleset()[0].length);
+
+		// calculate new sizes of the rulesets
+		int nSizeOne = pointOne + (c.getRuleset()[0].length - pointTwo);
+		int nSizeTwo = pointTwo + (ruleset[0].length - pointOne);
+
+		// finalize construction
+		nRuleSetOne = new String[2][];
+		nRuleSetOne[0] = new String[nSizeOne];
+		nRuleSetTwo = new String[2][];
+		nRuleSetTwo[0] = new String[nSizeTwo];
+
+		// swapping interaction for ruleset one
+		for(int i = 0; i < pointOne; i++) {
+			nRuleSetOne[0][i] = ruleset[0][i];
+		}
+		int counter = pointTwo;
+		for(int i = pointOne; i < nSizeOne; i++) {
+			nRuleSetOne[0][i] = c.getRuleset()[0][counter];
+			counter++;
+		}
+		// swapping for ruleset two
+		for(int i = 0; i < pointTwo; i++) {
+			nRuleSetTwo[0][i] = c.getRuleset()[0][i];
+		}
+		counter = pointOne;
+		for(int i = pointTwo; i < nSizeTwo; i++) {
+			nRuleSetTwo[0][i] = ruleset[0][counter];
+		}
+
+		// termination set
+		// crossover points
+		pointOne = SharedData.random.nextInt(ruleset[1].length);
+		pointTwo = SharedData.random.nextInt(c.getRuleset()[1].length);
+
+		// calculate new sizes of the rulesets
+		nSizeOne = pointOne + (c.getRuleset()[1].length - pointTwo);
+		nSizeTwo = pointTwo + (ruleset[1].length - pointOne);
+
+		// finalize construction
+		nRuleSetOne[1] = new String[nSizeOne];
+		nRuleSetTwo[1] = new String[nSizeTwo];
+
+		// give the children their rulesets
+		children.get(0).setRuleset(nRuleSetOne);
+		children.get(1).setRuleset(nRuleSetTwo);
+
+		// swapping terminations for ruleset one
+		for(int i = 0; i < pointOne; i++) {
+			nRuleSetOne[1][i] = ruleset[1][i];
+		}
+		counter = pointTwo;
+		for(int i = pointOne; i < nSizeOne; i++) {
+			nRuleSetOne[1][i] = c.getRuleset()[1][counter];
+			counter++;
+		}
+		// swapping for ruleset two
+		for(int i = 0; i < pointTwo; i++) {
+			nRuleSetTwo[1][i] = c.getRuleset()[1][i];
+		}
+		counter = pointOne;
+		for(int i = pointTwo; i < nSizeTwo; i++) {
+			nRuleSetTwo[1][i] = ruleset[1][counter];
+		}
+		for(int i = 0; i < nRuleSetOne.length; i++) {
+			ArrayList<String> temp = new ArrayList<> (Arrays.asList(nRuleSetOne[i]));
+			temp = (ArrayList<String>) temp.stream().distinct().collect(Collectors.toList());
+			nRuleSetOne[i] = new String[temp.size()];
+			nRuleSetOne[i] = temp.toArray(nRuleSetOne[i]);
+
+			temp = new ArrayList<> (Arrays.asList(nRuleSetTwo[i]));
+			temp = (ArrayList<String>) temp.stream().distinct().collect(Collectors.toList());
+			nRuleSetTwo[i] = new String[temp.size()];
+			nRuleSetTwo[i] = temp.toArray(nRuleSetTwo[i]);
+			}
+
+		return children;
+	}
+
 	/**
 	 * initialize the agents used during evaluating the chromosome
 	 */
