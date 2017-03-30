@@ -27,7 +27,7 @@ public class KillIfFromAbove extends Effect
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
 	if(sprite1 == null || sprite2 == null){
-	    Logger.getInstance().addMessage(new Message(Message.WARNING, "Either " + sprite1.name + " or " + sprite2.name + " is null."));
+	    Logger.getInstance().addMessage(new Message(Message.WARNING, "Either sprite1 or sprite2 is null."));
 	    return;
 	}
         //Kills the sprite, only if the other one is higher and moving down.
