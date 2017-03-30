@@ -116,7 +116,7 @@ public class ArcadeMachine {
 		boolean humans[] = new boolean[no_players];
 		boolean anyHuman = false;
 
-		// System.out.println("Number of players: " + no_players);
+		// System.out.println("Number of players: " + nbPlayers);
 
 		Player[] players;
 		if (no_players > 1) {

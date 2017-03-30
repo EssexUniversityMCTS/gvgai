@@ -50,7 +50,7 @@ public class RHGA extends RHEA {
         randomiseOpponent();
         // Evaluate and sort
         evaluatePopulation(evaluator);
-        sortPopulationByFitness(population);
+        sortPopulationByFitness(population, true);
         bestYet = population[0].getGenome();
         while (evaluator.nEvals() < maxEvals) { //&& !evaluator.optimalFound()) {
             randomiseOpponent();
@@ -62,14 +62,14 @@ public class RHGA extends RHEA {
             }
             // Generate offspring
             for (; i<popSize; i++) {
-                nextPop[i] = breed();
+                nextPop[i] = breed(population);
                 mutator.mutateIndividual(nextPop[i], probaMut);
                 nextPop[i].fitness(evaluator, opponentGenome, nSamples);
             }
             population = nextPop;
             // Evaluate and sort new population
             evaluatePopulation(evaluator);
-            sortPopulationByFitness(population);
+            sortPopulationByFitness(population, true);
             bestYet = population[0].getGenome();
         }
         return bestYet;
@@ -85,7 +85,7 @@ public class RHGA extends RHEA {
         // Evaluate and sort
         evaluatePopulation(evaluator);
 //        System.out.println("start sortPopulationByFitness: " + elapsedTimer.remainingTimeMillis());
-        sortPopulationByFitness(population);
+        sortPopulationByFitness(population, true);
 
         double avgTimeTaken = 0;
         double acumTimeTaken = 0;
@@ -106,14 +106,13 @@ public class RHGA extends RHEA {
             }
             // Generate offspring
             for (; i<popSize; i++) {
-                nextPop[i] = breed();
+                nextPop[i] = breed(population);
                 mutator.mutateIndividual(nextPop[i], probaMut);
-                nextPop[i].fitness(evaluator, opponentGenome, nSamples);
             }
             population = nextPop;
             // Evaluate and sort new population
             evaluatePopulation(evaluator);
-            sortPopulationByFitness(population);
+            sortPopulationByFitness(population, true);
             bestYet = population[0].getGenome();
 
             numIters++;

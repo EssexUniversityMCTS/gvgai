@@ -90,6 +90,10 @@ public class Individual {
         accumFit.add(fit);
     }
 
+    public void resetFitness() {
+        this.accumFit.reset();
+        this.fitness = 0;
+    }
 
     public Individual copy()
     {

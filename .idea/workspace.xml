@@ -2,37 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f8bd7213-f1cc-4e4a-87f5-e94c2835a3ff" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/Agent.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/evodef/EvoAlg.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/evodef/EvolutionLogger.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/evodef/FitnessSpace.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/evodef/GameActionSpaceAdapter.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/evodef/GameActionSpaceAdapterMulti.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/evodef/SearchSpace.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/evodef/SearchSpaceUtil.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/evodef/SolutionEvaluator.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/ntuple/EvaluateChoices.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/ntuple/FitnessLandscapeModel.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/ntuple/NTuple.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/ntuple/NTupleSystem.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/ntuple/UrnModel.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/ntuple/UrnSystem.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/rhAlgo/search/Individual.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/rhAlgo/search/RHEA.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/rhAlgo/search/RHGA.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/rhAlgo/strategy/ICrossover.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/rhAlgo/strategy/ISelection.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/rhAlgo/strategy/Mutator.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/rhAlgo/strategy/TournamentSelection.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/rhAlgo/strategy/UniformCrossover.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/deprecated/shiftBufferRHGA/tools/Picker.class" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/TestMultiPlayer.class" afterPath="$PROJECT_DIR$/out/production/gvgai/tracks/multiPlayer/TestMultiPlayer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/shiftBufferRHGA/rhAlgo/search/RHCA.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ontology/Types.java" afterPath="$PROJECT_DIR$/src/ontology/Types.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/shiftBufferRHGA/evodef/GameActionSpaceAdapterMulti.java" afterPath="$PROJECT_DIR$/src/shiftBufferRHGA/evodef/GameActionSpaceAdapterMulti.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/shiftBufferRHGA/rhAlgo/search/Individual.java" afterPath="$PROJECT_DIR$/src/shiftBufferRHGA/rhAlgo/search/Individual.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/shiftBufferRHGA/rhAlgo/search/RHEA.java" afterPath="$PROJECT_DIR$/src/shiftBufferRHGA/rhAlgo/search/RHEA.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/shiftBufferRHGA/rhAlgo/search/RHGA.java" afterPath="$PROJECT_DIR$/src/shiftBufferRHGA/rhAlgo/search/RHGA.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/tracks/ArcadeMachine.java" afterPath="$PROJECT_DIR$/src/tracks/ArcadeMachine.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/tracks/DesignMachine.java" afterPath="$PROJECT_DIR$/src/tracks/DesignMachine.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/tracks/multiPlayer/TestMultiPlayer.java" afterPath="$PROJECT_DIR$/src/tracks/multiPlayer/TestMultiPlayer.java" />
     </list>
     <ignored path="gvgai.iws" />
@@ -69,7 +45,7 @@
         <entry file="file://$PROJECT_DIR$/src/shiftBufferRHGA/Agent.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+              <caret line="55" column="45" selection-start-line="55" selection-start-column="16" selection-end-line="55" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -79,33 +55,83 @@
         <entry file="file://$PROJECT_DIR$/src/shiftBufferRHGA/rhAlgo/search/RHEA.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="25" column="30" selection-start-line="25" selection-start-column="30" selection-end-line="25" selection-end-column="30" />
+              <caret line="132" column="56" selection-start-line="132" selection-start-column="56" selection-end-line="132" selection-end-column="56" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RHGA.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="RHGA.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/shiftBufferRHGA/rhAlgo/search/RHGA.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="77" column="53" selection-start-line="77" selection-start-column="53" selection-end-line="77" selection-end-column="53" />
+            <state vertical-scroll-proportion="1.0803213">
+              <caret line="89" column="32" selection-start-line="89" selection-start-column="32" selection-end-line="89" selection-end-column="32" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GameActionSpaceAdapterMulti.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GameActionSpaceAdapterMulti.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/shiftBufferRHGA/evodef/GameActionSpaceAdapterMulti.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.562249">
-              <caret line="157" column="41" selection-start-line="157" selection-start-column="41" selection-end-line="157" selection-end-column="41" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RHCA.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/shiftBufferRHGA/rhAlgo/search/RHCA.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-18.333334">
+              <caret line="165" column="9" selection-start-line="165" selection-start-column="8" selection-end-line="165" selection-end-column="9" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TestMultiPlayer.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/tracks/multiPlayer/TestMultiPlayer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="60" column="30" selection-start-line="60" selection-start-column="30" selection-end-line="60" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Individual.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/shiftBufferRHGA/rhAlgo/search/Individual.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="20" column="19" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StatSummary.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/tools/StatSummary.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-8.888889">
+              <caret line="59" column="27" selection-start-line="59" selection-start-column="22" selection-end-line="59" selection-end-column="27" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Singleton" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -124,15 +150,18 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/ontology/Types.java" />
+        <option value="$PROJECT_DIR$/src/shiftBufferRHGA/evodef/GameActionSpaceAdapterMulti.java" />
+        <option value="$PROJECT_DIR$/src/shiftBufferRHGA/rhAlgo/search/Individual.java" />
         <option value="$PROJECT_DIR$/src/shiftBufferRHGA/rhAlgo/search/RHEA.java" />
         <option value="$PROJECT_DIR$/src/shiftBufferRHGA/rhAlgo/search/RHGA.java" />
-        <option value="$PROJECT_DIR$/src/shiftBufferRHGA/evodef/GameActionSpaceAdapterMulti.java" />
+        <option value="$PROJECT_DIR$/src/tracks/multiPlayer/TestMultiPlayer.java" />
+        <option value="$PROJECT_DIR$/src/shiftBufferRHGA/rhAlgo/search/RHCA.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="237" />
-    <option name="y" value="91" />
+    <option name="x" value="362" />
+    <option name="y" value="155" />
     <option name="width" value="2222" />
     <option name="height" value="1248" />
   </component>
@@ -651,7 +680,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="237" y="91" width="2222" height="1248" extended-state="0" />
+    <frame x="362" y="155" width="2222" height="1248" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -661,10 +690,11 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32958478" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32958478" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32958478" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -674,7 +704,6 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -698,10 +727,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/tools/StatSummary.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.888889">
+          <caret line="59" column="27" selection-start-line="59" selection-start-column="22" selection-end-line="59" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/shiftBufferRHGA/Agent.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+          <caret line="55" column="45" selection-start-line="55" selection-start-column="16" selection-end-line="55" selection-end-column="45" />
           <folding />
         </state>
       </provider>
@@ -709,23 +746,49 @@
     <entry file="file://$PROJECT_DIR$/src/shiftBufferRHGA/rhAlgo/search/RHEA.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="25" column="30" selection-start-line="25" selection-start-column="30" selection-end-line="25" selection-end-column="30" />
+          <caret line="132" column="56" selection-start-line="132" selection-start-column="56" selection-end-line="132" selection-end-column="56" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/shiftBufferRHGA/rhAlgo/search/RHGA.java">
+    <entry file="file://$PROJECT_DIR$/src/tracks/multiPlayer/TestMultiPlayer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="77" column="53" selection-start-line="77" selection-start-column="53" selection-end-line="77" selection-end-column="53" />
+          <caret line="60" column="30" selection-start-line="60" selection-start-column="30" selection-end-line="60" selection-end-column="30" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/shiftBufferRHGA/evodef/GameActionSpaceAdapterMulti.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.562249">
-          <caret line="157" column="41" selection-start-line="157" selection-start-column="41" selection-end-line="157" selection-end-column="41" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/shiftBufferRHGA/rhAlgo/search/Individual.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="19" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/shiftBufferRHGA/rhAlgo/search/RHCA.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-18.333334">
+          <caret line="165" column="9" selection-start-line="165" selection-start-column="8" selection-end-line="165" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/shiftBufferRHGA/rhAlgo/search/RHGA.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.0803213">
+          <caret line="89" column="32" selection-start-line="89" selection-start-column="32" selection-end-line="89" selection-end-column="32" />
           <folding />
         </state>
       </provider>

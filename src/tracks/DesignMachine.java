@@ -110,7 +110,7 @@ public class DesignMachine {
 		boolean humans[] = new boolean[no_players];
 		boolean anyHuman = false;
 
-		// System.out.println("Number of players: " + no_players);
+		// System.out.println("Number of players: " + nbPlayers);
 
 		if (no_players > 1) {
 			// multi player games

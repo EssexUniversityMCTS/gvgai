@@ -38,7 +38,7 @@ public abstract class RHEA implements EvoAlg {
     protected ICrossover cross;
     protected Mutator mutator;
 
-    protected int id, oppId, no_players;
+    protected int id, oppId, nbPlayers;
 
     // should not be a static, just did it quick and dirty
     static boolean noisy = false;
@@ -57,6 +57,8 @@ public abstract class RHEA implements EvoAlg {
 
     public RHEA(int playerId, int nSamples, boolean isShiftBuffer) {
         this.playerId = playerId;
+        this.nbPlayers = 2;
+        this.oppId = (playerId + 1) % nbPlayers;
         this.nSamples = nSamples;
         this.isShiftBuffer = isShiftBuffer;
         this.rdm = new Random();
@@ -85,7 +87,7 @@ public abstract class RHEA implements EvoAlg {
     /**
      * Init search space
      */
-    public void init(SolutionEvaluator evaluator) {
+    protected void init(SolutionEvaluator evaluator) {
         this.evaluator = evaluator;
         this.searchSpace = evaluator.searchSpace();
         this.mutator = new Mutator(searchSpace);
@@ -95,6 +97,7 @@ public abstract class RHEA implements EvoAlg {
         if (population != null && isShiftBuffer && (simulationDepth == population[0].getGenome().length)){
             for (int i = 0; i < popSize; i++) {
                 population[i].shiftGenome(searchSpace);
+                population[i].resetFitness();
             }
         } else {
             population = new Individual[popSize];
@@ -113,19 +116,31 @@ public abstract class RHEA implements EvoAlg {
         System.out.println();
     }
 
-    protected void sortPopulationByFitness(Individual[] population) {
-        for (int i = 0; i < population.length; i++) {
-            for (int j = i + 1; j < population.length; j++) {
-                if (population[i].getFitness() < population[j].getFitness()) {
-                    Individual gcache = population[i];
-                    population[i] = population[j];
-                    population[j] = gcache;
+    protected void sortPopulationByFitness(Individual[] population, boolean isMax) {
+        if (isMax) {
+            for (int i = 0; i < population.length; i++) {
+                for (int j = i + 1; j < population.length; j++) {
+                    if (population[i].getMeanFitness() < population[j].getMeanFitness()) {
+                        Individual gcache = population[i];
+                        population[i] = population[j];
+                        population[j] = gcache;
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < population.length; i++) {
+                for (int j = i + 1; j < population.length; j++) {
+                    if (population[i].getMeanFitness() > population[j].getMeanFitness()) {
+                        Individual gcache = population[i];
+                        population[i] = population[j];
+                        population[j] = gcache;
+                    }
                 }
             }
         }
     }
 
-    protected Individual breed() {
+    protected Individual breed(Individual[] population) {
         Individual gai1 = selector.getParent(population, null);        //First parent.
         Individual gai2 = selector.getParent(population, gai1);        //Second parent.
         return cross.uniformCross(gai1, gai2);
