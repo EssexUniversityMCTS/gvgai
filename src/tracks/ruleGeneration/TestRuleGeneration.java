@@ -51,8 +51,9 @@ public class TestRuleGeneration {
 
         // Other settings
         boolean visuals = true;
-        int seed = new Random().nextInt();
-        int gameIdx = 20;
+//        int seed = new Random().nextInt();
+        int seed = 0;
+        int gameIdx = 0;
         int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
         String game = generateRulePath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
@@ -61,8 +62,9 @@ public class TestRuleGeneration {
         // 1. Generate rules (Interaction and Terminations) for a fixed level
 
         if(RuleGenMachine.generateRules(game, level1, geneticRuleGenerator, recordGameFile, seed)){
-            // ArcadeMachine.playOneGame(recordGameFile, level1, recordActionsFile, seed);
+            // ArcadeMachine.playOneGame(recordGameFile, level1, recordActionsFile, seed)
             RuleGenMachine.runOneGame(game, recordGameFile, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
         }
     }
 }
+
