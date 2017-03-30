@@ -42,12 +42,12 @@ public class SpriteCounterMore extends Termination
         return false;
     }
 
-	@Override
-	public ArrayList<String> getTerminationSprites() {
-		ArrayList<String> result = new ArrayList<String>();
-		result.add(stype);
-		
-		return result;
-	}
+    @Override
+    public ArrayList<String> getTerminationSprites() {
+        ArrayList<String> result = new ArrayList<String>();
+        result.add(stype);
+
+        return result;
+    }
 
 }

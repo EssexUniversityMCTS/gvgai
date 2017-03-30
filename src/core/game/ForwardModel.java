@@ -456,7 +456,7 @@ public class ForwardModel extends Game
         this.avatars = new MovingAvatar[no_players];
         for (int i = 0; i < no_players; i++) {
             if(a_gameState.avatars[i] != null){
-        	avatars[i] = (MovingAvatar) a_gameState.avatars[i].copy();
+                avatars[i] = (MovingAvatar) a_gameState.avatars[i].copy();
                 avatars[i].setKeyHandler(a_gameState.avatars[i].getKeyHandler());
             }
         }

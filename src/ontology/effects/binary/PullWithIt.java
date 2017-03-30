@@ -41,10 +41,10 @@ public class PullWithIt extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
-	if(sprite1 == null || sprite2 == null){
-	    Logger.getInstance().addMessage(new Message(Message.WARNING, "Neither the 1st nor 2nd sprite can be EOS with PullWithIt interaction."));
-	    return;
-	}
+        if(sprite1 == null || sprite2 == null){
+            Logger.getInstance().addMessage(new Message(Message.WARNING, "Neither the 1st nor 2nd sprite can be EOS with PullWithIt interaction."));
+            return;
+        }
         //Keep in the list, for the current cycle, the sprites that have triggered this event.
         int currentGameTime = game.getGameTick();
         if(currentGameTime > lastGameTime)
@@ -76,11 +76,11 @@ public class PullWithIt extends Effect
         }
 
         sprite1._updatePos(new Direction(v.x, v.y), (int) (sprite2.speed*gridsize));
-        
+
         if(sprite1.physicstype_id != Types.PHYSICS_GRID)
-        {	
-        	sprite1.rect.y = sprite2.rect.y-sprite2.rect.height;
-        	sprite1.orientation = new Direction(sprite1.orientation.x(),0.0);
+        {
+            sprite1.rect.y = sprite2.rect.y-sprite2.rect.height;
+            sprite1.orientation = new Direction(sprite1.orientation.x(),0.0);
         }
 
         sprite1.lastrect = new Rectangle(r);
