@@ -1,6 +1,7 @@
 package tracks.ruleGeneration.constructiveRuleGenerator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import core.game.GameDescription.SpriteData;
@@ -34,7 +35,6 @@ public class RuleGenerator extends AbstractRuleGenerator{
     private double harmfulMovableProb = 0.5;
     private double firewallProb = 0.1;
     private double scoreSpikeProb = 0.1;
-    private double killScoreProb = 0.2;
     private double randomNPCProb = 0.5;
     private double spawnedProb = 0.5;
     private double bomberProb = 0.5;
@@ -453,8 +453,11 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	else {
 	    //If we have feeling NPCs use them as winning condition
 	    if (fleeingNPCs.size() > 0) {
-		terminations.add("SpriteCounter stype=" + fleeingNPCs.get(0) + " limit=0 win=True");
-	    } 
+		terminations.add("SpriteCounter stype=fleeing limit=0 win=True");
+	    }
+	    else if(harmfulObjects.size() > 0 && this.la.getAvatars(true)[0].sprites.size() > 0){
+		terminations.add("SpriteCounter stype=harmful limit=0 win=True");
+	    }
 	    //Otherwise use timeout as winning condition
     	    else {
     		terminations.add("Timeout limit=" + (500 + random.nextInt(5) * 100) + " win=True");
@@ -492,6 +495,27 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	this.getTerminations();
 	
 	return new String[][]{interactions.toArray(new String[interactions.size()]), terminations.toArray(new String[terminations.size()])};
+    }
+    
+    @Override
+    public HashMap<String, ArrayList<String>> getSpriteSetStructure() {
+        HashMap<String, ArrayList<String>> struct = new HashMap<String, ArrayList<String>>();
+        
+        if(fleeingNPCs.size() > 0){
+            struct.put("fleeing", new ArrayList<String>());
+        }
+        for(int i=0; i<this.fleeingNPCs.size(); i++){
+            struct.get("fleeing").add(this.fleeingNPCs.get(i));
+        }
+        
+        if(harmfulObjects.size() > 0){
+            struct.put("harmful", new ArrayList<String>());
+        }
+        for(int i=0; i<this.harmfulObjects.size(); i++){
+            struct.get("harmful").add(this.harmfulObjects.get(i));
+        }
+        
+        return struct;
     }
 
 }

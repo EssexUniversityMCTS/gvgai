@@ -302,6 +302,29 @@ public abstract class Game {
     }
 
     /**
+     * Modify the sprite order for the renderer of the GVG-AI
+     * @param spOrder	the request order
+     */
+    public void changeSpriteOrder(ArrayList<Integer> spOrder){
+	spriteOrder = new int[spOrder.size()];
+	// We need here the default 2 sprites:
+	avatarId = VGDLRegistry.GetInstance().getRegisteredSpriteValue("avatar");
+	wallId = VGDLRegistry.GetInstance().getRegisteredSpriteValue("wall");
+
+	// 1. "avatar" ALWAYS at the end of the array.
+	for (int i = 0; i < no_players; i++) {
+	    spriteOrder[spriteOrder.length - 1 - i] = avatarId;
+	}
+	// 2. Other sprite types are sorted using spOrder
+	int i = 0;
+	for (Integer intId : spOrder) {
+	    if (intId != avatarId) {
+		spriteOrder[i++] = intId;
+	    }
+	}
+    }
+    
+    /**
      * Initializes the sprite structures that hold the game.
      * 
      * @param spOrder
@@ -314,24 +337,13 @@ public abstract class Game {
     public void initSprites(ArrayList<Integer> spOrder, ArrayList<Integer> sings,
 	    HashMap<Integer, SpriteContent> constructors) {
 	ArrayList<Resource> resources = new ArrayList<Resource>();
-	spriteOrder = new int[spOrder.size()];
 
 	// We need here the default 2 sprites:
 	avatarId = VGDLRegistry.GetInstance().getRegisteredSpriteValue("avatar");
 	wallId = VGDLRegistry.GetInstance().getRegisteredSpriteValue("wall");
 
-	// 1. "avatar" ALWAYS at the end of the array.
-	for (int i = 0; i < no_players; i++) {
-	    spriteOrder[spriteOrder.length - 1 - i] = avatarId;
-	}
-
-	// 2. Other sprite types are sorted using spOrder
-	int i = 0;
-	for (Integer intId : spOrder) {
-	    if (intId != avatarId) {
-		spriteOrder[i++] = intId;
-	    }
-	}
+	// Initialize the sprite render order.
+	this.changeSpriteOrder(spOrder);
 
 	// Singletons
 	singletons = new boolean[VGDLRegistry.GetInstance().numSpriteTypes()];
@@ -409,7 +421,7 @@ public abstract class Game {
 
 	// Resources: use the list of resources created before to store limit
 	// and color of each resource.
-	for (i = 0; i < resources.size(); ++i) {
+	for (int i = 0; i < resources.size(); ++i) {
 	    Resource r = resources.get(i);
 	    resources_limits[r.resource_type] = r.limit;
 	    resources_colors[r.resource_type] = r.color;

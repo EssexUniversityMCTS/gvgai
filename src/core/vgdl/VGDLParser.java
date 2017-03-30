@@ -189,6 +189,12 @@ public class VGDLParser {
 	}
     }
     
+    /**
+     * Parse a custom sprite set
+     * @param currentGame 	the current game to modify
+     * @param spriteStruct	the current structure of the sprite set
+     * @param sprites		the current sprites
+     */
     public void parseSpriteSet(Game currentGame, HashMap<String, ArrayList<String>> spriteStruct, HashMap<String, String> sprites){
 	this.game = currentGame;
 	String template = "    ";
@@ -330,6 +336,58 @@ public class VGDLParser {
 
 	// Set the order of sprites.
 	game.initSprites(spriteOrderTmp, singletonTmp, constructors);
+    }
+    
+    /**
+     * Just modify the arrangement of the sprite render based on certain tree
+     * @param elements		current sprite set tree
+     * @param parentclass	previous parent in the tree (root have null parent)
+     */
+    private void modifySpriteOrder(ArrayList<Node> elements, String parentclass) {
+	String prevParentClass = parentclass;
+	for (Node el : elements) {
+	    SpriteContent sc = (SpriteContent) el.content;
+	    if (!sc.is_definition) // This checks if line contains ">"
+		return;
+
+	    // Register this entry.
+	    Integer intId = VGDLRegistry.GetInstance().getRegisteredSpriteValue(sc.identifier);
+	    
+	    // Get the class of the object
+	    String spriteClassName = sc.referenceClass;
+
+	    // This is the class of this object
+	    if (parentclass != null)
+		sc.referenceClass = parentclass;
+
+	    // If this is a leaf node, set the information on Game to create
+	    // objects of this type.
+	    if (el.children.size() == 0) {
+		if (spriteOrderTmp.contains(intId)) {
+		    // last one counts
+		    spriteOrderTmp.remove(intId);
+		}
+		spriteOrderTmp.add(intId);
+	    } else {
+		// This is the parent class of the next.
+		if (spriteClassName != null)
+		    parentclass = spriteClassName;
+
+		modifySpriteOrder(el.children, parentclass);
+	    }
+	}
+    }
+    
+    /**
+     * Modify the order of the sprites during rendering to another sprite set tree
+     * @param currentGame	current game to modify
+     * @param elements		new sprite set tree
+     */
+    public void modifyTheSpriteRender(Game currentGame, ArrayList<Node> elements){
+	this.game = currentGame;
+	this.modifySpriteOrder(elements, null);
+	
+	this.game.changeSpriteOrder(this.spriteOrderTmp);
     }
 
     /**
