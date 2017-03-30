@@ -246,6 +246,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		
 		for(int i = 0; i < SharedData.POPULATION_SIZE * SharedData.INIT_CONSTRUCT_PERCENT; i++) {
 			Chromosome c = new Chromosome(constructGen.generateRules(sl, time), sl, time);
+			
 			for(int q = 0; q < c.getRuleset().length; q++) {
 				System.out.println("=====");
 				for(int w = 0; w < c.getRuleset()[q].length; w++) {

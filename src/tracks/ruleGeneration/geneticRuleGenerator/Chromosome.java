@@ -256,7 +256,7 @@ public class Chromosome implements Comparable<Chromosome>{
 					String fixedRule = "";
 					for(String part : splitDeleteFromMe) {
 						if(!part.contains("=")) {
-							fixedRule += part;
+							fixedRule += part + " ";
 						}
 					}
 					interactionSet.set(point, fixedRule);
@@ -363,7 +363,7 @@ public class Chromosome implements Comparable<Chromosome>{
 				String[] splitModRule = modRule.split("\\s+");
 				// replace old rule with new one
 				splitModRule[3] = newRule;
-				newRule = splitModRule[0];
+				newRule = "";
 				for(String part : splitModRule) {
 					newRule += part + " ";
 				}
@@ -593,7 +593,7 @@ public class Chromosome implements Comparable<Chromosome>{
 				String[] splitModRule = modRule.split("\\s+");
 				// replace old rule with new one
 				splitModRule[0] = newRule;
-				newRule = splitModRule[0];
+				newRule = "";
 				for(String part : splitModRule) {
 					newRule += part + " ";
 				}

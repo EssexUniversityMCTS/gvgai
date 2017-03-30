@@ -322,12 +322,12 @@ public class VGDLFactory
 
         }catch (NoSuchMethodException e)
         {
-            e.printStackTrace();
+//            e.printStackTrace();
             System.out.println("Error creating termination condition " + content.identifier);
             throw new Exception("Line: " + content.lineNumber + " Error creating termination condition " + content.identifier);
         }catch (Exception e)
         {
-            e.printStackTrace();
+//            e.printStackTrace();
             System.out.println("Error creating termination condition " + content.identifier);
             throw new Exception("Line: " + content.lineNumber + " Error creating termination condition " + content.identifier);
         }
