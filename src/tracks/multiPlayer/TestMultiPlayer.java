@@ -26,7 +26,7 @@ public class TestMultiPlayer {
 		String rhcaController = "shiftBufferRHCA.Agent";
 
 	// Set here the tracks used in the games (need 2 separated by space).
-	String controllers = rhgaController + " " + sampleMCTSController;
+	String controllers = rhcaController + " " + sampleMCTSController;
 	// String tracks = sampleMCTSController + " " + sampleMCTSController;
 
 	// Available games:
@@ -58,7 +58,7 @@ public class TestMultiPlayer {
 					// + levelIdx + "_" + seed + ".txt";
 					// //where to record the actions
 					// executed. null if not to save.
-	for (gameIdx=0; gameIdx<10;gameIdx++) {
+	for (gameIdx=0; gameIdx<1;gameIdx++) {
 		String game = gamesPath + games[gameIdx] + ".txt";
 		String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
 
