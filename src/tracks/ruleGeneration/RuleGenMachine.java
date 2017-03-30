@@ -367,10 +367,8 @@ public class RuleGenMachine
 		    }
 		}
 	    }
-	    int i=0;
 	    for(String value:sprites.values()){
-		msprites.add(i, template + value.trim());
-		i++;
+		msprites.add(template + value.trim());
 	    }
 	    for(String value:msprites){
 		w.write(message + value + "\n");

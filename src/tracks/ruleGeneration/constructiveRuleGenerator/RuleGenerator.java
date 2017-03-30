@@ -57,6 +57,10 @@ public class RuleGenerator extends AbstractRuleGenerator{
      */
     private ArrayList<SpriteData> exit;
     /**
+     * array of all collectible sprites
+     */
+    private ArrayList<String> collectible;
+    /**
      * a certain unmovable object that is used as a collectible object
      */
     private SpriteData score;
@@ -95,6 +99,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	random = new Random();
 	harmfulObjects = new ArrayList<String>();
 	fleeingNPCs = new ArrayList<String>();
+	collectible = new ArrayList<String>();
 	
 	//Identify the wall object
 	wall = null;
@@ -256,6 +261,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	//If we have a score object make the avatar can collect it
 	if(score != null){
 	    for(int i=0; i<avatar.length; i++){
+		collectible.add(score.name);
 		interactions.add(score.name + " " + avatar[i].name + " > killSprite scoreChange=1");
 	    }
 	}
@@ -270,6 +276,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	    } 
 	    else {
 		for (int i = 0; i < avatar.length; i++) {
+		    collectible.add(spike.name);
 		    interactions.add(spike.name + " " + avatar[i].name + " > killSprite scoreChange=2");
 		}
 	    }
@@ -383,6 +390,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		//random npc are userful to the avatar
 		else{
 		    for (int j = 0; j < avatar.length; j++) {
+			collectible.add(npc[i].name);
 			interactions.add(npc[i].name + " " + avatar[j].name + " > killSprite scoreChange=1");
 		    }
 		}
@@ -421,6 +429,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		}
 		else{
 		    for(int i=0; i<avatar.length; i++){
+			collectible.add(movables[j].name);
 			interactions.add(movables[j].name + " " + avatar[i].name + " > killSprite scoreChange=1");
 		    }
 		}
@@ -446,8 +455,8 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		terminations.add("SpriteCounter stype=" + door.name + " limit=0 win=True");
 	    }
 	    //otherwise pick any other exit object
-	    else{
-		terminations.add("SpriteCounter stype=" + exit.get(random.nextInt(exit.size())).name + " limit=0 win=True");
+	    else if(collectible.size() > 0){
+		terminations.add("SpriteCounter stype=collectible limit=0 win=True");
 	    }
 	}
 	else {
@@ -513,6 +522,12 @@ public class RuleGenerator extends AbstractRuleGenerator{
         }
         for(int i=0; i<this.harmfulObjects.size(); i++){
             struct.get("harmful").add(this.harmfulObjects.get(i));
+        }
+        if(collectible.size() > 0){
+            struct.put("collectible", new ArrayList<String>());
+        }
+        for(int i=0; i<this.collectible.size(); i++){
+            struct.get("collectible").add(this.collectible.get(i));
         }
         
         return struct;
