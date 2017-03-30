@@ -101,7 +101,7 @@ public class SharedData {
 	/**
 	 * The amount of times we perform a mutation on a set
 	 */
-	public static final int MUTATION_AMOUNT = 1;
+	public static final int MUTATION_AMOUNT = 3;
 	/**
 	 * the probability of inserting a new rule
 	 */

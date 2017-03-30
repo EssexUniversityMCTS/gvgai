@@ -24,9 +24,9 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	/** Random object to help in generation **/
 	private Random random;
 	/** A constructor to help speed up the creation of random generators **/
-	private static tracks.ruleGeneration.randomRuleGenerator.RuleGenerator randomGen;
+	public static tracks.ruleGeneration.randomRuleGenerator.RuleGenerator randomGen;
 	/** A constructor to help speed up the creation of constructive generators */
-	private static tracks.ruleGeneration.constructiveRuleGenerator.RuleGenerator constructGen;
+	public static tracks.ruleGeneration.constructiveRuleGenerator.RuleGenerator constructGen;
 	/** contains info about sprites and current level **/
 	private SLDescription sl;
 	/** amount of time allowed **/
@@ -244,7 +244,53 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		constructGen = new tracks.ruleGeneration.constructiveRuleGenerator.RuleGenerator(sl, time);
 		double avgFitness = 0.0;
 		
+		for(int i = 0; i < SharedData.POPULATION_SIZE * SharedData.INIT_CONSTRUCT_PERCENT; i++) {
+			Chromosome c = new Chromosome(constructGen.generateRules(sl, time), sl, time);
+			for(int q = 0; q < c.getRuleset().length; q++) {
+				System.out.println("=====");
+				for(int w = 0; w < c.getRuleset()[q].length; w++) {
+					System.out.println(c.getRuleset()[q][w]);
+				}
+			}
+			c.calculateFitness(SharedData.EVALUATION_TIME);
+			if(c.getConstrainFitness() < 1){
+				iChromosomes.add(c);
+				System.out.println("\tChromosome #" + (counter) + " Constrain Fitness: " + c.getConstrainFitness());
+			}
+			else{
+				fChromosomes.add(c);
+				System.out.println("\tChromosome #" + (counter) + " Fitness: " + c.getFitness());
+			}
+			/**
+			 * Writing Stuff
+			 */
+			try (FileWriter fw = new FileWriter(SharedData.filename, true);
+					BufferedWriter bw = new BufferedWriter(fw);
+					PrintWriter out = new PrintWriter(bw)) {
+				out.println("*****");
+				out.println("Chromosome " + (counter) + " : Fitness = " + c.getFitness());
+				out.println(" ");
+				// print out chromosome
+				for (String[] q : c.getRuleset()) {
+					out.println(" ");
+					for(String s : q) {
+						out.println(s);
+					}
+				}
+
+			} catch (Exception ex) {
+				System.out.println(ex.getMessage());
+			}
+			/**
+			 * End Writing stuff
+			 */
+			avgFitness += c.getFitness().get(1);
+			allChromosomes.add(c);
+			counter++;
+		}
+		
 		int count = (int) (SharedData.POPULATION_SIZE * SharedData.INIT_RANDOM_PERCENT);
+		
 		for(int i = 0; i < count; i++) {
 			Chromosome c = new Chromosome(randomGen.generateRules(sl, time), sl, time);
 			
@@ -291,50 +337,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 			counter++;
 			allChromosomes.add(c);
 		}
-		for(int i = 0; i < SharedData.POPULATION_SIZE * SharedData.INIT_CONSTRUCT_PERCENT; i++) {
-			Chromosome c = new Chromosome(constructGen.generateRules(sl, time), sl, time);
-			for(int q = 0; q < c.getRuleset().length; q++) {
-				System.out.println("=====");
-				for(int w = 0; w < c.getRuleset()[q].length; w++) {
-					System.out.println(c.getRuleset()[q][w]);
-				}
-			}
-			c.calculateFitness(SharedData.EVALUATION_TIME);
-			if(c.getConstrainFitness() < 1){
-				iChromosomes.add(c);
-				System.out.println("\tChromosome #" + (counter) + " Constrain Fitness: " + c.getConstrainFitness());
-			}
-			else{
-				fChromosomes.add(c);
-				System.out.println("\tChromosome #" + (counter) + " Fitness: " + c.getFitness());
-			}
-			/**
-			 * Writing Stuff
-			 */
-			try (FileWriter fw = new FileWriter(SharedData.filename, true);
-					BufferedWriter bw = new BufferedWriter(fw);
-					PrintWriter out = new PrintWriter(bw)) {
-				out.println("*****");
-				out.println("Chromosome " + (counter) + " : Fitness = " + c.getFitness());
-				out.println(" ");
-				// print out chromosome
-				for (String[] q : c.getRuleset()) {
-					out.println(" ");
-					for(String s : q) {
-						out.println(s);
-					}
-				}
-
-			} catch (Exception ex) {
-				System.out.println(ex.getMessage());
-			}
-			/**
-			 * End Writing stuff
-			 */
-			avgFitness += c.getFitness().get(1);
-			allChromosomes.add(c);
-			counter++;
-		}
+		
 		for(int i = 0; i < SharedData.POPULATION_SIZE * SharedData.INIT_MUT_PERCENT; i++) {
 			Chromosome c = allChromosomes.get(SharedData.random.nextInt(allChromosomes.size()));
 			for(int j = 0; j < SharedData.INIT_MUTATION_AMOUNT; j++) {
@@ -394,8 +397,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 		}
-		while(time.remainingTimeMillis() > 2 * avgTime &&
-				time.remainingTimeMillis() > worstTime){
+		while(time.remainingTimeMillis() > 2 * avgTime && time.remainingTimeMillis() > worstTime){
 			ElapsedCpuTimer timer = new ElapsedCpuTimer();
 
 			System.out.println("Generation #" + (numberOfIterations + 1) + ": ");

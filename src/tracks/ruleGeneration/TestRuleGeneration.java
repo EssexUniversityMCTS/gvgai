@@ -62,7 +62,7 @@ public class TestRuleGeneration {
 
         if(RuleGenMachine.generateRules(game, level1, geneticRuleGenerator, recordGameFile, seed)){
             // ArcadeMachine.playOneGame(recordGameFile, level1, recordActionsFile, seed);
-            ArcadeMachine.runOneGame(recordGameFile, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
+            RuleGenMachine.runOneGame(game, recordGameFile, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
         }
     }
 }

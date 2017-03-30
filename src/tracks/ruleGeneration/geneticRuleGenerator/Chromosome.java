@@ -137,14 +137,13 @@ public class Chromosome implements Comparable<Chromosome>{
 		this.usefulSprites = SharedData.usefulSprites;
 	    this.levAl = new LevelAnalyzer(sl);
 	    this.parameters = new HashMap<String, Object>();
-		constructAgent();
 	}
 	/**
 	 * Flips a coin to see if we mutate on termination or interaction
 	 */
 	public void mutate() {
 		// loop through as many times as we want to mutate
-		int mutationCount = SharedData.random.nextInt(SharedData.MUTATION_AMOUNT);
+		int mutationCount = SharedData.random.nextInt(SharedData.MUTATION_AMOUNT) + 1;
 		for(int i = 0; i < mutationCount; i++) {
 			int mutateR = SharedData.random.nextInt(2);
 			if(mutateR == 0){
@@ -447,7 +446,7 @@ public class Chromosome implements Comparable<Chromosome>{
 					nTermination += "False";
 				}
 				
-				double val = SharedData.random.nextInt(SharedData.TERMINATION_LIMIT_PARAM);
+				int val = SharedData.random.nextInt(SharedData.TERMINATION_LIMIT_PARAM);
 				nTermination += " limit="+val;
 				
 			    // add the new termination to the termination set
@@ -635,7 +634,6 @@ public class Chromosome implements Comparable<Chromosome>{
 			this.fitness.set(0, constrainFitness);
 		} else {
 			constrainFitness = 1;
-			
 		}
 		return isFeasible;
 		
@@ -647,12 +645,15 @@ public class Chromosome implements Comparable<Chromosome>{
 	 * @return
 	 */
 	private boolean feasibilityTest() {
-		sl.testRules(this.getRuleset()[0], this.getRuleset()[1]);
+		HashMap<String, ArrayList<String>> spriteSetStruct = RuleGenerator.constructGen.getSpriteSetStructure();
+		sl.testRules(ruleset[0], ruleset[1], spriteSetStruct);		
 		errorCount = sl.getErrors().size();
 		if(errorCount > 0) {
 			// then there must have been an error
 			return false;
 		}
+		constructAgent();
+
 		doNothingLength = Integer.MAX_VALUE;
 		for(int i = 0; i < SharedData.REPETITION_AMOUNT; i++) {
 			int temp = this.getAgentResult(getStateObservation().copy(), FEASIBILITY_STEP_LIMIT, this.naiveAgent);
@@ -984,7 +985,9 @@ public class Chromosome implements Comparable<Chromosome>{
 		if(stateObs != null){
 			return stateObs;
 		}
-		stateObs = sl.testRules(ruleset[0], ruleset[1]);
+		//(ruleset[0], ruleset[1], RuleGenerator.constructGen.getSpriteSetStructure())
+		HashMap<String, ArrayList<String>> spriteSetStruct = RuleGenerator.constructGen.getSpriteSetStructure();
+		stateObs = sl.testRules(ruleset[0], ruleset[1], spriteSetStruct);
 		return stateObs;
 	}
 	
