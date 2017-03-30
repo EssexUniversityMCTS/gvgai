@@ -627,15 +627,17 @@ public class Chromosome implements Comparable<Chromosome>{
 	 * calculates the fitness of the chromosome.  If the chromosome causes errors in build, then it will
 	 * be considered infeasible
 	 */
-	public void calculateFitness(long time) {
+	public boolean calculateInfeasible() {
 		boolean isFeasible = false;
 		isFeasible = feasibilityTest();
 		if(!isFeasible) {
 			constrainFitness = 1.0f / (errorCount + 1.0f);	
+			this.fitness.set(0, constrainFitness);
 		} else {
 			constrainFitness = 1;
 			
 		}
+		return isFeasible;
 		
 	}
 	/**
@@ -669,144 +671,149 @@ public class Chromosome implements Comparable<Chromosome>{
 	 * calculates the fitness, by comparing the scores of a naiveAI and a smart AI
 	 * @param time	how much time to evaluate the chromosome
 	 */
-	public void runFitness(long time) {
+	public void calculateFitness(long time) {
 		// unique events that occurred in all the game simulations
 		Set<String> events = new HashSet<String>();
-
-		this.fitness.set(0, 1.0);
-		constrainFitness = 1;
-		//Play the game using the best agent
-		double score = -200;
-		ArrayList<Vector2d> SOs = new ArrayList<>();
-		// protects the fitness evaluation from looping forever
-
-		// Best Agent
-		double agentBestScore = Double.NEGATIVE_INFINITY;
-
-		for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
-			int protectionCounter = 0;
-			StepController stepAgent = new StepController(automatedAgent, SharedData.EVALUATION_STEP_TIME);
-			while(score < -100) {
-				ElapsedCpuTimer elapsedTimer = new ElapsedCpuTimer();
-				elapsedTimer.setMaxTimeMillis(time);
-
-				stepAgent.playGame(stateObs.copy(), elapsedTimer, SOs);
-				if(stepAgent.getFinalState().getGameScore() > agentBestScore) {
-					agentBestScore = stepAgent.getFinalState().getGameScore();
-					bestState = stepAgent.getFinalState();
-					bestSol = stepAgent.getSolution();
+		
+		if(calculateInfeasible()) {					
+			this.fitness.set(0, 1.0);
+			constrainFitness = 1;
+			//Play the game using the best agent
+			double score = -200;
+			ArrayList<Vector2d> SOs = new ArrayList<>();
+			// protects the fitness evaluation from looping forever
+	
+			// Best Agent
+			double agentBestScore = Double.NEGATIVE_INFINITY;
+	
+			for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
+				int protectionCounter = 0;
+				StepController stepAgent = new StepController(automatedAgent, SharedData.EVALUATION_STEP_TIME);
+				while(score < -100) {
+					ElapsedCpuTimer elapsedTimer = new ElapsedCpuTimer();
+					elapsedTimer.setMaxTimeMillis(time);
+	
+					stepAgent.playGame(stateObs.copy(), elapsedTimer, SOs);
+					if(stepAgent.getFinalState().getGameScore() > agentBestScore) {
+						agentBestScore = stepAgent.getFinalState().getGameScore();
+						bestState = stepAgent.getFinalState();
+						bestSol = stepAgent.getSolution();
+					}
+	
+					score = stepAgent.getFinalState().getGameScore();
+					protectionCounter++;
+					if(protectionCounter > SharedData.PROTECTION_COUNTER) {
+						break;
+					}
 				}
-
-				score = stepAgent.getFinalState().getGameScore();
-				protectionCounter++;
-				if(protectionCounter > SharedData.PROTECTION_COUNTER) {
-					break;
+				TreeSet s1 = stepAgent.getFinalState().getEventsHistory();
+				Iterator<Event> iter1 = s1.iterator();
+				while(iter1.hasNext()) {
+					Event e = iter1.next();
+					events.add(e.activeTypeId + "" + e.passiveTypeId);
 				}
+				score = -200;
+	
 			}
-			TreeSet s1 = stepAgent.getFinalState().getEventsHistory();
-			Iterator<Event> iter1 = s1.iterator();
-			while(iter1.hasNext()) {
-				Event e = iter1.next();
-				events.add(e.activeTypeId + "" + e.passiveTypeId);
+	
+			// Random Agent
+			StateObservation randomState = null;
+			int randomLength = Integer.MAX_VALUE;
+			double bestRandomScore = Double.NEGATIVE_INFINITY;
+			score = -200;
+			for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
+				int protectionCounter = 0;
+	//			while(score < -100) {
+					StateObservation tempState = stateObs.copy();
+	
+					StepController stepAgent = new StepController(randomAgent, SharedData.EVALUATION_STEP_TIME);
+					ElapsedCpuTimer elapsedTimer = new ElapsedCpuTimer();
+					elapsedTimer.setMaxTimeMillis(time);
+					if(elapsedTimer.remainingTimeMillis() < 0) {
+						System.out.println("Problem");
+					}
+					stepAgent.playGame(stateObs.copy(), elapsedTimer, SOs);
+	
+					tempState = stepAgent.getFinalState();
+					int temp = stepAgent.getSolution().size();
+	
+					if(temp < randomLength){
+						randomLength = temp;
+						randomState = tempState;
+					}
+					score = randomState.getGameScore();
+					if(score > bestRandomScore) {
+						bestRandomScore = score;
+					}
+	//				if(protectionCounter > SharedData.PROTECTION_COUNTER) {
+	//					break;
+	//				}
+	//			}
+				// gather all unique interactions between objects in the naive agent
+	//			TreeSet s1 = randomState.getEventsHistory();
+	//			Iterator<Event> iter1 = s1.iterator();
+	//			while(iter1.hasNext()) {
+	//				Event e = iter1.next();
+	//				events.add(e.activeTypeId + "" + e.passiveTypeId);
+	//			}
+				score = -200;
 			}
+			// Naive agent
 			score = -200;
-
-		}
-
-		// Random Agent
-		StateObservation randomState = null;
-		int randomLength = Integer.MAX_VALUE;
-		double bestRandomScore = Double.NEGATIVE_INFINITY;
-		score = -200;
-		for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
-			int protectionCounter = 0;
-//			while(score < -100) {
-				StateObservation tempState = stateObs.copy();
-
-				StepController stepAgent = new StepController(randomAgent, SharedData.EVALUATION_STEP_TIME);
-				ElapsedCpuTimer elapsedTimer = new ElapsedCpuTimer();
-				elapsedTimer.setMaxTimeMillis(time);
-				if(elapsedTimer.remainingTimeMillis() < 0) {
-					System.out.println("Problem");
+			StateObservation naiveState = null;
+			int naiveLength = Integer.MAX_VALUE;
+			double bestNaiveScore = Double.NEGATIVE_INFINITY;
+			//playing the game using the donothing agent and naive agent
+			for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
+				int protectionCounter = 0;
+				while(score < -100) {
+					StateObservation tempState = stateObs.copy();
+					int temp = getAgentResult(tempState, bestSol.size(), naiveAgent);
+					if(temp < naiveLength){
+						naiveLength = temp;
+						naiveState = tempState;
+					}
+					score = naiveState.getGameScore();
+					if(score > bestNaiveScore) {
+						bestNaiveScore = score;
+					}
+					protectionCounter++;
+					if(protectionCounter > SharedData.PROTECTION_COUNTER) {
+						break;
+					}
 				}
-				stepAgent.playGame(stateObs.copy(), elapsedTimer, SOs);
-
-				tempState = stepAgent.getFinalState();
-				int temp = stepAgent.getSolution().size();
-
-				if(temp < randomLength){
-					randomLength = temp;
-					randomState = tempState;
-				}
-				score = randomState.getGameScore();
-				if(score > bestRandomScore) {
-					bestRandomScore = score;
-				}
-//				if(protectionCounter > SharedData.PROTECTION_COUNTER) {
-//					break;
-//				}
-//			}
-			// gather all unique interactions between objects in the naive agent
-//			TreeSet s1 = randomState.getEventsHistory();
-//			Iterator<Event> iter1 = s1.iterator();
-//			while(iter1.hasNext()) {
-//				Event e = iter1.next();
-//				events.add(e.activeTypeId + "" + e.passiveTypeId);
-//			}
-			score = -200;
-		}
-		// Naive agent
-		score = -200;
-		StateObservation naiveState = null;
-		int naiveLength = Integer.MAX_VALUE;
-		double bestNaiveScore = Double.NEGATIVE_INFINITY;
-		//playing the game using the donothing agent and naive agent
-		for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
-			int protectionCounter = 0;
-			while(score < -100) {
-				StateObservation tempState = stateObs.copy();
-				int temp = getAgentResult(tempState, bestSol.size(), naiveAgent);
-				if(temp < naiveLength){
-					naiveLength = temp;
-					naiveState = tempState;
-				}
-				score = naiveState.getGameScore();
-				if(score > bestNaiveScore) {
-					bestNaiveScore = score;
-				}
-				protectionCounter++;
-				if(protectionCounter > SharedData.PROTECTION_COUNTER) {
-					break;
-				}
+				// gather all unique interactions between objects in the best agent
+				TreeSet s1 = naiveState.getEventsHistory();
+				Iterator<Event> iter1 = s1.iterator();
+				while(iter1.hasNext()) {
+					Event e = iter1.next();
+	//				if(e.activeTypeId.equals("")) {
+	//					
+	//				}
+					events.add(e.activeTypeId + "" + e.passiveTypeId);
+					}
+				score = -200;
 			}
-			// gather all unique interactions between objects in the best agent
-			TreeSet s1 = naiveState.getEventsHistory();
-			Iterator<Event> iter1 = s1.iterator();
-			while(iter1.hasNext()) {
-				Event e = iter1.next();
-				events.add(e.activeTypeId + "" + e.passiveTypeId);
-				}
-			score = -200;
+	
+			// calc difference between best agent and the best naive score
+			double difference = (bestState.getGameScore() - bestNaiveScore);
+			double fit = difference;
+			// penalize the fitness if both agents score 0
+			if(bestState.getGameScore() == 0 && naiveState.getGameScore() == 0) {
+				fit += -50;
+			}
+	
+			// reward the fitness if smart agent wins the game
+			if(bestState.getGameWinner() != Types.WINNER.PLAYER_WINS) {
+				fit += Math.abs(difference) * 1/2;
+			}
+			this.fitness.set(1, difference);
+	
+			// reward fitness for each unique interaction triggered
+			int uniqueCount = events.size();
+			fit += uniqueCount * 2;
+			this.fitness.set(1, fit);
 		}
-
-		// calc difference between best agent and the best naive score
-		double difference = (bestState.getGameScore() - bestNaiveScore);
-		double fit = difference;
-		// penalize the fitness if both agents score 0
-		if(bestState.getGameScore() == 0 && naiveState.getGameScore() == 0) {
-			fit += -50;
-		}
-
-		// reward the fitness if smart agent wins the game
-		if(bestState.getGameWinner() != Types.WINNER.PLAYER_WINS) {
-			fit += Math.abs(difference) * 1/2;
-		}
-		this.fitness.set(1, difference);
-
-		// reward fitness for each unique interaction triggered
-		int uniqueCount = events.size();
-		fit += uniqueCount * 2;
-		this.fitness.set(1, fit);
 	}
 	/**
 	 * Play the current level using the naive player

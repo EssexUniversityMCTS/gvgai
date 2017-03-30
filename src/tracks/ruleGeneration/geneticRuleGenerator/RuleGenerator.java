@@ -255,7 +255,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 				}
 			}
 			
-			c.runFitness(SharedData.EVALUATION_TIME);
+			c.calculateFitness(SharedData.EVALUATION_TIME);
 			if(c.getConstrainFitness() < 1){
 				iChromosomes.add(c);
 				System.out.println("\tChromosome #" + (counter) + " Constrain Fitness: " + c.getConstrainFitness());
@@ -264,6 +264,9 @@ public class RuleGenerator extends AbstractRuleGenerator{
 				fChromosomes.add(c);
 				System.out.println("\tChromosome #" + (counter) + " Fitness: " + c.getFitness());
 			}
+			/**
+			 * Writing stuff
+			 */
 			try (FileWriter fw = new FileWriter(SharedData.filename, true);
 					BufferedWriter bw = new BufferedWriter(fw);
 					PrintWriter out = new PrintWriter(bw)) {
@@ -277,10 +280,13 @@ public class RuleGenerator extends AbstractRuleGenerator{
 						out.println(s);
 					}
 				}
-
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
 			}
+			/**
+			 * End Writing stuff
+			 */
+			
 			avgFitness += c.getFitness().get(1);
 			counter++;
 			allChromosomes.add(c);
@@ -293,7 +299,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 					System.out.println(c.getRuleset()[q][w]);
 				}
 			}
-			c.runFitness(SharedData.EVALUATION_TIME);
+			c.calculateFitness(SharedData.EVALUATION_TIME);
 			if(c.getConstrainFitness() < 1){
 				iChromosomes.add(c);
 				System.out.println("\tChromosome #" + (counter) + " Constrain Fitness: " + c.getConstrainFitness());
@@ -302,7 +308,9 @@ public class RuleGenerator extends AbstractRuleGenerator{
 				fChromosomes.add(c);
 				System.out.println("\tChromosome #" + (counter) + " Fitness: " + c.getFitness());
 			}
-			
+			/**
+			 * Writing Stuff
+			 */
 			try (FileWriter fw = new FileWriter(SharedData.filename, true);
 					BufferedWriter bw = new BufferedWriter(fw);
 					PrintWriter out = new PrintWriter(bw)) {
@@ -320,6 +328,9 @@ public class RuleGenerator extends AbstractRuleGenerator{
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
 			}
+			/**
+			 * End Writing stuff
+			 */
 			avgFitness += c.getFitness().get(1);
 			allChromosomes.add(c);
 			counter++;
@@ -335,7 +346,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 					System.out.println(c.getRuleset()[q][w]);
 				}
 			}
-			c.runFitness(SharedData.EVALUATION_TIME);
+			c.calculateFitness(SharedData.EVALUATION_TIME);
 			if(c.getConstrainFitness() < 1){
 				iChromosomes.add(c);
 				System.out.println("\tChromosome #" + (counter) + " Constrain Fitness: " + c.getConstrainFitness());
