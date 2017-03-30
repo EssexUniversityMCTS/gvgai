@@ -20,11 +20,14 @@ public class SpriteCounterMore extends Termination
 
     public SpriteCounterMore(){}
 
-    public SpriteCounterMore(TerminationContent cnt)
+    public SpriteCounterMore(TerminationContent cnt) throws Exception
     {
         //Parse the arguments.
         this.parseParameters(cnt);
         itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
+        if(itype == -1){
+            throw new Exception("Undefined sprite " + stype);
+        }
     }
 
     @Override

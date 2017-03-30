@@ -22,11 +22,16 @@ public class MultiSpriteCounterSubTypes extends Termination
 
     public MultiSpriteCounterSubTypes(){}
 
-    public MultiSpriteCounterSubTypes(TerminationContent cnt)
+    public MultiSpriteCounterSubTypes(TerminationContent cnt) throws Exception
     {
         //Parse the arguments.
         this.parseParameters(cnt);
-        if(stype1 != null) itype1 = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype1);
+        if(stype1 != null){
+            itype1 = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype1);
+            if(itype1 == -1){
+        	throw new Exception("Undefined sprite " + stype1);
+            }
+        }
     }
 
     @Override
