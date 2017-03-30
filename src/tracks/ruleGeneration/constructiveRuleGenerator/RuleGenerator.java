@@ -509,25 +509,35 @@ public class RuleGenerator extends AbstractRuleGenerator{
     @Override
     public HashMap<String, ArrayList<String>> getSpriteSetStructure() {
         HashMap<String, ArrayList<String>> struct = new HashMap<String, ArrayList<String>>();
+        HashMap<String, Boolean> testing = new HashMap<String, Boolean>();
         
         if(fleeingNPCs.size() > 0){
             struct.put("fleeing", new ArrayList<String>());
         }
         for(int i=0; i<this.fleeingNPCs.size(); i++){
-            struct.get("fleeing").add(this.fleeingNPCs.get(i));
+            if(!testing.containsKey(this.fleeingNPCs.get(i))){
+        	testing.put(this.fleeingNPCs.get(i), true);
+        	struct.get("fleeing").add(this.fleeingNPCs.get(i));
+            }
         }
         
         if(harmfulObjects.size() > 0){
             struct.put("harmful", new ArrayList<String>());
         }
         for(int i=0; i<this.harmfulObjects.size(); i++){
-            struct.get("harmful").add(this.harmfulObjects.get(i));
+            if(!testing.containsKey(this.harmfulObjects.get(i))){
+        	testing.put(this.harmfulObjects.get(i), true);
+        	struct.get("harmful").add(this.harmfulObjects.get(i));
+            }
         }
         if(collectible.size() > 0){
             struct.put("collectible", new ArrayList<String>());
         }
         for(int i=0; i<this.collectible.size(); i++){
-            struct.get("collectible").add(this.collectible.get(i));
+            if(!testing.containsKey(this.collectible.get(i))){
+        	testing.put(this.collectible.get(i), true);
+        	struct.get("collectible").add(this.collectible.get(i));
+            }
         }
         
         return struct;

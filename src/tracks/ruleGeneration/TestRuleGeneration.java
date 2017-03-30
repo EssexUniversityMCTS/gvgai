@@ -4,6 +4,8 @@ import tracks.ArcadeMachine;
 
 import java.util.Random;
 
+import core.logging.Logger;
+
 /**
  * Created by dperez on 19/03/2017.
  */
@@ -60,7 +62,6 @@ public class TestRuleGeneration {
         String recordGameFile = generateRulePath + games[gameIdx] + "_ggame.txt";
         
         // 1. Generate rules (Interaction and Terminations) for a fixed level
-
         if(RuleGenMachine.generateRules(game, level1, geneticRuleGenerator, recordGameFile, seed)){
             // ArcadeMachine.playOneGame(recordGameFile, level1, recordActionsFile, seed)
             RuleGenMachine.runOneGame(game, recordGameFile, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);

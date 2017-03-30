@@ -92,7 +92,7 @@ public class VGDLParser {
 	    try {
 		parseNodes(rootNode);
 	    } catch (Exception e) {
-		// TODO: Mike
+		Logger.getInstance().addMessage(new Message(Message.ERROR, e.getMessage()));
 	    }
 	}
 
@@ -120,7 +120,7 @@ public class VGDLParser {
 	    try {
 		parseNodes(rootNode);
 	    } catch (Exception e) {
-		// TODO: Mike
+		Logger.getInstance().addMessage(new Message(Message.ERROR, e.getMessage()));
 	    }
 	}
 
@@ -164,7 +164,6 @@ public class VGDLParser {
 		    }
 		}
 	    }
-	    // logger.printMessages();
 	}
     }
 
@@ -549,7 +548,6 @@ public class VGDLParser {
 			    // is an error
 			} else {
 			    System.out.println("[PARSE ERROR] interaction entry references unknown sprite: " + ic.line);
-			    // TODO throw exception here
 			    throw new Exception("[PARSE ERROR] interaction entry references unknown sprite. Line: "
 				    + ic.lineNumber + " : " + ic.line);
 			}
