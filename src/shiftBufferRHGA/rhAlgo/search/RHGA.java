@@ -128,7 +128,7 @@ public class RHGA extends RHEA {
 
     public void evaluatePopulation(SolutionEvaluator evaluator) {
         for (int i=0; i<population.length; i++) {
-            population[i].fitness(evaluator, population[i].getGenome(), nSamples);
+            population[i].fitness(evaluator, opponentGenome, nSamples);
         }
     }
 }

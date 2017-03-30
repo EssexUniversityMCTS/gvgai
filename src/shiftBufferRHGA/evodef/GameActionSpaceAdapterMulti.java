@@ -149,6 +149,14 @@ public class GameActionSpaceAdapterMulti implements FitnessSpace {
             int myAction = actions[i];
             int opAction = oppActions[i];
             Types.ACTIONS[] acts = new Types.ACTIONS[2];
+            if (myAction>=gvgaiActions.length) {
+                myAction = random.nextInt(gvgaiActions.length);
+                actions[i] = myAction;
+            }
+            if (opAction>=gvgaiActions.length) {
+                opAction = random.nextInt(gvgaiActions.length);
+                oppActions[i] = opAction;
+            }
             acts[playerID] = gvgaiActions[myAction];
             acts[opponentID] = gvgaiActions[opAction];
 

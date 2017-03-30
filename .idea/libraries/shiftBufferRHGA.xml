@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="shiftBufferRHGA">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/shiftBufferRHGA.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

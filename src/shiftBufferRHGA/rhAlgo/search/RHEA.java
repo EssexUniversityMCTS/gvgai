@@ -23,7 +23,7 @@ public abstract class RHEA implements EvoAlg {
     protected int popSize = 5;
     protected int elitism = 2;
     protected int tournament = 1;
-    protected int nSamples = 2;
+    protected int nSamples = 1;
     protected int simulationDepth;
     protected double probaMut;
     protected Individual[] population;

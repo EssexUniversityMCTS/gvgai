@@ -57,7 +57,7 @@ public class TestMultiPlayer {
 					// + levelIdx + "_" + seed + ".txt";
 					// //where to record the actions
 					// executed. null if not to save.
-	for (gameIdx=0; gameIdx<games.length;gameIdx++) {
+	for (gameIdx=0; gameIdx<1;gameIdx++) {
 		String game = gamesPath + games[gameIdx] + ".txt";
 		String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
 
