@@ -1,6 +1,7 @@
 package tracks.ruleGeneration.constructiveRuleGenerator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import core.game.GameDescription.SpriteData;
@@ -34,7 +35,6 @@ public class RuleGenerator extends AbstractRuleGenerator{
     private double harmfulMovableProb = 0.5;
     private double firewallProb = 0.1;
     private double scoreSpikeProb = 0.1;
-    private double killScoreProb = 0.2;
     private double randomNPCProb = 0.5;
     private double spawnedProb = 0.5;
     private double bomberProb = 0.5;
@@ -56,6 +56,10 @@ public class RuleGenerator extends AbstractRuleGenerator{
      * array of all door sprites
      */
     private ArrayList<SpriteData> exit;
+    /**
+     * array of all collectible sprites
+     */
+    private ArrayList<String> collectible;
     /**
      * a certain unmovable object that is used as a collectible object
      */
@@ -95,6 +99,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	random = new Random();
 	harmfulObjects = new ArrayList<String>();
 	fleeingNPCs = new ArrayList<String>();
+	collectible = new ArrayList<String>();
 	
 	//Identify the wall object
 	wall = null;
@@ -256,6 +261,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	//If we have a score object make the avatar can collect it
 	if(score != null){
 	    for(int i=0; i<avatar.length; i++){
+		collectible.add(score.name);
 		interactions.add(score.name + " " + avatar[i].name + " > killSprite scoreChange=1");
 	    }
 	}
@@ -270,6 +276,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	    } 
 	    else {
 		for (int i = 0; i < avatar.length; i++) {
+		    collectible.add(spike.name);
 		    interactions.add(spike.name + " " + avatar[i].name + " > killSprite scoreChange=2");
 		}
 	    }
@@ -288,16 +295,6 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		for (int k = 0; k < avatar[i].sprites.size(); k++) {
 		    interactions.add(harmfulObjects.get(j) + " " + avatar[i].sprites.get(k) + " > killSprite scoreChange=1");
 		    interactions.add(avatar[i].sprites.get(k) + " " + harmfulObjects.get(j) + " > killSprite");
-		}
-	    }
-	}
-	
-	//If there is score object then make the player bullets can kill it
-	if(score != null && random.nextDouble() < killScoreProb){
-	    for (int i = 0; i < avatar.length; i++) {
-		for (int k = 0; k < avatar[i].sprites.size(); k++) {
-		    interactions.add(score.name + " " + avatar[i].sprites.get(k) + " > killSprite scoreChange=1");
-		    interactions.add(avatar[i].sprites.get(k) + " " + score.name + " > killSprite");
 		}
 	    }
 	}
@@ -393,6 +390,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		//random npc are userful to the avatar
 		else{
 		    for (int j = 0; j < avatar.length; j++) {
+			collectible.add(npc[i].name);
 			interactions.add(npc[i].name + " " + avatar[j].name + " > killSprite scoreChange=1");
 		    }
 		}
@@ -431,6 +429,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		}
 		else{
 		    for(int i=0; i<avatar.length; i++){
+			collectible.add(movables[j].name);
 			interactions.add(movables[j].name + " " + avatar[i].name + " > killSprite scoreChange=1");
 		    }
 		}
@@ -456,15 +455,18 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		terminations.add("SpriteCounter stype=" + door.name + " limit=0 win=True");
 	    }
 	    //otherwise pick any other exit object
-	    else{
-		terminations.add("SpriteCounter stype=" + exit.get(random.nextInt(exit.size())).name + " limit=0 win=True");
+	    else if(collectible.size() > 0){
+		terminations.add("SpriteCounter stype=collectible limit=0 win=True");
 	    }
 	}
 	else {
 	    //If we have feeling NPCs use them as winning condition
 	    if (fleeingNPCs.size() > 0) {
-		terminations.add("SpriteCounter stype=" + fleeingNPCs.get(0) + " limit=0 win=True");
-	    } 
+		terminations.add("SpriteCounter stype=fleeing limit=0 win=True");
+	    }
+	    else if(harmfulObjects.size() > 0 && this.la.getAvatars(true)[0].sprites.size() > 0){
+		terminations.add("SpriteCounter stype=harmful limit=0 win=True");
+	    }
 	    //Otherwise use timeout as winning condition
     	    else {
     		terminations.add("Timeout limit=" + (500 + random.nextInt(5) * 100) + " win=True");
@@ -502,6 +504,33 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	this.getTerminations();
 	
 	return new String[][]{interactions.toArray(new String[interactions.size()]), terminations.toArray(new String[terminations.size()])};
+    }
+    
+    @Override
+    public HashMap<String, ArrayList<String>> getSpriteSetStructure() {
+        HashMap<String, ArrayList<String>> struct = new HashMap<String, ArrayList<String>>();
+        
+        if(fleeingNPCs.size() > 0){
+            struct.put("fleeing", new ArrayList<String>());
+        }
+        for(int i=0; i<this.fleeingNPCs.size(); i++){
+            struct.get("fleeing").add(this.fleeingNPCs.get(i));
+        }
+        
+        if(harmfulObjects.size() > 0){
+            struct.put("harmful", new ArrayList<String>());
+        }
+        for(int i=0; i<this.harmfulObjects.size(); i++){
+            struct.get("harmful").add(this.harmfulObjects.get(i));
+        }
+        if(collectible.size() > 0){
+            struct.put("collectible", new ArrayList<String>());
+        }
+        for(int i=0; i<this.collectible.size(); i++){
+            struct.get("collectible").add(this.collectible.get(i));
+        }
+        
+        return struct;
     }
 
 }

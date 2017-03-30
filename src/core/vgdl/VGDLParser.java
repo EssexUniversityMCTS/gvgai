@@ -188,7 +188,43 @@ public class VGDLParser {
 	    }
 	}
     }
-
+    
+    /**
+     * Parse a custom sprite set
+     * @param currentGame 	the current game to modify
+     * @param spriteStruct	the current structure of the sprite set
+     * @param sprites		the current sprites
+     */
+    public void parseSpriteSet(Game currentGame, HashMap<String, ArrayList<String>> spriteStruct, HashMap<String, String> sprites){
+	this.game = currentGame;
+	String template = "    ";
+	
+	ArrayList<String> msprites = new ArrayList<String>();
+	msprites.add("SpriteSet");
+	for(String key:spriteStruct.keySet()){
+	    msprites.add(template + key + " >");
+	    for(int i=0; i<spriteStruct.get(key).size(); i++){
+		if(sprites.containsKey(spriteStruct.get(key).get(i).trim())){
+		    msprites.add(template + template + sprites.get(spriteStruct.get(key).get(i).trim()).trim());
+		    sprites.remove(spriteStruct.get(key).get(i).trim());
+		}
+		else{
+		    Logger.getInstance().addMessage(new Message(Message.ERROR, "Undefined " + spriteStruct.get(key).get(i) + " in the provided sprite set."));
+		}
+	    }
+	}
+	for(String value:sprites.values()){
+	    msprites.add(template + value.trim());
+	}
+	
+	Node spriteNode = indentTreeParser(msprites.toArray(new String[msprites.size()]));
+	try {
+	    parseSpriteSet(spriteNode.children);
+	} catch (Exception e) {
+	    logger.addMessage(new Message(1, "[PARSE ERROR]"));
+	}
+    }
+    
     /**
      * parse both rules and termination and add them to the current game object
      * 
@@ -300,6 +336,58 @@ public class VGDLParser {
 
 	// Set the order of sprites.
 	game.initSprites(spriteOrderTmp, singletonTmp, constructors);
+    }
+    
+    /**
+     * Just modify the arrangement of the sprite render based on certain tree
+     * @param elements		current sprite set tree
+     * @param parentclass	previous parent in the tree (root have null parent)
+     */
+    private void modifySpriteOrder(ArrayList<Node> elements, String parentclass) {
+	String prevParentClass = parentclass;
+	for (Node el : elements) {
+	    SpriteContent sc = (SpriteContent) el.content;
+	    if (!sc.is_definition) // This checks if line contains ">"
+		return;
+
+	    // Register this entry.
+	    Integer intId = VGDLRegistry.GetInstance().getRegisteredSpriteValue(sc.identifier);
+	    
+	    // Get the class of the object
+	    String spriteClassName = sc.referenceClass;
+
+	    // This is the class of this object
+	    if (parentclass != null)
+		sc.referenceClass = parentclass;
+
+	    // If this is a leaf node, set the information on Game to create
+	    // objects of this type.
+	    if (el.children.size() == 0) {
+		if (spriteOrderTmp.contains(intId)) {
+		    // last one counts
+		    spriteOrderTmp.remove(intId);
+		}
+		spriteOrderTmp.add(intId);
+	    } else {
+		// This is the parent class of the next.
+		if (spriteClassName != null)
+		    parentclass = spriteClassName;
+
+		modifySpriteOrder(el.children, parentclass);
+	    }
+	}
+    }
+    
+    /**
+     * Modify the order of the sprites during rendering to another sprite set tree
+     * @param currentGame	current game to modify
+     * @param elements		new sprite set tree
+     */
+    public void modifyTheSpriteRender(Game currentGame, ArrayList<Node> elements){
+	this.game = currentGame;
+	this.modifySpriteOrder(elements, null);
+	
+	this.game.changeSpriteOrder(this.spriteOrderTmp);
     }
 
     /**

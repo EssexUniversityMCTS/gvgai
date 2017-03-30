@@ -335,6 +335,8 @@ public class GameDescription {
      * Simple data class represents all game sprites
      */
     public static class SpriteData implements Cloneable {
+	private HashMap<String, String> parameters;
+	
 	/**
 	 * VGDL class type for the current sprite
 	 */
@@ -358,18 +360,44 @@ public class GameDescription {
 	public boolean isResource;
 	public boolean isStatic;
 
-	public SpriteData() {
-	    sprites = new ArrayList<String>();
+	public SpriteData(HashMap<String, String> parameters) {
+	    this.sprites = new ArrayList<String>();
+	    this.parameters = parameters;
 	}
 
 	@Override
 	public String toString() {
-	    return name + ":" + type + " " + sprites.toString();
+	    String reset = "";
+	    for(String key:parameters.keySet()){
+		reset += " " + key + "=" + parameters.get(key);
+	    }
+	    return name + " > " + type + " " + reset;
+	}
+	
+	/**
+	 * Used in encode the names sprites
+	 * @param oldName	the current name for the sprite
+	 * @param newName	the new name for the sprite
+	 */
+	public void changeSpriteName(String oldName, String newName){
+	    if(name.equalsIgnoreCase(oldName)){
+		name = newName;
+	    }
+	    for(int i=0; i<sprites.size(); i++){
+		if(sprites.get(i).equalsIgnoreCase(oldName)){
+		    sprites.set(i, newName);
+		}
+	    }
+	    for(String key:parameters.keySet()){
+		if(parameters.get(key).equalsIgnoreCase(oldName)){
+		    parameters.put(key, newName);
+		}
+	    }
 	}
 
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
-	    SpriteData s = new SpriteData();
+	    SpriteData s = new SpriteData(this.parameters);
 	    s.type = type;
 	    s.name = name;
 	    for (int i = 0; i < sprites.size(); i++) {
