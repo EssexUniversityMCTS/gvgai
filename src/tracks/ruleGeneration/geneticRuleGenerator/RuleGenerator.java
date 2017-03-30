@@ -246,11 +246,11 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		
 		for(int i = 0; i < SharedData.POPULATION_SIZE * SharedData.INIT_CONSTRUCT_PERCENT; i++) {
 			Chromosome c = new Chromosome(constructGen.generateRules(sl, time), sl, time);
-			
-			for(int q = 0; q < c.getRuleset().length; q++) {
+			String[][] decoded = sl.modifyRules(c.getRuleset()[0], c.getRuleset()[1], 0);
+			for(int q = 0; q < decoded.length; q++) {
 				System.out.println("=====");
-				for(int w = 0; w < c.getRuleset()[q].length; w++) {
-					System.out.println(c.getRuleset()[q][w]);
+				for(int w = 0; w < decoded[q].length; w++) {
+					System.out.println(decoded[q][w]);
 				}
 			}
 			c.calculateFitness(SharedData.EVALUATION_TIME);
@@ -272,7 +272,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 				out.println("Chromosome " + (counter) + " : Fitness = " + c.getFitness());
 				out.println(" ");
 				// print out chromosome
-				for (String[] q : c.getRuleset()) {
+				for (String[] q : decoded) {
 					out.println(" ");
 					for(String s : q) {
 						out.println(s);
@@ -295,10 +295,11 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		for(int i = 0; i < count; i++) {
 			Chromosome c = new Chromosome(randomGen.generateRules(sl, time), sl, time);
 			
-			for(int q = 0; q < c.getRuleset().length; q++) {
+			String[][] decoded = sl.modifyRules(c.getRuleset()[0], c.getRuleset()[1], 0);
+			for(int q = 0; q < decoded.length; q++) {
 				System.out.println("=====");
-				for(int w = 0; w < c.getRuleset()[q].length; w++) {
-					System.out.println(c.getRuleset()[q][w]);
+				for(int w = 0; w < decoded[q].length; w++) {
+					System.out.println(decoded[q][w]);
 				}
 			}
 			
@@ -321,7 +322,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 				out.println("Chromosome " + (counter) + " : Fitness = " + c.getFitness());
 				out.println(" ");
 				// print out chromosome
-				for (String[] q : c.getRuleset()) {
+				for (String[] q : decoded) {
 					out.println(" ");
 					for(String s : q) {
 						out.println(s);
@@ -344,10 +345,11 @@ public class RuleGenerator extends AbstractRuleGenerator{
 			for(int j = 0; j < SharedData.INIT_MUTATION_AMOUNT; j++) {
 				c.mutate();
 			}
-			for(int q = 0; q < c.getRuleset().length; q++) {
+			String[][] decoded = sl.modifyRules(c.getRuleset()[0], c.getRuleset()[1], 0);
+			for(int q = 0; q < decoded.length; q++) {
 				System.out.println("=====");
-				for(int w = 0; w < c.getRuleset()[q].length; w++) {
-					System.out.println(c.getRuleset()[q][w]);
+				for(int w = 0; w < decoded[q].length; w++) {
+					System.out.println(decoded[q][w]);
 				}
 			}
 			c.calculateFitness(SharedData.EVALUATION_TIME);
@@ -366,7 +368,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 				out.println("Chromosome " + (counter) + " : Fitness = " + c.getFitness());
 				out.println(" ");
 				// print out chromosome
-				for (String[] q : c.getRuleset()) {
+				for (String[] q : decoded) {
 					out.println(" ");
 					for(String s : q) {
 						out.println(s);
