@@ -194,7 +194,13 @@ public class SLDescription {
 	if(!value.contains(KEYWORD + "_")){
 	    return "";
 	}
-	int index = Integer.parseInt(value.split(KEYWORD + "_")[1]);
+	int index = -1;
+	try{
+	    index = Integer.parseInt(value.split(KEYWORD + "_")[1]);
+	}
+	catch(Exception e){
+	    return "";
+	}
 	if((index ^ seed) < 0 || (index ^ seed) >= this.gameSprites.length){
 	    return "";
 	}
@@ -251,7 +257,8 @@ public class SLDescription {
 	    for (int j = 0; j < parts.length; j++) {
 		if (parts[j].toLowerCase().contains(KEYWORD + "_")) {
 		    String[] temp = parts[j].split(KEYWORD + "_");
-		    String spriteName = this.decodeIndex(Integer.parseInt(temp[1]), seed);
+		    String spriteName = this.decodeName(parts[j].toLowerCase(), seed);
+		    
 		    if(spriteName.length() > 0){
 			modifiedRules.set(modifiedRules.size() - 1, modifiedRules.get(modifiedRules.size() - 1) + temp[0] + spriteName + " ");
 		    }
