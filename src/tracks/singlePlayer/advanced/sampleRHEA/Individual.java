@@ -33,7 +33,6 @@ public class Individual implements Comparable{
         b.setActions(actions);
 
         int count = 0;
-
         if (n > 1) { // make sure you can actually mutate
             while (count < MUT) {
 
@@ -43,9 +42,7 @@ public class Individual implements Comparable{
                 a = gen.nextInt(b.actions.length);
 
                 int s;
-                do {
-                    s = gen.nextInt(n); // find new action, different than the previous one
-                } while (s == b.actions[a]);
+                s = gen.nextInt(n); // find new action
                 b.actions[a] = s;
 
                 count++;
