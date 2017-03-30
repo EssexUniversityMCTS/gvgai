@@ -59,16 +59,10 @@ public class TestRuleGeneration {
         String recordGameFile = generateRulePath + games[gameIdx] + "_ggame.txt";
         
         // 1. Generate rules (Interaction and Terminations) for a fixed level
-<<<<<<< HEAD
 
         if(RuleGenMachine.generateRules(game, level1, geneticRuleGenerator, recordGameFile, seed)){
             // ArcadeMachine.playOneGame(recordGameFile, level1, recordActionsFile, seed);
             ArcadeMachine.runOneGame(recordGameFile, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
-=======
-        if(RuleGenMachine.generateRules(game, level1, constructiveRuleGenerator, recordGameFile, seed)){
-            // RuleGenMachine.playOneGame(game, recordGameFile, level1, recordActionsFile, seed);
-            RuleGenMachine.runOneGame(game, recordGameFile, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
->>>>>>> amidos2006/master
         }
     }
 }

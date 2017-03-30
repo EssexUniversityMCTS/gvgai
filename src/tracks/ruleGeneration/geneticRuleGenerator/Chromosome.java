@@ -747,12 +747,12 @@ public class Chromosome implements Comparable<Chromosome>{
 //				}
 //			}
 			// gather all unique interactions between objects in the naive agent
-			TreeSet s1 = randomState.getEventsHistory();
-			Iterator<Event> iter1 = s1.iterator();
-			while(iter1.hasNext()) {
-				Event e = iter1.next();
-				events.add(e.activeTypeId + "" + e.passiveTypeId);
-			}
+//			TreeSet s1 = randomState.getEventsHistory();
+//			Iterator<Event> iter1 = s1.iterator();
+//			while(iter1.hasNext()) {
+//				Event e = iter1.next();
+//				events.add(e.activeTypeId + "" + e.passiveTypeId);
+//			}
 			score = -200;
 		}
 		// Naive agent
@@ -779,7 +779,7 @@ public class Chromosome implements Comparable<Chromosome>{
 					break;
 				}
 			}
-			// gather all unique interactions between objects in the naive agent
+			// gather all unique interactions between objects in the best agent
 			TreeSet s1 = naiveState.getEventsHistory();
 			Iterator<Event> iter1 = s1.iterator();
 			while(iter1.hasNext()) {
