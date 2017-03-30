@@ -282,7 +282,7 @@ public abstract class Game {
     /**
      * Loads the constructor information for default objects (walls, avatar).
      */
-    private void loadDefaultConstr() {
+    public void loadDefaultConstr() {
 	// If more elements are added here, initSprites() must be modified
 	// accordingly!
 	VGDLRegistry.GetInstance().registerSprite("wall");
@@ -536,7 +536,7 @@ public abstract class Game {
      * @return sprite data object for the current sprite content
      */
     private SpriteData initializeSpriteData(SpriteContent sc) {
-	SpriteData data = new SpriteData();
+	SpriteData data = new SpriteData(sc.parameters);
 	data.name = sc.identifier;
 	data.type = sc.referenceClass;
 

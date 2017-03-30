@@ -291,16 +291,6 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		}
 	    }
 	}
-	
-	//If there is score object then make the player bullets can kill it
-	if(score != null && random.nextDouble() < killScoreProb){
-	    for (int i = 0; i < avatar.length; i++) {
-		for (int k = 0; k < avatar[i].sprites.size(); k++) {
-		    interactions.add(score.name + " " + avatar[i].sprites.get(k) + " > killSprite scoreChange=1");
-		    interactions.add(avatar[i].sprites.get(k) + " " + score.name + " > killSprite");
-		}
-	    }
-	}
     }
     
     /**

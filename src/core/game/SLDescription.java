@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import core.vgdl.VGDLParser;
+import core.vgdl.VGDLRegistry;
 import core.game.GameDescription.SpriteData;
 import core.logging.Logger;
 import core.logging.Message;
@@ -169,17 +170,35 @@ public class SLDescription {
     }
 
     /**
+     * decode the sprite index
+     * 
+     * @param value
+     *            current encoded sprite name
+     * @return correct sprite name
+     */
+    private String decodeIndex(int value, int seed) {
+	if((value ^ seed) < 0 || (value ^ seed) >= this.gameSprites.length){
+	    return "";
+	}
+	return this.gameSprites[value ^ seed].name;
+    }
+    
+    /**
      * decode the sprite name
      * 
      * @param value
      *            current encoded sprite name
      * @return correct sprite name
      */
-    private String decodeName(int value, int seed) {
-	if((value ^ seed) < 0 || (value ^ seed) >= this.gameSprites.length){
+    public String decodeName(String value, int seed) {
+	if(!value.contains(KEYWORD + "_")){
 	    return "";
 	}
-	return this.gameSprites[value ^ seed].name;
+	int index = Integer.parseInt(value.split(KEYWORD + "_")[1]);
+	if((index ^ seed) < 0 || (index ^ seed) >= this.gameSprites.length){
+	    return "";
+	}
+	return this.gameSprites[index ^ seed].name;
     }
 
     /**
@@ -195,9 +214,9 @@ public class SLDescription {
 	    } catch (CloneNotSupportedException e) {
 		e.printStackTrace();
 	    }
-	    result[i].name = this.encodeName(this.gameSprites[i].name, this.shift);
+	    result[i].changeSpriteName(result[i].name, this.encodeName(this.gameSprites[i].name, this.shift));
 	    for (int j = 0; j < result[i].sprites.size(); j++) {
-		result[i].sprites.set(j, this.encodeName(result[i].sprites.get(j), this.shift));
+		result[i].changeSpriteName(result[i].sprites.get(j), this.encodeName(this.gameSprites[i].sprites.get(j), this.shift));
 	    }
 	}
 
@@ -232,7 +251,7 @@ public class SLDescription {
 	    for (int j = 0; j < parts.length; j++) {
 		if (parts[j].toLowerCase().contains(KEYWORD + "_")) {
 		    String[] temp = parts[j].split(KEYWORD + "_");
-		    String spriteName = this.decodeName(Integer.parseInt(temp[1]), seed);
+		    String spriteName = this.decodeIndex(Integer.parseInt(temp[1]), seed);
 		    if(spriteName.length() > 0){
 			modifiedRules.set(modifiedRules.size() - 1, modifiedRules.get(modifiedRules.size() - 1) + temp[0] + spriteName + " ");
 		    }
@@ -253,7 +272,7 @@ public class SLDescription {
 	    for (int j = 0; j < parts.length; j++) {
 		if (parts[j].toLowerCase().contains(KEYWORD + "_")) {
 		    String[] temp = parts[j].split(KEYWORD + "_");
-		    String spriteName = this.decodeName(Integer.parseInt(temp[1]), seed);
+		    String spriteName = this.decodeIndex(Integer.parseInt(temp[1]), seed);
 		    if(spriteName.length() > 0){
 			modifiedWins.set(modifiedWins.size() - 1, modifiedWins.get(modifiedWins.size() - 1) + temp[0] + spriteName + " ");
 		    }
@@ -277,17 +296,56 @@ public class SLDescription {
      *            current interaction rules
      * @param wins
      *            current termination conditions
+     * @param spriteSetStructure
+     * 		  current sprite set hierarchy
      * @return state observation of the current game using the new interaction
      *         rules and termination conditions return null when there is errors
      */
-    public StateObservation testRules(String[] rules, String[] wins) {
+    public StateObservation testRules(String[] rules, String[] wins){
+	return this.testRules(rules, wins, null);
+    }
+    
+    /**
+     * get state observation based on the interaction rules and termination
+     * conditions
+     * 
+     * @param rules
+     *            current interaction rules
+     * @param wins
+     *            current termination conditions
+     * @param spriteSetStructure
+     * 		  current sprite set hierarchy
+     * @return state observation of the current game using the new interaction
+     *         rules and termination conditions return null when there is errors
+     */
+    public StateObservation testRules(String[] rules, String[] wins, HashMap<String, ArrayList<String>> spriteSetStructure) {
 	Logger.getInstance().flushMessages();
 
 	String[][] rw = this.modifyRules(rules, wins, this.shift);
+	HashMap<String, String> msprites = new HashMap<String, String>();
+	for(int i=0; i<this.gameSprites.length; i++){
+	    msprites.put(this.gameSprites[i].name, this.gameSprites[i].toString());
+	}
+	HashMap<String, ArrayList<String>> msetStructure = new HashMap<String, ArrayList<String>>();
+	if(spriteSetStructure != null){
+	    for(String key:spriteSetStructure.keySet()){
+		msetStructure.put(key, new ArrayList<String>());
+		for(int i=0; i<spriteSetStructure.get(key).size(); i++){
+		    if(spriteSetStructure.get(key).get(i).contains(KEYWORD + "_")){
+			String[] parts = spriteSetStructure.get(key).get(i).split(KEYWORD + "_");
+			msetStructure.get(key).add(this.decodeIndex(Integer.parseInt(parts[1]), this.shift));
+		    }
+		}
+	    }
+	}
 
+	VGDLRegistry.GetInstance().init();
+	this.currentGame.loadDefaultConstr();
 	this.currentGame.clearInteractionTerminationData();
+	
+	new VGDLParser().parseSpriteSet(this.currentGame, msetStructure, msprites);
 	new VGDLParser().parseInteractionTermination(this.currentGame, rw[0], rw[1]);
-
+	
 	this.currentGame.reset();
 	this.currentGame.buildStringLevel(this.level, this.random.nextInt());
 	if (Logger.getInstance().getMessageCount(Message.ERROR) > 0) {

@@ -6,10 +6,14 @@ import core.vgdl.VGDLParser;
 import core.vgdl.VGDLRegistry;
 import core.competition.CompetitionParameters;
 import core.content.InteractionContent;
+import core.content.SpriteContent;
 import core.content.TerminationContent;
 import core.game.Game;
+import core.game.GameDescription.SpriteData;
 import core.game.SLDescription;
 import core.generator.AbstractRuleGenerator;
+import core.logging.Logger;
+import core.logging.Message;
 import tools.ElapsedCpuTimer;
 import tools.IO;
 
@@ -18,6 +22,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by dperez on 19/03/2017.
@@ -45,11 +51,29 @@ public class RuleGenMachine
             SLDescription sl = new SLDescription(toPlay, lines, randomSeed);
             AbstractRuleGenerator generator = createRuleGenerator(ruleGenerator, sl);
             String[][] rules = getGeneratedRules(sl, toPlay, generator);
+            HashMap<String, ArrayList<String>> spriteSetStructure = generator.getSpriteSetStructure();
             rules = sl.modifyRules(rules[0], rules[1], randomSeed);
-            if (rules.length < 2) {
-                System.out.println("Missing either interaction rules or termination rules.");
+            
+            SpriteData[] data = sl.getGameSprites();
+            HashMap<String, String> msprites = new HashMap<String, String>();
+            for(int i=0; i<data.length; i++){
+        	String decodedLine = sl.modifyRules(new String[]{data[i].toString()}, new String[]{}, randomSeed)[0][0];
+        	msprites.put(sl.decodeName(data[i].name, randomSeed), decodedLine);
             }
-            saveGame(gameFile, modifiedFile, rules);
+            HashMap<String, ArrayList<String>> msetStructure = new HashMap<String, ArrayList<String>>();
+            if(spriteSetStructure != null){
+        	for(String key:spriteSetStructure.keySet()){
+        	    msetStructure.put(key, new ArrayList<String>());
+        	    for(int i=0; i<spriteSetStructure.get(key).size(); i++){
+        		String decodedName = sl.decodeName(spriteSetStructure.get(key).get(i), randomSeed);
+        		if(decodedName.length() > 0){
+        		    msetStructure.get(key).add(decodedName);
+        		}
+        	    }
+        	}
+            }
+            
+            saveGame(gameFile, modifiedFile, rules, msetStructure, msprites);
         } catch (Exception e) {
             toPlay.disqualify();
             toPlay.handleResult();
@@ -171,7 +195,7 @@ public class RuleGenMachine
      * @param rules		array of interaction rules or terminations
      * @throws IOException	thrown when a problem happens during writing
      */
-    private static void saveTree(Node n, int level, BufferedWriter w, String[][] rules) throws IOException{
+    private static void saveTree(Node n, int level, BufferedWriter w, String[][] rules, HashMap<String, ArrayList<String>> setStructure, HashMap<String, String> sprites) throws IOException{
 	String template = "    ";
 	String message = "";
 	for(int i=0; i<level; i++){
@@ -188,9 +212,30 @@ public class RuleGenMachine
 		w.write(message + template + rules[1][i].trim() + "\n");
 	    }
 	}
+	else if(n.content instanceof SpriteContent){
+	    ArrayList<String> msprites = new ArrayList<String>();
+	    for(String key:setStructure.keySet()){
+		msprites.add(template + key + " >");
+		for(int i=0; i<setStructure.get(key).size(); i++){
+		    if(sprites.containsKey(setStructure.get(key).get(i).trim())){
+			msprites.add(template + template + sprites.get(setStructure.get(key).get(i).trim()).trim());
+			sprites.remove(setStructure.get(key).get(i).trim());
+		    }
+		    else{
+			Logger.getInstance().addMessage(new Message(Message.ERROR, "Undefined " + setStructure.get(key).get(i) + " in the provided sprite set."));
+		    }
+		}
+	    }
+	    for(String value:sprites.values()){
+		msprites.add(template + value.trim());
+	    }
+	    for(String value:msprites){
+		w.write(message + value + "\n");
+	    }
+	}
 	else{
 	    for (int i = 0; i < n.children.size(); i++) {
-		saveTree(n.children.get(i), level + 1, w, rules);
+		saveTree(n.children.get(i), level + 1, w, rules, setStructure, sprites);
 	    }
 	}
     }
@@ -201,13 +246,13 @@ public class RuleGenMachine
      * @param modifiedFile	current new game file
      * @param rules		the generated rules
      */
-    private static void saveGame(String gameFile, String modifiedFile, String[][] rules) {
+    private static void saveGame(String gameFile, String modifiedFile, String[][] rules, HashMap<String, ArrayList<String>> setStructure, HashMap<String, String> sprites) {
         try {
             if (modifiedFile != null) {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(modifiedFile));
                 String[] gameLines = new tools.IO().readFile(gameFile);
                 Node n = new VGDLParser().indentTreeParser(gameLines);
-                saveTree(n, 0, writer, rules);
+                saveTree(n, 0, writer, rules, setStructure, sprites);
                 writer.close();
             }
         } catch (IOException e) {

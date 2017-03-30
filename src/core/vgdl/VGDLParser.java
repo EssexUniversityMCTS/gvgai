@@ -188,7 +188,37 @@ public class VGDLParser {
 	    }
 	}
     }
-
+    
+    public void parseSpriteSet(Game currentGame, HashMap<String, ArrayList<String>> spriteStruct, HashMap<String, String> sprites){
+	this.game = currentGame;
+	String template = "    ";
+	
+	ArrayList<String> msprites = new ArrayList<String>();
+	msprites.add("SpriteSet");
+	for(String key:spriteStruct.keySet()){
+	    msprites.add(template + key + " >");
+	    for(int i=0; i<spriteStruct.get(key).size(); i++){
+		if(sprites.containsKey(spriteStruct.get(key).get(i).trim())){
+		    msprites.add(template + template + sprites.get(spriteStruct.get(key).get(i).trim()).trim());
+		    sprites.remove(spriteStruct.get(key).get(i).trim());
+		}
+		else{
+		    Logger.getInstance().addMessage(new Message(Message.ERROR, "Undefined " + spriteStruct.get(key).get(i) + " in the provided sprite set."));
+		}
+	    }
+	}
+	for(String value:sprites.values()){
+	    msprites.add(template + value.trim());
+	}
+	
+	Node spriteNode = indentTreeParser(msprites.toArray(new String[msprites.size()]));
+	try {
+	    parseSpriteSet(spriteNode.children);
+	} catch (Exception e) {
+	    logger.addMessage(new Message(1, "[PARSE ERROR]"));
+	}
+    }
+    
     /**
      * parse both rules and termination and add them to the current game object
      * 
