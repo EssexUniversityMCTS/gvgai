@@ -29,12 +29,12 @@ public class SpawnIfHasMore  extends Effect {
         this.parseParameters(cnt);
         resourceId = VGDLRegistry.GetInstance().getRegisteredSpriteValue(resource);
         if(resourceId == -1){
-            String[] className = this.getClass().getName().split(".");
+            String[] className = this.getClass().getName().split("\\.");
             throw new Exception("[" + className[className.length - 1] + "] Undefined sprite " + resource);
         }
         itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
         if(itype == -1){
-            String[] className = this.getClass().getName().split(".");
+            String[] className = this.getClass().getName().split("\\.");
             throw new Exception("[" + className[className.length - 1] + "] Undefined sprite " + stype);
         }
     }
@@ -43,7 +43,7 @@ public class SpawnIfHasMore  extends Effect {
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
 	if(sprite1 == null){
-            String[] className = this.getClass().getName().split(".");
+            String[] className = this.getClass().getName().split("\\.");
             Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1] + "] sprite1 is null."));
             return;
         }

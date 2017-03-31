@@ -21,12 +21,12 @@ public class UpdateSpawnType extends Effect {
         this.parseParameters(cnt);
         itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
         if(itype == -1){
-            String[] className = this.getClass().getName().split(".");
+            String[] className = this.getClass().getName().split("\\.");
             throw new Exception("[" + className[className.length - 1] + "] Undefined sprite " + stype);
         }
         ispawn = VGDLRegistry.GetInstance().getRegisteredSpriteValue(spawnPoint);
         if(ispawn == -1){
-            String[] className = this.getClass().getName().split(".");
+            String[] className = this.getClass().getName().split("\\.");
             throw new Exception("[" + className[className.length - 1] + "] Undefined sprite " + spawnPoint);
         }
     }

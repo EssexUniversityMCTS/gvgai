@@ -46,11 +46,11 @@ public class TransformToSingleton extends Effect {
         itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
         itype_other = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype_other);
         if(itype == -1){
-            String[] className = this.getClass().getName().split(".");
+            String[] className = this.getClass().getName().split("\\.");
             throw new Exception("[" + className[className.length - 1] + "] Undefined sprite " + stype);
         }
         if(itype_other == -1){
-            String[] className = this.getClass().getName().split(".");
+            String[] className = this.getClass().getName().split("\\.");
             throw new Exception("[" + className[className.length - 1] + "] Undefined sprite " + stype_other);
         }
     }
@@ -59,7 +59,7 @@ public class TransformToSingleton extends Effect {
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
 	if(sprite1 == null || sprite2 == null){
-            String[] className = this.getClass().getName().split(".");
+            String[] className = this.getClass().getName().split("\\.");
             Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1] + "] Either sprite1 or sprite2 is null."));
             return;
         }
