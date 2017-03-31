@@ -42,9 +42,11 @@ public class PullWithIt extends Effect
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
 	if(sprite1 == null || sprite2 == null){
-	    Logger.getInstance().addMessage(new Message(Message.WARNING, "Neither the 1st nor 2nd sprite can be EOS with PullWithIt interaction."));
-	    return;
-	}
+            String[] className = this.getClass().getName().split(".");
+            Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1] + "] Either sprite1 or sprite2 is null."));
+            return;
+        }
+	
         //Keep in the list, for the current cycle, the sprites that have triggered this event.
         int currentGameTime = game.getGameTick();
         if(currentGameTime > lastGameTime)
