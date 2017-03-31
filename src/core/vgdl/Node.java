@@ -58,7 +58,7 @@ public class Node
         else
             parent.insert(this);
     }
-    
+
     public Node(String contentLine, int indent, Node parent, int set, int lineNumber) {
         children = new ArrayList<Node>();
         this.content = createContent(contentLine, set);
@@ -67,7 +67,7 @@ public class Node
             this.parent = null;
         else
             parent.insert(this);
-        
+
         this.lineNumber = lineNumber;
     }
     /**

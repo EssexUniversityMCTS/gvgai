@@ -21,6 +21,7 @@ public class Agent extends AbstractPlayer {
     //    private boolean REPLACE = false;
     private int MUTATION = 1;
     private int TOURNAMENT_SIZE = 2;
+    private int NO_PARENTS = 2;
     private int RESAMPLE = 1;
     private int ELITISM = 1;
 
@@ -54,9 +55,6 @@ public class Agent extends AbstractPlayer {
         randomGenerator = new Random();
         heuristic = new WinScoreHeuristic(stateObs);
         this.timer = elapsedTimer;
-
-        // INITIALISE POPULATION
-        init_pop(stateObs);
     }
 
     @Override
@@ -101,22 +99,21 @@ public class Agent extends AbstractPlayer {
             }
         }
 
-        // mutate one individual randomly
-        for (int i = ELITISM; i < NUM_INDIVIDUALS; i++) {
-            if (remaining > 2*avgTimeTakenEval && remaining > BREAK_MS) { // if enough time to evaluate one more individual
-                Individual newind;
+        if (NUM_INDIVIDUALS > 1) {
+            for (int i = ELITISM; i < NUM_INDIVIDUALS; i++) {
+                if (remaining > 2*avgTimeTakenEval && remaining > BREAK_MS) { // if enough time to evaluate one more individual
+                    Individual newind;
 
-                newind = crossover(population, population[0]);
-                newind = newind.mutate(MUTATION);
+                    newind = crossover();
+                    newind = newind.mutate(MUTATION);
 
-                // evaluate new individual, insert into population
-                add_individual(newind, nextPop, i, stateObs);
+                    // evaluate new individual, insert into population
+                    add_individual(newind, nextPop, i, stateObs);
 
-                remaining = timer.remainingTimeMillis();
+                    remaining = timer.remainingTimeMillis();
 
-            } else {keepIterating = false; break;}
-        }
-        if (NUM_INDIVIDUALS > 1)
+                } else {keepIterating = false; break;}
+            }
             Arrays.sort(nextPop, new Comparator<Individual>() {
                 @Override
                 public int compare(Individual o1, Individual o2) {
@@ -130,7 +127,14 @@ public class Agent extends AbstractPlayer {
                         return -1;
                     }
                     return o1.compareTo(o2);
-                }});
+                }
+            });
+        } else if (NUM_INDIVIDUALS == 1){
+            Individual newind = new Individual(SIMULATION_DEPTH, N_ACTIONS, randomGenerator).mutate(MUTATION);
+            evaluate(newind, heuristic, stateObs);
+            if (newind.value > population[0].value)
+                nextPop[0] = newind;
+        }
 
         population = nextPop.clone();
 
@@ -153,8 +157,8 @@ public class Agent extends AbstractPlayer {
 
         StateObservation st = state.copy();
         int i;
+        double acum = 0, avg;
         for (i = 0; i < SIMULATION_DEPTH; i++) {
-            double acum = 0, avg;
             if (! st.isGameOver()) {
                 ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
                 st.advance(action_mapping.get(individual.actions[i]));
@@ -184,25 +188,39 @@ public class Agent extends AbstractPlayer {
     }
 
     /**
-     * @param pop - the population from which a new individual should be produced
      * @return - the individual resulting from crossover applied to the specified population
      */
-    private Individual crossover(Individual[] pop, Individual newind) {
+    private Individual crossover() {
+        Individual newind = null;
         if (NUM_INDIVIDUALS > 1) {
+            newind = new Individual(SIMULATION_DEPTH, N_ACTIONS, randomGenerator);
             Individual[] tournament = new Individual[TOURNAMENT_SIZE];
+            Individual[] parents = new Individual[NO_PARENTS];
+
+            ArrayList<Individual> list = new ArrayList<>();
             if (NUM_INDIVIDUALS > TOURNAMENT_SIZE) {
-                ArrayList<Individual> list = new ArrayList<>();
-                list.addAll(Arrays.asList(pop).subList(1, NUM_INDIVIDUALS));
-                Collections.shuffle(list);
-                for (int i = 0; i < TOURNAMENT_SIZE; i++) {
-                    tournament[i] = list.get(i);
-                    list.remove(i);
-                }
+                list.addAll(Arrays.asList(population).subList(ELITISM, NUM_INDIVIDUALS));
             } else {
-                tournament[0] = pop[0];
-                tournament[1] = pop[1];
+                list.addAll(Arrays.asList(population));
             }
-            newind.crossover(tournament, CROSSOVER_TYPE);
+
+            //Select a number of random distinct individuals for tournament and sort them based on value
+            for (int i = 0; i < TOURNAMENT_SIZE; i++) {
+                int index = randomGenerator.nextInt(list.size());
+                tournament[i] = list.get(index);
+                list.remove(index);
+            }
+            Arrays.sort(tournament);
+
+            //get best individuals in tournament as parents
+            if (NO_PARENTS <= TOURNAMENT_SIZE) {
+                for (int i = 0; i < NO_PARENTS; i++) {
+                    parents[i] = list.get(i);
+                }
+                newind.crossover(parents, CROSSOVER_TYPE);
+            } else {
+                System.out.println("WARNING: Number of parents must be LESS than tournament size.");
+            }
         }
         return newind;
     }

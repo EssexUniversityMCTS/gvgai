@@ -32,7 +32,7 @@ public class BounceForward extends Effect
 	    Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1]  + "] Either sprite1 or sprite2 is equal to null."));
 	    return;
 	}
-	
+
         Vector2d dir = new Vector2d(sprite2.lastDirection());
         dir.normalise();
 
