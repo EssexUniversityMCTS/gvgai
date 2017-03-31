@@ -27,7 +27,7 @@ public class WrapAround extends Effect {
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game) {
 
 	if(sprite1 == null){
-	    Logger.getInstance().addMessage(new Message(Message.WARNING, sprite1.name + " can't be null."));
+	    Logger.getInstance().addMessage(new Message(Message.WARNING, "[WrapAround] sprite1 can't be null."));
 	    return;
 	}
 	

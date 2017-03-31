@@ -3,6 +3,8 @@ package ontology.effects.binary;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.logging.Logger;
+import core.logging.Message;
 import ontology.Types;
 import ontology.effects.Effect;
 import tools.Direction;
@@ -30,6 +32,12 @@ public class BounceDirection extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     { 
+	if(sprite1 == null || sprite2 == null){
+	    String[] className = this.getClass().getName().split(".");
+	    Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1]  + "] Either sprite1 or sprite2 is equal to null."));
+	    return;
+	}
+	
         sprite1.setRect(sprite1.lastrect);
         Direction inc = sprite1.orientation;
         Vector2d snorm = new Vector2d((-sprite1.rect.getCenterX() + sprite2.rect.getCenterX()), (-sprite1.rect.getCenterY() + sprite2.rect.getCenterY()));
