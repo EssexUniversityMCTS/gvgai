@@ -30,7 +30,7 @@ public class TransformToAll extends TransformTo {
         super(cnt);
         itypeTo = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stypeTo);
         if(itypeTo == -1){
-            String[] className = this.getClass().getName().split(".");
+            String[] className = this.getClass().getName().split("\\.");
             throw new Exception("[" + className[className.length - 1] + "] Undefined sprite " + stype);
         }
     }
@@ -39,7 +39,7 @@ public class TransformToAll extends TransformTo {
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
 	if(sprite2 == null){
-            String[] className = this.getClass().getName().split(".");
+            String[] className = this.getClass().getName().split("\\.");
             Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1] + "] sprite2 is null."));
             return;
         }

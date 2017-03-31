@@ -29,21 +29,21 @@ public class MultiSpriteCounter extends Termination
         if(stype1 != null) {
             itype1 = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype1);
             if(itype1 == -1){
-        	String[] className = this.getClass().getName().split(".");
+        	String[] className = this.getClass().getName().split("\\.");
         	throw new Exception("[" + className[className.length - 1] + "]Undefined sprite " + stype1);
             }
         }
         if(stype2 != null) {
             itype2 = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype2);
             if(itype2 == -1){
-        	String[] className = this.getClass().getName().split(".");
+        	String[] className = this.getClass().getName().split("\\.");
         	throw new Exception("[" + className[className.length - 1] + "]Undefined sprite " + stype2);
             }
         }
         if(stype3 != null) {
             itype3 = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype3);
             if(itype3 == -1){
-        	String[] className = this.getClass().getName().split(".");
+        	String[] className = this.getClass().getName().split("\\.");
         	throw new Exception("[" + className[className.length - 1] + "]Undefined sprite " + stype3);
             }
         }

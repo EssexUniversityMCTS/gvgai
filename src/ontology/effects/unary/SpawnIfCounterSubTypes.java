@@ -29,17 +29,17 @@ public class SpawnIfCounterSubTypes extends Effect {
         this.parseParameters(cnt);
         eitype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(estype);
         if(eitype == -1){
-            String[] className = this.getClass().getName().split(".");
+            String[] className = this.getClass().getName().split("\\.");
             throw new Exception("[" + className[className.length - 1] + "] Undefined sprite " + estype);
         }
         citype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stypeCount);
         if(citype == -1){
-            String[] className = this.getClass().getName().split(".");
+            String[] className = this.getClass().getName().split("\\.");
             throw new Exception("[" + className[className.length - 1] + "] Undefined sprite " + stypeCount);
         }
         itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
         if(itype == -1){
-            String[] className = this.getClass().getName().split(".");
+            String[] className = this.getClass().getName().split("\\.");
             throw new Exception("[" + className[className.length - 1] + "] Undefined sprite " + stype);
         }
     }
@@ -48,7 +48,7 @@ public class SpawnIfCounterSubTypes extends Effect {
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
 	if(sprite1 == null){
-            String[] className = this.getClass().getName().split(".");
+            String[] className = this.getClass().getName().split("\\.");
             Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1] + "] sprite1 is null."));
             return;
         }
