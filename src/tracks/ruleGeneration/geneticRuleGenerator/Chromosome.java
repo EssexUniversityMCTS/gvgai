@@ -796,24 +796,26 @@ public class Chromosome implements Comparable<Chromosome>{
 				score = -200;
 			}
 	
-			// calc difference between best agent and the best naive score
-			double difference = (bestState.getGameScore() - bestNaiveScore);
-			double fit = difference;
+			// calc difference between best agent and the best naive score (normalized over the best game score)
+			double gameScore = (bestState.getGameScore() - bestNaiveScore) / (bestState.getGameScore()+1);
+			
 			// penalize the fitness if both agents score 0
+			int bonus = 1;
 			if(bestState.getGameScore() == 0 && naiveState.getGameScore() == 0) {
-				fit += -50;
+				bonus = 0;
 			}
 	
-			// reward the fitness if smart agent wins the game
-			if(bestState.getGameWinner() != Types.WINNER.PLAYER_WINS) {
-				fit += Math.abs(difference) * 1/2;
-			}
-			this.fitness.set(1, difference);
-	
+//			// reward the fitness if smart agent wins the game
+//			if(bestState.getGameWinner() != Types.WINNER.PLAYER_WINS) {
+//				fit += 0.5;
+//			}	
 			// reward fitness for each unique interaction triggered
 			int uniqueCount = events.size();
-			fit += uniqueCount * 2;
-			this.fitness.set(1, fit);
+			// add a normalized unique count to the fitness
+			double rulesTriggered = uniqueCount / (ruleset[0].length * 1.0f + 1);
+			// fitness is calculated by summing the 3 variables together
+			double fitness = 0.5 * gameScore + 0.3 * rulesTriggered + 0.2 * bonus;
+			this.fitness.set(1, fitness);
 		}
 	}
 	/**
