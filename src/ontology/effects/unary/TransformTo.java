@@ -9,6 +9,8 @@ import core.vgdl.VGDLRegistry;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.logging.Logger;
+import core.logging.Message;
 import core.player.Player;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
@@ -30,16 +32,26 @@ public class TransformTo extends Effect {
     public boolean killSecond = false;
     public boolean forceOrientation = false;
 
-    public TransformTo(InteractionContent cnt)
+    public TransformTo(InteractionContent cnt) throws Exception
     {
         is_kill_effect = true;
         this.parseParameters(cnt);
         itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
+        if(itype == -1){
+            String[] className = this.getClass().getName().split(".");
+            throw new Exception("[" + className[className.length - 1] + "] Undefined sprite " + stype);
+        }
     }
 
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
+	if(sprite1 == null){
+            String[] className = this.getClass().getName().split(".");
+            Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1] + "] sprite1 is null."));
+            return;
+        }
+	
     	if (!sprite1.is_disabled()){
     		VGDLSprite newSprite = game.addSprite(itype, sprite1.getPosition());
     		transformTo(newSprite, sprite1,  sprite2,  game);

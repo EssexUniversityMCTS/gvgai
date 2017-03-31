@@ -3,6 +3,8 @@ package ontology.effects.unary;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.logging.Logger;
+import core.logging.Message;
 import ontology.effects.Effect;
 
 /**
@@ -24,6 +26,12 @@ public class WrapAround extends Effect {
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game) {
 
+	if(sprite1 == null){
+            String[] className = this.getClass().getName().split(".");
+            Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1] + "] sprite1 is null."));
+            return;
+        }
+	
         if(sprite1.orientation.x() > 0)
         {
             sprite1.rect.x = (int) (offset * sprite1.rect.width);

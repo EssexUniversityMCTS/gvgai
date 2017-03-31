@@ -26,7 +26,8 @@ public class SpriteCounterMore extends Termination
         this.parseParameters(cnt);
         itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
         if(itype == -1){
-            throw new Exception("Undefined sprite " + stype);
+            String[] className = this.getClass().getName().split(".");
+            throw new Exception("[" + className[className.length - 1] + "] Undefined sprite " + stype);
         }
     }
 

@@ -28,7 +28,8 @@ public class BounceForward extends Effect
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
 	if(sprite1 == null || sprite2 == null){
-	    Logger.getInstance().addMessage(new Message(Message.WARNING, "Neither the 1st nor 2nd sprite can be EOS with PullWithIt interaction."));
+	    String[] className = this.getClass().getName().split(".");
+	    Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1]  + "] Either sprite1 or sprite2 is equal to null."));
 	    return;
 	}
 	
