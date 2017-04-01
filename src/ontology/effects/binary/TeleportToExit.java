@@ -36,6 +36,11 @@ public class TeleportToExit extends Effect
         }
 	
         int destinationId = VGDLFactory.GetInstance().requestFieldValueInt(sprite2, "itype");
+        if(destinationId == -1){
+            String[] className = this.getClass().getName().split("\\.");
+            Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1] + "] " + sprite2 + " doesn't have itype."));
+            return;
+        }
 
         Collection<VGDLSprite> sprites = null;
         sprites = game.getSprites(destinationId);
