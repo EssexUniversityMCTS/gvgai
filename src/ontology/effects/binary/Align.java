@@ -32,6 +32,7 @@ public class Align extends Effect
 	    Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1]  + "] Either sprite1 or sprite2 is equal to null."));
 	    return;
 	}
+
         sprite1.orientation = sprite2.orientation.copy();
         sprite1.rect = new Rectangle(sprite2.rect.x, sprite2.rect.y,
                 sprite1.rect.width, sprite1.rect.height);

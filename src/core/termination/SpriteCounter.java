@@ -37,7 +37,7 @@ public class SpriteCounter extends Termination
         boolean ended = super.isFinished(game);
         if(ended)
             return true;
-        
+
         if(itype != -1 && game.getNumSprites(itype) - game.getNumDisabledSprites(itype) <= limit && canEnd) {
             countScore(game);
             return true;
@@ -46,12 +46,12 @@ public class SpriteCounter extends Termination
         return false;
     }
 
-	@Override
-	public ArrayList<String> getTerminationSprites() {
-		ArrayList<String> result = new ArrayList<String>();
-		result.add(stype);
-		
-		return result;
-	}
+    @Override
+    public ArrayList<String> getTerminationSprites() {
+        ArrayList<String> result = new ArrayList<String>();
+        result.add(stype);
+
+        return result;
+    }
 
 }

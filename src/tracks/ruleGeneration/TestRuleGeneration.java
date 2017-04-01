@@ -60,7 +60,7 @@ public class TestRuleGeneration {
         String game = generateRulePath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
         String recordGameFile = generateRulePath + games[gameIdx] + "_ggame.txt";
-        
+
         // 1. Generate rules (Interaction and Terminations) for a fixed level
         if(RuleGenMachine.generateRules(game, level1, geneticRuleGenerator, recordGameFile, seed)){
             // ArcadeMachine.playOneGame(recordGameFile, level1, recordActionsFile, seed)

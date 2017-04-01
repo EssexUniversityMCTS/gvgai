@@ -46,7 +46,7 @@ public class PullWithIt extends Effect
             Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1] + "] Either sprite1 or sprite2 is null."));
             return;
         }
-	
+
         //Keep in the list, for the current cycle, the sprites that have triggered this event.
         int currentGameTime = game.getGameTick();
         if(currentGameTime > lastGameTime)
@@ -78,11 +78,11 @@ public class PullWithIt extends Effect
         }
 
         sprite1._updatePos(new Direction(v.x, v.y), (int) (sprite2.speed*gridsize));
-        
+
         if(sprite1.physicstype_id != Types.PHYSICS_GRID)
-        {	
-        	sprite1.rect.y = sprite2.rect.y-sprite2.rect.height;
-        	sprite1.orientation = new Direction(sprite1.orientation.x(),0.0);
+        {
+            sprite1.rect.y = sprite2.rect.y-sprite2.rect.height;
+            sprite1.orientation = new Direction(sprite1.orientation.x(),0.0);
         }
 
         sprite1.lastrect = new Rectangle(r);
