@@ -191,14 +191,17 @@ public class SLDescription {
 	 * @return correct sprite name
 	 */
 	public String decodeName(String value, int seed) {
-		if(!value.contains(KEYWORD + "_")){
-			return "";
-		}
-		int index = Integer.parseInt(value.split(KEYWORD + "_")[1]);
-		if((index ^ seed) < 0 || (index ^ seed) >= this.gameSprites.length){
-			return "";
-		}
-		return this.gameSprites[index ^ seed].name;
+	    int index = -1;
+	    try{
+		index = Integer.parseInt(value.split(KEYWORD + "_")[1]);
+	    }
+	    catch(Exception e){
+		return "";
+	    }
+	    if((index ^ seed) < 0 || (index ^ seed) >= this.gameSprites.length){
+		return "";
+	    }
+	    return this.gameSprites[index ^ seed].name;
 	}
 
 	/**
@@ -234,7 +237,7 @@ public class SLDescription {
 
 	/**
 	 * Decode the rules and strings based on the seed
-	 *
+	 * 
 	 * @param rules
 	 *            current interaction rules to decode
 	 * @param wins
@@ -244,50 +247,51 @@ public class SLDescription {
 	 * @return return decoded interaction and termination rules
 	 */
 	public String[][] modifyRules(String[] rules, String[] wins, int seed) {
-		ArrayList<String> modifiedRules = new ArrayList<String>();
-		for (int i = 0; i < rules.length; i++) {
-			String[] parts = rules[i].split(" ");
-			modifiedRules.add("");
-			for (int j = 0; j < parts.length; j++) {
-				if (parts[j].toLowerCase().contains(KEYWORD + "_")) {
-					String[] temp = parts[j].split(KEYWORD + "_");
-					String spriteName = this.decodeIndex(Integer.parseInt(temp[1]), seed);
-					if(spriteName.length() > 0){
-						modifiedRules.set(modifiedRules.size() - 1, modifiedRules.get(modifiedRules.size() - 1) + temp[0] + spriteName + " ");
-					}
-					else{
-						Logger.getInstance().addMessage(new Message(Message.WARNING, parts[j] + " is undefined in the game."));
-					}
+	    ArrayList<String> modifiedRules = new ArrayList<String>();
+	    for (int i = 0; i < rules.length; i++) {
+		String[] parts = rules[i].split(" ");
+		modifiedRules.add("");
+		for (int j = 0; j < parts.length; j++) {
+		    if (parts[j].toLowerCase().contains(KEYWORD + "_")) {
+			String[] temp = parts[j].split(KEYWORD + "_");
+			String spriteName = this.decodeName(parts[j].toLowerCase(), seed);
 
-				} else {
-					modifiedRules.set(modifiedRules.size() - 1, modifiedRules.get(modifiedRules.size() - 1) + parts[j] + " ");
-				}
+			if(spriteName.length() > 0){
+			    modifiedRules.set(modifiedRules.size() - 1, modifiedRules.get(modifiedRules.size() - 1) + temp[0] + spriteName + " ");
 			}
-		}
-
-		ArrayList<String> modifiedWins = new ArrayList<String>();
-		for (int i = 0; i < wins.length; i++) {
-			String[] parts = wins[i].split(" ");
-			modifiedWins.add("");
-			for (int j = 0; j < parts.length; j++) {
-				if (parts[j].toLowerCase().contains(KEYWORD + "_")) {
-					String[] temp = parts[j].split(KEYWORD + "_");
-					String spriteName = this.decodeIndex(Integer.parseInt(temp[1]), seed);
-					if(spriteName.length() > 0){
-						modifiedWins.set(modifiedWins.size() - 1, modifiedWins.get(modifiedWins.size() - 1) + temp[0] + spriteName + " ");
-					}
-					else{
-						Logger.getInstance().addMessage(new Message(Message.WARNING, parts[j] + " is undefined in the game."));
-					}
-				} else {
-					modifiedWins.set(modifiedWins.size() - 1, modifiedWins.get(modifiedWins.size() - 1) + parts[j] + " ");
-				}
+			else{
+			    Logger.getInstance().addMessage(new Message(Message.ERROR, parts[j] + " is undefined in the game."));
 			}
-		}
 
-		return new String[][] { modifiedRules.toArray(new String[modifiedRules.size()]), modifiedWins.toArray(new String[modifiedWins.size()]) };
+		    } else {
+			modifiedRules.set(modifiedRules.size() - 1, modifiedRules.get(modifiedRules.size() - 1) + parts[j] + " ");
+		    }
+		}
+	    }
+
+	    ArrayList<String> modifiedWins = new ArrayList<String>();
+	    for (int i = 0; i < wins.length; i++) {
+		String[] parts = wins[i].split(" ");
+		modifiedWins.add("");
+		for (int j = 0; j < parts.length; j++) {
+		    if (parts[j].toLowerCase().contains(KEYWORD + "_")) {
+			String[] temp = parts[j].split(KEYWORD + "_");
+			String spriteName = this.decodeIndex(Integer.parseInt(temp[1]), seed);
+			if(spriteName.length() > 0){
+			    modifiedWins.set(modifiedWins.size() - 1, modifiedWins.get(modifiedWins.size() - 1) + temp[0] + spriteName + " ");
+			}
+			else{
+			    Logger.getInstance().addMessage(new Message(Message.ERROR, parts[j] + " is undefined in the game."));
+			}
+		    } else {
+			modifiedWins.set(modifiedWins.size() - 1, modifiedWins.get(modifiedWins.size() - 1) + parts[j] + " ");
+		    }
+		}
+	    }
+
+	    return new String[][] { modifiedRules.toArray(new String[modifiedRules.size()]), modifiedWins.toArray(new String[modifiedWins.size()]) };
 	}
-
+	
 	/**
 	 * get state observation based on the interaction rules and termination
 	 * conditions
@@ -354,12 +358,21 @@ public class SLDescription {
 		return this.currentGame.getObservation();
 	}
 
-	/**
-	 * get list of errors and warnings from the system
-	 *
-	 * @return a list of errors and warnings type 0: warnings type 1: errors
-	 */
-	public ArrayList<Message> getErrors() {
-		return Logger.getInstance().getMessages();
-	}
+    /**
+     * get list of errors from the system
+     * 
+     * @return a list of errors
+     */
+    public ArrayList<Message> getErrors() {
+	return Logger.getInstance().getMessages(Message.ERROR);
+    }
+    
+    /**
+     * get list of warnings from the system
+     * 
+     * @return a list of warning
+     */
+    public ArrayList<Message> getWarnings() {
+	return Logger.getInstance().getMessages(Message.WARNING);
+    }
 }

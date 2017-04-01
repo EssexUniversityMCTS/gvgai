@@ -16,11 +16,19 @@ public class UpdateSpawnType extends Effect {
     public String spawnPoint; //stype string of spawn point
     public int itype, ispawn;
 
-    public UpdateSpawnType(InteractionContent cnt)
+    public UpdateSpawnType(InteractionContent cnt) throws Exception
     {
         this.parseParameters(cnt);
         itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
+        if(itype == -1){
+            String[] className = this.getClass().getName().split("\\.");
+            throw new Exception("[" + className[className.length - 1] + "] Undefined sprite " + stype);
+        }
         ispawn = VGDLRegistry.GetInstance().getRegisteredSpriteValue(spawnPoint);
+        if(ispawn == -1){
+            String[] className = this.getClass().getName().split("\\.");
+            throw new Exception("[" + className[className.length - 1] + "] Undefined sprite " + spawnPoint);
+        }
     }
 
     @Override

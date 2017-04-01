@@ -3,6 +3,8 @@ package ontology.effects.unary;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.logging.Logger;
+import core.logging.Message;
 import ontology.Types;
 import ontology.effects.Effect;
 
@@ -23,6 +25,12 @@ public class TurnAround extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
+	if(sprite1 == null){
+            String[] className = this.getClass().getName().split("\\.");
+            Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1] + "] sprite1 is null."));
+            return;
+        }
+	
         sprite1.setRect(sprite1.lastrect);
         sprite1.lastmove = sprite1.cooldown;
         sprite1.physics.activeMovement(sprite1, Types.DDOWN, sprite1.speed);

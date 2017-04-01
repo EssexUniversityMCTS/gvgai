@@ -3,6 +3,8 @@ package ontology.effects.binary;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.logging.Logger;
+import core.logging.Message;
 import ontology.effects.Effect;
 
 /**
@@ -22,7 +24,12 @@ public class KillBoth extends Effect {
 
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game) {
-
+	if(sprite1 == null || sprite2 == null){
+            String[] className = this.getClass().getName().split("\\.");
+            Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1] + "] Either sprite1 or sprite2 is null."));
+            return;
+        }
+	
         //boolean variable set to false to indicate the sprite was not transformed
         game.killSprite(sprite1, false);
         game.killSprite(sprite2, false);

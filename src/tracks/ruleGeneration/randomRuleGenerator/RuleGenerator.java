@@ -158,17 +158,24 @@ public class RuleGenerator extends AbstractRuleGenerator {
 				sl.testRules(getArray(interaction), getArray(termination));
 			}
 		}
+		
 		// Add a winning termination condition
 		if (this.random.nextBoolean()) {
-			termination.add("Timeout limit=" + (800 + this.random.nextInt(500)) + " win=True");
+		    termination.add("Timeout limit=" + (800 + this.random.nextInt(500)) + " win=True");
 		} else {
-			String chosen = this.usefulSprites.get(this.random.nextInt(this.usefulSprites.size()));
+		    String chosen = this.usefulSprites.get(this.random.nextInt(this.usefulSprites.size()));
+		    sl.testRules(getArray(interaction), getArray(termination));
+		    while(sl.getErrors().size() > 0){
+			termination.remove(termination.size() - 1);
 			termination.add("SpriteCounter stype=" + chosen + " limit=0 win=True");
+			sl.testRules(getArray(interaction), getArray(termination));
+		    }
 		}
 		// Add a losing termination condition
 		termination.add("SpriteCounter stype=" + this.avatar + " limit=0 win=False");
 
 		return new String[][] { getArray(interaction), getArray(termination) };
 	}
+
 
 }

@@ -3,6 +3,8 @@ package ontology.effects.binary;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.logging.Logger;
+import core.logging.Message;
 import ontology.Types;
 import ontology.effects.Effect;
 import tools.Direction;
@@ -27,6 +29,12 @@ public class KillIfFrontal extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
+	if(sprite1 == null || sprite2 == null){
+            String[] className = this.getClass().getName().split("\\.");
+            Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1] + "] Either sprite1 or sprite2 is null."));
+            return;
+        }
+	
         //Kills the sprite, only if they are going in opposite directions or sprite1 is static.
         Vector2d firstV = sprite1.lastDirection();
         Vector2d otherV = sprite2.lastDirection();

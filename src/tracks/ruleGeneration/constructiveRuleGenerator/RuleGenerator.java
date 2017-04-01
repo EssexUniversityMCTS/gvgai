@@ -482,55 +482,66 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		}
 	}
 
-	/**
-	 * get the generated interaction rules and termination rules
-	 * @param sl	SLDescription object contain information about the game
-	 * 			sprites and the current level
-	 * @param time	the amount of time allowed for the rule generator
-	 * @return		two arrays the first contains the interaction rules
-	 * 			while the second contains the termination rules
-	 */
-	@Override
-	public String[][] generateRules(SLDescription sl, ElapsedCpuTimer time) {
-		this.getResourceInteractions();
-		this.getImmovableInteractions();
-		this.getNPCInteractions();
-		this.getSpawnerInteractions();
-		this.getPortalInteractions();
-		this.getMovableInteractions();
-		this.getWallInteractions();
-		this.getAvatarInteractions();
-
-		this.getTerminations();
-
-		return new String[][]{interactions.toArray(new String[interactions.size()]), terminations.toArray(new String[terminations.size()])};
-	}
-
-	@Override
-	public HashMap<String, ArrayList<String>> getSpriteSetStructure() {
-		HashMap<String, ArrayList<String>> struct = new HashMap<String, ArrayList<String>>();
-
-		if(fleeingNPCs.size() > 0){
-			struct.put("fleeing", new ArrayList<String>());
-		}
-		for(int i=0; i<this.fleeingNPCs.size(); i++){
-			struct.get("fleeing").add(this.fleeingNPCs.get(i));
-		}
-
-		if(harmfulObjects.size() > 0){
-			struct.put("harmful", new ArrayList<String>());
-		}
-		for(int i=0; i<this.harmfulObjects.size(); i++){
-			struct.get("harmful").add(this.harmfulObjects.get(i));
-		}
-		if(collectible.size() > 0){
-			struct.put("collectible", new ArrayList<String>());
-		}
-		for(int i=0; i<this.collectible.size(); i++){
-			struct.get("collectible").add(this.collectible.get(i));
-		}
-
-		return struct;
-	}
+    
+    /**
+     * get the generated interaction rules and termination rules
+     * @param sl	SLDescription object contain information about the game
+     * 			sprites and the current level
+     * @param time	the amount of time allowed for the rule generator
+     * @return		two arrays the first contains the interaction rules
+     * 			while the second contains the termination rules
+     */
+    @Override
+    public String[][] generateRules(SLDescription sl, ElapsedCpuTimer time) {
+	this.getResourceInteractions();
+	this.getImmovableInteractions();
+	this.getNPCInteractions();
+	this.getSpawnerInteractions();
+	this.getPortalInteractions();
+	this.getMovableInteractions();
+	this.getWallInteractions();
+	this.getAvatarInteractions();
+	
+	this.getTerminations();
+	
+	return new String[][]{interactions.toArray(new String[interactions.size()]), terminations.toArray(new String[terminations.size()])};
+    }
+    
+    @Override
+    public HashMap<String, ArrayList<String>> getSpriteSetStructure() {
+        HashMap<String, ArrayList<String>> struct = new HashMap<String, ArrayList<String>>();
+        HashMap<String, Boolean> testing = new HashMap<String, Boolean>();
+        
+        if(fleeingNPCs.size() > 0){
+            struct.put("fleeing", new ArrayList<String>());
+        }
+        for(int i=0; i<this.fleeingNPCs.size(); i++){
+            if(!testing.containsKey(this.fleeingNPCs.get(i))){
+        	testing.put(this.fleeingNPCs.get(i), true);
+        	struct.get("fleeing").add(this.fleeingNPCs.get(i));
+            }
+        }
+        
+        if(harmfulObjects.size() > 0){
+            struct.put("harmful", new ArrayList<String>());
+        }
+        for(int i=0; i<this.harmfulObjects.size(); i++){
+            if(!testing.containsKey(this.harmfulObjects.get(i))){
+        	testing.put(this.harmfulObjects.get(i), true);
+        	struct.get("harmful").add(this.harmfulObjects.get(i));
+            }
+        }
+        if(collectible.size() > 0){
+            struct.put("collectible", new ArrayList<String>());
+        }
+        for(int i=0; i<this.collectible.size(); i++){
+            if(!testing.containsKey(this.collectible.get(i))){
+        	testing.put(this.collectible.get(i), true);
+        	struct.get("collectible").add(this.collectible.get(i));
+            }
+        }
+        
+        return struct;
+    }
 
 }

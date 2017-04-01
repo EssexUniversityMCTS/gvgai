@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import core.vgdl.VGDLRegistry;
 import core.content.TerminationContent;
 import core.game.Game;
-import core.logging.Logger;
-import core.logging.Message;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,11 +20,15 @@ public class SpriteCounter extends Termination
 
     public SpriteCounter(){}
 
-    public SpriteCounter(TerminationContent cnt)
+    public SpriteCounter(TerminationContent cnt) throws Exception
     {
         //Parse the arguments.
         this.parseParameters(cnt);
         itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
+        if(itype == -1){
+            String[] className = this.getClass().getName().split("\\.");
+            throw new Exception("[" + className[className.length - 1] + "] Undefined sprite " + stype);
+        }
     }
 
     @Override
