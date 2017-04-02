@@ -26,17 +26,17 @@ public class SharedData {
 	/**
 	 * the amount of time to evaluate a single level
 	 */
-	public static final long EVALUATION_TIME = 10000;
+	public static final long EVALUATION_TIME = 5000;
 	
 	/**
 	 * number of the best chromosomes that are transfered from one generation to another
 	 */
-	public static final int ELITISM_NUMBER = 1;
+	public static final int ELITISM_NUMBER = 5;
 	
 	/**
 	 * Crossover probability
 	 */
-	public static final double CROSSOVER_PROB = 0.5;
+	public static final double CROSSOVER_PROB = 0.9;
 	
 	/**
 	 * Mutation probability
@@ -93,7 +93,7 @@ public class SharedData {
 	/**
 	 * The amount of times used to check the one step look ahead and do nothing algorithm
 	 */
-	public static final int REPETITION_AMOUNT = 5;
+	public static final int REPETITION_AMOUNT = 3;
 	/**
 	 * The amount of time given for each time step
 	 */
@@ -101,7 +101,7 @@ public class SharedData {
 	/**
 	 * The amount of times we perform a mutation on a set
 	 */
-	public static final int MUTATION_AMOUNT = 3;
+	public static final int MUTATION_AMOUNT = 2;
 	/**
 	 * the probability of inserting a new rule
 	 */
@@ -147,6 +147,6 @@ public class SharedData {
 	/**
 	 * Protects the fitness function from looping forever
 	 */
-	public static final int PROTECTION_COUNTER = 5;
+	public static final int PROTECTION_COUNTER = 3;
 
 }

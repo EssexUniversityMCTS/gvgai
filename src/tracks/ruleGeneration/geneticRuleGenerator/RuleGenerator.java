@@ -174,6 +174,9 @@ public class RuleGenerator extends AbstractRuleGenerator{
 			Collections.sort(fPopulation);
 			for(int i=0;i<SharedData.ELITISM_NUMBER;i++){
 				newPopulation.add(fPopulation.get(i));
+				Chromosome best = fPopulation.get(i);
+//				String[][] decoded = sl.modifyRules(best.getRuleset()[0], best.getRuleset()[1], 0);
+
 			}
 		}
 
@@ -183,10 +186,11 @@ public class RuleGenerator extends AbstractRuleGenerator{
 					PrintWriter out = new PrintWriter(bw)) {
 				out.println("*****");
 				out.println("Chromosome " + (i+1) + " : Fitness = " + newPopulation.get(i).getFitness());
-				for (String[] s : newPopulation.get(i).getRuleset()) {
-					out.println(" ");
-					for (String q : s) {
-						out.println(q);
+				String[][] decoded = sl.modifyRules(newPopulation.get(i).getRuleset()[0], newPopulation.get(i).getRuleset()[1], 0);
+				for(int q = 0; q < decoded.length; q++) {
+					out.println("=====");
+					for(int w = 0; w < decoded[q].length; w++) {
+						out.println(decoded[q][w]);
 					}
 				}
 			} catch (Exception ex) {
@@ -321,6 +325,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 				out.println("*****");
 				out.println("Chromosome " + (counter) + " : Fitness = " + c.getFitness());
 				out.println(" ");
+
 				// print out chromosome
 				for (String[] q : decoded) {
 					out.println(" ");

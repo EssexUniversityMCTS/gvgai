@@ -799,8 +799,8 @@ public class Chromosome implements Comparable<Chromosome>{
 			}
 	
 			// calc difference between best agent and the best naive score (normalized over the best game score)
-			double naiveGameScore = (bestState.getGameScore() - bestNaiveScore) / (bestState.getGameScore()+1);
-			double randomGameScore = (bestState.getGameScore() - bestRandomScore) / (bestState.getGameScore()+1);
+			double naiveGameScore = (bestState.getGameScore() - bestNaiveScore) / 1000;
+			double randomGameScore = (bestState.getGameScore() - bestRandomScore) / 1000;
 			// penalize the fitness if both agents score 0
 //			int bonus = 1;
 //			if(bestState.getGameScore() == 0 && naiveState.getGameScore() == 0) {
