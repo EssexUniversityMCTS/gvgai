@@ -493,6 +493,12 @@ public class RuleGenerator extends AbstractRuleGenerator{
      */
     @Override
     public String[][] generateRules(SLDescription sl, ElapsedCpuTimer time) {
+	this.interactions.clear();
+	this.terminations.clear();
+	this.collectible.clear();
+	this.harmfulObjects.clear();
+	this.fleeingNPCs.clear();
+	
 	this.getResourceInteractions();
 	this.getImmovableInteractions();
 	this.getNPCInteractions();
