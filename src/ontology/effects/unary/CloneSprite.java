@@ -2,6 +2,7 @@ package ontology.effects.unary;
 
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
+import core.game.ForwardModel;
 import core.game.Game;
 import core.logging.Logger;
 import core.logging.Message;
