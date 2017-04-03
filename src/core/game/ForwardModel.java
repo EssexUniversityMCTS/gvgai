@@ -359,8 +359,9 @@ public class ForwardModel extends Game
 
                 //update avatar sprite.
                 MovingAvatar a = (MovingAvatar) sp;
-                this.avatars[a.getPlayerID()] = a;
-
+                if(a.getKeyHandler() != null){
+                    this.avatars[a.getPlayerID()] = a;
+                }
                 playerList[itype] = true; //maybe use this
                 break;
             case Types.TYPE_RESOURCE:
