@@ -6,6 +6,8 @@ import core.vgdl.VGDLFactory;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.logging.Logger;
+import core.logging.Message;
 
 /**
  * Created with IntelliJ IDEA.
@@ -86,7 +88,13 @@ public abstract class Effect{
      */
     public int getScoreChange(int playerID) {
         String[] scores = scoreChange.split(",");
-        return playerID < scores.length ? Integer.parseInt(scores[playerID]) : Integer.parseInt(scores[0]);
+        try{
+            return playerID < scores.length ? Integer.parseInt(scores[playerID]) : Integer.parseInt(scores[0]);
+        }
+        catch(Exception e){
+            Logger.getInstance().addMessage(new Message(Message.WARNING, "scoreChange must be an integer number not " + scoreChange + "."));
+            return 0;
+        }
     }
 
     public int getCounter(int idx) {
