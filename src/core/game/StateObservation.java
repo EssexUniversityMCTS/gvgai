@@ -26,6 +26,17 @@ public class StateObservation {
     protected ForwardModel model;
 
     /**
+     * Field to represent the current game's state.
+     */
+    public Types.GAMESTATES currentGameState;
+
+    // TODO: 04/04/2017 Daniel: figure out whether the elapsed timer needs to be moved
+//    /**
+//     * Field to represent the current move's elapsed timer. Frequently modified in the model.
+//     */
+//    public long elapsedTimer;
+
+    /**
      * Default constructor for StateObservation.
      */
     public StateObservation() { }
@@ -71,6 +82,15 @@ public class StateObservation {
     public void setNewSeed(int seed)
     {
         model.setNewSeed(seed);
+    }
+
+    /**
+     * Return the current state of the game
+     * @return current state of the game as a GAMESTATES type.
+     */
+    public Types.GAMESTATES getGameState()
+    {
+        return this.currentGameState;
     }
 
     /**
@@ -132,12 +152,15 @@ public class StateObservation {
 
     /**
      * Indicates if the game is over or if it hasn't finished yet.
+     * Checks for three possible things: if there is a winner,
+     * if the player has asked for an abort or,
+     * if the game is in the end state.
      * @return true if the game is over.
      */
     public boolean isGameOver()
     {
-        // TODO: 27/03/2017 Daniel: check the SSO state (ABORT) 
-        return model.isGameOver();
+        // TODO: 27/03/2017 Daniel: check the SSO state (ABORT)
+        return model.isGameOver() || (Types.GAMESTATES.ABORT_STATE).equals(currentGameState) || (Types.GAMESTATES.END_STATE).equals(currentGameState);
     }
 
     /**

@@ -74,7 +74,7 @@ public class LearningMachine {
         toPlay.buildLevel(level_file, randomSeed);
 
         //Init the player for the game.
-        LearningMachine.initPlayer(player, actionFile, toPlay.getSerializableObservation(toPlay.getObservation()), randomSeed, isTraining);
+        LearningMachine.initPlayer(player, actionFile, toPlay.getObservation(), randomSeed, isTraining);
 
         if (player == null) {
             //Something went wrong in the constructor, controller disqualified
@@ -136,11 +136,11 @@ public class LearningMachine {
      *
      * @param player     Player to init.
      * @param actionFile filename of the file where the actions of this player, for this game, should be recorded.
-     * @param sso         Initial state of the game to be played by the agent.
+     * @param so         Initial state of the game to be played by the agent.
      * @param randomSeed Seed for the sampleRandom generator of the game to be played.
      * @return the player, created and initialized, ready to start playing the game.
      */
-    private static LearningPlayer initPlayer(LearningPlayer player, String actionFile, SerializableStateObservation sso,
+    private static LearningPlayer initPlayer(LearningPlayer player, String actionFile, StateObservation so,
                                              int randomSeed, boolean isTraining) {
 
 
@@ -149,7 +149,7 @@ public class LearningMachine {
         ect.setMaxTimeMillis(CompetitionParameters.INITIALIZATION_TIME);
 
         //Initialize the controller.
-        player.init(sso, ect);
+        player.init(so, ect);
 
         //Check if we returned on time, and act in consequence.
         long timeTaken = ect.elapsedMillis();
@@ -170,6 +170,8 @@ public class LearningMachine {
         return player;
     }
 
+
+
     /**
      * Tears the player down. This initiates the saving of actions to file.
      * It should be called when the game played is over.
@@ -181,8 +183,7 @@ public class LearningMachine {
         ElapsedCpuTimer ect = new ElapsedCpuTimer(CompetitionParameters.TIMER_TYPE);
         ect.setMaxTimeMillis(CompetitionParameters.TEAR_DOWN_TIME);
 
-        // TODO: Fix the serializableStateObservation hack
-        player.finishGame(toPlay.getSerializableObservation(toPlay.getObservation()), ect);
+        player.finishGame(toPlay.getObservation(), ect);
 
         player.teardown(toPlay);
         //player.close();

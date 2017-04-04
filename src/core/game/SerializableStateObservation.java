@@ -23,11 +23,6 @@ import java.util.TreeSet;
  */
 public class SerializableStateObservation {
 
-    public enum State{
-        // TODO: 27/03/2017 Daniel: ABORT state ?
-        INIT_STATE, ACT_STATE, END_STATE
-    }
-
     public long elapsedTimer;
     public float gameScore;
     public int gameTick;
@@ -43,7 +38,7 @@ public class SerializableStateObservation {
     public int avatarMaxHealthPoints;
     public int avatarLimitHealthPoints;
     public boolean isAvatarAlive;
-    public State gameState;
+    public Types.GAMESTATES gameState;
 
     public ArrayList<Types.ACTIONS> availableActions;
     public HashMap<Integer, Integer> avatarResources;
@@ -58,7 +53,7 @@ public class SerializableStateObservation {
 
     public SerializableStateObservation(StateObservation s)
     {
-        gameState = State.INIT_STATE;
+        gameState = s.getGameState();
         elapsedTimer = 0;
         availableActions = s.getAvailableActions();
         gameScore = (float) s.getGameScore();
