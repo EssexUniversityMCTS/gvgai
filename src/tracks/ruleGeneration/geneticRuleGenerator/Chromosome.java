@@ -692,7 +692,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		errorCount = sl.getErrors().size();
 		double errorFitness = 0.0;
 		double fourtyFramesFitness = 0.0;
-		
+		constrainFitness = 0;
 		constrainFitness += (0.5) * 1.0 / (errorCount + 1.0);	
 		
 		constructAgent();
@@ -707,6 +707,10 @@ public class Chromosome implements Comparable<Chromosome>{
 		constrainFitness += 0.2 * (doNothingLength / (40.0));
 		
 		this.fitness.set(0, constrainFitness);
+		if(constrainFitness > 1)
+		{
+			System.out.println("This is wrong");
+		}
 		return;
 	}
 	
@@ -877,6 +881,10 @@ public class Chromosome implements Comparable<Chromosome>{
 				this.fitness.set(1, fitness);
 			}
 		} 
+		if(constrainFitness > 1)
+		{
+			System.out.println("This is wrong");
+		}
 		this.randomAgent = null;
 		this.automatedAgent = null;
 		this.doNothingAgent = null;
