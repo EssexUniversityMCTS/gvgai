@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
@@ -41,6 +42,10 @@ public class VGDLViewer extends JComponent
      */
     public Player player;
 
+    public boolean justImage = false;
+
+    public static BufferedImage image;
+
 
     /**
      * Creates the viewer for the game.
@@ -69,10 +74,11 @@ public class VGDLViewer extends JComponent
         g.fillRect(0, size.height, size.width, size.height);
 
         //Possible efficiency improvement: static image with immovable objects.
-        /*
-        BufferedImage mapImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
-        Graphics2D gImage = mapImage.createGraphics();
-        */
+        if (justImage){
+            image = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
+            g = image.createGraphics();
+        }
+
 
         try {
             int[] gameSpriteOrder = game.getSpriteOrder();

@@ -3,6 +3,7 @@ package core.game;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.event.WindowEvent;
 import java.util.*;
 
 import javax.swing.JOptionPane;
@@ -877,7 +878,7 @@ public abstract class Game {
 
     /**
      * Plays the game, graphics enabled.
-     * 
+     *
      * @param players
      *            Players that play this game.
      * @param randomSeed
@@ -971,9 +972,98 @@ public abstract class Game {
 	return handleResult();
     }
 
+	public double[] playOnlineGame(Player[] players, int randomSeed, boolean isHuman, int humanID) {
+		// Prepare some structures and references for this game.
+		prepareGame(players, randomSeed, humanID);
+
+		// Create and initialize the panel for the graphics.
+		VGDLViewer view = new VGDLViewer(this, players[humanID]);
+		view.justImage = true;
+		JEasyFrame frame;
+		frame = new JEasyFrame(view, "Java-VGDL");
+		frame.setSize(0,0);
+
+		frame.addKeyListener(ki);
+		frame.addWindowListener(wi);
+		wi.windowClosed = false;
+
+		// Determine the delay for playing with a good fps.
+		double delay = CompetitionParameters.LONG_DELAY;
+		for (Player player : players)
+			if (player instanceof tracks.singlePlayer.tools.human.Agent) {
+				delay = 1000.0 / CompetitionParameters.DELAY; // in milliseconds
+				break;
+			}
+
+		boolean firstRun = true;
+
+		// Play until the game is ended
+		while (!isEnded && !wi.windowClosed) {
+			// Determine the time to adjust framerate.
+			long then = System.currentTimeMillis();
+
+			this.gameCycle(); // Execute a game cycle.
+
+			// Get the remaining time to keep fps.
+			long now = System.currentTimeMillis();
+			int remaining = (int) Math.max(0, delay - (now - then));
+
+			// Wait until de next cycle.
+			waitStep(remaining);
+
+			// Draw all sprites in the panel.
+			view.paint(this.spriteGroups);
+
+			// Update the frame title to reflect current score and tick.
+			this.setTitle(frame);
+
+			if (firstRun && isHuman) {
+				/*if (CompetitionParameters.dialogBoxOnStartAndEnd) {
+					JOptionPane.showMessageDialog(frame, "Click OK to start.");
+				}*/
+
+				firstRun = false;
+			}
+		}
+
+		if (isHuman && !wi.windowClosed && CompetitionParameters.killWindowOnEnd) {
+			// TODO this block might be unnecessary
+			if (CompetitionParameters.dialogBoxOnStartAndEnd) {
+				if (no_players == 1) {
+					String sb = "GAMEOVER: YOU LOSE.";
+					if (avatars[humanID] != null) {
+						sb = "GAMEOVER: YOU "
+								+ ((avatars[humanID].getWinState() == Types.WINNER.PLAYER_WINS) ? "WIN." : "LOSE.");
+					}
+					//JOptionPane.showMessageDialog(frame, sb);
+				} else {
+					String sb = "";
+					for (int i = 0; i < no_players; i++) {
+						//if (avatars[i] != null && avatars[i].getWinState() == Types.WINNER.PLAYER_WINS) {
+						//	sb += "Player " + i + "; ";
+						//}
+					}
+					if (sb.equals(""))
+						sb = "NONE";
+					//JOptionPane.showMessageDialog(frame, "GAMEOVER - WINNER: " + sb);
+				}
+			}
+			frame.dispose();
+		}
+
+		// Update the forward model for the game state sent to the controller.
+		fwdModel.update(this);
+
+		// performs the same event as the exit button were clicked
+		// closes the frame after game is over
+		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+
+		return handleResult();
+	}
+
     /**
      * Sets the title of the game screen, depending on the game ending state.
-     * 
+     *
      * @param frame
      *            The frame whose title needs to be set.
      */
@@ -1011,7 +1101,7 @@ public abstract class Game {
      * Initializes some variables for the game to be played, such as the game
      * tick, sampleRandom number generator, forward model and assigns the player
      * to the avatar.
-     * 
+     *
      * @param players
      *            Players that play this game.
      * @param randomSeed
