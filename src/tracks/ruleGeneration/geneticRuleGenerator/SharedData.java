@@ -13,7 +13,7 @@ public class SharedData {
 	/**
 	 * The size of the Genetic Algorithm Population
 	 */
-	public static final int POPULATION_SIZE = 50;
+	public static final int POPULATION_SIZE = 20;
 	/**
 	 * useful sprites in the game
 	 */
@@ -99,7 +99,7 @@ public class SharedData {
 	/**
 	 * The amount of times used to run each agent
 	 */
-	public static final int REPETITION_AMOUNT = 5;
+	public static final int REPETITION_AMOUNT = 1;
 	/**
 	 * The amount of time given for each time step
 	 */

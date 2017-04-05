@@ -50,19 +50,19 @@ public class Chromosome implements Comparable<Chromosome>{
 	/**
 	 * the best automated agent
 	 */
-	private AbstractPlayer automatedAgent;
+	public static AbstractPlayer automatedAgent;
 	/**
 	 * the naive automated agent
 	 */
-	private AbstractPlayer naiveAgent;
+	public static AbstractPlayer naiveAgent;
 	/**
 	 * the do nothing automated agent
 	 */
-	private AbstractPlayer doNothingAgent;
+	public static AbstractPlayer doNothingAgent;
 	/**
 	 * the random agent
 	 */
-	private AbstractPlayer randomAgent;
+	public static AbstractPlayer randomAgent;
 	/**
 	 * The current stateObservation of the level
 	 */
@@ -98,6 +98,8 @@ public class Chromosome implements Comparable<Chromosome>{
 	 */
 	private LevelAnalyzer levAl;
 	
+	
+	public static boolean ConstructedAgents;
 	/**
 	 * Array contains all interactions we want to mutate over
 	 */
@@ -692,8 +694,6 @@ public class Chromosome implements Comparable<Chromosome>{
 		
 		constrainFitness += (0.5) * 1.0 / (errorCount + 1.0);	
 		
-		constructAgent();
-
 		doNothingLength = Integer.MAX_VALUE;
 		for(int i = 0; i < SharedData.REPETITION_AMOUNT; i++) {
 			int temp = this.getAgentResult(getStateObservation().copy(), FEASIBILITY_STEP_LIMIT, this.doNothingAgent);
@@ -1005,11 +1005,11 @@ public class Chromosome implements Comparable<Chromosome>{
 	/**
 	 * initialize the agents used during evaluating the chromosome
 	 */
-	private void constructAgent(){
+	public static void constructAgent(){
 		try{
 			Class agentClass = Class.forName(SharedData.BEST_AGENT_NAME);
 			Constructor agentConst = agentClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
-			automatedAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation().copy(), null);
+			automatedAgent = (AbstractPlayer)agentConst.newInstance(null, null);
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -1018,7 +1018,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		try{
 			Class agentClass = Class.forName(SharedData.NAIVE_AGENT_NAME);
 			Constructor agentConst = agentClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
-			naiveAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation().copy(), null);
+			naiveAgent = (AbstractPlayer)agentConst.newInstance(null, null);
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -1027,7 +1027,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		try{
 			Class agentClass = Class.forName(SharedData.DO_NOTHING_AGENT_NAME);
 			Constructor agentConst = agentClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
-			doNothingAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation().copy(), null);
+			doNothingAgent = (AbstractPlayer)agentConst.newInstance(null, null);
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -1035,7 +1035,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		try{
 			Class agentClass = Class.forName(SharedData.RANDOM_AGENT_NAME);
 			Constructor agentConst = agentClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
-			randomAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation().copy(), null);
+			randomAgent = (AbstractPlayer)agentConst.newInstance(null, null);
 		}
 		catch(Exception e){
 			e.printStackTrace();

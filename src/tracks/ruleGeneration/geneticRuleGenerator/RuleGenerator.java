@@ -255,6 +255,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	 */
 	@Override
 	public String[][] generateRules(SLDescription sl, ElapsedCpuTimer time) {
+		Chromosome.constructAgent();
 		
 		//initialize the statistics objects
  		bestFitness = new ArrayList<Double>();
@@ -440,8 +441,8 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		}
 		
 		// START EVO LOOP
-		while(time.remainingTimeMillis() > 2 * avgTime && time.remainingTimeMillis() > worstTime){
-//		while(numberOfIterations < 2) {
+//		while(time.remainingTimeMillis() > 2 * avgTime && time.remainingTimeMillis() > worstTime){
+		while(numberOfIterations < 6) {
 			ElapsedCpuTimer timer = new ElapsedCpuTimer();
 
 			System.out.println("Generation #" + (numberOfIterations + 1) + ": ");
