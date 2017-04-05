@@ -893,7 +893,7 @@ public abstract class Game
 
         //Play until the game is ended
         while(!isEnded && !wi.windowClosed)
-        {	
+        {
             //Determine the time to adjust framerate.
             long then = System.currentTimeMillis();
 
@@ -903,7 +903,7 @@ public abstract class Game
             long now = System.currentTimeMillis();
             int remaining = (int) Math.max(0, delay - (now-then));
 
-            //Wait until de next cycle.
+            //Wait until the next cycle.
             waitStep(remaining);
 
             //Draw all sprites in the panel.

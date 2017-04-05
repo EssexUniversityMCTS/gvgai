@@ -1,6 +1,7 @@
 package core.player;
 
 import com.google.gson.Gson;
+import core.ServerComm;
 import core.VGDLRegistry;
 import core.game.SerializableStateObservation;
 import core.game.StateObservation;
@@ -18,6 +19,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import static core.ServerComm.commRecv;
+
 /**
  * Created by Daniel on 07.03.2017.
  */
@@ -28,17 +31,7 @@ public class LearningPlayer extends Player {
     /**
      * Last action executed by this agent.
      */
-    private Types.ACTIONS lasAction = null;
-
-    /**
-     * Reader of the player. Will read actions from the client.
-     */
-    public static BufferedReader input;
-
-    /**
-     * Writer of the player. Used to pass the client the state view information.
-     */
-    public static BufferedWriter output;
+    private Types.ACTIONS lastAction = null;
 
     /**
      * Line separator for messages.
@@ -50,80 +43,40 @@ public class LearningPlayer extends Player {
      */
     private Process client;
 
+    /**
+     * Server communication channel
+     */
+    private ServerComm serverComm;
 
     /**
-     * Public constructor of the player.
-     * @param client process that runs the agent.
+     * Learning Player constructor.
+     * Creates a new server side communication channel for every player.
      */
-
-
-    static {
-
-        FileHandler fh;
-
-        try {
-
-            // This block configure the logger with handler and formatter
-            fh = new FileHandler("./debug.txt");
-            logger.addHandler(fh);
-            SimpleFormatter formatter = new SimpleFormatter();
-            fh.setFormatter(formatter);
-
-            // the following statement is used to log any messages
-
-
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    public LearningPlayer(Process proc){
+        this.serverComm = new ServerComm(proc);
     }
 
-    public LearningPlayer(Process client) {
-        isLearner = true;
+//
+//    public LearningPlayer(Process client) {
+//        isLearner = true;
+//
+//
+//        this.client = client;
+//        initBuffers();
+//
+//
+//    }
 
-
-        this.client = client;
-        initBuffers();
-
-
-    }
-
-    /**
-     * Creates the buffers for pipe communication.
-     */
-    private void initBuffers() {
-
-        input = new BufferedReader(new InputStreamReader(client.getInputStream()));
-        output = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
-
-
-    }
-
-    /**
-     * Picks an action. This function is called at the beginning of the game for
-     * initialization.
-     *
-     * @param so    View of the current state.
-     * @param elapsedTimer Timer when the initialization is due to finish.
-     */
-    public void init(StateObservation so, ElapsedCpuTimer elapsedTimer) {
-        Gson serializer = new Gson();
-
-        try {
-            // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
-            so.currentGameState = Types.GAMESTATES.INIT_STATE;
-            SerializableStateObservation sso = new SerializableStateObservation(so);
-            sso.elapsedTimer = elapsedTimer.remainingTimeMillis();
-            commSend(sso.serialize(null));
-
-            String response = commRecv(elapsedTimer, "INIT");
-            logger.fine("Received: " + response);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    /**
+//     * Creates the buffers for pipe communication.
+//     */
+//    private void initBuffers() {
+//
+//        input = new BufferedReader(new InputStreamReader(client.getInputStream()));
+//        output = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
+//
+//
+//    }
 
     public Types.ACTIONS act(SerializableStateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
         return null;
@@ -141,14 +94,14 @@ public class LearningPlayer extends Player {
      */
     @Override
     public Types.ACTIONS act(StateObservation so, ElapsedCpuTimer elapsedTimer) {
-        initBuffers();
+        serverComm.initBuffers();
 
         //Sending messages.
         try {
             // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
             SerializableStateObservation sso = new SerializableStateObservation(so);
             sso.elapsedTimer = elapsedTimer.remainingTimeMillis();
-            commSend(sso.serialize(null));
+            serverComm.commSend(sso.serialize(null));
 
             String response = commRecv(elapsedTimer, "ACT");
             logger.fine("Received ACTION: " + response + "; ACT Response time: "
@@ -179,69 +132,54 @@ public class LearningPlayer extends Player {
     }
 
 
-    // TODO: 27/03/2017 Daniel: check the following two methods, why client side ?
     public void finishGame(StateObservation so, ElapsedCpuTimer elapsedTimer) throws IOException {
-        initBuffers();
-
-        // TODO: 27/03/2017 Daniel: is the game stopped correctly ?
-        // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
-        so.currentGameState = Types.GAMESTATES.END_STATE;
-
-        SerializableStateObservation sso = new SerializableStateObservation(so);
-
-        sso.elapsedTimer = elapsedTimer.remainingTimeMillis();
-        commSend(sso.serialize(null));
-
-        String response = commRecv(elapsedTimer, "GAME_DONE");
-
-        logger.fine("Received: " + response);
-
-        if(so.isGameOver()){
-        // TODO: 04/04/2017 Daniel: start new game
-        }
-
+        serverComm.finishGame(so, elapsedTimer);
     }
 
-    /**
-     * Sends a message through the pipe.
-     *
-     * @param msg message to send.
-     */
-    public void commSend(String msg) throws IOException {
-
-        output.write(msg + lineSep);
-        output.flush();
-
+    public ServerComm getServerComm() {
+        return serverComm;
     }
 
-    /**
-     * Waits for a response during T milliseconds.
-     *
-     * @param elapsedTimer Timer when the initialization is due to finish.
-     * @param idStr        String identifier of the phase the communication is in.
-     * @return the response got from the client, or null if no response was received after due time.
-     */
-    // TODO: 27/03/2017 Daniel: check the whole method
-    public static String commRecv(ElapsedCpuTimer elapsedTimer, String idStr) throws IOException {
-        String ret = null;
+//    /**
+//     * Sends a message through the pipe.
+//     *
+//     * @param msg message to send.
+//     */
+//    public void commSend(String msg) throws IOException {
+//
+//        output.write(msg + lineSep);
+//        output.flush();
+//
+//    }
 
-        while (elapsedTimer.remainingTimeMillis() > 0) {
-            if (input.ready()) {
-
-                ret = input.readLine();
-                if (ret != null && ret.trim().length() > 0) {
-                    //System.out.println("TIME OK");
-                    return ret.trim();
-                }
-            }
-        }
-
-
-        //if(elapsedTimer.remainingTimeMillis() <= 0)
-        //    System.out.println("TIME OUT (" + idStr + "): " + elapsedTimer.elapsedMillis());
-
-        return null;
-    }
+//    /**
+//     * Waits for a response during T milliseconds.
+//     *
+//     * @param elapsedTimer Timer when the initialization is due to finish.
+//     * @param idStr        String identifier of the phase the communication is in.
+//     * @return the response got from the client, or null if no response was received after due time.
+//     */
+//    // TODO: 27/03/2017 Daniel: check the whole method
+//    public static String commRecv(ElapsedCpuTimer elapsedTimer, String idStr) throws IOException {
+//        String ret = null;
+//
+//        while (elapsedTimer.remainingTimeMillis() > 0) {
+//            if (input.ready()) {
+//
+//                ret = input.readLine();
+//                if (ret != null && ret.trim().length() > 0) {
+//                    //System.out.println("TIME OK");
+//                    return ret.trim();
+//                }
+//            }
+//        }
+//
+//
+//        //if(elapsedTimer.remainingTimeMillis() <= 0)
+//        //    System.out.println("TIME OUT (" + idStr + "): " + elapsedTimer.elapsedMillis());
+//
+//        return null;
+//    }
 
 //    public final void close() {
 //        try {
