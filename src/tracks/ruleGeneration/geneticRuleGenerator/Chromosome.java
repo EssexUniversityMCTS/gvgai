@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+
+import javax.xml.bind.JAXB;
+
 import java.util.Arrays;
 import java.awt.Dimension;
 
@@ -50,19 +53,19 @@ public class Chromosome implements Comparable<Chromosome>{
 	/**
 	 * the best automated agent
 	 */
-	public static AbstractPlayer automatedAgent;
+	private AbstractPlayer automatedAgent;
 	/**
 	 * the naive automated agent
 	 */
-	public static AbstractPlayer naiveAgent;
+	private AbstractPlayer naiveAgent;
 	/**
 	 * the do nothing automated agent
 	 */
-	public static AbstractPlayer doNothingAgent;
+	private AbstractPlayer doNothingAgent;
 	/**
 	 * the random agent
 	 */
-	public static AbstractPlayer randomAgent;
+	private AbstractPlayer randomAgent;
 	/**
 	 * The current stateObservation of the level
 	 */
@@ -98,8 +101,6 @@ public class Chromosome implements Comparable<Chromosome>{
 	 */
 	private LevelAnalyzer levAl;
 	
-	
-	public static boolean ConstructedAgents;
 	/**
 	 * Array contains all interactions we want to mutate over
 	 */
@@ -694,6 +695,8 @@ public class Chromosome implements Comparable<Chromosome>{
 		
 		constrainFitness += (0.5) * 1.0 / (errorCount + 1.0);	
 		
+		constructAgent();
+
 		doNothingLength = Integer.MAX_VALUE;
 		for(int i = 0; i < SharedData.REPETITION_AMOUNT; i++) {
 			int temp = this.getAgentResult(getStateObservation().copy(), FEASIBILITY_STEP_LIMIT, this.doNothingAgent);
@@ -713,6 +716,7 @@ public class Chromosome implements Comparable<Chromosome>{
 	 * @param time	how much time to evaluate the chromosome
 	 */
 	public void calculateFitness(long time) {
+		
 		// reset bad frames
 		this.badFrames = 0;
 		// unique events that occurred in all the game simulations
@@ -873,6 +877,11 @@ public class Chromosome implements Comparable<Chromosome>{
 				this.fitness.set(1, fitness);
 			}
 		} 
+		this.randomAgent = null;
+		this.automatedAgent = null;
+		this.doNothingAgent = null;
+		this.naiveAgent = null;
+		System.gc();
 	}
 	/**
 	 * Play the current level using the naive player
@@ -1005,11 +1014,11 @@ public class Chromosome implements Comparable<Chromosome>{
 	/**
 	 * initialize the agents used during evaluating the chromosome
 	 */
-	public static void constructAgent(){
+	private void constructAgent(){
 		try{
 			Class agentClass = Class.forName(SharedData.BEST_AGENT_NAME);
 			Constructor agentConst = agentClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
-			automatedAgent = (AbstractPlayer)agentConst.newInstance(null, null);
+			automatedAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation().copy(), null);
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -1018,7 +1027,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		try{
 			Class agentClass = Class.forName(SharedData.NAIVE_AGENT_NAME);
 			Constructor agentConst = agentClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
-			naiveAgent = (AbstractPlayer)agentConst.newInstance(null, null);
+			naiveAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation().copy(), null);
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -1027,7 +1036,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		try{
 			Class agentClass = Class.forName(SharedData.DO_NOTHING_AGENT_NAME);
 			Constructor agentConst = agentClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
-			doNothingAgent = (AbstractPlayer)agentConst.newInstance(null, null);
+			doNothingAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation().copy(), null);
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -1035,7 +1044,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		try{
 			Class agentClass = Class.forName(SharedData.RANDOM_AGENT_NAME);
 			Constructor agentConst = agentClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
-			randomAgent = (AbstractPlayer)agentConst.newInstance(null, null);
+			randomAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation().copy(), null);
 		}
 		catch(Exception e){
 			e.printStackTrace();

@@ -255,7 +255,6 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	 */
 	@Override
 	public String[][] generateRules(SLDescription sl, ElapsedCpuTimer time) {
-		Chromosome.constructAgent();
 		
 		//initialize the statistics objects
  		bestFitness = new ArrayList<Double>();
