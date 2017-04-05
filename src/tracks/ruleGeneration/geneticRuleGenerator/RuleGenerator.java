@@ -93,6 +93,15 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		numOfFeasible.add(fPopulation.size());
 		numOfInFeasible.add(iPopulation.size());
 
+		
+		// CLEANSING PART
+		// cleanse the population 
+		for(Chromosome c : fPopulation) {
+			c.cleanseChromosome();
+		}
+		for(Chromosome c: iPopulation) {
+			c.cleanseChromosome();
+		}
 
 
 		while(newPopulation.size() < SharedData.POPULATION_SIZE){
@@ -150,6 +159,25 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		//calculate fitness of the new population chromosomes
 		for(int i=0;i<newPopulation.size();i++){
 			newPopulation.get(i).calculateFitness(SharedData.EVALUATION_TIME);
+			try (FileWriter fw = new FileWriter(SharedData.filename, true);
+					BufferedWriter bw = new BufferedWriter(fw);
+					PrintWriter out = new PrintWriter(bw)) {
+				out.println("*****");
+				String[][] decoded = sl.modifyRules(newPopulation.get(i).getRuleset()[0], newPopulation.get(i).getRuleset()[1], 0);
+				// print out chromosome
+				for (String[] q : decoded) {
+					out.println(" ");
+					for(String s : q) {
+						out.println(s);
+					}
+				}
+				newPopulation.get(i).calculateFitness(SharedData.EVALUATION_TIME);
+				out.println("Chromosome " + (i+1) + " : Fitness = " + newPopulation.get(i).getFitness());
+
+			} catch (Exception ex) {
+				System.out.println(ex.getMessage());
+			}
+
 			if(newPopulation.get(i).getConstrainFitness() < 1){
 				System.out.println("\tChromosome #" + (i+1) + " Constrain Fitness: " + newPopulation.get(i).getConstrainFitness());
 			}
@@ -184,15 +212,9 @@ public class RuleGenerator extends AbstractRuleGenerator{
 			try (FileWriter fw = new FileWriter(SharedData.filename, true);
 					BufferedWriter bw = new BufferedWriter(fw);
 					PrintWriter out = new PrintWriter(bw)) {
-				out.println("*****");
-				out.println("Chromosome " + (i+1) + " : Fitness = " + newPopulation.get(i).getFitness());
-				String[][] decoded = sl.modifyRules(newPopulation.get(i).getRuleset()[0], newPopulation.get(i).getRuleset()[1], 0);
-				for(int q = 0; q < decoded.length; q++) {
-					out.println("=====");
-					for(int w = 0; w < decoded[q].length; w++) {
-						out.println(decoded[q][w]);
-					}
-				}
+//				out.println("*****");
+//				out.println("Chromosome " + (i+1) + " : Fitness = " + newPopulation.get(i).getFitness());
+//				String[][] decoded = sl.modifyRules(newPopulation.get(i).getRuleset()[0], newPopulation.get(i).getRuleset()[1], 0);
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
 			}
@@ -243,6 +265,10 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		ArrayList<Chromosome> fChromosomes = new ArrayList<Chromosome>();
 		ArrayList<Chromosome> iChromosomes = new ArrayList<Chromosome>();
 		ArrayList<Chromosome> allChromosomes = new ArrayList<Chromosome>();
+		
+		// contains the constructed chromosomes only
+		ArrayList<Chromosome> constructedChromosomes = new ArrayList<Chromosome>();
+		
 		int counter = 1;
 		randomGen = new tracks.ruleGeneration.randomRuleGenerator.RuleGenerator(sl, time);
 		constructGen = new tracks.ruleGeneration.constructiveRuleGenerator.RuleGenerator(sl, time);
@@ -250,6 +276,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		
 		for(int i = 0; i < SharedData.POPULATION_SIZE * SharedData.INIT_CONSTRUCT_PERCENT; i++) {
 			Chromosome c = new Chromosome(constructGen.generateRules(sl, time), sl, time);
+			c.cleanseChromosome();
 			String[][] decoded = sl.modifyRules(c.getRuleset()[0], c.getRuleset()[1], 0);
 			for(int q = 0; q < decoded.length; q++) {
 				System.out.println("=====");
@@ -266,6 +293,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 				fChromosomes.add(c);
 				System.out.println("\tChromosome #" + (counter) + " Fitness: " + c.getFitness());
 			}
+			
 			/**
 			 * Writing Stuff
 			 */
@@ -291,6 +319,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 			 */
 			avgFitness += c.getFitness().get(1);
 			allChromosomes.add(c);
+			constructedChromosomes.add(c);
 			counter++;
 		}
 		
@@ -298,7 +327,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		
 		for(int i = 0; i < count; i++) {
 			Chromosome c = new Chromosome(randomGen.generateRules(sl, time), sl, time);
-			
+			c.cleanseChromosome();
 			String[][] decoded = sl.modifyRules(c.getRuleset()[0], c.getRuleset()[1], 0);
 			for(int q = 0; q < decoded.length; q++) {
 				System.out.println("=====");
@@ -308,6 +337,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 			}
 			
 			c.calculateFitness(SharedData.EVALUATION_TIME);
+
 			if(c.getConstrainFitness() < 1){
 				iChromosomes.add(c);
 				System.out.println("\tChromosome #" + (counter) + " Constrain Fitness: " + c.getConstrainFitness());
@@ -333,9 +363,11 @@ public class RuleGenerator extends AbstractRuleGenerator{
 						out.println(s);
 					}
 				}
+
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
 			}
+
 			/**
 			 * End Writing stuff
 			 */
@@ -346,10 +378,11 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		}
 		
 		for(int i = 0; i < SharedData.POPULATION_SIZE * SharedData.INIT_MUT_PERCENT; i++) {
-			Chromosome c = allChromosomes.get(SharedData.random.nextInt(allChromosomes.size()));
+			Chromosome c = constructedChromosomes.get(SharedData.random.nextInt(constructedChromosomes.size()));
 			for(int j = 0; j < SharedData.INIT_MUTATION_AMOUNT; j++) {
 				c.mutate();
 			}
+			c.cleanseChromosome();
 			String[][] decoded = sl.modifyRules(c.getRuleset()[0], c.getRuleset()[1], 0);
 			for(int q = 0; q < decoded.length; q++) {
 				System.out.println("=====");
@@ -405,7 +438,10 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 		}
+		
+		// START EVO LOOP
 		while(time.remainingTimeMillis() > 2 * avgTime && time.remainingTimeMillis() > worstTime){
+//		while(numberOfIterations < 2) {
 			ElapsedCpuTimer timer = new ElapsedCpuTimer();
 
 			System.out.println("Generation #" + (numberOfIterations + 1) + ": ");
@@ -416,6 +452,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
 			}
+			
 			//get the new population and split it to a the feasible and infeasible populations
 			ArrayList<Chromosome> chromosomes = getNextPopulation(fChromosomes, iChromosomes);
 			fChromosomes.clear();

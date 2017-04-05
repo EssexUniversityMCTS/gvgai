@@ -26,12 +26,12 @@ public class SharedData {
 	/**
 	 * the amount of time to evaluate a single level
 	 */
-	public static final long EVALUATION_TIME = 5000;
+	public static final long EVALUATION_TIME = 10000;
 	
 	/**
 	 * number of the best chromosomes that are transfered from one generation to another
 	 */
-	public static final int ELITISM_NUMBER = 5;
+	public static final int ELITISM_NUMBER = 1;
 	
 	/**
 	 * Crossover probability
@@ -45,7 +45,7 @@ public class SharedData {
 	/**
 	 * The percentage of the initial population that is randomly generated
 	 */
-	public static final double INIT_RANDOM_PERCENT = 0.3;
+	public static final double INIT_RANDOM_PERCENT = 0.4;
 	/**
 	 * The percentage of the initial population that is constructively generated
 	 */
@@ -54,12 +54,12 @@ public class SharedData {
 	 * The percentage of the initial population that is mutationally generated based
 	 * off what already exists (random and constructive) in the population
 	 */
-	public static final double INIT_MUT_PERCENT = 0.5;
+	public static final double INIT_MUT_PERCENT = 0.4;
 	
 	/**
 	 * the initial amount of mutations in the init pop
 	 */
-	public static final int INIT_MUTATION_AMOUNT = 20;
+	public static final int INIT_MUTATION_AMOUNT = 10;
 	/**
 	 * random object to help in choosing random stuff
 	 */
@@ -77,23 +77,29 @@ public class SharedData {
 	/**
 	 * The name of a the best agent with some human error
 	 */
-	public static final String BEST_AGENT_NAME = "tracks.singlePlayer.advanced.sampleMCTS.Agent";
+	public static final String BEST_AGENT_NAME = "tracks.singlePlayer.advanced.olets.Agent";
 	/**
 	 * The name of a naive agent
 	 */
-	public static final String NAIVE_AGENT_NAME = "tracks.singlePlayer.simple.sampleonesteplookahead.Agent";
+	public static final String NAIVE_AGENT_NAME = "tracks.singlePlayer.advanced.sampleMCTS.Agent";
 	/**
 	 * The name of the random agent
 	 */
-	public static final String RANDOM_AGENT_NAME = "tracks.singlePlayer.simple.sampleRandom.Agent";
+	public static final String RANDOM_AGENT_NAME = "tracks.singlePlayer.simple.simpleRandom.Agent";
 	/**
 	 * The name of the do nothing agent
 	 */
 	public static final String DO_NOTHING_AGENT_NAME = "tracks.singlePlayer.simple.doNothing.Agent";
+	
 	/**
-	 * The amount of times used to check the one step look ahead and do nothing algorithm
+	 * How many steps the best agent gets to evaluate a game
 	 */
-	public static final int REPETITION_AMOUNT = 3;
+	public static final int EVALUATION_STEP_COUNT = 300;
+	
+	/**
+	 * The amount of times used to run each agent
+	 */
+	public static final int REPETITION_AMOUNT = 5;
 	/**
 	 * The amount of time given for each time step
 	 */
@@ -137,12 +143,12 @@ public class SharedData {
 	/**
 	 * The upper bound on a numerical value for a parameter insertion
 	 */
-	public static final int NUMERICAL_VALUE_PARAM = 100;
+	public static final int NUMERICAL_VALUE_PARAM = 2000;
 	
 	/**
 	 * The upper bound on a numerical value for a termination limit parameter insertion
 	 */
-	public static final int TERMINATION_LIMIT_PARAM = 30000;
+	public static final int TERMINATION_LIMIT_PARAM = 1000;
 	
 	/**
 	 * Protects the fitness function from looping forever
