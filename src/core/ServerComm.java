@@ -115,7 +115,6 @@ public class ServerComm {
     public void commSend(String msg) throws IOException {
         output.write(msg + lineSep);
         output.flush();
-
     }
 
     /**

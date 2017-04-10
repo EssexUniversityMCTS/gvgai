@@ -1,7 +1,6 @@
 import com.google.gson.Gson;
-import core.game.SerializableStateObservation;
+import ontology.Game;
 import ontology.Avatar;
-import ontology.BitGrid;
 import ontology.Game;
 
 import java.awt.*;
@@ -45,7 +44,7 @@ public class ClientComm {
     /**
      * Game information
      */
-    public Game game;
+    public ontology.Game game;
 
     /**
      * Avatar information

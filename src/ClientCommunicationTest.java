@@ -9,7 +9,7 @@ import java.util.Random;
 public class ClientCommunicationTest {
     public static void main(String[] args) throws Exception {
         //Available controllers:
-        String javaController = "..\\clients\\GVGAI-JavaClient\\src\\JavaClient.java";
+        String javaController = "src\\runClient.bat";
 
         //Available games:
         String gamesPath = "examples/gridphysics/";

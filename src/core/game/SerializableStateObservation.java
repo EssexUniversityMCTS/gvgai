@@ -61,12 +61,14 @@ public class SerializableStateObservation {
         gameWinner = s.getGameWinner();
         isGameOver = s.isGameOver();
 
+        worldDimension = new double[2];
         worldDimension[0] = s.getWorldDimension().getWidth();
         worldDimension[1] = s.getWorldDimension().getHeight();
 
         blockSize = s.getBlockSize();
         avatarSpeed = (float) s.getAvatarSpeed();
 
+        avatarOrientation = new double[2];
         avatarOrientation[0] = s.getAvatarOrientation().x;
         avatarOrientation[1] = s.getAvatarOrientation().y;
 
