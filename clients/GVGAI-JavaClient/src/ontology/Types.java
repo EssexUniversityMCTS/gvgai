@@ -12,6 +12,12 @@ public class Types {
         ACTION_RIGHT,
         ACTION_USE,
         ACTION_ESCAPE;
+
+        private static ACTIONS[] vals = values();
+
+        public ACTIONS next(){
+            return vals[(this.ordinal()+1) % vals.length];
+        }
     }
 
     public static enum WINNER {

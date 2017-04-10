@@ -2,6 +2,7 @@ import com.google.gson.Gson;
 import ontology.Game;
 import ontology.Avatar;
 import ontology.Game;
+import ontology.Types;
 
 import java.awt.*;
 import java.io.*;
@@ -107,8 +108,7 @@ public class ClientComm {
             {
                 // TODO: 27/03/2017 Daniel: no agent for the moment
                 //This is the place to think and return what action to take.
-                int rndActionIdx = new Random().nextInt(avatar.actionList.size());
-                String rndAction = avatar.actionList.get(rndActionIdx);
+                String rndAction = Types.ACTIONS.ACTION_NIL.toString();
                 writeToServer(rndAction);
 
             }else if(commState == COMM_STATE.ENDED_END)
@@ -152,7 +152,7 @@ public class ClientComm {
     private void writeToServer(String line) throws IOException
     {
         output.write(line + lineSep);
-        output.flush();
+        //output.flush();
     }
 
     public COMM_STATE processCommandLine(String commLine)

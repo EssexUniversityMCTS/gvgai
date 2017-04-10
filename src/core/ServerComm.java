@@ -114,7 +114,7 @@ public class ServerComm {
      */
     public void commSend(String msg) throws IOException {
         output.write(msg + lineSep);
-        output.flush();
+        //output.flush();
     }
 
     /**
@@ -124,7 +124,7 @@ public class ServerComm {
      * @param idStr        String identifier of the phase the communication is in.
      * @return the response got from the client, or null if no response was received after due time.
      */
-    public static String commRecv(ElapsedCpuTimer elapsedTimer, String idStr) throws IOException {
+    public String commRecv(ElapsedCpuTimer elapsedTimer, String idStr) throws IOException {
         String ret = null;
 
         while (elapsedTimer.remainingTimeMillis() > 0) {

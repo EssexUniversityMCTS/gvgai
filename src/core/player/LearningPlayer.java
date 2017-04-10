@@ -19,8 +19,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import static core.ServerComm.commRecv;
-
 /**
  * Created by Daniel on 07.03.2017.
  */
@@ -103,7 +101,7 @@ public class LearningPlayer extends Player {
             sso.elapsedTimer = elapsedTimer.remainingTimeMillis();
             serverComm.commSend(sso.serialize(null));
 
-            String response = commRecv(elapsedTimer, "ACT");
+            String response = serverComm.commRecv(elapsedTimer, "ACT");
             logger.fine("Received ACTION: " + response + "; ACT Response time: "
                     + elapsedTimer.elapsedMillis() + " ms.");
 
