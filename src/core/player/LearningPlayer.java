@@ -92,6 +92,8 @@ public class LearningPlayer extends Player {
      */
     @Override
     public Types.ACTIONS act(StateObservation so, ElapsedCpuTimer elapsedTimer) {
+        final StringBuilder stringBuilder = new StringBuilder();
+
         serverComm.initBuffers();
 
         //Sending messages.
@@ -101,7 +103,17 @@ public class LearningPlayer extends Player {
             sso.elapsedTimer = elapsedTimer.remainingTimeMillis();
             serverComm.commSend(sso.serialize(null));
 
-            String response = serverComm.commRecv(elapsedTimer, "ACT");
+
+            new Thread(() -> {
+                try {
+                    String line = serverComm.commRecv(elapsedTimer, "ACT");
+                    stringBuilder.append(line);
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+            }).run();
+
+            String response = stringBuilder.toString();
             logger.fine("Received ACTION: " + response + "; ACT Response time: "
                     + elapsedTimer.elapsedMillis() + " ms.");
 

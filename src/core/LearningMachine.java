@@ -237,12 +237,11 @@ public class LearningMachine {
      */
     private static LearningPlayer createPlayer(String cmd) throws IOException {
 
-
         Process client;
 
-
-        client = Runtime.getRuntime().exec(cmd);
-
+        ProcessBuilder builder = new ProcessBuilder(cmd);
+        builder.redirectErrorStream(true);
+        client = builder.start();
 
         return new LearningPlayer(client);
     }

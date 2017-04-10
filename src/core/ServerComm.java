@@ -79,11 +79,8 @@ public class ServerComm {
      * Creates the buffers for pipe communication.
      */
     public void initBuffers() {
-
         input = new BufferedReader(new InputStreamReader(client.getInputStream()));
         output = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
-
-
     }
 
     public void finishGame(StateObservation so, ElapsedCpuTimer elapsedTimer) throws IOException {
@@ -129,7 +126,6 @@ public class ServerComm {
 
         while (elapsedTimer.remainingTimeMillis() > 0) {
             if (input.ready()) {
-
                 ret = input.readLine();
                 if (ret != null && ret.trim().length() > 0) {
                     //System.out.println("TIME OK");
@@ -162,6 +158,8 @@ public class ServerComm {
 
             String response = commRecv(elapsedTimer, "INIT");
             logger.fine("Received: " + response);
+            if ("INIT_DONE".equals(response))
+                System.out.println("Init done");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
