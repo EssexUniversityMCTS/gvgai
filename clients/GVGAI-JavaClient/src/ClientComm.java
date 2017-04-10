@@ -35,7 +35,7 @@ public class ClientComm {
     /**
      * Communication state
      */
-    private COMM_STATE commState;
+    public COMM_STATE commState;
 
     /**
      * Number of games played
@@ -124,6 +124,8 @@ public class ClientComm {
 
                 // TODO: 27/03/2017 Daniel:  after stopped, start another game ???
                 writeToServer("GAME_DONE");
+            } else {
+                writeToServer("null");
             }
 
             messageIdx++;
