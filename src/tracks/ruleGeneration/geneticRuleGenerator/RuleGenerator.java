@@ -16,6 +16,7 @@ import ontology.Types;
 import tools.ElapsedCpuTimer;
 import tools.LevelAnalyzer;
 import tools.LevelMapping;
+import tracks.ruleGeneration.TestRuleGeneration;
 
 public class RuleGenerator extends AbstractRuleGenerator{
 
@@ -163,7 +164,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 					BufferedWriter bw = new BufferedWriter(fw);
 					PrintWriter out = new PrintWriter(bw)) {
 				out.println("*****");
-				String[][] decoded = sl.modifyRules(newPopulation.get(i).getRuleset()[0], newPopulation.get(i).getRuleset()[1], 0);
+				String[][] decoded = sl.modifyRules(newPopulation.get(i).getRuleset()[0], newPopulation.get(i).getRuleset()[1], TestRuleGeneration.seedMain);
 				// print out chromosome
 				for (String[] q : decoded) {
 					out.println(" ");
@@ -277,7 +278,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		for(int i = 0; i < SharedData.POPULATION_SIZE * SharedData.INIT_CONSTRUCT_PERCENT; i++) {
 			Chromosome c = new Chromosome(constructGen.generateRules(sl, time), sl, time);
 			c.cleanseChromosome();
-			String[][] decoded = sl.modifyRules(c.getRuleset()[0], c.getRuleset()[1], 0);
+			String[][] decoded = sl.modifyRules(c.getRuleset()[0], c.getRuleset()[1], TestRuleGeneration.seedMain);
 			for(int q = 0; q < decoded.length; q++) {
 				System.out.println("=====");
 				for(int w = 0; w < decoded[q].length; w++) {
@@ -328,7 +329,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		for(int i = 0; i < count; i++) {
 			Chromosome c = new Chromosome(randomGen.generateRules(sl, time), sl, time);
 			c.cleanseChromosome();
-			String[][] decoded = sl.modifyRules(c.getRuleset()[0], c.getRuleset()[1], 0);
+			String[][] decoded = sl.modifyRules(c.getRuleset()[0], c.getRuleset()[1], TestRuleGeneration.seedMain);
 			for(int q = 0; q < decoded.length; q++) {
 				System.out.println("=====");
 				for(int w = 0; w < decoded[q].length; w++) {
@@ -383,7 +384,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 				c.mutate();
 			}
 			c.cleanseChromosome();
-			String[][] decoded = sl.modifyRules(c.getRuleset()[0], c.getRuleset()[1], 0);
+			String[][] decoded = sl.modifyRules(c.getRuleset()[0], c.getRuleset()[1], TestRuleGeneration.seedMain);
 			for(int q = 0; q < decoded.length; q++) {
 				System.out.println("=====");
 				for(int w = 0; w < decoded[q].length; w++) {
@@ -440,8 +441,8 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		}
 		
 		// START EVO LOOP
-//		while(time.remainingTimeMillis() > 2 * avgTime && time.remainingTimeMillis() > worstTime){
-		while(numberOfIterations < 6) {
+		while(time.remainingTimeMillis() > 2 * avgTime && time.remainingTimeMillis() > worstTime){
+//		while(numberOfIterations < 12) {
 			ElapsedCpuTimer timer = new ElapsedCpuTimer();
 
 			System.out.println("Generation #" + (numberOfIterations + 1) + ": ");

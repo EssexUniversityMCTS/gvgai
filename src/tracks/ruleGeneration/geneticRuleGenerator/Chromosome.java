@@ -415,6 +415,14 @@ public class Chromosome implements Comparable<Chromosome>{
 				addToMe += " " + nParam;
 				// replace the old rule with the modified one
 				ruleset[1][point] = addToMe;
+				
+				// DEBUG CODE loop through terminations and find a bug
+				for(int i = 0; i < this.ruleset[1].length; i++) {
+					if(ruleset[1][i].contains("limit= ")) {
+						System.out.println("Broken");
+					}
+				
+				}
 			}
 			// insert an entirely new rule, possibly with a parameter in it
 			else {
@@ -460,6 +468,15 @@ public class Chromosome implements Comparable<Chromosome>{
 				// redefine the termination array with the termination array list
 				ruleset[1] = new String[terminationSet.size()];
 				ruleset[1] = terminationSet.toArray(ruleset[1]);
+				
+				
+				// DEBUG CODE loop through terminations and find a bug
+				for(int i = 0; i < this.ruleset[1].length; i++) {
+					if(ruleset[1][i].contains("limit= ")) {
+						System.out.println("Broken");
+					}
+				
+				}
 			}
 		} 
 		// we do a deletion
@@ -502,6 +519,14 @@ public class Chromosome implements Comparable<Chromosome>{
 				// redefine the interaction array with the interaction array list
 				ruleset[1] = new String[terminationSet.size()];
 				ruleset[1] = terminationSet.toArray(ruleset[1]);
+				
+				// DEBUG CODE loop through terminations and find a bug
+				for(int i = 0; i < this.ruleset[1].length; i++) {
+					if(ruleset[1][i].contains("limit= ")) {
+						System.out.println("Broken");
+					}
+				
+				}
 			}
 			// delete an entire rule from the interaction set
 			else{
@@ -517,6 +542,14 @@ public class Chromosome implements Comparable<Chromosome>{
 				// redefine the interaction array with the interaction array list
 				ruleset[1] = new String[terminationSet.size()];
 				ruleset[1] = terminationSet.toArray(ruleset[1]);
+				
+				// DEBUG CODE loop through terminations and find a bug
+				for(int i = 0; i < this.ruleset[1].length; i++) {
+					if(ruleset[1][i].contains("limit= ")) {
+						System.out.println("Broken");
+					}
+				
+				}
 			}
 		} 
 		// modify a rule from the interaction set by changing its parameters
@@ -567,6 +600,7 @@ public class Chromosome implements Comparable<Chromosome>{
 								// if this is a timeout rule, special conditions apply,  make so limit is at least 500
 								if(fixedRule.contains("Timeout")) {
 									int roll2 = SharedData.random.nextInt(SharedData.TERMINATION_LIMIT_PARAM) + 500;
+									nParam += roll2;
 								}
 								else{
 									// roll dice to see how high the new limit is
@@ -592,6 +626,14 @@ public class Chromosome implements Comparable<Chromosome>{
 				// redefine the interaction array with the interaction array list
 				ruleset[1] = new String[terminationSet.size()];
 				ruleset[1] = terminationSet.toArray(ruleset[1]);
+				
+				// DEBUG CODE loop through terminations and find a bug
+				for(int i = 0; i < this.ruleset[1].length; i++) {
+					if(ruleset[1][i].contains("limit= ")) {
+						System.out.println("Broken");
+					}
+				
+				}
 			} 
 			// modify a rule, but leave the parameters and sprites
 			else {
@@ -606,12 +648,22 @@ public class Chromosome implements Comparable<Chromosome>{
 					newRule += part + " ";
 				}
 				ruleset[1][point] = newRule;
+				
+				// DEBUG CODE loop through terminations and find a bug
+				for(int i = 0; i < this.ruleset[1].length; i++) {
+					if(ruleset[1][i].contains("limit= ")) {
+						System.out.println("Broken");
+					}
+				
+				}
 			}
 		} 
 		// we should never ever reach this point
 		else {
 			System.err.println("What?! Howd we even get here!?");
 		}
+		
+
 	}
 	/**
 	 * clone the chromosome data
@@ -694,22 +746,23 @@ public class Chromosome implements Comparable<Chromosome>{
 		double fourtyFramesFitness = 0.0;
 		constrainFitness = 0;
 		constrainFitness += (0.5) * 1.0 / (errorCount + 1.0);	
-		
-		constructAgent();
-
-		doNothingLength = Integer.MAX_VALUE;
-		for(int i = 0; i < SharedData.REPETITION_AMOUNT; i++) {
-			int temp = this.getAgentResult(getStateObservation().copy(), FEASIBILITY_STEP_LIMIT, this.doNothingAgent);
-			if(temp < doNothingLength){
-				doNothingLength = temp;
+		if(constrainFitness >= 0.5) {
+			constructAgent();
+	
+			doNothingLength = Integer.MAX_VALUE;
+			for(int i = 0; i < SharedData.REPETITION_AMOUNT; i++) {
+				int temp = this.getAgentResult(getStateObservation().copy(), FEASIBILITY_STEP_LIMIT, this.doNothingAgent);
+				if(temp < doNothingLength){
+					doNothingLength = temp;
+				}
 			}
-		}
-		constrainFitness += 0.2 * (doNothingLength / (40.0));
-		
-		this.fitness.set(0, constrainFitness);
-		if(constrainFitness > 1)
-		{
-			System.out.println("This is wrong");
+			constrainFitness += 0.2 * (doNothingLength / (40.0));
+			
+			this.fitness.set(0, constrainFitness);
+			if(constrainFitness > 1)
+			{
+				System.out.println("This is wrong");
+			}
 		}
 		return;
 	}
@@ -838,7 +891,8 @@ public class Chromosome implements Comparable<Chromosome>{
 					}
 				score = -200;
 			}
-			if(this.badFrames > 0) {
+			double badFramePercent = badFrames / (1.0 * frameCount);
+			if(badFramePercent > .5) {
 				// if we have bad frames, this is still not a good game
 				constrainFitness += 0.3 * (1 - badFrames / (1.0 * frameCount));
 				this.fitness.set(0, constrainFitness);

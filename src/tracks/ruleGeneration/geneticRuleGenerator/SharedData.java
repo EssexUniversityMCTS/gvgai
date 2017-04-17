@@ -13,7 +13,7 @@ public class SharedData {
 	/**
 	 * The size of the Genetic Algorithm Population
 	 */
-	public static final int POPULATION_SIZE = 20;
+	public static final int POPULATION_SIZE = 50;
 	/**
 	 * useful sprites in the game
 	 */

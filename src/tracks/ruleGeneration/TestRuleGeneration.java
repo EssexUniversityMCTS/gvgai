@@ -11,6 +11,7 @@ import core.logging.Logger;
  */
 public class TestRuleGeneration {
 
+	public static int seedMain;
     public static void main(String[] args) {
 
         // Available Rule Generator
@@ -53,9 +54,13 @@ public class TestRuleGeneration {
 
         // Other settings
         boolean visuals = true;
-        int seed = new Random().nextInt();
+//        int seed = new Random().nextInt();
+        int seed = 1652279126;
+        seedMain = seed;
+        
+        System.out.println(seed);
 //        int seed = 0;
-        int gameIdx = 0;
+        int gameIdx = 76;
         int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
         String game = generateRulePath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
