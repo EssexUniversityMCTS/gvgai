@@ -161,6 +161,13 @@ public class Types {
         public int key() {return key;}
     }
 
+    /**
+     * This is an enum type that describes the potential states of the game
+     */
+    public static enum GAMESTATES{
+        INIT_STATE, ACT_STATE, END_STATE, ABORT_STATE
+    }
+
     public static enum MOVEMENT {
         STILL,
         ROTATE,

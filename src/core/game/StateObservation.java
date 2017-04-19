@@ -35,6 +35,11 @@ public class StateObservation {
     }
 
     /**
+     * Field to represent the current game's state.
+     */
+    public Types.GAMESTATES currentGameState;
+
+    /**
      * Returns an exact copy of the state observation object.
      *
      * @return a copy of the state observation.
@@ -67,6 +72,16 @@ public class StateObservation {
     {
         model.setNewSeed(seed);
     }
+
+    /**
+     * Return the current state of the game
+     * @return current state of the game as a GAMESTATES type.
+     */
+    public Types.GAMESTATES getGameState()
+    {
+        return this.currentGameState;
+    }
+
 
     /**
      * Returns the actions that are available in this game for
