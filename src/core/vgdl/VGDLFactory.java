@@ -49,7 +49,8 @@ public class VGDLFactory
              "FlakAvatar", "HorizontalAvatar", "VerticalAvatar", "MovingAvatar","MissileAvatar",
              "OrientedAvatar","ShootAvatar", "OngoingAvatar", "OngoingTurningAvatar", "BomberRandomMissile",
              "OngoingShootAvatar", "NullAvatar", "AimedAvatar", "MarioAvatar", "BirdAvatar",
-             "SpaceshipAvatar", "CarAvatar", "WizardAvatar", "LanderAvatar"};
+             "SpaceshipAvatar", "CarAvatar", "WizardAvatar", "LanderAvatar", "ShootOnlyAvatar", "SpawnPointMultiSprite",
+                    "LOSChaser"};
 
 
     /**
@@ -64,7 +65,8 @@ public class VGDLFactory
              FlakAvatar.class, HorizontalAvatar.class, VerticalAvatar.class, MovingAvatar.class,MissileAvatar.class,
              OrientedAvatar.class,ShootAvatar.class, OngoingAvatar.class, OngoingTurningAvatar.class, BomberRandomMissile.class,
              OngoingShootAvatar.class, NullAvatar.class, AimedAvatar.class, MarioAvatar.class, BirdAvatar.class,
-             SpaceshipAvatar.class, CarAvatar.class, WizardAvatar.class, LanderAvatar.class};
+             SpaceshipAvatar.class, CarAvatar.class, WizardAvatar.class, LanderAvatar.class, ShootOnlyAvatar.class, SpawnPointMultiSprite.class,
+                    LOSChaser.class};
 
     /**
      * Available effects for VGDL.
@@ -79,7 +81,7 @@ public class VGDLFactory
                     "transformToAll", "addTimer", "killIfFrontal", "killIfNotFrontal", "spawnBehind",
                     "updateSpawnType", "removeScore", "increaseSpeedToAll", "decreaseSpeedToAll", "setSpeedForAll", "transformToRandomChild",
                     "addHealthPointsToMax", "spawnIfCounterSubTypes", "bounceDirection", "wallBounce", "killIfSlow", "killIfAlive", 
-                    "waterPhysics", "halfSpeed", "killIfNotUpright"
+                    "waterPhysics", "halfSpeed", "killIfNotUpright", "killIfFast"
             };
 
     /**
@@ -95,7 +97,7 @@ public class VGDLFactory
                     TransformToAll.class, AddTimer.class, KillIfFrontal.class, KillIfNotFrontal.class, SpawnBehind.class, UpdateSpawnType.class,
                     RemoveScore.class, IncreaseSpeedToAll.class, DecreaseSpeedToAll.class, SetSpeedForAll.class, TransformToRandomChild.class,
                     AddHealthPointsToMax.class, SpawnIfCounterSubTypes.class, BounceDirection.class, WallBounce.class, KillIfSlow.class, 
-                    KillIfAlive.class, WaterPhysics.class, HalfSpeed.class, KillIfNotUpright.class
+                    KillIfAlive.class, WaterPhysics.class, HalfSpeed.class, KillIfNotUpright.class, KillIfFast.class
             };
 
 
@@ -322,10 +324,12 @@ public class VGDLFactory
 
         }catch (NoSuchMethodException e)
         {
+            e.printStackTrace();
             System.out.println("Error creating termination condition " + content.identifier);
             throw new Exception("Line: " + content.lineNumber + " Error creating termination condition " + content.identifier);
         }catch (Exception e)
         {
+            e.printStackTrace();
             System.out.println("Error creating termination condition " + content.identifier);
             throw new Exception("Line: " + content.lineNumber + " Error creating termination condition " + content.identifier);
         }
@@ -363,7 +367,7 @@ public class VGDLFactory
                     objVal = cfield.get(null);
                 } catch (Exception e) {
                     try {
-                        if (!parameter.equalsIgnoreCase("scoreChange"))
+                        if (!parameter.equalsIgnoreCase("scoreChange") && !parameter.equalsIgnoreCase("scoreChangeIfKilled"))
                             objVal = Integer.parseInt(value);
                         else objVal = value;
                     } catch (NumberFormatException e1) {
@@ -372,7 +376,8 @@ public class VGDLFactory
                         } catch (NumberFormatException e2) {
                             try {
                                 if((value.equalsIgnoreCase("true") ||
-                                   value.equalsIgnoreCase("false") ) && !parameter.equalsIgnoreCase("win"))
+                                   value.equalsIgnoreCase("false") ) && !parameter.equalsIgnoreCase("win")
+                                        && !parameter.equalsIgnoreCase("hidden")  && !parameter.equalsIgnoreCase("invisible"))
                                     objVal = Boolean.parseBoolean(value);
                                 else
                                     objVal = value;

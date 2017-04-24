@@ -20,7 +20,7 @@ import tools.*;
  */
 public class MovingAvatar extends VGDLSprite {
 
-    public boolean alternate_keys;
+	public boolean alternate_keys;
     public ArrayList<Types.ACTIONS> actions;
     public ArrayList<Types.ACTIONS> actionsNIL;
     public Player player;
@@ -62,7 +62,7 @@ public class MovingAvatar extends VGDLSprite {
         color = Types.WHITE;
         speed = 1;
         is_avatar = true;
-        alternate_keys = false;
+		alternate_keys = false;
         is_disqualified = false;
     }
 
@@ -139,7 +139,7 @@ public class MovingAvatar extends VGDLSprite {
 
         Types.ACTIONS action;
         if (game.no_players > 1) {
-            action = this.player.act(game.getObservationMulti(), ect.copy());
+            action = this.player.act(game.getObservationMulti(playerID), ect.copy());
         } else {
             action = this.player.act(game.getObservation(), ect.copy());
         }
@@ -267,7 +267,7 @@ public class MovingAvatar extends VGDLSprite {
 
     public void copyTo(VGDLSprite target) {
         MovingAvatar targetSprite = (MovingAvatar) target;
-        targetSprite.alternate_keys = this.alternate_keys;
+		targetSprite.alternate_keys = this.alternate_keys;
         targetSprite.actions = new ArrayList<Types.ACTIONS>();
         targetSprite.actionsNIL = new ArrayList<Types.ACTIONS>();
         targetSprite.playerID = this.playerID;

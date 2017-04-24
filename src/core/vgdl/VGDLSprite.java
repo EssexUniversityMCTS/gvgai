@@ -172,12 +172,12 @@ public abstract class VGDLSprite {
      * Indicates if the sprite is invisible. If it is, the effect is that
      * it is not drawn.
      */
-    public boolean invisible;
+    public String invisible;
 
     /**
      * If true, this sprite is never present in the observations passed to the controller.
      */
-    public boolean hidden;
+    public String hidden;
     
     /**
      * Indicates if the tile support autotiling
@@ -305,7 +305,13 @@ public abstract class VGDLSprite {
      * The sprites rotation
      */
     public double rotation;
-    
+
+    /**
+     * Multipliers for sprite's rectangle size
+     */
+    public double wMult = 1.0;
+    public double hMult = 1.0;
+
     /**
      * The sprites size
      */
@@ -320,6 +326,7 @@ public abstract class VGDLSprite {
         this.setRect(position, size);
         this.lastrect = new Rectangle(rect);
         physicstype_id = Types.PHYSICS_GRID;
+        wMult = hMult = 1.0;
         physics = null;
         gravity = 0.0;
         friction = 0.0;
@@ -346,7 +353,7 @@ public abstract class VGDLSprite {
         draw_arrow = false;
         orientation = Types.DNONE;
         lastmove = 0;
-        invisible = false;
+        invisible = "false";
         rotateInPlace = false;
         isFirstTick = true;
         disabled = false;
@@ -363,7 +370,7 @@ public abstract class VGDLSprite {
 
     public void setRect(Vector2d position, Dimension size)
     {
-        Rectangle r = new Rectangle((int) position.x, (int) position.y, size.width, size.height);
+        Rectangle r = new Rectangle((int) position.x, (int) position.y, (int) (size.width*wMult), (int) (size.height*hMult));
         setRect(r);
     }
 
@@ -619,7 +626,32 @@ public abstract class VGDLSprite {
      */
     public void draw(Graphics2D gphx, Game game) {
 
-        if(!invisible && !disabled)
+        String[] invis = invisible.split(",");
+
+        boolean show;
+        boolean invis0 = Boolean.parseBoolean(invis[0]);
+
+        if (game.no_players == 2) {
+
+            boolean invis1;
+
+            if (invis.length > 1)
+                invis1 = Boolean.parseBoolean(invis[1]);
+            else invis1 = invis0;
+
+            boolean displayP1 = game.humanPlayer[0] && !invis0;
+            boolean displayP2 = game.humanPlayer[1] && !invis1;
+
+            if (game.humanPlayer[0] && game.humanPlayer[1] || !game.humanPlayer[0] && !game.humanPlayer[1]) {
+                if (invis0 == invis1) show = !invis0;
+                else if (color == Types.DARKGRAY) show = false;
+                else show = !invis0 || !invis1;
+            } else
+                show = displayP1 || displayP2;
+        } else
+            show = !invis0;
+
+        if(show && !disabled)
         {
             Rectangle r = new Rectangle(rect);
 
@@ -695,10 +727,6 @@ public abstract class VGDLSprite {
             Color arrowColor = new Color(color.getRed(), 255-color.getGreen(), color.getBlue());
             Polygon p = Utils.triPoints(r, orientation);
 
-            g.setColor(arrowColor);
-            //g.drawPolygon(p);
-            g.fillPolygon(p);
-
             // Rotation information
             
             if(shrinkfactor != 1)
@@ -718,6 +746,10 @@ public abstract class VGDLSprite {
             trans.scale(scale,scale);
             trans.rotate(rotation,w/2.0,h/2.0);
             g.drawImage(image, trans, null);
+
+            g.setColor(arrowColor);
+            //g.drawPolygon(p);
+            g.fillPolygon(p);
             
         }
     }
@@ -770,9 +802,10 @@ public abstract class VGDLSprite {
 
         int w = image.getWidth(null);
         int h = image.getHeight(null);
-        float scale = (float)r.width/w; //assume all sprites are quadratic.
+        float scaleX = (float)r.width/w;
+        float scaleY = (float)r.height/h;
 
-        gphx.drawImage(image, r.x, r.y, (int) (w*scale), (int) (h*scale), null);
+        gphx.drawImage(image, r.x, r.y, (int) (w*scaleX), (int) (h*scaleY), null);
 
         //uncomment this to see lots of numbers around
         //gphx.setColor(Color.BLACK);
@@ -844,7 +877,10 @@ public abstract class VGDLSprite {
         Rectangle filled = new Rectangle(xOffset, startY + heightUnhealth, barWidth, heightHealth);
         Rectangle rest   = new Rectangle(xOffset, startY, barWidth, heightUnhealth);
 
-        gphx.setColor(Types.RED);
+        if (game.no_players > 1)
+            gphx.setColor(color);
+        else
+            gphx.setColor(Types.RED);
         gphx.fillRect(filled.x, filled.y, filled.width, filled.height);
         gphx.setColor(Types.BLACK);
         gphx.fillRect(rest.x, rest.y, rest.width, rest.height);
@@ -877,6 +913,12 @@ public abstract class VGDLSprite {
 
         if(healthPoints > maxHealthPoints)
             healthPoints = maxHealthPoints;
+
+
+        if(rect != null)
+        {
+            this.rect = new Rectangle(rect.x, rect.y, (int)(rect.width*wMult), (int)(rect.height*hMult));
+        }
 
         //Safety checks:
         if(cooldown < 1)
@@ -1013,6 +1055,8 @@ public abstract class VGDLSprite {
         toSprite.limitHealthPoints = this.limitHealthPoints;
         toSprite.timeToLive = this.timeToLive;
         toSprite.rotation = this.rotation;
+        toSprite.wMult = this.wMult;
+        toSprite.hMult = this.hMult;
 
         toSprite.itypes = new ArrayList<Integer>();
         for(Integer it : this.itypes)

@@ -17,24 +17,25 @@ import tools.Vector2d;
  */
 public class KillIfSlow extends Effect
 {
+	public double limspeed;
 	
     public KillIfSlow(InteractionContent cnt)
     {
         is_kill_effect = true;
+        limspeed = 1.0;
         this.parseParameters(cnt);
     }
 
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
-	if(sprite1 == null || sprite2 == null){
+		if(sprite1 == null || sprite2 == null) {
             String[] className = this.getClass().getName().split("\\.");
             Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1] + "] Either sprite1 or sprite2 is null."));
             return;
         }
-	
+		
     	double relspeed = 0.0;
-    	double limspeed = 6.0;
     	if (sprite1.is_static){
     		relspeed = sprite2.speed;
     	}

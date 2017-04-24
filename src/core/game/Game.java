@@ -40,6 +40,11 @@ import tools.pathfinder.PathFinder;
 public abstract class Game {
 
 	/**
+	 * indicates if player i is human or not
+	 */
+	public boolean[] humanPlayer;
+
+	/**
 	 * z-level of sprite types (in case of overlap)
 	 */
 	protected int[] spriteOrder;
@@ -299,6 +304,7 @@ public abstract class Game {
 			avatarLastAction[i] = Types.ACTIONS.ACTION_NIL;
 
 		counter = new int[no_counters];
+        humanPlayer = new boolean[no_players];
 	}
 
 	/**
@@ -753,7 +759,7 @@ public abstract class Game {
 	 * Starts the forward model for the game.
 	 */
 	public void initForwardModel() {
-		fwdModel = new ForwardModel(this);
+		fwdModel = new ForwardModel(this, 0);
 		fwdModel.update(this);
 	}
 
@@ -2026,7 +2032,7 @@ public abstract class Game {
 	 * @return the observation.
 	 */
 	public StateObservation getObservation() {
-		return new StateObservation(fwdModel.copy());
+		return new StateObservation(fwdModel.copy(), 0);
 	}
 
 	/**
@@ -2034,8 +2040,8 @@ public abstract class Game {
 	 *
 	 * @return the observation.
 	 */
-	public StateObservationMulti getObservationMulti() {
-		return new StateObservationMulti(fwdModel.copy());
+	public StateObservationMulti getObservationMulti(int playerID) {
+        return new StateObservationMulti(fwdModel.copy(), playerID);
 	}
 
 	/**
