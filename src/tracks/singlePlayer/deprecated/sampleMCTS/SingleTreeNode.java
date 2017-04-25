@@ -244,6 +244,12 @@ public class SingleTreeNode
         {
             n.nVisits++;
             n.totValue += result;
+            if (result < n.bounds[0]) {
+                n.bounds[0] = result;
+            }
+            if (result > n.bounds[1]) {
+                n.bounds[1] = result;
+            }
             n = n.parent;
         }
     }
