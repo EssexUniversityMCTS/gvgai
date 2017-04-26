@@ -759,10 +759,7 @@ public class Chromosome implements Comparable<Chromosome>{
 			constrainFitness += 0.2 * (doNothingLength / (40.0));
 			
 			this.fitness.set(0, constrainFitness);
-			if(constrainFitness > 1)
-			{
-				System.out.println("This is wrong");
-			}
+
 		}
 		return;
 	}
@@ -892,7 +889,7 @@ public class Chromosome implements Comparable<Chromosome>{
 				score = -200;
 			}
 			double badFramePercent = badFrames / (1.0 * frameCount);
-			if(badFramePercent > .5) {
+			if(badFramePercent > .3) {
 				// if we have bad frames, this is still not a good game
 				constrainFitness += 0.3 * (1 - badFrames / (1.0 * frameCount));
 				this.fitness.set(0, constrainFitness);
@@ -919,26 +916,29 @@ public class Chromosome implements Comparable<Chromosome>{
 	
 				// calc game score differences
 				double gameScore = (summedBest - summedNaive) * (summedNaive - summedRandom);
-	
+				
+				// allows rounding up due to weird scores
+				if(gameScore > -0.0005) {
+					
+					gameScore = 0;
+				}
 				// reward fitness for each unique interaction triggered
 				int uniqueCount = events.size();
 				// add a normalized unique count to the fitness
 				double rulesTriggered = uniqueCount / (ruleset[0].length * 1.0f + 1);
 				
 				// fitness is calculated by weight summing the 2 variables together
-				if(gameScore < 0) {
-					System.out.println("GameScore less than 0...");
-				}
-				double fitness = gameScore * rulesTriggered;
+				
+				double fitness = (gameScore + 1) * (rulesTriggered);
 				constrainFitness = 1.0;
 				this.fitness.set(0, constrainFitness);
 				this.fitness.set(1, fitness);
 			}
 		} 
-		if(constrainFitness > 1)
-		{
-			System.out.println("This is wrong");
-		}
+//		if(constrainFitness > 1)
+//		{
+//			System.out.println("This is wrong");
+//		}
 		this.randomAgent = null;
 		this.automatedAgent = null;
 		this.doNothingAgent = null;

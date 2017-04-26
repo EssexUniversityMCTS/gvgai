@@ -26,7 +26,7 @@ public class SharedData {
 	/**
 	 * the amount of time to evaluate a single level
 	 */
-	public static final long EVALUATION_TIME = 10000;
+	public static final long EVALUATION_TIME = 1000;
 	
 	/**
 	 * number of the best chromosomes that are transfered from one generation to another
@@ -59,7 +59,7 @@ public class SharedData {
 	/**
 	 * the initial amount of mutations in the init pop
 	 */
-	public static final int INIT_MUTATION_AMOUNT = 10;
+	public static final int INIT_MUTATION_AMOUNT = 2;
 	/**
 	 * random object to help in choosing random stuff
 	 */
