@@ -46,6 +46,7 @@ public class ServerCommTest {
     public static void main(String[] args)
     {
         ClientComm ccomm = new ClientComm();
+        //ccomm.start();
 
         mockInit(ccomm, true);
         mockAct(ccomm,true);

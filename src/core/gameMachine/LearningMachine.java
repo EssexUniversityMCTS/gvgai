@@ -241,7 +241,8 @@ public class LearningMachine {
         Process client;
 
         ProcessBuilder builder = new ProcessBuilder(cmd);
-        builder.redirectErrorStream(true);
+        //builder.redirectErrorStream(true);
+        builder.redirectError(new File("logs/processErrorLog.txt"));
         client = builder.start();
 
         return new LearningPlayer(client);

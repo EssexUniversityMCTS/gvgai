@@ -53,7 +53,7 @@ public class ServerComm {
         try {
 
             // This block configure the logger with handler and formatter
-            fh = new FileHandler("./debug.txt");
+            fh = new FileHandler("logs/serverCommDebug.txt");
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);

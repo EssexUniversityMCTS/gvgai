@@ -28,6 +28,11 @@ public class ClientComm {
     public static BufferedWriter output;
 
     /**
+     * Writer of the player. Used to pass the action of the player to the server.
+     */
+    public static BufferedWriter fileOutput;
+
+    /**
      * Line separator for messages.
      */
     private String lineSep = System.getProperty("line.separator");
@@ -53,7 +58,7 @@ public class ClientComm {
     public Avatar avatar;
 
     /**
-     * Avatar information
+     * State information
      */
     public SerializableStateObservation sso;
 
@@ -81,6 +86,7 @@ public class ClientComm {
     {
         initBuffers();
 
+        // Comment this for testing purposes
         try {
             listen();
         } catch (Exception e) {
@@ -91,10 +97,13 @@ public class ClientComm {
 
     private void listen() throws IOException {
         String line = "start";
+        fileOutput.write("start");
 
         int messageIdx = 0;
         while (line != null) {
             line = input.readLine();
+
+            fileOutput.write(line);
 
             commState = processCommandLine(line);
             processLine(line);
@@ -141,6 +150,11 @@ public class ClientComm {
             input = new BufferedReader(new InputStreamReader(System.in));
             output = new BufferedWriter(new OutputStreamWriter(System.out));
 
+            // Test outputs
+//            output = new BufferedWriter(new FileWriter("log.txt"));
+            fileOutput = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream("logs/clientLog.txt"), "utf-8"));
+
         } catch (Exception e) {
             System.out.println("Exception creating the client process: " + e);
             e.printStackTrace();
@@ -154,7 +168,7 @@ public class ClientComm {
     private void writeToServer(String line) throws IOException
     {
         output.write(line + lineSep);
-        //output.flush();
+        output.flush();
     }
 
     public COMM_STATE processCommandLine(String commLine)
@@ -165,10 +179,22 @@ public class ClientComm {
         if(sso.gameState == SerializableStateObservation.State.INIT_STATE)
         {
             game.remMillis = sso.elapsedTimer;
+            //Test
+//            try {
+//                writeToServer("init end");
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
             return COMM_STATE.INIT_END;
 
         }else if(sso.gameState == SerializableStateObservation.State.ACT_STATE){
-            game.remMillis = sso.elapsedTimer;;
+            game.remMillis = sso.elapsedTimer;
+            //Test
+//            try {
+//                writeToServer("acted");
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
             return COMM_STATE.ACT_END;
 
         }else if(commLine.contains("ENDGAME-END")) {
