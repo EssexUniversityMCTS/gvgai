@@ -8,3 +8,5 @@ D:\WORK\GVGAI\learningTrack2017\clients\GVGAI-JavaClient\src\ontology\Avatar.jav
 D:\WORK\GVGAI\learningTrack2017\clients\GVGAI-JavaClient\src\ontology\BitGrid.java 
 D:\WORK\GVGAI\learningTrack2017\clients\GVGAI-JavaClient\src\ontology\Game.java 
 D:\WORK\GVGAI\learningTrack2017\clients\GVGAI-JavaClient\src\ontology\Types.java 
+D:\WORK\GVGAI\learningTrack2017\clients\GVGAI-JavaClient\src\serialization\ArrayAdapter.java 
+D:\WORK\GVGAI\learningTrack2017\clients\GVGAI-JavaClient\src\serialization\ArrayAdapterFactory.java 

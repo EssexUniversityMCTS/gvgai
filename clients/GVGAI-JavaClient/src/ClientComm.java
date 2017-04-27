@@ -1,8 +1,10 @@
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import ontology.Game;
 import ontology.Avatar;
 import ontology.Game;
 import ontology.Types;
+import serialization.ArrayAdapterFactory;
 
 import java.awt.*;
 import java.io.*;
@@ -77,6 +79,7 @@ public class ClientComm {
         avatar = new Avatar();
         numGames = 0;
         isTraining = false;
+        sso = new SerializableStateObservation();
     }
 
     /**
@@ -96,21 +99,23 @@ public class ClientComm {
 
 
     private void listen() throws IOException {
-        String line = "start";
-        fileOutput.write("start");
+        String line = "start client";
+        writeToFile(line);
 
         int messageIdx = 0;
         while (line != null) {
             line = input.readLine();
 
-            fileOutput.write(line);
+            writeToFile("going to processing");
+            //writeToFile(line);
 
-            commState = processCommandLine(line);
             processLine(line);
+            commState = processCommandLine(line);
 
             if(commState == COMM_STATE.INIT_END)
             {
                 //We can work on some initialization stuff here.
+                writeToFile("init done");
                 writeToServer("INIT_DONE");
 
             }else if(commState == COMM_STATE.ACT_END)
@@ -118,8 +123,8 @@ public class ClientComm {
                 // TODO: 27/03/2017 Daniel: no agent for the moment
                 //This is the place to think and return what action to take.
                 String rndAction = Types.ACTIONS.ACTION_NIL.toString();
+                writeToFile("action" + rndAction);
                 writeToServer(rndAction);
-
             }else if(commState == COMM_STATE.ENDED_END)
             {
                 // TODO: 27/03/2017 Daniel: is the game stopped ?
@@ -171,13 +176,19 @@ public class ClientComm {
         output.flush();
     }
 
-    public COMM_STATE processCommandLine(String commLine)
-    {
-        Gson gson = new Gson();
-        SerializableStateObservation sso = gson.fromJson(commLine, SerializableStateObservation.class);
+    /**
+     * Writes a line to the client debug file, adding a line separator at the end.
+     * @param line to write
+     */
+    private void writeToFile(String line) throws IOException{
+        fileOutput.write(line + lineSep);
+        fileOutput.flush();
+    }
 
+    public COMM_STATE processCommandLine(String commLine) throws IOException {
         if(sso.gameState == SerializableStateObservation.State.INIT_STATE)
         {
+            writeToFile("game is in init state");
             game.remMillis = sso.elapsedTimer;
             //Test
 //            try {
@@ -205,10 +216,11 @@ public class ClientComm {
         return commState;
     }
 
-    public void processLine(String json)
-    {
-        Gson gson = new Gson();
+    public void processLine(String json) throws IOException{
+        writeToFile("initializing gson");
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(new ArrayAdapterFactory()).create();
         this.sso = gson.fromJson(json, SerializableStateObservation.class);
+        writeToFile("gson initialized");
 //        String data = gson.fromJson(gson, String.class);
 //
 //        for (String act : availableActions)

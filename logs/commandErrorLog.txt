@@ -1,2 +1,3 @@
 Listening for transport dt_socket at address: 8000
-com.google.gson.JsonSyntaxException: java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 525 path $.observationGrid[0][0][0].position
+INIT_DONE
+INIT_DONE

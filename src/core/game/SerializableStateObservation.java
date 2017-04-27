@@ -42,14 +42,14 @@ public class SerializableStateObservation {
 
     public ArrayList<Types.ACTIONS> availableActions;
     public HashMap<Integer, Integer> avatarResources;
-    public ArrayList<Observation>[][] observationGrid;
-    //public TreeSet<Event> eventsHistory;
-    public ArrayList<Observation>[] NPCPositions;
-    public ArrayList<Observation>[] immovablePositions;
-    public ArrayList<Observation>[] movablePositions;
-    public ArrayList<Observation>[] resourcesPositions;
-    public ArrayList<Observation>[] portalsPositions;
-    public ArrayList<Observation>[] fromAvatarSpritesPositions;
+    //public ArrayList<Observation>[][] observationGrid;
+//    //public TreeSet<Event> eventsHistory;
+//    public ArrayList<Observation>[] NPCPositions;
+    //public ArrayList<Observation>[] immovablePositions;
+//    public ArrayList<Observation>[] movablePositions;
+//    public ArrayList<Observation>[] resourcesPositions;
+//    public ArrayList<Observation>[] portalsPositions;
+//    public ArrayList<Observation>[] fromAvatarSpritesPositions;
 
     public SerializableStateObservation(StateObservation s)
     {
@@ -79,13 +79,13 @@ public class SerializableStateObservation {
         avatarMaxHealthPoints = s.getAvatarMaxHealthPoints();
         avatarLimitHealthPoints = s.getAvatarLimitHealthPoints();
         isAvatarAlive = s.isAvatarAlive();
-        observationGrid = s.getObservationGrid();
-        NPCPositions = s.getNPCPositions();
-        immovablePositions = s.getImmovablePositions();
-        movablePositions = s.getMovablePositions();
-        resourcesPositions = s.getResourcesPositions();
-        portalsPositions = s.getPortalsPositions();
-        fromAvatarSpritesPositions = s.getFromAvatarSpritesPositions();
+        //observationGrid = s.getObservationGrid();
+//        NPCPositions = s.getNPCPositions();
+//        //immovablePositions = s.getImmovablePositions();
+//        movablePositions = s.getMovablePositions();
+//        resourcesPositions = s.getResourcesPositions();
+//        portalsPositions = s.getPortalsPositions();
+//        fromAvatarSpritesPositions = s.getFromAvatarSpritesPositions();
     }
 
     public String serialize(String filename)
@@ -191,113 +191,113 @@ public class SerializableStateObservation {
             sb.append(str);
             sb.append("],");
         }
-        //NPCpositions
-        sb.append("\"NPCpositions\":[");
-        if (NPCPositions==null) {
-            sb.append("[]],");
-        } else {
-            String str = "";
-            for (int i = 0; i < this.NPCPositions.length; i++) {
-                for (Observation npc : NPCPositions[i]) {
-                    str += npc.toString() + ",";
-                }
-            }
-            if (str.endsWith(",")) {
-                str = str.substring(0, str.length() - 1);
-            }
-            sb.append(str);
-            sb.append("],");
-        }
+//        //NPCpositions
+//        sb.append("\"NPCpositions\":[");
+//        if (NPCPositions==null) {
+//            sb.append("[]],");
+//        } else {
+//            String str = "";
+//            for (int i = 0; i < this.NPCPositions.length; i++) {
+//                for (Observation npc : NPCPositions[i]) {
+//                    str += npc.toString() + ",";
+//                }
+//            }
+//            if (str.endsWith(",")) {
+//                str = str.substring(0, str.length() - 1);
+//            }
+//            sb.append(str);
+//            sb.append("],");
+//        }
 
         //immovablePositions
         sb.append("\"immovablePositions\":[");
-        if (immovablePositions==null) {
-            sb.append("[]],");
-        } else {
-            String str = "";
-            for (int i = 0; i < this.immovablePositions.length; i++) {
-                for (Observation npc : immovablePositions[i]) {
-                    str += npc.toString() + ",";
-                }
-            }
-            if (str.endsWith(",")) {
-                str = str.substring(0, str.length() - 1);
-            }
-            sb.append(str);
-            sb.append("],");
-        }
+//        if (immovablePositions==null) {
+//            sb.append("[]],");
+//        } else {
+//            String str = "";
+//            for (int i = 0; i < this.immovablePositions.length; i++) {
+//                for (Observation npc : immovablePositions[i]) {
+//                    str += npc.toString() + ",";
+//                }
+//            }
+//            if (str.endsWith(",")) {
+//                str = str.substring(0, str.length() - 1);
+//            }
+//            sb.append(str);
+//            sb.append("],");
+//        }
 
-        //movablePositions
-        sb.append("\"movablePositions\":[");
-        if (movablePositions==null) {
-            sb.append("[]],");
-        } else {
-            String str = "";
-            for (int i = 0; i < this.movablePositions.length; i++) {
-                for (Observation npc : movablePositions[i]) {
-                    str += npc.toString() + ",";
-                }
-            }
-            if (str.endsWith(",")) {
-                str = str.substring(0, str.length() - 1);
-            }
-            sb.append(str);
-            sb.append("],");
-        }
-
-        //resourcesPositions
-        sb.append("\"resourcesPositions\":[");
-        if (resourcesPositions==null) {
-            sb.append("[]],");
-        } else {
-            String str = "";
-            for (int i = 0; i < this.resourcesPositions.length; i++) {
-                for (Observation npc : resourcesPositions[i]) {
-                    str += npc.toString() + ",";
-                }
-            }
-            if (str.endsWith(",")) {
-                str = str.substring(0, str.length() - 1);
-            }
-            sb.append(str);
-            sb.append("],");
-        }
-
-        //portalsPositions
-        sb.append("\"portalsPositions\":[");
-        if (portalsPositions==null) {
-            sb.append("[]],");
-        } else {
-            String str = "";
-            for (int i = 0; i < this.portalsPositions.length; i++) {
-                for (Observation npc : portalsPositions[i]) {
-                    str += npc.toString() + ",";
-                }
-            }
-            if (str.endsWith(",")) {
-                str = str.substring(0, str.length() - 1);
-            }
-            sb.append(str);
-            sb.append("],");
-        }
-
-        //fromAvatarSpritesPositions
-        sb.append("\"fromAvatarSpritesPositions\":[");
-        if (fromAvatarSpritesPositions==null) {
-            sb.append("[]]}");
-        } else {
-            String str = "";
-            for (int i = 0; i < this.fromAvatarSpritesPositions.length; i++) {
-                for (Observation npc : fromAvatarSpritesPositions[i]) {
-                    str += npc.toString() + ",";
-                }
-            }
-            if (str.endsWith(",")) {
-                str = str.substring(0, str.length() - 1);
-            }
-            sb.append(str);
-            sb.append("]}");
-        }
+//        //movablePositions
+//        sb.append("\"movablePositions\":[");
+//        if (movablePositions==null) {
+//            sb.append("[]],");
+//        } else {
+//            String str = "";
+//            for (int i = 0; i < this.movablePositions.length; i++) {
+//                for (Observation npc : movablePositions[i]) {
+//                    str += npc.toString() + ",";
+//                }
+//            }
+//            if (str.endsWith(",")) {
+//                str = str.substring(0, str.length() - 1);
+//            }
+//            sb.append(str);
+//            sb.append("],");
+//        }
+//
+//        //resourcesPositions
+//        sb.append("\"resourcesPositions\":[");
+//        if (resourcesPositions==null) {
+//            sb.append("[]],");
+//        } else {
+//            String str = "";
+//            for (int i = 0; i < this.resourcesPositions.length; i++) {
+//                for (Observation npc : resourcesPositions[i]) {
+//                    str += npc.toString() + ",";
+//                }
+//            }
+//            if (str.endsWith(",")) {
+//                str = str.substring(0, str.length() - 1);
+//            }
+//            sb.append(str);
+//            sb.append("],");
+//        }
+//
+//        //portalsPositions
+//        sb.append("\"portalsPositions\":[");
+//        if (portalsPositions==null) {
+//            sb.append("[]],");
+//        } else {
+//            String str = "";
+//            for (int i = 0; i < this.portalsPositions.length; i++) {
+//                for (Observation npc : portalsPositions[i]) {
+//                    str += npc.toString() + ",";
+//                }
+//            }
+//            if (str.endsWith(",")) {
+//                str = str.substring(0, str.length() - 1);
+//            }
+//            sb.append(str);
+//            sb.append("],");
+//        }
+//
+//        //fromAvatarSpritesPositions
+//        sb.append("\"fromAvatarSpritesPositions\":[");
+//        if (fromAvatarSpritesPositions==null) {
+//            sb.append("[]]}");
+//        } else {
+//            String str = "";
+//            for (int i = 0; i < this.fromAvatarSpritesPositions.length; i++) {
+//                for (Observation npc : fromAvatarSpritesPositions[i]) {
+//                    str += npc.toString() + ",";
+//                }
+//            }
+//            if (str.endsWith(",")) {
+//                str = str.substring(0, str.length() - 1);
+//            }
+//            sb.append(str);
+//            sb.append("]}");
+//        }
         return sb.toString();
     }
 

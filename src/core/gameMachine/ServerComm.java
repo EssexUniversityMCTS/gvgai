@@ -93,7 +93,7 @@ public class ServerComm {
         sso.elapsedTimer = elapsedTimer.remainingTimeMillis();
         commSend(sso.serialize(null));
 
-        String response = commRecv(elapsedTimer, "GAME_DONE");
+        String response = commRecv(elapsedTimer);
 
         logger.fine("Received: " + response);
 
@@ -117,10 +117,9 @@ public class ServerComm {
      * Waits for a response during T milliseconds.
      *
      * @param elapsedTimer Timer when the initialization is due to finish.
-     * @param idStr        String identifier of the phase the communication is in.
      * @return the response got from the client, or null if no response was received after due time.
      */
-    public String commRecv(ElapsedCpuTimer elapsedTimer, String idStr) throws IOException {
+    public String commRecv(ElapsedCpuTimer elapsedTimer) throws IOException {
         String ret = null;
 
         while (elapsedTimer.remainingTimeMillis() > 0) {
@@ -155,10 +154,12 @@ public class ServerComm {
             sso.elapsedTimer = elapsedTimer.remainingTimeMillis();
             commSend(sso.serialize(null));
 
-            String response = commRecv(elapsedTimer, "INIT");
+            String response = commRecv(elapsedTimer);
             logger.fine("Received: " + response);
-            if ("INIT_DONE".equals(response))
+            if ("INIT_DONE".equals(response)) {
                 System.out.println("Init done");
+                so.currentGameState = Types.GAMESTATES.ACT_STATE;
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

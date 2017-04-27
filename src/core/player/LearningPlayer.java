@@ -97,16 +97,17 @@ public class LearningPlayer extends Player {
             serverComm.commSend(sso.serialize(null));
 
 
-            new Thread(() -> {
-                try {
-                    String line = serverComm.commRecv(elapsedTimer, "ACT");
-                    stringBuilder.append(line);
-                }catch(IOException e){
-                    e.printStackTrace();
-                }
-            }).run();
+//            new Thread(() -> {
+//                try {
+//                    String line = serverComm.commRecv(elapsedTimer);
+//                    stringBuilder.append(line);
+//                }catch(IOException e){
+//                    e.printStackTrace();
+//                }
+//            }).run();
 
-            String response = stringBuilder.toString();
+//            String response = stringBuilder.toString();
+            String response = serverComm.commRecv(elapsedTimer);
             logger.fine("Received ACTION: " + response + "; ACT Response time: "
                     + elapsedTimer.elapsedMillis() + " ms.");
 
