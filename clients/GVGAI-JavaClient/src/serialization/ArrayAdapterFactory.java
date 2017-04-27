@@ -1,6 +1,7 @@
 package serialization;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;

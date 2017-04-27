@@ -42,14 +42,14 @@ public class SerializableStateObservation {
 
     public ArrayList<Types.ACTIONS> availableActions;
     public HashMap<Integer, Integer> avatarResources;
-    //public ArrayList<Observation>[][] observationGrid;
-//    //public TreeSet<Event> eventsHistory;
-//    public ArrayList<Observation>[] NPCPositions;
-    //public ArrayList<Observation>[] immovablePositions;
-//    public ArrayList<Observation>[] movablePositions;
-//    public ArrayList<Observation>[] resourcesPositions;
-//    public ArrayList<Observation>[] portalsPositions;
-//    public ArrayList<Observation>[] fromAvatarSpritesPositions;
+    public ArrayList<Observation>[][] observationGrid;
+    //public TreeSet<Event> eventsHistory;
+    public ArrayList<Observation>[] NPCPositions;
+    public ArrayList<Observation>[] immovablePositions;
+    public ArrayList<Observation>[] movablePositions;
+    public ArrayList<Observation>[] resourcesPositions;
+    public ArrayList<Observation>[] portalsPositions;
+    public ArrayList<Observation>[] fromAvatarSpritesPositions;
 
     public SerializableStateObservation(StateObservation s)
     {
@@ -79,13 +79,13 @@ public class SerializableStateObservation {
         avatarMaxHealthPoints = s.getAvatarMaxHealthPoints();
         avatarLimitHealthPoints = s.getAvatarLimitHealthPoints();
         isAvatarAlive = s.isAvatarAlive();
-        //observationGrid = s.getObservationGrid();
-//        NPCPositions = s.getNPCPositions();
-//        //immovablePositions = s.getImmovablePositions();
-//        movablePositions = s.getMovablePositions();
-//        resourcesPositions = s.getResourcesPositions();
-//        portalsPositions = s.getPortalsPositions();
-//        fromAvatarSpritesPositions = s.getFromAvatarSpritesPositions();
+        observationGrid = s.getObservationGrid();
+        NPCPositions = s.getNPCPositions();
+        immovablePositions = s.getImmovablePositions();
+        movablePositions = s.getMovablePositions();
+        resourcesPositions = s.getResourcesPositions();
+        portalsPositions = s.getPortalsPositions();
+        fromAvatarSpritesPositions = s.getFromAvatarSpritesPositions();
     }
 
     public String serialize(String filename)

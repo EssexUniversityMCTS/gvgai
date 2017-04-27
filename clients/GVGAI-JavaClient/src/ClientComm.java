@@ -32,7 +32,7 @@ public class ClientComm {
     /**
      * Writer of the player. Used to pass the action of the player to the server.
      */
-    public static BufferedWriter fileOutput;
+    public static PrintWriter fileOutput;
 
     /**
      * Line separator for messages.
@@ -162,8 +162,8 @@ public class ClientComm {
 
             // Test outputs
 //            output = new BufferedWriter(new FileWriter("log.txt"));
-            fileOutput = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream("logs/clientLog.txt"), "utf-8"));
+            fileOutput = new PrintWriter(
+                    new File("logs/clientLog.txt"), "utf-8");
 
         } catch (Exception e) {
             System.out.println("Exception creating the client process: " + e);
@@ -207,9 +207,13 @@ public class ClientComm {
 
     public void processLine(String json) throws IOException{
         writeToFile("initializing gson");
-        Gson gson = new GsonBuilder().registerTypeAdapterFactory(new ArrayAdapterFactory()).create();
-        this.sso = gson.fromJson(json, SerializableStateObservation.class);
-        writeToFile("gson initialized");
+        try {
+            Gson gson = new GsonBuilder().registerTypeAdapterFactory(new ArrayAdapterFactory()).create();
+            this.sso = gson.fromJson(json, SerializableStateObservation.class);
+            writeToFile("gson initialized");
+        } catch (Exception e){
+            e.printStackTrace(fileOutput);
+        }
 //        String data = gson.fromJson(gson, String.class);
 //
 //        for (String act : availableActions)
