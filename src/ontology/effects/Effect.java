@@ -58,6 +58,11 @@ public abstract class Effect{
     public boolean enabled;
 
     /**
+     * Indicates if the effect wishes to take into account all sprites of the second type at once.
+     */
+    public boolean inBatch = false;
+
+    /**
      * Executes the effect
      *
      * @param sprite1 first sprite of the collision
@@ -65,6 +70,18 @@ public abstract class Effect{
      * @param game    reference to the game object with the current state.
      */
     public abstract void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game);
+
+
+    /**
+     * Executes the effect to all second sprites at once.
+     *
+     * @param sprite1       first sprite of the collision
+     * @param sprite2list   list of all second sprites of the collision
+     * @param game          reference to the game object with the current state.
+     * @return the number of sprites considered in the collision
+     */
+    public int executeBatch(VGDLSprite sprite1, ArrayList<VGDLSprite> sprite2list, Game game) {return -1;}
+
 
     public void setStochastic() {
         if (prob > 0 && prob < 1)
