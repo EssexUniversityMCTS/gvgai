@@ -304,7 +304,7 @@ public abstract class Game {
 			avatarLastAction[i] = Types.ACTIONS.ACTION_NIL;
 
 		counter = new int[no_counters];
-        humanPlayer = new boolean[no_players];
+		humanPlayer = new boolean[no_players];
 	}
 
 	/**
@@ -1431,42 +1431,91 @@ public abstract class Game {
 							}
 						}
 
-						for (int a = 0; a < new_secondx.size(); a++) {
-							for (int b = 0; b < new_secondx.size(); b++) {
-								if (a < b) {
-									if (Math.sqrt(((s1.getPosition().x - new_secondx.get(a).getPosition().x)
-											* (s1.getPosition().x - new_secondx.get(a).getPosition().x)) +
+						if(new_secondx.size() > 0) {
+							if (ef.inBatch) {
+								executeEffectBatch(ef, s1, new_secondx);
+							} else {
 
-											((s1.getPosition().y - new_secondx.get(a).getPosition().y)
-													* (s1.getPosition().y - new_secondx.get(a).getPosition().y))) > Math
-											.sqrt(((s1.getPosition().x
-													- new_secondx.get(b).getPosition().x)
-													* (s1.getPosition().x
-													- new_secondx.get(b).getPosition().x))
-													+
-
-													((s1.getPosition().y
-															- new_secondx.get(b).getPosition().y)
-															* (s1.getPosition().y - new_secondx.get(b)
-															.getPosition().y)))) {
-										new_secondx.add(a, new_secondx.get(b));
-										new_secondx.remove(b + 1);
+								for (int i = 0; i < new_secondx.size(); i++) {
+									if (!kill_list.contains(s1) && s1 != new_secondx.get(i) && s1.rect.intersects(new_secondx.get(i).rect)) {
+										executeEffect(ef, s1, new_secondx.get(i));
 									}
 								}
 							}
 						}
-
-						for (int i = 0; i < new_secondx.size(); i++) {
-							if (!kill_list.contains(s1) && s1 != new_secondx.get(i)
-									&& s1.rect.intersects(new_secondx.get(i).rect)) {
-								executeEffect(ef, s1, new_secondx.get(i));
-							}
-						}
+//						for (int a = 0; a < new_secondx.size(); a++) {
+//							for (int b = 0; b < new_secondx.size(); b++) {
+//								if (a < b) {
+//									if (Math.sqrt(((s1.getPosition().x - new_secondx.get(a).getPosition().x)
+//											* (s1.getPosition().x - new_secondx.get(a).getPosition().x)) +
+//
+//											((s1.getPosition().y - new_secondx.get(a).getPosition().y)
+//													* (s1.getPosition().y - new_secondx.get(a).getPosition().y))) > Math
+//											.sqrt(((s1.getPosition().x
+//													- new_secondx.get(b).getPosition().x)
+//													* (s1.getPosition().x
+//													- new_secondx.get(b).getPosition().x))
+//													+
+//
+//													((s1.getPosition().y
+//															- new_secondx.get(b).getPosition().y)
+//															* (s1.getPosition().y - new_secondx.get(b)
+//															.getPosition().y)))) {
+//										new_secondx.add(a, new_secondx.get(b));
+//										new_secondx.remove(b + 1);
+//									}
+//								}
+//							}
+//						}
+//						for (int i = 0; i < new_secondx.size(); i++) {
+//							if (!kill_list.contains(s1) && s1 != new_secondx.get(i) && s1.rect.intersects(new_secondx.get(i).rect) ) {
+//								executeEffect(ef, s1, new_secondx.get(i));
+//							}
+//						}
 					}
 				}
 			}
 		}
 
+	}
+
+
+	private void executeEffectBatch(Effect ef, VGDLSprite s1, ArrayList<VGDLSprite> s2list) {
+		// There is a collision. Apply the effect.
+		int batchCount = ef.executeBatch(s1, s2list, this);
+		if(batchCount == -1)
+		{
+			System.out.println("WARNING: Batch collision not or bad implemented (batchCount == -1)");
+			batchCount = 0; //So the game keeps making better sense.
+		}
+
+		// Affect score:
+		if (ef.applyScore) {
+			// apply scores for all avatars
+			for (int i = 0; i < no_players; i++) {
+				double multScore = ef.getScoreChange(i) * batchCount;
+				avatars[i].addScore(multScore);
+			}
+		}
+
+		// Add to events history.
+		if (s1 != null && s2list != null)
+			for(VGDLSprite s2 : s2list)
+				addEvent(s1, s2);
+
+		if (ef.count) {
+			for (int i = 0; i < no_counters; i++) {
+				double multCounter = ef.getCounter(i) * batchCount;
+				this.counter[i] += multCounter;
+			}
+		}
+
+		if (ef.countElse) {
+			for (int i = 0; i < no_counters; i++) {
+				double multElseCounter = ef.getCounterElse(i) * batchCount;
+				this.counter[i] += multElseCounter;
+			}
+		}
 	}
 
 	private void executeEffect(Effect ef, VGDLSprite s1, VGDLSprite s2) {
@@ -1666,16 +1715,15 @@ public abstract class Game {
 			}
 		}
 
-		// Only create the sprite if there is not any other sprite that blocks
-		// it.
+		// Only create the sprite if there is not any other sprite that blocks it.
 		if (!anyother) {
 			VGDLSprite newSprite;
 
+			Dimension spriteDim = new Dimension(block_size, block_size);
 			if (templateSprites[itype] == null) // don't have a template yet, so
 			// need to create one
 			{
-				newSprite = VGDLFactory.GetInstance().createSprite(this, content, position,
-						new Dimension(block_size, block_size));
+				newSprite = VGDLFactory.GetInstance().createSprite(this, content, position, spriteDim);
 
 				// Assign its types and add it to the collection of sprites.
 				newSprite.itypes = (ArrayList<Integer>) content.itypes.clone();
@@ -1687,7 +1735,7 @@ public abstract class Game {
 				newSprite = templateSprites[itype].copy();
 
 				// make sure the copy is moved to the correct position
-				newSprite.setRect(position, new Dimension(block_size, block_size));
+				newSprite.setRect(position, spriteDim);
 
 				// Set last rect
 				newSprite.lastrect = new Rectangle(newSprite.rect);
@@ -2041,7 +2089,7 @@ public abstract class Game {
 	 * @return the observation.
 	 */
 	public StateObservationMulti getObservationMulti(int playerID) {
-        return new StateObservationMulti(fwdModel.copy(), playerID);
+		return new StateObservationMulti(fwdModel.copy(), playerID);
 	}
 
 	/**
