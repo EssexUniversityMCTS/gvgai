@@ -120,19 +120,16 @@ public class ServerComm {
      * @return the response got from the client, or null if no response was received after due time.
      */
     public String commRecv(ElapsedCpuTimer elapsedTimer) throws IOException {
-        String ret = null;
+        if (input.ready()) {
+            //skip the first line
+            input.readLine();
 
-        while (elapsedTimer.remainingTimeMillis() > 0) {
-            if (input.ready()) {
-                ret = input.readLine();
-                if (ret != null && ret.trim().length() > 0) {
-                    //System.out.println("TIME OK");
-                    return ret.trim();
-                }
+            String ret = null;
+            while ((ret = input.readLine()) != null && ret.trim().length() > 0) {
+                //System.out.println("TIME OK");
+                return ret.trim();
             }
         }
-
-
         //if(elapsedTimer.remainingTimeMillis() <= 0)
         //    System.out.println("TIME OUT (" + idStr + "): " + elapsedTimer.elapsedMillis());
 
@@ -146,7 +143,7 @@ public class ServerComm {
      * @param so    View of the current state.
      * @param elapsedTimer Timer when the initialization is due to finish.
      */
-    public void init(StateObservation so, ElapsedCpuTimer elapsedTimer) {
+    public boolean init(StateObservation so, ElapsedCpuTimer elapsedTimer) {
         try {
             // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
             so.currentGameState = Types.GAMESTATES.INIT_STATE;
@@ -157,8 +154,11 @@ public class ServerComm {
             String response = commRecv(elapsedTimer);
             logger.fine("Received: " + response);
             if ("INIT_DONE".equals(response)) {
-                System.out.println("Init done");
-                so.currentGameState = Types.GAMESTATES.ACT_STATE;
+                System.out.println("\nInit done");
+                return true;
+            } else {
+                System.out.println("init failed");
+                return false;
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

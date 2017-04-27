@@ -107,10 +107,9 @@ public class ClientComm {
             line = input.readLine();
 
             writeToFile("going to processing");
-            //writeToFile(line);
 
             processLine(line);
-            commState = processCommandLine(line);
+            commState = processCommandLine();
 
             if(commState == COMM_STATE.INIT_END)
             {
@@ -122,9 +121,15 @@ public class ClientComm {
             {
                 // TODO: 27/03/2017 Daniel: no agent for the moment
                 //This is the place to think and return what action to take.
-                String rndAction = Types.ACTIONS.ACTION_NIL.toString();
-                writeToFile("action" + rndAction);
+                Random r = new Random();
+                String rndAction;
+                if (r.nextFloat() < 0.5)
+                    rndAction = Types.ACTIONS.ACTION_RIGHT.toString();
+                else
+                    rndAction = Types.ACTIONS.ACTION_LEFT.toString();
+                writeToFile("action: " + rndAction);
                 writeToServer(rndAction);
+
             }else if(commState == COMM_STATE.ENDED_END)
             {
                 // TODO: 27/03/2017 Daniel: is the game stopped ?
@@ -185,34 +190,18 @@ public class ClientComm {
         fileOutput.flush();
     }
 
-    public COMM_STATE processCommandLine(String commLine) throws IOException {
+    public COMM_STATE processCommandLine() throws IOException {
         if(sso.gameState == SerializableStateObservation.State.INIT_STATE)
         {
             writeToFile("game is in init state");
             game.remMillis = sso.elapsedTimer;
-            //Test
-//            try {
-//                writeToServer("init end");
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
             return COMM_STATE.INIT_END;
 
-        }else if(sso.gameState == SerializableStateObservation.State.ACT_STATE){
+        }else if(sso.gameState == SerializableStateObservation.State.ACT_STATE) {
             game.remMillis = sso.elapsedTimer;
-            //Test
-//            try {
-//                writeToServer("acted");
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
             return COMM_STATE.ACT_END;
 
-        }else if(commLine.contains("ENDGAME-END")) {
-            game.remMillis = sso.elapsedTimer;
-            return COMM_STATE.ENDED_END;
         }
-
         return commState;
     }
 

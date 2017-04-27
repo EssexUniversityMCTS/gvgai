@@ -1,3 +1,0 @@
-Listening for transport dt_socket at address: 8000
-INIT_DONE
-INIT_DONE

@@ -7,4 +7,1579 @@ init done
 going to processing
 initializing gson
 gson initialized
-init done
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized

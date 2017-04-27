@@ -1,12 +1,14 @@
 import com.google.gson.Gson;
 import ontology.Types;
 
+import java.io.IOException;
+
 /**
  * Created by Daniel on 11.04.2017.
  */
 public class ServerCommTest {
 
-    public static void mockInit(ClientComm cc, boolean isTraining) {
+    public static void mockInit(ClientComm cc, boolean isTraining) throws IOException{
         SerializableStateObservation sso = new SerializableStateObservation();
         sso.gameState = SerializableStateObservation.State.INIT_STATE;
         Gson gson = new Gson();
@@ -24,7 +26,7 @@ public class ServerCommTest {
         }
     }
 
-    public static void mockAct(ClientComm cc, boolean isTraining) {
+    public static void mockAct(ClientComm cc, boolean isTraining) throws IOException{
         SerializableStateObservation sso = new SerializableStateObservation();
         sso.gameState = SerializableStateObservation.State.ACT_STATE;
         Gson gson = new Gson();
@@ -43,7 +45,7 @@ public class ServerCommTest {
         }
     }
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws IOException
     {
         ClientComm ccomm = new ClientComm();
         //ccomm.start();

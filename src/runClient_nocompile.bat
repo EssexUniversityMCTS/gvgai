@@ -9,4 +9,4 @@ set root_path=..\
 rem This script presumes that all the client-related Java files have been previously compiled and put in a folder called "build"
 
 rem Run the JavaClient class	
-java -agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=n -cp src\%build_folder%;%gson% JavaClient > logs/commandErrorLog.txt
+java -agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=n -cp src\%build_folder%;%gson% JavaClient

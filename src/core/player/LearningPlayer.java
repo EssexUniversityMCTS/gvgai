@@ -87,16 +87,13 @@ public class LearningPlayer extends Player {
     public Types.ACTIONS act(StateObservation so, ElapsedCpuTimer elapsedTimer) {
         final StringBuilder stringBuilder = new StringBuilder();
 
-        serverComm.initBuffers();
-
         //Sending messages.
         try {
             // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
+            so.currentGameState = Types.GAMESTATES.ACT_STATE;
             SerializableStateObservation sso = new SerializableStateObservation(so);
             sso.elapsedTimer = elapsedTimer.remainingTimeMillis();
             serverComm.commSend(sso.serialize(null));
-
-
 //            new Thread(() -> {
 //                try {
 //                    String line = serverComm.commRecv(elapsedTimer);
@@ -108,13 +105,20 @@ public class LearningPlayer extends Player {
 
 //            String response = stringBuilder.toString();
             String response = serverComm.commRecv(elapsedTimer);
+            if (response == null)
+                response = Types.ACTIONS.ACTION_NIL.toString();
+
             logger.fine("Received ACTION: " + response + "; ACT Response time: "
+                    + elapsedTimer.elapsedMillis() + " ms.");
+
+            System.out.println("Received ACTION: " + response + "; ACT Response time: "
                     + elapsedTimer.elapsedMillis() + " ms.");
 
             // TODO: 04/04/2017 Daniel: check for game ending (currentGameState is not static) ?
             if ("ABORT".equals(response)){
                 so.currentGameState = Types.GAMESTATES.ABORT_STATE;
             }
+
 
             Types.ACTIONS action = Types.ACTIONS.fromString(response);
             return action;

@@ -70,9 +70,7 @@ public class LearningMachine {
         toPlay.buildLevel(level_file, randomSeed);
 
         //Init the player for the game.
-        LearningMachine.initPlayer(player, actionFile, toPlay.getObservation(), randomSeed, isTraining);
-
-        if (player == null) {
+        if (player == null || LearningMachine.initPlayer(player, actionFile, toPlay.getObservation(), randomSeed, isTraining) == null) {
             //Something went wrong in the constructor, controller disqualified
             toPlay.disqualify();
 
@@ -241,8 +239,8 @@ public class LearningMachine {
         Process client;
 
         ProcessBuilder builder = new ProcessBuilder(cmd);
-        //builder.redirectErrorStream(true);
-        builder.redirectError(new File("logs/processErrorLog.txt"));
+        builder.redirectErrorStream(true);
+        //builder.redirectError(new File("logs/processErrorLog.txt"));
         client = builder.start();
 
         return new LearningPlayer(client);
@@ -279,17 +277,17 @@ public class LearningMachine {
         ect.setMaxTimeMillis(CompetitionParameters.INITIALIZATION_TIME);
 
         //Initialize the controller.
-        player.getServerComm().init(so, ect);
+        if (!player.getServerComm().init(so, ect))
+            return null;
 
         //Check if we returned on time, and act in consequence.
         long timeTaken = ect.elapsedMillis();
         if (ect.exceededMaxTime()) {
             long exceeded = -ect.remainingTimeMillis();
             System.out.println("Controller initialization time out (" + exceeded + ").");
-
             return null;
         } else {
-            //System.out.println("Controller initialization time: " + timeTaken + " ms.");
+            System.out.println("Controller initialization time: " + timeTaken + " ms.");
         }
 
         //If we have a player, set it up for action recording.

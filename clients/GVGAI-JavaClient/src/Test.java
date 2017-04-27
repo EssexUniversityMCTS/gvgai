@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 /**
  * Created by dperez on 18/03/2015.
  */
@@ -5,7 +7,7 @@ public class Test
 {
 
     // MOCKS DATA PASSED TO THE CLIENT
-    public static void mockInit(ClientComm cc, boolean isTraining)
+    public static void mockInit(ClientComm cc, boolean isTraining) throws IOException
     {
         String line = "INIT " + isTraining;
         cc.processCommandLine(line);
@@ -58,7 +60,7 @@ public class Test
     }
 
     // MOCKS DATA PASSED TO THE CLIENT
-    public static void mockAct(ClientComm cc, int gameTick)
+    public static void mockAct(ClientComm cc, int gameTick) throws IOException
     {
         String line = "ACT";
         cc.processCommandLine(line);
@@ -107,7 +109,7 @@ public class Test
     }
 
 
-    public static void mockEnd(ClientComm cc, int gameTick)
+    public static void mockEnd(ClientComm cc, int gameTick) throws IOException
     {
         String line = "ENDGAME";
         cc.processCommandLine(line);
@@ -158,7 +160,7 @@ public class Test
         cc.processLine(line);
     }
     
-    public static void main(String[] args)
+    public static void main(String[] args) throws IOException
     {
         ClientComm ccomm = new ClientComm();
 
