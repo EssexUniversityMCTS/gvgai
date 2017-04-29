@@ -22,7 +22,7 @@ public class LearningMachine {
 
 
     /**
-     * Reads and launches a game for a human to be played. Graphics always on.
+     * Reads and launches a game for a bot to play. Graphics always on.
      *
      * @param game_file  game description file.
      * @param level_file file with the level to be played.
@@ -63,6 +63,30 @@ public class LearningMachine {
         return finalScore;
     }
 
+    /**
+     * Reads and launches a game to be played on a series of both pre-determined and non
+     * pre-determined levels.
+     *
+     * @param game_file  game description file.
+     * @param level_files file with the level to be played.
+     * @param agentName  name (inc. package) where the controller is otherwise.
+     * @param actionFiles filename of the file where the actions of this player, for this game, should be recorded.
+     */
+    public static void runMultipleGames(String game_file, String[] level_files,
+                                            String agentName, String[] actionFiles) throws IOException {
+        int trainingPlays = 0;
+
+        VGDLFactory.GetInstance().init(); //This always first thing to do.
+        VGDLRegistry.GetInstance().init();
+
+        //Create the player.
+        LearningPlayer player = LearningMachine.createPlayer(agentName);
+
+        // Play the training games.
+        System.out.print(trainingPlays + "\n");
+        runGames(game_file, level_files, 1, player, actionFiles);
+    }
+
     private static double[] playOnce(LearningPlayer player, String actionFile, String game_file, String level_file,
                                    boolean visuals, int randomSeed, boolean isTraining) throws IOException {
         //Create the game.
@@ -94,28 +118,27 @@ public class LearningMachine {
         return score;
     }
 
+
     /**
-     * Tears the player down. This initiates the saving of actions to file.
-     * It should be called when the game played is over.
-     * @param toPlay game played.
-     * @param players players to be closed.
-     * @param actionFile file where players' actions should be saved.
-     * @param randomSeed random seed of the game.
-     * @param record boolean, true if actions should be recorded, false otherwise
-     * @return false if there was a timeout from the players. true otherwise.
+     * Reads and launches a game for a bot to be played. It specifies which levels to play and how many times.
+     * Filenames for saving actions can be specified. Graphics always off.
+     * @param game_file game description file.
+     * @param level_files array of level file names to play.
+     * @param level_times how many times each level has to be played.
+     * @param actionFiles names of the files where the actions of this player, for this game, should be recorded. Accepts
+     *                    null if no recording is desired. If not null, this array must contain as much String objects as
+     *                    level_files.length*level_times.
      */
     public static StatSummary performance;
     public static void runGames(String game_file, String[] level_files, int level_times,
-                                LearningPlayer[] playerNames, String[] actionFiles)
-    {
+                                LearningPlayer player, String[] actionFiles) throws IOException {
         VGDLFactory.GetInstance().init(); //This always first thing to do.
         VGDLRegistry.GetInstance().init();
 
         boolean recordActions = false;
-        if(actionFiles != null)
-        {
+        if (actionFiles != null) {
             recordActions = true;
-            assert actionFiles.length >= level_files.length*level_times :
+            assert actionFiles.length >= level_files.length * level_times :
                     "runGames (actionFiles.length<level_files.length*level_times): " +
                             "you must supply an action file for each game instance to be played, or null.";
         }
@@ -125,94 +148,38 @@ public class LearningMachine {
 
         StatSummary[] victories = new StatSummary[toPlay.getNoPlayers()];
         StatSummary[] scores = new StatSummary[toPlay.getNoPlayers()];
-        for (int i = 0; i < toPlay.getNoPlayers(); i++) {
-            victories[i] = new StatSummary();
-            scores[i] = new StatSummary();
-        }
+        victories[0] = new StatSummary();
+        scores[0] = new StatSummary();
         performance = new StatSummary();
 
-        for(String level_file : level_files)
-        {
-            for(int i = 0; i < level_times; ++i)
-            {
-                if(VERBOSE)
-                    System.out.println(" ** Playing game " + game_file + ", level " + level_file + " ("+(i+1)+"/"+level_times+") **");
+        // Player array to hold the single player
+        // TODO: Fix this little hack
+        Player[] players = new Player[]{player};
 
-                //Determine the random seed, different for each game to be played.
-                int randomSeed = new Random().nextInt();
+        // TODO: Figure out what to do with the random seed.
+        //Determine the random seed, different for each game to be played.
+        int randomSeed = new Random().nextInt();
+        // Initialize the player
+        players[0] = LearningMachine.initPlayer(player, actionFiles[0], toPlay.getObservation(), randomSeed, true);
+        // TODO: Figure out what to do with the random seed.
 
-                //build the level in the game.
-                toPlay.buildLevel(level_file, randomSeed);
-
-                String filename = recordActions ? actionFiles[levelIdx*level_times + i] : null;
-
-                //Create the player.
-                int no_players = playerNames.length;
-
-                int disqCount = 0; //count how many players disqualified
-                double[] score = new double[no_players]; //store scores for all the players
-
-                LearningPlayer[] players;
-                if (no_players > 1) {
-                    //multi player games
-                    players = new LearningPlayer[no_players];
-                } else {
-                    //single player games
-                    players = new LearningPlayer[no_players];
-                }
-
-                for (int j = 0; j < no_players; j++) {
-                    if (no_players > 1) {
-                        //multi player
-                        players[j] = LearningMachine.initMultiPlayer(playerNames[j], filename, toPlay.getObservationMulti(), randomSeed, j, false);
-                    } else {
-                        //single player
-                        players[j] = LearningMachine.initPlayer(playerNames[j], actionFiles[0], toPlay.getObservation(), randomSeed, true);
-                    }
-                    score[j] = -1;
-                    if (players[j] == null) {
-                        //Something went wrong in the constructor, controller disqualified
-                        //toPlay.disqualify(j);
-                        toPlay.getAvatars()[j].disqualify(true);
-
-                        disqCount++;
-                    }
-                }
-
-                //Play the game if at least 2 players in multiplayer games or at least 1 in single player.
-                //Get array of scores back.
-                if ((no_players - disqCount) >= toPlay.no_players) {
-                    score = toPlay.runGame(players, randomSeed);
-                    //score = toPlay.playGame(players, randomSeed, false, 0);
-                    toPlay.printResult();
-                }
-                else {
-                    //Get the score for the result.
-                    score = toPlay.handleResult();
-                    toPlay.printResult();
-                }
-
-                //Finally, when the game is over, we need to tear the players down.
-                try {
-                    LearningMachine.tearMultiPlayerDown(players, toPlay);
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
-
-                //Get players stats
-                for (Player player : players)
-                    if(player != null) {
-                        int id = player.getPlayerID();
-                        scores[id].add(score[id]);
-                        victories[id].add(toPlay.getWinner(id) == Types.WINNER.PLAYER_WINS ? 1 : 0);
-                    }
-
-                //reset the game.
-                toPlay.reset();
+        for (String level_file : level_files) {
+            for (int i = 0; i < level_times; ++i) {
+                playOneLevel(game_file,level_file,i,recordActions,levelIdx,players,actionFiles,toPlay,scores,victories);
             }
-
             levelIdx++;
         }
+
+        // TODO: Encircle this bit in a while loop for the duration of 10 minutes from the start of the game.
+        // Ask player for next level to play in case the current level is 2
+        StateObservation obs = toPlay.getObservation();
+        obs.currentGameState = Types.GAMESTATES.CHOOSE_LEVEL;
+        player.getServerComm().commSend(new SerializableStateObservation(obs).serialize(null));
+        int level = Integer.parseInt(player.getServerComm().commRecv());
+
+        // Play the selected level once
+        playOneLevel(game_file,level_files[level],0,recordActions,0,players,actionFiles,toPlay,scores,victories);
+        // TODO: Encircle this bit in a while loop for the duration of 10 minutes from the start of the game.
 
         String vict = "", sc = "";
         for (int i = 0; i < toPlay.no_players; i++) {
@@ -223,9 +190,69 @@ public class LearningMachine {
                 sc += ", ";
             }
         }
+
         System.out.println("Results in game " + game_file + ", " +
                 vict + " , " + sc //);
                 + ", " + performance.mean());
+    }
+
+    /**
+     *
+     * @param game_file Game file to be used to play the game. Is sent by parent method.
+     * @param level_file Level file to be used to play the game. Is sent by parent method.
+     * @param level_time Integer denominating how many times the current level has been played in a row.
+     *                   Is also sent from the exterior, and exists for debugging only.
+     * @param recordActions Boolean determining whether the actions should be recorded.
+     * @param levelIdx Level index. Used for debugging.
+     * @param players Array of Player-type objects. Used to play the game
+     * @param actionFiles
+     * @param toPlay The game to be played. Must be pre-initialized.
+     * @param scores Array of scores to be modified. Is modified at the end of the level.
+     * @param victories Array of victories to be modified. Is modified at the end of the level.
+     * @throws IOException
+     */
+    public static void playOneLevel(String game_file, String level_file, int level_time, boolean recordActions,
+                                    int levelIdx, Player[] players, String[] actionFiles, Game toPlay, StatSummary[] scores,
+                                    StatSummary[] victories) throws IOException{
+        if (VERBOSE)
+            System.out.println(" ** Playing game " + game_file + ", level " + level_file + " (" + level_time + ") **");
+
+        // Create a new random seed for the next level.
+        int randomSeed = new Random().nextInt();
+
+        //build the level in the game.
+        toPlay.buildLevel(level_file, randomSeed);
+
+        String filename = recordActions ? actionFiles[levelIdx * level_time] : null;
+
+        // Score array to hold handled results
+        double[] score;
+
+        // If the player cannot be initialized, disqualify the controller
+        if (players[0] == null) {
+            //Something went wrong in the constructor, controller disqualified
+            //toPlay.disqualify(j);
+            toPlay.getAvatars()[0].disqualify(true);
+            toPlay.handleResult();
+            toPlay.printResult();
+        }
+
+        //Play the game
+        //Get array of scores back.
+        score = toPlay.playGame(players, randomSeed, false, 0);
+        toPlay.printResult();
+
+        //Finally, when the game is over, we need to tear the player down.
+        LearningMachine.tearPlayerDown(players[0], toPlay);
+
+        //Get player stats
+        if (players[0] != null) {
+            scores[0].add(score[0]);
+            victories[0].add(toPlay.getWinner(0) == Types.WINNER.PLAYER_WINS ? 1 : 0);
+        }
+
+        //reset the game.
+        toPlay.reset();
     }
 
     /**
@@ -323,12 +350,10 @@ public class LearningMachine {
      *
      * @param player player to be closed.
      */
-    private static void tearPlayerDown(LearningPlayer player, Game toPlay) throws IOException {
+    private static void tearPlayerDown(Player player, Game toPlay) throws IOException {
         //Determine the time due for the controller initialization.
         ElapsedCpuTimer ect = new ElapsedCpuTimer();
         ect.setMaxTimeMillis(CompetitionParameters.TEAR_DOWN_TIME);
-
-        player.finishGame(toPlay.getObservation(), ect);
 
         player.teardown(toPlay);
         //player.close();

@@ -104,7 +104,7 @@ public class LearningPlayer extends Player {
 //            }).run();
 
 //            String response = stringBuilder.toString();
-            String response = serverComm.commRecv(elapsedTimer);
+            String response = serverComm.commRecv();
             if (response == null)
                 response = Types.ACTIONS.ACTION_NIL.toString();
 

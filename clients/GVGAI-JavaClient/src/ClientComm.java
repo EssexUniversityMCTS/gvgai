@@ -208,7 +208,7 @@ public class ClientComm {
     public void processLine(String json) throws IOException{
         writeToFile("initializing gson");
         try {
-            Gson gson = new GsonBuilder().registerTypeAdapterFactory(new ArrayAdapterFactory()).create();
+            Gson gson = new Gson();
             this.sso = gson.fromJson(json, SerializableStateObservation.class);
             writeToFile("gson initialized");
         } catch (Exception e){

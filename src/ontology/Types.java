@@ -165,7 +165,7 @@ public class Types {
      * This is an enum type that describes the potential states of the game
      */
     public static enum GAMESTATES{
-        INIT_STATE, ACT_STATE, END_STATE, ABORT_STATE
+        INIT_STATE, ACT_STATE, END_STATE, ABORT_STATE, CHOOSE_LEVEL
     }
 
     public static enum MOVEMENT {

@@ -93,7 +93,7 @@ public class ServerComm {
         sso.elapsedTimer = elapsedTimer.remainingTimeMillis();
         commSend(sso.serialize(null));
 
-        String response = commRecv(elapsedTimer);
+        String response = commRecv();
 
         logger.fine("Received: " + response);
 
@@ -116,10 +116,9 @@ public class ServerComm {
     /**
      * Waits for a response during T milliseconds.
      *
-     * @param elapsedTimer Timer when the initialization is due to finish.
      * @return the response got from the client, or null if no response was received after due time.
      */
-    public String commRecv(ElapsedCpuTimer elapsedTimer) throws IOException {
+    public String commRecv() throws IOException {
         if (input.ready()) {
             //skip the first line
             input.readLine();
@@ -151,7 +150,7 @@ public class ServerComm {
             sso.elapsedTimer = elapsedTimer.remainingTimeMillis();
             commSend(sso.serialize(null));
 
-            String response = commRecv(elapsedTimer);
+            String response = commRecv();
             logger.fine("Received: " + response);
             if ("INIT_DONE".equals(response)) {
                 System.out.println("\nInit done");

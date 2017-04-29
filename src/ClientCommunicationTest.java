@@ -37,15 +37,16 @@ public class ClientCommunicationTest {
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
 
-        // 1. This starts a game, in a level, played by a human.
-        //ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
+        String[] level_files = new String[3];
+        for (int i = 0; i <= 2; i++){
+            level_files[i] = gamesPath + games[gameIdx] + "_lvl" + i +".txt";
+        }
 
-        // 2. This plays a game in a level by the controller (through the "Learning Machine").
+        // 1. This plays a game in a level by the controller (through the "Learning Machine").
         //int trainingPlays = 100;
-        LearningMachine.runOneGame(game, level1, visuals, javaController, recordActionsFile, seed, true);
+        //LearningMachine.runOneGame(game, level1, visuals, javaController, recordActionsFile, seed, true);
 
-        // 3. This replays a game from an action file previously recorded
-        //String readActionsFile = "seminar/SeaQuest.txt";  //This example is for
-        //ArcadeMachine.replayGame(game, level1, visuals, readActionsFile);
+        // 1. This plays a training round for a specified game.
+        LearningMachine.runMultipleGames(game, level_files, javaController, new String[]{null});
     }
 }
