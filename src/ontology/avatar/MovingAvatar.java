@@ -120,7 +120,7 @@ public class MovingAvatar extends VGDLSprite {
     public void applyMovement(Game game, Direction action)
     {
     	//this.physics.passiveMovement(this);
-    	if (physicstype_id != 0)
+    	if (physicstype != 0)
     		super.updatePassive();
     	if (action.x()!=0.0 || action.y()!=0.0)
     		lastMovementType = this.physics.activeMovement(this, action, speed);
@@ -141,7 +141,7 @@ public class MovingAvatar extends VGDLSprite {
         } else {
             action = this.player.act(game.getObservation(), ect.copy());
         }
-        
+
         if(CompetitionParameters.TIME_CONSTRAINED && ect.exceededMaxTime())
         {
             long exceeded =  - ect.remainingTimeMillis();
@@ -157,7 +157,6 @@ public class MovingAvatar extends VGDLSprite {
 
             action = Types.ACTIONS.ACTION_NIL;
         }
-
 
         if(!actions.contains(action))
             action = Types.ACTIONS.ACTION_NIL;

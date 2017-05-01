@@ -1,7 +1,7 @@
 BasicGame
     SpriteSet    
         pad    > Immovable color=BLUE 
-        inertial > physicstype_id=1 friction=0.02
+        inertial > physicstype=CONT friction=0.02
             avatar > CarAvatar img=newset/car_redR
         fire > Immovable color=RED
             

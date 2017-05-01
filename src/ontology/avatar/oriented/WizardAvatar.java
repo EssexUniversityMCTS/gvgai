@@ -52,7 +52,7 @@ public class WizardAvatar extends MovingAvatar
     {
         super.loadDefaults();
         draw_arrow = false;
-        strength = 15;
+        jump_strength = 15;
         on_ground = false;
         speed=0;
         stype = null;
@@ -92,7 +92,7 @@ public class WizardAvatar extends MovingAvatar
         }
         
         if(Utils.processUseKey(getKeyHandler().getMask(), getPlayerID()) && on_ground) {
-        	Direction action = new Direction (0,-strength);
+        	Direction action = new Direction (0,-jump_strength);
         	this.orientation = new Direction (this.orientation.x(),0.0);
         	this.physics.activeMovement(this, action, this.speed);
         	Direction temp = new Direction (0,-1);
@@ -149,7 +149,7 @@ public class WizardAvatar extends MovingAvatar
     public void applyMovement(Game game, Direction action)
     {
     	//this.physics.passiveMovement(this);
-    	if (physicstype_id != 0)
+    	if (physicstype != 0)
     		super.updatePassive();
     	if (action.x()!=0.0 || action.y()!=0.0){
     		Direction new_action = new Direction(action.x()*ground_speedup_factor, action.y());

@@ -83,7 +83,7 @@ public class ShootOnlyAvatar extends ShootAvatar
         //No movement
 
         //this.physics.passiveMovement(this);
-        if (physicstype_id != 0)
+        if (physicstype != 0)
             super.updatePassive();
     }
 

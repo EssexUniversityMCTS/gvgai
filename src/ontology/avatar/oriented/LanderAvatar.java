@@ -57,7 +57,7 @@ public class LanderAvatar extends OrientedAvatar
     public void applyMovement(Game game, Direction action)
     {
     	//this.physics.passiveMovement(this);
-    	if (physicstype_id != 0)
+    	if (physicstype != 0)
     		super.updatePassive();
     }
 

@@ -1,14 +1,18 @@
 BasicGame
-    SpriteSet 
-        elevator > Missile orientation=UP speed=0.1 img=newset/floor3
-        float    > Passive img=newset/cloud2 physicstype_id=1 gravity=1.0 friction=0.02
-        moving > physicstype_id=1 gravity=1.0 friction=0.02
-            avatar > MarioAvatar img=newset/man1
-            evil   >  orientation=LEFT
-                goomba     > Walker img=newset/zombie
-                paratroopa > WalkerJumper img=newset/shark2 gravity=0.5
+    SpriteSet
+
+        platforms > solid=True
+            elevator > Missile orientation=UP speed=0.1 img=newset/floor3
+            cloud    > Passive img=newset/cloud2 physicstype=CONT gravity=1.0 friction=0.02
+
+        moving > physicstype=CONT gravity=1.0
+            avatar > PlatformerAvatar img=newset/man1 mass=1 friction=0.1 jump_strength=16
+            evil   >  orientation=LEFT gravity=0.5
+                goomba     > Walker img=newset/zombie friction=0.0
+                paratroopa > WalkerJumper img=newset/shark2 mass=1 friction=0.1 jump_strength=5
+
         goal > Immovable img=oryx/mushroom2
-        water > Immovable img=oryx/fire1
+        fire > Immovable img=oryx/fire1
         coin > Immovable img=oryx/gold1
             
     TerminationSet
@@ -16,25 +20,31 @@ BasicGame
         SpriteCounter stype=avatar    win=False
            
     InteractionSet
+
+        coin avatar > killSprite scoreChange=1
         evil avatar > killIfFromAbove scoreChange=1
         avatar evil > killIfAlive
-        moving EOS  > killSprite
+        evil EOS  > killSprite
+
         goal avatar > killSprite
-        moving elevator > pullWithIt 
-        moving wall > wallStop
+
+        moving elevator > pullWithIt
+        evil wall > wallReverse
+
         elevator EOS > wrapAround
-        float avatar > bounceForward
-        float water > wallStop
-        float wall > wallStop
-        avatar float > wallStop
-        coin avatar > killSprite scoreChange=1
-        avatar water > killSprite
+
+        cloud avatar > bounceForward
+        cloud wall fire > wallStop
+        avatar wall > wallStop
+
+        avatar cloud > wallStop
+        avatar EOS fire > killSprite
         
     LevelMapping
         G > goal
         1 > goomba
         2 > paratroopa
         = > elevator
-        f > float
-        W > water
+        l > cloud
+        f > fire
         c > coin

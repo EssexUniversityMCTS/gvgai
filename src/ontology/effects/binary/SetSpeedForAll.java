@@ -22,20 +22,17 @@ public class SetSpeedForAll extends Effect
     public int itype;
     public double value=0;
 
-    public SetSpeedForAll(InteractionContent cnt) throws Exception
+    public SetSpeedForAll(InteractionContent cnt)
     {
         is_stochastic = true;
         this.parseParameters(cnt);
         itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
-        if(itype == -1){
-            String[] className = this.getClass().getName().split("\\.");
-            throw new Exception("[" + className[className.length - 1] + "] Undefined sprite " + stype);
-        }
     }
 
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
+
         ArrayList<Integer> subtypes = game.getSubTypes(itype);
         for (Integer i: subtypes) {
             Iterator<VGDLSprite> spriteIt = game.getSpriteGroup(i);

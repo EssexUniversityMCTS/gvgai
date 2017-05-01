@@ -4,8 +4,6 @@ import core.vgdl.VGDLRegistry;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
-import core.logging.Logger;
-import core.logging.Message;
 import ontology.effects.Effect;
 
 import java.util.ArrayList;
@@ -24,20 +22,17 @@ public class DecreaseSpeedToAll extends Effect
     public int itype;
     public double value=0.1;
 
-    public DecreaseSpeedToAll(InteractionContent cnt) throws Exception
+    public DecreaseSpeedToAll(InteractionContent cnt)
     {
         is_stochastic = true;
         this.parseParameters(cnt);
         itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
-        if(itype == -1){
-            String[] className = this.getClass().getName().split("\\.");
-            throw new Exception("[" + className[className.length - 1] + "] Undefined sprite " + stype);
-        }
     }
 
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
+
         ArrayList<Integer> subtypes = game.getSubTypes(itype);
         for (Integer i: subtypes) {
             Iterator<VGDLSprite> spriteIt = game.getSpriteGroup(i);

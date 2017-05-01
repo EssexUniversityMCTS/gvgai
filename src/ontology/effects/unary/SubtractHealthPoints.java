@@ -5,8 +5,6 @@ import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
 import ontology.effects.Effect;
-import core.logging.Logger;
-import core.logging.Message;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,20 +26,15 @@ public class SubtractHealthPoints extends Effect
     public String scoreChangeIfKilled;
     private String defScoreChange;
 
-    public SubtractHealthPoints(InteractionContent cnt) throws Exception
+    public SubtractHealthPoints(InteractionContent cnt)
     {
         is_kill_effect = true;
         limit = 0;
         value = 1;
         scoreChangeIfKilled = "0";
         this.parseParameters(cnt);
-        if (!Objects.equals(stype, "")){
+        if (!Objects.equals(stype, ""))
             itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
-			if(itype == -1){
-                String[] className = this.getClass().getName().split("\\.");
-                throw new Exception("[" + className[className.length - 1] + "] Undefined sprite " + stype);
-            }
-        }
         defScoreChange = scoreChange;
     }
 
@@ -61,13 +54,6 @@ public class SubtractHealthPoints extends Effect
                         e.printStackTrace();
                     }
                 }
-            }
-        }
-		else{
-            if(sprite1 == null){
-                String[] className = this.getClass().getName().split("\\.");
-                Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1] + "] sprite1 is null."));
-                return;
             }
         }
         s.healthPoints -= value;

@@ -10,7 +10,7 @@ BasicGame
             avatar      > VerticalAvatar alternate_keys=True img=oryx/floor3
             otheravatar > Passive color=BLUE img=oryx/floor2
 
-        ball > Missile orientation=LEFT physicstype_id=1 img=oryx/bullet1 shrinkfactor=4
+        ball > Missile orientation=LEFT physicstype=CONT img=oryx/bullet1 shrinkfactor=4
             normalBall > speed=25
             slowBall > speed=15
 

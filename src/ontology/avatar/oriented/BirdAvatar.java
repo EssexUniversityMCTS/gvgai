@@ -39,7 +39,7 @@ public class BirdAvatar extends OrientedAvatar
     {
         super.loadDefaults();
         draw_arrow = true;
-        strength = 10;
+        jump_strength = 10;
     }
 
 
@@ -57,7 +57,7 @@ public class BirdAvatar extends OrientedAvatar
     		action2 = new Direction (1.0,0.0);
 
         if(Utils.processUseKey(getKeyHandler().getMask(), getPlayerID())) {
-        	Direction action = new Direction (0,-strength);
+        	Direction action = new Direction (0,-jump_strength);
         	this.orientation = new Direction (this.orientation.x(),0.0);
         	this.physics.activeMovement(this, action, this.speed);
         }

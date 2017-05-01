@@ -21,8 +21,8 @@ import ontology.sprites.*;
 import ontology.sprites.missile.ErraticMissile;
 import ontology.sprites.missile.Missile;
 import ontology.sprites.missile.RandomMissile;
-import ontology.sprites.missile.Walker;
-import ontology.sprites.missile.WalkerJumper;
+import ontology.sprites.npc.Walker;
+import ontology.sprites.npc.WalkerJumper;
 import ontology.sprites.npc.*;
 import ontology.sprites.producer.*;
 import tools.Vector2d;
@@ -48,7 +48,7 @@ public class VGDLFactory
              "Bomber", "RandomBomber", "Portal", "SpawnPoint", "SpriteProducer", "Door",
              "FlakAvatar", "HorizontalAvatar", "VerticalAvatar", "MovingAvatar","MissileAvatar",
              "OrientedAvatar","ShootAvatar", "OngoingAvatar", "OngoingTurningAvatar", "BomberRandomMissile",
-             "OngoingShootAvatar", "NullAvatar", "AimedAvatar", "MarioAvatar", "BirdAvatar",
+             "OngoingShootAvatar", "NullAvatar", "AimedAvatar", "PlatformerAvatar", "BirdAvatar",
              "SpaceshipAvatar", "CarAvatar", "WizardAvatar", "LanderAvatar", "ShootOnlyAvatar", "SpawnPointMultiSprite",
                     "LOSChaser"};
 
@@ -64,7 +64,7 @@ public class VGDLFactory
              Bomber.class, RandomBomber.class, Portal.class, SpawnPoint.class, SpriteProducer.class, Door.class,
              FlakAvatar.class, HorizontalAvatar.class, VerticalAvatar.class, MovingAvatar.class,MissileAvatar.class,
              OrientedAvatar.class,ShootAvatar.class, OngoingAvatar.class, OngoingTurningAvatar.class, BomberRandomMissile.class,
-             OngoingShootAvatar.class, NullAvatar.class, AimedAvatar.class, MarioAvatar.class, BirdAvatar.class,
+             OngoingShootAvatar.class, NullAvatar.class, AimedAvatar.class, PlatformerAvatar.class, BirdAvatar.class,
              SpaceshipAvatar.class, CarAvatar.class, WizardAvatar.class, LanderAvatar.class, ShootOnlyAvatar.class, SpawnPointMultiSprite.class,
                     LOSChaser.class};
 
@@ -81,7 +81,7 @@ public class VGDLFactory
                     "transformToAll", "addTimer", "killIfFrontal", "killIfNotFrontal", "spawnBehind",
                     "updateSpawnType", "removeScore", "increaseSpeedToAll", "decreaseSpeedToAll", "setSpeedForAll", "transformToRandomChild",
                     "addHealthPointsToMax", "spawnIfCounterSubTypes", "bounceDirection", "wallBounce", "killIfSlow", "killIfAlive", 
-                    "waterPhysics", "halfSpeed", "killIfNotUpright", "killIfFast"
+                    "waterPhysics", "halfSpeed", "killIfNotUpright", "killIfFast", "wallReverse"
             };
 
     /**
@@ -97,7 +97,7 @@ public class VGDLFactory
                     TransformToAll.class, AddTimer.class, KillIfFrontal.class, KillIfNotFrontal.class, SpawnBehind.class, UpdateSpawnType.class,
                     RemoveScore.class, IncreaseSpeedToAll.class, DecreaseSpeedToAll.class, SetSpeedForAll.class, TransformToRandomChild.class,
                     AddHealthPointsToMax.class, SpawnIfCounterSubTypes.class, BounceDirection.class, WallBounce.class, KillIfSlow.class, 
-                    KillIfAlive.class, WaterPhysics.class, HalfSpeed.class, KillIfNotUpright.class, KillIfFast.class
+                    KillIfAlive.class, WaterPhysics.class, HalfSpeed.class, KillIfNotUpright.class, KillIfFast.class, WallReverse.class,
             };
 
 

@@ -1,7 +1,6 @@
 package ontology.avatar.oriented;
 
 import java.awt.Dimension;
-import java.awt.Rectangle;
 
 import core.vgdl.VGDLSprite;
 import core.content.SpriteContent;
@@ -19,15 +18,14 @@ import tools.Vector2d;
  * Time: 18:10
  * This is a Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
-public class MarioAvatar extends MovingAvatar
+public class PlatformerAvatar extends MovingAvatar
 {
-	public boolean on_ground;
 	public double ground_speedup_factor;
     public double air_slowdown_factor;
 	
-    public MarioAvatar(){}
+    public PlatformerAvatar(){}
 
-    public MarioAvatar(Vector2d position, Dimension size, SpriteContent cnt)
+    public PlatformerAvatar(Vector2d position, Dimension size, SpriteContent cnt)
     {
         //Init the sprite
         this.init(position, size);
@@ -44,10 +42,21 @@ public class MarioAvatar extends MovingAvatar
     {
         super.loadDefaults();
         draw_arrow = false;
-        strength = 15;
+        jump_strength = 10;
         on_ground = false;
-        ground_speedup_factor = 2.0;
+        ground_speedup_factor = 1.0;
         air_slowdown_factor = 2.0;
+        max_speed = 30.0;
+    }
+
+
+    /**
+     * Overwritting intersects to check if we are on ground.
+     * @return true if it directly intersects with sp (as in the normal case), but additionally checks for on_ground condition.
+     */
+    public boolean intersects (VGDLSprite sp)
+    {
+        return this.groundIntersects(sp);
     }
 
 
@@ -59,39 +68,19 @@ public class MarioAvatar extends MovingAvatar
     {
         super.update(game);
 
-        on_ground = false;
-        Rectangle test_rect = new Rectangle(this.rect);
-        test_rect.setLocation(this.rect.x,this.rect.y+3);
-        
-        for (int i = 0; i <  game.getSpriteData().size(); i++){
-        	if (game.getSpriteData().get(i).name.equals("wall") ||
-                game.getSpriteData().get(i).name.equals("elevator"))
-            {
-        		for (int j = 0; j <  game.getSprites(i).size(); j++){
-                    if (game.getSprites(i).get(j).rect.intersects(test_rect) &&
-                            !game.getSprites(i).get(j).rect.intersects((this.rect))){
-                        on_ground = true;
-                    }
-        		}
-        	}
-            else if (game.getSpriteData().get(i).name.equals("float"))
-            {
-                for (int j = 0; j <  game.getSprites(i).size(); j++){
-                    if (game.getSprites(i).get(j).rect.intersects(test_rect)){
-                        on_ground = true;
-                    }
-                }
-            }
-        }
-        
+        //Managing jumps
         if(Utils.processUseKey(getKeyHandler().getMask(), getPlayerID()) && on_ground) {
-        	Direction action = new Direction (0,-strength);
+            Direction action = new Direction (0,-jump_strength);
         	this.orientation = new Direction (this.orientation.x(),0.0);
         	this.physics.activeMovement(this, action, this.speed);
-        	Direction temp = new Direction (0,-1);
-        	this._updatePos(temp, 5);
+            Direction temp = new Direction (0,-1);
+            lastmove = cooldown; //need this to force this movement.
+            this._updatePos(temp, 5);
         }
-        	
+
+
+        //This at the end, needed for check on ground status in the next cycle.
+        on_ground = false;
         	
     }
     
@@ -115,8 +104,8 @@ public class MarioAvatar extends MovingAvatar
     
     public void applyMovement(Game game, Direction action)
     {
-    	//this.physics.passiveMovement(this);
-    	if (physicstype_id != 0)
+        //this.physics.passiveMovement(this);
+    	if (physicstype != 0)
     		super.updatePassive();
     	if (action.x()!=0.0 || action.y()!=0.0){
     		Direction new_action = new Direction(action.x()*ground_speedup_factor, action.y());
@@ -130,14 +119,16 @@ public class MarioAvatar extends MovingAvatar
 
     public VGDLSprite copy()
     {
-        MarioAvatar newSprite = new MarioAvatar();
+        PlatformerAvatar newSprite = new PlatformerAvatar();
         this.copyTo(newSprite);
         return newSprite;
     }
 
     public void copyTo(VGDLSprite target)
     {
-    	MarioAvatar targetSprite = (MarioAvatar) target;
+    	PlatformerAvatar targetSprite = (PlatformerAvatar) target;
+        ((PlatformerAvatar) target).air_slowdown_factor = this.air_slowdown_factor;
+        ((PlatformerAvatar) target).ground_speedup_factor = this.ground_speedup_factor;
         super.copyTo(targetSprite);
     }
 

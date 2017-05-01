@@ -5,10 +5,10 @@ w      c    wwwww     wwwwww
 w               wwwwwwwwwwww
 w     www   c              w
 w     www                  w
-wwwwwwwwwwwwww    c        w
+wwwwwwwwwwwwwwww  c        w
 w                 1        w
 w                wwwww  c  w
 w        c               1 w
 w A               c     wwww
-wwwwwww    wwwww     wwwwwww
-wwwwwww    wwwwwwwwwwwwwwwww
+wwwwwww  wwwwwww     wwwwwww
+wwwwwww  wwwwwwwwwwwwwwwwwww

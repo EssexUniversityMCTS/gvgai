@@ -365,6 +365,7 @@ public abstract class Game {
 		// By default, we have 2 constructors:
 		Content wallConst = new SpriteContent("wall", "Immovable");
 		wallConst.parameters.put("color", "DARKGRAY");
+		wallConst.parameters.put("solid", "True");
 		((SpriteContent) wallConst).itypes.add(wallId);
 		classConst[wallId] = wallConst;
 
@@ -1426,7 +1427,7 @@ public abstract class Game {
 						new_secondx = new ArrayList<VGDLSprite>();
 
 						for (VGDLSprite s2 : secondx) {
-							if ((s1 != s2 && s1.rect.intersects(s2.rect))) {
+							if ((s1 != s2 && s1.intersects(s2))) {
 								new_secondx.add(s2);
 							}
 						}
@@ -1437,41 +1438,12 @@ public abstract class Game {
 							} else {
 
 								for (int i = 0; i < new_secondx.size(); i++) {
-									if (!kill_list.contains(s1) && s1 != new_secondx.get(i) && s1.rect.intersects(new_secondx.get(i).rect)) {
+									if (!kill_list.contains(s1) && s1 != new_secondx.get(i) && s1.intersects(new_secondx.get(i))) {
 										executeEffect(ef, s1, new_secondx.get(i));
 									}
 								}
 							}
 						}
-//						for (int a = 0; a < new_secondx.size(); a++) {
-//							for (int b = 0; b < new_secondx.size(); b++) {
-//								if (a < b) {
-//									if (Math.sqrt(((s1.getPosition().x - new_secondx.get(a).getPosition().x)
-//											* (s1.getPosition().x - new_secondx.get(a).getPosition().x)) +
-//
-//											((s1.getPosition().y - new_secondx.get(a).getPosition().y)
-//													* (s1.getPosition().y - new_secondx.get(a).getPosition().y))) > Math
-//											.sqrt(((s1.getPosition().x
-//													- new_secondx.get(b).getPosition().x)
-//													* (s1.getPosition().x
-//													- new_secondx.get(b).getPosition().x))
-//													+
-//
-//													((s1.getPosition().y
-//															- new_secondx.get(b).getPosition().y)
-//															* (s1.getPosition().y - new_secondx.get(b)
-//															.getPosition().y)))) {
-//										new_secondx.add(a, new_secondx.get(b));
-//										new_secondx.remove(b + 1);
-//									}
-//								}
-//							}
-//						}
-//						for (int i = 0; i < new_secondx.size(); i++) {
-//							if (!kill_list.contains(s1) && s1 != new_secondx.get(i) && s1.rect.intersects(new_secondx.get(i).rect) ) {
-//								executeEffect(ef, s1, new_secondx.get(i));
-//							}
-//						}
 					}
 				}
 			}

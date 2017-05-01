@@ -2,7 +2,7 @@ BasicGame
     SpriteSet
         elevator > Missile orientation=UP speed=0.1 color=BLUE
         bullet > Immovable singleton=False img=newset/blockB
-        moving > physicstype_id=1 gravity=1.0 friction=0.02
+        moving > physicstype=CONT gravity=1.0 friction=0.02
             avatar > WizardAvatar color=YELLOW stype=bullet img=newset/chef
             box    > Passive img=newset/cloud2 shrinkfactor=0.8
             evil   >  orientation=LEFT
