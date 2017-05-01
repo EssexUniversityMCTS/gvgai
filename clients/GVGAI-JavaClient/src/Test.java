@@ -10,7 +10,7 @@ public class Test
     public static void mockInit(ClientComm cc, boolean isTraining) throws IOException
     {
         String line = "INIT " + isTraining;
-        cc.processCommandLine(line);
+        cc.processCommandLine();
         cc.processLine(line);
         
         line = "Game#1.0#0#NO_WINNER#false#665#798#133#";
@@ -63,7 +63,7 @@ public class Test
     public static void mockAct(ClientComm cc, int gameTick) throws IOException
     {
         String line = "ACT";
-        cc.processCommandLine(line);
+        cc.processCommandLine();
 
         line = "Game#1.0#" + gameTick + "#NO_WINNER#false#";
         cc.processLine(line);
@@ -112,7 +112,7 @@ public class Test
     public static void mockEnd(ClientComm cc, int gameTick) throws IOException
     {
         String line = "ENDGAME";
-        cc.processCommandLine(line);
+        cc.processCommandLine();
 
         line = "Game#1.0#" + gameTick + "#NO_WINNER#true#";
         cc.processLine(line);

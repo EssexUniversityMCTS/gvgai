@@ -15,7 +15,7 @@ public class ServerCommTest {
 
         String json = gson.toJson(sso);
 
-        cc.commState = cc.processCommandLine(json);
+        cc.commState = cc.processCommandLine();
         cc.processLine(json);
 
         if(cc.commState == ClientComm.COMM_STATE.INIT_END)
@@ -33,7 +33,7 @@ public class ServerCommTest {
 
         String json = gson.toJson(sso);
 
-        cc.commState = cc.processCommandLine(json);
+        cc.commState = cc.processCommandLine();
         cc.processLine(json);
 
         if(cc.commState == ClientComm.COMM_STATE.ACT_END)

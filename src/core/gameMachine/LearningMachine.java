@@ -153,10 +153,10 @@ public class LearningMachine {
         performance = new StatSummary();
 
         // Player array to hold the single player
-        // TODO: Fix this little hack
+        // TODO: Fix this little hack (DIEGO: happy with this for the moment, not important).
         Player[] players = new Player[]{player};
 
-        // TODO: Figure out what to do with the random seed.
+        // TODO: Figure out what to do with the random seed. (DIEGO: Each time a game is played - in any level - a new random seed must be used)
         //Determine the random seed, different for each game to be played.
         int randomSeed = new Random().nextInt();
         // Initialize the player
