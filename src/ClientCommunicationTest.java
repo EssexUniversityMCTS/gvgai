@@ -1,3 +1,4 @@
+import core.competition.CompetitionParameters;
 import core.gameMachine.LearningMachine;
 
 import java.util.Random;
@@ -8,7 +9,11 @@ import java.util.Random;
 public class ClientCommunicationTest {
     public static void main(String[] args) throws Exception {
         //Available controllers:
-        String javaController = "src\\runClient_nocompile.bat";
+        String javaController = "src/runClient_nocompile.sh";
+        if(CompetitionParameters.OS_WIN)
+        {
+            javaController = "src\\runClient_nocompile.bat";
+        }
 
         //Available games:
         String gamesPath = "examples/gridphysics/";

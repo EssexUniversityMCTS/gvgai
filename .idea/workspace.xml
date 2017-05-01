@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bf9f5600-6806-4fe4-94e8-6da781c69d75" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/learningTrack2017/core/gameMachine/LearningMachine.class" afterPath="$PROJECT_DIR$/production/learningTrack2017/core/gameMachine/LearningMachine.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/production/GVGAI-JavaClient/ClientComm$COMM_STATE.class" afterPath="$PROJECT_DIR$/src/production/GVGAI-JavaClient/ClientComm$COMM_STATE.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/production/GVGAI-JavaClient/ClientComm.class" afterPath="$PROJECT_DIR$/src/production/GVGAI-JavaClient/ClientComm.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/production/GVGAI-JavaClient/SerializableStateObservation$State.class" afterPath="$PROJECT_DIR$/src/production/GVGAI-JavaClient/SerializableStateObservation$State.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/production/GVGAI-JavaClient/ServerCommTest.class" afterPath="$PROJECT_DIR$/src/production/GVGAI-JavaClient/ServerCommTest.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/production/GVGAI-JavaClient/Test.class" afterPath="$PROJECT_DIR$/src/production/GVGAI-JavaClient/Test.class" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/serverCommDebug.txt.lck" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/production/learningTrack2017/ClientCommunicationTest.class" afterPath="$PROJECT_DIR$/production/learningTrack2017/ClientCommunicationTest.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/clients/GVGAI-JavaClient/src/ServerCommTest.java" afterPath="$PROJECT_DIR$/clients/GVGAI-JavaClient/src/ServerCommTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/clients/GVGAI-JavaClient/src/Test.java" afterPath="$PROJECT_DIR$/clients/GVGAI-JavaClient/src/Test.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ClientCommunicationTest.java" afterPath="$PROJECT_DIR$/src/ClientCommunicationTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/core/gameMachine/LearningMachine.java" afterPath="$PROJECT_DIR$/src/core/gameMachine/LearningMachine.java" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -26,12 +21,44 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="LearningMachine.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="LearningMachine.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/core/gameMachine/LearningMachine.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="169">
-              <caret line="82" column="0" lean-forward="false" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
+            <state relative-caret-position="289">
+              <caret line="163" column="115" lean-forward="false" selection-start-line="163" selection-start-column="115" selection-end-line="163" selection-end-column="115" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="serverCommDebug.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/logs/serverCommDebug.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="clientLog.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/logs/clientLog.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Game.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/core/game/Game.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="169">
+              <caret line="2028" column="0" lean-forward="false" selection-start-line="2028" selection-start-column="0" selection-end-line="2028" selection-end-column="0" />
+              <folding>
+                <element signature="e#55277#55278#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -56,65 +83,41 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ClientComm.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/clients/GVGAI-JavaClient/src/ClientComm.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2835">
-              <caret line="199" column="66" lean-forward="false" selection-start-line="199" selection-start-column="66" selection-end-line="199" selection-end-column="66" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Types.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/clients/GVGAI-JavaClient/src/ontology/Types.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="13" lean-forward="false" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LearningPlayer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/player/LearningPlayer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1830">
-              <caret line="138" column="24" lean-forward="false" selection-start-line="138" selection-start-column="24" selection-end-line="138" selection-end-column="24" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SerializableStateObservation.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core/game/SerializableStateObservation.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="42" column="22" lean-forward="false" selection-start-line="42" selection-start-column="22" selection-end-line="42" selection-end-column="22" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="ClientCommunicationTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ClientCommunicationTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="88">
-              <caret line="10" column="63" lean-forward="true" selection-start-line="10" selection-start-column="63" selection-end-line="10" selection-end-column="63" />
+            <state relative-caret-position="373">
+              <caret line="54" column="0" lean-forward="false" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="runClient_nocompile.sh" pinned="false" current-in-tab="true">
+      <file leaf-file-name="runClient_nocompile.sh" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/runClient_nocompile.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="clientLog.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/logs/clientLog.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CompetitionParameters.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/core/competition/CompetitionParameters.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="73" column="60" lean-forward="false" selection-start-line="73" selection-start-column="60" selection-end-line="73" selection-end-column="60" />
               <folding />
             </state>
           </provider>
@@ -160,10 +163,11 @@
         <option value="$PROJECT_DIR$/src/core/player/LearningPlayer.java" />
         <option value="$PROJECT_DIR$/src/ontology/Types.java" />
         <option value="$PROJECT_DIR$/clients/GVGAI-JavaClient/src/SerializableStateObservation.java" />
-        <option value="$PROJECT_DIR$/src/ClientCommunicationTest.java" />
-        <option value="$PROJECT_DIR$/src/core/gameMachine/LearningMachine.java" />
         <option value="$PROJECT_DIR$/clients/GVGAI-JavaClient/src/ServerCommTest.java" />
         <option value="$PROJECT_DIR$/clients/GVGAI-JavaClient/src/Test.java" />
+        <option value="$PROJECT_DIR$/src/runClient_nocompile.sh" />
+        <option value="$PROJECT_DIR$/src/ClientCommunicationTest.java" />
+        <option value="$PROJECT_DIR$/src/core/gameMachine/LearningMachine.java" />
       </list>
     </option>
   </component>
@@ -220,6 +224,60 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gvgai" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gvgai" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gvgai" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gvgai" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="competition" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gvgai" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gvgai" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="logs" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -581,7 +639,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/ClientCommunicationTest.java</url>
-          <line>49</line>
+          <line>54</line>
           <properties />
           <option name="timeStamp" value="49" />
         </line-breakpoint>
@@ -603,32 +661,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/clients/GVGAI-JavaClient/src/ServerCommTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="748">
-          <caret line="47" column="61" lean-forward="false" selection-start-line="47" selection-start-column="61" selection-end-line="47" selection-end-column="61" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/game/SerializableStateObservation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/clients/GVGAI-JavaClient/src/Test.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2754">
-          <caret line="162" column="61" lean-forward="false" selection-start-line="162" selection-start-column="61" selection-end-line="162" selection-end-column="61" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ClientCommunicationTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="714">
@@ -779,13 +811,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/TestLearner.java" />
-    <entry file="file://$PROJECT_DIR$/src/core/competition/CompetitionParameters.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/core/gameMachine/ArcadeMachine.java" />
     <entry file="file://$PROJECT_DIR$/clients/GVGAI-JavaClient/src/Observation.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -805,6 +830,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
           <caret line="974" column="20" lean-forward="true" selection-start-line="974" selection-start-column="20" selection-end-line="974" selection-end-column="20" />
+          <folding>
+            <element signature="e#32914#32915#0" expanded="false" />
+            <element signature="e#32952#32953#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -882,6 +911,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="214">
           <caret line="167" column="67" lean-forward="false" selection-start-line="167" selection-start-column="67" selection-end-line="167" selection-end-column="67" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -929,17 +959,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/game/Game.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="2028" column="48" lean-forward="false" selection-start-line="2028" selection-start-column="48" selection-end-line="2028" selection-end-column="48" />
-          <folding>
-            <element signature="e#55226#55227#0" expanded="true" />
-            <element signature="e#55277#55278#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/core/gameMachine/ServerComm.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2025">
@@ -972,26 +991,68 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/gameMachine/LearningMachine.java">
+    <entry file="file://$PROJECT_DIR$/src/logs/clientLog.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="169">
-          <caret line="82" column="0" lean-forward="false" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ClientCommunicationTest.java">
+    <entry file="file://$PROJECT_DIR$/src/core/competition/CompetitionParameters.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="10" column="63" lean-forward="true" selection-start-line="10" selection-start-column="63" selection-end-line="10" selection-end-column="63" />
+        <state relative-caret-position="150">
+          <caret line="73" column="60" lean-forward="false" selection-start-line="73" selection-start-column="60" selection-end-line="73" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logs/serverCommDebug.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logs/clientLog.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/runClient_nocompile.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="120">
+          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ClientCommunicationTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="373">
+          <caret line="54" column="0" lean-forward="false" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/game/Game.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="169">
+          <caret line="2028" column="0" lean-forward="false" selection-start-line="2028" selection-start-column="0" selection-end-line="2028" selection-end-column="0" />
+          <folding>
+            <element signature="e#55277#55278#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/gameMachine/LearningMachine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="163" column="115" lean-forward="false" selection-start-line="163" selection-start-column="115" selection-end-line="163" selection-end-column="115" />
           <folding />
         </state>
       </provider>

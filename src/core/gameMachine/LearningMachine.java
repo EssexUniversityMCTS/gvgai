@@ -80,7 +80,7 @@ public class LearningMachine {
         VGDLRegistry.GetInstance().init();
 
         //Create the player.
-        LearningPlayer player = LearningMachine.createPlayer(agentName);
+        LearningPlayer player = LearningMachine.createPlayer(agentName); //TODO (Diego: This happens once only - so it's okay as it is).
 
         // Play the training games.
         System.out.print(trainingPlays + "\n");
@@ -160,8 +160,9 @@ public class LearningMachine {
         //Determine the random seed, different for each game to be played.
         int randomSeed = new Random().nextInt();
         // Initialize the player
+
+        //TODO (Diego: This should happen INSIDE playOnce() - you'll have to change what to pass to that function).
         players[0] = LearningMachine.initPlayer(player, actionFiles[0], toPlay.getObservation(), randomSeed, true);
-        // TODO: Figure out what to do with the random seed.
 
         for (String level_file : level_files) {
             for (int i = 0; i < level_times; ++i) {
