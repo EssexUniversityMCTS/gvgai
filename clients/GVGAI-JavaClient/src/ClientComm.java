@@ -16,7 +16,7 @@ import java.util.Random;
 public class ClientComm {
 
     public static enum COMM_STATE {
-        START, INIT, INIT_END, ACT, ACT_END, ENDED, ENDED_END
+        START, INIT, INIT_END, ACT, ACT_END, ENDED, ENDED_END, CHOOSE
     }
 
     /**
@@ -130,6 +130,13 @@ public class ClientComm {
                 writeToFile("action: " + rndAction);
                 writeToServer(rndAction);
 
+            }else if(commState == COMM_STATE.CHOOSE)
+            {
+                //This is the place to pick a level to be played after the initial 2 levels have gone through
+                Random r = new Random();
+                Integer message = r.nextInt(2);
+                writeToServer(message.toString());
+
             }else if(commState == COMM_STATE.ENDED_END)
             {
                 // TODO: 27/03/2017 Daniel: is the game stopped ?
@@ -201,6 +208,10 @@ public class ClientComm {
             game.remMillis = sso.elapsedTimer;
             return COMM_STATE.ACT_END;
 
+        }else if(sso.gameState == SerializableStateObservation.State.CHOOSE_LEVEL) {
+            game.remMillis = sso.elapsedTimer;
+            return COMM_STATE.CHOOSE;
+
         }
         return commState;
     }
@@ -209,6 +220,15 @@ public class ClientComm {
         writeToFile("initializing gson");
         try {
             Gson gson = new Gson();
+
+            // Debug line
+            //fileOutput.write(json);
+
+            if (json.equals("INIT_START")){
+                this.sso.gameState = SerializableStateObservation.State.INIT_STATE;
+                return;
+            }
+
             this.sso = gson.fromJson(json, SerializableStateObservation.class);
             writeToFile("gson initialized");
         } catch (Exception e){

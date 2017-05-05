@@ -139,18 +139,13 @@ public class ServerComm {
      * Picks an action. This function is called at the beginning of the game for
      * initialization.
      *
-     * @param so    View of the current state.
      * @param elapsedTimer Timer when the initialization is due to finish.
      */
-    public boolean init(StateObservation so, ElapsedCpuTimer elapsedTimer) {
+    public boolean init(ElapsedCpuTimer elapsedTimer) {
         try {
-            // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
-            so.currentGameState = Types.GAMESTATES.INIT_STATE;
-            SerializableStateObservation sso = new SerializableStateObservation(so);
-            sso.elapsedTimer = elapsedTimer.remainingTimeMillis();
-            commSend(sso.serialize(null));
-
+            commSend("INIT_START");
             String response = commRecv();
+
             logger.fine("Received: " + response);
             if ("INIT_DONE".equals(response)) {
                 System.out.println("\nInit done");

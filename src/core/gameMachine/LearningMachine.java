@@ -94,7 +94,7 @@ public class LearningMachine {
         toPlay.buildLevel(level_file, randomSeed);
 
         //Init the player for the game.
-        if (player == null || LearningMachine.initPlayer(player, actionFile, toPlay.getObservation(), randomSeed, isTraining) == null) {
+        if (player == null || LearningMachine.initPlayer(player, actionFile, randomSeed) == null) {
             //Something went wrong in the constructor, controller disqualified
             toPlay.disqualify();
 
@@ -154,15 +154,19 @@ public class LearningMachine {
 
         // Player array to hold the single player
         // TODO: Fix this little hack (DIEGO: happy with this for the moment, not important).
-        Player[] players = new Player[]{player};
+        LearningPlayer[] players = new LearningPlayer[]{player};
 
-        // TODO: Figure out what to do with the random seed. (DIEGO: Each time a game is played - in any level - a new random seed must be used)
-        //Determine the random seed, different for each game to be played.
-        int randomSeed = new Random().nextInt();
+        // Initialize the 10 minute timer for the game duration
+        ElapsedCpuTimer ect = new ElapsedCpuTimer();
+        ect.setMaxTimeMillis(CompetitionParameters.MAX_GAME_LENGTH);
+
         // Initialize the player
-
-        //TODO (Diego: This should happen INSIDE playOnce() - you'll have to change what to pass to that function).
-        players[0] = LearningMachine.initPlayer(player, actionFiles[0], toPlay.getObservation(), randomSeed, true);
+        // TODO: check if the new player init is alright
+        boolean initSuccesful = players[0].initPlayerController();
+        if (!initSuccesful) {
+            System.out.println("Controller initialization failed due to time out");
+            return;
+        }
 
         for (String level_file : level_files) {
             for (int i = 0; i < level_times; ++i) {
@@ -172,14 +176,18 @@ public class LearningMachine {
         }
 
         // TODO: Encircle this bit in a while loop for the duration of 10 minutes from the start of the game.
-        // Ask player for next level to play in case the current level is 2
-        StateObservation obs = toPlay.getObservation();
-        obs.currentGameState = Types.GAMESTATES.CHOOSE_LEVEL;
-        player.getServerComm().commSend(new SerializableStateObservation(obs).serialize(null));
-        int level = Integer.parseInt(player.getServerComm().commRecv());
+        // Acquire an initial state observation
+        StateObservation so = toPlay.getObservation();
 
-        // Play the selected level once
-        playOneLevel(game_file,level_files[level],0,recordActions,0,players,actionFiles,toPlay,scores,victories);
+        while (!ect.exceededMaxTime()) {
+            // Ask player for next level to play in case the current level is 2
+            so.currentGameState = Types.GAMESTATES.CHOOSE_LEVEL;
+            player.getServerComm().commSend(new SerializableStateObservation(so).serialize(null));
+            int level = Integer.parseInt(player.getServerComm().commRecv());
+
+            // Play the selected level once
+            playOneLevel(game_file, level_files[level], 0, recordActions, 0, players, actionFiles, toPlay, scores, victories);
+        }
         // TODO: Encircle this bit in a while loop for the duration of 10 minutes from the start of the game.
 
         String vict = "", sc = "";
@@ -213,7 +221,7 @@ public class LearningMachine {
      * @throws IOException
      */
     public static void playOneLevel(String game_file, String level_file, int level_time, boolean recordActions,
-                                    int levelIdx, Player[] players, String[] actionFiles, Game toPlay, StatSummary[] scores,
+                                    int levelIdx, LearningPlayer[] players, String[] actionFiles, Game toPlay, StatSummary[] scores,
                                     StatSummary[] victories) throws IOException{
         if (VERBOSE)
             System.out.println(" ** Playing game " + game_file + ", level " + level_file + " (" + level_time + ") **");
@@ -228,6 +236,8 @@ public class LearningMachine {
 
         // Score array to hold handled results
         double[] score;
+
+        players[0] = LearningMachine.initPlayer(players[0], actionFiles[0], randomSeed);
 
         // If the player cannot be initialized, disqualify the controller
         if (players[0] == null) {
@@ -292,36 +302,13 @@ public class LearningMachine {
      *
      * @param player     Player to init.
      * @param actionFile filename of the file where the actions of this player, for this game, should be recorded.
-     * @param so         Initial state of the game to be played by the agent.
      * @param randomSeed Seed for the sampleRandom generator of the game to be played.
      * @return the player, created and initialized, ready to start playing the game.
      */
-    private static LearningPlayer initPlayer(LearningPlayer player, String actionFile, StateObservation so,
-                                             int randomSeed, boolean isTraining) {
-
-
-        //Determine the time due for the controller initialization.
-        ElapsedCpuTimer ect = new ElapsedCpuTimer();
-        ect.setMaxTimeMillis(CompetitionParameters.INITIALIZATION_TIME);
-
-        //Initialize the controller.
-        if (!player.getServerComm().init(so, ect))
-            return null;
-
-        //Check if we returned on time, and act in consequence.
-        long timeTaken = ect.elapsedMillis();
-        if (ect.exceededMaxTime()) {
-            long exceeded = -ect.remainingTimeMillis();
-            System.out.println("Controller initialization time out (" + exceeded + ").");
-            return null;
-        } else {
-            System.out.println("Controller initialization time: " + timeTaken + " ms.");
-        }
-
+    private static LearningPlayer initPlayer(LearningPlayer player, String actionFile, int randomSeed) {
         //If we have a player, set it up for action recording.
         if (player != null)
             player.setup(actionFile, randomSeed, false);
-
 
         return player;
     }
@@ -342,8 +329,6 @@ public class LearningMachine {
     {
         return playerName;
     }
-
-
 
     /**
      * Tears the player down. This initiates the saving of actions to file.
