@@ -1,9 +1,7 @@
 package core.player;
 
-import com.google.gson.Gson;
 import core.competition.CompetitionParameters;
-import core.gameMachine.ServerComm;
-import core.vgdl.VGDLRegistry;
+import tracks.singleLearning.ServerComm;
 import core.game.SerializableStateObservation;
 import core.game.StateObservation;
 import core.game.StateObservationMulti;
