@@ -1,4 +1,4 @@
-package core.gameMachine;
+package tracks.singleLearning;
 
 import core.competition.CompetitionParameters;
 import core.game.*;
@@ -9,9 +9,6 @@ import tools.ElapsedCpuTimer;
 import tools.StatSummary;
 
 import java.io.*;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Random;
 
 /**
