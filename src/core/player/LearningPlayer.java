@@ -1,6 +1,7 @@
 package core.player;
 
 import com.google.gson.Gson;
+import core.competition.CompetitionParameters;
 import core.gameMachine.ServerComm;
 import core.vgdl.VGDLRegistry;
 import core.game.SerializableStateObservation;
@@ -141,6 +142,33 @@ public class LearningPlayer extends Player {
 
     public ServerComm getServerComm() {
         return serverComm;
+    }
+
+    /**
+     * Inits the controller for the player
+     *
+     * @return true or false, depending on whether the initialization has been successful
+     */
+    public boolean initPlayerController() {
+        //Determine the time due for the controller initialization.
+        ElapsedCpuTimer ect = new ElapsedCpuTimer();
+        ect.setMaxTimeMillis(CompetitionParameters.INITIALIZATION_TIME);
+
+        //Initialize the controller.
+        if (!this.serverComm.init(ect))
+            return false;
+
+        //Check if we returned on time, and act in consequence.
+        long timeTaken = ect.elapsedMillis();
+        if (ect.exceededMaxTime()) {
+            long exceeded = -ect.remainingTimeMillis();
+            System.out.println("Controller initialization time out (" + exceeded + ").");
+            return false;
+        } else {
+            System.out.println("Controller initialization time: " + timeTaken + " ms.");
+        }
+
+        return true;
     }
 
 //    /**
