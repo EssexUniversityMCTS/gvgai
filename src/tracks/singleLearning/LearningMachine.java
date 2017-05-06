@@ -164,18 +164,20 @@ public class LearningMachine {
             return;
         }
 
-        for (String level_file : level_files) {
+        // Initialize a variable to hold the next level to be played
+        int nextLevelToPlay = 0;
+
+        // Establish the level files for level 0,1,2
+        String[] trainingLevels = new String[]{level_files[0],level_files[1],level_files[2]};
+        for (String level_file : trainingLevels) {
             for (int i = 0; i < level_times; ++i) {
-                playOneLevel(game_file,level_file,i,recordActions,levelIdx,players,actionFiles,toPlay,scores,victories);
+                nextLevelToPlay = playOneLevel(game_file,level_file,i,recordActions,levelIdx,players,actionFiles,toPlay,scores,victories);
             }
             levelIdx++;
         }
 
         // Acquire an initial state observation
         StateObservation so = toPlay.getObservation();
-
-        // Initialize a variable to hold the next level to be played
-        int nextLevelToPlay = 0;
 
         while (!ect.exceededMaxTime()) {
             // Play the selected level once
