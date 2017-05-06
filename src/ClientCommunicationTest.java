@@ -1,5 +1,5 @@
 import core.competition.CompetitionParameters;
-import core.gameMachine.LearningMachine;
+import tracks.singleLearning.LearningMachine;
 
 import java.util.Random;
 

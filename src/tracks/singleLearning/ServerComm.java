@@ -1,4 +1,4 @@
-package core.gameMachine;
+package tracks.singleLearning;
 
 /**
  * Created by Daniel on 05.04.2017.

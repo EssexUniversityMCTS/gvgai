@@ -19,5 +19,7 @@ out/
 /bin
 /build/classes/
 /build/dist/
+production/
 
 *.ipr
+*.class
