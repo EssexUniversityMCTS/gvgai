@@ -42,8 +42,8 @@ public class ClientCommunicationTest {
         String game = gamesPath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
 
-        String[] level_files = new String[3];
-        for (int i = 0; i <= 2; i++){
+        String[] level_files = new String[5];
+        for (int i = 0; i <= 4; i++){
             level_files[i] = gamesPath + games[gameIdx] + "_lvl" + i +".txt";
         }
 

@@ -119,16 +119,17 @@ public class ServerComm {
      * @return the response got from the client, or null if no response was received after due time.
      */
     public String commRecv() throws IOException {
-        if (input.ready()) {
+        String ret = "";
+        //if (input.ready()) {
             //skip the first line
-            input.readLine();
+            //input.readLine();
 
-            String ret = null;
-            while ((ret = input.readLine()) != null && ret.trim().length() > 0) {
+            ret = input.readLine();
+            while (ret != null && ret.trim().length() > 0) {
                 //System.out.println("TIME OK");
                 return ret.trim();
             }
-        }
+        //}
         //if(elapsedTimer.remainingTimeMillis() <= 0)
         //    System.out.println("TIME OUT (" + idStr + "): " + elapsedTimer.elapsedMillis());
 
@@ -143,8 +144,14 @@ public class ServerComm {
      */
     public boolean init(ElapsedCpuTimer elapsedTimer) {
         try {
+            String response = "";
+
             commSend("INIT_START");
-            String response = commRecv();
+
+            // Ignore the first response
+            response = commRecv();
+
+            response = commRecv();
 
             logger.fine("Received: " + response);
             if ("INIT_DONE".equals(response)) {

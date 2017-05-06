@@ -164,7 +164,6 @@ public class LearningMachine {
         // TODO: check if the new player init is alright
         boolean initSuccesful = players[0].initPlayerController();
         if (!initSuccesful) {
-            System.out.println("Controller initialization failed due to time out");
             return;
         }
 
@@ -175,20 +174,27 @@ public class LearningMachine {
             levelIdx++;
         }
 
-        // TODO: Encircle this bit in a while loop for the duration of 10 minutes from the start of the game.
         // Acquire an initial state observation
         StateObservation so = toPlay.getObservation();
 
-        while (!ect.exceededMaxTime()) {
-            // Ask player for next level to play in case the current level is 2
-            so.currentGameState = Types.GAMESTATES.CHOOSE_LEVEL;
-            player.getServerComm().commSend(new SerializableStateObservation(so).serialize(null));
-            int level = Integer.parseInt(player.getServerComm().commRecv());
+        // Initialize a variable to hold the next level to be played
+        int nextLevelToPlay = 0;
 
+        while (!ect.exceededMaxTime()) {
             // Play the selected level once
-            playOneLevel(game_file, level_files[level], 0, recordActions, 0, players, actionFiles, toPlay, scores, victories);
+            nextLevelToPlay = playOneLevel(game_file, level_files[nextLevelToPlay], 0, recordActions, 0, players, actionFiles, toPlay, scores, victories);
         }
-        // TODO: Encircle this bit in a while loop for the duration of 10 minutes from the start of the game.
+
+        // Validation time
+        // Establish the level files for level 3 and 4
+        String[] validationLevels = new String[]{level_files[3],level_files[4]};
+
+        for (String validation_level : validationLevels) {
+            for (int i = 0; i < level_times; ++i) {
+                playOneLevel(game_file, validation_level, i, recordActions, levelIdx, players, actionFiles, toPlay, scores, victories);
+            }
+            levelIdx++;
+        }
 
         String vict = "", sc = "";
         for (int i = 0; i < toPlay.no_players; i++) {
@@ -220,7 +226,7 @@ public class LearningMachine {
      * @param victories Array of victories to be modified. Is modified at the end of the level.
      * @throws IOException
      */
-    public static void playOneLevel(String game_file, String level_file, int level_time, boolean recordActions,
+    public static int playOneLevel(String game_file, String level_file, int level_time, boolean recordActions,
                                     int levelIdx, LearningPlayer[] players, String[] actionFiles, Game toPlay, StatSummary[] scores,
                                     StatSummary[] victories) throws IOException{
         if (VERBOSE)
@@ -262,8 +268,40 @@ public class LearningMachine {
             victories[0].add(toPlay.getWinner(0) == Types.WINNER.PLAYER_WINS ? 1 : 0);
         }
 
+        // Send results to player and save their choice of next level to be played
+        // First create a new observation
+        StateObservation so = toPlay.getObservation();
+        // Sends results to player and retrieve the next level to be played
+        int level = sendResults(so, players[0]);
+
         //reset the game.
         toPlay.reset();
+
+        return level;
+    }
+
+    /**
+     * Sends the given state observation to a player through their communication pipeline
+     * and receives the next level to be played, as stated by the player.
+     * May only be used to ask the player to choose the next level to be played.
+     * Helper method.
+     *
+     * @param so state observation containing the results to be sent to the player
+     * @param player player object that will be used to send the results to
+     * @return the next level to be played that the player chose
+     * @throws IOException
+     */
+    private static int sendResults(StateObservation so, LearningPlayer player) throws IOException{
+        int level = new Random().nextInt(3);
+
+        so.currentGameState = Types.GAMESTATES.CHOOSE_LEVEL;
+        player.getServerComm().commSend(new SerializableStateObservation(so).serialize(null));
+        String response = player.getServerComm().commRecv();
+
+        if (response != null)
+            level = Integer.parseInt(response);
+
+        return level;
     }
 
     /**
