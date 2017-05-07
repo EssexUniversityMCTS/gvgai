@@ -298,7 +298,8 @@ public class LearningMachine {
         String response = player.getServerComm().commRecv();
 
         if (response != null)
-            level = Integer.parseInt(response);
+            if (response.matches("^[0-3]$"))
+                level = Integer.parseInt(response);
 
         return level;
     }

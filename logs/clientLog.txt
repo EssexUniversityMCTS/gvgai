@@ -1,4 +1,4 @@
-start client 2
+start client
 going to processing
 initializing gson
 game is in init state
@@ -6,7 +6,7 @@ init done
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -17,11 +17,11 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -33,7 +33,7 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -41,7 +41,7 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -49,7 +49,7 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -57,7 +57,7 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -65,7 +65,7 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -77,10 +77,6 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
 action: ACTION_LEFT
 going to processing
 initializing gson
@@ -105,11 +101,11 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -117,7 +113,7 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -141,7 +137,7 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -149,11 +145,11 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -161,7 +157,7 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -173,7 +169,7 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -202,10 +198,6 @@ going to processing
 initializing gson
 gson initialized
 action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -213,7 +205,7 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -233,7 +225,7 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -242,10 +234,6 @@ going to processing
 initializing gson
 gson initialized
 action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -269,10 +257,6 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
 action: ACTION_LEFT
 going to processing
 initializing gson
@@ -294,10 +278,6 @@ going to processing
 initializing gson
 gson initialized
 action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -313,10 +293,6 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
 action: ACTION_LEFT
 going to processing
 initializing gson
@@ -345,11 +321,11 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -361,15 +337,15 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -377,7 +353,7 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -389,7 +365,7 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -401,7 +377,7 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -409,11 +385,11 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -437,15 +413,11 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
 action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -461,7 +433,7 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -473,7 +445,7 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -481,19 +453,19 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -538,6 +510,10 @@ going to processing
 initializing gson
 gson initialized
 action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -570,6 +546,10 @@ going to processing
 initializing gson
 gson initialized
 action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -577,7 +557,7 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -609,7 +589,7 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -617,11 +597,11 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -634,6 +614,10 @@ going to processing
 initializing gson
 gson initialized
 action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -649,7 +633,7 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -661,6 +645,10 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
 action: ACTION_LEFT
 going to processing
 initializing gson
@@ -669,7 +657,7 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -681,19 +669,19 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -725,7 +713,7 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -733,7 +721,7 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -741,7 +729,7 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -749,7 +737,7 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -757,7 +745,7 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -773,7 +761,11 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -793,11 +785,11 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -826,6 +818,10 @@ going to processing
 initializing gson
 gson initialized
 action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -837,11 +833,11 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -849,7 +845,7 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -865,7 +861,7 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -873,7 +869,7 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -893,7 +889,6 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -905,11 +900,11 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -937,7 +932,7 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -950,6 +945,10 @@ going to processing
 initializing gson
 gson initialized
 action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -958,6 +957,10 @@ going to processing
 initializing gson
 gson initialized
 action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -981,7 +984,11 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -990,6 +997,10 @@ going to processing
 initializing gson
 gson initialized
 action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -1005,7 +1016,7 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -1013,7 +1024,7 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -1021,7 +1032,7 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -1029,11 +1040,15 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
 action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -1049,11 +1064,11 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -1069,11 +1084,11 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -1105,7 +1120,7 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -1113,7 +1128,7 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -1122,6 +1137,10 @@ going to processing
 initializing gson
 gson initialized
 action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -1137,19 +1156,19 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -1169,7 +1188,7 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -1185,7 +1204,7 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -1193,7 +1212,7 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -1209,11 +1228,15 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
 action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -1237,7 +1260,7 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -1245,11 +1268,19 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
 action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -1266,3 +1297,630 @@ going to processing
 initializing gson
 gson initialized
 action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT

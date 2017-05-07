@@ -113,7 +113,7 @@ public class LearningPlayer extends Player {
             System.out.println("Received ACTION: " + response + "; ACT Response time: "
                     + elapsedTimer.elapsedMillis() + " ms.");
 
-            // TODO: 04/04/2017 Daniel: check for game ending (currentGameState is not static) ?
+            // TODO: Work a bit on the abort
             if ("ABORT".equals(response)){
                 so.currentGameState = Types.GAMESTATES.ABORT_STATE;
             }
