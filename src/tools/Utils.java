@@ -158,4 +158,22 @@ public class Utils
         }
         return maxIndex;
     }
+
+    public static String toStringArray(String[] array)
+    {
+        if (array != null && array.length > 0) {
+            StringBuilder nameBuilder = new StringBuilder();
+
+            for (String elem : array)
+                nameBuilder.append(elem).append(",");
+
+            nameBuilder.deleteCharAt(nameBuilder.length() - 1);
+
+            return nameBuilder.toString();
+        } else {
+            return "";
+        }
+    }
+
+
 }

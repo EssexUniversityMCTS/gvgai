@@ -209,13 +209,13 @@ public class DesignMachine {
     {
         long spaceSize = 1;
         System.out.println("Individual length: " + getNumDimensions());
-        System.out.printf("%-20.20s  %-15.15s %-20.20s %-20.20s \n", "Value", "Dim. Size", "Range", "Description");
+        System.out.printf("%-20.20s  %-15.15s %-20.20s %s \n", "Value", "Dim. Size", "Range", "Description");
         for(int i = 0; i < getNumDimensions(); ++i)
         {
             ParameterContent pc = parameterContents[i];
             String val = pc.getStValue();
             spaceSize *= getDimSize(i);
-            System.out.printf("%-20.20s  %-15.15s %-20.20s %-20.20s \n", val, getDimSize(i), pc.values(), parameterStrings[i]);
+            System.out.printf("%-20.20s  %-15.15s %-20.20s %s \n", val, getDimSize(i), pc.values(), parameterStrings[i]);
 
         }
         DecimalFormat df = new DecimalFormat("0.000E0");

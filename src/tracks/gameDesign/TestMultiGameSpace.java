@@ -40,8 +40,8 @@ public class TestMultiGameSpace {
         int seed = new Random().nextInt();
 
         // Game and level to play
-        int gameIdx = 1;
-        int levelIdx = 3; // level names from 0 to 4 (game_lvlN.txt).
+        int gameIdx = 0;
+        int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
         String controllers = sampleRHEA + " " + sampleRHEA;
 
         String game = gamesPath + games[gameIdx] + ".txt";
