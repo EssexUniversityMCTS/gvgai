@@ -220,7 +220,8 @@ public class RuleGenMachine
 			toPlay.handleResult();
 			toPlay.printResult();
 			System.out.println(e.getMessage());
-
+			System.out.println(e.getStackTrace().toString());
+			e.printStackTrace();
 			return false;
 		}
 

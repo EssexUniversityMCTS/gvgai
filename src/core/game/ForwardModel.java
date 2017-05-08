@@ -524,6 +524,9 @@ public class ForwardModel extends Game
         MovingAvatar a = avatars[playerID];
         if (!a.is_disabled()) {
             KeyHandler ki = a.getKeyHandler();
+            if(ki == null) {
+            	System.out.println("Debugging");
+            }
             ki.reset(playerID);
             ki.setAction(action, a.getPlayerID());
 
