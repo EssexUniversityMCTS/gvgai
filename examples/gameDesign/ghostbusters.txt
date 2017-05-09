@@ -44,13 +44,13 @@ GameSpace key_handler=Pulse square_size=50 no_players=2
     ParameterSet
         #{Name of the parameter} > {values(min, inc, max)/(boolean)} {descriptive string}
 
-        SPHUNT      > values=0.1:0.1:1.5     string=Hunter_Speed            value=1.7
+        SPHUNT      > values=0.1:0.1:1.0     string=Hunter_Speed            value=0.5
         SPGHOST     > values=0.1:0.1:1.0     string=Ghost_Speed
         SPE0        > values=0.1:0.1:1.0     string=Enemy0_Speed
         SPE1        > values=0.1:0.1:1.0     string=Enemy1_Speed
         PE0         > values=0.01:0.01:0.1   string=Enemy0_prob
         PE1         > values=0.01:0.01:0.1   string=Enemy1_prob
-        TTLMIS      > values=1:5:30          string=Missile_TimeToLive      value=31
+        TTLMIS      > values=1:5:30          string=Missile_TimeToLive      value=15
         SPMIS       > values=0.1:0.1:1.0     string=Missile_Speed
         SPMISA      > values=0.1:0.1:1.0     string=MissileA_Speed
         SPMISB      > values=0.1:0.1:1.0     string=MissileB_Speed
@@ -65,4 +65,5 @@ GameSpace key_handler=Pulse square_size=50 no_players=2
         SC_GHMISA_B0 > values=-30:5:-5       string=Score_Ghost-MissileA-B0
         SC_GHMISA_B1 > values=-30:5:-5       string=Score_Ghost-MissileA-B1
 
-        EN_MIS_WRAP > values=True:False      string=Enable_Missile_Wrapping value=False
+        EN_MIS_WRAP > values=True:False      string=Enable_Missile_Wrapping value=True
+

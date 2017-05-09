@@ -64,6 +64,14 @@ public class DesignMachine {
     }
 
 
+    public double[] playGame2P(int[] parameters, String game_file, String level_file, int randomSeed)
+    {
+        String humanController = "tracks.multiPlayer.tools.human.Agent";
+        String controllers = humanController + " " + humanController;
+        boolean visuals = true;
+        return runOneGame(parameters, game_file, level_file, visuals, controllers, null, randomSeed, 0);
+    }
+
     /**
      * Reads and launches a game for a bot to be played. Graphics can be on or
      * off.

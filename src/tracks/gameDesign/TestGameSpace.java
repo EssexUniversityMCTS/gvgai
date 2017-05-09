@@ -31,8 +31,6 @@ public class TestGameSpace {
 
         // All public games
         games = new String[] { "aliens", "seaquest" }; 				// 0
-        gameRules = new String[] { "aliensRules" };     // 0
-
 
         // Other settings
         boolean visuals = true;
@@ -42,11 +40,7 @@ public class TestGameSpace {
         int gameIdx = 0;
         int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
 
-
         String game = gamesPath + games[gameIdx] + ".txt";
-//        String game = gamesPath + gameRules[gameIdx] + ".txt";
-
-
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
 
         String recordActionsFile = null;// "actions_" + games[gameIdx] + "_lvl"
@@ -56,26 +50,35 @@ public class TestGameSpace {
 
 
 
-        /** New stuff starts here **/
+        /** Game Spaces stuff starts here **/
 
+        //Reads VGDL and loads game with parameters.
         DesignMachine dm = new DesignMachine(game);
 
+        //0: Assigns values to parameters to play the game. Two ways: random and explicit.
+        //0.a: Creating an individual at random:
         int[] individual = new int[dm.getNumDimensions()];
-        for(int i = 0; i < individual.length; ++i)
+        for (int i = 0; i < individual.length; ++i)
             individual[i] = new Random().nextInt(dm.getDimSize(i));
+
+        //0.b: Creating a new individual with an int[]:
+        //    Each parameter will take a value = "lower_bound + i*increment" in the order defined in VGDL
+//      int[] individual = new int[]{0,1,2,14,1,4,9,1,5,5,2,4};
+
+        //We can print a report with the parameters and values:
+        dm.printValues(individual);
 
 
         //1. Play as a human.
-        dm.playGame(individual, game, level1, seed);
+//        dm.playGame(individual, game, level1, seed);
 
         //2. Play with a controller.
-//        dm.runOneGame(individual, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
+        dm.runOneGame(individual, game, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
 
-//        dm.printDimensions();
 
-        //Random Search tracks.singlePlayer.Test.
+        //3. Random Search test.
 //        int NUM_TRIALS = 10;
-//        int[] individual = new int[dm.getNumDimensions()];
+//        individual = new int[dm.getNumDimensions()];
 //        int[] best = new int[dm.getNumDimensions()];
 //        double bestFit = -Integer.MAX_VALUE;
 //        visuals = false;

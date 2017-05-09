@@ -1,5 +1,6 @@
 package tracks.gameDesign;
 
+import tracks.ArcadeMachine;
 import tracks.DesignMachine;
 
 import java.util.Random;
@@ -26,13 +27,13 @@ public class TestMultiGameSpace {
 
         // Available games:
         String gamesPath = "examples/gameDesign/";
-        String games[] = new String[] {};
-        String gameRules[] = new String[] {};
+        String games[] = new String[]{};
+        String gameRules[] = new String[]{};
 
 
         // All public games
-        games = new String[] { "ghostbusters", "fatty" }; 				// 0
-        gameRules = new String[] {  };     // 0
+        games = new String[]{"ghostbusters", "fatty"};                // 0
+        gameRules = new String[]{};     // 0
 
 
         // Other settings
@@ -45,88 +46,47 @@ public class TestMultiGameSpace {
         String controllers = sampleRHEA + " " + sampleRHEA;
 
         String game = gamesPath + games[gameIdx] + ".txt";
-//        String game = gamesPath + gameRules[gameIdx] + ".txt";
-//        String game = "examples/gridphysics/" + games[gameIdx] + ".txt";
-
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
 
-        String recordActionsFile = null;// "actions_" + games[gameIdx] + "_lvl"
-                        // + levelIdx + "_" + seed + ".txt";
-                        // where to record the actions
-                        // executed. null if not to save.
+        String recordActionsFile =  null;// "actions_" + games[gameIdx] + "_lvl";
+        // + levelIdx + "_" + seed + ".txt";
+        // where to record the actions
+        // executed. null if not to save.
 
 
+        /** Game Spaces stuff starts here **/
 
-        /** New stuff starts here **/
-
+        //Reads VGDL and loads game with parameters.
         DesignMachine dm = new DesignMachine(game);
 
+        //0: Assigns values to parameters to play the game. Two ways: random and explicit.
+        //0.a: Creating an individual at random:
         int[] individual = new int[dm.getNumDimensions()];
-        for(int i = 0; i < individual.length; ++i)
+        for (int i = 0; i < individual.length; ++i)
             individual[i] = new Random().nextInt(dm.getDimSize(i));
 
-        dm.printValues(individual);
+        //0.b: Creating a new individual with an int[]:
+        //    Each parameter will take a value = "lower_bound + i*increment" in the order defined in VGDL
 //        int[] individual = new int[]{0,1,2,14,1,4,9,1,5,5,2,4};
 
+        //We can print a report with the parameters and values:
+        dm.printValues(individual);
+
         //1. Play as a human.
-//        dm.playGame(individual, game, level1, seed);
+        dm.playGame2P(individual, game, level1, seed);
 
-        //2. Play with a controller.
-        dm.runOneGame(individual, game, level1, visuals, controllers, recordActionsFile, seed, 0);
+        //2. Play with controllers.
+//        dm.runOneGame(individual, game, level1, true, controllers, recordActionsFile, seed, 0);
 
-
+        //3. Plays validationReps times, reports averaged results; visuals off
 //        double wins = 0.0, scores = 0.0;
-//        double validationReps = 20;
+//        double validationReps = 10;
+//        for (int i = 0; i < validationReps; ++i) {
+//            double[] results = dm.runOneGame(individual, game, level1, false, controllers, recordActionsFile, seed, 0);
 //
-//        visuals = false;
-//        for(int i =0; i < validationReps; ++i)
-//        {
-//            tracks.singlePlayer.RHEA.Agent.SIMULATION_DEPTH = 6;
-//
-//            double[] results = ArcadeMachine.runOneGame(game, level1, visuals, rhea, recordActionsFile, seed, 0);
-//
-////            double[] results = dm.runOneGame(individual, game, level1, visuals, rhea, recordActionsFile, seed, 0);
 //            wins += results[0];
 //            scores += results[1];
 //        }
-//
-//        System.out.printf("%.2f%%, average score: %.2f", 100*wins/validationReps, scores/validationReps);
-
-
-
-
-
-//        dm.printDimensions();
-
-        //Random Search tracks.singlePlayer.Test.
-//        int NUM_TRIALS = 10;
-//        int[] individual = new int[dm.getNumDimensions()];
-//        int[] best = new int[dm.getNumDimensions()];
-//        double bestFit = -Integer.MAX_VALUE;
-//        visuals = false;
-//        for(int count = 0; count < NUM_TRIALS; ++count)
-//        {
-//            for(int i = 0; i < individual.length; ++i)
-//                individual[i] = new Random().nextInt(dm.getDimSize(i));
-//
-//            dm.printValues(individual);
-//
-//            double[] result = dm.runOneGame(individual, game, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
-//            double fit = 1000.0 * result[0] + result[1]; //win + score
-//
-//            if(fit > bestFit)
-//            {
-//                bestFit = fit;
-//                System.arraycopy(individual, 0, best, 0, dm.getNumDimensions());
-//            }
-//
-//        }
-//
-//        visuals = true;
-//        System.out.println("##########################");
-//        System.out.println("Best individual with fitness " + bestFit);
-//        System.out.println("##########################");
-//        dm.runOneGame(individual, game, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
-//        dm.printDimensions();
+//        System.out.printf("%.2f%%, average score: %.2f", 100 * wins / validationReps, scores / validationReps);
     }
 }
