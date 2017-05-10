@@ -1,11 +1,9 @@
 package tracks.ruleGeneration.geneticRuleGenerator;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Random;
 
-import core.game.GameDescription;
-import tools.GameAnalyzer;
+import core.player.AbstractPlayer;
 import tools.LevelAnalyzer;
 
 public class SharedData {
@@ -66,20 +64,9 @@ public class SharedData {
 	public static Random random;
 	
 	/**
-	 * static file to write to
-	 */
-	public static String filename = "debugLog";
-	/**
-	 * Writer
-	 */
-	public static PrintWriter output;
-	
-	/**
 	 * The name of a the best agent with some human error
 	 */
 	public static final String BEST_AGENT_NAME = "tracks.singlePlayer.advanced.olets.Agent";
-//	public static final String BEST_AGENT_NAME = "tracks.singlePlayer.simple.sampleonesteplookahead.Agent";
-
 	/**
 	 * The name of a naive agent
 	 */
@@ -156,5 +143,52 @@ public class SharedData {
 	 * Protects the fitness function from looping forever
 	 */
 	public static final int PROTECTION_COUNTER = 3;
+	
+	/**
+	 * the best automated agent
+	 */
+	public static AbstractPlayer automatedAgent;
+	/**
+	 * the naive automated agent
+	 */
+	public static AbstractPlayer naiveAgent;
+	/**
+	 * the do nothing automated agent
+	 */
+	public static AbstractPlayer doNothingAgent;
+	/**
+	 * the random agent
+	 */
+	public static AbstractPlayer randomAgent;
+	
+	public static tracks.ruleGeneration.constructiveRuleGenerator.RuleGenerator constGen;
+	
+	/**
+	 * Array contains all interactions we want to mutate over
+	 */
+	public static String[] interactions = new String[]{
+			"killSprite", "killAll", "killIfHasMore", "killIfHasLess", "killIfFromAbove",
+			"killIfOtherHasMore", "transformToSingleton", "spawnBehind",
+			"spawnIfHasMore", "spawnIfHasLess", "cloneSprite", "transformTo", "transformIfCounts", 
+			"transformToRandomChild", "updateSpawnType", "removeScore", 
+			"addHealthPoints",  "addHealthPointsToMax", "subtractHealthPoints", "increaseSpeedToAll", 
+			"decreaseSpeedToAll", "setSpeedForAll", "stepBack",  "undoAll", "flipDirection",  
+			"reverseDirection", "attractGaze", "align", "turnAround", "wrapAround", "teleportToExit",
+			"pullWithIt", "bounceForward", "collectResource", "changeResource"};
+	/** 
+	 * Array contains all terminations
+	 */
+	public static String[] terminations = new String[] {
+		"SpriteCounter", "SpriteCounterMore", "MultiSpriteCounter",
+		"StopCounter", "Timeout"};
+	/**
+	 * Array contains all possible interaction parameter types
+	 */
+	public static String[] interactionParams = new String[] {
+		"scoreChange", "stype", "limit", "resource", "stype_other", "forceOrientation", "spawnPoint",
+		"value", "geq", "leq"};
+	public static String[] terminationParams = new String[] {
+		"stype", "stype1", "stype2", "stype3"
+	};
 
 }

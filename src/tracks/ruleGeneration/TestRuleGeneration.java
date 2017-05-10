@@ -1,24 +1,19 @@
 package tracks.ruleGeneration;
 
-import tracks.ArcadeMachine;
-
 import java.util.Random;
-
-import core.logging.Logger;
 
 /**
  * Created by dperez on 19/03/2017.
  */
 public class TestRuleGeneration {
-
-	public static int seedMain;
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+	//Available Controllers
+	String sampleMCTSController = "tracks.singlePlayer.advanced.sampleMCTS.Agent";
 
         // Available Rule Generator
         String randomRuleGenerator = "tracks.ruleGeneration.randomRuleGenerator.RuleGenerator";
         String constructiveRuleGenerator = "tracks.ruleGeneration.constructiveRuleGenerator.RuleGenerator";
         String geneticRuleGenerator = "tracks.ruleGeneration.geneticRuleGenerator.RuleGenerator";
-        String sampleMCTSController = "tracks.singlePlayer.advanced.sampleMCTS.Agent";
 
         // Available games:
         String gamesPath = "examples/gridphysics/";
@@ -53,6 +48,7 @@ public class TestRuleGeneration {
         // executed. null if not to save.
 
         // Other settings
+        boolean visuals = true;
         int seed = new Random().nextInt();
         int gameIdx = 76;
         int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
@@ -62,10 +58,9 @@ public class TestRuleGeneration {
 
         // 1. Generate rules (Interaction and Terminations) for a fixed level
         if(RuleGenMachine.generateRules(game, level1, geneticRuleGenerator, recordGameFile, seed)){
-//             ArcadeMachine.playOneGame(recordGameFile, level1, recordActionsFile, seed)
-//            RuleGenMachine.runOneGame(game, recordGameFile, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
+            // RuleGenMachine.playOneGame(game, recordGameFile, level1, recordActionsFile, seed);
+            RuleGenMachine.runOneGame(game, recordGameFile, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
         }
-//            RuleGenMachine.playOneGame(game, recordGameFile, level1, recordActionsFile, seed)
     }
 }
 

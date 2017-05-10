@@ -10,7 +10,6 @@ import core.player.AbstractPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
 import tools.LevelAnalyzer;
-import tools.StepController;
 import tools.Vector2d;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -18,20 +17,13 @@ import java.util.HashMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import javax.xml.bind.JAXB;
-
 import java.util.Arrays;
-import java.awt.Dimension;
 
 public class Chromosome implements Comparable<Chromosome>{
 	/**
 	 * current chromosome fitness if its a feasible
 	 */
 	private ArrayList<Double> fitness;
-	/**
-	 * Parameters to initialize constraints
-	 */
-	HashMap<String, Object> parameters;
 	/**
 	 * current chromosome fitness if its an infeasible
 	 */
@@ -46,30 +38,7 @@ public class Chromosome implements Comparable<Chromosome>{
 	 * contains how many errors came out of the build test
 	 */
 	private int errorCount;
-	/**
-	 * if the fitness is calculated before (no need to recalculate)
-	 */
-	private boolean calculated;
-	/**
-	 * the best automated agent
-	 */
-	private AbstractPlayer automatedAgent;
-	/**
-	 * the naive automated agent
-	 */
-	private AbstractPlayer naiveAgent;
-	/**
-	 * the do nothing automated agent
-	 */
-	private AbstractPlayer doNothingAgent;
-	/**
-	 * the random agent
-	 */
-	private AbstractPlayer randomAgent;
-	/**
-	 * The current stateObservation of the level
-	 */
-	private StateObservation stateObs;
+	
 	/**
 	 * the ruleset this chromosome contains
 	 */
@@ -91,43 +60,7 @@ public class Chromosome implements Comparable<Chromosome>{
 	StateObservation doNothingState;
 	StateObservation bestState;
 	ArrayList<Types.ACTIONS> bestSol;
-
-	/**
-	 * List of all useful sprites in the game
-	 */
-	private ArrayList<String> usefulSprites;
-	/**
-	 * Level analyzer for the game
-	 */
-	private LevelAnalyzer levAl;
 	
-	/**
-	 * Array contains all interactions we want to mutate over
-	 */
-	private String[] interactions = new String[]{
-			"killSprite", "killAll", "killIfHasMore", "killIfHasLess", "killIfFromAbove",
-			"killIfOtherHasMore", "transformToSingleton", "spawnBehind",
-			"spawnIfHasMore", "spawnIfHasLess", "cloneSprite", "transformTo", "transformIfCounts", 
-			"transformToRandomChild", "updateSpawnType", "removeScore", 
-			"addHealthPoints",  "addHealthPointsToMax", "subtractHealthPoints", "increaseSpeedToAll", 
-			"decreaseSpeedToAll", "setSpeedForAll", "stepBack",  "undoAll", "flipDirection",  
-			"reverseDirection", "attractGaze", "align", "turnAround", "wrapAround", "teleportToExit",
-			"pullWithIt", "bounceForward", "collectResource", "changeResource"};
-	/** 
-	 * Array contains all terminations
-	 */
-	private String[] terminations = new String[] {
-		"SpriteCounter", "SpriteCounterMore", "MultiSpriteCounter",
-		"StopCounter", "Timeout"};
-	/**
-	 * Array contains all possible interaction parameter types
-	 */
-	private String[] interactionParams = new String[] {
-		"scoreChange", "stype", "limit", "resource", "stype_other", "forceOrientation", "spawnPoint",
-		"value", "geq", "leq"};
-	private String[] terminationParams = new String[] {
-		"stype", "stype1", "stype2", "stype3"
-	};
 	/**
 	 * Chromosome constructor.  Holds the ruleset and initializes agents within
 	 * @param ruleset	the ruleset the chromosome contains
@@ -135,18 +68,13 @@ public class Chromosome implements Comparable<Chromosome>{
 	 * @param time		elapsed time
 	 */
 
-	public Chromosome(String[][] ruleset, SLDescription sl, ElapsedCpuTimer time) {
+	public Chromosome(String[][] ruleset, SLDescription sl) {
 		this.ruleset = ruleset;
 		this.sl = sl;
 		this.fitness = new ArrayList<Double>();
 		fitness.add(0.0);
 		fitness.add(0.0);
 		this.badFrames = 0;
-		this.calculated = false;
-		this.stateObs = null;
-		this.usefulSprites = SharedData.usefulSprites;
-	    this.levAl = new LevelAnalyzer(sl);
-	    this.parameters = new HashMap<String, Object>();
 	}
 	/**
 	 * Flips a coin to see if we mutate on termination or interaction
@@ -184,7 +112,7 @@ public class Chromosome implements Comparable<Chromosome>{
 				int point = SharedData.random.nextInt(interactionSet.size());
 				String addToMe = interactionSet.get(point);
 				// insert a new parameter into it
-				String nParam = interactionParams[SharedData.random.nextInt(interactionParams.length)];
+				String nParam = SharedData.interactionParams[SharedData.random.nextInt(SharedData.interactionParams.length)];
 				nParam += "=";
 				
 				// there are two types of parameters, ones that take sprites and ones that take values
@@ -193,7 +121,7 @@ public class Chromosome implements Comparable<Chromosome>{
 					int val = SharedData.random.nextInt(SharedData.NUMERICAL_VALUE_PARAM) - 1000;
 					nParam += val;
 				} else {
-					String nSprite = usefulSprites.get(SharedData.random.nextInt(usefulSprites.size()));
+					String nSprite = SharedData.usefulSprites.get(SharedData.random.nextInt(SharedData.usefulSprites.size()));
 					nParam += nSprite;
 				}
 				addToMe += " " + nParam;
@@ -202,16 +130,16 @@ public class Chromosome implements Comparable<Chromosome>{
 			}
 			// insert an entirely new rule, possibly with a parameter in it
 			else {
-				String nInteraction = interactions[SharedData.random.nextInt(interactions.length)];
-				int i1 = SharedData.random.nextInt(usefulSprites.size());
-			    int i2 = (i1 + 1 + SharedData.random.nextInt(usefulSprites.size() - 1)) % usefulSprites.size();
+				String nInteraction = SharedData.interactions[SharedData.random.nextInt(SharedData.interactions.length)];
+				int i1 = SharedData.random.nextInt(SharedData.usefulSprites.size());
+			    int i2 = (i1 + 1 + SharedData.random.nextInt(SharedData.usefulSprites.size() - 1)) % SharedData.usefulSprites.size();
 			    
-			    String newInteraction = usefulSprites.get(i1) + " " + usefulSprites.get(i2) + " > " + nInteraction;
+			    String newInteraction = SharedData.usefulSprites.get(i1) + " " + SharedData.usefulSprites.get(i2) + " > " + nInteraction;
 			    // roll to see if you insert a parameter into this interaction
 			    roll = SharedData.random.nextDouble();
 			    
 			    if(roll < SharedData.INSERT_PARAM_PROB) {
-			    	String nParam = interactionParams[SharedData.random.nextInt(interactionParams.length)];
+			    	String nParam = SharedData.interactionParams[SharedData.random.nextInt(SharedData.interactionParams.length)];
 					nParam += "=";
 					
 					// there are two types of parameters, ones that take sprites and ones that take values
@@ -220,7 +148,7 @@ public class Chromosome implements Comparable<Chromosome>{
 						int val = SharedData.random.nextInt(SharedData.NUMERICAL_VALUE_PARAM) - 1000;
 						nParam += val;
 					} else {
-						String nSprite = usefulSprites.get(SharedData.random.nextInt(usefulSprites.size()));
+						String nSprite = SharedData.usefulSprites.get(SharedData.random.nextInt(SharedData.usefulSprites.size()));
 						nParam += nSprite;
 					}
 					newInteraction += " " + nParam;
@@ -334,7 +262,7 @@ public class Chromosome implements Comparable<Chromosome>{
 						} 
 						// we are on the parameter we want to replace
 						else {
-							String nParam = interactionParams[SharedData.random.nextInt(interactionParams.length)];
+							String nParam = SharedData.interactionParams[SharedData.random.nextInt(SharedData.interactionParams.length)];
 							nParam += "=";
 							// there are two types of parameters, ones that take sprites and ones that take values
 							if(nParam.equals("scoreChange=") || nParam.equals("limit=") || nParam.equals("value=") || nParam.equals("geq=")
@@ -342,7 +270,7 @@ public class Chromosome implements Comparable<Chromosome>{
 								int val = SharedData.random.nextInt(SharedData.NUMERICAL_VALUE_PARAM) - 1000;
 								nParam += val;
 							} else {
-								String nSprite = usefulSprites.get(SharedData.random.nextInt(usefulSprites.size()));
+								String nSprite = SharedData.usefulSprites.get(SharedData.random.nextInt(SharedData.usefulSprites.size()));
 								nParam += nSprite;
 							}
 							
@@ -361,7 +289,7 @@ public class Chromosome implements Comparable<Chromosome>{
 			} 
 			// modify a rule, but leave the parameters and sprites
 			else {
-				String newRule = interactions[SharedData.random.nextInt(interactions.length)];
+				String newRule = SharedData.interactions[SharedData.random.nextInt(SharedData.interactions.length)];
 				String modRule = ruleset[0][point];
 				
 				String[] splitModRule = modRule.split("\\s+");
@@ -398,13 +326,13 @@ public class Chromosome implements Comparable<Chromosome>{
 				int point = SharedData.random.nextInt(terminationSet.size());
 				String addToMe = terminationSet.get(point);
 				// insert a new parameter into it
-				String nParam = terminationParams[SharedData.random.nextInt(terminationParams.length)];
+				String nParam = SharedData.terminationParams[SharedData.random.nextInt(SharedData.terminationParams.length)];
 				nParam += "=";
 				// add either a number or a sprite to the parameter
 				double roll1 = SharedData.random.nextDouble();
 				// insert a sprite
 				if(roll1 < SharedData.PARAM_NUM_OR_SPRITE_PROB) {
-					String nSprite = usefulSprites.get(SharedData.random.nextInt(usefulSprites.size()));
+					String nSprite = SharedData.usefulSprites.get(SharedData.random.nextInt(SharedData.usefulSprites.size()));
 					nParam += nSprite;
 				}
 				// insert a numerical value
@@ -426,18 +354,18 @@ public class Chromosome implements Comparable<Chromosome>{
 			}
 			// insert an entirely new rule, possibly with a parameter in it
 			else {
-				String nTermination = terminations[SharedData.random.nextInt(terminations.length)];    
+				String nTermination = SharedData.terminations[SharedData.random.nextInt(SharedData.terminations.length)];    
 				
 				
 				// roll to see if we include a parameter from the termination parameter set
 				double roll1 = SharedData.random.nextDouble();
 				if(roll < SharedData.INSERT_PARAM_PROB) {
-					String nParam = terminationParams[SharedData.random.nextInt(terminationParams.length)];
+					String nParam = SharedData.terminationParams[SharedData.random.nextInt(SharedData.terminationParams.length)];
 					nParam += "=";
 					// add either a number or a sprite to the parameter only two types
 					double roll2 = SharedData.random.nextDouble();
 					// insert a sprite
-					String nSprite = usefulSprites.get(SharedData.random.nextInt(usefulSprites.size()));
+					String nSprite = SharedData.usefulSprites.get(SharedData.random.nextInt(SharedData.usefulSprites.size()));
 					nParam += nSprite;
 					
 					nTermination+= " " + nParam;
@@ -609,9 +537,9 @@ public class Chromosome implements Comparable<Chromosome>{
 								}
 							} else {
 								// pick a new parameter
-								nParam = terminationParams[SharedData.random.nextInt(terminationParams.length)] + "=";
+								nParam = SharedData.terminationParams[SharedData.random.nextInt(SharedData.terminationParams.length)] + "=";
 								// insert a sprite
-								String nSprite = usefulSprites.get(SharedData.random.nextInt(usefulSprites.size()));
+								String nSprite = SharedData.usefulSprites.get(SharedData.random.nextInt(SharedData.usefulSprites.size()));
 								nParam += nSprite;
 							}
 							fixedRule += nParam + " ";
@@ -637,7 +565,7 @@ public class Chromosome implements Comparable<Chromosome>{
 			} 
 			// modify a rule, but leave the parameters and sprites
 			else {
-				String newRule = terminations[SharedData.random.nextInt(terminations.length)];
+				String newRule = SharedData.terminations[SharedData.random.nextInt(SharedData.terminations.length)];
 				String modRule = ruleset[1][point];
 				
 				String[] splitModRule = modRule.split("\\s+");
@@ -679,7 +607,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		for(int i = 0; i < ruleset[1].length; i++) {
 			nRuleset[1][i] = ruleset[1][i];
 		}
-		Chromosome c = new Chromosome(nRuleset, sl, time);
+		Chromosome c = new Chromosome(nRuleset, sl);
 		return c;
 	}
 
@@ -705,7 +633,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		
 		// check termination set for an end if player dies
 		boolean hasCondition = false;
-		SpriteData[] avatarName = levAl.getAvatars(false);
+		SpriteData[] avatarName = SharedData.la.getAvatars(false);
 		for(int i = 0; i < ruleset[1].length; i++) {
 			if(ruleset[1][i].contains("SpriteCounter") && ruleset[1][i].contains("stype="+avatarName[0].name) && ruleset[1][i].contains("limit=0")) {
 				hasCondition = true;
@@ -738,20 +666,16 @@ public class Chromosome implements Comparable<Chromosome>{
 	 * if it does, this is infeasible.
 	 * @return
 	 */
-	private void feasibilityTest() {
-		HashMap<String, ArrayList<String>> spriteSetStruct = RuleGenerator.constructGen.getSpriteSetStructure();
-		sl.testRules(ruleset[0], ruleset[1], spriteSetStruct);		
+	private StateObservation feasibilityTest() {
+		HashMap<String, ArrayList<String>> spriteSetStruct = SharedData.constGen.getSpriteSetStructure();
+		StateObservation state = sl.testRules(ruleset[0], ruleset[1], spriteSetStruct);		
 		errorCount = sl.getErrors().size();
-		double errorFitness = 0.0;
-		double fourtyFramesFitness = 0.0;
 		constrainFitness = 0;
 		constrainFitness += (0.5) * 1.0 / (errorCount + 1.0);	
 		if(constrainFitness >= 0.5) {
-			constructAgent();
-	
 			doNothingLength = Integer.MAX_VALUE;
 			for(int i = 0; i < SharedData.REPETITION_AMOUNT; i++) {
-				int temp = this.getAgentResult(getStateObservation().copy(), FEASIBILITY_STEP_LIMIT, this.doNothingAgent);
+				int temp = this.getAgentResult(state.copy(), FEASIBILITY_STEP_LIMIT, SharedData.doNothingAgent);
 				if(temp < doNothingLength){
 					doNothingLength = temp;
 				}
@@ -761,7 +685,7 @@ public class Chromosome implements Comparable<Chromosome>{
 			this.fitness.set(0, constrainFitness);
 
 		}
-		return;
+		return state;
 	}
 	
 	
@@ -775,7 +699,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		this.badFrames = 0;
 		// unique events that occurred in all the game simulations
 		Set<String> events = new HashSet<String>();
-		feasibilityTest();
+		StateObservation stateObs = feasibilityTest();
 		if(constrainFitness < 0.7) {
 			// failed feasibility
 			this.fitness.set(0, constrainFitness);
@@ -796,8 +720,8 @@ public class Chromosome implements Comparable<Chromosome>{
 			int bestSolutionSize = 0;
 			for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
 				StateObservation tempState = stateObs.copy();
-				reconstructAgent();
-				int temp = getAgentResult(tempState, SharedData.EVALUATION_STEP_COUNT, automatedAgent);
+				cleanOpenloopAgents();
+				int temp = getAgentResult(tempState, SharedData.EVALUATION_STEP_COUNT, SharedData.automatedAgent);
 				// add temp to framesCount
 				frameCount += temp;
 				
@@ -832,7 +756,7 @@ public class Chromosome implements Comparable<Chromosome>{
 			StateObservation randomState = null;
 			for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
 				StateObservation tempState = stateObs.copy();
-				int temp = getAgentResult(tempState, bestSolutionSize, randomAgent);
+				int temp = getAgentResult(tempState, bestSolutionSize, SharedData.randomAgent);
 				// add temp to framesCount
 				frameCount += temp;
 				randomState = tempState;
@@ -863,9 +787,8 @@ public class Chromosome implements Comparable<Chromosome>{
 			double naiveWinSum = 0.0;
 			//playing the game using the naive agent
 			for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
-				StateObservation tempState = stateObs.copy();		
-				reconstructAgent();
-				int temp = getAgentResult(tempState, bestSolutionSize, naiveAgent);
+				StateObservation tempState = stateObs.copy();
+				int temp = getAgentResult(tempState, bestSolutionSize, SharedData.naiveAgent);
 				// add temp to framesCount
 				frameCount += temp;
 				naiveState = tempState;
@@ -934,17 +857,7 @@ public class Chromosome implements Comparable<Chromosome>{
 				constrainFitness = 1.0;
 				this.fitness.set(0, constrainFitness);
 				this.fitness.set(1, fitness);
-//			}
 		} 
-//		if(constrainFitness > 1)
-//		{
-//			System.out.println("This is wrong");
-//		}
-		this.randomAgent = null;
-		this.automatedAgent = null;
-		this.doNothingAgent = null;
-		this.naiveAgent = null;
-		System.gc();
 	}
 	/**
 	 * Play the current level using the naive player
@@ -1075,78 +988,10 @@ public class Chromosome implements Comparable<Chromosome>{
 	}
 
 	
-	private void reconstructAgent() {
-		try{
-			Class agentClass = Class.forName(SharedData.BEST_AGENT_NAME);
-			Constructor agentConst = agentClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
-			automatedAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation().copy(), null);
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-		
-		try{
-			Class agentClass = Class.forName(SharedData.NAIVE_AGENT_NAME);
-			Constructor agentConst = agentClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
-			naiveAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation().copy(), null);
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	/**
-	 * initialize the agents used during evaluating the chromosome
-	 */
-	private void constructAgent(){
-		try{
-			Class agentClass = Class.forName(SharedData.BEST_AGENT_NAME);
-			Constructor agentConst = agentClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
-			automatedAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation().copy(), null);
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-
-		try{
-			Class agentClass = Class.forName(SharedData.NAIVE_AGENT_NAME);
-			Constructor agentConst = agentClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
-			naiveAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation().copy(), null);
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-
-		try{
-			Class agentClass = Class.forName(SharedData.DO_NOTHING_AGENT_NAME);
-			Constructor agentConst = agentClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
-			doNothingAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation().copy(), null);
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-		try{
-			Class agentClass = Class.forName(SharedData.RANDOM_AGENT_NAME);
-			Constructor agentConst = agentClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
-			randomAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation().copy(), null);
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * get game state observation for the current level
-	 * @return	StateObservation for the current level
-	 */
-	private StateObservation getStateObservation(){
-		if(stateObs != null){
-			return stateObs;
-		}
-		//(ruleset[0], ruleset[1], RuleGenerator.constructGen.getSpriteSetStructure())
-		HashMap<String, ArrayList<String>> spriteSetStruct = RuleGenerator.constructGen.getSpriteSetStructure();
-		
-		stateObs = sl.testRules(ruleset[0], ruleset[1], spriteSetStruct);
-		return stateObs;
+	private void cleanOpenloopAgents() {
+		((tracks.singlePlayer.advanced.olets.Agent)SharedData.automatedAgent).mctsPlayer = 
+			new tracks.singlePlayer.advanced.olets.SingleMCTSPlayer(new Random(), 
+				(tracks.singlePlayer.advanced.olets.Agent) SharedData.automatedAgent);
 	}
 	
 	/***
@@ -1181,9 +1026,8 @@ public class Chromosome implements Comparable<Chromosome>{
 		int yMin = -1 * stateObs.getBlockSize();
 		
 		// add a 1 pixel buffer
-		int xMax = (levAl.getWidth()+1) * stateObs.getBlockSize();
-		int yMax = (levAl.getLength()+1) * stateObs.getBlockSize();
-		boolean outOfScreen = false;
+		int xMax = (SharedData.la.getWidth()+1) * stateObs.getBlockSize();
+		int yMax = (SharedData.la.getLength()+1) * stateObs.getBlockSize();
 		int counter = 0;
 		// check to see if any sprites are out of screen
 		boolean frameBad = false;

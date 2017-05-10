@@ -58,7 +58,6 @@ public class TerminationContent extends Content
                 else{
                     throw new Exception(keyValue[0] + " has no value.");
                 }
-                
             }
         }
     }
