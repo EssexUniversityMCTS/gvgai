@@ -219,8 +219,8 @@ public class ClientComm {
     public void processLine(String json) throws IOException{
         writeToFile("initializing gson");
         try {
-            Gson gson = new Gson();
-
+            Gson gson = new GsonBuilder().registerTypeAdapterFactory(new ArrayAdapterFactory()).create();
+            //Gson gson = new Gson();
             // Debug line
             //fileOutput.write(json);
 
@@ -228,6 +228,8 @@ public class ClientComm {
                 this.sso.gameState = SerializableStateObservation.State.INIT_STATE;
                 return;
             }
+
+            writeToFile(json);
 
             this.sso = gson.fromJson(json, SerializableStateObservation.class);
             writeToFile("gson initialized");

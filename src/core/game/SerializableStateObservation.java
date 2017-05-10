@@ -44,14 +44,21 @@ public class SerializableStateObservation {
 
     public ArrayList<Types.ACTIONS> availableActions;
     public HashMap<Integer, Integer> avatarResources;
-//    public ArrayList<Observation>[][] observationGrid;
+    public ArrayList<Observation>[][] observationGrid;
+    public Observation[][][] observationGridArray;
+    public Observation[][] NPCPositionsArray;
+    public Observation[][] immovablePositionsArray;
+    public Observation[][] movablePositionsArray;
+    public Observation[][] resourcesPositionsArray;
+    public Observation[][] portalsPositionsArray;
+    public Observation[][] fromAvatarSpritesPositionsArray;
     //public TreeSet<Event> eventsHistory;
-//    public ArrayList<Observation>[] NPCPositions;
-//    public ArrayList<Observation>[] immovablePositions;
-//    public ArrayList<Observation>[] movablePositions;
-//    public ArrayList<Observation>[] resourcesPositions;
-//    public ArrayList<Observation>[] portalsPositions;
-//    public ArrayList<Observation>[] fromAvatarSpritesPositions;
+    public ArrayList<Observation>[] NPCPositions;
+    public ArrayList<Observation>[] immovablePositions;
+    public ArrayList<Observation>[] movablePositions;
+    public ArrayList<Observation>[] resourcesPositions;
+    public ArrayList<Observation>[] portalsPositions;
+    public ArrayList<Observation>[] fromAvatarSpritesPositions;
 
     public SerializableStateObservation(StateObservation s)
     {
@@ -82,7 +89,26 @@ public class SerializableStateObservation {
         avatarLimitHealthPoints = s.getAvatarLimitHealthPoints();
         isAvatarAlive = s.isAvatarAlive();
 //        observationGrid = s.getObservationGrid();
+
+        // Observation grid
+        observationGridArray = new Observation[s.getObservationGrid().length][s.getObservationGrid()[0].length][s.getObservationGrid()[0][0].size()];
+
+        for (int i = 0; i < s.getObservationGrid().length; i++){
+            for (int j = 0; j < s.getObservationGrid()[i].length; j++){
+                for (int k = 0; k < s.getObservationGrid()[i][j].size(); k++)
+                    observationGridArray[i][j][k] = s.getObservationGrid()[i][j].get(k);
+            }
+        }
+
 //        NPCPositions = s.getNPCPositions();
+        // NPC positions
+        NPCPositionsArray = new Observation[s.getNPCPositions().length][];
+        ArrayList<Observation> row;
+
+        for (int i = 0; i < s.getNPCPositions().length; i++) {
+            row = s.getNPCPositions()[i];
+            NPCPositionsArray[i] = row.toArray(new Observation[row.size()]);
+        }
 //        immovablePositions = s.getImmovablePositions();
 //        movablePositions = s.getMovablePositions();
 //        resourcesPositions = s.getResourcesPositions();
@@ -93,7 +119,7 @@ public class SerializableStateObservation {
     public String serialize(String filename)
     {
         String message = "";
-        Gson gson = new GsonBuilder().registerTypeAdapterFactory(new ArrayAdapterFactory()).create();
+        Gson gson = new Gson();
         if(filename == null)
         {
             message = gson.toJson(this);
