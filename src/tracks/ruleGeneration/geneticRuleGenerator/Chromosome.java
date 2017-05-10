@@ -796,7 +796,7 @@ public class Chromosome implements Comparable<Chromosome>{
 			int bestSolutionSize = 0;
 			for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
 				StateObservation tempState = stateObs.copy();
-				
+				reconstructAgent();
 				int temp = getAgentResult(tempState, SharedData.EVALUATION_STEP_COUNT, automatedAgent);
 				// add temp to framesCount
 				frameCount += temp;
@@ -863,7 +863,8 @@ public class Chromosome implements Comparable<Chromosome>{
 			double naiveWinSum = 0.0;
 			//playing the game using the naive agent
 			for(int i=0; i<SharedData.REPETITION_AMOUNT; i++){
-				StateObservation tempState = stateObs.copy();					
+				StateObservation tempState = stateObs.copy();		
+				reconstructAgent();
 				int temp = getAgentResult(tempState, bestSolutionSize, naiveAgent);
 				// add temp to framesCount
 				frameCount += temp;
@@ -889,12 +890,12 @@ public class Chromosome implements Comparable<Chromosome>{
 				score = -200;
 			}
 			double badFramePercent = badFrames / (1.0 * frameCount);
-			if(badFramePercent > .3) {
-				// if we have bad frames, this is still not a good game
-				constrainFitness += 0.3 * (1 - badFrames / (1.0 * frameCount));
-				this.fitness.set(0, constrainFitness);
-			}
-			else {
+//			if(badFramePercent > .3) {
+//				// if we have bad frames, this is still not a good game
+//				constrainFitness += 0.3 * (1 - badFrames / (1.0 * frameCount));
+//				this.fitness.set(0, constrainFitness);
+//			}
+//			else {
 				// find average scores and wins across playthroughs
 				double avgBestScore = automatedScoreSum / SharedData.REPETITION_AMOUNT;
 				double avgNaiveScore = naiveScoreSum / SharedData.REPETITION_AMOUNT;
@@ -933,7 +934,7 @@ public class Chromosome implements Comparable<Chromosome>{
 				constrainFitness = 1.0;
 				this.fitness.set(0, constrainFitness);
 				this.fitness.set(1, fitness);
-			}
+//			}
 		} 
 //		if(constrainFitness > 1)
 //		{
@@ -1073,6 +1074,26 @@ public class Chromosome implements Comparable<Chromosome>{
 		return children;
 	}
 
+	
+	private void reconstructAgent() {
+		try{
+			Class agentClass = Class.forName(SharedData.BEST_AGENT_NAME);
+			Constructor agentConst = agentClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
+			automatedAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation().copy(), null);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		try{
+			Class agentClass = Class.forName(SharedData.NAIVE_AGENT_NAME);
+			Constructor agentConst = agentClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
+			naiveAgent = (AbstractPlayer)agentConst.newInstance(getStateObservation().copy(), null);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * initialize the agents used during evaluating the chromosome
 	 */

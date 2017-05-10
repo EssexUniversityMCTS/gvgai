@@ -26,7 +26,7 @@ public class SharedData {
 	/**
 	 * the amount of time to evaluate a single level
 	 */
-	public static final long EVALUATION_TIME = 1000;
+	public static final long EVALUATION_TIME = 10000;
 	
 	/**
 	 * number of the best chromosomes that are transfered from one generation to another
@@ -78,6 +78,8 @@ public class SharedData {
 	 * The name of a the best agent with some human error
 	 */
 	public static final String BEST_AGENT_NAME = "tracks.singlePlayer.advanced.olets.Agent";
+//	public static final String BEST_AGENT_NAME = "tracks.singlePlayer.simple.sampleonesteplookahead.Agent";
+
 	/**
 	 * The name of a naive agent
 	 */
@@ -99,7 +101,7 @@ public class SharedData {
 	/**
 	 * The amount of times used to run each agent
 	 */
-	public static final int REPETITION_AMOUNT = 1;
+	public static final int REPETITION_AMOUNT = 3;
 	/**
 	 * The amount of time given for each time step
 	 */
