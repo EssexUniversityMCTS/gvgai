@@ -44,7 +44,7 @@ public class SerializableStateObservation {
 
     public ArrayList<Types.ACTIONS> availableActions;
     public HashMap<Integer, Integer> avatarResources;
-    public ArrayList<Observation>[][] observationGrid;
+//    public ArrayList<Observation>[][] observationGrid;
     public Observation[][][] observationGridArray;
     public Observation[][] NPCPositionsArray;
     public Observation[][] immovablePositionsArray;
@@ -53,12 +53,12 @@ public class SerializableStateObservation {
     public Observation[][] portalsPositionsArray;
     public Observation[][] fromAvatarSpritesPositionsArray;
     //public TreeSet<Event> eventsHistory;
-    public ArrayList<Observation>[] NPCPositions;
-    public ArrayList<Observation>[] immovablePositions;
-    public ArrayList<Observation>[] movablePositions;
-    public ArrayList<Observation>[] resourcesPositions;
-    public ArrayList<Observation>[] portalsPositions;
-    public ArrayList<Observation>[] fromAvatarSpritesPositions;
+//    public ArrayList<Observation>[] NPCPositions;
+//    public ArrayList<Observation>[] immovablePositions;
+//    public ArrayList<Observation>[] movablePositions;
+//    public ArrayList<Observation>[] resourcesPositions;
+//    public ArrayList<Observation>[] portalsPositions;
+//    public ArrayList<Observation>[] fromAvatarSpritesPositions;
 
     public SerializableStateObservation(StateObservation s)
     {
@@ -90,30 +90,86 @@ public class SerializableStateObservation {
         isAvatarAlive = s.isAvatarAlive();
 //        observationGrid = s.getObservationGrid();
 
-        // Observation grid
-        observationGridArray = new Observation[s.getObservationGrid().length][s.getObservationGrid()[0].length][s.getObservationGrid()[0][0].size()];
+        // Create a row to be used for translation from ArrayList to array
+        ArrayList<Observation> row;
 
-        for (int i = 0; i < s.getObservationGrid().length; i++){
-            for (int j = 0; j < s.getObservationGrid()[i].length; j++){
-                for (int k = 0; k < s.getObservationGrid()[i][j].size(); k++)
-                    observationGridArray[i][j][k] = s.getObservationGrid()[i][j].get(k);
+        // Observation grid
+        if (s.getObservationGrid()!=null) {
+            observationGridArray = new Observation[s.getObservationGrid().length][s.getObservationGrid()[0].length][];
+
+            for (int i = 0; i < s.getObservationGrid().length; i++) {
+                for (int j = 0; j < s.getObservationGrid()[i].length; j++) {
+                    row = s.getObservationGrid()[i][j];
+                    observationGridArray[i][j] = row.toArray(new Observation[row.size()]);
+                }
             }
         }
 
 //        NPCPositions = s.getNPCPositions();
         // NPC positions
-        NPCPositionsArray = new Observation[s.getNPCPositions().length][];
-        ArrayList<Observation> row;
+        if (s.getNPCPositions()!=null) {
+            NPCPositionsArray = new Observation[s.getNPCPositions().length][];
 
-        for (int i = 0; i < s.getNPCPositions().length; i++) {
-            row = s.getNPCPositions()[i];
-            NPCPositionsArray[i] = row.toArray(new Observation[row.size()]);
+            for (int i = 0; i < s.getNPCPositions().length; i++) {
+                row = s.getNPCPositions()[i];
+                NPCPositionsArray[i] = row.toArray(new Observation[row.size()]);
+            }
         }
+
 //        immovablePositions = s.getImmovablePositions();
+        // Immovable positions
+        if (s.getImmovablePositions()!=null) {
+            immovablePositionsArray = new Observation[s.getImmovablePositions().length][];
+
+            for (int i = 0; i < s.getImmovablePositions().length; i++) {
+                row = s.getImmovablePositions()[i];
+                immovablePositionsArray[i] = row.toArray(new Observation[row.size()]);
+            }
+        }
+
 //        movablePositions = s.getMovablePositions();
+        // Movable positions
+        if(s.getMovablePositions()!=null) {
+            movablePositionsArray = new Observation[s.getMovablePositions().length][];
+
+            for (int i = 0; i < s.getMovablePositions().length; i++) {
+                row = s.getMovablePositions()[i];
+                movablePositionsArray[i] = row.toArray(new Observation[row.size()]);
+            }
+        }
+
 //        resourcesPositions = s.getResourcesPositions();
+        // Resource position
+        if(s.getResourcesPositions()!=null) {
+            resourcesPositionsArray = new Observation[s.getResourcesPositions().length][];
+
+            for (int i = 0; i < s.getResourcesPositions().length; i++) {
+                row = s.getResourcesPositions()[i];
+                resourcesPositionsArray[i] = row.toArray(new Observation[row.size()]);
+            }
+        }
+
 //        portalsPositions = s.getPortalsPositions();
+        // Portal position
+        if(s.getPortalsPositions()!=null) {
+            portalsPositionsArray = new Observation[s.getPortalsPositions().length][];
+
+            for (int i = 0; i < s.getPortalsPositions().length; i++) {
+                row = s.getPortalsPositions()[i];
+                portalsPositionsArray[i] = row.toArray(new Observation[row.size()]);
+            }
+        }
+
 //        fromAvatarSpritesPositions = s.getFromAvatarSpritesPositions();
+        // Avatar sprite position
+        if(s.getFromAvatarSpritesPositions()!=null) {
+            fromAvatarSpritesPositionsArray = new Observation[s.getFromAvatarSpritesPositions().length][];
+
+            for (int i = 0; i < s.getFromAvatarSpritesPositions().length; i++) {
+                row = s.getFromAvatarSpritesPositions()[i];
+                fromAvatarSpritesPositionsArray[i] = row.toArray(new Observation[row.size()]);
+            }
+        }
     }
 
     public String serialize(String filename)
