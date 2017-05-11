@@ -358,6 +358,13 @@ public class SLDescription {
 		return this.currentGame.getObservation();
 	}
 
+	/**
+	 * Disable/Enable the logger
+	 * @param value		enable or disable
+	 */
+	public void enable(boolean value){
+	    Logger.getInstance().active = value;
+	}
     /**
      * get list of errors from the system
      * 
