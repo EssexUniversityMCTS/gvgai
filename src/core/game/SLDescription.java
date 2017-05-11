@@ -362,7 +362,7 @@ public class SLDescription {
 	 * Disable/Enable the logger
 	 * @param value		enable or disable
 	 */
-	public void enable(boolean value){
+	public void enableLogger(boolean value){
 	    Logger.getInstance().active = value;
 	}
     /**
