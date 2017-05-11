@@ -4,7 +4,6 @@ import ontology.Game;
 import ontology.Avatar;
 import ontology.Game;
 import ontology.Types;
-import serialization.ArrayAdapterFactory;
 
 import java.awt.*;
 import java.io.*;
@@ -219,8 +218,8 @@ public class ClientComm {
     public void processLine(String json) throws IOException{
         writeToFile("initializing gson");
         try {
-            Gson gson = new GsonBuilder().registerTypeAdapterFactory(new ArrayAdapterFactory()).create();
-            //Gson gson = new Gson();
+            //Gson gson = new GsonBuilder().registerTypeAdapterFactory(new ArrayAdapterFactory()).create();
+            Gson gson = new Gson();
             // Debug line
             //fileOutput.write(json);
 
@@ -229,7 +228,7 @@ public class ClientComm {
                 return;
             }
 
-            writeToFile(json);
+            //writeToFile(json);
 
             this.sso = gson.fromJson(json, SerializableStateObservation.class);
             writeToFile("gson initialized");

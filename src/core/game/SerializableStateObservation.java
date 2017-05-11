@@ -3,7 +3,6 @@ package core.game;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import ontology.Types;
-import serialization.ArrayAdapterFactory;
 import tools.ElapsedCpuTimer;
 import tools.Vector2d;
 
@@ -93,6 +92,8 @@ public class SerializableStateObservation {
         // Create a row to be used for translation from ArrayList to array
         ArrayList<Observation> row;
 
+        ElapsedCpuTimer ect = new ElapsedCpuTimer();
+
         // Observation grid
         if (s.getObservationGrid()!=null) {
             observationGridArray = new Observation[s.getObservationGrid().length][s.getObservationGrid()[0].length][];
@@ -170,6 +171,8 @@ public class SerializableStateObservation {
                 fromAvatarSpritesPositionsArray[i] = row.toArray(new Observation[row.size()]);
             }
         }
+
+        System.out.println(ect.elapsedMillis() + " taken");
     }
 
     public String serialize(String filename)

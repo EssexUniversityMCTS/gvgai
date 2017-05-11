@@ -145,22 +145,33 @@ public class ServerComm {
     public boolean init(ElapsedCpuTimer elapsedTimer) {
         try {
             String response = "";
+            int count = 11;
 
             commSend("INIT_START");
 
-            // Ignore the first response
             response = commRecv();
+            while(response != null &&  !response.equalsIgnoreCase("INIT_DONE") && count>0)
+            {
+                response = commRecv();
+                count--;
+            }
 
-            response = commRecv();
-
-            logger.fine("Received: " + response);
-            if ("INIT_DONE".equals(response)) {
-                System.out.println("\nInit done");
-                return true;
-            } else {
-                System.out.println("init failed");
+            if(count <= 0)
+            {
+                System.out.println("init failed: too many unexpected messages received");
                 return false;
             }
+            // Ignore the first response
+
+            logger.fine("Received: " + response);
+//            if ("INIT_DONE".equals(response)) {
+            System.out.println("\nInit done");
+            return true;
+//            }
+//            else {
+//                System.out.println("init failed");
+//                return false;
+//            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
