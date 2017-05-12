@@ -21,9 +21,18 @@ import java.awt.*;
  */
 public class WizardAvatar extends MovingAvatar
 {
-	public boolean on_ground;
-	public double ground_speedup_factor;
+    public double ground_speedup_factor;
     public double air_slowdown_factor;
+
+
+    //This is the sprite I shoot
+    public String stype;
+    public String[] stypes;
+    public int[] itype;
+
+    public Direction facing_dir;
+
+    public int last_block_time;
 
     public WizardAvatar(){}
 
@@ -39,30 +48,32 @@ public class WizardAvatar extends MovingAvatar
         this.parseParameters(cnt);
     }
 
-    //This is the sprite I shoot
-    public String stype;
-    public String[] stypes;
-    public int[] itype;
-
-    public Direction facing_dir;
-
-    public int last_block_time;
-
     protected void loadDefaults()
     {
         super.loadDefaults();
         draw_arrow = false;
-        jump_strength = 15;
+        jump_strength = 10;
         on_ground = false;
-        speed=0;
+        speed = 0;
         stype = null;
         stypes = new String[1];
         itype = new int[1];
         last_block_time = 0;
-        ground_speedup_factor = 2.0;
+        ground_speedup_factor = 1.0;
         air_slowdown_factor = 2.0;
+        max_speed = 30.0;
 
         facing_dir = new Direction(1,0);
+    }
+
+
+    /**
+     * Overwritting intersects to check if we are on ground.
+     * @return true if it directly intersects with sp (as in the normal case), but additionally checks for on_ground condition.
+     */
+    public boolean intersects (VGDLSprite sp)
+    {
+        return this.groundIntersects(sp);
     }
 
 
@@ -70,35 +81,21 @@ public class WizardAvatar extends MovingAvatar
      * This update call is for the game tick() loop.
      * @param game current state of the game.
      */
-    public void update(Game game)
+    public void updateAvatar(Game game, boolean requestInput, boolean[] actionMask)
     {
-        super.update(game);
-        
-        on_ground = false;
-        Rectangle test_rect = new Rectangle(this.rect);
-        test_rect.setLocation(this.rect.x,this.rect.y+3);
-        
-        for (int i = 0; i <  game.getSpriteData().size(); i++){
-        	if (game.getSpriteData().get(i).name.equals("wall") ||
-                game.getSpriteData().get(i).name.equals("bullet"))
-            {
-        		for (int j = 0; j <  game.getSprites(i).size(); j++){
-        			if (game.getSprites(i).get(j).rect.intersects(test_rect) &&
-                            !game.getSprites(i).get(j).rect.intersects((this.rect))){
-        				on_ground = true;
-        			}
-        		}
-        	}
-        }
-        
+        super.updateAvatar(game, requestInput, actionMask);
+
+        //Managing jumps
         if(Utils.processUseKey(getKeyHandler().getMask(), getPlayerID()) && on_ground) {
-        	Direction action = new Direction (0,-jump_strength);
-        	this.orientation = new Direction (this.orientation.x(),0.0);
-        	this.physics.activeMovement(this, action, this.speed);
-        	Direction temp = new Direction (0,-1);
-        	this._updatePos(temp, 5);
+            Direction action = new Direction (0,-jump_strength);
+            this.orientation = new Direction (this.orientation.x(),0.0);
+            this.physics.activeMovement(this, action, this.speed);
+            Direction temp = new Direction (0,-1);
+            lastmove = cooldown; //need this to force this movement.
+            this._updatePos(temp, 5);
         }
 
+        //Spawning blocks
         if (Utils.processMovementActionKeys(getKeyHandler().getMask(), getPlayerID()) == Types.DUP &&
                 last_block_time+5 <= game.getGameTick()){
             this.physics.activeMovement(this, new Direction(0,1), -1);
@@ -110,7 +107,6 @@ public class WizardAvatar extends MovingAvatar
             }
             last_block_time = game.getGameTick();
         }
-
         if (Utils.processMovementActionKeys(getKeyHandler().getMask(), getPlayerID()) == Types.DLEFT){
             facing_dir = new Direction(-1,0);
         }
@@ -118,6 +114,9 @@ public class WizardAvatar extends MovingAvatar
         if (Utils.processMovementActionKeys(getKeyHandler().getMask(), getPlayerID()) == Types.DRIGHT){
             facing_dir = new Direction(1,0);
         }
+
+        //This at the end, needed for check on ground status in the next cycle.
+        on_ground = false;
 
     }
     
@@ -140,24 +139,19 @@ public class WizardAvatar extends MovingAvatar
 
         super.postProcess();
     }
-    
-    public void move(Game game, boolean[] actionMask)
-    {
-        super.move(game, actionMask);
-    }
-    
+
     public void applyMovement(Game game, Direction action)
     {
-    	//this.physics.passiveMovement(this);
-    	if (physicstype != 0)
-    		super.updatePassive();
-    	if (action.x()!=0.0 || action.y()!=0.0){
-    		Direction new_action = new Direction(action.x()*ground_speedup_factor, action.y());
-    		if (!on_ground){
-    			new_action = new Direction(action.x()/air_slowdown_factor, action.y());
-    		}
-    		lastMovementType = this.physics.activeMovement(this, new_action, speed);
-    	}
+        //this.physics.passiveMovement(this);
+        if (physicstype != 0)
+            super.updatePassive();
+        if (action.x()!=0.0 || action.y()!=0.0){
+            Direction new_action = new Direction(action.x()*ground_speedup_factor, action.y());
+            if (!on_ground){
+                new_action = new Direction(action.x()/air_slowdown_factor, action.y());
+            }
+            lastMovementType = this.physics.activeMovement(this, new_action, speed);
+        }
     }
 
 
@@ -171,9 +165,13 @@ public class WizardAvatar extends MovingAvatar
     public void copyTo(VGDLSprite target)
     {
     	WizardAvatar targetSprite = (WizardAvatar) target;
+        targetSprite.ground_speedup_factor = this.ground_speedup_factor;
+        targetSprite.air_slowdown_factor = this.air_slowdown_factor;
         targetSprite.stype = this.stype;
-        targetSprite.itype = this.itype.clone();
         targetSprite.stypes = this.stypes.clone();
+        targetSprite.itype = this.itype.clone();
+        targetSprite.facing_dir = new Direction(this.facing_dir.x(), this.facing_dir.y());
+        targetSprite.last_block_time = this.last_block_time;
         super.copyTo(targetSprite);
     }
 

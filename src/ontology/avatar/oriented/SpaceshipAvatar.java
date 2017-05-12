@@ -48,12 +48,12 @@ public class SpaceshipAvatar extends ShootAvatar
      * This update call is for the game tick() loop.
      * @param game current state of the game.
      */
-    public void update(Game game)
+    public void updateAvatar(Game game, boolean requestInput, boolean[] actionMask)
     {
-        super.update(game);
+        super.updateAvatar(game, requestInput, actionMask);
         updateUse(game);
-        aim(game);
-        move(game);
+        aim();
+        move();
     }
     
     public void shoot(Game game, int idx)
@@ -81,7 +81,7 @@ public class SpaceshipAvatar extends ShootAvatar
     }
 
     
-    public void aim(Game game)
+    private void aim()
     {
     	double angle = this.rotation;
 
@@ -96,7 +96,7 @@ public class SpaceshipAvatar extends ShootAvatar
     	this._updateRotation(angle);
     }
     
-    public void move(Game game)
+    public void move()
     {
     	Direction facing = new Direction(0,0);
 
@@ -110,6 +110,20 @@ public class SpaceshipAvatar extends ShootAvatar
     		facing = new Direction(Math.cos(this.rotation+Math.toRadians(180)), Math.sin(this.rotation+Math.toRadians(180.0)));
     		this.physics.activeMovement(this, facing, speed);
     	}
+    }
+
+    public VGDLSprite copy()
+    {
+        SpaceshipAvatar newSprite = new SpaceshipAvatar();
+        this.copyTo(newSprite);
+        return newSprite;
+    }
+
+    public void copyTo(VGDLSprite target)
+    {
+        SpaceshipAvatar targetSprite = (SpaceshipAvatar) target;
+        targetSprite.angle_diff = this.angle_diff;
+        super.copyTo(targetSprite);
     }
 
 }

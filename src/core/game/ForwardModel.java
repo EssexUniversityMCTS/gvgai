@@ -554,7 +554,7 @@ public class ForwardModel extends Game
 
             //apply action to correct avatar
             a.preMovement();
-            a.move(this, ki.getMask());
+            a.updateAvatar(this, false, ki.getMask());
             setAvatarLastAction(action);
         }
     }

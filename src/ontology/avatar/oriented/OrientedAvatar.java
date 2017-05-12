@@ -48,9 +48,9 @@ public class OrientedAvatar extends MovingAvatar
      * This update call is for the game tick() loop.
      * @param game current state of the game.
      */
-    public void update(Game game)
+    public void updateAvatar(Game game, boolean requestInput, boolean[] actionMask)
     {
-        super.update(game);
+        super.updateAvatar(game, requestInput, actionMask);
 
         //If the last thing the avatar did is to move (displacement), then update
         //the orientation in the direction of the move.
@@ -65,26 +65,6 @@ public class OrientedAvatar extends MovingAvatar
         //Otherwise, orientation is already updated, no need to change anything.
     }
 
-    /**
-     * This move call is for the Forward Model tick() loop.
-     * @param game current state of the game.
-     * @param actionMask action to apply.
-     */
-    public void move(Game game, boolean[] actionMask)
-    {
-        super.move(game, actionMask);
-
-        //If the last thing the avatar did is to move (displacement), then update
-        //the orientation in the direction of the move.
-        if (lastMovementType == Types.MOVEMENT.MOVE)
-        {
-	        Vector2d dir = lastDirection();
-	        dir.normalise();
-	        orientation = new Direction(dir.x, dir.y);
-        }
-        
-        //Otherwise, orientation is already updated, no need to change anything.
-    }
 
     public VGDLSprite copy()
     {

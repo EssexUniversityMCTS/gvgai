@@ -1282,7 +1282,7 @@ public abstract class Game {
 		for (int i = 0; i < no_players; i++) {
 			if (avatars[i] != null && !avatars[i].is_disabled()) {
 				avatars[i].preMovement();
-				avatars[i].update(this);
+				avatars[i].updateAvatar(this, true, null);
 			} else if (avatars[i] == null) {
 				System.out.println(gameTick + ": Something went wrong, no avatar, ID = " + i);
 			}

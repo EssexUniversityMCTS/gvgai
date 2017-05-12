@@ -4,6 +4,7 @@ import java.awt.Dimension;
 
 import core.content.SpriteContent;
 import core.game.Game;
+import core.vgdl.VGDLSprite;
 import ontology.Types;
 import tools.Direction;
 import tools.Utils;
@@ -47,11 +48,11 @@ public class LanderAvatar extends OrientedAvatar
      * This update call is for the game tick() loop.
      * @param game current state of the game.
      */
-    public void update(Game game)
+    public void updateAvatar(Game game, boolean requestInput, boolean[] actionMask)
     {
-        super.update(game);
-        aim(game);
-        move(game);
+        super.updateAvatar(game, requestInput, actionMask);
+        aim();
+        move();
     }
     
     public void applyMovement(Game game, Direction action)
@@ -62,7 +63,7 @@ public class LanderAvatar extends OrientedAvatar
     }
 
     
-    public void aim(Game game)
+    public void aim()
     {
     	double angle = this.rotation;
 
@@ -77,7 +78,7 @@ public class LanderAvatar extends OrientedAvatar
     	this._updateRotation(angle);
     }
     
-    public void move(Game game)
+    public void move()
     {
     	Direction facing = new Direction(0,0);
 
@@ -86,6 +87,20 @@ public class LanderAvatar extends OrientedAvatar
     		facing = new Direction(Math.cos(this.rotation), Math.sin(this.rotation));
     		this.physics.activeMovement(this, facing, speed);
     	}
+    }
+
+    public VGDLSprite copy()
+    {
+        LanderAvatar newSprite = new LanderAvatar();
+        this.copyTo(newSprite);
+        return newSprite;
+    }
+
+    public void copyTo(VGDLSprite target)
+    {
+        LanderAvatar targetSprite = (LanderAvatar) target;
+        targetSprite.angle_diff = this.angle_diff;
+        super.copyTo(targetSprite);
     }
 
 }

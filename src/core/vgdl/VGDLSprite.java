@@ -460,6 +460,9 @@ public abstract class VGDLSprite {
         }
     }
 
+    public void updateAvatar(Game game, boolean request, boolean[] actionMask) {}
+
+
     /**
      * Set the disabled flag of this sprite.
      * @param is_disabled - disabled state
@@ -719,13 +722,16 @@ public abstract class VGDLSprite {
     {
         boolean normalIntersect = this.rect.intersects(sp.rect);
 
+        boolean otherHigher = sp.lastrect.getMinY() > (this.lastrect.getMinY()+(this.rect.height/2));
+        boolean goingDown = this.rect.getMinY() > this.lastrect.getMinY();
+
         if(!on_ground && sp.solid)
         {
             //No need to keep checking. Actually, we shouldn't (we won't intersect with all sprites!).
             Rectangle test_rect = new Rectangle(this.rect);
             test_rect.setLocation(this.rect.x,this.rect.y+3);
 
-            this.on_ground = test_rect.intersects(sp.rect);
+            this.on_ground = test_rect.intersects(sp.rect) && otherHigher && goingDown;
         }
 
 

@@ -47,9 +47,9 @@ public class BirdAvatar extends OrientedAvatar
      * This update call is for the game tick() loop.
      * @param game current state of the game.
      */
-    public void update(Game game)
+    public void updateAvatar(Game game, boolean requestInput, boolean[] actionMask)
     {
-        super.update(game);
+        super.updateAvatar(game, requestInput, actionMask);
         
         Direction action2 = new Direction (0.0,0.0);
         
@@ -76,11 +76,6 @@ public class BirdAvatar extends OrientedAvatar
         }
 
         super.postProcess();
-    }
-    
-    public void move(Game game, boolean[] actionMask)
-    {
-        super.move(game, actionMask);
     }
 
 

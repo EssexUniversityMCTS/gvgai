@@ -4,6 +4,7 @@ import java.awt.Dimension;
 
 import core.content.SpriteContent;
 import core.game.Game;
+import core.vgdl.VGDLSprite;
 import ontology.Types;
 import tools.Direction;
 import tools.Utils;
@@ -20,7 +21,6 @@ public class CarAvatar extends OrientedAvatar
 {
 
     public double angle_diff = 0.15;
-    
     public double facing = 0;
 
     public CarAvatar(){}
@@ -48,12 +48,12 @@ public class CarAvatar extends OrientedAvatar
      * This update call is for the game tick() loop.
      * @param game current state of the game.
      */
-    public void update(Game game)
+    public void updateAvatar(Game game, boolean requestInput, boolean[] actionMask)
     {
-        super.update(game);
+        super.updateAvatar(game, requestInput, actionMask);
         updateUse(game);
-        aim(game);
-        move(game);
+        aim();
+        move();
     }
     
     public void applyMovement(Game game, Direction action)
@@ -64,7 +64,7 @@ public class CarAvatar extends OrientedAvatar
     }
 
     
-    public void aim(Game game)
+    public void aim()
     {
     	double angle = this.rotation;
 
@@ -79,7 +79,7 @@ public class CarAvatar extends OrientedAvatar
     	this._updateRotation(angle);
     }
     
-    public void move(Game game)
+    public void move()
     {
     	if (Utils.processMovementActionKeys(getKeyHandler().getMask(), getPlayerID()) == Types.DUP) 
     	{
@@ -93,6 +93,21 @@ public class CarAvatar extends OrientedAvatar
     	}
     	Direction direx =  new Direction(Math.cos(this.rotation+(facing*Math.toRadians(180))), Math.sin(this.rotation+(facing*Math.toRadians(180))));
     	this.physics.activeMovement(this, direx, 5);
+    }
+
+    public VGDLSprite copy()
+    {
+        CarAvatar newSprite = new CarAvatar();
+        this.copyTo(newSprite);
+        return newSprite;
+    }
+
+    public void copyTo(VGDLSprite target)
+    {
+        CarAvatar targetSprite = (CarAvatar) target;
+        targetSprite.facing = this.facing;
+        targetSprite.angle_diff = this.angle_diff;
+        super.copyTo(targetSprite);
     }
 
 }

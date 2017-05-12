@@ -64,9 +64,9 @@ public class PlatformerAvatar extends MovingAvatar
      * This update call is for the game tick() loop.
      * @param game current state of the game.
      */
-    public void update(Game game)
+    public void updateAvatar(Game game, boolean requestInput, boolean[] actionMask)
     {
-        super.update(game);
+        super.updateAvatar(game, requestInput, actionMask);
 
         //Managing jumps
         if(Utils.processUseKey(getKeyHandler().getMask(), getPlayerID()) && on_ground) {
@@ -97,11 +97,6 @@ public class PlatformerAvatar extends MovingAvatar
         super.postProcess();
     }
     
-    public void move(Game game, boolean[] actionMask)
-    {
-        super.move(game, actionMask);
-    }
-    
     public void applyMovement(Game game, Direction action)
     {
         //this.physics.passiveMovement(this);
@@ -127,8 +122,8 @@ public class PlatformerAvatar extends MovingAvatar
     public void copyTo(VGDLSprite target)
     {
     	PlatformerAvatar targetSprite = (PlatformerAvatar) target;
-        ((PlatformerAvatar) target).air_slowdown_factor = this.air_slowdown_factor;
-        ((PlatformerAvatar) target).ground_speedup_factor = this.ground_speedup_factor;
+        targetSprite.air_slowdown_factor = this.air_slowdown_factor;
+        targetSprite.ground_speedup_factor = this.ground_speedup_factor;
         super.copyTo(targetSprite);
     }
 
