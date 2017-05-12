@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/learningTrack2017.iml" filepath="$PROJECT_DIR$/learningTrack2017.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gvgai.iml" filepath="$PROJECT_DIR$/gvgai.iml" />
     </modules>
   </component>
 </project>

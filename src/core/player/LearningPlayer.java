@@ -116,6 +116,7 @@ public class LearningPlayer extends Player {
             // TODO: Work a bit on the abort
             if ("ABORT".equals(response)){
                 so.currentGameState = Types.GAMESTATES.ABORT_STATE;
+                return Types.ACTIONS.ACTION_ESCAPE;
             }
 
 
@@ -133,9 +134,22 @@ public class LearningPlayer extends Player {
         return null;
     }
 
+    /**
+     * Function called when the game is over. This method must finish before CompetitionParameters.TEAR_DOWN_TIME,
+     *  or the agent will be DISQUALIFIED
+     * @param stateObs the game state at the end of the game
+     * @param elapsedCpuTimer timer when this method is meant to finish.
+     */
+    public void result(StateObservation stateObs, ElapsedCpuTimer elapsedCpuTimer)
+    {
+        try{
+            serverComm.finishGame(stateObs, elapsedCpuTimer);
+        }catch(Exception e)
+        {
+            System.out.println("Error finishing a game (LearningPlayer.result()");
+            e.printStackTrace();
+        }
 
-    public void finishGame(StateObservation so, ElapsedCpuTimer elapsedTimer) throws IOException {
-        serverComm.finishGame(so, elapsedTimer);
     }
 
     public ServerComm getServerComm() {

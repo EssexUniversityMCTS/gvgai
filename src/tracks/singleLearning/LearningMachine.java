@@ -380,7 +380,7 @@ public class LearningMachine {
         ect.setMaxTimeMillis(CompetitionParameters.TEAR_DOWN_TIME);
 
         player.teardown(toPlay);
-        //player.close();
+        player.result(toPlay.getObservation(), ect);
     }
 
     /**

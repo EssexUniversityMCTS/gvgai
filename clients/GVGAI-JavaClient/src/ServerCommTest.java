@@ -18,7 +18,7 @@ public class ServerCommTest {
         cc.commState = cc.processCommandLine();
         cc.processLine(json);
 
-        if(cc.commState == ClientComm.COMM_STATE.INIT_END)
+        if(cc.commState == ClientComm.COMM_STATE.INIT)
         {
             //We can work on some initialization stuff here.
             System.out.println("init done");
@@ -36,7 +36,7 @@ public class ServerCommTest {
         cc.commState = cc.processCommandLine();
         cc.processLine(json);
 
-        if(cc.commState == ClientComm.COMM_STATE.ACT_END)
+        if(cc.commState == ClientComm.COMM_STATE.ACT)
         {
             //This is the place to think and return what action to take.
             String rndAction = Types.ACTIONS.ACTION_NIL.toString();

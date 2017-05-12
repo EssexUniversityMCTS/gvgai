@@ -172,7 +172,7 @@ public class SerializableStateObservation {
             }
         }
 
-        System.out.println(ect.elapsedMillis() + " taken");
+        System.out.println(ect.elapsedMillis() + " ms taken to build SSO");
     }
 
     public String serialize(String filename)

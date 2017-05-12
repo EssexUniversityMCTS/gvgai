@@ -15,7 +15,7 @@ import java.util.Random;
 public class ClientComm {
 
     public static enum COMM_STATE {
-        START, INIT, INIT_END, ACT, ACT_END, ENDED, ENDED_END, CHOOSE
+        START, INIT, ACT, ABORT, ENDED, CHOOSE
     }
 
     /**
@@ -110,13 +110,13 @@ public class ClientComm {
             processLine(line);
             commState = processCommandLine();
 
-            if(commState == COMM_STATE.INIT_END)
+            if(commState == COMM_STATE.INIT)
             {
                 //We can work on some initialization stuff here.
                 writeToFile("init done");
                 writeToServer("INIT_DONE");
 
-            }else if(commState == COMM_STATE.ACT_END)
+            }else if(commState == COMM_STATE.ACT)
             {
                 // TODO: 27/03/2017 Daniel: no agent for the moment
                 //This is the place to think and return what action to take.
@@ -133,10 +133,10 @@ public class ClientComm {
             {
                 //This is the place to pick a level to be played after the initial 2 levels have gone through
                 Random r = new Random();
-                Integer message = r.nextInt(2);
+                Integer message = r.nextInt(3);
                 writeToServer(message.toString());
 
-            }else if(commState == COMM_STATE.ENDED_END)
+            }else if(commState == COMM_STATE.ABORT)
             {
                 // TODO: 27/03/2017 Daniel: is the game stopped ?
                 //We can study what happened in the game here.
@@ -148,7 +148,20 @@ public class ClientComm {
                 avatar = new Avatar();
 
                 // TODO: 27/03/2017 Daniel:  after stopped, start another game ???
-                writeToServer("GAME_DONE");
+                writeToServer("GAME_DONE_ABORT");
+            }else if(commState == COMM_STATE.ENDED)
+            {
+                // TODO: 27/03/2017 Daniel: is the game stopped ?
+                //We can study what happened in the game here.
+                //For debug, print here game and avatar info:
+                game.printToFile(numGames);
+                avatar.printToFile(numGames);
+
+                game = new Game();
+                avatar = new Avatar();
+
+                // TODO: 27/03/2017 Daniel:  after stopped, start another game ???
+                writeToServer("GAME_DONE_ENDED");
             } else {
                 writeToServer("null");
             }
@@ -163,13 +176,11 @@ public class ClientComm {
      */
     private void initBuffers() {
         try {
+            fileOutput = new PrintWriter(new File("logs/clientLog.txt"), "utf-8");
+
+
             input = new BufferedReader(new InputStreamReader(System.in));
             output = new BufferedWriter(new OutputStreamWriter(System.out));
-
-            // Test outputs
-//            output = new BufferedWriter(new FileWriter("log.txt"));
-            fileOutput = new PrintWriter(
-                    new File("logs/clientLog.txt"), "utf-8");
 
         } catch (Exception e) {
             System.out.println("Exception creating the client process: " + e);
@@ -201,17 +212,26 @@ public class ClientComm {
         {
             writeToFile("game is in init state");
             game.remMillis = sso.elapsedTimer;
-            return COMM_STATE.INIT_END;
+            return COMM_STATE.INIT;
 
         }else if(sso.gameState == SerializableStateObservation.State.ACT_STATE) {
             game.remMillis = sso.elapsedTimer;
-            return COMM_STATE.ACT_END;
+            return COMM_STATE.ACT;
 
         }else if(sso.gameState == SerializableStateObservation.State.CHOOSE_LEVEL) {
             game.remMillis = sso.elapsedTimer;
             return COMM_STATE.CHOOSE;
 
+        }else if(sso.gameState == SerializableStateObservation.State.ABORT_STATE) {
+            game.remMillis = sso.elapsedTimer;
+            return COMM_STATE.ABORT;
+
+        }else if(sso.gameState == SerializableStateObservation.State.END_STATE) {
+            game.remMillis = sso.elapsedTimer;
+            return COMM_STATE.ENDED;
+
         }
+
         return commState;
     }
 

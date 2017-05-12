@@ -86,7 +86,10 @@ public class ServerComm {
         initBuffers();
 
         // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
-        so.currentGameState = Types.GAMESTATES.END_STATE;
+        if(so.getAvatarLastAction() == Types.ACTIONS.ACTION_ESCAPE)
+            so.currentGameState = Types.GAMESTATES.ABORT_STATE;
+        else
+            so.currentGameState = Types.GAMESTATES.END_STATE;
 
         SerializableStateObservation sso = new SerializableStateObservation(so);
 
@@ -96,11 +99,6 @@ public class ServerComm {
         String response = commRecv();
 
         logger.fine("Received: " + response);
-
-        if(so.isGameOver()){
-            // TODO: 04/04/2017 Daniel: start new game
-        }
-
     }
 
     /**
