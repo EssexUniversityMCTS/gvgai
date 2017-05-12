@@ -94,7 +94,7 @@ public class RuleGenerator extends AbstractRuleGenerator{
 	    	ArrayList<Chromosome> chromosomes = new ArrayList<Chromosome>();
 	    	try{
         	    	Class genClass = Class.forName(name);
-        	    	Constructor genConst = genClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
+        	    	Constructor genConst = genClass.getConstructor(new Class[]{SLDescription.class, ElapsedCpuTimer.class});
         	    	AbstractRuleGenerator ruleGen = (AbstractRuleGenerator)genConst.newInstance(sl, null);
             	 	for(int i = 0; i < amount; i++) {
         	 		Chromosome c = new Chromosome(ruleGen.generateRules(sl, null), sl);
