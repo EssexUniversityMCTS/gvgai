@@ -1,23 +1,19 @@
 package tracks.ruleGeneration;
 
-import tracks.ArcadeMachine;
-
 import java.util.Random;
-
-import core.logging.Logger;
 
 /**
  * Created by dperez on 19/03/2017.
  */
 public class TestRuleGeneration {
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+	//Available Controllers
+	String sampleMCTSController = "tracks.singlePlayer.advanced.sampleMCTS.Agent";
 
         // Available Rule Generator
         String randomRuleGenerator = "tracks.ruleGeneration.randomRuleGenerator.RuleGenerator";
         String constructiveRuleGenerator = "tracks.ruleGeneration.constructiveRuleGenerator.RuleGenerator";
-
-        String sampleMCTSController = "tracks.singlePlayer.advanced.sampleMCTS.Agent";
+        String geneticRuleGenerator = "tracks.ruleGeneration.geneticRuleGenerator.RuleGenerator";
 
         // Available games:
         String gamesPath = "examples/gridphysics/";
@@ -54,16 +50,17 @@ public class TestRuleGeneration {
         // Other settings
         boolean visuals = true;
         int seed = new Random().nextInt();
-        int gameIdx = 0;
+        int gameIdx = 76;
         int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
         String game = generateRulePath + games[gameIdx] + ".txt";
         String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
         String recordGameFile = generateRulePath + games[gameIdx] + "_ggame.txt";
 
         // 1. Generate rules (Interaction and Terminations) for a fixed level
-        if(RuleGenMachine.generateRules(game, level1, randomRuleGenerator, recordGameFile, seed)){
+        if(RuleGenMachine.generateRules(game, level1, geneticRuleGenerator, recordGameFile, seed)){
             // RuleGenMachine.playOneGame(game, recordGameFile, level1, recordActionsFile, seed);
             RuleGenMachine.runOneGame(game, recordGameFile, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
         }
     }
 }
+
