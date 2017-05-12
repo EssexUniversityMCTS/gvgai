@@ -64,6 +64,14 @@ public class DesignMachine {
     }
 
 
+    public double[] playGame2P(int[] parameters, String game_file, String level_file, int randomSeed)
+    {
+        String humanController = "tracks.multiPlayer.tools.human.Agent";
+        String controllers = humanController + " " + humanController;
+        boolean visuals = true;
+        return runOneGame(parameters, game_file, level_file, visuals, controllers, null, randomSeed, 0);
+    }
+
     /**
      * Reads and launches a game for a bot to be played. Graphics can be on or
      * off.
@@ -127,7 +135,7 @@ public class DesignMachine {
 
 			if (no_players > 1) {
 			// multi player
-			players[i] = ArcadeMachine.createMultiPlayer(names[i], actionFile, toPlay.getObservationMulti(),
+			players[i] = ArcadeMachine.createMultiPlayer(names[i], actionFile, toPlay.getObservationMulti(i),
 				randomSeed, i, humans[i]);
 			} else {
 			// single player
@@ -209,13 +217,13 @@ public class DesignMachine {
     {
         long spaceSize = 1;
         System.out.println("Individual length: " + getNumDimensions());
-        System.out.printf("%-20.20s  %-15.15s %-20.20s %-20.20s \n", "Value", "Dim. Size", "Range", "Description");
+        System.out.printf("%-20.20s  %-15.15s %-20.20s %s \n", "Value", "Dim. Size", "Range", "Description");
         for(int i = 0; i < getNumDimensions(); ++i)
         {
             ParameterContent pc = parameterContents[i];
             String val = pc.getStValue();
             spaceSize *= getDimSize(i);
-            System.out.printf("%-20.20s  %-15.15s %-20.20s %-20.20s \n", val, getDimSize(i), pc.values(), parameterStrings[i]);
+            System.out.printf("%-20.20s  %-15.15s %-20.20s %s \n", val, getDimSize(i), pc.values(), parameterStrings[i]);
 
         }
         DecimalFormat df = new DecimalFormat("0.000E0");

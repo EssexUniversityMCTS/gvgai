@@ -34,7 +34,7 @@ public class ContinuousPhysics extends GridPhysics
         {
             sprite._updatePos(sprite.orientation, (int) sprite.speed);
 
-            if(sprite.gravity > 0 && sprite.mass > 0)
+            if(sprite.gravity > 0 && sprite.mass > 0 && !sprite.on_ground)
             {
             	Direction gravityAction = new Direction(0, sprite.gravity * sprite.mass);
                 this.activeMovement(sprite, gravityAction, 0);
@@ -62,7 +62,12 @@ public class ContinuousPhysics extends GridPhysics
         double v2 = (action.y() / (float)sprite.mass) + (sprite.orientation.y() * speed);
 
         Vector2d dir = new Vector2d(v1, v2);
+
         double speedD = dir.mag();
+        if(sprite.max_speed != -1) {
+            speedD = Math.min(dir.mag(), sprite.max_speed);
+        }
+
         dir.normalise();
         Direction d = new Direction(dir.x, dir.y);
 

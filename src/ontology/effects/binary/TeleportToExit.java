@@ -29,21 +29,16 @@ public class TeleportToExit extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
-	if(sprite1 == null || sprite2 == null){
-            String[] className = this.getClass().getName().split("\\.");
-            Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1] + "] Either sprite1 or sprite2 is null."));
-            return;
-        }
-	
         int destinationId = VGDLFactory.GetInstance().requestFieldValueInt(sprite2, "itype");
-        if(destinationId == -1){
-            String[] className = this.getClass().getName().split("\\.");
-            Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1] + "] " + sprite2 + " doesn't have itype."));
-            return;
-        }
 
         Collection<VGDLSprite> sprites = null;
-        sprites = game.getSprites(destinationId);
+        if(destinationId != -1){
+            sprites = game.getSprites(destinationId);
+        }
+        else{
+            Logger.getInstance().addMessage(new Message(Message.WARNING, "Ignoring TeleportToExit effect as " + sprite2.name + " isn't of type portal."));
+            return;
+        }
 
         if(sprites.size() > 0){
             VGDLSprite destination = (VGDLSprite) Utils.choice(sprites.toArray(), game.getRandomGenerator());

@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import core.vgdl.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
+import tools.Direction;
 import tools.Vector2d;
 
 /**
@@ -41,26 +42,16 @@ public class MissileAvatar extends OrientedAvatar
      * This update call is for the game tick() loop.
      * @param game current state of the game.
      */
-    public void update(Game game)
+    public void updateAvatar(Game game, boolean requestInput, boolean[] actionMask)
     {
-        //Get the input from the player (it won't be processed, but we allow thinking time).
-        requestPlayerInput(game);
+        if (requestInput || actionMask == null) {
+            //Get the input from the player.
+            requestPlayerInput(game);
+        }
 
         //MissileAvatar has no actions available. Just update movement.
         super.updatePassive();
     }
-
-
-    /**
-     * This move call is for the Forward Model tick() loop.
-     * @param game current state of the game.
-     * @param actionMask action to apply.
-     */
-    public void move(Game game, boolean[] actionMask)
-    {
-        super.updatePassive();
-    }
-
 
     public VGDLSprite copy()
     {

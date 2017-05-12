@@ -3,6 +3,7 @@ package ontology;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
+import java.util.Random;
 
 import tools.Direction;
 import tools.Vector2d;
@@ -16,10 +17,8 @@ import tools.Vector2d;
  */
 public class Types {
     public static final int PHYSICS_NONE = -1;
-    public static final int PHYSICS_GRID = 0;
-    public static final int PHYSICS_CONT = 1;
-    public static final int PHYSICS_NON_FRICTION = 2;
-    public static final int PHYSICS_GRAVITY = 3;
+    public static final int GRID = 0;
+    public static final int CONT = 1;
 
     public static final int VGDL_GAME_DEF = 0;
     public static final int VGDL_SPRITE_SET = 1;
@@ -190,6 +189,9 @@ public class Types {
     public static final Color LIGHTGRAY = new Color(238, 238, 238);
     public static final Color DARKGRAY = new Color(30, 30, 30);
     public static final Color DARKBLUE = new Color(20, 20, 100);
+
+    public static final Color RANDOM = new Color(new Random().nextInt(256), new Random().nextInt(256), new Random().nextInt(256));
+
 
     public static final Integer[] COLOR_DISC = new Integer[]{20, 80, 140, 200};
 

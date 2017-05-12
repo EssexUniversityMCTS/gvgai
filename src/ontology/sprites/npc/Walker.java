@@ -1,11 +1,12 @@
-package ontology.sprites.missile;
+package ontology.sprites.npc;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.util.Random;
 
 import core.vgdl.VGDLSprite;
 import core.content.SpriteContent;
 import core.game.Game;
+import ontology.sprites.missile.Missile;
 import tools.Direction;
 import tools.Vector2d;
 
@@ -16,7 +17,7 @@ import tools.Vector2d;
  * Time: 18:16
  * This is a Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
-public class Walker extends Missile
+public class Walker extends VGDLSprite
 {
     public boolean airsteering;
 
@@ -33,17 +34,22 @@ public class Walker extends Missile
         //Parse the arguments.
         this.parseParameters(cnt);
     }
-    
-    public static int getRandom(int[] array) {
-        int rnd = new Random().nextInt(array.length);
-        return array[rnd];
+
+    /**
+     * Overwritting intersects to check if we are on ground.
+     * @return true if it directly intersects with sp (as in the normal case), but additionally checks for on_ground condition.
+     */
+    public boolean intersects (VGDLSprite sp)
+    {
+        return this.groundIntersects(sp);
     }
+
     
     public void update(Game game)
     {
     	super.updatePassive();
-    	
-    	double d;
+
+        double d;
     	if (this.airsteering || this.lastDirection().x == 0){
     		if (this.orientation.x() > 0){
     			d = 1;
@@ -52,20 +58,27 @@ public class Walker extends Missile
     			d = -1;
     		}
     		else{
-    			d = getRandom(new int[]{-1,1});
+    		    int[] choices = new int[]{-1,1};
+    			d = choices[game.getRandomGenerator().nextInt(choices.length)];
     		}
     		Direction dir = new Direction(d,0);
-    		this.physics.activeMovement(this, dir, this.speed);
+    		this.orientation = dir.copy();
+    		this.physics.activeMovement(this, dir, this.max_speed);
     	}
-    	//super.update(game);
-    	
+
+    	this.speed = max_speed;
+        on_ground = false;
     }
 
     protected void loadDefaults()
     {
         super.loadDefaults();
+        speed = 5;
+        max_speed = 5;
+        is_oriented = true;
         airsteering = false;
         is_stochastic = true;
+        on_ground = false;
     }
 
     public VGDLSprite copy()

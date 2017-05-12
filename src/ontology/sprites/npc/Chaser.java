@@ -81,7 +81,7 @@ public class Chaser extends RandomNPC
         if(actions.size() == 0)
         {
             //unless, no actions really take me closer to anybody!
-            act = (Direction) Utils.choice(Types.DBASEDIRS,game.getRandomGenerator());
+            act = getRandomMove(game);
         }else{
             act = Utils.choiceDir(actions, game.getRandomGenerator());
         }

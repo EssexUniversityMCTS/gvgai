@@ -134,7 +134,7 @@ public class ArcadeMachine {
 
 			if (no_players > 1) {
 			// multi player
-			players[i] = ArcadeMachine.createMultiPlayer(names[i], actionFile, toPlay.getObservationMulti(),
+			players[i] = ArcadeMachine.createMultiPlayer(names[i], actionFile, toPlay.getObservationMulti(i),
 				randomSeed, i, humans[i]);
 			} else {
 			// single player
@@ -228,7 +228,7 @@ public class ArcadeMachine {
 		for (int i = 0; i < no_players; i++) {
 			if (no_players > 1) {
 			// multi player
-			players[i] = ArcadeMachine.createMultiPlayer(agentName, null, toPlay.getObservationMulti(), -1, i,
+			players[i] = ArcadeMachine.createMultiPlayer(agentName, null, toPlay.getObservationMulti(i), -1, i,
 				false);
 			} else {
 			// single player
@@ -451,7 +451,7 @@ public class ArcadeMachine {
 		    if (no_players > 1) {
 			// multi player
 			players[j] = ArcadeMachine.createMultiPlayer(agentNames[j], filename,
-				toPlay.getObservationMulti(), randomSeed, j, false);
+				toPlay.getObservationMulti(i), randomSeed, j, false);
 		    } else {
 			// single player
 			players[j] = ArcadeMachine.createPlayer(agentNames[j], filename, toPlay.getObservation(),
@@ -725,7 +725,7 @@ public class ArcadeMachine {
 
         if (no_players > 1) {
             // multi player
-            stateObs = toPlay.getObservationMulti();
+            stateObs = toPlay.getObservationMulti(0);
             for (int i = 0; i < no_players; i++) {
             actions[i] = ((StateObservationMulti) stateObs).getAvailableActions(i);
             }
@@ -887,7 +887,7 @@ public class ArcadeMachine {
             // Inform about the result and the final game state.
             // Inform about the result and the final game state.
             if (toPlay.no_players > 1)
-            p.resultMulti(toPlay.getObservationMulti().copy(), ect);
+            p.resultMulti(toPlay.getObservationMulti(p.getPlayerID()).copy(), ect);
             else
             p.result(toPlay.getObservation(), ect);
 

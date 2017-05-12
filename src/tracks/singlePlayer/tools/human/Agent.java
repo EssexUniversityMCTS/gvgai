@@ -39,8 +39,10 @@ public class Agent extends AbstractPlayer
         //In the keycontroller, move has preference.
         Types.ACTIONS action = Types.ACTIONS.fromVector(move);
 
-        if(action == Types.ACTIONS.ACTION_NIL && useOn)
+        //if(action == Types.ACTIONS.ACTION_NIL && useOn)
+        if(useOn) //This allows switching to Use when moving.
             action = Types.ACTIONS.ACTION_USE;
+
 
         return action;
     }

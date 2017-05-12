@@ -2,12 +2,12 @@ wwwwwwwwwwwwwwwwwwwww
 w                   w
 w         G         w
 w  c             c  w
-w      w   1 w      w
-w      wwwwwww      w
+w      .   1 .      w
+w      w.....w      w
 w                   w
 w  c             c  w
-w      w 1   w      w
-w      wwwwwww      w
+w      . 1   .      w
+w      w.....w      w
 w                   w
 w A                 w
-wwwwwwwwwwwwwwwwwwwww
+w...................w

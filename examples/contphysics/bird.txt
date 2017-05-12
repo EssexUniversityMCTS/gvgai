@@ -1,6 +1,6 @@
 BasicGame
     SpriteSet 
-        avatar > physicstype_id=1 gravity=1.0 BirdAvatar img=newset/chickenr_0
+        avatar > physicstype=CONT gravity=1.0 BirdAvatar img=newset/chickenr_0
         evil   >  Immovable color=RED
         goal > Immovable color=GREEN
         coin > Immovable img=oryx/gold2

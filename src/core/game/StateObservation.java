@@ -19,6 +19,12 @@ import tools.Vector2d;
  * This is a Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
 public class StateObservation {
+
+    /**
+     * ID of the player that sees this observation
+     */
+    int playerID;
+
     /**
      * This is the model of the game, used to apply an action and
      * get to the next state. This model MUST NOT be public.
@@ -30,8 +36,9 @@ public class StateObservation {
      *
      * @param a_model forward model of the game.
      */
-    public StateObservation(ForwardModel a_model) {
+    public StateObservation(ForwardModel a_model, int playerID) {
         model = a_model;
+        this.playerID = playerID;
     }
 
     /**
@@ -40,7 +47,7 @@ public class StateObservation {
      * @return a copy of the state observation.
      */
     public StateObservation copy() {
-        StateObservation copyObs = new StateObservation(model.copy());
+        StateObservation copyObs = new StateObservation(model.copy(), this.playerID);
         return copyObs;
     }
 

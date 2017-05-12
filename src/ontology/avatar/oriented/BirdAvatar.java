@@ -39,7 +39,7 @@ public class BirdAvatar extends OrientedAvatar
     {
         super.loadDefaults();
         draw_arrow = true;
-        strength = 10;
+        jump_strength = 10;
     }
 
 
@@ -47,9 +47,9 @@ public class BirdAvatar extends OrientedAvatar
      * This update call is for the game tick() loop.
      * @param game current state of the game.
      */
-    public void update(Game game)
+    public void updateAvatar(Game game, boolean requestInput, boolean[] actionMask)
     {
-        super.update(game);
+        super.updateAvatar(game, requestInput, actionMask);
         
         Direction action2 = new Direction (0.0,0.0);
         
@@ -57,7 +57,7 @@ public class BirdAvatar extends OrientedAvatar
     		action2 = new Direction (1.0,0.0);
 
         if(Utils.processUseKey(getKeyHandler().getMask(), getPlayerID())) {
-        	Direction action = new Direction (0,-strength);
+        	Direction action = new Direction (0,-jump_strength);
         	this.orientation = new Direction (this.orientation.x(),0.0);
         	this.physics.activeMovement(this, action, this.speed);
         }
@@ -76,11 +76,6 @@ public class BirdAvatar extends OrientedAvatar
         }
 
         super.postProcess();
-    }
-    
-    public void move(Game game, boolean[] actionMask)
-    {
-        super.move(game, actionMask);
     }
 
 

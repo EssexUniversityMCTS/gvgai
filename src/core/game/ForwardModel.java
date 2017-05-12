@@ -19,6 +19,13 @@ import tools.*;
  */
 public class ForwardModel extends Game
 {
+
+    /**
+     * ID of the player that gets this FM
+     */
+    int playerID;
+
+
     /**
      * Private sampleRandom generator. Rolling the state forward from this state
      * observation will use this sampleRandom generator, different from the one
@@ -77,9 +84,9 @@ public class ForwardModel extends Game
 
     /**
      * Boolean map of sprite types that are not hidden.
-     * visibleList[spriteType]==true : sprite.hidden = false;
+     * visibleList[playerID][spriteType]==true : sprite.hidden[playerID] = false;
      */
-    private boolean visibleList[];
+    private boolean visibleList[][];
 
     /**
      * List of (persistent) observations for all sprites, indexed by sprite ID.
@@ -95,8 +102,10 @@ public class ForwardModel extends Game
      * Constructor for StateObservation. Initializes everything
      * @param a_gameState
      */
-    public ForwardModel(Game a_gameState)
+    public ForwardModel(Game a_gameState, int playerID)
     {
+        this.playerID = playerID;
+
         //All static elements of the game are assigned from the game we create the copy from.
         initNonVolatile(a_gameState);
 
@@ -140,7 +149,15 @@ public class ForwardModel extends Game
 
                 spriteGroups[i].addSprite(spCopy.spriteID, spCopy);
 
-                if(!spCopy.hidden) {
+                String hidden = "False";
+                if (spCopy.hidden != null) {
+                    String[] split = spCopy.hidden.split(",");
+                    if (playerID > split.length - 1)
+                        hidden = split[split.length - 1];
+                    else
+                        hidden = split[playerID];
+                }
+                if(!Boolean.parseBoolean(hidden)) {
                     checkSpriteFeatures(spCopy, i);
                     updateObservation(spCopy);
                 }
@@ -383,7 +400,16 @@ public class ForwardModel extends Game
                 movList[itype] = true;
         }
         unknownList[itype] = true;
-        visibleList[itype] = !sp.hidden;
+
+        String hidden = "False";
+        if (sp.hidden != null) {
+            String[] split = sp.hidden.split(",");
+            if (playerID > split.length - 1)
+                hidden = split[split.length - 1];
+            else
+                hidden = split[playerID];
+        }
+        visibleList[playerID][itype] = !Boolean.parseBoolean(hidden);
     }
 
     private int getSpriteCategory(VGDLSprite sp)
@@ -472,7 +498,7 @@ public class ForwardModel extends Game
         portalList  = new boolean[a_gameState.spriteGroups.length];
         fromAvatar  = new boolean[a_gameState.spriteGroups.length];
         unknownList = new boolean[a_gameState.spriteGroups.length];
-        visibleList = new boolean[a_gameState.spriteGroups.length];
+        visibleList = new boolean[no_players][a_gameState.spriteGroups.length];
         playerList  = new boolean[a_gameState.spriteGroups.length];
 
         observations = new HashMap<Integer, Observation>();
@@ -532,7 +558,7 @@ public class ForwardModel extends Game
 
             //apply action to correct avatar
             a.preMovement();
-            a.move(this, ki.getMask());
+            a.updateAvatar(this, false, ki.getMask());
             setAvatarLastAction(action);
         }
     }
@@ -634,7 +660,7 @@ public class ForwardModel extends Game
      * @return the copy of this forward model.
      */
     final public ForwardModel copy() {
-        ForwardModel copyObs = new ForwardModel(this);
+        ForwardModel copyObs = new ForwardModel(this, this.playerID);
         copyObs.update(this);
         return copyObs;
     }
@@ -928,7 +954,7 @@ public class ForwardModel extends Game
             if(!unknownList[i] && spriteGroups[i].getFirstSprite() != null)
                 checkSpriteFeatures(spriteGroups[i].getFirstSprite(), i);
 
-            if(groupArray[i] && visibleList[i]) numDiffTypes++;
+            if(groupArray[i] && visibleList[playerID][i]) numDiffTypes++;
         }
 
         if(numDiffTypes == 0)
@@ -943,7 +969,7 @@ public class ForwardModel extends Game
         for(int i = 0; i < groupArray.length; ++i)
         {
             //For each one of the sprite types that belong to the specified category
-            if(groupArray[i] && visibleList[i])
+            if(groupArray[i] && visibleList[playerID][i])
             {
                 observations[idx] = new ArrayList<Observation>();
                 Iterator<VGDLSprite> spriteIt = spriteGroups[i].getSpriteIterator();
