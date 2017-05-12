@@ -97,6 +97,11 @@ public class CompetitionParameters
      * Longer delay for human play.
      */
     public static int LONG_DELAY = 25;
+    
+    /**
+     * Number of warnings that the game will be considered over after it.
+     */
+    public static int MAX_ALLOWED_WARNINGS = 20;
 
 
     /**
