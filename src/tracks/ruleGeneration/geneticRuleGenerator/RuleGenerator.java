@@ -88,13 +88,14 @@ public class RuleGenerator extends AbstractRuleGenerator{
 		SharedData.usefulSprites.add("EOS");
 		constructAgent(sl);
 		SharedData.constGen = new tracks.ruleGeneration.constructiveRuleGenerator.RuleGenerator(sl, time);
+		SharedData.constGen.generateRules(sl, time);
 	}
 	
 	private ArrayList<Chromosome> getFirstPopulation(SLDescription sl, String name, int amount, int mutations){
 	    	ArrayList<Chromosome> chromosomes = new ArrayList<Chromosome>();
 	    	try{
         	    	Class genClass = Class.forName(name);
-        	    	Constructor genConst = genClass.getConstructor(new Class[]{StateObservation.class, ElapsedCpuTimer.class});
+        	    	Constructor genConst = genClass.getConstructor(new Class[]{SLDescription.class, ElapsedCpuTimer.class});
         	    	AbstractRuleGenerator ruleGen = (AbstractRuleGenerator)genConst.newInstance(sl, null);
             	 	for(int i = 0; i < amount; i++) {
         	 		Chromosome c = new Chromosome(ruleGen.generateRules(sl, null), sl);

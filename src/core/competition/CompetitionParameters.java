@@ -83,6 +83,11 @@ public class CompetitionParameters
     public static int OPTIMIZATION_EVALUATION = 5;
     
     /**
+     * Max number of warning then the system consider the game unplayable.
+     */
+    public static int MAX_ALLOWED_WARNINGS = 25;
+    
+    /**
      * Path to sprite images.
      */
     public static String IMG_PATH = "sprites/";
