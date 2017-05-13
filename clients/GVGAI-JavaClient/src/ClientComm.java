@@ -147,6 +147,8 @@ public class ClientComm {
                 game = new Game();
                 avatar = new Avatar();
 
+                writeToFile("game aborted");
+
                 // TODO: 27/03/2017 Daniel:  after stopped, start another game ???
                 writeToServer("GAME_DONE_ABORT");
             }else if(commState == COMM_STATE.ENDED)
@@ -159,6 +161,8 @@ public class ClientComm {
 
                 game = new Game();
                 avatar = new Avatar();
+
+                writeToFile("game ended");
 
                 // TODO: 27/03/2017 Daniel:  after stopped, start another game ???
                 writeToServer("GAME_DONE_ENDED");

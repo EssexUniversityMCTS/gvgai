@@ -374,7 +374,7 @@ public class LearningMachine {
      *
      * @param player player to be closed.
      */
-    private static void tearPlayerDown(Player player, Game toPlay) throws IOException {
+    private static void tearPlayerDown(LearningPlayer player, Game toPlay) throws IOException {
         //Determine the time due for the controller initialization.
         ElapsedCpuTimer ect = new ElapsedCpuTimer();
         ect.setMaxTimeMillis(CompetitionParameters.TEAR_DOWN_TIME);

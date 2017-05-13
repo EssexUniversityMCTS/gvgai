@@ -1,0 +1,1 @@
+Score 0.0, GameTick: -1, Winner: NO_WINNER, GameOver: false, WorldDimW: 0, WorldDimW: 0, BlockSize: 0, RemMillis: 99

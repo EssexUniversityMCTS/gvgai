@@ -91,6 +91,7 @@ public class LearningPlayer extends Player {
             // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
             so.currentGameState = Types.GAMESTATES.ACT_STATE;
             SerializableStateObservation sso = new SerializableStateObservation(so);
+
             sso.elapsedTimer = elapsedTimer.remainingTimeMillis();
             serverComm.commSend(sso.serialize(null));
 //            new Thread(() -> {
