@@ -114,7 +114,6 @@ public class LearningPlayer extends Player {
             System.out.println("Received ACTION: " + response + "; ACT Response time: "
                     + elapsedTimer.elapsedMillis() + " ms.");
 
-            // TODO: Work a bit on the abort
             if ("ABORT".equals(response)){
                 so.currentGameState = Types.GAMESTATES.ABORT_STATE;
                 return Types.ACTIONS.ACTION_ESCAPE;

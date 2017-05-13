@@ -6,6 +6,17 @@ init done
 going to processing
 initializing gson
 gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
 action: ACTION_RIGHT
 going to processing
 initializing gson
@@ -21,15 +32,10 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+game ended
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -37,15 +43,10 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+game ended
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -53,7 +54,10 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+game ended
+going to processing
+initializing gson
+gson initialized
 going to processing
 initializing gson
 gson initialized
@@ -61,23 +65,10 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+game ended
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -85,75 +76,10 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+game ended
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -172,7 +98,10 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+game ended
+going to processing
+initializing gson
+gson initialized
 going to processing
 initializing gson
 gson initialized
@@ -180,15 +109,10 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+game ended
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -196,35 +120,10 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+game ended
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -243,15 +142,10 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+game ended
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -259,187 +153,10 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+game ended
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -458,7 +175,21 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
 action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
 going to processing
 initializing gson
 gson initialized
@@ -466,7 +197,10 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+game ended
+going to processing
+initializing gson
+gson initialized
 going to processing
 initializing gson
 gson initialized
@@ -474,7 +208,10 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+game ended
+going to processing
+initializing gson
+gson initialized
 going to processing
 initializing gson
 gson initialized
@@ -482,19 +219,10 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+game ended
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
@@ -502,7 +230,21 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
 action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
 going to processing
 initializing gson
 gson initialized
@@ -510,19 +252,10 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
+game ended
 going to processing
 initializing gson
 gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
@@ -530,11 +263,274 @@ action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
 going to processing
 initializing gson
 gson initialized
 action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_RIGHT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
+going to processing
+initializing gson
+gson initialized
+action: ACTION_LEFT
+going to processing
+initializing gson
+gson initialized
+game ended
+going to processing
+initializing gson
+gson initialized
 going to processing
 initializing gson
 gson initialized
@@ -546,47 +542,7 @@ action: ACTION_RIGHT
 going to processing
 initializing gson
 gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
 action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_RIGHT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
-going to processing
-initializing gson
-gson initialized
-action: ACTION_LEFT
 going to processing
 initializing gson
 gson initialized
