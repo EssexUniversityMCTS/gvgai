@@ -258,9 +258,7 @@ public class MovingAvatar extends VGDLSprite {
     public void copyTo(VGDLSprite target) {
         MovingAvatar targetSprite = (MovingAvatar) target;
         targetSprite.actions = new ArrayList<Types.ACTIONS>();
-        targetSprite.actions.addAll(this.actions);
         targetSprite.actionsNIL = new ArrayList<Types.ACTIONS>();
-        targetSprite.actionsNIL.addAll(this.actionsNIL);
         targetSprite.playerID = this.playerID;
         targetSprite.winState = this.winState;
         targetSprite.score = this.score;
