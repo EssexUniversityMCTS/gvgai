@@ -129,6 +129,39 @@ public class LearningPlayer extends Player {
 
     }
 
+    public boolean init(StateObservation so, ElapsedCpuTimer ect) {
+        final StringBuilder stringBuilder = new StringBuilder();
+
+        //Sending messages.
+        try {
+            // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
+            so.currentGameState = Types.GAMESTATES.INIT_STATE;
+            SerializableStateObservation sso = new SerializableStateObservation(so);
+
+            sso.elapsedTimer = ect.remainingTimeMillis();
+            serverComm.commSend(sso.serialize(null));
+
+            serverComm.commRecv();
+
+            //Check if we returned on time, and act in consequence.
+            long timeTaken = ect.elapsedMillis();
+            if (ect.exceededMaxTime()) {
+                long exceeded = -ect.remainingTimeMillis();
+                System.out.println("Controller initialization time out (" + exceeded + ").");
+                return false;
+            } else {
+                System.out.println("Controller initialization time: " + timeTaken + " ms.");
+            }
+
+            return true;
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
     @Override
     public Types.ACTIONS act(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer) {
         return null;
@@ -161,23 +194,23 @@ public class LearningPlayer extends Player {
      *
      * @return true or false, depending on whether the initialization has been successful
      */
-    public boolean initPlayerController() {
+    public boolean startPlayerCommunication() {
         //Determine the time due for the controller initialization.
         ElapsedCpuTimer ect = new ElapsedCpuTimer();
         ect.setMaxTimeMillis(CompetitionParameters.INITIALIZATION_TIME);
 
         //Initialize the controller.
-        if (!this.serverComm.init(ect))
+        if (!this.serverComm.start(ect))
             return false;
 
         //Check if we returned on time, and act in consequence.
         long timeTaken = ect.elapsedMillis();
         if (ect.exceededMaxTime()) {
             long exceeded = -ect.remainingTimeMillis();
-            System.out.println("Controller initialization time out (" + exceeded + ").");
+            System.out.println("Controller start time out (" + exceeded + ").");
             return false;
         } else {
-            System.out.println("Controller initialization time: " + timeTaken + " ms.");
+            System.out.println("Controller start time: " + timeTaken + " ms.");
         }
 
         return true;

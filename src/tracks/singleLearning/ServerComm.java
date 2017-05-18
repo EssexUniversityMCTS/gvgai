@@ -135,20 +135,20 @@ public class ServerComm {
     }
 
     /**
-     * Picks an action. This function is called at the beginning of the game for
+     *  This function is called at the beginning of the game for
      * initialization.
      *
      * @param elapsedTimer Timer when the initialization is due to finish.
      */
-    public boolean init(ElapsedCpuTimer elapsedTimer) {
+    public boolean start(ElapsedCpuTimer elapsedTimer) {
         try {
             String response = "";
             int count = 11;
 
-            commSend("INIT_START");
+            commSend("START");
 
             response = commRecv();
-            while(response != null &&  !response.equalsIgnoreCase("INIT_DONE") && count>0)
+            while(response != null &&  !response.equalsIgnoreCase("START_DONE") && count>0)
             {
                 response = commRecv();
                 count--;
@@ -156,24 +156,25 @@ public class ServerComm {
 
             if(count <= 0)
             {
-                System.out.println("init failed: too many unexpected messages received");
+                System.out.println("start failed: too many unexpected messages received");
                 return false;
             }
             // Ignore the first response
 
             logger.fine("Received: " + response);
 //            if ("INIT_DONE".equals(response)) {
-            System.out.println("\nInit done");
+            System.out.println("\nStart done");
             return true;
 //            }
 //            else {
-//                System.out.println("init failed");
+//                System.out.println("start failed");
 //                return false;
 //            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
 }
 
 

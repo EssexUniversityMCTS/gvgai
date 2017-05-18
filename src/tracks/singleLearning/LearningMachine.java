@@ -91,7 +91,7 @@ public class LearningMachine {
         toPlay.buildLevel(level_file, randomSeed);
 
         //Init the player for the game.
-        if (player == null || LearningMachine.initPlayer(player, actionFile, randomSeed) == null) {
+        if (player == null || LearningMachine.initPlayer(player, actionFile, randomSeed, toPlay.getObservation()) == null) {
             //Something went wrong in the constructor, controller disqualified
             toPlay.disqualify();
 
@@ -158,8 +158,8 @@ public class LearningMachine {
         ect.setMaxTimeMillis(CompetitionParameters.MAX_GAME_LENGTH);
 
         // Initialize the player
-        // TODO: check if the new player init is alright
-        boolean initSuccesful = players[0].initPlayerController();
+        // TODO: check if the new player start is alright
+        boolean initSuccesful = players[0].startPlayerCommunication();
         if (!initSuccesful) {
             return;
         }
@@ -171,7 +171,7 @@ public class LearningMachine {
         String[] trainingLevels = new String[]{level_files[0],level_files[1],level_files[2]};
         for (String level_file : trainingLevels) {
             for (int i = 0; i < level_times; ++i) {
-                nextLevelToPlay = playOneLevel(game_file,level_file,i,recordActions,levelIdx,players,actionFiles,toPlay,scores,victories);
+                playOneLevel(game_file,level_file,i,recordActions,levelIdx,players,actionFiles,toPlay,scores,victories);
             }
             levelIdx++;
         }
@@ -181,7 +181,9 @@ public class LearningMachine {
 
         while (!ect.exceededMaxTime()) {
             // Play the selected level once
-            nextLevelToPlay = playOneLevel(game_file, level_files[nextLevelToPlay], 0, recordActions, 0, players, actionFiles, toPlay, scores, victories);
+            int req_nextLevelToPlay = playOneLevel(game_file, level_files[nextLevelToPlay], 0, recordActions, 0, players, actionFiles, toPlay, scores, victories);
+            if(req_nextLevelToPlay != -1)
+                nextLevelToPlay = req_nextLevelToPlay;
         }
 
         // Validation time
@@ -242,18 +244,19 @@ public class LearningMachine {
         // Score array to hold handled results
         double[] score;
 
-        players[0] = LearningMachine.initPlayer(players[0], actionFiles[0], randomSeed);
-
+        LearningPlayer learningPlayer = LearningMachine.initPlayer(players[0], actionFiles[0], randomSeed, toPlay.getObservation());
         // If the player cannot be initialized, disqualify the controller
-        if (players[0] == null) {
+        if (learningPlayer == null) {
             //Something went wrong in the constructor, controller disqualified
             //toPlay.disqualify(j);
             toPlay.getAvatars()[0].disqualify(true);
             toPlay.handleResult();
             toPlay.printResult();
+            return -1;
         }
+        players[0] = learningPlayer;
 
-        //Play the game
+                //Play the game
         //Get array of scores back.
         score = toPlay.playGame(players, randomSeed, false, 0);
         toPlay.printResult();
@@ -338,17 +341,23 @@ public class LearningMachine {
     /**
      * Inits the player for a given game.
      *
-     * @param player     Player to init.
+     * @param player     Player to start.
      * @param actionFile filename of the file where the actions of this player, for this game, should be recorded.
      * @param randomSeed Seed for the sampleRandom generator of the game to be played.
      * @return the player, created and initialized, ready to start playing the game.
      */
-    private static LearningPlayer initPlayer(LearningPlayer player, String actionFile, int randomSeed) {
+    private static LearningPlayer initPlayer(LearningPlayer player, String actionFile, int randomSeed, StateObservation so) {
         //If we have a player, set it up for action recording.
         if (player != null)
             player.setup(actionFile, randomSeed, false);
 
-        return player;
+        //Send Init message.
+        ElapsedCpuTimer initTimer = new ElapsedCpuTimer();
+        initTimer.setMaxTimeMillis(CompetitionParameters.INITIALIZATION_TIME);
+        if(player.init(so, initTimer))
+            return player;
+
+        return null;//Disqualified.
     }
 
     /**

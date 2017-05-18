@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class SerializableStateObservation {
 
     public enum State{
-        INIT_STATE, ACT_STATE, ABORT_STATE, END_STATE, CHOOSE_LEVEL
+        START_STATE, INIT_STATE, ACT_STATE, ABORT_STATE, END_STATE, CHOOSE_LEVEL
     }
 
     public long elapsedTimer;

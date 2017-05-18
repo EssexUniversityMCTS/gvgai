@@ -10,7 +10,7 @@ public class ServerCommTest {
 
     public static void mockInit(ClientComm cc, boolean isTraining) throws IOException{
         SerializableStateObservation sso = new SerializableStateObservation();
-        sso.gameState = SerializableStateObservation.State.INIT_STATE;
+        sso.gameState = SerializableStateObservation.State.START_STATE;
         Gson gson = new Gson();
 
         String json = gson.toJson(sso);
@@ -21,7 +21,7 @@ public class ServerCommTest {
         if(cc.commState == ClientComm.COMM_STATE.INIT)
         {
             //We can work on some initialization stuff here.
-            System.out.println("init done");
+            System.out.println("start done");
 
         }
     }

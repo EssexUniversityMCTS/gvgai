@@ -1,11 +1,8 @@
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import ontology.Game;
 import ontology.Avatar;
-import ontology.Game;
 import ontology.Types;
 
-import java.awt.*;
 import java.io.*;
 import java.util.Random;
 
@@ -110,7 +107,13 @@ public class ClientComm {
             processLine(line);
             commState = processCommandLine();
 
-            if(commState == COMM_STATE.INIT)
+            if(commState == COMM_STATE.START)
+            {
+                //We can work on some initialization stuff here.
+                writeToFile("start done");
+                writeToServer("START_DONE");
+
+            }else if(commState == COMM_STATE.INIT)
             {
                 //We can work on some initialization stuff here.
                 writeToFile("init done");
@@ -120,13 +123,14 @@ public class ClientComm {
             {
                 // TODO: 27/03/2017 Daniel: no agent for the moment
                 //This is the place to think and return what action to take.
+                ElapsedCpuTimer ect = new ElapsedCpuTimer();
                 Random r = new Random();
                 String rndAction;
                 if (r.nextFloat() < 0.5)
                     rndAction = Types.ACTIONS.ACTION_RIGHT.toString();
                 else
                     rndAction = Types.ACTIONS.ACTION_LEFT.toString();
-                writeToFile("action: " + rndAction);
+                writeToFile("action: " + rndAction + " " + ect.elapsedMillis());
                 writeToServer(rndAction);
 
             }else if(commState == COMM_STATE.CHOOSE)
@@ -212,7 +216,13 @@ public class ClientComm {
     }
 
     public COMM_STATE processCommandLine() throws IOException {
-        if(sso.gameState == SerializableStateObservation.State.INIT_STATE)
+        if(sso.gameState == SerializableStateObservation.State.START_STATE)
+        {
+            writeToFile("game is in start state");
+            game.remMillis = sso.elapsedTimer;
+            return COMM_STATE.START;
+
+        }if(sso.gameState == SerializableStateObservation.State.INIT_STATE)
         {
             writeToFile("game is in init state");
             game.remMillis = sso.elapsedTimer;
@@ -247,15 +257,16 @@ public class ClientComm {
             // Debug line
             //fileOutput.write(json);
 
-            if (json.equals("INIT_START")){
-                this.sso.gameState = SerializableStateObservation.State.INIT_STATE;
+            if (json.equals("START")){
+                this.sso.gameState = SerializableStateObservation.State.START_STATE;
                 return;
             }
 
             //writeToFile(json);
 
+            ElapsedCpuTimer cpu = new ElapsedCpuTimer();
             this.sso = gson.fromJson(json, SerializableStateObservation.class);
-            writeToFile("gson initialized");
+            writeToFile("gson initialized " + cpu.elapsedMillis());
         } catch (Exception e){
             e.printStackTrace(fileOutput);
         }
