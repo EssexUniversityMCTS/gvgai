@@ -1,8 +1,8 @@
 package tracks.singlePlayer;
 
-import java.util.Random;
-
 import tracks.ArcadeMachine;
+
+import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA. User: Diego Date: 04/10/13 Time: 16:29 This is a
@@ -23,6 +23,7 @@ public class Test {
         String sampleRHEAController = "tracks.singlePlayer.advanced.sampleRHEA.Agent";
 		String sampleOLETSController = "tracks.singlePlayer.advanced.olets.Agent";
 
+		String nestedMCController = "tracks.singlePlayer.advanced.nestedMC.Agent";
 		// Available games:
 		String gridGamesPath = "examples/gridphysics/";
         String contGamesPath = "examples/contphysics/";
@@ -65,23 +66,29 @@ public class Test {
 		int seed = new Random().nextInt();
 
 		// Game and level to play
-		int gameIdx = 0;
-		int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
-		String game = gamesPath + games[gameIdx] + ".txt";
-		String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
-
-		String recordActionsFile = null;// "actions_" + games[gameIdx] + "_lvl"
-						// + levelIdx + "_" + seed + ".txt";
-						// where to record the actions
-						// executed. null if not to save.
-
-		// 1. This starts a game, in a level, played by a human.
-		ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
+//		int gameIdx = 2;
+//		int levelIdx = 0;
+//		String game = gamesPath + games[gameIdx] + ".txt";
+//		String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
+//
+////
+//		String recordActionsFile = null;// "actions_" + games[gameIdx] + "_lvl"
+////						// + levelIdx + "_" + seed + ".txt";
+////						// where to record the actions
+////						// executed. null if not to save.
+////
+////		// 1. This starts a game, in a level, played by a human.
+//		ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
 
 		// 2. This plays a game in a level by the controller.
-//		ArcadeMachine.runOneGame(game, level1, visuals, sampleRHEAController, recordActionsFile, seed, 0);
-
-
+//		for (int gameIdx=75; gameIdx<76;gameIdx++) {
+		int gameIdx = 91;
+			for (int levelIdx = 0; levelIdx < 5; levelIdx++) {
+				String game = gamesPath + games[gameIdx] + ".txt";
+				String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
+				ArcadeMachine.runOneGame(game, level1, visuals, nestedMCController, null, seed, 0);
+			}
+//		}
 		// 3. This replays a game from an action file previously recorded
 	//	 String readActionsFile = recordActionsFile;
 	//	 ArcadeMachine.replayGame(game, level1, visuals, readActionsFile);
