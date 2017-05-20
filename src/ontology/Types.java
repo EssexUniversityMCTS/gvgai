@@ -59,6 +59,17 @@ public class Types {
         return cfield;
     }
 
+    public static String v2DirStr(Vector2d v)
+    {
+        if (v.equals(NIL)) return "NIL";
+        if (v.equals(NONE)) return "NONE";
+        if (v.equals(UP)) return "UP";
+        if (v.equals(DOWN)) return "DOWN";
+        if (v.equals(LEFT)) return "LEFT";
+        if (v.equals(RIGHT)) return "RIGHT";
+        return null;
+    }
+
     private static String _v2DirStr(Vector2d v)
     {
         if (v.equals(NIL)) return "DNIL";

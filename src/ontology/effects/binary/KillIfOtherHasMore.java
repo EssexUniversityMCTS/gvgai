@@ -18,11 +18,13 @@ public class KillIfOtherHasMore extends Effect
     public String resource;
     public int resourceId;
     public int limit;
+    public boolean subtract;
 
     public KillIfOtherHasMore(InteractionContent cnt)
     {
         is_kill_effect = true;
         resourceId = -1;
+        subtract = false;
         this.parseParameters(cnt);
         resourceId = VGDLRegistry.GetInstance().getRegisteredSpriteValue(resource);
     }
@@ -37,6 +39,9 @@ public class KillIfOtherHasMore extends Effect
             applyScore = true;
             //boolean variable set to false to indicate the sprite was not transformed
             game.killSprite(sprite1, false);
+            if (subtract)
+                sprite2.subtractResource(resourceId, limit);
+
         }
     }
 }

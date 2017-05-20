@@ -808,12 +808,6 @@ public abstract class Game {
 
 		if (sprite.is_stochastic)
 			this.is_stochastic = true;
-
-		if (itype == wallId) {
-			sprite.loadImage("wall.png");
-		} else if (itype == avatarId) {
-			sprite.loadImage("avatar.png");
-		}
 	}
 
 	/**
