@@ -2,7 +2,7 @@ BasicGame
     SpriteSet
         floor > Immovable img=oryx/grass autotiling=True hidden=True
         cocoon > Immovable color=BLUE img=newset/cocoonb2
-        animal > physicstype=GRID
+        animal > 
             avatar    > MovingAvatar img=oryx/angel1 frameRate=8
             butterfly > RandomNPC speed=0.6 img=newset/butterfly1 cons=1 frameRate=5
 
