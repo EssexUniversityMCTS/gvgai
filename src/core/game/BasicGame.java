@@ -1,6 +1,6 @@
 package core.game;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -10,6 +10,7 @@ import core.vgdl.VGDLSprite;
 import core.logging.Logger;
 import core.logging.Message;
 import core.content.GameContent;
+import ontology.Types;
 import tools.IO;
 import tools.Vector2d;
 import tools.pathfinder.PathFinder;
@@ -162,12 +163,16 @@ public class BasicGame extends Game {
 							avatars.add(s);
 						}
 						if (s.autotiling) {
-							s.image = s.allImages.get(similarTiles);
+
+							ArrayList<Image> images = s.images.get("NONE");
+							if(images.size() > 0)
+								s.image = images.get(similarTiles);
 						}
 						if (s.randomtiling >= 0) {
 							Random random = new Random(randomSeed);
-							if (random.nextDouble() > s.randomtiling && s.allImages.size() > 0) {
-								s.image = s.allImages.get(random.nextInt(s.allImages.size()));
+							ArrayList<Image> allImages = s.images.get("NONE");
+							if (random.nextDouble() > s.randomtiling && allImages.size() > 0) {
+								s.image = allImages.get(random.nextInt(allImages.size()));
 							}
 						}
 					}

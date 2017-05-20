@@ -219,19 +219,24 @@ public abstract class VGDLSprite {
     public TreeMap<Integer, Integer> resources;
 
     /**
-     * Image of this sprite.
+     * All images in case there's orientation changes and/or animations.
+     */
+    public HashMap<String,ArrayList<Image>> images;
+
+    /**
+     * Unique and current image of this sprite.
      */
     public Image image;
-    
-    /**
-     * Dictionary for autoTiling
-     */
-    public HashMap<Integer, Image> allImages;
 
     /**
      * String that represents the image in VGDL.
      */
     public String img;
+
+    /**
+     * String that represents the image in VGDL.
+     */
+    public String orientedImg;
 
     /**
      * Indicates if this sprite is an NPC.
@@ -341,7 +346,6 @@ public abstract class VGDLSprite {
         physics = null;
         gravity = 0.0;
         friction = 0.0;
-        image = null;
         speed = 0;
         stationary = false;
         cooldown = 0;
@@ -359,7 +363,6 @@ public abstract class VGDLSprite {
         frameRate = -1;
         frameRemaining = 0;
         currentFrame = -1;
-        allImages = new HashMap<Integer, Image>();
         is_oriented = false;
         draw_arrow = false;
         orientation = Types.DNONE;
@@ -373,6 +376,7 @@ public abstract class VGDLSprite {
         itypes = new ArrayList<Integer>();
         rotation = 0.0;
         max_speed = -1.0;
+        images = new HashMap<String,ArrayList<Image>>();
 
         this.size = size;
 
@@ -487,10 +491,20 @@ public abstract class VGDLSprite {
         lastmove += 1;
 
         frameRemaining -= 1;
-        if (frameRate > 0 && frameRemaining <= 0 && allImages.size() > 0) {
-            currentFrame = (currentFrame + 1) % allImages.size();
-            frameRemaining = frameRate;
-            image = allImages.get(currentFrame);
+        if (frameRate > 0 && frameRemaining <= 0 && images.size() > 0) {
+
+            ArrayList<Image> allImages;
+            boolean isOrientedImg = (orientedImg != null);
+            if (!isOrientedImg)
+                allImages = images.get("NONE");
+            else
+                allImages = images.get(Types.v2DirStr(orientation.getVector()));
+
+            if (allImages.size() > 0){
+                currentFrame = (currentFrame + 1) % allImages.size();
+                frameRemaining = frameRate;
+                image = allImages.get(currentFrame);
+            }
         }
     }
 
@@ -622,6 +636,13 @@ public abstract class VGDLSprite {
         resources.put(resourceId, next);
     }
 
+    public void subtractResource(int resourceId, int amount_delta)
+    {
+        int prev = getAmountResource(resourceId);
+        int next = Math.max(0,prev - amount_delta);
+        resources.put(resourceId, next);
+    }
+
     /**
      * Removes all resources collected of the specified type.
      * @param resourceId - id of the resource whose quantity must be changed.
@@ -744,36 +765,41 @@ public abstract class VGDLSprite {
      */
     public void _drawOriented(Graphics2D g, Rectangle r)
     {
-    	if(draw_arrow)
+        Color arrowColor = new Color(color.getRed(), 255-color.getGreen(), color.getBlue());
+        Polygon p = Utils.triPoints(r, orientation);
+
+        // Rotation information
+
+        if(shrinkfactor != 1)
         {
-            Color arrowColor = new Color(color.getRed(), 255-color.getGreen(), color.getBlue());
-            Polygon p = Utils.triPoints(r, orientation);
-
-            // Rotation information
-            
-            if(shrinkfactor != 1)
-            {
-                r.width *= shrinkfactor;
-                r.height *= shrinkfactor;
-                r.x += (rect.width-r.width)/2;
-                r.y += (rect.height-r.height)/2;
-            }
-
-            int w = image.getWidth(null);
-            int h = image.getHeight(null);
-            float scale = (float)r.width/w; //assume all sprites are quadratic.
-
-            AffineTransform trans = new AffineTransform();
-            trans.translate(r.x, r.y);
-            trans.scale(scale,scale);
-            trans.rotate(rotation,w/2.0,h/2.0);
-            g.drawImage(image, trans, null);
-
-            g.setColor(arrowColor);
-            //g.drawPolygon(p);
-            g.fillPolygon(p);
-            
+            r.width *= shrinkfactor;
+            r.height *= shrinkfactor;
+            r.x += (rect.width-r.width)/2;
+            r.y += (rect.height-r.height)/2;
         }
+
+        int w = image.getWidth(null);
+        int h = image.getHeight(null);
+        float scale = (float)r.width/w; //assume all sprites are quadratic.
+
+        AffineTransform trans = new AffineTransform();
+        trans.translate(r.x, r.y);
+        trans.scale(scale,scale);
+        trans.rotate(rotation,w/2.0,h/2.0);
+        // Uncomment this line to have only one sprite
+        //g.drawImage(image, trans, null);
+
+        /* Code added by Carlos*/
+        g.drawImage(image, trans, null);
+        /* End of code added by carlos*/
+
+        // We only draw the arrow if the directional sprites are null
+        if (draw_arrow) {
+            g.setColor(arrowColor);
+            g.drawPolygon(p);
+            g.fillPolygon(p);
+        }
+
     }
 
     /**
@@ -922,7 +948,7 @@ public abstract class VGDLSprite {
      */
     public void postProcess()
     {
-    	loadImage(img);
+    	loadImage();
 
         if(!(this.orientation.equals(Types.DNONE)))
         {
@@ -947,56 +973,112 @@ public abstract class VGDLSprite {
             cooldown = 1; //Minimum possible value.
     }
 
+
     /**
      * Loads the image that represents this sprite, using its string name as reference.
-     * @param str name of the image to load.
      */
-    public void loadImage(String str)
+    public void loadImage()
     {
-        if(image == null && str != null)
+        String str = (orientedImg != null) ? orientedImg : img;
+        boolean isOrientedImg = (orientedImg != null);
+        Direction[] directions = new Direction[]{Types.DUP,Types.DDOWN,Types.DLEFT,Types.DRIGHT};
+        if(images == null && orientedImg == null && str == null)
         {
-            //load image.
-            try {
-            	if (this.autotiling || this.randomtiling >= 0 || this.frameRate >= 0){
-            		if (str.contains(".png")) str = str.substring(0, str.length() - 3);
-            		String imagePath = CompetitionParameters.IMG_PATH + str + "_";
-            		boolean noMoreFiles = false;
-            		int i = 0;
-            		do{
-            			String currentFile = imagePath + i + ".png";
-            			if((new File(currentFile).exists())) {
-            				allImages.put(i, ImageIO.read(new File(currentFile)));
-    	                }
-    	                else {
-    	                    //System.out.println(currentFile);
-    	                	//tempImage = ImageIO.read(this.getClass().getResource("/" + currentFile));
-    	                	noMoreFiles = true;
-    	                }
-            			i += 1;
-            		}while(!noMoreFiles);
-            		image = allImages.get(0);
-            	}
-            	else{
-	                if (!(str.contains(".png"))) str = str + ".png";
-	                String image_file = CompetitionParameters.IMG_PATH + str;
-	                if((new File(image_file).exists())) {
-	                    image = ImageIO.read(new File(image_file));
-	                }
-	                else {
-	                    //System.out.println(image_file);
-	                    image = ImageIO.read(this.getClass().getResource("/" + image_file));
-	                }
-            	}
+          int a = 0;
+         return;
+        }
 
-            } catch (IOException e) {
-                System.out.println("Image " + str + " could not be found.");
-                e.printStackTrace();
-            } catch (Exception e) {
-                //Ignore other exceptions.
-                //If no images are shown, it'll draw an coloured rectangle instead.
+        if(images.size() == 0 && str != null)
+        {
+            //There is autotiling (disabled now) or animations
+            if (this.autotiling || this.randomtiling >= 0 || this.frameRate >= 0){
+
+                if (str.contains(".png"))
+                    str = str.substring(0, str.length() - 3);
+
+                String imagePathBase = CompetitionParameters.IMG_PATH + str + "_";
+
+                //Get all the images for each orientation
+                if(isOrientedImg) for(Direction dir : directions)
+                {
+                    String strDir = Types.v2DirStr(dir.getVector());
+                    String imagePath = imagePathBase + strDir + "_";
+                    ArrayList<Image> theImages = getAnimatedImages(imagePath);
+                    images.put(strDir, theImages);
+                }else{
+                    ArrayList<Image> theImages = getAnimatedImages(imagePathBase);
+                    images.put("NONE", theImages);
+                }
+
             }
+            else{
+
+                if (!(str.contains(".png")))
+                    str = str + ".png";
+                String base_image_file = CompetitionParameters.IMG_PATH + str;
+                Image onlyImage;
+
+                //Get all the images for each orientation
+                if(isOrientedImg) for(Direction dir : directions)
+                {
+                    String strDir = Types.v2DirStr(dir.getVector());
+                    ArrayList<Image> theImages = new ArrayList<Image>();
+                    String image_file = base_image_file + "_" + strDir;
+                    onlyImage = getImage(image_file);
+                    theImages.add(onlyImage);
+
+                    images.put(strDir, theImages);
+                    image = theImages.get(0);
+                }else {
+                    //Only one image. images stays empty.
+                    image = getImage(base_image_file);
+                }
+
+            }
+
         }
     }
+
+    private Image getImage(String image_file)
+    {
+        try {
+
+            if((new File(image_file).exists())) {
+                return ImageIO.read(new File(image_file));
+            }
+
+            return ImageIO.read(this.getClass().getResource("/" + image_file));
+        } catch (IOException e) {
+            //e.printStackTrace();
+        } catch (Exception e) {
+            //e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    private ArrayList<Image> getAnimatedImages(String imagePath)
+    {
+        ArrayList<Image> theImages = new ArrayList<>();
+        try{
+            boolean noMoreFiles = false;
+            int i = 0;
+
+            do{
+                String currentFile = imagePath + i + ".png";
+                if((new File(currentFile).exists())) {
+                    theImages.add(ImageIO.read(new File(currentFile)));
+                }
+                else {
+                    noMoreFiles = true;
+                }
+                i += 1;
+            }while(!noMoreFiles);
+            image = theImages.get(0); //Default.
+        }catch(Exception e) {}
+        return theImages;
+    }
+
 
     /**
      * Used to indicate if this sprite was created by the avatar.
@@ -1056,8 +1138,8 @@ public abstract class VGDLSprite {
         toSprite.color = this.color;
         toSprite.draw_arrow = this.draw_arrow;
         toSprite.is_npc = this.is_npc;
-        toSprite.allImages = this.allImages;
         toSprite.image = this.image;
+        toSprite.images = this.images;
         toSprite.spriteID = this.spriteID;
         toSprite.is_from_avatar = this.is_from_avatar;
         toSprite.bucket = this.bucket;
@@ -1081,6 +1163,8 @@ public abstract class VGDLSprite {
         toSprite.on_ground = this.on_ground;
         toSprite.solid = this.solid;
         toSprite.max_speed = this.max_speed;
+        toSprite.img = this.img;
+        toSprite.orientedImg = this.orientedImg;
 
         toSprite.itypes = new ArrayList<Integer>();
         for(Integer it : this.itypes)
