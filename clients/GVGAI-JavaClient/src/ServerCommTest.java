@@ -1,5 +1,6 @@
 import com.google.gson.Gson;
 import ontology.Types;
+import serialization.SerializableStateObservation;
 
 import java.io.IOException;
 

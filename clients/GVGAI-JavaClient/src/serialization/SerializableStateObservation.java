@@ -1,3 +1,5 @@
+package serialization;
+
 import ontology.Types;
 import java.util.ArrayList;
 import java.util.HashMap;

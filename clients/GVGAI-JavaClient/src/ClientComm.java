@@ -1,7 +1,8 @@
+import agents.PlayerAgent;
 import com.google.gson.Gson;
 import ontology.Game;
 import ontology.Avatar;
-import ontology.Types;
+import serialization.SerializableStateObservation;
 
 import java.io.*;
 import java.util.Random;
@@ -60,6 +61,10 @@ public class ClientComm {
      */
     public SerializableStateObservation sso;
 
+    /**
+     * Variable to store the player's agent information
+     */
+    public PlayerAgent player;
 
     /**
      * Indicates if the current game is a training game
@@ -125,12 +130,14 @@ public class ClientComm {
             if(commState == COMM_STATE.START)
             {
                 // Perform one-time startup initialization here
+                player.START();
                 writeToFile("start done");
                 writeToServer("START_DONE");
 
             }else if(commState == COMM_STATE.INIT)
             {
                 // Perform level-entry initialization here
+                player.INIT();
                 writeToFile("init done");
                 writeToServer("INIT_DONE");
 
@@ -138,45 +145,32 @@ public class ClientComm {
             {
                 //This is the place to think and return what action to take.
                 ElapsedCpuTimer ect = new ElapsedCpuTimer();
-                Random r = new Random();
-                String rndAction;
-                if (r.nextFloat() < 0.5)
-                    rndAction = Types.ACTIONS.ACTION_RIGHT.toString();
-                else
-                    rndAction = Types.ACTIONS.ACTION_LEFT.toString();
-                writeToFile("action: " + rndAction + " " + ect.elapsedMillis());
-                writeToServer(rndAction);
+
+                // Save the player's action in a string
+                String action = player.ACT(sso).toString();
+
+                writeToFile("action: " + action + " " + ect.elapsedMillis());
+                writeToServer(action);
 
             }else if(commState == COMM_STATE.CHOOSE)
             {
                 //This is the place to pick a level to be played after the initial 2 levels have gone through
-                Random r = new Random();
-                Integer message = r.nextInt(3);
+                Integer message = player.CHOOSE(sso);
                 writeToServer(message.toString());
 
             }else if(commState == COMM_STATE.ABORT)
             {
                 // Perform abort-state actions (such as teardown) here
-                game.printToFile(numGames);
-                avatar.printToFile(numGames);
-
-                game = new Game();
-                avatar = new Avatar();
+                player.ABORT(sso);
 
                 writeToFile("game aborted");
-
                 writeToServer("GAME_DONE_ABORT");
             }else if(commState == COMM_STATE.ENDED)
             {
                 // Perform end-state actions (such as teardown) here
-                game.printToFile(numGames);
-                avatar.printToFile(numGames);
-
-                game = new Game();
-                avatar = new Avatar();
+                player.END(sso);
 
                 writeToFile("game ended");
-
                 writeToServer("GAME_DONE_ENDED");
             } else {
                 writeToServer("null");
