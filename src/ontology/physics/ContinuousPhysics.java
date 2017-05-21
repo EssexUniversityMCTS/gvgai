@@ -74,7 +74,10 @@ public class ContinuousPhysics extends GridPhysics
         sprite.orientation = d;
         sprite.speed = speedD;
 
-        return Types.MOVEMENT.MOVE;
+        if(action.equals(Types.DNONE))
+            return Types.MOVEMENT.STILL;
+        else
+            return Types.MOVEMENT.MOVE;
     }
 
 
