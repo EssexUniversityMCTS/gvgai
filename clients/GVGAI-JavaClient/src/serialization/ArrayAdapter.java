@@ -11,6 +11,12 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
+/***
+ * This is a custom array adapter used to interpret GSon arrays in a special, tokenized manner.
+ * It is used to avoid deserialization errors (since the standard adapter cannot handle
+ * array lists well enough).
+ * @param <T>
+ */
 public class ArrayAdapter<T> extends TypeAdapter<List<T>> {
     private Class<T> adapterclass;
 

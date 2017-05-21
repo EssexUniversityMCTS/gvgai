@@ -39,36 +39,28 @@ public class ServerComm {
      */
     private Process client;
 
-
     /**
-     * Public constructor of the player.
-     * @param client process that runs the agent.
+     * Static block that handles the debug log creation.
      */
-
-
     static {
-
         FileHandler fh;
-
         try {
-
             // This block configure the logger with handler and formatter
             fh = new FileHandler("logs/serverCommDebug.txt");
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);
-
-            // the following statement is used to log any messages
-
-
         } catch (SecurityException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
+    /**
+     * Public constructor of the player.
+     * @param client process that runs the agent.
+     */
     public ServerComm(Process client) {
         this.client = client;
         initBuffers();
@@ -82,6 +74,15 @@ public class ServerComm {
         output = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
     }
 
+    /***
+     * This method is used to set the game state to either "ABORT_STATE" or "END_STATE"
+     * depending on the termination of the game. Each game calls this method upon teardown
+     * of the player object.
+     *
+     * @param so State observation of the game in progress to be used for message sending.
+     * @param elapsedTimer Current timer object to be given to the player for interpretation.
+     * @throws IOException
+     */
     public void finishGame(StateObservation so, ElapsedCpuTimer elapsedTimer) throws IOException {
         initBuffers();
 
@@ -112,24 +113,18 @@ public class ServerComm {
     }
 
     /**
-     * Waits for a response during T milliseconds.
+     * Receives a message from the client.
      *
      * @return the response got from the client, or null if no response was received after due time.
      */
     public String commRecv() throws IOException {
         String ret = "";
-        //if (input.ready()) {
-            //skip the first line
-            //input.readLine();
+        ret = input.readLine();
+        while (ret != null && ret.trim().length() > 0) {
 
-            ret = input.readLine();
-            while (ret != null && ret.trim().length() > 0) {
-                //System.out.println("TIME OK");
-                return ret.trim();
-            }
-        //}
-        //if(elapsedTimer.remainingTimeMillis() <= 0)
-        //    System.out.println("TIME OUT (" + idStr + "): " + elapsedTimer.elapsedMillis());
+            //System.out.println("TIME OK");
+            return ret.trim();
+        }
 
         return null;
     }
@@ -137,10 +132,8 @@ public class ServerComm {
     /**
      *  This function is called at the beginning of the game for
      * initialization.
-     *
-     * @param elapsedTimer Timer when the initialization is due to finish.
      */
-    public boolean start(ElapsedCpuTimer elapsedTimer) {
+    public boolean start() {
         try {
             String response = "";
             int count = 11;
@@ -159,7 +152,6 @@ public class ServerComm {
                 System.out.println("start failed: too many unexpected messages received");
                 return false;
             }
-            // Ignore the first response
 
             logger.fine("Received: " + response);
 //            if ("INIT_DONE".equals(response)) {

@@ -94,34 +94,48 @@ public class ClientComm {
     }
 
 
+    /***
+     * Method that perpetually listens for messages from the server.
+     * With the use of additional helper methods, this function interprets
+     * messages and represents the core response-generation methodology of the agent.
+     * @throws IOException
+     */
     private void listen() throws IOException {
         String line = "start client";
         writeToFile(line);
 
         int messageIdx = 0;
+
+        // Continuously listen for messages
         while (line != null) {
+            // Read a line from System.in and save it as a String
             line = input.readLine();
 
             writeToFile("going to processing");
 
+            // Process the line
             processLine(line);
+
+            // Generate a communication state based on the processed line
+            // This will influence the further action to be taken by the client.
             commState = processCommandLine();
 
+            // Decide on the further action to perform, based on the communication state,
+            // as deciphered from the received line
             if(commState == COMM_STATE.START)
             {
-                //We can work on some initialization stuff here.
+                // Perform one-time startup initialization here
                 writeToFile("start done");
                 writeToServer("START_DONE");
 
             }else if(commState == COMM_STATE.INIT)
             {
-                //We can work on some initialization stuff here.
+                // Perform level-entry initialization here
                 writeToFile("init done");
                 writeToServer("INIT_DONE");
 
             }else if(commState == COMM_STATE.ACT)
             {
-                // TODO: 27/03/2017 Daniel: no agent for the moment
                 //This is the place to think and return what action to take.
                 ElapsedCpuTimer ect = new ElapsedCpuTimer();
                 Random r = new Random();
@@ -142,9 +156,7 @@ public class ClientComm {
 
             }else if(commState == COMM_STATE.ABORT)
             {
-                // TODO: 27/03/2017 Daniel: is the game stopped ?
-                //We can study what happened in the game here.
-                //For debug, print here game and avatar info:
+                // Perform abort-state actions (such as teardown) here
                 game.printToFile(numGames);
                 avatar.printToFile(numGames);
 
@@ -153,13 +165,10 @@ public class ClientComm {
 
                 writeToFile("game aborted");
 
-                // TODO: 27/03/2017 Daniel:  after stopped, start another game ???
                 writeToServer("GAME_DONE_ABORT");
             }else if(commState == COMM_STATE.ENDED)
             {
-                // TODO: 27/03/2017 Daniel: is the game stopped ?
-                //We can study what happened in the game here.
-                //For debug, print here game and avatar info:
+                // Perform end-state actions (such as teardown) here
                 game.printToFile(numGames);
                 avatar.printToFile(numGames);
 
@@ -168,7 +177,6 @@ public class ClientComm {
 
                 writeToFile("game ended");
 
-                // TODO: 27/03/2017 Daniel:  after stopped, start another game ???
                 writeToServer("GAME_DONE_ENDED");
             } else {
                 writeToServer("null");
@@ -185,7 +193,6 @@ public class ClientComm {
     private void initBuffers() {
         try {
             fileOutput = new PrintWriter(new File("logs/clientLog.txt"), "utf-8");
-
 
             input = new BufferedReader(new InputStreamReader(System.in));
             output = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -215,6 +222,13 @@ public class ClientComm {
         fileOutput.flush();
     }
 
+    /***
+     * This method interprets the game-state as received from the server,
+     * then decides what the appropriate client state is supposed to be
+     * and returns that state, for further actions.
+     * @return The state directly related to the state of the server
+     * @throws IOException
+     */
     public COMM_STATE processCommandLine() throws IOException {
         if(sso.gameState == SerializableStateObservation.State.START_STATE)
         {
@@ -249,14 +263,26 @@ public class ClientComm {
         return commState;
     }
 
+    /***
+     * Method that interprets the received messages from the server's side.
+     * A message can either be a string (in the case of initialization), or
+     * a json object containing an encapsulated state observation.
+     * This method deserializes the json object into a local state observation
+     * instance.
+     * @param json Message received from server to be interpreted.
+     * @throws IOException
+     */
     public void processLine(String json) throws IOException{
         writeToFile("initializing gson");
         try {
             //Gson gson = new GsonBuilder().registerTypeAdapterFactory(new ArrayAdapterFactory()).create();
             Gson gson = new Gson();
+
             // Debug line
             //fileOutput.write(json);
 
+            // Set the state to "START_STATE" in case the connexion (not game) is in the initialization phase.
+            // Happens only on one-time setup
             if (json.equals("START")){
                 this.sso.gameState = SerializableStateObservation.State.START_STATE;
                 return;
@@ -264,23 +290,14 @@ public class ClientComm {
 
             //writeToFile(json);
 
+            // Else, deserialize the json using GSon
             ElapsedCpuTimer cpu = new ElapsedCpuTimer();
             this.sso = gson.fromJson(json, SerializableStateObservation.class);
             writeToFile("gson initialized " + cpu.elapsedMillis());
         } catch (Exception e){
             e.printStackTrace(fileOutput);
         }
-//        String data = gson.fromJson(gson, String.class);
-//
-//        for (String act : availableActions)
-//            avatar.actionList.add(act);
-//
-//        for (String r : avatarResources)
-//        {
-//            int key = Integer.parseInt(r.split(",")[0]);
-//            int val = Integer.parseInt(r.split(",")[1]);
-//            avatar.resources.put(key, val);
-//        }
+
     }
 
 }

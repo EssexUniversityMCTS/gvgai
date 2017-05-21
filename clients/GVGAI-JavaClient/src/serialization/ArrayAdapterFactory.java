@@ -9,6 +9,9 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 
+/***
+ * This class is used to generate GSon objects using the custom ArrayAdapter class rules.
+ */
 public class ArrayAdapterFactory implements TypeAdapterFactory {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

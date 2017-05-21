@@ -43,7 +43,6 @@ public class SerializableStateObservation {
 
     public ArrayList<Types.ACTIONS> availableActions;
     public HashMap<Integer, Integer> avatarResources;
-//    public ArrayList<Observation>[][] observationGrid;
     public Observation[][][] observationGridArray;
     public Observation[][] NPCPositionsArray;
     public Observation[][] immovablePositionsArray;
@@ -51,13 +50,6 @@ public class SerializableStateObservation {
     public Observation[][] resourcesPositionsArray;
     public Observation[][] portalsPositionsArray;
     public Observation[][] fromAvatarSpritesPositionsArray;
-    //public TreeSet<Event> eventsHistory;
-//    public ArrayList<Observation>[] NPCPositions;
-//    public ArrayList<Observation>[] immovablePositions;
-//    public ArrayList<Observation>[] movablePositions;
-//    public ArrayList<Observation>[] resourcesPositions;
-//    public ArrayList<Observation>[] portalsPositions;
-//    public ArrayList<Observation>[] fromAvatarSpritesPositions;
 
     public SerializableStateObservation(StateObservation s)
     {
@@ -87,12 +79,17 @@ public class SerializableStateObservation {
         avatarMaxHealthPoints = s.getAvatarMaxHealthPoints();
         avatarLimitHealthPoints = s.getAvatarLimitHealthPoints();
         isAvatarAlive = s.isAvatarAlive();
-//        observationGrid = s.getObservationGrid();
 
         // Create a row to be used for translation from ArrayList to array
         ArrayList<Observation> row;
 
         ElapsedCpuTimer ect = new ElapsedCpuTimer();
+
+        /*
+        * The following block is a sequence of iterative attributions
+        * that render the game-information holding array objects
+        * to be sent and interpreted by the agent.
+        */
 
         // Observation grid
         if (s.getObservationGrid()!=null) {
@@ -106,7 +103,6 @@ public class SerializableStateObservation {
             }
         }
 
-//        NPCPositions = s.getNPCPositions();
         // NPC positions
         if (s.getNPCPositions()!=null) {
             NPCPositionsArray = new Observation[s.getNPCPositions().length][];
@@ -117,7 +113,6 @@ public class SerializableStateObservation {
             }
         }
 
-//        immovablePositions = s.getImmovablePositions();
         // Immovable positions
         if (s.getImmovablePositions()!=null) {
             immovablePositionsArray = new Observation[s.getImmovablePositions().length][];
@@ -128,7 +123,6 @@ public class SerializableStateObservation {
             }
         }
 
-//        movablePositions = s.getMovablePositions();
         // Movable positions
         if(s.getMovablePositions()!=null) {
             movablePositionsArray = new Observation[s.getMovablePositions().length][];
@@ -139,7 +133,6 @@ public class SerializableStateObservation {
             }
         }
 
-//        resourcesPositions = s.getResourcesPositions();
         // Resource position
         if(s.getResourcesPositions()!=null) {
             resourcesPositionsArray = new Observation[s.getResourcesPositions().length][];
@@ -150,7 +143,6 @@ public class SerializableStateObservation {
             }
         }
 
-//        portalsPositions = s.getPortalsPositions();
         // Portal position
         if(s.getPortalsPositions()!=null) {
             portalsPositionsArray = new Observation[s.getPortalsPositions().length][];
@@ -161,7 +153,6 @@ public class SerializableStateObservation {
             }
         }
 
-//        fromAvatarSpritesPositions = s.getFromAvatarSpritesPositions();
         // Avatar sprite position
         if(s.getFromAvatarSpritesPositions()!=null) {
             fromAvatarSpritesPositionsArray = new Observation[s.getFromAvatarSpritesPositions().length][];
@@ -175,6 +166,12 @@ public class SerializableStateObservation {
         System.out.println(ect.elapsedMillis() + " ms taken to build SSO");
     }
 
+    /***
+     * This method serializes this class into a cohesive json object, using GSon,
+     * and optionally saves the converted object to a given file.
+     * @param filename Name of the file to save the serialization to (optional)
+     * @return
+     */
     public String serialize(String filename)
     {
         String message = "";

@@ -77,7 +77,7 @@ public class LearningMachine {
         VGDLRegistry.GetInstance().init();
 
         //Create the player.
-        LearningPlayer player = LearningMachine.createPlayer(agentName); //TODO (Diego: This happens once only - so it's okay as it is).
+        LearningPlayer player = LearningMachine.createPlayer(agentName);
 
         // Play the training games.
         System.out.print(trainingPlays + "\n");
@@ -102,7 +102,6 @@ public class LearningMachine {
         //Then, play the game.
         double[] score;
 
-        // TODO: Fix this little hack
         Player[] players = new Player[]{player};
         if (visuals)
             score = toPlay.playGame(players, randomSeed, false, 0);
@@ -118,7 +117,7 @@ public class LearningMachine {
 
     /**
      * Reads and launches a game for a bot to be played. It specifies which levels to play and how many times.
-     * Filenames for saving actions can be specified. Graphics always off.
+     * Filenames for saving actions can be specified. Graphics always on.
      * @param game_file game description file.
      * @param level_files array of level file names to play.
      * @param level_times how many times each level has to be played.
@@ -150,7 +149,6 @@ public class LearningMachine {
         performance = new StatSummary();
 
         // Player array to hold the single player
-        // TODO: Fix this little hack (DIEGO: happy with this for the moment, not important).
         LearningPlayer[] players = new LearningPlayer[]{player};
 
         // Initialize the 10 minute timer for the game duration
@@ -158,7 +156,6 @@ public class LearningMachine {
         ect.setMaxTimeMillis(CompetitionParameters.MAX_GAME_LENGTH);
 
         // Initialize the player
-        // TODO: check if the new player start is alright
         boolean initSuccesful = players[0].startPlayerCommunication();
         if (!initSuccesful) {
             return;
@@ -213,6 +210,8 @@ public class LearningMachine {
     }
 
     /**
+     * Method used to play a single given level. It is also used to request player input in regards
+     * to the next game to be played.
      *
      * @param game_file Game file to be used to play the game. Is sent by parent method.
      * @param level_file Level file to be used to play the game. Is sent by parent method.
@@ -221,10 +220,11 @@ public class LearningMachine {
      * @param recordActions Boolean determining whether the actions should be recorded.
      * @param levelIdx Level index. Used for debugging.
      * @param players Array of Player-type objects. Used to play the game
-     * @param actionFiles
+     * @param actionFiles Files used to record the actions in for logging purposes.
      * @param toPlay The game to be played. Must be pre-initialized.
      * @param scores Array of scores to be modified. Is modified at the end of the level.
      * @param victories Array of victories to be modified. Is modified at the end of the level.
+     * @return Next level to be played as chosen by the player, or a random substituent.
      * @throws IOException
      */
     public static int playOneLevel(String game_file, String level_file, int level_time, boolean recordActions,
@@ -241,14 +241,15 @@ public class LearningMachine {
 
         String filename = recordActions ? actionFiles[levelIdx * level_time] : null;
 
-        // Score array to hold handled results
+        // Score array to hold handled results.
         double[] score;
 
+        // Initialize the new learningPlayer instance.
         LearningPlayer learningPlayer = LearningMachine.initPlayer(players[0], actionFiles[0], randomSeed, toPlay.getObservation());
+
         // If the player cannot be initialized, disqualify the controller
         if (learningPlayer == null) {
             //Something went wrong in the constructor, controller disqualified
-            //toPlay.disqualify(j);
             toPlay.getAvatars()[0].disqualify(true);
             toPlay.handleResult();
             toPlay.printResult();
@@ -256,7 +257,7 @@ public class LearningMachine {
         }
         players[0] = learningPlayer;
 
-                //Play the game
+        //Play the game
         //Get array of scores back.
         score = toPlay.playGame(players, randomSeed, false, 0);
         toPlay.printResult();
@@ -273,6 +274,7 @@ public class LearningMachine {
         // Send results to player and save their choice of next level to be played
         // First create a new observation
         StateObservation so = toPlay.getObservation();
+
         // Sends results to player and retrieve the next level to be played
         int level = sendResults(so, players[0]);
 
@@ -325,19 +327,6 @@ public class LearningMachine {
         return new LearningPlayer(client);
     }
 
-
-//
-//    private static void printLines(String name, InputStream ins) {
-//        String line = null;
-//        BufferedReader in = new BufferedReader(
-//                new InputStreamReader(ins));
-//
-//            while ((line = in.readLine()) != null) {
-//                System.out.println(name + " " + line);
-//            }
-//
-//    }
-
     /**
      * Inits the player for a given game.
      *
@@ -371,7 +360,7 @@ public class LearningMachine {
      * @return the player, created and initialized, ready to start playing the game.
      */
 
-    // TODO: 05/04/2017 Daniel: Finish this up somehow
+    // Unfinished
     private static LearningPlayer initMultiPlayer(LearningPlayer playerName, String actionFile, StateObservationMulti so, int randomSeed, int id, boolean isHuman)
     {
         return playerName;

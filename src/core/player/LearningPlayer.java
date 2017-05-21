@@ -46,27 +46,10 @@ public class LearningPlayer extends Player {
         this.serverComm = new ServerComm(proc);
     }
 
-//
-//    public LearningPlayer(Process client) {
-//        isLearner = true;
-//
-//
-//        this.client = client;
-//        initBuffers();
-//
-//
-//    }
-
-//    /**
-//     * Creates the buffers for pipe communication.
-//     */
-//    private void initBuffers() {
-//
-//        input = new BufferedReader(new InputStreamReader(client.getInputStream()));
-//        output = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
-//
-//
-//    }
+    // Getter for the server comm object
+    public ServerComm getServerComm() {
+        return serverComm;
+    }
 
     public Types.ACTIONS act(SerializableStateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
         return null;
@@ -84,8 +67,6 @@ public class LearningPlayer extends Player {
      */
     @Override
     public Types.ACTIONS act(StateObservation so, ElapsedCpuTimer elapsedTimer) {
-        final StringBuilder stringBuilder = new StringBuilder();
-
         //Sending messages.
         try {
             // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
@@ -94,31 +75,24 @@ public class LearningPlayer extends Player {
 
             sso.elapsedTimer = elapsedTimer.remainingTimeMillis();
             serverComm.commSend(sso.serialize(null));
-//            new Thread(() -> {
-//                try {
-//                    String line = serverComm.commRecv(elapsedTimer);
-//                    stringBuilder.append(line);
-//                }catch(IOException e){
-//                    e.printStackTrace();
-//                }
-//            }).run();
 
-//            String response = stringBuilder.toString();
+            // Receive the response and set ACTION_NIL as default action
             String response = serverComm.commRecv();
             if (response == null)
                 response = Types.ACTIONS.ACTION_NIL.toString();
 
+            // Log and debug the received action
             logger.fine("Received ACTION: " + response + "; ACT Response time: "
                     + elapsedTimer.elapsedMillis() + " ms.");
 
             System.out.println("Received ACTION: " + response + "; ACT Response time: "
                     + elapsedTimer.elapsedMillis() + " ms.");
 
+            // Set the game to the kill state if the response is that of ABORT
             if ("ABORT".equals(response)){
                 so.currentGameState = Types.GAMESTATES.ABORT_STATE;
                 return Types.ACTIONS.ACTION_ESCAPE;
             }
-
 
             Types.ACTIONS action = Types.ACTIONS.fromString(response);
             return action;
@@ -129,9 +103,13 @@ public class LearningPlayer extends Player {
 
     }
 
+    /***
+     *
+     * @param so State observation of the current game in its initial state
+     * @param ect Elapsed timer object to store timing information in regards to initialization time
+     * @return
+     */
     public boolean init(StateObservation so, ElapsedCpuTimer ect) {
-        final StringBuilder stringBuilder = new StringBuilder();
-
         //Sending messages.
         try {
             // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
@@ -139,8 +117,8 @@ public class LearningPlayer extends Player {
             SerializableStateObservation sso = new SerializableStateObservation(so);
 
             sso.elapsedTimer = ect.remainingTimeMillis();
-            serverComm.commSend(sso.serialize(null));
 
+            serverComm.commSend(sso.serialize(null));
             serverComm.commRecv();
 
             //Check if we returned on time, and act in consequence.
@@ -185,10 +163,6 @@ public class LearningPlayer extends Player {
 
     }
 
-    public ServerComm getServerComm() {
-        return serverComm;
-    }
-
     /**
      * Inits the controller for the player
      *
@@ -200,7 +174,7 @@ public class LearningPlayer extends Player {
         ect.setMaxTimeMillis(CompetitionParameters.INITIALIZATION_TIME);
 
         //Initialize the controller.
-        if (!this.serverComm.start(ect))
+        if (!this.serverComm.start())
             return false;
 
         //Check if we returned on time, and act in consequence.
@@ -215,61 +189,5 @@ public class LearningPlayer extends Player {
 
         return true;
     }
-
-//    /**
-//     * Sends a message through the pipe.
-//     *
-//     * @param msg message to send.
-//     */
-//    public void commSend(String msg) throws IOException {
-//
-//        output.write(msg + lineSep);
-//        output.flush();
-//
-//    }
-
-//    /**
-//     * Waits for a response during T milliseconds.
-//     *
-//     * @param elapsedTimer Timer when the initialization is due to finish.
-//     * @param idStr        String identifier of the phase the communication is in.
-//     * @return the response got from the client, or null if no response was received after due time.
-//     */
-//    // TODO: 27/03/2017 Daniel: check the whole method
-//    public static String commRecv(ElapsedCpuTimer elapsedTimer, String idStr) throws IOException {
-//        String ret = null;
-//
-//        while (elapsedTimer.remainingTimeMillis() > 0) {
-//            if (input.ready()) {
-//
-//                ret = input.readLine();
-//                if (ret != null && ret.trim().length() > 0) {
-//                    //System.out.println("TIME OK");
-//                    return ret.trim();
-//                }
-//            }
-//        }
-//
-//
-//        //if(elapsedTimer.remainingTimeMillis() <= 0)
-//        //    System.out.println("TIME OUT (" + idStr + "): " + elapsedTimer.elapsedMillis());
-//
-//        return null;
-//    }
-
-//    public final void close() {
-//        try {
-//            input.close();
-//            output.close();
-//
-//        } catch (IOException e) {
-//            logger.severe("IO Exception closing the buffers: " + e.getStackTrace());
-//
-//        } catch (Exception e) {
-//            logger.severe("Exception closing the buffers: " + e.getStackTrace());
-//
-//        }
-//    }
-
 }
 
