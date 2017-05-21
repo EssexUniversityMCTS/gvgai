@@ -80,6 +80,7 @@ public class ClientComm {
         avatar = new Avatar();
         numGames = 0;
         isTraining = false;
+        player = new PlayerAgent();
         sso = new SerializableStateObservation();
     }
 
@@ -130,6 +131,7 @@ public class ClientComm {
             if(commState == COMM_STATE.START)
             {
                 // Perform one-time startup initialization here
+                writeToFile("beginning start");
                 player.START();
                 writeToFile("start done");
                 writeToServer("START_DONE");
