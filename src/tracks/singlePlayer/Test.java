@@ -23,7 +23,7 @@ public class Test {
         String sampleRHEAController = "tracks.singlePlayer.advanced.sampleRHEA.Agent";
 		String sampleOLETSController = "tracks.singlePlayer.advanced.olets.Agent";
 
-		String nestedMCController = "tracks.singlePlayer.advanced.nestedMC.Agent";
+		String nestedMCController = "nestedMC.Agent";
 		// Available games:
 		String gridGamesPath = "examples/gridphysics/";
         String contGamesPath = "examples/contphysics/";
@@ -81,14 +81,14 @@ public class Test {
 //		ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
 
 		// 2. This plays a game in a level by the controller.
-//		for (int gameIdx=75; gameIdx<76;gameIdx++) {
-		int gameIdx = 91;
+		for (int gameIdx=0; gameIdx<90;gameIdx++) {
+//		int gameIdx = 91;
 			for (int levelIdx = 0; levelIdx < 5; levelIdx++) {
 				String game = gamesPath + games[gameIdx] + ".txt";
 				String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
-				ArcadeMachine.runOneGame(game, level1, visuals, nestedMCController, null, seed, 0);
+				ArcadeMachine.runOneGame(game, level1, true, nestedMCController, null, seed, 0);
 			}
-//		}
+		}
 		// 3. This replays a game from an action file previously recorded
 	//	 String readActionsFile = recordActionsFile;
 	//	 ArcadeMachine.replayGame(game, level1, visuals, readActionsFile);
