@@ -7,5 +7,8 @@ fi
 
 build_folder='../../clients/GVGAI-JavaClient/out/'
 gson='gson-2.6.2.jar'
-#echo "java -agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=n -classpath ${build_folder}:${gson} JavaClient"
+
 java -agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=n -classpath ${build_folder}:${gson} JavaClient
+
+#Uncomment this line instead for debug only (all printed out will go to output_redirect.txt. SERVER-CLIENT WON'T WORK
+#java -agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=n -classpath ${build_folder}:${gson} JavaClient > logs/output_redirect.txt

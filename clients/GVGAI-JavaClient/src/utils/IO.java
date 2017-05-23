@@ -38,6 +38,8 @@ public class IO
             input = new BufferedReader(new InputStreamReader(System.in));
             output = new BufferedWriter(new OutputStreamWriter(System.out));
 
+
+
         } catch (Exception e) {
             System.out.println("Exception creating the client process: " + e);
             e.printStackTrace();
@@ -64,9 +66,16 @@ public class IO
      * Writes a line to the client debug file, adding a line separator at the end.
      * @param line to write
      */
-    public void writeToFile(String line) throws IOException{
-        fileOutput.write(line + lineSep);
-        fileOutput.flush();
+    public void writeToFile(String line)
+    {
+        try {
+            fileOutput.write(line + lineSep);
+            fileOutput.flush();
+        }catch(Exception e)
+        {
+            System.out.println("Error trying to write " + line + " to the local file.");
+            e.printStackTrace();
+        }
     }
 
 }

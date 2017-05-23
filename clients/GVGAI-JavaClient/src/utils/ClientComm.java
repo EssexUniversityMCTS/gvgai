@@ -53,6 +53,7 @@ public class ClientComm {
             listen();
         } catch (Exception e) {
             System.out.println(e);
+            io.writeToFile(e.toString());
         }
     }
 
@@ -64,12 +65,12 @@ public class ClientComm {
      */
     private void listen() throws IOException {
         String line = "";
-        //writeToFile(line);
 
         // Continuously listen for messages
         while (line != null) {
             // Read a line from System.in and save it as a String
             line = io.input.readLine();
+            //io.writeToFile(line);
 
             // Process the line
             processLine(line);
@@ -111,7 +112,7 @@ public class ClientComm {
      * @throws IOException
      */
     public void processLine(String json) throws IOException{
-        //writeToFile("initializing gson");
+        //io.writeToFile("initializing gson");
         try {
             //Gson gson = new GsonBuilder().registerTypeAdapterFactory(new ArrayAdapterFactory()).create();
             Gson gson = new Gson();
@@ -123,12 +124,12 @@ public class ClientComm {
                 return;
             }
 
-            //writeToFile(json);
+            //io.writeToFile(json);
 
             // Else, deserialize the json using GSon
             ElapsedCpuTimer cpu = new ElapsedCpuTimer();
             this.sso = gson.fromJson(json, SerializableStateObservation.class);
-            //writeToFile("gson initialized " + cpu.elapsedMillis());
+            //io.writeToFile("gson initialized " + cpu.elapsedMillis());
         } catch (Exception e){
             e.printStackTrace(io.fileOutput);
         }
@@ -157,7 +158,7 @@ public class ClientComm {
         {
             io.writeToServer("START_FAILED");
         }else {
-            //writeToFile("start done");
+            //io.writeToFile("start done");
             io.writeToServer("START_DONE");
         }
 
@@ -174,7 +175,7 @@ public class ClientComm {
 
         // Perform level-entry initialization here
         player.init(sso, ect.copy());
-        //writeToFile("init done");
+        //io.writeToFile("init done");
 
         if(ect.exceededMaxTime())
         {
@@ -196,7 +197,7 @@ public class ClientComm {
 
         // Save the player's action in a string
         String action = player.act(sso, ect.copy()).toString();
-        //writeToFile("init done");
+        //io.writeToFile("init done");
 
         if(ect.exceededMaxTime())
         {
@@ -228,7 +229,7 @@ public class ClientComm {
 
         // Submit result and wait for next level.
         int nextLevel = player.result(sso, ect.copy());
-        //writeToFile("init done");
+        //io.writeToFile("init done");
 
         if(ect.exceededMaxTime())
         {

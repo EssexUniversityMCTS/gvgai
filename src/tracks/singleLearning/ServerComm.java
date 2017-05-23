@@ -182,6 +182,8 @@ public class ServerComm {
 
             }
 
+            int a = 0;
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
