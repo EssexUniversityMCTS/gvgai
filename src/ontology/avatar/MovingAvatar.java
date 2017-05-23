@@ -143,7 +143,6 @@ public class MovingAvatar extends VGDLSprite {
             action = this.player.act(game.getObservation(), ect.copy());
         }
 
-        // TODO: Put another condition to avoid disqualification on the first game
         if (CompetitionParameters.TIME_CONSTRAINED && ect.exceededMaxTime()) {
             long exceeded = -ect.remainingTimeMillis();
 

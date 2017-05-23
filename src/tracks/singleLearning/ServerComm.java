@@ -103,13 +103,15 @@ public class ServerComm {
 
             if(response == null || response.equals("END_OVERSPENT"))
             {
-                return -1;
+                return Types.LEARNING_RESULT_DISQ;
             }
 
-            if (response.matches("^[0-3]$")) {
+            if (response.matches("^[0-" + Types.NUM_TRAINING_LEVELS + "]$")) {
                 return Integer.parseInt(response);
+            }else if (response.equals("END_TRAINING")) {
+                return Types.LEARNING_RESULT_OK;
             } else {
-                return new Random().nextInt(3);
+                return new Random().nextInt(Types.NUM_TRAINING_LEVELS);
             }
 
 
@@ -138,7 +140,6 @@ public class ServerComm {
     public String commRecv() throws IOException {
         String ret = input.readLine();
         while (ret != null && ret.trim().length() > 0) {// TODO: 22/05/17 if or while
-            System.out.println(ret);
             return ret.trim();
         }
         return null;
@@ -167,10 +168,10 @@ public class ServerComm {
                     return false;
                 } else if (response.equalsIgnoreCase("START_DONE")) {
                     logger.fine("Received: " + response);
-                    System.out.println("\nStart done");
+                    //System.out.println("\nStart done");
                     return true;
                 } else {
-                    System.out.println("For tests: not START_DONE, not START_FAILED: "+response);
+                    //System.out.println("For tests: not START_DONE, not START_FAILED: "+response);
 //                    response = commRecv();
                     count--;
                 }

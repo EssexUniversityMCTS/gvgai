@@ -236,7 +236,14 @@ public class ClientComm {
         {
             io.writeToServer("END_OVERSPENT");
         }else {
-            io.writeToServer(nextLevel+"");
+
+            if(global_ect.exceededMaxTime())
+            {
+                //Note this is okay, TOTAL_LEARNING_TIME is over, within the rules
+                io.writeToServer("END_TRAINING");
+            }else {
+                io.writeToServer(nextLevel + "");
+            }
         }
     }
 

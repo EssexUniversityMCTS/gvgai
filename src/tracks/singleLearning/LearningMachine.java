@@ -173,34 +173,41 @@ public class LearningMachine {
         boolean keepPlaying = true;
         String[] trainingLevels = new String[]{level_files[0],level_files[1],level_files[2]};
         int level_idx = 0;
+        int levelOutcome = 0;
         while(keepPlaying && level_idx < trainingLevels.length)
         {
             String level_file = trainingLevels[level_idx];
             for (int i = 0; keepPlaying && i < level_times; ++i) {
-                int levelOutcome = playOneLevel(game_file,level_file,i,false, recordActions,levelIdx,players,actionFiles,toPlay,scores,victories);
-                keepPlaying = (levelOutcome!=-1);
+                levelOutcome = playOneLevel(game_file,level_file,i,false, recordActions,levelIdx,
+                                                players,actionFiles,toPlay,scores,victories);
+                keepPlaying = (levelOutcome!=Types.LEARNING_RESULT_DISQ);
             }
             level_idx++;
         }
 
-        while (keepPlaying) {
+        if(levelOutcome == Types.LEARNING_RESULT_DISQ)
+            return;
+
+        levelOutcome = 0;
+        while (levelOutcome >= 0) {
             // Play the selected level once
-            int levelOutcome = playOneLevel(game_file, level_files[nextLevelToPlay], 0, false, recordActions, 0, players, actionFiles, toPlay, scores, victories);
-            keepPlaying = (levelOutcome!=-1);
-            if(keepPlaying)
-                nextLevelToPlay = levelOutcome;
+            levelOutcome = playOneLevel(game_file, level_files[nextLevelToPlay], 0, false, recordActions,
+                                0, players, actionFiles, toPlay, scores, victories);
         }
+
+        if(levelOutcome == Types.LEARNING_RESULT_DISQ)
+            return;
 
         // Validation time
         // Establish the level files for level 3 and 4
         String[] validationLevels = new String[]{level_files[3],level_files[4]};
-        level_idx = 0;
+        level_idx = 0; levelOutcome = 0;
         while(keepPlaying && level_idx < validationLevels.length)
         {
             String validation_level = validationLevels[level_idx];
             for (int i = 0; keepPlaying && i < level_times; ++i) {
-                int levelOutcome = playOneLevel(game_file,validation_level,i, true, recordActions,levelIdx,players,actionFiles,toPlay,scores,victories);
-                keepPlaying = (levelOutcome!=-1);
+                levelOutcome = playOneLevel(game_file,validation_level,i, true, recordActions,levelIdx,players,actionFiles,toPlay,scores,victories);
+                keepPlaying = (levelOutcome!=Types.LEARNING_RESULT_DISQ);
             }
             level_idx++;
         }
