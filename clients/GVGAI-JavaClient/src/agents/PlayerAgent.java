@@ -45,7 +45,7 @@ public class PlayerAgent {
      *            the next action to be taken by the agent.
      * @return The action to be performed by the agent.
      */
-    public Types.ACTIONS ACT(SerializableStateObservation sso){
+    public Types.ACTIONS ACT(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer){
 
         Random r = new Random();
         Types.ACTIONS rndAction;

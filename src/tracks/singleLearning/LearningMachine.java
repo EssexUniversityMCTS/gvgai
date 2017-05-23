@@ -305,16 +305,15 @@ public class LearningMachine {
      * @throws IOException
      */
     private static int sendResults(StateObservation so, LearningPlayer player) throws IOException{
-        int level = new Random().nextInt(3);
-
         so.currentGameState = Types.GAMESTATES.CHOOSE_LEVEL;
         player.getServerComm().commSend(new SerializableStateObservation(so).serialize(null));
         String response = player.getServerComm().commRecv();
-
-        if (response != null)
-            if (response.matches("^[0-3]$"))
-                level = Integer.parseInt(response);
-
+        int level;
+        if (response != null && response.matches("^[0-3]$")) {
+            level = Integer.parseInt(response);
+        } else {
+            level = new Random().nextInt(3);
+        }
         return level;
     }
 
@@ -325,14 +324,11 @@ public class LearningMachine {
      * @return the player, created but NOT initialized, ready to start playing the game.
      */
     private static LearningPlayer createPlayer(String cmd) throws IOException {
-
         Process client;
-
         ProcessBuilder builder = new ProcessBuilder(cmd);
         builder.redirectErrorStream(true);
         //builder.redirectError(new File("logs/processErrorLog.txt"));
         client = builder.start();
-
         return new LearningPlayer(client);
     }
 
@@ -368,8 +364,8 @@ public class LearningMachine {
      * @param isHuman Indicates if the player is human
      * @return the player, created and initialized, ready to start playing the game.
      */
-
-    // Unfinished
+    // Not useful for singleLearning
+    // TODO: 23/05/17  Unfinished
     private static LearningPlayer initMultiPlayer(LearningPlayer playerName, String actionFile, StateObservationMulti so, int randomSeed, int id, boolean isHuman)
     {
         return playerName;
@@ -393,7 +389,7 @@ public class LearningMachine {
     /**
      * Tears multiple players down. This initiates the saving of actions to file.
      * It should be called when the game played is over.
-     *
+     * Not useful for singleLearning
      * @param players list of players to be closed.
      */
     private static boolean tearMultiPlayerDown(Player[] players, Game toPlay) throws IOException {
