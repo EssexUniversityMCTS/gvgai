@@ -1482,6 +1482,9 @@ public abstract class Game {
 				this.counter[i] += multElseCounter;
 			}
 		}
+
+		// Play sound of the effect
+		ef.audioCtrl.PlaySound();
 	}
 
 	private void executeEffect(Effect ef, VGDLSprite s1, VGDLSprite s2) {
@@ -1511,6 +1514,9 @@ public abstract class Game {
 				this.counter[i] += ef.getCounterElse(i);
 			}
 		}
+
+		// Play the sound of the effect
+		ef.audioCtrl.PlaySound();
 	}
 
 	private void addEvent(VGDLSprite s1, VGDLSprite s2) {

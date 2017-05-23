@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import audio.AudioCtrl;
 import core.vgdl.VGDLFactory;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
@@ -72,6 +73,16 @@ public abstract class Effect{
      * Collision for batches
      */
     protected Rectangle collision;
+
+    /**
+     * The path to the audioFile
+     */
+    public String soundSource;
+
+    /**
+     * The controller that will handle the logic of the audio
+     */
+    public AudioCtrl audioCtrl;
 
     /**
      * Executes the effect
@@ -219,6 +230,14 @@ public abstract class Effect{
         //parameters from the object.
         VGDLFactory.GetInstance().parseParameters(content, this);
         hashCode = content.hashCode;
+
+        // We check if audioctrl is instantiated already, if not, we instantiate it
+        if (audioCtrl == null) {
+            audioCtrl = new AudioCtrl();
+        }
+
+        // We load the sound
+        audioCtrl.LoadSound(soundSource);
     }
 
     /**

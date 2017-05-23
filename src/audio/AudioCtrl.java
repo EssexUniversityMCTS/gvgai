@@ -17,20 +17,57 @@ public class AudioCtrl {
 
     private Music musicObject;
 
+    public AudioCtrl() {
+
+    }
+
     public AudioCtrl(String audioSource) {
         this.audioSource = audioSource;
     }
 
+    /**
+     * Loads into the instance the sound
+     * @param audioSource
+     */
+    public void LoadSound(String audioSource) {
+        if (CheckInit()) {
+            this.soundObject = TinySound.loadSound(audioSource);
+        }
+    }
+
+    /**
+     * Loads into the instance the music file
+     * @param audioSource the path to load
+     */
+    public void LoadMusic(String audioSource) {
+        if (CheckInit()) {
+            this.musicObject = TinySound.loadMusic(audioSource);
+        }
+    }
+
+    /**
+     * Loads a sound into the reference passed in
+     * @param soundToPlay the reference to load the audio into
+     * @param soundSource the path to load
+     */
     public void PlaySound(Sound soundToPlay, String soundSource) {
         // We check that the audiosystem is initialized
         if (CheckInit()) {
-            // We load the sound
-            soundToPlay = TinySound.loadSound(soundSource);
+
+            if (soundToPlay == null) {
+                // We load the sound
+                soundToPlay = TinySound.loadSound(soundSource);
+            }
+
             // We play it
             PlaySound(soundToPlay);
         }
     }
 
+    /**
+     * Plays the sound passed in
+     * @param soundToPlay
+     */
     public void PlaySound(Sound soundToPlay) {
         if (soundToPlay == null) {
             System.out.println("soundToPlay = " + soundToPlay);
@@ -49,6 +86,20 @@ public class AudioCtrl {
 
     }
 
+    /**
+     * Loads and plays the sound according to a path
+     * @param audioSource
+     */
+    public void PlaySound(String audioSource) {
+        if (audioSource != null) {
+            LoadSound(audioSource);
+            PlaySound();
+        }
+    }
+
+    /**
+     * Plays the sound contained in the instance of this object
+     */
     public void PlaySound() {
         PlaySound(this.soundObject);
     }
@@ -56,8 +107,12 @@ public class AudioCtrl {
     public void PlayMusic(Music musicToPlay, String musicSource) {
         // We check that the audiosystem is initialized
         if (CheckInit()) {
-            // We load the music
-            musicToPlay = TinySound.loadMusic(musicSource, true);
+
+            if (musicToPlay == null) {
+                // We load the music
+                musicToPlay = TinySound.loadMusic(musicSource, true);
+            }
+
             // We play it
             PlayMusic(musicToPlay);
         }
