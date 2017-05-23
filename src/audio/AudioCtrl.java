@@ -70,18 +70,13 @@ public class AudioCtrl {
      */
     public void PlaySound(Sound soundToPlay) {
         if (soundToPlay == null) {
-            System.out.println("soundToPlay = " + soundToPlay);
+//            System.out.println("soundToPlay = " + soundToPlay);
             return;
         }
 
         if (CheckInit()) {
             soundToPlay.play();
-
-            // Sleep little for the sound
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {}
-
+            
         }
 
     }
