@@ -138,7 +138,7 @@ public class ServerComm {
     public String commRecv() throws IOException {
         String ret = input.readLine();
         while (ret != null && ret.trim().length() > 0) {// TODO: 22/05/17 if or while
-            //System.out.println("TIME OK");
+            System.out.println(ret);
             return ret.trim();
         }
         return null;
