@@ -7,7 +7,6 @@ package tracks.singleLearning;
 import core.game.SerializableStateObservation;
 import core.game.StateObservation;
 import ontology.Types;
-import tools.ElapsedCpuTimer;
 
 import java.io.*;
 import java.util.Random;
@@ -154,39 +153,46 @@ public class ServerComm {
         try {
             int count = 11;
             commSend("START");
-            String response = commRecv();
+            String response;
 
-            while(response != null)
-            {
-                if(response.equals("START_FAILED"))
+            while(count>0) {
+                response = commRecv();
+                if (response==null) {
+                    System.out.println("For tests: null response");
+                    count--;
+                } else if(response.equalsIgnoreCase("START_FAILED"))
                 {
+                    System.out.println("START_FAILED");
                     //Disqualification because of timeout.
                     return false;
-                }else if(!response.equalsIgnoreCase("START_DONE") && count>0){
-                    response = commRecv();
-                    count--;
-
-                    if(count <= 0)
-                    {
-                        //Disqualification before too many things received that are not appropriate.
-                        System.out.println("Start failed: too many unexpected messages received");
-                        return false;
-                    }
-                }else if(response.equalsIgnoreCase("START_DONE"))
-                {
+                } else if (response.equalsIgnoreCase("START_DONE")) {
                     logger.fine("Received: " + response);
-
                     System.out.println("\nStart done");
                     return true;
+                } else {
+                    System.out.println("For tests: not START_DONE, not START_FAILED: "+response);
+//                    response = commRecv();
+                    count--;
                 }
+//                else if(count <= 0) {
+//                    System.out.println("3");
+//                    //Disqualification before too many things received that are not appropriate.
+//                    System.out.println("Start failed: too many unexpected messages received");
+//                    return false;
+//                }  else {
+//
+//                }
 
             }
 
-            int a = 0;
-
+            if (count<=0) {
+                System.out.println("Start failed: too many unexpected messages received");
+                return false;
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
 
         //Disqualification because of exception, communication fail.
         System.out.println("Communication failed for unknown reason, could not play any games :-( ");
