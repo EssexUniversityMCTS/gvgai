@@ -12,7 +12,7 @@ public class CompetitionParameters
     /**
      * Milliseconds allowed per controller action.
      */
-    public static int ACTION_TIME = 40000;
+    public static int ACTION_TIME = 40;
 
     /**
      * Milliseconds for controller disqualification, if it returns an action after this time.
