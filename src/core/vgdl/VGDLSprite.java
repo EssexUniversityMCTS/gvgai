@@ -508,7 +508,8 @@ public abstract class VGDLSprite {
                     frameRemaining = frameRate;
                     image = allImages.get(currentFrame);
                 }
-            } else {
+
+            } else if (!autotiling){
 
                 image = allImages.get(0);
             }
