@@ -24,20 +24,20 @@ public class TestGameSpace {
 
 
         // Available games:
-        String gamesPath = "examples/gameDesign/";
+        String gamesPath = "examples/CE810/";
         String games[] = new String[] {};
         String gameRules[] = new String[] {};
 
 
         // All public games
-        games = new String[] { "aliens", "seaquest" }; 				// 0
+        games = new String[] { "aliens", "seaquest", "SpaceJohn" }; 				// 0
 
         // Other settings
         boolean visuals = true;
         int seed = new Random().nextInt();
 
         // Game and level to play
-        int gameIdx = 0;
+        int gameIdx = 2;
         int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
 
         String game = gamesPath + games[gameIdx] + ".txt";
@@ -70,10 +70,10 @@ public class TestGameSpace {
 
 
         //1. Play as a human.
-//        dm.playGame(individual, game, level1, seed);
+        dm.playGame(individual, game, level1, seed);
 
         //2. Play with a controller.
-        dm.runOneGame(individual, game, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
+//        dm.runOneGame(individual, game, level1, visuals, sampleMCTSController, recordActionsFile, seed, 0);
 
 
         //3. Random Search test.

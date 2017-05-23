@@ -491,7 +491,8 @@ public abstract class VGDLSprite {
         lastmove += 1;
 
         frameRemaining -= 1;
-        if (frameRate > 0 && frameRemaining <= 0 && images.size() > 0) {
+
+        if(images.size() > 0) {
 
             ArrayList<Image> allImages;
             boolean isOrientedImg = (orientedImg != null);
@@ -500,10 +501,16 @@ public abstract class VGDLSprite {
             else
                 allImages = images.get(Types.v2DirStr(orientation.getVector()));
 
-            if (allImages.size() > 0){
-                currentFrame = (currentFrame + 1) % allImages.size();
-                frameRemaining = frameRate;
-                image = allImages.get(currentFrame);
+            if (frameRate > 0 && frameRemaining <= 0) {
+
+                if (allImages.size() > 0) {
+                    currentFrame = (currentFrame + 1) % allImages.size();
+                    frameRemaining = frameRate;
+                    image = allImages.get(currentFrame);
+                }
+            } else {
+
+                image = allImages.get(0);
             }
         }
     }
@@ -984,8 +991,7 @@ public abstract class VGDLSprite {
         Direction[] directions = new Direction[]{Types.DUP,Types.DDOWN,Types.DLEFT,Types.DRIGHT};
         if(images == null && orientedImg == null && str == null)
         {
-          int a = 0;
-         return;
+            return;
         }
 
         if(images.size() == 0 && str != null)
@@ -1013,23 +1019,32 @@ public abstract class VGDLSprite {
             }
             else{
 
-                if (!(str.contains(".png")))
-                    str = str + ".png";
-                String base_image_file = CompetitionParameters.IMG_PATH + str;
-                Image onlyImage;
-
                 //Get all the images for each orientation
-                if(isOrientedImg) for(Direction dir : directions)
-                {
-                    String strDir = Types.v2DirStr(dir.getVector());
-                    ArrayList<Image> theImages = new ArrayList<Image>();
-                    String image_file = base_image_file + "_" + strDir;
-                    onlyImage = getImage(image_file);
-                    theImages.add(onlyImage);
+                if(isOrientedImg){
 
-                    images.put(strDir, theImages);
-                    image = theImages.get(0);
+                    if (str.contains(".png"))
+                        str = str.substring(0, str.length() - 4);
+
+                    String base_image_file = CompetitionParameters.IMG_PATH + str;
+                    Image onlyImage;
+
+                    for(Direction dir : directions) {
+                        String strDir = Types.v2DirStr(dir.getVector());
+                        ArrayList<Image> theImages = new ArrayList<Image>();
+                        String image_file = base_image_file + "_" + strDir + ".png";
+                        onlyImage = getImage(image_file);
+                        theImages.add(onlyImage);
+
+                        images.put(strDir, theImages);
+                        image = theImages.get(0);
+                    }
                 }else {
+
+
+                    if (!(str.contains(".png")))
+                        str = str + ".png";
+                    String base_image_file = CompetitionParameters.IMG_PATH + str;
+
                     //Only one image. images stays empty.
                     image = getImage(base_image_file);
                 }
