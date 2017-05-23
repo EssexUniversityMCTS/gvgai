@@ -68,6 +68,7 @@ public class ClientComm {
 
         // Continuously listen for messages
         while (line != null) {
+
             // Read a line from System.in and save it as a String
             line = io.input.readLine();
             //io.writeToFile(line);
@@ -119,7 +120,7 @@ public class ClientComm {
 
             // Set the state to "START_STATE" in case the connexion (not game) is in the initialization phase.
             // Happens only on one-time setup
-            if (json.equals("start")){
+            if (json.equals("START")){
                 this.sso.gameState = SerializableStateObservation.State.START_STATE;
                 return;
             }
