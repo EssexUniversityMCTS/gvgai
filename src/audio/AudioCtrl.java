@@ -76,7 +76,6 @@ public class AudioCtrl {
 
         if (CheckInit()) {
             soundToPlay.play();
-            
         }
 
     }
@@ -115,17 +114,12 @@ public class AudioCtrl {
 
     public void PlayMusic (Music musicToPlay) {
         if (musicToPlay == null) {
-            System.out.println("musicToPlay = " + musicToPlay);
+//            System.out.println("musicToPlay = " + musicToPlay);
             return;
         }
 
         if (CheckInit()) {
             musicToPlay.play(true);
-
-            // Sleep a lot for music
-		    try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {}
         }
     }
 

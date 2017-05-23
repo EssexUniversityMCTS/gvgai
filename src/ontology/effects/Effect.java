@@ -77,7 +77,7 @@ public abstract class Effect{
     /**
      * The path to the audioFile
      */
-    public String soundSource;
+    public String soundSrc;
 
     /**
      * The controller that will handle the logic of the audio
@@ -237,7 +237,7 @@ public abstract class Effect{
         }
 
         // We load the sound
-        audioCtrl.LoadSound(soundSource);
+        audioCtrl.LoadSound(soundSrc);
     }
 
     /**

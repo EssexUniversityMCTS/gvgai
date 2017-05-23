@@ -7,6 +7,7 @@ import java.util.*;
 
 import javax.swing.JOptionPane;
 
+import audio.AudioCtrl;
 import core.vgdl.SpriteGroup;
 import core.vgdl.VGDLFactory;
 import core.vgdl.VGDLRegistry;
@@ -261,6 +262,16 @@ public abstract class Game {
 	public int[] counter;
 
 	public static KeyHandler ki;
+
+	/**
+	 * The audioCtrl for the music
+	 */
+	private AudioCtrl musicCtrl;
+
+	/**
+	 * The path to the music
+	 */
+	public String musicSrc;
 
 	/**
 	 * Default constructor.
@@ -789,6 +800,14 @@ public abstract class Game {
 
 		ki = CompetitionParameters.KEY_HANDLER == CompetitionParameters.KEY_INPUT ? new KeyInput()
 				: new KeyPulse(no_players);
+
+		// Check if there is an instance of music ctrl
+		if (musicCtrl == null) {
+			musicCtrl = new AudioCtrl();
+		}
+		// Load music file from path
+		musicCtrl.LoadMusic(musicSrc);
+
 	}
 
 	/**
@@ -938,6 +957,9 @@ public abstract class Game {
 					JOptionPane.showMessageDialog(frame, "Click OK to start.");
 				}
 
+				// Start playing the music
+				musicCtrl.PlayMusic();
+
 				firstRun = false;
 			}
 		}
@@ -964,6 +986,9 @@ public abstract class Game {
 				}
 			}
 			frame.dispose();
+
+			// Dispose the audio system (affects all audio)
+			musicCtrl.ShutDownSystem();
 		}
 
 		// Update the forward model for the game state sent to the controller.
