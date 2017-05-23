@@ -24,7 +24,7 @@ import java.util.TreeSet;
  */
 public class SerializableStateObservation {
 
-    public long elapsedTimer;
+    public boolean isValidation;
     public float gameScore;
     public int gameTick;
     public Types.WINNER gameWinner;
@@ -54,7 +54,6 @@ public class SerializableStateObservation {
     public SerializableStateObservation(StateObservation s)
     {
         gameState = s.getGameState();
-        elapsedTimer = 0;
         availableActions = s.getAvailableActions();
         gameScore = (float) s.getGameScore();
         gameTick = s.getGameTick();

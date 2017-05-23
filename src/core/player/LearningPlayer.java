@@ -73,7 +73,6 @@ public class LearningPlayer extends Player {
             so.currentGameState = Types.GAMESTATES.ACT_STATE;
             SerializableStateObservation sso = new SerializableStateObservation(so);
 
-            sso.elapsedTimer = elapsedTimer.remainingTimeMillis();
             serverComm.commSend(sso.serialize(null));
 
             // Receive the response and set ACTION_NIL as default action
@@ -82,14 +81,14 @@ public class LearningPlayer extends Player {
                 response = Types.ACTIONS.ACTION_NIL.toString();
 
             // Log and debug the received action
-            logger.fine("Received ACTION: " + response + "; ACT Response time: "
+            logger.fine("Received ACTION: " + response + "; ACT (Server) Response time: "
                     + elapsedTimer.elapsedMillis() + " ms.");
 
-            System.out.println("Received ACTION: " + response + "; ACT Response time: "
+            System.out.println("Received ACTION: " + response + "; ACT (Server) Response time: "
                     + elapsedTimer.elapsedMillis() + " ms.");
 
             // Set the game to the kill state if the response is that of ABORT
-            if ("ABORT".equals(response)){
+            if (response.equals("ABORT")){
                 so.currentGameState = Types.GAMESTATES.ABORT_STATE;
                 return Types.ACTIONS.ACTION_ESCAPE;
             }
@@ -106,33 +105,23 @@ public class LearningPlayer extends Player {
     /***
      *
      * @param so State observation of the current game in its initial state
-     * @param ect Elapsed timer object to store timing information in regards to initialization time
-     * @return
+     * @param isValidation true if the level to play is a validation one.
+     * @return true if Init worked.
      */
-    public boolean init(StateObservation so, ElapsedCpuTimer ect) {
+    public boolean init(StateObservation so, boolean isValidation) {
         //Sending messages.
         try {
             // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
             so.currentGameState = Types.GAMESTATES.INIT_STATE;
             SerializableStateObservation sso = new SerializableStateObservation(so);
-
-            sso.elapsedTimer = ect.remainingTimeMillis();
+            sso.isValidation = isValidation;
 
             serverComm.commSend(sso.serialize(null));
-            serverComm.commRecv();
+            String initResponse = serverComm.commRecv();
 
-            //Check if we returned on time, and act in consequence.
-            long timeTaken = ect.elapsedMillis();
-            if (ect.exceededMaxTime()) {
-                long exceeded = -ect.remainingTimeMillis();
-                System.out.println("Controller initialization time out (" + exceeded + ").");
+            if(initResponse.equals("INIT_FAILED"))
                 return false;
-            } else {
-                System.out.println("Controller initialization time: " + timeTaken + " ms.");
-            }
-
             return true;
-
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -149,43 +138,23 @@ public class LearningPlayer extends Player {
      * Function called when the game is over. This method must finish before CompetitionParameters.TEAR_DOWN_TIME,
      *  or the agent will be DISQUALIFIED
      * @param stateObs the game state at the end of the game
-     * @param elapsedCpuTimer timer when this method is meant to finish.
+     * @returns Level to be plated.
+     *
      */
-    public void result(StateObservation stateObs, ElapsedCpuTimer elapsedCpuTimer)
+    public int result(StateObservation stateObs)
     {
-        try{
-            serverComm.finishGame(stateObs, elapsedCpuTimer);
-        }catch(Exception e)
-        {
-            System.out.println("Error finishing a game (LearningPlayer.result()");
-            e.printStackTrace();
-        }
-
+        return this.serverComm.finishGame(stateObs);
     }
 
     /**
-     * Inits the controller for the player
-     *
+     * Starts the communication between the server and the client.
      * @return true or false, depending on whether the initialization has been successful
      */
     public boolean startPlayerCommunication() {
-        //Determine the time due for the controller initialization.
-        ElapsedCpuTimer ect = new ElapsedCpuTimer();
-        ect.setMaxTimeMillis(CompetitionParameters.INITIALIZATION_TIME);
 
         //Initialize the controller.
         if (!this.serverComm.start())
             return false;
-
-        //Check if we returned on time, and act in consequence.
-        long timeTaken = ect.elapsedMillis();
-        if (ect.exceededMaxTime()) {
-            long exceeded = -ect.remainingTimeMillis();
-            System.out.println("Controller start time out (" + exceeded + ").");
-            return false;
-        } else {
-            System.out.println("Controller start time: " + timeTaken + " ms.");
-        }
 
         return true;
     }

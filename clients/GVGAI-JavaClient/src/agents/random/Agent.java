@@ -18,16 +18,12 @@ import java.util.Random;
  */
 public class Agent {
 
-    // Empty constructor
-    public Agent(){}
-
     /**
      * Public method to be called at the start of the communication. No game has been initialized yet.
      * Perform one-time setup here.
      */
-    public void start(){
+    public Agent(){}
 
-    }
 
     /**
      * Public method to be called at the start of every level of a game.
@@ -48,14 +44,8 @@ public class Agent {
      */
     public Types.ACTIONS act(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer){
 
-        Random r = new Random();
-        Types.ACTIONS rndAction;
-        if (r.nextFloat() < 0.5)
-            rndAction = Types.ACTIONS.ACTION_RIGHT;
-        else
-            rndAction = Types.ACTIONS.ACTION_LEFT;
-
-        return rndAction;
+        int index = sso.availableActions.size();
+        return sso.availableActions.get(index);
     }
 
     /**

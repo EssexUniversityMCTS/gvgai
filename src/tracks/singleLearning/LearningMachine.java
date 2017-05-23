@@ -100,7 +100,7 @@ public class LearningMachine {
         toPlay.buildLevel(level_file, randomSeed);
 
         //Init the player for the game.
-        if (player == null || LearningMachine.initPlayer(player, actionFile, randomSeed, toPlay.getObservation()) == null) {
+        if (player == null || LearningMachine.initPlayer(player, actionFile, randomSeed, false, toPlay.getObservation()) == null) {
             //Something went wrong in the constructor, controller disqualified
             toPlay.disqualify();
             //Get the score for the result.
@@ -160,10 +160,6 @@ public class LearningMachine {
         // Player array to hold the single player
         LearningPlayer[] players = new LearningPlayer[]{player};
 
-        // Initialize the 10 minute timer for the game duration
-        ElapsedCpuTimer ect = new ElapsedCpuTimer();
-        ect.setMaxTimeMillis(CompetitionParameters.MAX_GAME_LENGTH);
-
         // Initialize the player
         boolean initSuccesful = players[0].startPlayerCommunication();
         if (!initSuccesful) {
@@ -174,33 +170,39 @@ public class LearningMachine {
         int nextLevelToPlay = 0;
 
         // Establish the level files for level 0,1,2
+        boolean keepPlaying = true;
         String[] trainingLevels = new String[]{level_files[0],level_files[1],level_files[2]};
-        for (String level_file : trainingLevels) {
-            for (int i = 0; i < level_times; ++i) {
-                playOneLevel(game_file,level_file,i,recordActions,levelIdx,players,actionFiles,toPlay,scores,victories);
+        int level_idx = 0;
+        while(keepPlaying)
+        {
+            String level_file = trainingLevels[level_idx];
+            for (int i = 0; keepPlaying && i < level_times; ++i) {
+                int levelOutcome = playOneLevel(game_file,level_file,i,false, recordActions,levelIdx,players,actionFiles,toPlay,scores,victories);
+                keepPlaying = (levelOutcome!=-1);
             }
-            levelIdx++;
+            level_idx++;
         }
 
-        // Acquire an initial state observation
-        StateObservation so = toPlay.getObservation();
-
-        while (!ect.exceededMaxTime()) {
+        while (keepPlaying) {
             // Play the selected level once
-            int req_nextLevelToPlay = playOneLevel(game_file, level_files[nextLevelToPlay], 0, recordActions, 0, players, actionFiles, toPlay, scores, victories);
-            if(req_nextLevelToPlay != -1)
-                nextLevelToPlay = req_nextLevelToPlay;
+            int levelOutcome = playOneLevel(game_file, level_files[nextLevelToPlay], 0, false, recordActions, 0, players, actionFiles, toPlay, scores, victories);
+            keepPlaying = (levelOutcome!=-1);
+            if(keepPlaying)
+                nextLevelToPlay = levelOutcome;
         }
 
         // Validation time
         // Establish the level files for level 3 and 4
         String[] validationLevels = new String[]{level_files[3],level_files[4]};
-
-        for (String validation_level : validationLevels) {
-            for (int i = 0; i < level_times; ++i) {
-                playOneLevel(game_file, validation_level, i, recordActions, levelIdx, players, actionFiles, toPlay, scores, victories);
+        level_idx = 0;
+        while(keepPlaying)
+        {
+            String validation_level = validationLevels[level_idx];
+            for (int i = 0; keepPlaying && i < level_times; ++i) {
+                int levelOutcome = playOneLevel(game_file,validation_level,i, true, recordActions,levelIdx,players,actionFiles,toPlay,scores,victories);
+                keepPlaying = (levelOutcome!=-1);
             }
-            levelIdx++;
+            level_idx++;
         }
 
         String vict = "", sc = "";
@@ -226,6 +228,7 @@ public class LearningMachine {
      * @param level_file Level file to be used to play the game. Is sent by parent method.
      * @param level_time Integer denominating how many times the current level has been played in a row.
      *                   Is also sent from the exterior, and exists for debugging only.
+     * @param isValidation Indicates if the level being played is a validation level
      * @param recordActions Boolean determining whether the actions should be recorded.
      * @param levelIdx Level index. Used for debugging.
      * @param players Array of Player-type objects. Used to play the game
@@ -236,7 +239,7 @@ public class LearningMachine {
      * @return Next level to be played as chosen by the player, or a random substituent.
      * @throws IOException
      */
-    public static int playOneLevel(String game_file, String level_file, int level_time, boolean recordActions,
+    public static int playOneLevel(String game_file, String level_file, int level_time, boolean isValidation, boolean recordActions,
                                     int levelIdx, LearningPlayer[] players, String[] actionFiles, Game toPlay, StatSummary[] scores,
                                     StatSummary[] victories) throws IOException{
         if (VERBOSE)
@@ -254,7 +257,7 @@ public class LearningMachine {
         double[] score;
 
         // Initialize the new learningPlayer instance.
-        LearningPlayer learningPlayer = LearningMachine.initPlayer(players[0], actionFiles[0], randomSeed, toPlay.getObservation());
+        LearningPlayer learningPlayer = LearningMachine.initPlayer(players[0], actionFiles[0], randomSeed, isValidation, toPlay.getObservation());
 
         // If the player cannot be initialized, disqualify the controller
         if (learningPlayer == null) {
@@ -285,7 +288,7 @@ public class LearningMachine {
         StateObservation so = toPlay.getObservation();
 
         // Sends results to player and retrieve the next level to be played
-        int level = sendResults(so, players[0]);
+        int level = players[0].result(so);
 
         //reset the game.
         toPlay.reset();
@@ -293,29 +296,7 @@ public class LearningMachine {
         return level;
     }
 
-    /**
-     * Sends the given state observation to a player through their communication pipeline
-     * and receives the next level to be played, as stated by the player.
-     * May only be used to ask the player to choose the next level to be played.
-     * Helper method.
-     *
-     * @param so state observation containing the results to be sent to the player
-     * @param player player object that will be used to send the results to
-     * @return the next level to be played that the player chose
-     * @throws IOException
-     */
-    private static int sendResults(StateObservation so, LearningPlayer player) throws IOException{
-        so.currentGameState = Types.GAMESTATES.CHOOSE_LEVEL;
-        player.getServerComm().commSend(new SerializableStateObservation(so).serialize(null));
-        String response = player.getServerComm().commRecv();
-        int level;
-        if (response != null && response.matches("^[0-3]$")) {
-            level = Integer.parseInt(response);
-        } else {
-            level = new Random().nextInt(3);
-        }
-        return level;
-    }
+
 
     /**
      * Creates a player given its name. This method starts the process that runs this client.
@@ -338,17 +319,16 @@ public class LearningMachine {
      * @param player     Player to start.
      * @param actionFile filename of the file where the actions of this player, for this game, should be recorded.
      * @param randomSeed Seed for the sampleRandom generator of the game to be played.
+     * @param isValidation true if playing a validation level.
      * @return the player, created and initialized, ready to start playing the game.
      */
-    private static LearningPlayer initPlayer(LearningPlayer player, String actionFile, int randomSeed, StateObservation so) {
+    private static LearningPlayer initPlayer(LearningPlayer player, String actionFile, int randomSeed, boolean isValidation, StateObservation so) {
         //If we have a player, set it up for action recording.
         if (player != null)
             player.setup(actionFile, randomSeed, false);
 
         //Send Init message.
-        ElapsedCpuTimer initTimer = new ElapsedCpuTimer();
-        initTimer.setMaxTimeMillis(CompetitionParameters.INITIALIZATION_TIME);
-        if(player.init(so, initTimer))
+        if(player.init(so, isValidation))
             return player;
 
         return null;//Disqualified.
@@ -378,12 +358,7 @@ public class LearningMachine {
      * @param player player to be closed.
      */
     private static void tearPlayerDown(LearningPlayer player, Game toPlay) throws IOException {
-        //Determine the time due for the controller initialization.
-        ElapsedCpuTimer ect = new ElapsedCpuTimer();
-        ect.setMaxTimeMillis(CompetitionParameters.TEAR_DOWN_TIME);
-
         player.teardown(toPlay);
-        player.result(toPlay.getObservation(), ect);
     }
 
     /**

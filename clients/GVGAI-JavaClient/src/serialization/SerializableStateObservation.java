@@ -12,13 +12,12 @@ import java.util.HashMap;
 public class SerializableStateObservation {
 
     public enum State{
-        START_STATE, INIT_STATE, ACT_STATE, ABORT_STATE, END_STATE, CHOOSE_LEVEL
+        START_STATE, INIT_STATE, ACT_STATE, ABORT_STATE, END_STATE
     }
 
 
     public boolean isValidation;
 
-    public long elapsedTimer;
     public float gameScore;
     public int gameTick;
     public Types.WINNER gameWinner;

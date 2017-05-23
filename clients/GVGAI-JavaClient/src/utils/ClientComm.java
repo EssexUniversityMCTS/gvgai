@@ -46,11 +46,6 @@ public class ClientComm {
     public COMM_STATE commState;
 
     /**
-     * Remaining milliseconds
-     */
-    public long remMillis;
-
-    /**
      * State information
      */
     public SerializableStateObservation sso;
@@ -71,7 +66,6 @@ public class ClientComm {
      */
     public ClientComm() {
         commState = COMM_STATE.START;
-        player = new Agent();
         sso = new SerializableStateObservation();
     }
 
@@ -106,7 +100,6 @@ public class ClientComm {
 
             // Process the line
             processLine(line);
-            remMillis = sso.elapsedTimer;
 
 
             if(sso.gameState == SerializableStateObservation.State.START_STATE)
@@ -181,8 +174,20 @@ public class ClientComm {
         global_ect = new ElapsedCpuTimer();
         global_ect.setMaxTimeMillis(CompetitionParameters.TOTAL_LEARNING_TIME);
 
-        //writeToFile("start done");
-        writeToServer("START_DONE");
+        ElapsedCpuTimer ect = new ElapsedCpuTimer();
+        ect.setMaxTimeMillis(CompetitionParameters.START_TIME);
+
+        //Starts the agent.
+        player = new Agent();
+
+        if(ect.exceededMaxTime())
+        {
+            writeToServer("START_FAILED");
+        }else {
+            //writeToFile("start done");
+            writeToServer("START_DONE");
+        }
+
     }
 
 

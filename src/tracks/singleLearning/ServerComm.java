@@ -10,6 +10,7 @@ import ontology.Types;
 import tools.ElapsedCpuTimer;
 
 import java.io.*;
+import java.util.Random;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -82,26 +83,42 @@ public class ServerComm {
      * ABORT_STATE: Game is violently ended by player using "ABORT" message or ACTION_ESCAPE key
      *
      * @param so State observation of the game in progress to be used for message sending.
-     * @param elapsedTimer Current timer object to be given to the player for interpretation.
-     * @throws IOException
+     * @return response by the client (level to be played)
      */
-    public void finishGame(StateObservation so, ElapsedCpuTimer elapsedTimer) throws IOException {
-        initBuffers();
+    public int finishGame(StateObservation so){
 
-        // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
-        if(so.getAvatarLastAction() == Types.ACTIONS.ACTION_ESCAPE)
-            so.currentGameState = Types.GAMESTATES.ABORT_STATE;
-        else
-            so.currentGameState = Types.GAMESTATES.END_STATE;
+        try
+        {
+            // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
+            if(so.getAvatarLastAction() == Types.ACTIONS.ACTION_ESCAPE)
+                so.currentGameState = Types.GAMESTATES.ABORT_STATE;
+            else
+                so.currentGameState = Types.GAMESTATES.END_STATE;
 
-        SerializableStateObservation sso = new SerializableStateObservation(so);
+            SerializableStateObservation sso = new SerializableStateObservation(so);
 
-        sso.elapsedTimer = elapsedTimer.remainingTimeMillis();
-        commSend(sso.serialize(null));
+            commSend(sso.serialize(null));
 
-        String response = commRecv();
+            String response = commRecv();
 
-        logger.fine("Received: " + response);
+
+            if(response == null || response.equals("END_OVERSPENT"))
+            {
+                return -1;
+            }
+
+            if (response.matches("^[0-3]$")) {
+                return Integer.parseInt(response);
+            } else {
+                return new Random().nextInt(3);
+            }
+
+
+        }catch(Exception e){
+            System.out.println("Error sending results to the client:");
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     /**
@@ -138,25 +155,41 @@ public class ServerComm {
             int count = 11;
             commSend("START");
             String response = commRecv();
-            while(response != null &&  !response.equalsIgnoreCase("START_DONE") && count>0)
+
+            while(response != null)
             {
-                response = commRecv();
-                count--;
+                if(response.equals("START_FAILED"))
+                {
+                    //Disqualification because of timeout.
+                    return false;
+                }else if(!response.equalsIgnoreCase("START_DONE") && count>0){
+                    response = commRecv();
+                    count--;
+
+                    if(count <= 0)
+                    {
+                        //Disqualification before too many things received that are not appropriate.
+                        System.out.println("Start failed: too many unexpected messages received");
+                        return false;
+                    }
+                }else if(response.equalsIgnoreCase("START_DONE"))
+                {
+                    logger.fine("Received: " + response);
+
+                    System.out.println("\nStart done");
+                    return true;
+                }
+
             }
 
-            if(count <= 0)
-            {
-                System.out.println("start failed: too many unexpected messages received");
-                return false;
-            }
-
-            logger.fine("Received: " + response);
-
-            System.out.println("\nStart done");
-            return true;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        //Disqualification because of exception, communication fail.
+        System.out.println("Communication failed for unknown reason, could not play any games :-( ");
+        return false;
+
     }
 
 }
