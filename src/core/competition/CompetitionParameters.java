@@ -120,11 +120,6 @@ public class CompetitionParameters
     public static boolean killWindowOnEnd = true;
 
     /**
-     * Maximum time allowed for a learning track game, equivalent of 10 minutes in milliseconds.
-     */
-    public static final int MAX_GAME_LENGTH = 600000; //10*60*1000
-
-    /**
      * Java Warm-up time before starting the game.
      */
     public static final long WARMUP_TIME = 5000;
