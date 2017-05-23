@@ -1,11 +1,12 @@
-package agents;
+package agents.random;
 
 /**
  * Created by Daniel on 21.05.2017.
  */
 
-import ontology.Types;
+import serialization.Types;
 import serialization.SerializableStateObservation;
+import utils.ElapsedCpuTimer;
 
 import java.util.Random;
 
@@ -15,16 +16,16 @@ import java.util.Random;
  * to be later used by the client to send and receive information
  * to and from the server.
  */
-public class PlayerAgent {
+public class Agent {
 
     // Empty constructor
-    public PlayerAgent(){}
+    public Agent(){}
 
     /**
-     * Public method to be called at the start of the communication (not game!).
+     * Public method to be called at the start of the communication. No game has been initialized yet.
      * Perform one-time setup here.
      */
-    public void START(){
+    public void start(){
 
     }
 
@@ -32,7 +33,7 @@ public class PlayerAgent {
      * Public method to be called at the start of every level of a game.
      * Perform any level-entry initialization here.
      */
-    public void INIT(){
+    public void init(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer){
 
     }
 
@@ -45,7 +46,7 @@ public class PlayerAgent {
      *            the next action to be taken by the agent.
      * @return The action to be performed by the agent.
      */
-    public Types.ACTIONS ACT(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer){
+    public Types.ACTIONS act(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer){
 
         Random r = new Random();
         Types.ACTIONS rndAction;
@@ -58,40 +59,20 @@ public class PlayerAgent {
     }
 
     /**
-     * Method used to determine the next level of the current game to be played by the agent.
-     * The level is bound in the range of [0,4). If the input is any different, then the level
-     * chosen will be ignored, and the game will play a random one instead.
+     * Method used to perform actions in case of a game end.
+     * This is the last thing called when a level is played (the game is already in a terminal state).
+     * Use this for actions such as teardown or process data.
      *
-     * @param sso Observation of the current state of the game to be used for informational
-     *            reasons, if required by the player.
+     * @param sso The current state observation of the game.
      * @return The next level of the current game to be played.
+     * The level is bound in the range of [0,2]. If the input is any different, then the level
+     * chosen will be ignored, and the game will play a random one instead.
      */
-    public int CHOOSE(SerializableStateObservation sso){
+    public int result(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer){
         Random r = new Random();
         Integer level = r.nextInt(3);
 
         return level;
     }
 
-    /**
-     * Method used to perform actions in case of an abort. This is the last thing called before the
-     * level ends.
-     * Use this for actions such as teardown.
-     *
-     * @param sso The current state observation of the game.
-     */
-    public void ABORT(SerializableStateObservation sso){
-
-    }
-
-    /**
-     * Method used to perform actions in case of the game ending. This is the last thing called before
-     * the game ends.
-     * Use this for actions such as teardown.
-     *
-     * @param sso The current state observation of the game.
-     */
-    public void END(SerializableStateObservation sso){
-
-    }
 }
