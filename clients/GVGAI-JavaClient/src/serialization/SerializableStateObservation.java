@@ -1,6 +1,5 @@
 package serialization;
 
-import ontology.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,6 +14,9 @@ public class SerializableStateObservation {
     public enum State{
         START_STATE, INIT_STATE, ACT_STATE, ABORT_STATE, END_STATE, CHOOSE_LEVEL
     }
+
+
+    public boolean isValidation;
 
     public long elapsedTimer;
     public float gameScore;

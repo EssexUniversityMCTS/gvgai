@@ -1,4 +1,4 @@
-/**
+package utils; /**
  * Created by diego on 26/02/14.
  */
 
