@@ -6,7 +6,6 @@ package tracks.singleLearning;
 
 import core.game.SerializableStateObservation;
 import core.game.StateObservation;
-import core.game.StateObservationMulti;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
 
@@ -79,6 +78,9 @@ public class ServerComm {
      * depending on the termination of the game. Each game calls this method upon teardown
      * of the player object.
      *
+     * END_STATE: Game ends normally
+     * ABORT_STATE: Game is violently ended by player using "ABORT" message or ACTION_ESCAPE key
+     *
      * @param so State observation of the game in progress to be used for message sending.
      * @param elapsedTimer Current timer object to be given to the player for interpretation.
      * @throws IOException
@@ -118,29 +120,24 @@ public class ServerComm {
      * @return the response got from the client, or null if no response was received after due time.
      */
     public String commRecv() throws IOException {
-        String ret = "";
-        ret = input.readLine();
-        while (ret != null && ret.trim().length() > 0) {
-
+        String ret = input.readLine();
+        while (ret != null && ret.trim().length() > 0) {// TODO: 22/05/17 if or while
             //System.out.println("TIME OK");
             return ret.trim();
         }
-
         return null;
     }
 
     /**
-     *  This function is called at the beginning of the game for
+     * This function is called at the beginning of the game for
      * initialization.
+     * Will give up if no "START_DONE" received after having received 11 responses
      */
     public boolean start() {
         try {
-            String response = "";
             int count = 11;
-
             commSend("START");
-
-            response = commRecv();
+            String response = commRecv();
             while(response != null &&  !response.equalsIgnoreCase("START_DONE") && count>0)
             {
                 response = commRecv();
@@ -154,14 +151,9 @@ public class ServerComm {
             }
 
             logger.fine("Received: " + response);
-//            if ("INIT_DONE".equals(response)) {
+
             System.out.println("\nStart done");
             return true;
-//            }
-//            else {
-//                System.out.println("start failed");
-//                return false;
-//            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

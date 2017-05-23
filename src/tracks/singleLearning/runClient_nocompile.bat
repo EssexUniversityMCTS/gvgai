@@ -1,10 +1,10 @@
 @echo off
 
 set path=%PATH%;C:\Program Files\Java\jdk1.8.0_121\bin
-set build_folder=..\clients\out\production\GVGAI-JavaClient
+set build_folder=..\..\..\clients\out\production\GVGAI-JavaClient
 set gson=gson-2.6.2.jar
-set src=..\clients\GVGAI-JavaClient\src
-set root_path=..\
+set src=..\..\..\clients\GVGAI-JavaClient\src
+set root_path=..\..\..\
 
 rem This script presumes that all the client-related Java files have been previously compiled and put in a folder called "build"
 

@@ -17,21 +17,20 @@ import java.util.Random;
 public class LearningMachine {
     public static final boolean VERBOSE = false;
 
-
     /**
-     * Reads and launches a game for a bot to play. Graphics always on.
+     * Reads and launches a game for a human to play. Graphics always on.
      *
      * @param game_file  game description file.
      * @param level_file file with the level to be played.
      */
-    public static double[] playOneGame(String game_file, String level_file, String actionFile, int randomSeed, boolean isTraining) throws IOException {
+    public static double[] playOneGame(String game_file, String level_file, String actionFile, int randomSeed) throws IOException {
         String agentName = "controllers.human.Agent";
         boolean visuals = true;
-        return runOneGame(game_file, level_file, visuals, agentName, actionFile, randomSeed, isTraining);
+        return runOneGame(game_file, level_file, visuals, agentName, actionFile, randomSeed);
     }
 
     /**
-     * Reads and launches a game for a bot to be played. Graphics can be on or off.
+     * Reads and launches a game for an agent to be played. Graphics can be on or off.
      *
      * @param game_file  game description file.
      * @param level_file file with the level to be played.
@@ -41,21 +40,20 @@ public class LearningMachine {
      * @param randomSeed sampleRandom seed for the sampleRandom generator.
      */
     public static double[] runOneGame(String game_file, String level_file, boolean visuals,
-                                    String agentName, String actionFile, int randomSeed, boolean isTraining) throws IOException {
-        int trainingPlays = 0;
+                                    String agentName, String actionFile, int randomSeed) throws IOException {
+//        int trainingPlays = 0;// TODO: 22/05/17 to be removed?
 
         VGDLFactory.GetInstance().init(); //This always first thing to do.
         VGDLRegistry.GetInstance().init();
 
         System.out.println(" ** Playing game " + game_file + ", level " + level_file + " **");
 
-        //Create the player.
+        //1. Create the player.
         LearningPlayer player = LearningMachine.createPlayer(agentName);
-
 //
         //2. Play the training games.
-        System.out.print(trainingPlays + " ");
-        double[] finalScore = playOnce(player, actionFile, game_file, level_file, visuals, randomSeed, isTraining);
+//        System.out.print(trainingPlays + " ");// TODO: 22/05/17 to be removed?
+        double[] finalScore = playOnce(player, actionFile, game_file, level_file, visuals, randomSeed);
 
         return finalScore;
     }
@@ -71,7 +69,7 @@ public class LearningMachine {
      */
     public static void runMultipleGames(String game_file, String[] level_files,
                                             String agentName, String[] actionFiles) throws IOException {
-        int trainingPlays = 0;
+//        int trainingPlays = 0;// TODO: 22/05/17 to be removed?
 
         VGDLFactory.GetInstance().init(); //This always first thing to do.
         VGDLRegistry.GetInstance().init();
@@ -80,12 +78,23 @@ public class LearningMachine {
         LearningPlayer player = LearningMachine.createPlayer(agentName);
 
         // Play the training games.
-        System.out.print(trainingPlays + "\n");
+//        System.out.print(trainingPlays + "\n");// TODO: 22/05/17 to be removed?
         runGames(game_file, level_files, 1, player, actionFiles);
     }
 
+    /**
+     * Play a given level of a given game once using a given player
+     * @param player
+     * @param actionFile
+     * @param game_file
+     * @param level_file
+     * @param visuals
+     * @param randomSeed
+     * @return Score of players in the game (one player in a single player case)
+     * @throws IOException
+     */
     private static double[] playOnce(LearningPlayer player, String actionFile, String game_file, String level_file,
-                                   boolean visuals, int randomSeed, boolean isTraining) throws IOException {
+                                   boolean visuals, int randomSeed) throws IOException {
         //Create the game.
         Game toPlay = new VGDLParser().parseGame(game_file);
         toPlay.buildLevel(level_file, randomSeed);
@@ -94,7 +103,6 @@ public class LearningMachine {
         if (player == null || LearningMachine.initPlayer(player, actionFile, randomSeed, toPlay.getObservation()) == null) {
             //Something went wrong in the constructor, controller disqualified
             toPlay.disqualify();
-
             //Get the score for the result.
             return toPlay.handleResult();
         }
@@ -104,7 +112,7 @@ public class LearningMachine {
 
         Player[] players = new Player[]{player};
         if (visuals)
-            score = toPlay.playGame(players, randomSeed, false, 0);
+            score = toPlay.playGame(players, randomSeed, false, 0);// TODO: 22/05/17 why false???
         else
             score = toPlay.runGame(players, randomSeed);
 
@@ -115,6 +123,7 @@ public class LearningMachine {
     }
 
 
+    // TODO: 22/05/17 why "Graphics always on"?
     /**
      * Reads and launches a game for a bot to be played. It specifies which levels to play and how many times.
      * Filenames for saving actions can be specified. Graphics always on.
@@ -239,7 +248,7 @@ public class LearningMachine {
         //build the level in the game.
         toPlay.buildLevel(level_file, randomSeed);
 
-        String filename = recordActions ? actionFiles[levelIdx * level_time] : null;
+        String filename = recordActions ? actionFiles[levelIdx * level_time] : null; // TODO: 22/05/17 check this 
 
         // Score array to hold handled results.
         double[] score;

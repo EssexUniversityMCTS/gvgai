@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# mkdir logs
+DIRECTORY=logs
+if [ ! -d "$DIRECTORY" ]; then
+  mkdir $DIRECTORY
+fi
 
 build_folder='clients/GVGAI-JavaClient/out/'
 gson='gson-2.6.2.jar'

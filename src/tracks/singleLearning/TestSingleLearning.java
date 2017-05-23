@@ -1,18 +1,19 @@
+package tracks.singleLearning;
+
 import core.competition.CompetitionParameters;
-import tracks.singleLearning.LearningMachine;
 
 import java.util.Random;
 
 /**
  * Created by Daniel on 07.03.2017.
  */
-public class ClientCommunicationTest {
+public class TestSingleLearning {
     public static void main(String[] args) throws Exception {
         //Available controllers:
-        String javaController = "src/runClient_nocompile.sh";
+        String javaController = "src/tracks/singleLearning/runClient_nocompile.sh";
         if(CompetitionParameters.OS_WIN)
         {
-            javaController = "src\\runClient_nocompile.bat";
+            javaController = "src\\tracks\\singleLearning\\runClient_nocompile.bat";
         }
 
         //Available games:
