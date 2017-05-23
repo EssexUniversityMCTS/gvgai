@@ -44,7 +44,7 @@ public class Agent {
      */
     public Types.ACTIONS act(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer){
 
-        int index = sso.availableActions.size();
+        int index = new Random().nextInt(sso.availableActions.size());
         return sso.availableActions.get(index);
     }
 
