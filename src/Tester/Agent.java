@@ -33,7 +33,7 @@ public class Agent extends AbstractPlayer {
     public double epsilon = 1e-6;
     Types.ACTIONS[] bestPrediction;
     public double bestScoreSoFar;
-    
+
     /**
      * Public constructor with state observation and time due.
      *
@@ -55,25 +55,28 @@ public class Agent extends AbstractPlayer {
         }
         moveSeqCopy = new Types.ACTIONS[maxRolloutLength];
         for (int i=0;i<moveSeqCopy.length;i++) {
-            moveSeqCopy[i] = Types.ACTIONS.ACTION_NIL;
+            moveSeqCopy[i] = act.get(random.nextInt(act.size())); //Types.ACTIONS.ACTION_NIL;
         }
 
         bestRollout = new Types.ACTIONS[maxNestingDepth][maxRolloutLength];
         for (int i=0; i<maxNestingDepth; i++) {
             for (int j=0; j<maxRolloutLength; j++) {
-                bestRollout[i][j] = Types.ACTIONS.ACTION_NIL;
+                bestRollout[i][j] = act.get(random.nextInt(act.size())); //Types.ACTIONS.ACTION_NIL;
             }
         }
         lengthBestRollout = new int[maxNestingDepth];
         scoreBestRollout = new double[maxNestingDepth];
     }
 
-    public void shiftBestPlayout() {
+    public void shiftBestPlayout(StateObservation so) {
+
         int i=0;
         for (;i<maxRolloutLength-1;i++){
             bestPrediction[i] = bestPrediction[i+1];
         }
-        bestPrediction[i] = bestPrediction[i-1];
+//        bestPrediction[i] = bestPrediction[i-1];
+        ArrayList<Types.ACTIONS> act = so.getAvailableActions();
+        bestPrediction[i] = act.get(random.nextInt(act.size())); // bestPrediction[i-1];
     }
 
     public void resetMoveSeqCopy() {
@@ -90,7 +93,7 @@ public class Agent extends AbstractPlayer {
      * @return An action for the current state
      */
     public Types.ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
-        shiftBestPlayout();
+        shiftBestPlayout(stateObs);
 
         //Set the state observation object as the new root of the tree.
         // we'll set up a game adapter and run the algorithm independently each
@@ -158,7 +161,7 @@ public class Agent extends AbstractPlayer {
 
 
     boolean playout(StateObservation stateObservation, Types.ACTIONS[] moveSeq, int nActionsPlayed,
-        ElapsedCpuTimer elapsedTimer) {
+                    ElapsedCpuTimer elapsedTimer) {
         while (!stateObservation.isGameOver() && nActionsPlayed < maxRolloutLength) {
             if (elapsedTimer.remainingTimeMillis() <= minRemainingTime) {
                 return false;
@@ -173,7 +176,7 @@ public class Agent extends AbstractPlayer {
     }
 
     boolean nested(StateObservation stateObservation, int nestingLevel, Types.ACTIONS[] moveSeq,
-                int nActionsPlayed, ElapsedCpuTimer elapsedTimer) {
+                   int nActionsPlayed, ElapsedCpuTimer elapsedTimer) {
         ArrayList<Types.ACTIONS> availableActions = stateObservation.getAvailableActions();
         int nbMoves = availableActions.size();
 
@@ -184,13 +187,12 @@ public class Agent extends AbstractPlayer {
                 return true;
             if (nActionsPlayed >= maxRolloutLength)
                 return true;
-            if (elapsedTimer.remainingTimeMillis() < minRemainingTime) {
+            if (elapsedTimer.remainingTimeMillis() <= minRemainingTime) {
                 return false;
             }
             double avgTimeTaken = 0;
             double acumTimeTaken = 0;
             long remaining = elapsedTimer.remainingTimeMillis();
-            int numIters = 0;
             int i=0;
             while(remaining > 2*avgTimeTaken && remaining > minRemainingTime && i<nbMoves) {
 //            for (int i = 0; i < nbMoves; i++) {
@@ -223,15 +225,16 @@ public class Agent extends AbstractPlayer {
                     }
                 }
                 i++;
-                numIters++;
                 acumTimeTaken += (elapsedTimerIteration.elapsedMillis()) ;
-                avgTimeTaken  = acumTimeTaken/numIters;
+                avgTimeTaken  = acumTimeTaken/i;
                 remaining = elapsedTimer.remainingTimeMillis();
             }
-            stateObservation.advance(bestRollout[nestingLevel][nActionsPlayed]);
             moveSeq[nActionsPlayed] = bestRollout[nestingLevel][nActionsPlayed];
+            stateObservation.advance(bestRollout[nestingLevel][nActionsPlayed]);
             nActionsPlayed++;
-
+//            if (nestingLevel>=2) {
+//                System.err.println("Finish nestingLevel: " + nestingLevel);
+//            }
         }
     }
 
