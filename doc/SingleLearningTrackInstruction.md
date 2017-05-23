@@ -16,8 +16,8 @@ The Single-Player Learning track is based on the GVGAI framework. Different from
 ## Main procedure
 For a given game, each agent will have **10 minutes** for training on levels 0,1,2 of the game, the level 3 and 4 will be used for validation.
 ### Main steps during training
-1. Playing once levels 0, 1 and 2 in a sequence: Firstly, the agent plays once levels 0,1,2 sequentially. At the end of each level, whatever the game has terminated normally or the agent forces to terminate the game, the `results()` method will be called and send the results of the (possibly unfinished) game to the agent.
-2. (Repeat until time up) Level selection: After having finished step 1, the agent is free to select the next level to play (from levels 0, 1 and 2) by calling the method `nextLevel`. If the selected level id $$$\not\in \\{0,1,2\\}$$$, then a random level id $$$\in \\{0,1,2\\}$$$ will be passed and a new game will start. This step is repeated until **10min** has been used.
+1. Playing once levels 0, 1 and 2 in a sequence: Firstly, the agent plays once levels 0,1,2 sequentially. At the end of each level, whatever the game has terminated normally or the agent forces to terminate the game, the server will send the results of the (possibly unfinished) game to the agent.
+2. (Repeat until time up) Level selection: After having finished step 1, the agent is free to select the next level to play (from levels 0, 1 and 2) by calling the method `int result()` (detailed later). If the selected level id $$$\not\in \\{0,1,2\\}$$$, then a random level id $$$\in \\{0,1,2\\}$$$ will be passed and a new game will start. This step is repeated until **10min** has been used.
 
 ### Main steps during validation
 During the validation, the agent plays once levels 4 and 5 sequentially.
@@ -47,9 +47,12 @@ The `act` method selects an action to play at every game tick. It receives two p
 * `SerializableStateObservation sso`.
 * `ElapsedCpuTimer elapsedTimer`: The `act` has to finish in **1 second**, otherwise, this agent is **disqualified** in the game being played.
 
-### Select the next level to play
-    public int nextLevel() {...}
-During the step 2 of training, after terminating a game, the agent is supposed to select the next level to play. If the return level id $$$\not\in \\{0,1,2\\}$$$, then a random level id $$$\in \\{0,1,2\\}$$$ will be passed and a new game will start.
-
 ### Abort the current game
-The agent can abort the current game by calling the method `abort()`. The agent will receive the results of the unfinished game. Then the agent is supposed to select the next level to play using the method `nextLevel(int nextLevelId)`.
+The agent can abort the current game by returning the action `ACTION_ESCAPE`. The agent will receive the results and state observation `sso` of the unfinished game and returns the next level to play using the method `int result(sso)`.
+
+### Select the next level to play
+    public int result(SerializableStateObservation sso) {...}
+During the step 2 of training, after terminating a game and receiving the results and final game state, the agent is supposed to select the next level to play. If the return level id $$$\not\in \\{0,1,2\\}$$$, then a random level id $$$\in \\{0,1,2\\}$$$ will be passed and a new game will start.
+
+## Contact
+*jialin.liu@essex.ac.uk* or *jialin.liu.cn@gmail.com*
