@@ -16,34 +16,7 @@ import java.io.*;
  */
 public class ClientComm {
 
-    public static enum COMM_STATE {
-        START, INIT, ACT, ABORT, ENDED
-    }
-
-    /**
-     * Reader of the player. Will read the game state from the client.
-     */
-    public static BufferedReader input;
-
-    /**
-     * Writer of the player. Used to pass the action of the player to the server.
-     */
-    public static BufferedWriter output;
-
-    /**
-     * Writer of the player. Used to pass the action of the player to the server.
-     */
-    public static PrintWriter fileOutput;
-
-    /**
-     * Line separator for messages.
-     */
-    private String lineSep = System.getProperty("line.separator");
-
-    /**
-     * Communication state
-     */
-    public COMM_STATE commState;
+    private IO io;
 
     /**
      * State information
@@ -65,7 +38,7 @@ public class ClientComm {
      * Creates the client.
      */
     public ClientComm() {
-        commState = COMM_STATE.START;
+        io = new IO();
         sso = new SerializableStateObservation();
     }
 
@@ -75,7 +48,7 @@ public class ClientComm {
      */
     public void startComm()
     {
-        initBuffers();
+        io.initBuffers();
         try {
             listen();
         } catch (Exception e) {
@@ -96,7 +69,7 @@ public class ClientComm {
         // Continuously listen for messages
         while (line != null) {
             // Read a line from System.in and save it as a String
-            line = input.readLine();
+            line = io.input.readLine();
 
             // Process the line
             processLine(line);
@@ -121,7 +94,7 @@ public class ClientComm {
                 this.result();
 
             } else {
-                writeToServer("null");
+                io.writeToServer("null");
             }
 
         }
@@ -157,7 +130,7 @@ public class ClientComm {
             this.sso = gson.fromJson(json, SerializableStateObservation.class);
             //writeToFile("gson initialized " + cpu.elapsedMillis());
         } catch (Exception e){
-            e.printStackTrace(fileOutput);
+            e.printStackTrace(io.fileOutput);
         }
 
     }
@@ -182,10 +155,10 @@ public class ClientComm {
 
         if(ect.exceededMaxTime())
         {
-            writeToServer("START_FAILED");
+            io.writeToServer("START_FAILED");
         }else {
             //writeToFile("start done");
-            writeToServer("START_DONE");
+            io.writeToServer("START_DONE");
         }
 
     }
@@ -205,9 +178,9 @@ public class ClientComm {
 
         if(ect.exceededMaxTime())
         {
-            writeToServer("INIT_FAILED");
+            io.writeToServer("INIT_FAILED");
         }else {
-            writeToServer("INIT_DONE");
+            io.writeToServer("INIT_DONE");
         }
     }
 
@@ -228,9 +201,9 @@ public class ClientComm {
         if(ect.exceededMaxTime())
         {
             //Overspent. Server (MovingAvatar) will take care of disqualifications.
-            writeToServer("ACTION_NIL");
+            io.writeToServer("ACTION_NIL");
         }else {
-            writeToServer(action);
+            io.writeToServer(action);
         }
     }
 
@@ -259,54 +232,10 @@ public class ClientComm {
 
         if(ect.exceededMaxTime())
         {
-            writeToServer("END_OVERSPENT");
+            io.writeToServer("END_OVERSPENT");
         }else {
-            writeToServer(nextLevel+"");
+            io.writeToServer(nextLevel+"");
         }
-    }
-
-    // Some utils
-
-
-    /**
-     * Creates the buffers for pipe communication.
-     */
-    private void initBuffers() {
-        try {
-            fileOutput = new PrintWriter(new File("logs/clientLog.txt"), "utf-8");
-
-            input = new BufferedReader(new InputStreamReader(System.in));
-            output = new BufferedWriter(new OutputStreamWriter(System.out));
-
-        } catch (Exception e) {
-            System.out.println("Exception creating the client process: " + e);
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Writes a line to the server, adding a line separator at the end.
-     * @param line to write
-     */
-    private void writeToServer(String line)
-    {
-        try {
-            output.write(line + lineSep);
-            output.flush();
-        }catch(Exception e)
-        {
-            System.out.println("Error trying to write " + line + " to the server.");
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Writes a line to the client debug file, adding a line separator at the end.
-     * @param line to write
-     */
-    private void writeToFile(String line) throws IOException{
-        fileOutput.write(line + lineSep);
-        fileOutput.flush();
     }
 
 
