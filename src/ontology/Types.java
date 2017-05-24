@@ -44,9 +44,10 @@ public class Types {
     public static final Direction DDOWN = new Direction(0, 1);
     public static final Direction[] DBASEDIRS = new Direction[]{DUP, DLEFT, DDOWN, DRIGHT};
 
-    public static final int NUM_TRAINING_LEVELS = 3;
+    public static final int NUM_LEARNING_LEVELS = 5;
+    public static final int NUM_TRAINING_LEVELS = 3; //NUM_EVALUATION = NUM_LEARNING_LEVELS - NUM_TRAINING_LEVELS
     public static final int LEARNING_RESULT_DISQ = -1;
-    public static final int LEARNING_RESULT_OK = -2;
+    public static final int LEARNING_FINISH_ROUND = -2;
 
     //This is a small method to automatically link and parse vectors to directions.
     public static Field processField(String value)

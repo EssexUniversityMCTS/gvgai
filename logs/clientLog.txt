@@ -1,0 +1,2 @@
+result timers: global: 0.618(true), local: 0.003(false)
+END_TRAINING

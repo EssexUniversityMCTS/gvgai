@@ -230,19 +230,21 @@ public class ClientComm {
 
         // Submit result and wait for next level.
         int nextLevel = player.result(sso, ect.copy());
-        //io.writeToFile("init done");
+        io.writeToFile("result timers: global: " + global_ect.elapsedSeconds()  + "(" + global_ect.exceededMaxTime() + ")" +
+                ", local: " + ect.elapsedSeconds() + "(" + ect.exceededMaxTime() + ")" );
 
         if(ect.exceededMaxTime())
         {
-            io.writeToServer("END_OVERSPENT");
+            io.writeToServer("END_OVERSPENT", true);
+
         }else {
 
             if(global_ect.exceededMaxTime())
             {
                 //Note this is okay, TOTAL_LEARNING_TIME is over, within the rules
-                io.writeToServer("END_TRAINING");
+                io.writeToServer("END_TRAINING", true);
             }else {
-                io.writeToServer(nextLevel + "");
+                io.writeToServer(nextLevel + "", true);
             }
         }
     }

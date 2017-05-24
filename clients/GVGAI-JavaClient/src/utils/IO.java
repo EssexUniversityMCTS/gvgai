@@ -62,6 +62,18 @@ public class IO
         }
     }
 
+
+    /**
+     * Writes a line to the server, adding a line separator at the end.
+     * @param line to write
+     * @param log if true, write to file as well.
+     */
+    public void writeToServer(String line, boolean log)
+    {
+        this.writeToServer(line);
+        if(log) this.writeToFile(line);
+    }
+
     /**
      * Writes a line to the client debug file, adding a line separator at the end.
      * @param line to write
