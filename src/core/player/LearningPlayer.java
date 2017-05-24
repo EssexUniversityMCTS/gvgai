@@ -1,14 +1,13 @@
 package core.player;
 
-import core.competition.CompetitionParameters;
-import tracks.singleLearning.ServerComm;
 import core.game.SerializableStateObservation;
 import core.game.StateObservation;
 import core.game.StateObservationMulti;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
+import tracks.singleLearning.ServerComm;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 /**

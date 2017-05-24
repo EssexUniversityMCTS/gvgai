@@ -25,7 +25,7 @@ public class LearningMachine {
      */
     public static double[] playOneGame(String game_file, String level_file, String actionFile, int randomSeed) throws IOException {
         String agentName = "controllers.human.Agent";
-        boolean visuals = true;
+        boolean visuals = false;
         return runOneGame(game_file, level_file, visuals, agentName, actionFile, randomSeed);
     }
 
@@ -42,7 +42,6 @@ public class LearningMachine {
     public static double[] runOneGame(String game_file, String level_file, boolean visuals,
                                     String agentName, String actionFile, int randomSeed) throws IOException {
 //        int trainingPlays = 0;// TODO: 22/05/17 to be removed?
-
         VGDLFactory.GetInstance().init(); //This always first thing to do.
         VGDLRegistry.GetInstance().init();
 
@@ -112,7 +111,8 @@ public class LearningMachine {
 
         Player[] players = new Player[]{player};
         if (visuals)
-            score = toPlay.playGame(players, randomSeed, false, 0);// TODO: 22/05/17 why false???
+            score = toPlay.playGame(players, randomSeed, true, 0);
+//            score = toPlay.playGame(players, randomSeed, false, 0);// TODO: 22/05/17 why false???
         else
             score = toPlay.runGame(players, randomSeed);
 
@@ -140,6 +140,7 @@ public class LearningMachine {
         VGDLFactory.GetInstance().init(); //This always first thing to do.
         VGDLRegistry.GetInstance().init();
 
+        boolean visual = false;
         boolean recordActions = false;
         if (actionFiles != null) {
             recordActions = true;
@@ -174,7 +175,7 @@ public class LearningMachine {
             trainingLevels[level_idx] = level_files[level_idx];
 
         String[] validationLevels = new String[Types.NUM_LEARNING_LEVELS - Types.NUM_TRAINING_LEVELS];
-        for(int i = 0; level_idx < validationLevels.length; i++, level_idx++)
+        for(int i = 0; i < validationLevels.length; i++, level_idx++)
             validationLevels[i] = level_files[level_idx];
 
         level_idx = 0;
@@ -186,6 +187,7 @@ public class LearningMachine {
             for (int i = 0; keepPlaying && i < level_times; ++i) {
                 levelOutcome = playOneLevel(game_file,level_file,i,false, recordActions,levelIdx,
                                                 players,actionFiles,toPlay,scores,victories);
+//                System.err.println("levelOutcome="+levelOutcome);
                 keepPlaying = (levelOutcome>=0);
             }
             level_idx++;
@@ -199,8 +201,11 @@ public class LearningMachine {
             System.out.println("Starting Second Phase of Training in " + Types.NUM_TRAINING_LEVELS + " levels.");
             while (levelOutcome >= 0) {
                 // Play the selected level once
+//                 System.err.println("played level=" + levelOutcome);
+
                 levelOutcome = playOneLevel(game_file, level_files[levelOutcome], 0, false, recordActions,
                         0, players, actionFiles, toPlay, scores, victories);
+//                System.err.println("next level="+levelOutcome);
             }
         }
 
@@ -211,12 +216,16 @@ public class LearningMachine {
         // Establish the level files for level 3 and 4
         System.out.println("Starting Validation in " + Types.NUM_TRAINING_LEVELS + " levels.");
         level_idx = 0; levelOutcome = 0;
+        keepPlaying=true;
+//        System.err.println("At beginning, keepPlaying="+keepPlaying + ",level_idx="+level_idx);
         while(keepPlaying && level_idx < validationLevels.length)
         {
             String validation_level = validationLevels[level_idx];
             for (int i = 0; keepPlaying && i < level_times; ++i) {
+//                System.err.println("validation_level=" + validation_level);
                 levelOutcome = playOneLevel(game_file,validation_level,i, true, recordActions,levelIdx,players,actionFiles,toPlay,scores,victories);
                 keepPlaying = (levelOutcome!=Types.LEARNING_RESULT_DISQ);
+//                System.err.println("levelOutcome=" + levelOutcome + ", keepPlaying="+keepPlaying);
             }
             level_idx++;
         }

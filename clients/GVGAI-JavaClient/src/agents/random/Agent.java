@@ -4,8 +4,8 @@ package agents.random;
  * Created by Daniel on 21.05.2017.
  */
 
-import serialization.Types;
 import serialization.SerializableStateObservation;
+import serialization.Types;
 import utils.ElapsedCpuTimer;
 
 import java.util.Random;
@@ -43,7 +43,11 @@ public class Agent {
      * @return The action to be performed by the agent.
      */
     public Types.ACTIONS act(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer){
-
+//        try {
+//            Thread.sleep(1000);
+//        } catch(InterruptedException ex) {
+//            Thread.currentThread().interrupt();
+//        }
         int index = new Random().nextInt(sso.availableActions.size());
         return sso.availableActions.get(index);
     }
