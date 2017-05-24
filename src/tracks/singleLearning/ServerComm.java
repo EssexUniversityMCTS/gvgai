@@ -34,6 +34,16 @@ public class ServerComm {
     private String lineSep = System.getProperty("line.separator");
 
     /**
+     * Special character to separate message ID from actual message
+     */
+    private String TOKEN_SEP = "#";
+
+    /**
+     * Message ID
+     */
+    private long messageId;
+
+    /**
      * Client process
      */
     private Process client;
@@ -62,6 +72,7 @@ public class ServerComm {
      */
     public ServerComm(Process client) {
         this.client = client;
+        this.messageId = 0;
         initBuffers();
     }
 
@@ -128,8 +139,10 @@ public class ServerComm {
      * @param msg message to send.
      */
     public void commSend(String msg) throws IOException {
-        output.write(msg + lineSep);
+        String message = messageId + TOKEN_SEP + msg + lineSep;
+        output.write(message);
         output.flush();
+        messageId++;
     }
 
     /**
@@ -139,9 +152,29 @@ public class ServerComm {
      */
     public String commRecv() throws IOException {
         String ret = input.readLine();
-        while (ret != null && ret.trim().length() > 0) {// TODO: 22/05/17 if or while
-            return ret.trim();
+
+        if(ret != null && ret.trim().length() > 0)
+        {
+            String messageParts[] = ret.split(TOKEN_SEP);
+            if(messageParts.length < 2)
+                return null;
+
+            int receivedID = Integer.parseInt(messageParts[0]);
+            String msg = messageParts[1];
+
+            if(receivedID == (messageId-1))
+            {
+                return msg.trim();
+            }else if (receivedID < (messageId-1))
+            {
+                //Previous message, ignore and keep waiting.
+                return commRecv();
+            }else{
+                //A message from the future? Ignore and return null;
+                return null;
+            }
         }
+
         return null;
     }
 
@@ -152,15 +185,16 @@ public class ServerComm {
      */
     public boolean start() {
         try {
-            int count = 11;
+            //int count = 11;
             commSend("START");
             String response;
 
-            while(count>0) {
+            //while(count>0) {
                 response = commRecv();
                 if (response==null) {
                     System.out.println("For tests: null response");
-                    count--;
+                    return start();
+                    //count--;
                 } else if(response.equalsIgnoreCase("START_FAILED"))
                 {
                     System.out.println("START_FAILED");
@@ -170,11 +204,13 @@ public class ServerComm {
                     logger.fine("Received: " + response);
                     //System.out.println("\nStart done");
                     return true;
-                } else {
+                }
+
+//                } else {
                     //System.out.println("For tests: not START_DONE, not START_FAILED: "+response);
 //                    response = commRecv();
-                    count--;
-                }
+//                    count--;
+//                }
 //                else if(count <= 0) {
 //                    System.out.println("3");
 //                    //Disqualification before too many things received that are not appropriate.
@@ -184,12 +220,12 @@ public class ServerComm {
 //
 //                }
 
-            }
+            //}
 
-            if (count<=0) {
-                System.out.println("Start failed: too many unexpected messages received");
-                return false;
-            }
+//            if (count<=0) {
+//                System.out.println("Start failed: too many unexpected messages received");
+//                return false;
+//            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

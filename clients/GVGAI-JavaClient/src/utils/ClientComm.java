@@ -35,6 +35,22 @@ public class ClientComm {
 
 
     /**
+     * Special character to separate message ID from actual message
+     */
+    public static String TOKEN_SEP = "#";
+
+
+    /**
+     * If true, all messages sent to server are also printed to the log file
+     */
+    private boolean LOG = true;
+
+    /**
+     * Last Message ID received.
+     */
+    private long lastMessageId;
+
+    /**
      * Creates the client.
      */
     public ClientComm() {
@@ -71,11 +87,9 @@ public class ClientComm {
 
             // Read a line from System.in and save it as a String
             line = io.input.readLine();
-            //io.writeToFile(line);
 
             // Process the line
             processLine(line);
-
 
             if(sso.gameState == SerializableStateObservation.State.START_STATE)
             {
@@ -96,7 +110,7 @@ public class ClientComm {
                 this.result();
 
             } else {
-                io.writeToServer("null");
+                io.writeToServer(lastMessageId, "null", LOG);
             }
 
         }
@@ -109,12 +123,24 @@ public class ClientComm {
      * a json object containing an encapsulated state observation.
      * This method deserializes the json object into a local state observation
      * instance.
-     * @param json Message received from server to be interpreted.
+     * @param msg Message received from server to be interpreted.
      * @throws IOException
      */
-    public void processLine(String json) throws IOException{
+    public void processLine(String msg) throws IOException{
         //io.writeToFile("initializing gson");
         try {
+
+            //Separate ID and message:
+            String message[] = msg.split(TOKEN_SEP);
+
+            if(message.length < 2)
+                return;
+
+            lastMessageId = Integer.parseInt(message[0]);
+            String json = message[1];
+
+            //io.writeToFile("message received " + json);
+
             //Gson gson = new GsonBuilder().registerTypeAdapterFactory(new ArrayAdapterFactory()).create();
             Gson gson = new Gson();
 
@@ -157,10 +183,10 @@ public class ClientComm {
 
         if(ect.exceededMaxTime())
         {
-            io.writeToServer("START_FAILED");
+            io.writeToServer(lastMessageId, "START_FAILED", LOG);
         }else {
             //io.writeToFile("start done");
-            io.writeToServer("START_DONE");
+            io.writeToServer(lastMessageId, "START_DONE", LOG);
         }
 
     }
@@ -180,9 +206,9 @@ public class ClientComm {
 
         if(ect.exceededMaxTime())
         {
-            io.writeToServer("INIT_FAILED");
+            io.writeToServer(lastMessageId, "INIT_FAILED", LOG);
         }else {
-            io.writeToServer("INIT_DONE");
+            io.writeToServer(lastMessageId, "INIT_DONE", LOG);
         }
     }
 
@@ -203,9 +229,9 @@ public class ClientComm {
         if(ect.exceededMaxTime())
         {
             //Overspent. Server (MovingAvatar) will take care of disqualifications.
-            io.writeToServer("ACTION_NIL");
+            io.writeToServer(lastMessageId, "ACTION_NIL", LOG);
         }else {
-            io.writeToServer(action);
+            io.writeToServer(lastMessageId, action, LOG);
         }
     }
 
@@ -235,16 +261,16 @@ public class ClientComm {
 
         if(ect.exceededMaxTime())
         {
-            io.writeToServer("END_OVERSPENT", true);
+            io.writeToServer(lastMessageId, "END_OVERSPENT", LOG);
 
         }else {
 
             if(global_ect.exceededMaxTime())
             {
                 //Note this is okay, TOTAL_LEARNING_TIME is over, within the rules
-                io.writeToServer("END_TRAINING", true);
+                io.writeToServer(lastMessageId, "END_TRAINING", LOG);
             }else {
-                io.writeToServer(nextLevel + "", true);
+                io.writeToServer(lastMessageId, nextLevel + "", LOG);
             }
         }
     }

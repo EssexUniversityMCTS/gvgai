@@ -29,7 +29,7 @@ public class CompetitionParameters
     /**
      * Maximum time allowed for a learning track game, equivalent of 10 minutes in milliseconds.
      */
-    public static final int TOTAL_LEARNING_TIME = 10;//600000; //10*60*1000
+    public static final int TOTAL_LEARNING_TIME = 10*1000; //2*60000; //10*60000
 
     /**
      * Extra second for learning time, used in case the last game finished after TOTAL_LEARNING_TIME.
