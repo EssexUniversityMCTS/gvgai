@@ -1,14 +1,19 @@
 package tracks.singleLearning;
 
 import core.competition.CompetitionParameters;
-import core.game.*;
-import core.player.*;
-import core.vgdl.*;
+import core.game.Game;
+import core.game.StateObservation;
+import core.game.StateObservationMulti;
+import core.player.LearningPlayer;
+import core.player.Player;
+import core.vgdl.VGDLFactory;
+import core.vgdl.VGDLParser;
+import core.vgdl.VGDLRegistry;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
 import tools.StatSummary;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -154,7 +159,6 @@ public class LearningMachine {
         if (!initSuccesful) {
             return;
         }
-
         // Establish the training and validation levels.
         boolean keepPlaying = true;
         String[] trainingLevels = new String[Types.NUM_TRAINING_LEVELS];
@@ -189,11 +193,11 @@ public class LearningMachine {
             System.out.println("Starting Second Phase of Training in " + Types.NUM_TRAINING_LEVELS + " levels.");
             while (levelOutcome >= 0) {
                 // Play the selected level once
-//                 System.err.println("played level=" + levelOutcome);
+                 System.err.println("played level=" + levelOutcome);
 
                 levelOutcome = playOneLevel(game_file, level_files[levelOutcome], 0, false, recordActions,
                         0, players, actionFiles, toPlay, scores, victories);
-//                System.err.println("next level="+levelOutcome);
+                System.err.println("next level="+levelOutcome);
             }
         }
 

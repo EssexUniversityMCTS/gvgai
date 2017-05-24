@@ -44,7 +44,7 @@ public class ClientComm {
     /**
      * If true, all messages sent to server are also printed to the log file
      */
-    private boolean LOG = false;
+    private boolean LOG = true;
 
     /**
      * Last Message ID received.
@@ -108,7 +108,6 @@ public class ClientComm {
                 this.init();
 
             }else if(sso.phase == SerializableStateObservation.Phase.ACT) {
-
                 this.act();
 
             }else if( (sso.phase == SerializableStateObservation.Phase.ABORT) ||
@@ -138,6 +137,9 @@ public class ClientComm {
         try {
 
             //Separate ID and message:
+            if (msg==null) {
+                System.err.println("ClientComm: msg==null");
+            }
             String message[] = msg.split(TOKEN_SEP);
 
             if(message.length < 2)
@@ -156,6 +158,10 @@ public class ClientComm {
             if (json.equals("START")){
                 this.sso.phase = SerializableStateObservation.Phase.START;
                 return;
+            }
+
+            if (json.equals("INIT")){
+                this.sso.phase = SerializableStateObservation.Phase.INIT;
             }
 
             // Else, deserialize the json using GSon
@@ -236,21 +242,21 @@ public class ClientComm {
     private void act()
     {
         ElapsedCpuTimer ect = new ElapsedCpuTimer();
-        ect.setMaxTimeMillis(CompetitionParameters.ACTION_TIME_DISQ);
+        ect.setMaxTimeMillis(CompetitionParameters.ACTION_TIME);
 
         // Save the player's action in a string
         String action = player.act(sso, ect.copy()).toString();
         //io.writeToFile("init done");
 
         if(ect.exceededMaxTime()) {
-            io.writeToServer(lastMessageId, "END_OVERSPENT", LOG);
-        } else {
-            if (ect.remainingTimeMillis() < CompetitionParameters.ACTION_TIME_DISQ - CompetitionParameters.ACTION_TIME) {
+            if (ect.elapsedMillis() > CompetitionParameters.ACTION_TIME_DISQ) {
+                io.writeToServer(lastMessageId, "END_OVERSPENT", LOG);
+            } else {
                 //Overspent. Server (MovingAvatar) will take care of disqualifications.
                 io.writeToServer(lastMessageId, "ACTION_NIL", LOG);
-            } else {
-                io.writeToServer(lastMessageId, action, LOG);
             }
+        } else {
+            io.writeToServer(lastMessageId, action, LOG);
         }
     }
 

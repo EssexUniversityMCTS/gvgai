@@ -1,11 +1,11 @@
 package ontology;
 
-import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.lang.reflect.Field;
-
 import tools.Direction;
 import tools.Vector2d;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.lang.reflect.Field;
 
 /**
  * Created with IntelliJ IDEA.

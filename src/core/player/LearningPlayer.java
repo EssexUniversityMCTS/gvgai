@@ -10,6 +10,7 @@ import tracks.singleLearning.ServerComm;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+
 /**
  * Created by Daniel on 07.03.2017.
  */
@@ -147,7 +148,10 @@ public class LearningPlayer extends Player {
      */
     public int result(StateObservation stateObs)
     {
-        return this.serverComm.finishGame(stateObs);
+        int result = this.serverComm.finishGame(stateObs);
+        System.out.println("Client replied: " + result);
+        return result;
+//        return this.serverComm.finishGame(stateObs);
     }
 
     /**
@@ -159,7 +163,11 @@ public class LearningPlayer extends Player {
         //Initialize the controller.
         if (!this.serverComm.start())
             return false;
-
+        try {
+            serverComm.commSend("INIT");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return true;
     }
 }

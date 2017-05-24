@@ -1,19 +1,12 @@
 package core.game;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
-import tools.Vector2d;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeSet;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,6 +16,9 @@ import java.util.TreeSet;
  * This is a Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
 public class SerializableStateObservation {
+    public enum Phase {
+        START, INIT, ACT, ABORT, END
+    }
 
     public boolean isValidation;
     public float gameScore;
@@ -39,7 +35,7 @@ public class SerializableStateObservation {
     public int avatarMaxHealthPoints;
     public int avatarLimitHealthPoints;
     public boolean isAvatarAlive;
-    public Types.GAMESTATES gameState;
+    public Phase phase;
 
     public ArrayList<Types.ACTIONS> availableActions;
     public HashMap<Integer, Integer> avatarResources;
@@ -53,7 +49,7 @@ public class SerializableStateObservation {
 
     public SerializableStateObservation(StateObservation s)
     {
-        gameState = s.getGameState();
+        setPhase(s.getGameState());
         availableActions = s.getAvailableActions();
         gameScore = (float) s.getGameScore();
         gameTick = s.getGameTick();
@@ -188,4 +184,17 @@ public class SerializableStateObservation {
         return message;
     }
 
+    public void setPhase(Types.GAMESTATES currentGameState) {
+        if (currentGameState.equals(Types.GAMESTATES.INIT_STATE)) {
+            phase = Phase.INIT;
+        } else if (currentGameState.equals(Types.GAMESTATES.ACT_STATE)) {
+            phase = Phase.ACT;
+        } else if (currentGameState.equals(Types.GAMESTATES.ABORT_STATE)) {
+            phase = Phase.ABORT;
+        } else if (currentGameState.equals(Types.GAMESTATES.END_STATE)) {
+            phase = Phase.END;
+        } else {
+            phase = Phase.START;
+        }
+    }
 }

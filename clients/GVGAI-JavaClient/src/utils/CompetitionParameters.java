@@ -30,7 +30,7 @@ public class CompetitionParameters
      */
     public static int ACTION_TIME_DISQ = 2;
 
-    private static final int MILLIS_IN_MIN = 60000;
+    private static final int MILLIS_IN_MIN = 1;
     /**
      * Maximum time allowed for a learning track game, equivalent of 10 minutes in milliseconds.
      */

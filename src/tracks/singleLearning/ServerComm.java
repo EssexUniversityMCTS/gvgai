@@ -111,9 +111,9 @@ public class ServerComm {
 
             String response = commRecv();
 
-            if(response == null || response.equals("END_OVERSPENT"))
+            if(response == null || response.equalsIgnoreCase("END_OVERSPENT"))
             {
-                System.err.println("ServerComm:END_OVERSPENT");
+//                System.err.println("ServerComm:END_OVERSPENT");
                 return Types.LEARNING_RESULT_DISQ;
             }
 
@@ -152,22 +152,20 @@ public class ServerComm {
      */
     public String commRecv() throws IOException {
         String ret = input.readLine();
-        //System.out.println(ret);
 
         if(ret != null && ret.trim().length() > 0)
         {
             String messageParts[] = ret.split(TOKEN_SEP);
-            if(messageParts.length < 2)
+            if(messageParts.length < 2) {
                 return null;
+            }
 
             int receivedID = Integer.parseInt(messageParts[0]);
             String msg = messageParts[1];
 
-            if(receivedID == (messageId-1))
-            {
+            if(receivedID == (messageId-1)) {
                 return msg.trim();
-            }else if (receivedID < (messageId-1))
-            {
+            } else if (receivedID < (messageId-1)) {
                 //Previous message, ignore and keep waiting.
                 return commRecv();
             }else{
@@ -175,7 +173,7 @@ public class ServerComm {
                 return null;
             }
         }
-
+        System.err.println("I will return nill");
         return null;
     }
 
