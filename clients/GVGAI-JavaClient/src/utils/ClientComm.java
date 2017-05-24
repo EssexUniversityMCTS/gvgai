@@ -220,22 +220,23 @@ public class ClientComm {
     private void act()
     {
         ElapsedCpuTimer ect = new ElapsedCpuTimer();
-        ect.setMaxTimeMillis(CompetitionParameters.ACTION_TIME);
+        ect.setMaxTimeMillis(CompetitionParameters.ACTION_TIME_DISQ);
 
         // Save the player's action in a string
         String action = player.act(sso, ect.copy()).toString();
         //io.writeToFile("init done");
 
-        if(ect.exceededMaxTime())
-        {
-            //Overspent. Server (MovingAvatar) will take care of disqualifications.
-            io.writeToServer(lastMessageId, "ACTION_NIL", LOG);
-        }else {
-            io.writeToServer(lastMessageId, action, LOG);
+        if(ect.exceededMaxTime()) {
+            io.writeToServer(lastMessageId, "END_OVERSPENT", LOG);
+        } else {
+            if (ect.remainingTimeMillis() < CompetitionParameters.ACTION_TIME_DISQ - CompetitionParameters.ACTION_TIME) {
+                //Overspent. Server (MovingAvatar) will take care of disqualifications.
+                io.writeToServer(lastMessageId, "ACTION_NIL", LOG);
+            } else {
+                io.writeToServer(lastMessageId, action, LOG);
+            }
         }
     }
-
-
 
     /**
      * Manages the aresult sent to the agent. The time limit for this call will be TOTAL_LEARNING_TIME

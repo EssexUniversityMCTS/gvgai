@@ -23,8 +23,12 @@ public class CompetitionParameters
     /**
      * Milliseconds allowed per controller action.
      */
-    public static final int ACTION_TIME = 40;
+    public static final int ACTION_TIME = 1;
 
+    /**
+     * Milliseconds for controller disqualification, if it returns an action after this time.
+     */
+    public static int ACTION_TIME_DISQ = 2;
 
     /**
      * Maximum time allowed for a learning track game, equivalent of 10 minutes in milliseconds.

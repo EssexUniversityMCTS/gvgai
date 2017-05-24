@@ -114,13 +114,14 @@ public class ServerComm {
 
             if(response == null || response.equalsIgnoreCase("END_OVERSPENT"))
             {
-                System.out.println("ServerComm:END_OVERSPENT");
+                System.err.println("ServerComm:END_OVERSPENT");
                 return Types.LEARNING_RESULT_DISQ;
             }
 
             if (response.matches("^[0-" + Types.NUM_TRAINING_LEVELS + "]$")) {
                 return Integer.parseInt(response);
-            }else if (response.equalsIgnoreCase("END_TRAINING")) {
+            } else if (response.equalsIgnoreCase("END_TRAINING")) {
+                System.err.println("ServerComm:END_TRAINING");
                 return Types.LEARNING_FINISH_ROUND;
             } else {
                 return new Random().nextInt(Types.NUM_TRAINING_LEVELS);

@@ -86,7 +86,12 @@ public class LearningPlayer extends Player {
             //System.out.println("Received ACTION: " + response + "; ACT (Server) Response time: "
             //        + elapsedTimer.elapsedMillis() + " ms.");
 
-            // Set the game to the kill state if the response is that of ABORT
+            if (response.equals("END_OVERSPENT")) {
+                so.currentGameState = Types.GAMESTATES.ABORT_STATE;
+                return Types.ACTIONS.ACTION_ESCAPE;
+            }
+
+                // Set the game to the kill state if the response is that of ABORT
             if (response.equals("ABORT")){
                 so.currentGameState = Types.GAMESTATES.ABORT_STATE;
                 return Types.ACTIONS.ACTION_ESCAPE;

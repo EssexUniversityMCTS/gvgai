@@ -43,12 +43,19 @@ public class Agent {
      * @return The action to be performed by the agent.
      */
     public Types.ACTIONS act(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer){
-//        try {
-//            Thread.sleep(1000);
-//        } catch(InterruptedException ex) {
-//            Thread.currentThread().interrupt();
-//        }
+        int n = 10;
+        while (n>0) {
+            for (int i=0;i<10000000;i++) {
+                int a = 1;
+                int b = a^i;
+            }
+            n--;
+        }
+        if (sso.gameTick == 100) {
+            return Types.ACTIONS.ACTION_ESCAPE;
+        }
         int index = new Random().nextInt(sso.availableActions.size());
+
         return sso.availableActions.get(index);
     }
 
