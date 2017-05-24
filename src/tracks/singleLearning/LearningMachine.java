@@ -214,7 +214,7 @@ public class LearningMachine {
 
         // Validation time
         // Establish the level files for level 3 and 4
-        System.out.println("Starting Validation in " + Types.NUM_TRAINING_LEVELS + " levels.");
+        System.out.println("Starting Validation in " + validationLevels.length + " levels.");
         level_idx = 0; levelOutcome = 0;
         keepPlaying=true;
 //        System.err.println("At beginning, keepPlaying="+keepPlaying + ",level_idx="+level_idx);
