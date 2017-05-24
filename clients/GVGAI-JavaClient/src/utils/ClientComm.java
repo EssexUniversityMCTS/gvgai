@@ -16,10 +16,13 @@ import java.lang.reflect.Constructor;
  */
 public class ClientComm {
 
+    /**
+     * Handles writing to pipes and files.
+     */
     private IO io;
 
     /**
-     * State information
+     * Phase information
      */
     public SerializableStateObservation sso;
 
@@ -33,12 +36,10 @@ public class ClientComm {
      */
     private ElapsedCpuTimer global_ect;
 
-
     /**
      * Special character to separate message ID from actual message
      */
     public static String TOKEN_SEP = "#";
-
 
     /**
      * If true, all messages sent to server are also printed to the log file
@@ -97,21 +98,21 @@ public class ClientComm {
             // Process the line
             processLine(line);
 
-            if(sso.gameState == SerializableStateObservation.State.START_STATE)
+            if(sso.phase == SerializableStateObservation.Phase.START)
             {
                 this.start();
 
-            }if(sso.gameState == SerializableStateObservation.State.INIT_STATE)
+            }if(sso.phase == SerializableStateObservation.Phase.INIT)
             {
 
                 this.init();
 
-            }else if(sso.gameState == SerializableStateObservation.State.ACT_STATE) {
+            }else if(sso.phase == SerializableStateObservation.Phase.ACT) {
 
                 this.act();
 
-            }else if( (sso.gameState == SerializableStateObservation.State.ABORT_STATE) ||
-                      (sso.gameState == SerializableStateObservation.State.END_STATE) ){
+            }else if( (sso.phase == SerializableStateObservation.Phase.ABORT) ||
+                      (sso.phase == SerializableStateObservation.Phase.END) ){
 
                 this.result();
 
@@ -133,7 +134,7 @@ public class ClientComm {
      * @throws IOException
      */
     public void processLine(String msg) throws IOException{
-        //io.writeToFile("initializing gson");
+
         try {
 
             //Separate ID and message:
@@ -150,19 +151,16 @@ public class ClientComm {
             //Gson gson = new GsonBuilder().registerTypeAdapterFactory(new ArrayAdapterFactory()).create();
             Gson gson = new Gson();
 
-            // Set the state to "START_STATE" in case the connexion (not game) is in the initialization phase.
+            // Set the state to "START" in case the connexion (not game) is in the initialization phase.
             // Happens only on one-time setup
             if (json.equals("START")){
-                this.sso.gameState = SerializableStateObservation.State.START_STATE;
+                this.sso.phase = SerializableStateObservation.Phase.START;
                 return;
             }
 
-            //io.writeToFile(json);
-
             // Else, deserialize the json using GSon
-            ElapsedCpuTimer cpu = new ElapsedCpuTimer();
             this.sso = gson.fromJson(json, SerializableStateObservation.class);
-            //io.writeToFile("gson initialized " + cpu.elapsedMillis());
+
         } catch (Exception e){
             e.printStackTrace(io.fileOutput);
         }
@@ -200,7 +198,7 @@ public class ClientComm {
     private void startAgent()
     {
         try{
-            io.writeToFile("Starting the agent " + agentName);
+            //io.writeToFile("Starting the agent " + agentName);
             Class<? extends AbstractPlayer> controllerClass = Class.forName(agentName).asSubclass(AbstractPlayer.class);
             Constructor controllerArgsConstructor = controllerClass.getConstructor();
             player = (AbstractPlayer) controllerArgsConstructor.newInstance();
@@ -221,7 +219,6 @@ public class ClientComm {
 
         // Perform level-entry initialization here
         player.init(sso, ect.copy());
-        //io.writeToFile("init done");
 
         if(ect.exceededMaxTime())
         {
@@ -275,8 +272,9 @@ public class ClientComm {
 
         // Submit result and wait for next level.
         int nextLevel = player.result(sso, ect.copy());
-        io.writeToFile("result timers: global: " + global_ect.elapsedSeconds()  + "(" + global_ect.exceededMaxTime() + ")" +
-                ", local: " + ect.elapsedSeconds() + "(" + ect.exceededMaxTime() + ")" );
+
+        //io.writeToFile("result timers: global: " + global_ect.elapsedSeconds()  + "(" + global_ect.exceededMaxTime() + ")" +
+        //        ", local: " + ect.elapsedSeconds() + "(" + ect.exceededMaxTime() + ")" );
 
         if(ect.exceededMaxTime())
         {

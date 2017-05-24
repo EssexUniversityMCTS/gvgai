@@ -11,19 +11,33 @@ import java.util.HashMap;
  */
 public class SerializableStateObservation {
 
-    public enum State{
-        START_STATE, INIT_STATE, ACT_STATE, ABORT_STATE, END_STATE
+    public enum Phase {
+        START, INIT, ACT, ABORT, END
     }
 
+    /**
+     * Indicates the state of the protocol
+     */
+    public Phase phase;
 
+    /**
+     * Indicates if the game being played is validation or training.
+     */
     public boolean isValidation;
 
+    /**
+     * Game Phase
+     */
     public float gameScore;
     public int gameTick;
     public Types.WINNER gameWinner;
     public boolean isGameOver;
     public double[] worldDimension;
     public int blockSize;
+
+    /**
+     * Avatar Phase
+     */
     public float avatarSpeed;
     public double[] avatarOrientation;
     public Types.ACTIONS avatarLastAction;
@@ -32,12 +46,13 @@ public class SerializableStateObservation {
     public int avatarMaxHealthPoints;
     public int avatarLimitHealthPoints;
     public boolean isAvatarAlive;
-    public State gameState;
-
     public ArrayList<Types.ACTIONS> availableActions;
     public HashMap<Integer, Integer> avatarResources;
+
+    /**
+     * Observations of the world.
+     */
     public ArrayList<Observation>[][] observationGrid;
-    //public TreeSet<Event> eventsHistory;
     public ArrayList<Observation>[] NPCPositions;
     public ArrayList<Observation>[] immovablePositions;
     public ArrayList<Observation>[] movablePositions;
@@ -45,6 +60,7 @@ public class SerializableStateObservation {
     public ArrayList<Observation>[] portalsPositions;
     public ArrayList<Observation>[] fromAvatarSpritesPositions;
 
+    //Default constructor.
     public SerializableStateObservation() {}
 
 }

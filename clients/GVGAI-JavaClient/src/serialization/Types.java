@@ -4,6 +4,10 @@ package serialization;
  * Created by Daniel on 16.03.2017.
  */
 public class Types {
+
+    /**
+     * All actions available.
+     */
     public static enum ACTIONS {
         ACTION_NIL,
         ACTION_UP,
@@ -20,6 +24,9 @@ public class Types {
         }
     }
 
+    /**
+     * Winner of the game.
+     */
     public static enum WINNER {
         PLAYER_DISQ(-100),
         NO_WINNER(-1),

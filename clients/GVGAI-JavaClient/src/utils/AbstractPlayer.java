@@ -11,7 +11,7 @@ public abstract class AbstractPlayer {
     /**
      * Public method to be called at the start of every level of a game.
      * Perform any level-entry initialization here.
-     * @param sso State Observation of the current game.
+     * @param sso Phase Observation of the current game.
      * @param elapsedTimer Timer (1s)
      */
     public abstract void init(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer);
