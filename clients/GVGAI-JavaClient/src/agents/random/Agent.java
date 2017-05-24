@@ -48,19 +48,18 @@ public class Agent extends utils.AbstractPlayer {
      */
     @Override
     public Types.ACTIONS act(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer){
-        int n = 10;
-        while (n>0) {
-            for (int i=0;i<10000000;i++) {
-                int a = 1;
-                int b = a^i;
-            }
-            n--;
-        }
-        if (sso.gameTick == 100) {
-            return Types.ACTIONS.ACTION_ESCAPE;
-        }
+//        int n = 10;
+//        while (n>0) {
+//            for (int i=0;i<10000000;i++) {
+//                int a = 1;
+//                int b = a^i;
+//            }
+//            n--;
+//        }
+//        if (sso.gameTick == 100) {
+//            return Types.ACTIONS.ACTION_ESCAPE;
+//        }
         int index = new Random().nextInt(sso.availableActions.size());
-
         return sso.availableActions.get(index);
     }
 
