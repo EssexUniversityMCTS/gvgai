@@ -1,10 +1,10 @@
 package utils;
 
-import agents.random.Agent;
 import com.google.gson.Gson;
 import serialization.SerializableStateObservation;
 
 import java.io.*;
+import java.lang.reflect.Constructor;
 
 /**
  *  -----  DO NOT MODIFY THIS CLASS -----
@@ -26,7 +26,7 @@ public class ClientComm {
     /**
      * Variable to store the player's agent information
      */
-    public Agent player;
+    public AbstractPlayer player;
 
     /**
      * Global timer.
@@ -51,11 +51,17 @@ public class ClientComm {
     private long lastMessageId;
 
     /**
+     * Name of the agent to run
+     */
+    private String agentName;
+
+    /**
      * Creates the client.
      */
-    public ClientComm() {
+    public ClientComm(String agentName) {
         io = new IO();
         sso = new SerializableStateObservation();
+        this.agentName = agentName;
     }
 
 
@@ -178,8 +184,8 @@ public class ClientComm {
         ElapsedCpuTimer ect = new ElapsedCpuTimer();
         ect.setMaxTimeMillis(CompetitionParameters.START_TIME);
 
-        //Starts the agent.
-        player = new Agent();
+        //Starts the agent (calls the constructor).
+        startAgent();
 
         if(ect.exceededMaxTime())
         {
@@ -189,6 +195,19 @@ public class ClientComm {
             io.writeToServer(lastMessageId, "START_DONE", LOG);
         }
 
+    }
+
+    private void startAgent()
+    {
+        try{
+            io.writeToFile("Starting the agent " + agentName);
+            Class<? extends AbstractPlayer> controllerClass = Class.forName(agentName).asSubclass(AbstractPlayer.class);
+            Constructor controllerArgsConstructor = controllerClass.getConstructor();
+            player = (AbstractPlayer) controllerArgsConstructor.newInstance();
+        }catch (Exception e)
+        {
+            io.writeToFile(e.toString());
+        }
     }
 
 

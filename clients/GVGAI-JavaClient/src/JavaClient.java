@@ -15,7 +15,14 @@ public class JavaClient
 {
     public static void main(String[] args)
     {
-        ClientComm ccomm = new ClientComm();
+        //I should receive as argument the agent to use.
+        String agentName = "";
+        if(args.length == 1)
+        {
+            agentName = args[0];
+        }
+
+        ClientComm ccomm = new ClientComm(agentName);
         ccomm.startComm();
     }
 }

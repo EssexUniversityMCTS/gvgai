@@ -111,7 +111,6 @@ public class ServerComm {
 
             String response = commRecv();
 
-
             if(response == null || response.equals("END_OVERSPENT"))
             {
                 return Types.LEARNING_RESULT_DISQ;
@@ -152,6 +151,7 @@ public class ServerComm {
      */
     public String commRecv() throws IOException {
         String ret = input.readLine();
+        //System.out.println(ret);
 
         if(ret != null && ret.trim().length() > 0)
         {
