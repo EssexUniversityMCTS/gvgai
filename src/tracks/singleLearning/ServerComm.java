@@ -119,7 +119,7 @@ public class ServerComm {
 
             if (response.matches("^[0-" + Types.NUM_TRAINING_LEVELS + "]$")) {
                 return Integer.parseInt(response);
-            }else if (response.equals("END_TRAINING")) {
+            }else if (response.equals("END_TRAINING") || response.equals("END_VALIDATION")) {
                 return Types.LEARNING_FINISH_ROUND;
             } else {
                 return new Random().nextInt(Types.NUM_TRAINING_LEVELS);

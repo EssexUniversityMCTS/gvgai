@@ -43,7 +43,7 @@ public class ClientComm {
     /**
      * If true, all messages sent to server are also printed to the log file
      */
-    private boolean LOG = true;
+    private boolean LOG = false;
 
     /**
      * Last Message ID received.
@@ -267,8 +267,9 @@ public class ClientComm {
 
             if(global_ect.exceededMaxTime())
             {
+                String end_message = sso.isValidation ? "END_VALIDATION" : "END_TRAINING";
                 //Note this is okay, TOTAL_LEARNING_TIME is over, within the rules
-                io.writeToServer(lastMessageId, "END_TRAINING", LOG);
+                io.writeToServer(lastMessageId, end_message, LOG);
             }else {
                 io.writeToServer(lastMessageId, nextLevel + "", LOG);
             }
