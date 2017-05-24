@@ -10,27 +10,57 @@ import java.util.Random;
 public class TestSingleLearning {
     public static void main(String[] args) throws Exception {
         //Available controllers:
-        String javaController = "src/tracks/singleLearning/runClient_nocompile.sh";
+        String scriptFile = "src/tracks/singleLearning/runClient_nocompile.sh";
         if(CompetitionParameters.OS_WIN)
         {
-            javaController = "src\\tracks\\singleLearning\\runClient_nocompile.bat";
+            scriptFile = "src\\tracks\\singleLearning\\runClient_nocompile.bat";
         }
 
-        //Available games:
-        String gamesPath = "examples/gridphysics/";
+        //Port for the socket.
+        String port = "8000";
 
-        //CIG 2014 Training Set Games
-        String games[] = new String[]{"aliens", "boulderdash", "butterflies", "chase", "frogs",
-                "missilecommand", "portals", "sokoban", "survivezombies", "zelda"};
+        //Agent to play with
+        String agentName = "agents.random.Agent";
 
-        //CIG 2014 Validation Set Games
-        //String games[] = new String[]{"camelRace", "digdug", "firestorms", "infection", "firecaster",
-        //      "overload", "pacman", "seaquest", "whackamole", "eggomania"};
+        //Building the command line
+        String cmd[] = new String[]{scriptFile, agentName, port};
 
-        //CIG 2015 New Training Set Games
-        //String games[] = new String[]{"bait", "boloadventures", "brainman", "chipschallenge",  "modality",
-        //                              "painter", "realportals", "realsokoban", "thecitadel", "zenpuzzle"};
 
+        // Available games:
+        String gridGamesPath = "examples/gridphysics/";
+        String contGamesPath = "examples/contphysics/";
+        String gamesPath;
+        String games[];
+        boolean GRID_PHYSICS = true;
+
+        // All public games (gridphysics)
+        if(GRID_PHYSICS) {
+            gamesPath = gridGamesPath;
+            games = new String[]{"aliens", "angelsdemons", "assemblyline", "avoidgeorge", "bait", // 0-4
+                    "beltmanager", "blacksmoke", "boloadventures", "bomber", "bomberman", // 5-9
+                    "boulderchase", "boulderdash", "brainman", "butterflies", "cakybaky", // 10-14
+                    "camelRace", "catapults", "chainreaction", "chase", "chipschallenge", // 15-19
+                    "clusters", "colourescape", "chopper", "cookmepasta", "cops", // 20-24
+                    "crossfire", "defem", "defender", "digdug", "dungeon", // 25-29
+                    "eighthpassenger", "eggomania", "enemycitadel", "escape", "factorymanager", // 30-34
+                    "firecaster", "fireman", "firestorms", "freeway", "frogs", // 35-39
+                    "garbagecollector", "gymkhana", "hungrybirds", "iceandfire", "ikaruga", // 40-44
+                    "infection", "intersection", "islands", "jaws", "killBillVol1", // 45-49
+                    "labyrinth", "labyrinthdual", "lasers", "lasers2", "lemmings", // 50-54
+                    "missilecommand", "modality", "overload", "pacman", "painter", // 55-59
+                    "pokemon", "plants", "plaqueattack", "portals", "raceBet", // 60-64
+                    "raceBet2", "realportals", "realsokoban", "rivers", "roadfighter", // 65-69
+                    "roguelike", "run", "seaquest", "sheriff", "shipwreck", // 70-74
+                    "sokoban", "solarfox", "superman", "surround", "survivezombies", // 75-79
+                    "tercio", "thecitadel", "thesnowman", "waitforbreakfast", "watergame", // 80-84
+                    "waves", "whackamole", "wildgunman", "witnessprotection", "wrapsokoban", // 85-89
+                    "zelda", "zenpuzzle"}; // 90, 91
+
+        }else{
+            gamesPath = contGamesPath;
+            games = new String[]{"artillery", "asteroids", "bird", "bubble", "candy",   //0 - 4
+                    "lander", "mario", "pong", "ptsp", "racing"};                       //5 - 9
+        }
 
         //Other settings
         boolean visuals = true;
@@ -53,6 +83,6 @@ public class TestSingleLearning {
         //LearningMachine.runOneGame(game, level1, visuals, javaController, recordActionsFile, seed, true);
 
         // 1. This plays a training round for a specified game.
-        LearningMachine.runMultipleGames(game, level_files, javaController, new String[]{null});
+        LearningMachine.runMultipleGames(game, level_files, cmd, new String[]{null});
     }
 }

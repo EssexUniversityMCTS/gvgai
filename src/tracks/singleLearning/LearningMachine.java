@@ -18,29 +18,17 @@ public class LearningMachine {
     public static final boolean VERBOSE = false;
 
     /**
-     * Reads and launches a game for a human to play. Graphics always on.
-     *
-     * @param game_file  game description file.
-     * @param level_file file with the level to be played.
-     */
-    public static double[] playOneGame(String game_file, String level_file, String actionFile, int randomSeed) throws IOException {
-        String agentName = "controllers.human.Agent";
-        boolean visuals = false;
-        return runOneGame(game_file, level_file, visuals, agentName, actionFile, randomSeed);
-    }
-
-    /**
      * Reads and launches a game for an agent to be played. Graphics can be on or off.
      *
      * @param game_file  game description file.
      * @param level_file file with the level to be played.
      * @param visuals    true to show the graphics, false otherwise. Training games have never graphics set to ON.
-     * @param agentName  name (inc. package) where the controller is otherwise.
+     * @param cmd  array with name of the script file to run for the client, plus agent and port
      * @param actionFile filename of the file where the actions of this player, for this game, should be recorded.
      * @param randomSeed sampleRandom seed for the sampleRandom generator.
      */
     public static double[] runOneGame(String game_file, String level_file, boolean visuals,
-                                    String agentName, String actionFile, int randomSeed) throws IOException {
+                                    String[] cmd, String actionFile, int randomSeed) throws IOException {
 //        int trainingPlays = 0;// TODO: 22/05/17 to be removed?
         VGDLFactory.GetInstance().init(); //This always first thing to do.
         VGDLRegistry.GetInstance().init();
@@ -48,7 +36,7 @@ public class LearningMachine {
         System.out.println(" ** Playing game " + game_file + ", level " + level_file + " **");
 
         //1. Create the player.
-        LearningPlayer player = LearningMachine.createPlayer(agentName);
+        LearningPlayer player = LearningMachine.createPlayer(cmd);
 //
         //2. Play the training games.
 //        System.out.print(trainingPlays + " ");// TODO: 22/05/17 to be removed?
@@ -63,18 +51,18 @@ public class LearningMachine {
      *
      * @param game_file  game description file.
      * @param level_files file with the level to be played.
-     * @param agentName  name (inc. package) where the controller is otherwise.
+     * @param cmd  array with name of the script file to run for the client, plus agent and port
      * @param actionFiles filename of the file where the actions of this player, for this game, should be recorded.
      */
     public static void runMultipleGames(String game_file, String[] level_files,
-                                            String agentName, String[] actionFiles) throws IOException {
+                                            String cmd[], String[] actionFiles) throws IOException {
 //        int trainingPlays = 0;// TODO: 22/05/17 to be removed?
 
         VGDLFactory.GetInstance().init(); //This always first thing to do.
         VGDLRegistry.GetInstance().init();
 
         //Create the player.
-        LearningPlayer player = LearningMachine.createPlayer(agentName);
+        LearningPlayer player = LearningMachine.createPlayer(cmd);
 
         // Play the training games.
 //        System.out.print(trainingPlays + "\n");// TODO: 22/05/17 to be removed?
@@ -296,7 +284,8 @@ public class LearningMachine {
 
         //Play the game
         //Get array of scores back.
-        score = toPlay.playGame(players, randomSeed, false, 0);
+        //score = toPlay.playGame(players, randomSeed, false, 0);
+        score = toPlay.runGame(players, randomSeed);
         toPlay.printResult();
 
         //Finally, when the game is over, we need to tear the player down.
@@ -329,9 +318,9 @@ public class LearningMachine {
      * @param cmd name of the agent to create.
      * @return the player, created but NOT initialized, ready to start playing the game.
      */
-    private static LearningPlayer createPlayer(String cmd) throws IOException {
+    private static LearningPlayer createPlayer(String[] cmd) throws IOException {
         Process client;
-        ProcessBuilder builder = new ProcessBuilder(cmd);
+        ProcessBuilder builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2]);
         builder.redirectErrorStream(true);
         //builder.redirectError(new File("logs/processErrorLog.txt"));
         client = builder.start();

@@ -147,9 +147,7 @@ public class LearningPlayer extends Player {
      */
     public int result(StateObservation stateObs)
     {
-        int result = this.serverComm.finishGame(stateObs);
-        System.out.println("Client replied: " + result);
-        return result;
+        return this.serverComm.finishGame(stateObs);
     }
 
     /**

@@ -1,29 +1,12 @@
-package agents.random;
-
-/**
- * Created by Daniel on 21.05.2017.
- */
+package utils;
 
 import serialization.SerializableStateObservation;
 import serialization.Types;
-import utils.ElapsedCpuTimer;
-
-import java.util.Random;
 
 /**
- * This class has been built with a simple design in mind.
- * It is to be used to store player agent information,
- * to be later used by the client to send and receive information
- * to and from the server.
+ * Created by dperez on 24/05/2017.
  */
-public class Agent extends utils.AbstractPlayer {
-
-    /**
-     * Public method to be called at the start of the communication. No game has been initialized yet.
-     * Perform one-time setup here.
-     */
-    public Agent(){}
-
+public abstract class AbstractPlayer {
 
     /**
      * Public method to be called at the start of every level of a game.
@@ -31,10 +14,8 @@ public class Agent extends utils.AbstractPlayer {
      * @param sso Phase Observation of the current game.
      * @param elapsedTimer Timer (1s)
      */
-    @Override
-    public void init(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer){
+    public abstract void init(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer);
 
-    }
 
     /**
      * Method used to determine the next move to be performed by the agent.
@@ -46,23 +27,8 @@ public class Agent extends utils.AbstractPlayer {
      * @param elapsedTimer Timer (40ms)
      * @return The action to be performed by the agent.
      */
-    @Override
-    public Types.ACTIONS act(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer){
-        int n = 10;
-        while (n>0) {
-            for (int i=0;i<10000000;i++) {
-                int a = 1;
-                int b = a^i;
-            }
-            n--;
-        }
-        if (sso.gameTick == 100) {
-            return Types.ACTIONS.ACTION_ESCAPE;
-        }
-        int index = new Random().nextInt(sso.availableActions.size());
+    public abstract Types.ACTIONS act(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer);
 
-        return sso.availableActions.get(index);
-    }
 
     /**
      * Method used to perform actions in case of a game end.
@@ -76,12 +42,5 @@ public class Agent extends utils.AbstractPlayer {
      * The level is bound in the range of [0,2]. If the input is any different, then the level
      * chosen will be ignored, and the game will play a random one instead.
      */
-    @Override
-    public int result(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer){
-        Random r = new Random();
-        Integer level = r.nextInt(3);
-
-        return level;
-    }
-
+    public abstract int result(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer);
 }

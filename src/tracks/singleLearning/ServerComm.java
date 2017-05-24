@@ -111,8 +111,7 @@ public class ServerComm {
 
             String response = commRecv();
 
-
-            if(response == null || response.equalsIgnoreCase("END_OVERSPENT"))
+            if(response == null || response.equals("END_OVERSPENT"))
             {
                 System.err.println("ServerComm:END_OVERSPENT");
                 return Types.LEARNING_RESULT_DISQ;
@@ -120,8 +119,7 @@ public class ServerComm {
 
             if (response.matches("^[0-" + Types.NUM_TRAINING_LEVELS + "]$")) {
                 return Integer.parseInt(response);
-            } else if (response.equalsIgnoreCase("END_TRAINING")) {
-                System.err.println("ServerComm:END_TRAINING");
+            }else if (response.equals("END_TRAINING") || response.equals("END_VALIDATION")) {
                 return Types.LEARNING_FINISH_ROUND;
             } else {
                 return new Random().nextInt(Types.NUM_TRAINING_LEVELS);
@@ -154,6 +152,7 @@ public class ServerComm {
      */
     public String commRecv() throws IOException {
         String ret = input.readLine();
+        //System.out.println(ret);
 
         if(ret != null && ret.trim().length() > 0)
         {
@@ -186,52 +185,27 @@ public class ServerComm {
      * Will give up if no "START_DONE" received after having received 11 responses
      */
     public boolean start() {
+
         try {
-            //int count = 11;
             commSend("START");
             String response;
 
-            //while(count>0) {
-                response = commRecv();
-                if (response==null) {
-                    System.out.println("For tests: null response");
-                    return start();
-                    //count--;
-                } else if(response.equalsIgnoreCase("START_FAILED"))
-                {
-                    System.out.println("START_FAILED");
-                    //Disqualification because of timeout.
-                    return false;
-                } else if (response.equalsIgnoreCase("START_DONE")) {
-                    logger.fine("Received: " + response);
-                    //System.out.println("\nStart done");
-                    return true;
-                }
+            response = commRecv();
+            if (response==null) {
+                return start();
+            } else if(response.equalsIgnoreCase("START_FAILED"))
+            {
+                //Disqualification because of timeout.
+                System.out.println("START_FAILED");
+                return false;
+            } else if (response.equalsIgnoreCase("START_DONE")) {
+                logger.fine("Received: " + response);
+                return true;
+            }
 
-//                } else {
-                    //System.out.println("For tests: not START_DONE, not START_FAILED: "+response);
-//                    response = commRecv();
-//                    count--;
-//                }
-//                else if(count <= 0) {
-//                    System.out.println("3");
-//                    //Disqualification before too many things received that are not appropriate.
-//                    System.out.println("Start failed: too many unexpected messages received");
-//                    return false;
-//                }  else {
-//
-//                }
-
-            //}
-
-//            if (count<=0) {
-//                System.out.println("Start failed: too many unexpected messages received");
-//                return false;
-//            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
 
         //Disqualification because of exception, communication fail.
         System.out.println("Communication failed for unknown reason, could not play any games :-( ");
