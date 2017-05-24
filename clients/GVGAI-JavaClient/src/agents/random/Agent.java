@@ -59,6 +59,7 @@ public class Agent extends utils.AbstractPlayer {
         if (sso.gameTick == 100) {
             return Types.ACTIONS.ACTION_ESCAPE;
         }
+
         int index = new Random().nextInt(sso.availableActions.size());
         return sso.availableActions.get(index);
     }

@@ -233,8 +233,7 @@ public class LearningMachine {
         }
 
         System.out.println("Results in game " + game_file + ", " +
-                vict + " , " + sc //);
-                + ", " + performance.mean());
+                vict + " , " + sc);
     }
 
     /**
