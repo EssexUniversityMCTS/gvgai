@@ -389,7 +389,7 @@ public class LearningMachine {
 
             //Inform about the result and the final game state.
             if (toPlay.no_players > 1)
-                p.resultMulti(toPlay.getObservationMulti().copy(), ect);
+                p.resultMulti(toPlay.getObservationMulti(p.getPlayerID()).copy(), ect);
             else
                 p.result(toPlay.getObservation(), ect);
 
