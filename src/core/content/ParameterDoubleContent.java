@@ -54,7 +54,7 @@ public class ParameterDoubleContent extends ParameterContent {
     {
         String param = "";
         if(parameters.containsKey("value"))
-            return param + Integer.parseInt(parameters.get("value"));
+            return param + Double.parseDouble(parameters.get("value"));
 
         if(isFinalValueSet)
             return param + finalValue;

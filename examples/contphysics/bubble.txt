@@ -1,8 +1,8 @@
 BasicGame
     SpriteSet    
-        avatar > FlakAvatar stype=bullet physicstype_id=1 friction=0.02 img=oryx/spider3
-        bullet > Missile speed=25 singleton=True orientation=DUP physicstype_id=1 img=oryx/bullet1
-        bubble > Missile physicstype_id=1 gravity=0.5
+        avatar > FlakAvatar stype=bullet physicstype=CONT friction=0.02 img=oryx/spider3
+        bullet > Missile speed=25 singleton=True orientation=DUP physicstype=CONT img=oryx/bullet1
+        bubble > Missile physicstype=CONT gravity=0.5
         	bubble1 > speed=4 shrinkfactor=1.2 img=oryx/orb1
         		bubble1a > orientation=DLEFT
         		bubble1b > orientation=DRIGHT

@@ -3,8 +3,8 @@ BasicGame
         pad    > Immovable img=oryx/devil1
         bouncey    > Immovable img=oryx/floorTileOrange
         avatar > AimedAvatar stype=bullet img=newset/lasercannon_1
-        bullet > Missile physicstype_id=1 gravity=0.5 friction=0.02 speed=25 singleton=True img=oryx/bullet1 shrinkfactor=4
-        box    > Missile img=newset/cloud2 shrinkfactor=0.8 physicstype_id=1 gravity=0.5 friction=0.02
+        bullet > Missile physicstype=CONT gravity=0.5 friction=0.02 speed=25 singleton=True img=oryx/bullet1 shrinkfactor=4
+        box    > Missile img=newset/cloud2 shrinkfactor=0.8 physicstype=CONT gravity=0.5 friction=0.02
         breakable > Immovable img=oryx/backBrown
             
     TerminationSet

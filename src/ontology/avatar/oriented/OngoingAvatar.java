@@ -44,47 +44,29 @@ public class OngoingAvatar extends OrientedAvatar
      * This update call is for the game tick() loop.
      * @param game current state of the game.
      */
-    public void update(Game game)
+    public void updateAvatar(Game game, boolean requestInput, boolean[] actionMask)
     {
         lastMovementType = Types.MOVEMENT.MOVE;
 
-        //Get the input from the player.
-        requestPlayerInput(game);
+        Direction action;
 
-        //Map from the action mask to a Vector2D action.
-        Direction action2D = Utils.processMovementActionKeys(getKeyHandler().getMask(), getPlayerID());
+        if (requestInput || actionMask == null) {
+            //Get the input from the player.
+            requestPlayerInput(game);
+            //Map from the action mask to a Vector2D action.
+            action = Utils.processMovementActionKeys(getKeyHandler().getMask(), getPlayerID());
+        } else {
+            action = Utils.processMovementActionKeys(actionMask, getPlayerID());
+        }
 
         //Update the orientation for this cycle's movement,
         // but only if there was a direction indicated.
-        if(!(action2D.equals(Types.DNONE)))
-            this._updateOrientation(action2D);
+        if(!(action.equals(Types.DNONE)))
+            this._updateOrientation(action);
 
         //Update movement.
         super.updatePassive();
     }
-
-
-    /**
-     * This move call is for the Forward Model tick() loop.
-     * @param game current state of the game.
-     * @param actionMask action to apply.
-     */
-    public void move(Game game, boolean[] actionMask)
-    {
-        lastMovementType = Types.MOVEMENT.MOVE;
-
-        //Map from the action mask to a Vector2D action.
-        Direction action2D = Utils.processMovementActionKeys(actionMask, getPlayerID());
-
-        //Update the orientation for this cycle's movement,
-        // but only if there was a direction indicated.
-        if(!(action2D.equals(Types.DNONE)))
-            this._updateOrientation(action2D);
-
-        //Update movement.
-        super.updatePassive();
-    }
-
 
     public VGDLSprite copy()
     {

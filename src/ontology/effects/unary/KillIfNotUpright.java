@@ -26,7 +26,6 @@ public class KillIfNotUpright extends Effect
     {
     	double current_rotation = ((sprite1.rotation+2*Math.PI)%(2*Math.PI));
     	if (!(current_rotation < 5.0 && current_rotation > 4.4)){
-    		System.out.println("wrong angle");
     		game.killSprite(sprite1, false);
     	}
     }

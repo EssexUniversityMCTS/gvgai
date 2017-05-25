@@ -1,14 +1,14 @@
 wwwwwwwwwwwwwwwwwwwwwwwwwwww
 w                          w
 w                        G1w
-w             ===  c    wwww
+w             ===  c    ...w
 w                     1    w
-w                w  2 ww   w
-w             c  wwwwwww   w
+w                .  2 ..   w
+w             c  w....ww   w
 w                          w
 w         c                w
 w          2        2      w
-w    c   www      wwwwww   w
+w    c   ...      ......   w
 w A      1   ===           w
-wwww   wwww                w
-wwwwwwwwww      wwww       w
+w...   ....                w
+wwww...www      ....       w

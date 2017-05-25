@@ -41,12 +41,10 @@ public class PullWithIt extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
-	if(sprite1 == null || sprite2 == null){
-            String[] className = this.getClass().getName().split("\\.");
-            Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1] + "] Either sprite1 or sprite2 is null."));
+        if(sprite1 == null || sprite2 == null){
+            Logger.getInstance().addMessage(new Message(Message.WARNING, "Neither the 1st nor 2nd sprite can be EOS with PullWithIt interaction."));
             return;
         }
-
         //Keep in the list, for the current cycle, the sprites that have triggered this event.
         int currentGameTime = game.getGameTick();
         if(currentGameTime > lastGameTime)
@@ -67,7 +65,7 @@ public class PullWithIt extends Effect
         v.normalise();
 
         int gridsize = 1;
-        if(sprite1.physicstype_id == Types.PHYSICS_GRID)
+        if(sprite1.physicstype == Types.GRID)
         {
             GridPhysics gp = (GridPhysics)(sprite1.physics);
             gridsize = gp.gridsize.width;
@@ -79,7 +77,7 @@ public class PullWithIt extends Effect
 
         sprite1._updatePos(new Direction(v.x, v.y), (int) (sprite2.speed*gridsize));
 
-        if(sprite1.physicstype_id != Types.PHYSICS_GRID)
+        if(sprite1.physicstype != Types.GRID)
         {
             sprite1.rect.y = sprite2.rect.y-sprite2.rect.height;
             sprite1.orientation = new Direction(sprite1.orientation.x(),0.0);

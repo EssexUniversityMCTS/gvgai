@@ -33,7 +33,7 @@ public class RandomInertial extends RandomNPC
     protected void loadDefaults()
     {
         super.loadDefaults();
-        physicstype_id = Types.PHYSICS_CONT;
+        physicstype = Types.CONT;
         is_oriented = true;
     }
 

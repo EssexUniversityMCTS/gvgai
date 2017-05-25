@@ -1,8 +1,8 @@
 BasicGame
     SpriteSet    
         pad    > Immovable img=oryx/alien1
-        avatar > SpaceshipAvatar stype=bullet physicstype_id=1 img=oryx/spaceship3
-        bullet > Missile physicstype_id=1 speed=25 singleton=True img=oryx/bullet2
+        avatar > SpaceshipAvatar stype=bullet physicstype=CONT img=oryx/spaceship3
+        bullet > Missile physicstype=CONT speed=25 singleton=True img=oryx/bullet2
         breakable > Immovable img=oryx/backOrange
             
     TerminationSet

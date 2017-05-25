@@ -1,4 +1,4 @@
-package ontology.sprites.missile;
+package ontology.sprites.npc;
 
 import java.awt.Dimension;
 
@@ -33,27 +33,43 @@ public class WalkerJumper extends Walker
         this.parseParameters(cnt);
     }
 
+    /**
+     * Overwritting intersects to check if we are on ground.
+     * @return true if it directly intersects with sp (as in the normal case), but additionally checks for on_ground condition.
+     */
+    public boolean intersects (VGDLSprite sp)
+    {
+        return this.groundIntersects(sp);
+    }
+
+
     public void update(Game game)
     {
     	super.updatePassive();
     	
-    	if (this.lastDirection().x == 0)
-    	{
-    		if (this.probability > Math.random())
-    		{
-    			Direction dd = new Direction(0,-this.strength);
-    			this.physics.activeMovement(this, dd, this.speed);
-    		}
-    	}
-    	super.update(game);
-    	
+    	if (on_ground && this.probability > Math.random())
+        {
+            Direction dd = new Direction(0,-this.jump_strength);
+            this.orientation = new Direction (this.orientation.x(),0.0);
+            this.physics.activeMovement(this, dd, this.speed);
+
+            Direction temp = new Direction (0,-1);
+            lastmove = cooldown; //need this to force this movement.
+            this._updatePos(temp, 5);
+
+        }else{
+            this.physics.activeMovement(this, this.orientation, this.speed);
+        }
+
+        on_ground = false;
     }
     
     protected void loadDefaults()
     {
         super.loadDefaults();
         probability = 0.1;
-        strength = 10;
+        jump_strength = 1;
+        max_speed = 5.0;
     }
 
     public VGDLSprite copy()
