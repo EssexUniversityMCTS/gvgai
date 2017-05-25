@@ -1,4 +1,9 @@
 #Instructions for GVGAI Single-Player Learning track
+**Thanks for using the GVGAI Single-Player Learning framework. All suggestions are welcome.**
+
+Contact: Jialin Liu, University of Essex, UK
+
+Email: *jialin.liu@essex.ac.uk* or *jialin.liu.cn@gmail.com*
 
 ## Useful links
 [GVGAI competition](http://www.gvgai.net/)
@@ -6,10 +11,6 @@
 [GVGAI framework](https://github.com/EssexUniversityMCTS/gvgai)
 
 [GVGAI wiki](https://github.com/EssexUniversityMCTS/gvgai/wiki) (planning tracks and level generation track)
-
-**Contact:** Jialin Liu, University of Essex, UK
-
-Email: *jialin.liu@essex.ac.uk* or *jialin.liu.cn@gmail.com*
 
 ## Overview
 The Single-Player Learning track is based on the GVGAI framework. Different from the planning tracks, no forward model is given to the agent, thus, no simulation of game is possible. It is notable that the agent still has the access to the current game state (objects in the current game state), as in planning tracks.
@@ -53,7 +54,7 @@ The `act` method selects an action to play at every game tick. It receives two p
 * `ElapsedCpuTimer elapsedTimer`: The timer with maximal time **40ms** for the whole training. The `act` has to finish in **40 ms**, otherwise, this agent is **disqualified** in the game being played.
 
 ### Abort the current game
-The agent can abort the current game by returning the action `ACTION_ESCAPE`. The agent will receive the results and state observation `sso` of the unfinished game and returns the next level to play using the method `int result(sso)`.
+The agent can abort the current game by returning the action `ACTION_ESCAPE`. The agent will receive the results and serialised state observation `sso` of the unfinished game, timer and returns the next level to play using the method `int result(...)`.
 
 ### Select the next level to play
     public int result(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer) {...}
@@ -65,9 +66,9 @@ During the step 2 of training, after terminating a game and receiving the result
 ## Structure of framework
 The framework can be downloaded [here](https://github.com/EssexUniversityMCTS/gvgai) (master). There are two main projects to work on:
 
-* `gvgai/clients/GVGAI-JavaClient`: This should be import as a separate project. It contains the all the necessary classes for client, including the communication and a sample random agent. You can create an agent for the Single-Player Learning Track of the GVG-AI competition just by creating a Java class that inherits from `utils.AbstractPlayer.java`. This class must be named `Agent.java` and its package must be the same as the username you used to register to the website (this is in order to allow the server to run your controller when you submit). 
+* `gvgai/clients/GVGAI-JavaClient`: It contains the all the necessary classes for client, including the communication and a sample random agent. You can create an agent for the Single-Player Learning Track of the GVG-AI competition just by creating a Java class that inherits from `utils.AbstractPlayer.java`. This class must be named `Agent.java` and its package must be the same as the username you used to register to the website (this is in order to allow the server to run your controller when you submit). 
 During testing phase, the package can be located in `gvgai/clients/GVGAI-JavaClient/src/agents`.
-* `gvgai/src/tracks/SingleLearning`: This package contains the `LearningMachine.java`, a test `TestSingleLearning.java`, `ServerComm.java` and the necessary `runClient_nocompile.bat` and `runClient_nocompile.sh` files for communication.
+* `gvgai/src/tracks/SingleLearning`: This package contains the `LearningMachine.java`, a test `TestSingleLearning.java`, `ServerComm.java` and the necessary `runClient_nocompile.bat` and `runClient_nocompile.sh` files for compiling the client and building the communication.
 
 ## How to test
 ### Step 1: Import the projects
@@ -82,7 +83,8 @@ During testing phase, the package can be located in `gvgai/clients/GVGAI-JavaCli
 If you want to use your own agent, you can pass the name of agent as a parameter to `JavaClient.java`. Otherwise, the sample random agent `gvgai/clients/GVGAI-JavaClient/src/agents/random/Agent.java` will be used.
 
 ### Step 4: Launch the server and client
-Run `TestSingleLearning.java` in `gvgai/src/tracks/SingleLearning`.
+Run `TestSingleLearning.java` in `gvgai/src/tracks/SingleLearning`. It will compile the client, build the communication and launch the program.
+
 
 ## Possible issues and actions
 ### If gson not found
