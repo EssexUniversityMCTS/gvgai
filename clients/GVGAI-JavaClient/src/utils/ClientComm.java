@@ -44,7 +44,7 @@ public class ClientComm {
     /**
      * If true, all messages sent to server are also printed to the log file
      */
-    private boolean LOG = true;
+    private boolean LOG = false;
 
     /**
      * Last Message ID received.
@@ -100,11 +100,13 @@ public class ClientComm {
 
             if(sso.phase == SerializableStateObservation.Phase.START)
             {
+                //io.writeToFile(lastMessageId + "#in start");
                 this.start();
 
             }if(sso.phase == SerializableStateObservation.Phase.INIT)
             {
 
+                //io.writeToFile(lastMessageId + "#in init");
                 this.init();
 
             }else if(sso.phase == SerializableStateObservation.Phase.ACT) {
@@ -113,6 +115,7 @@ public class ClientComm {
             }else if( (sso.phase == SerializableStateObservation.Phase.ABORT) ||
                       (sso.phase == SerializableStateObservation.Phase.END) ){
 
+//                io.writeToFile(lastMessageId + "#in result");
                 this.result();
 
             } else {
@@ -148,7 +151,7 @@ public class ClientComm {
             lastMessageId = Integer.parseInt(message[0]);
             String json = message[1];
 
-            //io.writeToFile("message received " + json);
+            //io.writeToFile("message received " + lastMessageId + "#" + json);
 
             //Gson gson = new GsonBuilder().registerTypeAdapterFactory(new ArrayAdapterFactory()).create();
             Gson gson = new Gson();
@@ -158,10 +161,6 @@ public class ClientComm {
             if (json.equals("START")){
                 this.sso.phase = SerializableStateObservation.Phase.START;
                 return;
-            }
-
-            if (json.equals("INIT")){
-                this.sso.phase = SerializableStateObservation.Phase.INIT;
             }
 
             // Else, deserialize the json using GSon
@@ -252,7 +251,7 @@ public class ClientComm {
             if (ect.elapsedMillis() > CompetitionParameters.ACTION_TIME_DISQ) {
                 io.writeToServer(lastMessageId, "END_OVERSPENT", LOG);
             } else {
-                //Overspent. Server (MovingAvatar) will take care of disqualifications.
+                //Overspent.
                 io.writeToServer(lastMessageId, "ACTION_NIL", LOG);
             }
         } else {
@@ -280,8 +279,8 @@ public class ClientComm {
         // Submit result and wait for next level.
         int nextLevel = player.result(sso, ect.copy());
 
-        //io.writeToFile("result timers: global: " + global_ect.elapsedSeconds()  + "(" + global_ect.exceededMaxTime() + ")" +
-        //        ", local: " + ect.elapsedSeconds() + "(" + ect.exceededMaxTime() + ")" );
+//        io.writeToFile("result timers: global: " + global_ect.elapsedSeconds()  + "(" + global_ect.exceededMaxTime() + ")" +
+//                ", local: " + ect.elapsedSeconds() + "(" + ect.exceededMaxTime() + ")" );
 
         if(ect.exceededMaxTime())
         {

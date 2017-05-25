@@ -287,8 +287,8 @@ public class LearningMachine {
 
         //Play the game
         //Get array of scores back.
-        //score = toPlay.playGame(players, randomSeed, false, 0);
-        score = toPlay.runGame(players, randomSeed);
+        score = toPlay.playGame(players, randomSeed, false, 0);
+        //score = toPlay.runGame(players, randomSeed);
         toPlay.printResult();
 
         //Finally, when the game is over, we need to tear the player down.
