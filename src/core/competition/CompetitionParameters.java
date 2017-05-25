@@ -118,7 +118,7 @@ public class CompetitionParameters
      * Close the open window when you die or win
      */
     public static boolean killWindowOnEnd = true;
-    
+
     /**
      * Java Warm-up time before starting the game.
      */

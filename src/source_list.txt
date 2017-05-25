@@ -1,0 +1,12 @@
+D:\WORK\GVGAI\learningTrack2017\clients\GVGAI-JavaClient\src\ClientComm.java 
+D:\WORK\GVGAI\learningTrack2017\clients\GVGAI-JavaClient\src\JavaClient.java 
+D:\WORK\GVGAI\learningTrack2017\clients\GVGAI-JavaClient\src\Observation.java 
+D:\WORK\GVGAI\learningTrack2017\clients\GVGAI-JavaClient\src\SerializableStateObservation.java 
+D:\WORK\GVGAI\learningTrack2017\clients\GVGAI-JavaClient\src\ServerCommTest.java 
+D:\WORK\GVGAI\learningTrack2017\clients\GVGAI-JavaClient\src\Test.java 
+D:\WORK\GVGAI\learningTrack2017\clients\GVGAI-JavaClient\src\ontology\Avatar.java 
+D:\WORK\GVGAI\learningTrack2017\clients\GVGAI-JavaClient\src\ontology\BitGrid.java 
+D:\WORK\GVGAI\learningTrack2017\clients\GVGAI-JavaClient\src\ontology\Game.java 
+D:\WORK\GVGAI\learningTrack2017\clients\GVGAI-JavaClient\src\ontology\Types.java 
+D:\WORK\GVGAI\learningTrack2017\clients\GVGAI-JavaClient\src\serialization\ArrayAdapter.java 
+D:\WORK\GVGAI\learningTrack2017\clients\GVGAI-JavaClient\src\serialization\ArrayAdapterFactory.java 

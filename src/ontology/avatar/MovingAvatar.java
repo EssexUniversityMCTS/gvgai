@@ -123,8 +123,7 @@ public class MovingAvatar extends VGDLSprite {
      * Requests the controller's input, setting the game.ki.action mask with the processed data.
      * @param game
      */
-    protected void requestPlayerInput(Game game)
-    {
+    protected void requestPlayerInput(Game game) {
         ElapsedCpuTimer ect = new ElapsedCpuTimer();
         ect.setMaxTimeMillis(CompetitionParameters.ACTION_TIME);
 
@@ -135,24 +134,25 @@ public class MovingAvatar extends VGDLSprite {
             action = this.player.act(game.getObservation(), ect.copy());
         }
 
-        if(CompetitionParameters.TIME_CONSTRAINED && ect.exceededMaxTime())
-        {
-            long exceeded =  - ect.remainingTimeMillis();
+        if (CompetitionParameters.TIME_CONSTRAINED && ect.exceededMaxTime()) {
+            long exceeded = -ect.remainingTimeMillis();
 
-            if(ect.elapsedMillis() > CompetitionParameters.ACTION_TIME_DISQ)
-            {
+            if (ect.elapsedMillis() > CompetitionParameters.ACTION_TIME_DISQ) {
                 //The agent took too long to replay. The game is over and the agent is disqualified
-                System.out.println("Too long: " + playerID + "(exceeding "+(exceeded)+"ms): controller disqualified.");
+                System.out.println("Too long: " + playerID + "(exceeding " + (exceeded) + "ms): controller disqualified.");
                 game.disqualify(playerID);
-            }else{
-                System.out.println("Overspent: " + playerID + "(exceeding "+(exceeded)+"ms): applying ACTION_NIL.");
+            } else {
+                System.out.println("Overspent: " + playerID + "(exceeding " + (exceeded) + "ms): applying ACTION_NIL.");
             }
 
             action = Types.ACTIONS.ACTION_NIL;
         }
 
-        if(!actions.contains(action))
+        if (action.equals(Types.ACTIONS.ACTION_ESCAPE)) {
+            game.abort();
+        } else if (!actions.contains(action)) {
             action = Types.ACTIONS.ACTION_NIL;
+        }
 
         this.player.logAction(action);
         game.setAvatarLastAction(action, getPlayerID());

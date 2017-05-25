@@ -1,4 +1,30 @@
-.DS_Store
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Intellij
 .idea/
-.class
-.iml
+.idea
+*.iml
+*.iws
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target
+out/
+/bin
+/build/classes/
+/build/dist/
+production/
+
+*.ipr
+*.class
+*.xml
+*.html
+*.txt
+*.png
+*.gif
