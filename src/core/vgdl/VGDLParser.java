@@ -22,109 +22,110 @@ import core.logging.Message;
  * Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
 public class VGDLParser {
-    /**
-     * Game which description is being read.
-     */
-    public Game game;
+	/**
+	 * Game which description is being read.
+	 */
+	public Game game;
 
-    /**
-     * Current set through the game description file.
-     */
-    public int currentSet;
+	/**
+	 * Current set through the game description file.
+	 */
+	public int currentSet;
 
-    /**
-     * Temporal structure to hold spriteOrder (before the final array is created
-     * and sorted).
-     */
-    private ArrayList<Integer> spriteOrderTmp;
+	/**
+	 * Temporal structure to hold spriteOrder (before the final array is created
+	 * and sorted).
+	 */
+	private ArrayList<Integer> spriteOrderTmp;
 
-    /**
-     * Temporal structure to hold which sprites are singleton.
-     */
-    private ArrayList<Integer> singletonTmp;
+	/**
+	 * Temporal structure to hold which sprites are singleton.
+	 */
+	private ArrayList<Integer> singletonTmp;
 
-    /**
-     * Maps integer identifier with sprite constructors
-     */
-    private HashMap<Integer, SpriteContent> constructors;
+	/**
+	 * Maps integer identifier with sprite constructors
+	 */
+	private HashMap<Integer, SpriteContent> constructors;
 
-    /**
-     * Set to true to print out debug information about parsing.
-     */
-    private static boolean VERBOSE_PARSER = false;
+	/**
+	 * Set to true to print out debug information about parsing.
+	 */
+	private static boolean VERBOSE_PARSER = false;
 
-    /**
-     * private Logger which logs warnings and errors
-     */
-    private Logger logger;
+	/**
+	 * private Logger which logs warnings and errors
+	 */
+	private Logger logger;
 
-    /**
-     * Default constructor.
-     */
-    public VGDLParser() {
-	currentSet = Types.VGDL_GAME_DEF;
-	spriteOrderTmp = new ArrayList<Integer>();
-	singletonTmp = new ArrayList<Integer>();
-	constructors = new HashMap<Integer, SpriteContent>();
-	logger = Logger.getInstance();
-    }
-
-    /**
-     * Parses a game passed whose file is passed by parameter.
-     * 
-     * @param gamedesc_file
-     *            filename of the file containing the game
-     * @return the game created
-     */
-    public Game parseGame(String gamedesc_file) {
-	String[] desc_lines = new IO().readFile(gamedesc_file);
-	if (desc_lines != null) {
-	    Node rootNode = indentTreeParser(desc_lines);
-
-	    // Parse here game and arguments of the first line
-	    game = VGDLFactory.GetInstance().createGame((GameContent) rootNode.content);
-	    game.initMulti();
-
-	    // Parse the parameter nodes first, if any.
-	    parseParameterNodes(rootNode);
-
-	    // Parse the nodes.
-	    try {
-		parseNodes(rootNode);
-	    } catch (Exception e) {
-		Logger.getInstance().addMessage(new Message(Message.ERROR, e.getMessage()));
-	    }
+	/**
+	 * Default constructor.
+	 */
+	public VGDLParser() {
+		currentSet = Types.VGDL_GAME_DEF;
+		spriteOrderTmp = new ArrayList<Integer>();
+		singletonTmp = new ArrayList<Integer>();
+		constructors = new HashMap<Integer, SpriteContent>();
+		logger = Logger.getInstance();
 	}
 
-	return game;
-    }
+	/**
+	 * Parses a game passed whose file is passed by parameter.
+	 *
+	 * @param gamedesc_file
+	 *            filename of the file containing the game
+	 * @return the game created
+	 */
+	public Game parseGame(String gamedesc_file) {
+		String[] desc_lines = new IO().readFile(gamedesc_file);
+		if (desc_lines != null) {
+			Node rootNode = indentTreeParser(desc_lines);
 
-    /**
-     * Parses a game passed whose file is passed by parameter.
-     * 
-     * @param gamedesc_file
-     *            filename of the file containing the game
-     * @return the game created
-     */
-    public Game parseGameWithParameters(String gamedesc_file, HashMap<String, ParameterContent> parameters) {
-	String[] desc_lines = new IO().readFile(gamedesc_file);
-	if (desc_lines != null) {
-	    Node rootNode = indentTreeParser(desc_lines);
+			// Parse here game and arguments of the first line
+			game = VGDLFactory.GetInstance().createGame((GameContent) rootNode.content);
+			game.initMulti();
 
-	    // Parse here game and arguments of the first line
-	    game = VGDLFactory.GetInstance().createGame((GameContent) rootNode.content);
-	    game.initMulti();
-	    game.setParameters(parameters);
+			// Parse the parameter nodes first, if any.
+			parseParameterNodes(rootNode);
 
-	    // Parse the normal nodes, but not the parameters.
-	    try {
-		parseNodes(rootNode);
-	    } catch (Exception e) {
-		Logger.getInstance().addMessage(new Message(Message.ERROR, e.getMessage()));
-	    }
+			// Parse the nodes.
+			try {
+				parseNodes(rootNode);
+			} catch (Exception e) {
+				// TODO: Mike
+			}
+		}
+
+		return game;
 	}
-	return game;
-    }
+
+	/**
+	 * Parses a game passed whose file is passed by parameter.
+	 *
+	 * @param gamedesc_file
+	 *            filename of the file containing the game
+	 * @return the game created
+	 */
+	public Game parseGameWithParameters(String gamedesc_file, HashMap<String, ParameterContent> parameters) {
+		String[] desc_lines = new IO().readFile(gamedesc_file);
+		if (desc_lines != null) {
+			Node rootNode = indentTreeParser(desc_lines);
+
+			// Parse here game and arguments of the first line
+			game = VGDLFactory.GetInstance().createGame((GameContent) rootNode.content);
+			game.initMulti();
+			game.setParameters(parameters);
+
+			// Parse the normal nodes, but not the parameters.
+			try {
+				parseNodes(rootNode);
+			} catch (Exception e) {
+				// TODO: Mike
+			}
+		}
+
+		return game;
+	}
 
 	/**
 	 * Parses the parameter nodes in VGDL description for game spaces.
@@ -548,6 +549,7 @@ public class VGDLParser {
 							// is an error
 						} else {
 							System.out.println("[PARSE ERROR] interaction entry references unknown sprite: " + ic.line);
+							// TODO throw exception here
 							throw new Exception("[PARSE ERROR] interaction entry references unknown sprite. Line: "
 									+ ic.lineNumber + " : " + ic.line);
 						}

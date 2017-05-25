@@ -1,5 +1,7 @@
 package core.content;
 
+import tools.Utils;
+
 import java.util.HashMap;
 
 /**
@@ -55,12 +57,23 @@ public abstract class Content
     {
         for (String parameter : this.parameters.keySet()) {
             String value = this.parameters.get(parameter);
+            String[] tokens = value.split(",");
+            String[] allValues = new String[tokens.length];
+            int idx = 0;
 
-            if(pcs.containsKey(value))
-            {
-                ParameterContent pc = pcs.get(value);
-                this.parameters.put(parameter, pc.getStValue());
+            for (String token : tokens) {
+                if(pcs.containsKey(token))
+                {
+                    ParameterContent pc = pcs.get(token);
+                    allValues[idx] = pc.getStValue();
+                }else{
+                    allValues[idx] = token;
+                }
+                idx++;
             }
+
+            String allValuesSt = Utils.toStringArray(allValues);
+            this.parameters.put(parameter, allValuesSt);
         }
     }
 

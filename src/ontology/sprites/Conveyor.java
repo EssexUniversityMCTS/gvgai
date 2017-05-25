@@ -35,7 +35,7 @@ public class Conveyor extends VGDLSprite
         super.loadDefaults();
         is_static = true;
         color = Types.BLUE;
-        strength = 1;
+        jump_strength = 1;
         draw_arrow = true;
         is_oriented = true;
     }

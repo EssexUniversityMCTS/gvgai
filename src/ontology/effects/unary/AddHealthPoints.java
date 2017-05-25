@@ -3,8 +3,6 @@ package ontology.effects.unary;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
-import core.logging.Logger;
-import core.logging.Message;
 import ontology.effects.Effect;
 
 /**
@@ -28,12 +26,6 @@ public class AddHealthPoints extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
-	if(sprite1 == null){
-            String[] className = this.getClass().getName().split("\\.");
-            Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1] + "] sprite1 is null."));
-            return;
-        }
-	
         applyScore = false;
         if(sprite1.healthPoints + value < sprite1.limitHealthPoints) {
             sprite1.healthPoints += value;

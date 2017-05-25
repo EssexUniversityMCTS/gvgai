@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
-import core.logging.Logger;
-import core.logging.Message;
 import ontology.effects.Effect;
 import tools.Direction;
 import tools.Vector2d;
@@ -34,11 +32,6 @@ public class WallStop extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
-	if(sprite1 == null || sprite2 == null){
-            String[] className = this.getClass().getName().split("\\.");
-            Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1] + "] Either sprite1 or sprite2 is null."));
-            return;
-        }
         // Stop just in front of the wall, removing that velocity component, but possibly sliding along it.
 
         //Keep in the list, for the current cycle, the sprites that have triggered this event.
@@ -53,7 +46,9 @@ public class WallStop extends Effect
         if(spritesThisCycle.contains(sprite1))
             return;
 
-        sprite1.setRect(sprite1.lastrect);
+        //sprite1.setRect(sprite1.lastrect);
+        sprite1.setRect(calculatePixelPerfect(sprite1, sprite2));
+
         double centerXDiff = Math.abs(sprite1.rect.getCenterX() - sprite2.rect.getCenterX());
         double centerYDiff = Math.abs(sprite1.rect.getCenterY() - sprite2.rect.getCenterY());
 

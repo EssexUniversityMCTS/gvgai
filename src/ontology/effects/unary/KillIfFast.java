@@ -3,8 +3,6 @@ package ontology.effects.unary;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
-import core.logging.Logger;
-import core.logging.Message;
 import ontology.effects.Effect;
 import tools.Vector2d;
 
@@ -29,12 +27,6 @@ public class KillIfFast extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
-	if(sprite1 == null || sprite2 == null){
-            String[] className = this.getClass().getName().split("\\.");
-            Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1] + "] Either sprite1 or sprite2 is null."));
-            return;
-        }
-	
     	double relspeed = 0.0;
     	if (sprite1.is_static){
     		relspeed = sprite2.speed;

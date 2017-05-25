@@ -193,11 +193,8 @@ public class LearningMachine {
             System.out.println("Starting Second Phase of Training in " + Types.NUM_TRAINING_LEVELS + " levels.");
             while (levelOutcome >= 0) {
                 // Play the selected level once
-                 System.err.println("played level=" + levelOutcome);
-
                 levelOutcome = playOneLevel(game_file, level_files[levelOutcome], 0, false, recordActions,
                         0, players, actionFiles, toPlay, scores, victories);
-                System.err.println("next level="+levelOutcome);
             }
         }
 

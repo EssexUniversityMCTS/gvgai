@@ -18,6 +18,8 @@ import java.awt.*;
  */
 public class Align extends Effect
 {
+    public boolean orient = true;
+
     public Align(InteractionContent cnt)
     {
         this.parseParameters(cnt);
@@ -27,13 +29,13 @@ public class Align extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
-	if(sprite1 == null || sprite2 == null){
-	    String[] className = this.getClass().getName().split("\\.");
-	    Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1]  + "] Either sprite1 or sprite2 is equal to null."));
-	    return;
-	}
-
-        sprite1.orientation = sprite2.orientation.copy();
+        if(sprite1 == null || sprite2 == null){
+            Logger.getInstance().addMessage(new Message(Message.WARNING, "Neither 1st not 2nd sprite can be EOS with Align interaction."));
+            return;
+        }
+        if (orient) {
+            sprite1.orientation = sprite2.orientation.copy();
+        }
         sprite1.rect = new Rectangle(sprite2.rect.x, sprite2.rect.y,
                 sprite1.rect.width, sprite1.rect.height);
     }
