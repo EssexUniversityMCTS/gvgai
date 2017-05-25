@@ -1,3 +1,0 @@
-Position X: 0.0, Position Y: 0.0, Orientation X: 0.0, Orientation Y: 0.0, Speed: 0.0, Last Action: NIL
-Actions: {}
-Resources: {}
