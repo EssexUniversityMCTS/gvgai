@@ -1,5 +1,5 @@
-#Instructions for GVGAI Single-Player Learning track
-**Thanks for using the GVGAI Single-Player Learning framework. All suggestions are welcome.**
+# Instructions for GVGAI Single-Player Learning track
+**Thanks for using the GVGAI Single-Player Learning framework. All suggestions are welcome.** 
 
 Contact: Jialin Liu, University of Essex, UK
 
@@ -13,10 +13,10 @@ Email: *jialin.liu@essex.ac.uk* or *jialin.liu.cn@gmail.com*
 [GVGAI wiki](https://github.com/EssexUniversityMCTS/gvgai/wiki) (planning tracks and level generation track)
 
 ## Overview
-The Single-Player Learning track is based on the GVGAI framework. Different from the planning tracks, no forward model is given to the agent, thus, no simulation of game is possible. It is notable that the agent still has the access to the current game state (objects in the current game state), as in planning tracks.
+The Single-Player Learning track is based on the GVGAI framework. Different from the planning tracks, no forward model is given to the agent, thus, no simulation of games is possible. The agent does still have access to the current game state (objects in the current game state), as in the planning tracks.
 
 ## Main steps
-For a given game, each agent will have **5 minutes** for training on levels 0,1,2 of the game, the level 3 and 4 will be used for validation. The communication time is not included by Timer.
+For a given game, each agent will have **5 minutes** for training on levels 0,1,2 of the game, the levels 3 and 4 will be used for validation. The communication time is not included by Timer.
 ### Main steps during training
 1. **Training phase 1:** Playing once levels 0, 1 and 2 in a sequence: Firstly, the agent plays once levels 0,1,2 sequentially. At the end of each level, whether the game has terminated normally or the agent forces to terminate the game, the server will send the results of the (possibly unfinished) game to the agent.
 2. **Training phase 2:** (Repeat until time up) Level selection: After having finished step 1, the agent is free to select the next level to play (from levels 0, 1 and 2) by calling the method `int result()` (detailed later). If the selected level id $$$\not\in \\{0,1,2\\}$$$, then a random level id $$$\in \\{0,1,2\\}$$$ will be passed and a new game will start. This step is repeated until **5 minutes** has been used.
@@ -67,16 +67,16 @@ During the step 2 of training, after terminating a game and receiving the result
 The framework can be downloaded [here](https://github.com/EssexUniversityMCTS/gvgai) (master). There are two main projects to work on:
 
 * `gvgai/clients/GVGAI-JavaClient`: It contains the all the necessary classes for client, including the communication and a sample random agent. You can create an agent for the Single-Player Learning Track of the GVG-AI competition just by creating a Java class that inherits from `utils.AbstractPlayer.java`. This class must be named `Agent.java` and its package must be the same as the username you used to register to the website (this is in order to allow the server to run your controller when you submit). 
-During testing phase, the package can be located in `gvgai/clients/GVGAI-JavaClient/src/agents`.
-* `gvgai/src/tracks/SingleLearning`: This package contains the `LearningMachine.java`, a test `TestSingleLearning.java`, `ServerComm.java` and the necessary `runClient_nocompile.bat` and `runClient_nocompile.sh` files for compiling the client and building the communication.
+During the testing phase, the package can be located in `gvgai/clients/GVGAI-JavaClient/src/agents`.
+* `gvgai/src/tracks/SingleLearning`: This package contains `LearningMachine.java`, a test `TestSingleLearning.java`, `ServerComm.java` and the necessary `runClient_nocompile.bat` and `runClient_nocompile.sh` files for compiling the client and building the communication.
 
 ## How to test
 ### Step 1: Import the projects
 * Launch the IDE, open the project `gvgai`.
 
 ### Step 2: (Optional) Advanced settings
-* Set the port for communication: If you don't want to use the default setting with port 8000, please edit the `TestSingleLearning.java`.
-* You may need to edit the `gvgai/src/tracks/SingleLearning/runClient_nocompile.bat` to specify the path to the sdk.
+* Set the port for communication: If you don't want to use the default setting with port 8000, please edit `TestSingleLearning.java`.
+* You may need to edit `gvgai/src/tracks/SingleLearning/runClient_nocompile.bat` to specify the path to the sdk.
 * If you move the `GVGAI-JavaClient` project to another folder, please change the path to the build and source folders in `runClient_nocompile.bat` or `runClient_nocompile.sh`. Attention: this will affect the location of the output file ClientLog.txt (see `GVGAI-JavaClient/src/utils/IO.java`).
 
 ### Step 3: Set your agent
