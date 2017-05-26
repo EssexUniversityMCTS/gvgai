@@ -82,8 +82,10 @@ During the testing phase, the package can be located in `gvgai/clients/GVGAI-Jav
 ### Step 3: Set your agent
 If you want to use your own agent, you can pass the name of agent as a parameter to `JavaClient.java`. Otherwise, the sample random agent `gvgai/clients/GVGAI-JavaClient/src/agents/random/Agent.java` will be used.
 
-### Step 4: Launch the server and client
+### Step 4: Executing from the server
 Run `TestSingleLearning.java` in `gvgai/src/tracks/SingleLearning`. It will compile the client, build the communication and launch the program.
+
+### Step 4b: Executing from the client (Work in progress).
 
 
 ## Possible issues and actions
