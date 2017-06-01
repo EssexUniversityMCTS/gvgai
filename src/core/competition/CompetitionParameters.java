@@ -71,6 +71,17 @@ public class CompetitionParameters
     public static final boolean OS_WIN = System.getProperty("os.name").contains("Windows");
 
     /**
+     * Use sockets for Learning track connection?
+     * (NOTE: Client code should also be configured to use sockets - or not).
+     */
+    public static final boolean USE_SOCKETS = true;
+
+    /**
+     * Milliseconds allowed per controller action.
+     */
+    public static final int SOCKET_PORT = 3000;
+
+    /**
      * Indicates if the overspend should be taken into account or not.
      *  Time limits are WALL TIME on Windows, because CPU TIME is not accurate enough
      *  at the level of milliseconds on this OS.

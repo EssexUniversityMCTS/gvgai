@@ -284,8 +284,8 @@ public class LearningMachine {
 
         //Play the game
         //Get array of scores back.
-        score = toPlay.playGame(players, randomSeed, false, 0);
-        //score = toPlay.runGame(players, randomSeed);
+//        score = toPlay.playGame(players, randomSeed, false, 0);
+        score = toPlay.runGame(players, randomSeed);
         toPlay.printResult();
 
         //Finally, when the game is over, we need to tear the player down.
@@ -319,12 +319,13 @@ public class LearningMachine {
      * @return the player, created but NOT initialized, ready to start playing the game.
      */
     private static LearningPlayer createPlayer(String[] cmd) throws IOException {
+
         Process client;
         ProcessBuilder builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2]);
         builder.redirectErrorStream(true);
-        //builder.redirectError(new File("logs/processErrorLog.txt"));
         client = builder.start();
-        return new LearningPlayer(client);
+        return new LearningPlayer(client, cmd[2]);
+
     }
 
     /**

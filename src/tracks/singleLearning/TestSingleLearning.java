@@ -1,6 +1,8 @@
 package tracks.singleLearning;
 
 import core.competition.CompetitionParameters;
+import tools.ElapsedCpuTimer;
+import tools.ElapsedWallTimer;
 
 import java.util.Random;
 
@@ -9,15 +11,22 @@ import java.util.Random;
  */
 public class TestSingleLearning {
     public static void main(String[] args) throws Exception {
+
+        ElapsedWallTimer wallClock = new ElapsedWallTimer();
+
         //Available controllers:
-        String scriptFile = "src/tracks/singleLearning/runClient_nocompile.sh";
+        String scriptFile;
         if(CompetitionParameters.OS_WIN)
         {
             scriptFile = "src\\tracks\\singleLearning\\runClient_nocompile.bat";
+        }else{
+            scriptFile = CompetitionParameters.USE_SOCKETS ? "src/tracks/singleLearning/runClient_nocompile.sh" :
+                                                             "src/tracks/singleLearning/runClient_nocompile_pipes.sh";
+
         }
 
         //Port for the socket.
-        String port = "8000";
+        String port = CompetitionParameters.SOCKET_PORT + "";
 
         //Agent to play with
         String agentName = "agents.random.Agent";
@@ -84,5 +93,12 @@ public class TestSingleLearning {
 
         // 1. This plays a training round for a specified game.
         LearningMachine.runMultipleGames(game, level_files, cmd, new String[]{null});
+
+
+
+        //Report total time spent.
+        int minutes = (int) wallClock.elapsedMinutes();
+        int seconds = ((int) wallClock.elapsedSeconds()) % 60;
+        System.out.printf("\n \t --> Real execution time: %d minutes, %d seconds of wall time.\n", minutes, seconds);
     }
 }

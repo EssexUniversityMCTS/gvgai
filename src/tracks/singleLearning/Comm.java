@@ -1,88 +1,42 @@
 package tracks.singleLearning;
 
-/**
- * Created by Daniel on 05.04.2017.
- */
-
+import core.competition.CompetitionParameters;
 import core.game.SerializableStateObservation;
 import core.game.StateObservation;
 import ontology.Types;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.Random;
-import java.util.logging.FileHandler;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
-public class ServerComm {
-
-    private static final Logger logger = Logger.getLogger(core.player.LearningPlayer.class.getName());
-
-    /**
-     * Reader of the player. Will read actions from the client.
-     */
-    public static BufferedReader input;
-
-    /**
-     * Writer of the player. Used to pass the client the state view information.
-     */
-    public static BufferedWriter output;
+/**
+ * Created by dperez on 01/06/2017.
+ */
+public abstract class Comm extends Thread {
 
     /**
      * Line separator for messages.
      */
-    private String lineSep = System.getProperty("line.separator");
+    protected String lineSep = System.getProperty("line.separator");
 
     /**
      * Special character to separate message ID from actual message
      */
-    private String TOKEN_SEP = "#";
+    protected String TOKEN_SEP = "#";
 
     /**
      * Message ID
      */
-    private long messageId;
+    protected long messageId;
 
     /**
-     * Client process
+     * Default constructor
      */
-    private Process client;
-
-    /**
-     * Static block that handles the debug log creation.
-     */
-    static {
-        FileHandler fh;
-        try {
-            // This block configure the logger with handler and formatter
-            fh = new FileHandler("logs/serverCommDebug.txt");
-            logger.addHandler(fh);
-            SimpleFormatter formatter = new SimpleFormatter();
-            fh.setFormatter(formatter);
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Public constructor of the player.
-     * @param client process that runs the agent.
-     */
-    public ServerComm(Process client) {
-        this.client = client;
+    public Comm() {
         this.messageId = 0;
-        initBuffers();
     }
 
-    /**
-     * Creates the buffers for pipe communication.
-     */
-    public void initBuffers() {
-        input = new BufferedReader(new InputStreamReader(client.getInputStream()));
-        output = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
-    }
+
 
     /***
      * This method is used to set the game state to either "ABORT_STATE" or "END_STATE"
@@ -113,7 +67,7 @@ public class ServerComm {
 
             if(response == null || response.equalsIgnoreCase("END_OVERSPENT"))
             {
-//                System.err.println("ServerComm:END_OVERSPENT");
+//                System.err.println("PipeComm:END_OVERSPENT");
                 return Types.LEARNING_RESULT_DISQ;
             }
 
@@ -133,61 +87,20 @@ public class ServerComm {
         return -1;
     }
 
-    /**
-     * Sends a message through the pipe.
-     *
-     * @param msg message to send.
-     */
-    public void commSend(String msg) throws IOException {
-        String message = messageId + TOKEN_SEP + msg + lineSep;
-        output.write(message);
-        output.flush();
-        messageId++;
-    }
 
-    /**
-     * Receives a message from the client.
-     *
-     * @return the response got from the client, or null if no response was received after due time.
-     */
-    public String commRecv() throws IOException {
-        String ret = input.readLine();
-        //System.out.println("Received in server: " + ret);
-        if(ret != null && ret.trim().length() > 0)
-        {
-            String messageParts[] = ret.split(TOKEN_SEP);
-            if(messageParts.length < 2) {
-                return null;
-            }
-
-            int receivedID = Integer.parseInt(messageParts[0]);
-            String msg = messageParts[1];
-
-            if(receivedID == (messageId-1)) {
-                return msg.trim();
-            } else if (receivedID < (messageId-1)) {
-                //Previous message, ignore and keep waiting.
-                return commRecv();
-            }else{
-                //A message from the future? Ignore and return null;
-                return null;
-            }
-        }
-        System.err.println("I will return nill");
-        return null;
-    }
 
     /**
      * This function is called at the beginning of the game for
      * initialization.
      * Will give up if no "START_DONE" received after having received 11 responses
      */
-    public boolean start() {
+    public boolean startComm() {
 
         try {
 
             //First thing we recieve: ACK from client about connection. We don't care about that, skip.
-            commRecv();
+            if(!CompetitionParameters.USE_SOCKETS)
+                commRecv();
 
             commSend("START");
             String response;
@@ -202,7 +115,6 @@ public class ServerComm {
                 System.out.println("START_FAILED");
                 return false;
             } else if (response.equalsIgnoreCase("START_DONE")) {
-                logger.fine("Received: " + response);
                 return true;
             }
 
@@ -216,6 +128,24 @@ public class ServerComm {
 
     }
 
+    /**
+     * Creates the buffers for communication.
+     */
+    public abstract void initBuffers();
+
+    /**
+     * Receives a message from the client.
+     *
+     * @return the response got from the client, or null if no response was received after due time.
+     */
+    public abstract String commRecv() throws IOException;
+
+    /**
+     * Sends a message through the pipe.
+     *
+     * @param msg message to send.
+     */
+    public abstract void commSend(String msg) throws IOException;
+
+
 }
-
-
