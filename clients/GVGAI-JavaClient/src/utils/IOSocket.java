@@ -40,7 +40,7 @@ public class IOSocket extends IO {
                     socket = new Socket(hostname, port);
                     connected = true;
                 }catch (ConnectException e) {
-                    System.out.println(e);
+                    //System.out.println(e);
                 }
             }
 

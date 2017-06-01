@@ -1,38 +1,27 @@
-package tracks.singleLearning;
+package tracks.singleLearning.utils;
 
 import core.competition.CompetitionParameters;
 import tools.ElapsedWallTimer;
+import tracks.singleLearning.LearningMachine;
 
 import java.util.Random;
 
 /**
- * Created by Daniel on 07.03.2017.
+ * Created by dperez on 01/06/2017.
  */
-public class TestSingleLearning {
+public class JavaServer {
+
     public static void main(String[] args) throws Exception {
 
         ElapsedWallTimer wallClock = new ElapsedWallTimer();
 
-        //Available controllers:
-        String scriptFile;
-        if(CompetitionParameters.OS_WIN)
-        {
-            scriptFile = "src\\tracks\\singleLearning\\utils\\runClient_nocompile.bat";
-        }else{
-            scriptFile = CompetitionParameters.USE_SOCKETS ? "tracks/singleLearning/runClient_nocompile.sh" :
-                    "tracks/singleLearning/utils/runClient_nocompile_pipes.sh";
-
-        }
-
         //Port for the socket.
         String port = CompetitionParameters.SOCKET_PORT + "";
 
-        //Agent to play with
-        String agentName = "agents.random.Agent";
-
         //Building the command line
-        String cmd[] = new String[]{scriptFile, agentName, port};
+        String cmd[] = new String[]{null, null, port};
 
+        System.out.println("Server asked to run at port: " + port);
 
         // Available games:
         String gridGamesPath = "examples/gridphysics/";

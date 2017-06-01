@@ -9,6 +9,13 @@ package utils;
  */
 public class CompetitionParameters
 {
+
+    /**
+     * Indicates if the OS is Windows.
+     */
+    public static final boolean OS_WIN = System.getProperty("os.name").contains("Windows");
+
+
     /**
      * Milliseconds allowed for controller's constructor.
      */

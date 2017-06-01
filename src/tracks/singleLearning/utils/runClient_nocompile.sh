@@ -15,4 +15,4 @@ mkdir -p $build_folder
 find ${src_folder} -name "*.java" > sources.txt
 javac -cp ${gson} -d $build_folder @sources.txt
 
-java -agentlib:jdwp=transport=dt_socket,server=y,address=${port},suspend=n -classpath ${build_folder}:${gson} JavaClient ${agent}
+java -agentlib:jdwp=transport=dt_socket,server=y,address=${port},suspend=n -classpath ${build_folder}:${gson} utils.JavaClient ${agent} > logs/output_client_redirect.txt
