@@ -30,9 +30,11 @@ public class CompetitionParameters
      */
     public static int ACTION_TIME_DISQ = 50;
 
+
     private static final int MILLIS_IN_MIN = 60*1000;
+
     /**
-     * Maximum time allowed for a learning track game, equivalent of 10 minutes in milliseconds.
+     * Maximum time allowed for a learning track game, equivalent of 5 minutes in milliseconds.
      */
 
     public static final int TOTAL_LEARNING_TIME = 5*MILLIS_IN_MIN; //10*MILLIS_IN_MIN
@@ -41,5 +43,15 @@ public class CompetitionParameters
      * Extra second for learning time, used in case the last game finished after TOTAL_LEARNING_TIME.
      */
     public static final int EXTRA_LEARNING_TIME = 1000; //1 second.
+
+    /**
+     * Use sockets for Learning track connection?
+     */
+    public static final boolean USE_SOCKETS = true;
+
+    /**
+     * Milliseconds allowed per controller action.
+     */
+    public static final int SOCKET_PORT = 3000;
 
 }

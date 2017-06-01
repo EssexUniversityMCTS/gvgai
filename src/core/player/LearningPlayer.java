@@ -1,11 +1,14 @@
 package core.player;
 
+import core.competition.CompetitionParameters;
 import core.game.SerializableStateObservation;
 import core.game.StateObservation;
 import core.game.StateObservationMulti;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
-import tracks.singleLearning.ServerComm;
+import tracks.singleLearning.Comm;
+import tracks.singleLearning.PipeComm;
+import tracks.singleLearning.SocketComm;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -16,40 +19,26 @@ import java.util.logging.Logger;
  */
 public class LearningPlayer extends Player {
 
-    private static final Logger logger = Logger.getLogger(LearningPlayer.class.getName());
-
-    /**
-     * Last action executed by this agent.
-     */
-    private Types.ACTIONS lastAction = null;
-
-    /**
-     * Line separator for messages.
-     */
-    private String lineSep = System.getProperty("line.separator");
-
-    /**
-     * Client process
-     */
-    private Process client;
-
     /**
      * Server communication channel
      */
-    private ServerComm serverComm;
+    private Comm comm;
 
     /**
      * Learning Player constructor.
      * Creates a new server side communication channel for every player.
      */
-    public LearningPlayer(Process proc){
-        this.serverComm = new ServerComm(proc);
+    public LearningPlayer(Process proc, String port){
+        if(CompetitionParameters.USE_SOCKETS)
+        {
+            //Sockets:
+            this.comm = new SocketComm(port);
+        }
+        //Else: pipes
+        else this.comm = new PipeComm(proc);
+
     }
 
-    // Getter for the server comm object
-    public ServerComm getServerComm() {
-        return serverComm;
-    }
 
     public Types.ACTIONS act(SerializableStateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
         return null;
@@ -73,16 +62,12 @@ public class LearningPlayer extends Player {
             so.currentGameState = Types.GAMESTATES.ACT_STATE;
             SerializableStateObservation sso = new SerializableStateObservation(so);
 
-            serverComm.commSend(sso.serialize(null));
+            comm.commSend(sso.serialize(null));
 
             // Receive the response and set ACTION_NIL as default action
-            String response = serverComm.commRecv();
+            String response = comm.commRecv();
             if (response == null)
                 response = Types.ACTIONS.ACTION_NIL.toString();
-
-            // Log and debug the received action
-            logger.fine("Received ACTION: " + response + "; ACT (Server) Response time: "
-                    + elapsedTimer.elapsedMillis() + " ms.");
 
             //System.out.println("Received ACTION: " + response + "; ACT (Server) Response time: "
             //        + elapsedTimer.elapsedMillis() + " ms.");
@@ -121,8 +106,8 @@ public class LearningPlayer extends Player {
             SerializableStateObservation sso = new SerializableStateObservation(so);
             sso.isValidation = isValidation;
 
-            serverComm.commSend(sso.serialize(null));
-            String initResponse = serverComm.commRecv();
+            comm.commSend(sso.serialize(null));
+            String initResponse = comm.commRecv();
 
             if(initResponse.equals("INIT_FAILED"))
                 return false;
@@ -148,7 +133,7 @@ public class LearningPlayer extends Player {
      */
     public int result(StateObservation stateObs)
     {
-        int result = this.serverComm.finishGame(stateObs);
+        int result = this.comm.finishGame(stateObs);
         //System.out.println("Client replied: " + result);
         return result;
     }
@@ -160,7 +145,7 @@ public class LearningPlayer extends Player {
     public boolean startPlayerCommunication() {
 
         //Initialize the controller.
-        if (!this.serverComm.start())
+        if (!this.comm.startComm())
             return false;
 
         return true;

@@ -60,9 +60,11 @@ public class ClientComm {
      * Creates the client.
      */
     public ClientComm(String agentName) {
-        io = new IO();
+
+        io = CompetitionParameters.USE_SOCKETS ? new IOSocket(CompetitionParameters.SOCKET_PORT) : new IOPipe();
         sso = new SerializableStateObservation();
         this.agentName = agentName;
+
     }
 
 
@@ -75,8 +77,7 @@ public class ClientComm {
         try {
             listen();
         } catch (Exception e) {
-            System.out.println(e);
-            io.writeToFile(e.toString());
+            io.logStackTrace(e);
         }
     }
 
@@ -93,10 +94,11 @@ public class ClientComm {
         while (line != null) {
 
             // Read a line from System.in and save it as a String
-            line = io.input.readLine();
+            line = io.readLine();
 
             // Process the line
             processLine(line);
+            //io.writeToFile("line: " + line);
 
             if(sso.phase == SerializableStateObservation.Phase.START)
             {
@@ -167,7 +169,7 @@ public class ClientComm {
             this.sso = gson.fromJson(json, SerializableStateObservation.class);
 
         } catch (Exception e){
-            e.printStackTrace(io.fileOutput);
+            io.logStackTrace(e);
         }
 
     }
@@ -203,7 +205,6 @@ public class ClientComm {
     private void startAgent()
     {
         try{
-            //io.writeToFile("Starting the agent " + agentName);
             Class<? extends AbstractPlayer> controllerClass = Class.forName(agentName).asSubclass(AbstractPlayer.class);
             Constructor controllerArgsConstructor = controllerClass.getConstructor();
             player = (AbstractPlayer) controllerArgsConstructor.newInstance();
