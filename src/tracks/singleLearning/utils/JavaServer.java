@@ -1,4 +1,4 @@
-package tracks.singleLearning;
+package tracks.singleLearning.utils;
 
 import core.competition.CompetitionParameters;
 import tools.ElapsedWallTimer;
@@ -7,40 +7,35 @@ import tracks.LearningMachine;
 import java.util.Random;
 
 /**
- * Created by Daniel on 07.03.2017.
+ * Created by dperez on 01/06/2017.
  */
-public class TestSingleLearning {
+public class JavaServer {
+
     public static void main(String[] args) throws Exception {
 
         ElapsedWallTimer wallClock = new ElapsedWallTimer();
 
-        //Available controllers:
-        String scriptFile;
-        if(CompetitionParameters.OS_WIN)
-        {
-            scriptFile = "src\\tracks\\singleLearning\\utils\\runClient_nocompile.bat";
-        }else{
-            scriptFile = CompetitionParameters.USE_SOCKETS ? "src/tracks/singleLearning/utils/runClient_nocompile.sh" :
-                                                             "src/tracks/singleLearning/utils/runClient_nocompile_pipes.sh";
-
-        }
-
         //Port for the socket.
         String port = CompetitionParameters.SOCKET_PORT + "";
 
-        //Agent to play with
-        String agentName = "agents.random.Agent";
-
         //Building the command line
-        String cmd[] = new String[]{scriptFile, agentName, port};
+        String cmd[] = new String[]{null, null, port};
 
+        String gamesPathPrepend = "";
+        if(args.length > 0)
+        {
+            gamesPathPrepend = args[0];
+        }
 
         // Available games:
-        String gridGamesPath = "examples/gridphysics/";
-        String contGamesPath = "examples/contphysics/";
+        String gridGamesPath = gamesPathPrepend + "examples/gridphysics/";
+        String contGamesPath = gamesPathPrepend + "examples/contphysics/";
         String gamesPath;
         String games[];
         boolean GRID_PHYSICS = true;
+
+
+        System.out.println("Server asked to run at port: " + port + " where games are IN " + gamesPathPrepend);
 
         // All public games (gridphysics)
         if(GRID_PHYSICS) {

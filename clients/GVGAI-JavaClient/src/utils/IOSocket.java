@@ -39,8 +39,9 @@ public class IOSocket extends IO {
 
                     socket = new Socket(hostname, port);
                     connected = true;
+                    System.out.println("Client connected to server [OK]");
                 }catch (ConnectException e) {
-                    System.out.println(e);
+                    //System.out.println(e);
                 }
             }
 

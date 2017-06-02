@@ -189,6 +189,8 @@ public class ClientComm {
         ElapsedCpuTimer ect = new ElapsedCpuTimer();
         ect.setMaxTimeMillis(CompetitionParameters.START_TIME);
 
+        System.out.println("Starting to play [OK]");
+
         //Starts the agent (calls the constructor).
         startAgent();
 

@@ -1,4 +1,4 @@
-package tracks.singleLearning;
+package tracks.singleLearning.utils;
 
 import core.competition.CompetitionParameters;
 import core.game.SerializableStateObservation;

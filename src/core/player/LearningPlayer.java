@@ -6,12 +6,11 @@ import core.game.StateObservation;
 import core.game.StateObservationMulti;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
-import tracks.singleLearning.Comm;
-import tracks.singleLearning.PipeComm;
-import tracks.singleLearning.SocketComm;
+import tracks.singleLearning.utils.Comm;
+import tracks.singleLearning.utils.PipeComm;
+import tracks.singleLearning.utils.SocketComm;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 
 /**
