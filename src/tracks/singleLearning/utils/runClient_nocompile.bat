@@ -16,4 +16,4 @@ dir /s/b %src_folder%\*.java > sources.txt
 javac -cp %gson% -d %build_folder% @sources.txt
 
 rem Run the JavaClient class	
-java -agentlib:jdwp=transport=dt_socket,server=y,address=%port%,suspend=n -cp %build_folder%;%gson% JavaClient %agent%
+java -agentlib:jdwp=transport=dt_socket,server=y,address=%port%,suspend=n -cp %build_folder%;%gson% utils.JavaClient %agent%  > logs/output_client_redirect.txt 2> logs/output_client_redirect_err.txt

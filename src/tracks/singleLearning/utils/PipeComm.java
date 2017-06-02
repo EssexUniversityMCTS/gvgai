@@ -1,31 +1,36 @@
-package tracks.singleLearning;
+package tracks.singleLearning.utils;
 
 /**
  * Created by Daniel on 05.04.2017.
  */
 
 import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Scanner;
 
-public class SocketComm extends Comm {
+public class PipeComm extends Comm {
 
+    /**
+     * Reader of the player. Will read actions from the client.
+     */
+    public static BufferedReader input;
 
-    public int port = 3000; //default
-    private Socket socket;
-    private Scanner in;
-    private PrintStream out;
-    private boolean end;
+    /**
+     * Writer of the player. Used to pass the client the state view information.
+     */
+    public static BufferedWriter output;
+
+    /**
+     * Client process
+     */
+    private Process client;
 
 
     /**
      * Public constructor of the player.
+     * @param client process that runs the agent.
      */
-    public SocketComm(String portStr) {
+    public PipeComm(Process client) {
         super();
-        end = false;
-        port = Integer.parseInt(portStr);
+        this.client = client;
         initBuffers();
     }
 
@@ -34,44 +39,10 @@ public class SocketComm extends Comm {
      */
     @Override
     public void initBuffers() {
-        try{
-
-            //Accepting the socket connection.
-            while (socket == null) {
-                ServerSocket serverSocket = new ServerSocket(port);
-                socket = serverSocket.accept();
-            }
-
-            //Initialize input and output through socket.
-            in = new Scanner(socket.getInputStream());
-            out = new PrintStream(socket.getOutputStream());
-
-        }catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-
+        input = new BufferedReader(new InputStreamReader(client.getInputStream()));
+        output = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
     }
 
-    public void start()
-    {
-        try {
-            initBuffers();
-
-            while(!end)
-            {
-
-            }
-            //out.format("Sending back: " + received);
-
-            // may want to close this client side instead
-            socket.close();
-            System.out.println("Closed socket");
-            System.out.println();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Sends a message through the pipe.
@@ -80,8 +51,8 @@ public class SocketComm extends Comm {
      */
     public void commSend(String msg) throws IOException {
         String message = messageId + TOKEN_SEP + msg + lineSep;
-        out.format(message);
-        out.flush();
+        output.write(message);
+        output.flush();
         messageId++;
     }
 
@@ -91,7 +62,7 @@ public class SocketComm extends Comm {
      * @return the response got from the client, or null if no response was received after due time.
      */
     public String commRecv() throws IOException {
-        String ret = in.nextLine();
+        String ret = input.readLine();
         //System.out.println("Received in server: " + ret);
         if(ret != null && ret.trim().length() > 0)
         {
@@ -113,7 +84,7 @@ public class SocketComm extends Comm {
                 return null;
             }
         }
-        System.err.println("I will return null");
+        System.err.println("I will return nill");
         return null;
     }
 

@@ -1,4 +1,4 @@
-package tracks.singleLearning;
+package tracks;
 
 import core.competition.CompetitionParameters;
 import core.game.Game;
@@ -315,16 +315,31 @@ public class LearningMachine {
     /**
      * Creates a player given its name. This method starts the process that runs this client.
      *
-     * @param cmd name of the agent to create.
+     * @param cmd name of the script to execute, with parameters (agent name and port).
+     *            If cmd[0] is null, we (the server) is not starting the communication, the client is, via sockets.
      * @return the player, created but NOT initialized, ready to start playing the game.
      */
     private static LearningPlayer createPlayer(String[] cmd) throws IOException {
 
-        Process client;
-        ProcessBuilder builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2]);
-        builder.redirectErrorStream(true);
-        client = builder.start();
-        return new LearningPlayer(client, cmd[2]);
+//        Process client;
+//        ProcessBuilder builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2]);
+//        builder.redirectErrorStream(true);
+//        client = builder.start();
+//        return new LearningPlayer(client, cmd[2]);
+
+        String scriptName = cmd[0];
+
+        if(scriptName != null)
+        {
+            Process client;
+            ProcessBuilder builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2]);
+            builder.redirectErrorStream(true);
+            client = builder.start();
+            return new LearningPlayer(client, cmd[2]);
+        }else{
+            assert (CompetitionParameters.USE_SOCKETS);
+            return new LearningPlayer(null, cmd[2]);
+        }
 
     }
 
