@@ -10,7 +10,7 @@ class IOSocket:
         self.port = port
         self.hostname = 'localhost'
 
-    def initBuffers():
+    def initBuffers(self):
         connected = False
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 

@@ -10,13 +10,7 @@ class ACTIONS(Enum):
     ACTION_ESCAPE = 7
 
 class WINNER(Enum):
-    -100 = PLAYER_DISQ
-    -1 = NO_WINNER
-    0 =PLAYER_LOSES
-    1 = PLAYER_WINS
-
-    def __init__(self,value):
-        self.key = self[value]
-    
-    def key():
-        return self.key
+    PLAYER_DISQ = -100
+    NO_WINNER = -1
+    PLAYER_LOSES = 0
+    PLAYER_WINS = 1

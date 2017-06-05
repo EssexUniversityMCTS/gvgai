@@ -1,3 +1,5 @@
+import sys
+import os
 from CompetitionParameters import CompetitionParameters
 from IOSocket import IOSocket
 from AbstractPlayer import *
@@ -7,8 +9,8 @@ class ClientComm:
     TOKEN_SEP = '#'
     
     def __init__(self, agentName):
-        self.io = IOSocket(CompetitionParametrs.SOCKET_PORT)
-        self.sso = SerializableStateObservation()
+        self.io = IOSocket.IOSocket(CompetitionParametrs.SOCKET_PORT)
+        self.sso = SerializableStateObservation.SerializableStateObservation()
         self.LOG = false
         self.agentName = agentName
         self.lasMessageId = 0
@@ -67,7 +69,7 @@ class ClientComm:
     def processLine(self,msg):
         try:
             if(msg == None):
-                print 'Message is null.'
+                print ('Message is null.')
 
             message = msg.split(self.TOKEN_SEP)
 
@@ -82,7 +84,7 @@ class ClientComm:
             else:
                 self.sso = json.loads(js, object_hook=as_sso)
         except:
-            print 'Line processing failed.'
+            print ('Line processing failed.')
 
     """
      * Manages the start of the communication. It starts the whole process, and sets up the timer for the whole run.
@@ -90,15 +92,15 @@ class ClientComm:
     def start(self):
         # insert timer stuff here...
 
-        print 'Starting to play [OK]'
+        print ('Starting to play [OK]')
         self.startAgent()
 
     def startAgent(self):
         try:
             # do not currently know how to do this any better...
-            self.player = AbstractPlayer()
+            self.player = AbstractPlayer.AbstractPlayer()
         except:
-            print 'Agent startup failed."
+            print ('Agent startup failed.')
 
     """
      * Manages the init of a game played.

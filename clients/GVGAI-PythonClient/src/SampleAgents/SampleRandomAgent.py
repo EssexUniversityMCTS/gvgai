@@ -1,7 +1,12 @@
+import random
 from SerializableStateObservation import SerializableStateObservation
 from Types import Types
 
 class AbstractPlayer:
+
+    def __init__(self):
+        pass
+    
     def init(sso, elapsedTimer):
      """
      * Public method to be called at the start of every level of a game.
@@ -22,8 +27,11 @@ class AbstractPlayer:
      * @param elapsedTimer Timer (40ms)
      * @return The action to be performed by the agent.
      """
-         
-         pass
+        if sso.gameTick == 100:
+            return Types.ACTIONS['ACTION_ESCAPE']
+
+        index = random.randint(0,len(sso.availableActions))
+        return sso.availableActions[index]
 
     def result(self, sso, elapsedTimer):
      """
@@ -38,5 +46,4 @@ class AbstractPlayer:
      * The level is bound in the range of [0,2]. If the input is any different, then the level
      * chosen will be ignored, and the game will play a random one instead.
      """
-        
-         pass
+         return random.randint(0,3)
