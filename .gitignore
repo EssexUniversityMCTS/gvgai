@@ -11,9 +11,7 @@
 
 # Mac
 .DS_Store
-<<<<<<< HEAD
 /bin/
-=======
 
 # Maven
 log/
@@ -31,4 +29,3 @@ production/
 *.txt
 *.png
 *.gif
->>>>>>> 9e2dc59531344dbaa2a561b99f32e389170b6958
