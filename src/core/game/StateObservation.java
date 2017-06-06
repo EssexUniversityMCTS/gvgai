@@ -1,15 +1,13 @@
 package core.game;
 
-import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.TreeSet;
-
 import ontology.Types;
 import tools.KeyHandler;
 import tools.Vector2d;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TreeSet;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,6 +17,12 @@ import tools.Vector2d;
  * This is a Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
 public class StateObservation {
+
+    /**
+     * ID of the player that sees this observation
+     */
+    int playerID;
+
     /**
      * This is the model of the game, used to apply an action and
      * get to the next state. This model MUST NOT be public.
@@ -30,9 +34,15 @@ public class StateObservation {
      *
      * @param a_model forward model of the game.
      */
-    public StateObservation(ForwardModel a_model) {
+    public StateObservation(ForwardModel a_model, int playerID) {
         model = a_model;
+        this.playerID = playerID;
     }
+
+    /**
+     * Field to represent the current game's state.
+     */
+    public Types.GAMESTATES currentGameState;
 
     /**
      * Returns an exact copy of the state observation object.
@@ -40,7 +50,7 @@ public class StateObservation {
      * @return a copy of the state observation.
      */
     public StateObservation copy() {
-        StateObservation copyObs = new StateObservation(model.copy());
+        StateObservation copyObs = new StateObservation(model.copy(), this.playerID);
         return copyObs;
     }
 
@@ -67,6 +77,16 @@ public class StateObservation {
     {
         model.setNewSeed(seed);
     }
+
+    /**
+     * Return the current state of the game
+     * @return current state of the game as a GAMESTATES type.
+     */
+    public Types.GAMESTATES getGameState()
+    {
+        return this.currentGameState;
+    }
+
 
     /**
      * Returns the actions that are available in this game for

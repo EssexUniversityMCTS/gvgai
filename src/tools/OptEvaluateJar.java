@@ -53,13 +53,16 @@ public class OptEvaluateJar {
 		}
 		break;
 	    case "maxsteps":
-		CompetitionParameters.MAX_TIMESTEPS = Integer.parseInt(value);
+		//CompetitionParameters.MAX_TIMESTEPS = Integer.parseInt(value);
+			System.out.println("Warning: CompetitionParameters.MAX_TIMESTEPS was not changed." );
 		break;
 	    case "repetitions":
-		CompetitionParameters.OPTIMIZATION_REPEATITION = Integer.parseInt(value);
+		//CompetitionParameters.OPTIMIZATION_REPEATITION = Integer.parseInt(value);
+			System.out.println("Warning: CompetitionParameters.OPTIMIZATION_REPEATITION was not changed." );
 		break;
 	    case "evaluations":
-		CompetitionParameters.OPTIMIZATION_EVALUATION = Integer.parseInt(value);
+		//CompetitionParameters.OPTIMIZATION_EVALUATION = Integer.parseInt(value);
+			System.out.println("Warning: CompetitionParameters.OPTIMIZATION_EVALUATION was not changed." );
 		break;
 	    case "safetymargin":
 		tracks.singlePlayer.tools.ucbOptimizerAgent.Agent.safetyMargin = Integer.parseInt(value);

@@ -3,8 +3,6 @@ package ontology.effects.binary;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
-import core.logging.Logger;
-import core.logging.Message;
 import ontology.Types;
 import ontology.effects.Effect;
 import tools.Direction;
@@ -21,65 +19,75 @@ import java.awt.*;
  */
 public class BounceDirection extends Effect
 {
-    public boolean pixelPerfect;
+    public double maxBounceAngleDeg;
+    private double maxBounceAngleRad;
 
     public BounceDirection(InteractionContent cnt)
     {
-        pixelPerfect = false;
+        maxBounceAngleDeg = 60; //Default value
         this.parseParameters(cnt);
+        maxBounceAngleRad = Math.toRadians(maxBounceAngleDeg);
     }
 
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
-    { 
-	if(sprite1 == null || sprite2 == null){
-	    String[] className = this.getClass().getName().split("\\.");
-	    Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1]  + "] Either sprite1 or sprite2 is equal to null."));
-	    return;
-	}
-	
-        sprite1.setRect(sprite1.lastrect);
-        Direction inc = sprite1.orientation;
-        Vector2d snorm = new Vector2d((-sprite1.rect.getCenterX() + sprite2.rect.getCenterX()), (-sprite1.rect.getCenterY() + sprite2.rect.getCenterY()));
-        snorm.normalise();
-        Double dp = snorm.x * inc.x() + snorm.y * inc.y();
-        sprite1.orientation = new Direction(-2 * dp * snorm.x + inc.x(), -2 * dp * snorm.y + inc.y());
-        //sprite1.speed *= (1. - sprite1.friction);
-    }
-
-    private Rectangle calculatePixelPerfect(VGDLSprite sprite1, VGDLSprite sprite2)
     {
-        Vector2d sprite1v = new Vector2d(sprite1.rect.getCenterX() - sprite1.lastrect.getCenterX(),
-                sprite1.rect.getCenterY() - sprite1.lastrect.getCenterY());
+        //We need the actual intersection:
+        Rectangle interRect = sprite1.rect.intersection(sprite2.rect);
+        double padLenght = sprite2.rect.height;
+        double diff, travelDir;
+        Vector2d vel = sprite1._velocity();
 
-        sprite1v.normalise();
-        Direction sprite1Dir = new Direction(sprite1v.x, sprite1v.y);
+//        boolean verticalBounce = interRect.width > interRect.height;
+//        boolean horizontalBounce = interRect.width < interRect.height;
 
-        if(sprite1Dir.equals(Types.DDOWN))
+        double distX =  Math.min(Math.abs (sprite1.lastrect.x - (sprite2.rect.x + sprite2.rect.width)) ,
+                Math.abs ((sprite1.lastrect.x + sprite1.rect.width) - sprite2.rect.x));
+
+        double distY =  Math.min(Math.abs (sprite1.lastrect.y - (sprite2.rect.y + sprite2.rect.height)) ,
+                Math.abs ((sprite1.lastrect.y + sprite1.rect.height) - sprite2.rect.y));
+
+
+        double tX = Math.abs(distX / vel.x);
+        double tY = Math.abs(distY / vel.y);
+        boolean horizontalBounce = (tX < tY);
+        boolean verticalBounce = (tY < tX);
+
+        if(verticalBounce)
         {
-            int overlay = (sprite1.rect.y + sprite1.rect.height) - sprite2.rect.y;
-            return new Rectangle(sprite1.rect.x, sprite1.rect.y - overlay,
-                    sprite1.rect.width, sprite1.rect.height);
+            //Bouncing vertically
+            padLenght = sprite2.rect.width;
+            diff = sprite1.rect.getCenterX() - sprite2.rect.getCenterX();
+            travelDir = (sprite1.rect.getCenterY() < sprite2.rect.getCenterY())? 1 : -1;
         }
-        else if(sprite1Dir.equals(Types.DRIGHT))
-        {
-            int overlay = (sprite1.rect.x + sprite1.rect.width) - sprite2.rect.x;
-            return new Rectangle(sprite1.rect.x - overlay, sprite1.rect.y,
-                    sprite1.rect.width, sprite1.rect.height);
-        }
-        else if(sprite1Dir.equals(Types.DUP))
-        {
-            return new Rectangle(sprite1.rect.x, sprite2.rect.y + sprite2.rect.height,
-                    sprite1.rect.width, sprite1.rect.height);
-        }
-        else if(sprite1Dir.equals(Types.DLEFT))
-        {
-            return new Rectangle(sprite2.rect.x + sprite2.rect.width, sprite1.rect.y,
-                    sprite1.rect.width, sprite1.rect.height);
+        else if(horizontalBounce){
+            diff = sprite2.rect.getCenterY()  - sprite1.rect.getCenterY();
+            travelDir = (sprite1.rect.getCenterX() > sprite2.rect.getCenterX())? 1 : -1;
+        }else{
+            sprite1.orientation = new Direction(-sprite1.orientation.x(), sprite1.orientation.y());
+            //System.out.println("DIAGONAL");
+            return;
         }
 
+        //Calculate bouncing angle relative to the position where sprite1 hit sprite2.
+        double relHit = diff / (0.5 * padLenght);
+        if(relHit < 0) relHit = Math.max(relHit, -1); else relHit = Math.min(relHit, 1); //Keeping it in [-1,1]
+        double bounceAngle = relHit * maxBounceAngleRad;
 
-        return sprite1.lastrect;
+        double xDir, yDir;
+        if(verticalBounce)
+        {
+            xDir = Math.sin(bounceAngle);
+            yDir = -Math.cos(bounceAngle) * travelDir;
+        }else{
+            xDir = Math.cos(bounceAngle) * travelDir;
+            yDir = -Math.sin(bounceAngle);
+        }
 
+        //Assign new orientation with the calculated new direction.
+        Vector2d outDir = new Vector2d(xDir, yDir);
+        outDir.normalise();
+        sprite1.orientation = new Direction(outDir.x, outDir.y);
     }
+
 }

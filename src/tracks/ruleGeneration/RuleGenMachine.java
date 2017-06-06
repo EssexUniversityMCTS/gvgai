@@ -130,7 +130,7 @@ public class RuleGenMachine
 
 			if (no_players > 1) {
 				// multi player
-				players[i] = ArcadeMachine.createMultiPlayer(names[i], actionFile, toPlay.getObservationMulti(),
+				players[i] = ArcadeMachine.createMultiPlayer(names[i], actionFile, toPlay.getObservationMulti(i),
 						randomSeed, i, humans[i]);
 			} else {
 				// single player
@@ -220,7 +220,6 @@ public class RuleGenMachine
 			toPlay.handleResult();
 			toPlay.printResult();
 			System.out.println(e.getMessage());
-			System.out.println(e.getStackTrace().toString());
 			e.printStackTrace();
 			return false;
 		}

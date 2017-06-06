@@ -15,8 +15,8 @@ public class StateObservationMulti extends StateObservation {
      *
      * @param a_model forward model of the game.
      */
-    public StateObservationMulti(ForwardModel a_model) {
-        super(a_model);
+    public StateObservationMulti(ForwardModel a_model, int playerID) {
+        super(a_model, playerID);
     }
 
     /**
@@ -184,7 +184,7 @@ public class StateObservationMulti extends StateObservation {
 
 
     public StateObservationMulti copy() {
-        StateObservationMulti copyObs = new StateObservationMulti(model.copy());
+        StateObservationMulti copyObs = new StateObservationMulti(model.copy(), this.playerID);
         return copyObs;
     }
 

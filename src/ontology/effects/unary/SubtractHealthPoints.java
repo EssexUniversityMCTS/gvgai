@@ -4,8 +4,6 @@ import core.vgdl.VGDLRegistry;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
-import core.logging.Logger;
-import core.logging.Message;
 import ontology.effects.Effect;
 
 import java.util.ArrayList;
@@ -25,20 +23,19 @@ public class SubtractHealthPoints extends Effect
     public String stype = "";
     public int itype = -1;
     public int limit; //kills sprite1 when less or equal to this value (default=0).
+    public String scoreChangeIfKilled;
+    private String defScoreChange;
 
-    public SubtractHealthPoints(InteractionContent cnt) throws Exception
+    public SubtractHealthPoints(InteractionContent cnt)
     {
         is_kill_effect = true;
         limit = 0;
         value = 1;
+        scoreChangeIfKilled = "0";
         this.parseParameters(cnt);
-        if (!Objects.equals(stype, "")){
+        if (!Objects.equals(stype, ""))
             itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
-            if(itype == -1){
-                String[] className = this.getClass().getName().split("\\.");
-                throw new Exception("[" + className[className.length - 1] + "] Undefined sprite " + stype);
-            }
-        }
+        defScoreChange = scoreChange;
     }
 
     @Override
@@ -59,18 +56,14 @@ public class SubtractHealthPoints extends Effect
                 }
             }
         }
-        else{
-            if(sprite1 == null){
-                String[] className = this.getClass().getName().split("\\.");
-                Logger.getInstance().addMessage(new Message(Message.WARNING, "[" + className[className.length - 1] + "] sprite1 is null."));
-                return;
-            }
-        }
         s.healthPoints -= value;
         if(s.healthPoints <= limit)
         {
             //boolean variable set to false to indicate the sprite was not transformed
             game.killSprite(s, false);
+            scoreChange = scoreChangeIfKilled;
+        } else {
+            scoreChange = defScoreChange;
         }
     }
 }

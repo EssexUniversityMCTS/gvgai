@@ -119,6 +119,7 @@ public class TimeEffect extends Effect implements Comparable<TimeEffect> {
         tef.repeating = this.repeating;
         tef.delegate = this.delegate;
         tef.isNative = this.isNative;
+        tef.enabled = this.enabled;
 
         return tef;
     }
@@ -137,6 +138,7 @@ public class TimeEffect extends Effect implements Comparable<TimeEffect> {
         tef.nextExecution = this.nextExecution;
         tef.itype = this.itype;
         tef.repeating = this.repeating;
+        tef.enabled = this.enabled;
     }
 
 }

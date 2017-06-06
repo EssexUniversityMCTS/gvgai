@@ -1,2 +1,34 @@
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Intellij
+.idea/
+.idea
+*.iml
+*.iws
+
+# Mac
 .DS_Store
+<<<<<<< HEAD
 /bin/
+=======
+
+# Maven
+log/
+target
+out/
+/bin
+/build/classes/
+/build/dist/
+production/
+
+*.ipr
+*.class
+*.xml
+*.html
+*.txt
+*.png
+*.gif
+>>>>>>> 9e2dc59531344dbaa2a561b99f32e389170b6958

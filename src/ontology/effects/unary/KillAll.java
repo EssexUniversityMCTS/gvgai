@@ -22,15 +22,12 @@ public class KillAll extends Effect {
     public String stype;
     public int itype;
 
-    public KillAll(InteractionContent cnt) throws Exception
+    public KillAll(InteractionContent cnt)
     {
         is_kill_effect = true;
         this.parseParameters(cnt);
         itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
-        if(itype == -1){
-            String[] className = this.getClass().getName().split("\\.");
-            throw new Exception("[" + className[className.length - 1] + "] Undefined sprite " + stype);
-        }
+
     }
 
     @Override
