@@ -493,8 +493,8 @@ public class Chromosome implements Comparable<Chromosome>{
 	/**
 	 * get a fitness value for the number of unique rules satisfied during playing the game
 	 * @param gameState		the current level after playing using the best player
-	 * @param minUniqueRule	minimum amount of rules needed to reach 1
-	 * @return				near 1 when its near to minUniqueRule
+	 * @param minUniqueRule		minimum amount of rules needed to reach 1
+	 * @return			near 1 when its near to minUniqueRule
 	 */
 	private double getUniqueRuleScore(StateObservation gameState, double minUniqueRule){
 		double unique = 0;

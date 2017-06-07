@@ -339,6 +339,7 @@ public class VGDLFactory
      * Parses the parameters from content, assigns them to variables in obj.
      * @param content contains the parameters to read.
      * @param obj object with the variables to assign.
+     * @throws Exception 
      */
     public void parseParameters(Content content, Object obj)
     {
@@ -390,10 +391,10 @@ public class VGDLFactory
                 try {
                     fieldMap.get(parameter).set(obj, objVal);
                 } catch (IllegalAccessException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                } catch (Exception e)
-                {
-                    e.printStackTrace();
+                    //TODO: Do it later
+                    
+                } catch (Exception e) {
+                    //TODO: Do it later
                 }
             }
             else

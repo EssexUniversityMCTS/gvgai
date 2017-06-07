@@ -292,7 +292,12 @@ public class VGDLParser {
 				char firstChar = content.charAt(0);
 				// figure out the indent of the line.
 				int indent = line.indexOf(firstChar);
-				last = new Node(content, indent, last, currentSet, lineNumber);
+				try{
+				    last = new Node(content, indent, last, currentSet, lineNumber);
+				}
+				catch(Exception e){
+				    Logger.getInstance().addMessage(new Message(Message.ERROR, "[PARSE ERROR]" + e.getMessage() + " Line: " + lineNumber + ":" + line.trim()));
+				}
 			}
 			lineNumber++;
 		}

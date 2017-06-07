@@ -245,10 +245,31 @@ public class RuleGenerator extends AbstractRuleGenerator{
 			for (int i = 0; i < avatar.length; i++) {
 				for (int j = 0; j < spawners.length; j++) {
 					for (int k = 0; k < spawners[j].sprites.size(); k++) {
+					    if(!harmfulObjects.contains(spawners[j].sprites.get(k))){
+						collectible.add(spawners[j].sprites.get(k));
 						interactions.add(spawners[j].sprites.get(k) + " " + avatar[i].name + " > killSprite scoreChange=1");
+					    }
 					}
 				}
 			}
+		}
+		
+		for (int j = 0; j < spawners.length; j++) {
+		    for (int k = 0; k < spawners[j].sprites.size(); k++) {
+			if(harmfulObjects.contains(spawners[j].sprites.get(k))){
+			    harmfulObjects.add(spawners[j].name);
+			    break;
+			}
+		    }
+		}
+		
+		for (int j = 0; j < spawners.length; j++) {
+		    for (int k = 0; k < spawners[j].sprites.size(); k++) {
+			if(collectible.contains(spawners[j].sprites.get(k))){
+			    collectible.add(spawners[j].name);
+			    break;
+			}
+		    }
 		}
 	}
 
@@ -493,6 +514,12 @@ public class RuleGenerator extends AbstractRuleGenerator{
      */
     @Override
     public String[][] generateRules(SLDescription sl, ElapsedCpuTimer time) {
+	this.interactions.clear();
+	this.terminations.clear();
+	this.collectible.clear();
+	this.harmfulObjects.clear();
+	this.fleeingNPCs.clear();
+	
 	this.getResourceInteractions();
 	this.getImmovableInteractions();
 	this.getNPCInteractions();

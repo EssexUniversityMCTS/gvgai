@@ -9,6 +9,8 @@ import core.vgdl.VGDLFactory;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.logging.Logger;
+import core.logging.Message;
 import ontology.Types;
 import tools.Direction;
 import tools.Vector2d;
@@ -228,17 +230,35 @@ public abstract class Effect{
      */
     public int getScoreChange(int playerID) {
         String[] scores = scoreChange.split(",");
-        return playerID < scores.length ? Integer.parseInt(scores[playerID]) : Integer.parseInt(scores[0]);
+        try{
+            return playerID < scores.length ? Integer.parseInt(scores[playerID]) : Integer.parseInt(scores[0]);
+        }
+        catch(Exception e){
+            Logger.getInstance().addMessage(new Message(Message.WARNING, "scoreChange must be an integer number not " + scoreChange + "."));
+            return 0;
+        }
     }
 
     public int getCounter(int idx) {
         String[] scores = counter.split(",");
-        return idx < scores.length ? Integer.parseInt(scores[idx]) : Integer.parseInt(scores[0]);
+        try{
+            return idx < scores.length ? Integer.parseInt(scores[idx]) : Integer.parseInt(scores[0]);
+        }
+        catch(Exception e){
+            Logger.getInstance().addMessage(new Message(Message.WARNING, "counter must be an integer number not " + counter + "."));
+            return 0;
+        }
     }
     
     public int getCounterElse(int idx) {		
-    	String[] scores = counterElse.split(",");		
-    	return idx < scores.length ? Integer.parseInt(scores[idx]) : Integer.parseInt(scores[0]);		
+    	String[] scores = counterElse.split(",");
+    	try{
+    	    return idx < scores.length ? Integer.parseInt(scores[idx]) : Integer.parseInt(scores[0]);	
+    	}
+    	catch(Exception e){
+            Logger.getInstance().addMessage(new Message(Message.WARNING, "counterElse must be an integer number not " + counterElse + "."));
+            return 0;
+        }
     }
     
     public ArrayList<String> getEffectSprites(){
