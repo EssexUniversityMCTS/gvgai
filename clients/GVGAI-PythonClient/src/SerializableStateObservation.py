@@ -14,10 +14,9 @@ class SerializableStateObservation:
         self.worldDimension = []
         self.blockSize = 0
 
-
         self.avatarSpeed = 0.0
         self.avatarOrientation = []
-        self.avatarLastAction = Types.ACTIONS['ACTION_NIL']
+        self.avatarLastAction = None  # Types.ACTIONS['ACTION_NIL']
         self.avatarType = 0
         self.avatarHealthPoints = 0
         self.avatarMaxHealthPoints = 0
@@ -31,15 +30,15 @@ class SerializableStateObservation:
         immovablePositions = []
         movablePositions = []
         resourcesPositions = []
-        protalsPositions = []
+        portalsPositions = []
         fromAvatarSpritePositions = []
 
 class Phase(Enum):
-    START = 1
-    INIT = 2
-    ACT = 3
-    ABORT = 4
-    END = 5
+    START = 0
+    INIT = 1
+    ACT = 2
+    ABORT = 3
+    END = 4
 
         
     

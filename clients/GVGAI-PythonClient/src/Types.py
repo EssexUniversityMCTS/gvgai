@@ -1,13 +1,13 @@
 from enum import Enum
 
 class ACTIONS(Enum):
-    ACTION_NIL = 1
-    ACTION_UP = 2
-    ACTION_LEFT = 3
-    ACTION_DOWN = 4
-    ACTION_RIGHT = 5
-    ACTION_USE = 6
-    ACTION_ESCAPE = 7
+    ACTION_NIL = 0
+    ACTION_UP = 1
+    ACTION_LEFT = 2
+    ACTION_DOWN = 3
+    ACTION_RIGHT = 4
+    ACTION_USE = 5
+    ACTION_ESCAPE = 6
 
 class WINNER(Enum):
     PLAYER_DISQ = -100

@@ -1,13 +1,14 @@
 import random
 from SerializableStateObservation import SerializableStateObservation
-from Types import Types
+from Types import *
+from AbstractPlayer import *
 
-class AbstractPlayer:
+class Agent(AbstractPlayer):
 
     def __init__(self):
         pass
     
-    def init(sso, elapsedTimer):
+    def init(self, sso, elapsedTimer):
      """
      * Public method to be called at the start of every level of a game.
      * Perform any level-entry initialization here.

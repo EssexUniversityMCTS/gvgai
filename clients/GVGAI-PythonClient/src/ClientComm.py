@@ -9,9 +9,9 @@ class ClientComm:
     TOKEN_SEP = '#'
     
     def __init__(self, agentName):
-        self.io = IOSocket.IOSocket(CompetitionParametrs.SOCKET_PORT)
+        self.io = IOSocket.IOSocket(CompetitionParameters.SOCKET_PORT)
         self.sso = SerializableStateObservation.SerializableStateObservation()
-        self.LOG = false
+        self.LOG = False
         self.agentName = agentName
         self.lasMessageId = 0
 
@@ -19,7 +19,7 @@ class ClientComm:
         self.io.initBuffers()
 
         try:
-            listen()
+            self.listen()
         except:
             print 'Failed to listen.'
 
@@ -35,7 +35,7 @@ class ClientComm:
         while (line is not None):
             line = self.io.readline()
 
-            processLine(line)
+            self.processLine(line)
 
             if (self.sso.phase == SerializableStateObservation.Phase['START']):
                 self.start()
@@ -108,7 +108,7 @@ class ClientComm:
     def init(self):
         # insert timer stuff here...
         ect = ElapsedCpuTimer()
-        ect.setMaxTimeMillis(Competitionparameters.INITIALIZATION_TIME)
+        ect.setMaxTimeMillis(CompetitionParameters.INITIALIZATION_TIME)
 
         self.player.init(self.sso, ect.copy())
 
@@ -124,7 +124,7 @@ class ClientComm:
     def act(self):
         # insert timer stuff here...
         ect = ElapsedCpuTimer()
-        ect.setMaxTimeMillis(Competitionparameters.ACTION_TIME)
+        ect.setMaxTimeMillis(CompetitionParameters.ACTION_TIME)
 
         action = str(self.player.act(self.sso, ect.copy()))
 

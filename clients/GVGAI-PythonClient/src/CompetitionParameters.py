@@ -13,5 +13,5 @@ class CompetitionParameters:
     MILLIS_IN_MIN = 60*1000
     TOTAL_LEARNING_TIME = 5*MILLIS_IN_MIN
     EXTRA_LEARNING_TIME = 1000
-    USE_SOCKETS = true
+    USE_SOCKETS = True
     SOCKET_PORT = 3000

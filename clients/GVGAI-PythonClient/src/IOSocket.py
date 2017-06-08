@@ -44,4 +44,3 @@ class IOSocket:
         except:
             print 'Error trying to write ' + file + ' to server.'
 
-    

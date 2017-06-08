@@ -1,8 +1,9 @@
 from SerializableStateObservation import SerializableStateObservation
-from Types import Types
+from Types import *
 
 class AbstractPlayer:
-    def init(sso, elapsedTimer):
+
+    def init(self, sso, elapsedTimer):
      """
      * Public method to be called at the start of every level of a game.
      * Perform any level-entry initialization here.
@@ -38,5 +39,4 @@ class AbstractPlayer:
      * The level is bound in the range of [0,2]. If the input is any different, then the level
      * chosen will be ignored, and the game will play a random one instead.
      """
-        
-         pass
+        pass
