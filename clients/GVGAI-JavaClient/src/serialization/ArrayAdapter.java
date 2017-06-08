@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
-import com.google.gson.stream.JsonWriter;
+import utils.com.google.gson.Gson;
+import utils.com.google.gson.GsonBuilder;
+import utils.com.google.gson.TypeAdapter;
+import utils.com.google.gson.stream.JsonReader;
+import utils.com.google.gson.stream.JsonToken;
+import utils.com.google.gson.stream.JsonWriter;
 
 /***
  * This is a custom array adapter used to interpret GSon arrays in a special, tokenized manner.

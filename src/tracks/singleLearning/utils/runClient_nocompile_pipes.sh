@@ -9,10 +9,9 @@ agent=$1
 port=$2
 src_folder='clients/GVGAI-JavaClient/src'
 build_folder='clients/GVGAI-JavaClient/out'
-gson='lib/gson-2.8.0.jar'
 
 mkdir -p $build_folder
 find ${src_folder} -name "*.java" > sources.txt
-javac -cp ${gson} -d $build_folder @sources.txt
+javac -d $build_folder @sources.txt
 
-java -agentlib:jdwp=transport=dt_socket,server=y,address=${port},suspend=n -classpath ${build_folder}:${gson} utils.JavaClient ${agent}
+java -agentlib:jdwp=transport=dt_socket,server=y,address=${port},suspend=n -classpath ${build_folder} utils.JavaClient ${agent}
