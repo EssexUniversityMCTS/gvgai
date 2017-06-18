@@ -19,7 +19,7 @@ public class TestLearningClient
         String scriptFile;
         if(CompetitionParameters.OS_WIN)
         {
-            scriptFile = "src\\utils\\runServer_nocompile.bat";
+            scriptFile = "clients\\GVGAI-JavaClient\\src\\utils\\runServer_nocompile.bat";
         }else{
             scriptFile = "src/utils/runServer_nocompile.sh";
         }

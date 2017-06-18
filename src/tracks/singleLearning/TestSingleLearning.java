@@ -31,8 +31,11 @@ public class TestSingleLearning {
         //Agent to play with
         String agentName = "agents.random.Agent";
 
+        // Type of client to test against (Python/Java)
+        String clientType = "java";
+
         //Building the command line
-        String cmd[] = new String[]{scriptFile, agentName, port};
+        String cmd[] = new String[]{scriptFile, agentName, port, clientType};
 
 
         // Available games:

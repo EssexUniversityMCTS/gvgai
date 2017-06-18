@@ -21,7 +21,7 @@ class ClientComm:
         try:
             self.listen()
         except:
-            print 'Failed to listen.'
+            print ('Failed to listen.')
 
     """
      * Method that perpetually listens for messages from the server.
@@ -76,7 +76,7 @@ class ClientComm:
             if (len(message) < 2):
                 return
 
-            self.lastMessageId = (int) message[0]
+            self.lastMessageId = message[0]
             js = message[1]
 
             if (js == 'START'):

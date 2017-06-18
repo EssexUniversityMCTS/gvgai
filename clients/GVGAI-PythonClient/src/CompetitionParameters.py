@@ -1,7 +1,7 @@
 import sys
 
 class CompetitionParameters:
-    if 'win32' in sys.platform():
+    if 'win32' in sys.platform:
         OS_WIN = True
     else:
         OS_WIN = False

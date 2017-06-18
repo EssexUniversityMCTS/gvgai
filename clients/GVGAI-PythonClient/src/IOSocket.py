@@ -2,7 +2,7 @@ import socket
 import sys
 import os
 
-from ClientComm import ClientComm
+import ClientComm
 
 class IOSocket:
     
@@ -18,9 +18,9 @@ class IOSocket:
             try:
                 self.s.bind(hostname, port)
                 connected = True
-                print 'Client connected to server [OK]'
+                print ('Client connected to server [OK]')
             except socket.error as msg:
-                print 'Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
+                print ('Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1])
                 sys.exit()
                 
     def writeToFile(line):
@@ -42,5 +42,5 @@ class IOSocket:
             self.s.send(line + os.linesep)
             self.s.flush()
         except:
-            print 'Error trying to write ' + file + ' to server.'
+            print ('Error trying to write ' + file + ' to server.')
 

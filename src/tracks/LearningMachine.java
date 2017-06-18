@@ -332,7 +332,9 @@ public class LearningMachine {
         if(scriptName != null)
         {
             Process client;
-            ProcessBuilder builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2]);
+            if (cmd[3].equals(null))
+                cmd[3] = "python";
+            ProcessBuilder builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2], cmd[3]);
             builder.redirectErrorStream(true);
             client = builder.start();
             return new LearningPlayer(client, cmd[2]);
