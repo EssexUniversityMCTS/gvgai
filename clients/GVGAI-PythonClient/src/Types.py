@@ -1,6 +1,4 @@
-from enum import Enum
-
-class ACTIONS(Enum):
+class ACTIONS():
     ACTION_NIL = 0
     ACTION_UP = 1
     ACTION_LEFT = 2
@@ -9,7 +7,7 @@ class ACTIONS(Enum):
     ACTION_USE = 5
     ACTION_ESCAPE = 6
 
-class WINNER(Enum):
+class WINNER():
     PLAYER_DISQ = -100
     NO_WINNER = -1
     PLAYER_LOSES = 0

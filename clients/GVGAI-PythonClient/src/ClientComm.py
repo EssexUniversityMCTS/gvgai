@@ -1,4 +1,4 @@
-import sys
+import sys, traceback
 import os
 from CompetitionParameters import CompetitionParameters
 from IOSocket import IOSocket
@@ -9,8 +9,8 @@ class ClientComm:
     TOKEN_SEP = '#'
     
     def __init__(self, agentName):
-        self.io = IOSocket.IOSocket(CompetitionParameters.SOCKET_PORT)
-        self.sso = SerializableStateObservation.SerializableStateObservation()
+        self.io = IOSocket(CompetitionParameters.SOCKET_PORT)
+        self.sso = SerializableStateObservation()
         self.LOG = False
         self.agentName = agentName
         self.lasMessageId = 0
@@ -22,6 +22,7 @@ class ClientComm:
             self.listen()
         except:
             print ('Failed to listen.')
+            traceback.print_exc()
 
     """
      * Method that perpetually listens for messages from the server.
@@ -33,7 +34,7 @@ class ClientComm:
         line = ''
 
         while (line is not None):
-            line = self.io.readline()
+            line = self.io.readLine()
 
             self.processLine(line)
 
@@ -85,6 +86,7 @@ class ClientComm:
                 self.sso = json.loads(js, object_hook=as_sso)
         except:
             print ('Line processing failed.')
+            traceback.print_exc()
 
     """
      * Manages the start of the communication. It starts the whole process, and sets up the timer for the whole run.
@@ -98,9 +100,10 @@ class ClientComm:
     def startAgent(self):
         try:
             # do not currently know how to do this any better...
-            self.player = AbstractPlayer.AbstractPlayer()
+            self.player = AbstractPlayer()
         except:
             print ('Agent startup failed.')
+            traceback.print_exc()
 
     """
      * Manages the init of a game played.

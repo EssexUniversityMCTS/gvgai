@@ -1,5 +1,5 @@
 import socket
-import sys
+import sys, traceback
 import os
 
 import ClientComm
@@ -8,19 +8,21 @@ class IOSocket:
     
     def __init__(self,port):  
         self.port = port
-        self.hostname = 'localhost'
+        self.hostname = '127.0.0.1'
 
     def initBuffers(self):
-        connected = False
+        self.connected = False
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-        while not connected:
+        while not self.connected:
             try:
-                self.s.bind(hostname, port)
-                connected = True
+                print ("Selected host is: " + str(self.hostname))
+                print ("Selected port is: " + str(self.port))
+                self.s.connect((self.hostname, self.port))
+                self.connected = True
                 print ('Client connected to server [OK]')
-            except socket.error as msg:
-                print ('Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1])
+            except:
+                traceback.print_exc()
                 sys.exit()
                 
     def writeToFile(line):
@@ -30,12 +32,12 @@ class IOSocket:
 
     def writeToServer(self, messageId, line, log):
         msg = messageId + ClientComm.TOKEN_SEP + line
-        self.s.send(msg)
+        self.s.send(bytes(msg))
         if log:
             writeToFile(msg)
 
     def readLine(self):
-        return self.s.recv(RECV_BUFFER)
+        return self.s.recv(2048)
 
     def writeToServer(self, line):
         try:

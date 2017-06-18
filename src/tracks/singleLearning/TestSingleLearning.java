@@ -32,7 +32,7 @@ public class TestSingleLearning {
         String agentName = "agents.random.Agent";
 
         // Type of client to test against (Python/Java)
-        String clientType = "java";
+        String clientType = "python";
 
         //Building the command line
         String cmd[] = new String[]{scriptFile, agentName, port, clientType};
