@@ -13,7 +13,9 @@ import ontology.Types;
 import tools.ElapsedCpuTimer;
 import tools.StatSummary;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Random;
 
 /**
@@ -61,8 +63,6 @@ public class LearningMachine {
      */
     public static void runMultipleGames(String game_file, String[] level_files,
                                             String cmd[], String[] actionFiles) throws IOException {
-//        int trainingPlays = 0;// TODO: 22/05/17 to be removed?
-
         VGDLFactory.GetInstance().init(); //This always first thing to do.
         VGDLRegistry.GetInstance().init();
 
@@ -70,7 +70,6 @@ public class LearningMachine {
         LearningPlayer player = LearningMachine.createPlayer(cmd);
 
         // Play the training games.
-//        System.out.print(trainingPlays + "\n");// TODO: 22/05/17 to be removed?
         runGames(game_file, level_files, 1, player, actionFiles);
     }
 
@@ -329,15 +328,23 @@ public class LearningMachine {
 
         String scriptName = cmd[0];
 
-        if(scriptName != null)
-        {
+        if(scriptName != null) {
             Process client;
             if (cmd[3].equals(null))
                 cmd[3] = "python";
-            ProcessBuilder builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2], cmd[3]);
-            builder.redirectErrorStream(true);
-            client = builder.start();
-            return new LearningPlayer(client, cmd[2]);
+            if (cmd[3] == "python") {
+                String command = "python " + cmd[1];
+                Process p = Runtime.getRuntime().exec(command);
+                BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                String ret = in.readLine();
+                System.out.println("value is : " + ret);
+                return null;
+            } else {
+                ProcessBuilder builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2], cmd[3]);
+                builder.redirectErrorStream(true);
+                client = builder.start();
+                return new LearningPlayer(client, cmd[2]);
+            }
         }else{
             assert (CompetitionParameters.USE_SOCKETS);
             return new LearningPlayer(null, cmd[2]);

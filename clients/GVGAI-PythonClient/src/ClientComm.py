@@ -5,6 +5,7 @@ from IOSocket import IOSocket
 from AbstractPlayer import *
 from SerializableStateObservation import *
 
+
 class ClientComm:
     TOKEN_SEP = '#'
     

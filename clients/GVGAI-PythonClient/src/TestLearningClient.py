@@ -1,7 +1,7 @@
 from ClientComm import ClientComm
 from CompetitionParameters import CompetitionParameters
 import subprocess, traceback, sys
-
+import os.path
 
 class TestLearningClient:
     def __init__(self):
@@ -10,7 +10,7 @@ class TestLearningClient:
         if(CompetitionParameters.OS_WIN):
             self.scriptFile = "utils\\runServer_nocompile_python.bat"
         else:
-            self.scriptFile = "utils/runServer_nocompile_python.sh"
+            self.scriptFile = os.path.join("utils", "runServer_nocompile_python.sh")
             
         self.agentName = "SampleRandomAgent"
         

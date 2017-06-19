@@ -1,8 +1,8 @@
 from SerializableStateObservation import SerializableStateObservation
 from Types import *
 
-class AbstractPlayer:
 
+class AbstractPlayer:
     def init(self, sso, elapsedTimer):
         """
         * Public method to be called at the start of every level of a game.

@@ -19,5 +19,4 @@ rm -rf $build_folder
 mkdir -p $build_folder
 find ${src_folder} -name "*.java" > sources.txt
 javac -cp ${gson} -d $build_folder @sources.txt
-
 java -agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=n -classpath ${build_folder}:${gson} tracks.singleLearning.utils.JavaServer ${SERVER_GAMES_DIR} > logs/output_server_redirect.txt 2> logs/output_server_redirect_err.txt

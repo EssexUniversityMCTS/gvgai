@@ -1,5 +1,6 @@
 import sys
 
+
 class CompetitionParameters:
     if 'win32' in sys.platform:
         OS_WIN = True

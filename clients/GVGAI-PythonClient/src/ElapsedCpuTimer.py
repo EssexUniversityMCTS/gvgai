@@ -1,5 +1,6 @@
 import time
 
+
 class ElapsedCpuTimer:
     if 'win32' in sys.platform():
         OS_WIN = True

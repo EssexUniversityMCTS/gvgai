@@ -73,7 +73,7 @@ public class Utils
 
     public static Polygon roundedPoints(Rectangle rect)
     {
-        System.out.println("Utils.roundedPoints not implemented yet");
+        System.out.println("utils.roundedPoints not implemented yet");
         return null;
     }
 
@@ -135,7 +135,7 @@ public class Utils
         if(input != -epsilon) {
             return (input + epsilon) * (1.0 + epsilon * (random - 0.5));
         }else {
-            //System.out.format("Utils.tiebreaker(): WARNING: value equal to epsilon: %f\n",input);
+            //System.out.format("utils.tiebreaker(): WARNING: value equal to epsilon: %f\n",input);
             return (input + epsilon) * (1.0 + epsilon * (random - 0.5));
         }
     }

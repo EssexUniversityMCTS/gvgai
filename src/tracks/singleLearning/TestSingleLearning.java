@@ -14,25 +14,37 @@ public class TestSingleLearning {
 
         ElapsedWallTimer wallClock = new ElapsedWallTimer();
 
+        // Type of client to test against (Python/Java)
+        String clientType = "python";
+
         //Available controllers:
         String scriptFile;
-        if(CompetitionParameters.OS_WIN)
-        {
-            scriptFile = "src\\tracks\\singleLearning\\utils\\runClient_nocompile.bat";
-        }else{
-            scriptFile = CompetitionParameters.USE_SOCKETS ? "src/tracks/singleLearning/utils/runClient_nocompile.sh" :
-                                                             "src/tracks/singleLearning/utils/runClient_nocompile_pipes.sh";
-
+        if (clientType.equals("python")) {
+            if (CompetitionParameters.OS_WIN) {
+                scriptFile = "src\\tracks\\singleLearning\\utils\\runClient_nocompile.bat";
+            } else {
+                scriptFile = CompetitionParameters.USE_SOCKETS ? "src/tracks/singleLearning/utils/runClient_nocompile.sh" :
+                    "src/tracks/singleLearning/utils/runClient_nocompile_pipes.sh";
+            }
+        } else {
+            if (CompetitionParameters.OS_WIN) {
+                scriptFile = "clients\\GVGAI-PythonClient\\src\\utils\\runServer_nocompile_python.sh";
+            } else {
+                scriptFile = "clients/GVGAI-PythonClient/src/utils/runServer_nocompile_python.sh";
+            }
         }
 
         //Port for the socket.
         String port = CompetitionParameters.SOCKET_PORT + "";
 
         //Agent to play with
-        String agentName = "agents.random.Agent";
+        String agentName;
+        if (clientType.equals("python")) {
+            agentName = "agents.random.Agent";
+        } else {
+            agentName = "clients/GVGAI-PythonClient/src/sampleAgents/SampleRandomAgent.py";
+        }
 
-        // Type of client to test against (Python/Java)
-        String clientType = "python";
 
         //Building the command line
         String cmd[] = new String[]{scriptFile, agentName, port, clientType};
