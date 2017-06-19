@@ -330,21 +330,10 @@ public class LearningMachine {
 
         if(scriptName != null) {
             Process client;
-            if (cmd[3].equals(null))
-                cmd[3] = "python";
-            if (cmd[3] == "python") {
-                String command = "python " + cmd[1];
-                Process p = Runtime.getRuntime().exec(command);
-                BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-                String ret = in.readLine();
-                System.out.println("value is : " + ret);
-                return null;
-            } else {
-                ProcessBuilder builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2], cmd[3]);
-                builder.redirectErrorStream(true);
-                client = builder.start();
-                return new LearningPlayer(client, cmd[2]);
-            }
+            ProcessBuilder builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2]);
+            builder.redirectErrorStream(true);
+            client = builder.start();
+            return new LearningPlayer(client, cmd[2]);
         }else{
             assert (CompetitionParameters.USE_SOCKETS);
             return new LearningPlayer(null, cmd[2]);

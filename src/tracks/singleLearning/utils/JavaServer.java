@@ -19,7 +19,7 @@ public class JavaServer {
         String port = CompetitionParameters.SOCKET_PORT + "";
 
         //Building the command line
-        String cmd[] = new String[]{null, null, port, "python"};
+        String cmd[] = new String[]{null, null, port};
 
         String gamesPathPrepend = "";
         if(args.length > 0)

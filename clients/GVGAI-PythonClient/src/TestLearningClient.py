@@ -3,17 +3,18 @@ from CompetitionParameters import CompetitionParameters
 import subprocess, traceback, sys
 import os.path
 
+
 class TestLearningClient:
     def __init__(self):
         self.scriptFile = ""
-        
-        if(CompetitionParameters.OS_WIN):
+
+        if CompetitionParameters.OS_WIN:
             self.scriptFile = "utils\\runServer_nocompile_python.bat"
         else:
             self.scriptFile = os.path.join("utils", "runServer_nocompile_python.sh")
-            
+
         self.agentName = "SampleRandomAgent"
-        
+
         try:
             if __name__ == '__main__':
                 p = subprocess.Popen(self.scriptFile)
@@ -22,9 +23,10 @@ class TestLearningClient:
         except:
             print("Server process started [FAIL]")
             traceback.print_exc()
-            sys.exit()  
-           
+            sys.exit()
+
         ccomm = ClientComm(self.agentName)
         ccomm.startComm()
+
 
 lc = TestLearningClient()

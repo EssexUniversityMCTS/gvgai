@@ -4,6 +4,8 @@ package tracks.singleLearning.utils;
  * Created by Daniel on 05.04.2017.
  */
 
+import core.competition.CompetitionParameters;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,7 +14,7 @@ import java.util.Scanner;
 public class SocketComm extends Comm {
 
 
-    public int port = 3000; //default
+    public int port = CompetitionParameters.SOCKET_PORT; //default
     private Socket socket;
     private Scanner in;
     private PrintStream out;

@@ -9,11 +9,11 @@ from SerializableStateObservation import *
 class ClientComm:
     TOKEN_SEP = '#'
     
-    def __init__(self, agentName):
+    def __init__(self, agentname):
         self.io = IOSocket(CompetitionParameters.SOCKET_PORT)
         self.sso = SerializableStateObservation()
         self.LOG = False
-        self.agentName = agentName
+        self.agentName = agentname
         self.lasMessageId = 0
 
     def startComm(self):
@@ -49,7 +49,7 @@ class ClientComm:
                 self.result()
 
             else:
-                self.io.writeToServer(lastMessageId, 'null', LOG)
+                self.io.writeToServer(self.lastMessageId, 'null', self.LOG)
 
     """
     Helper method that converts a given dictionary into

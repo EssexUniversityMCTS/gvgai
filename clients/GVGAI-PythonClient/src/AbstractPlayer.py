@@ -3,7 +3,10 @@ from Types import *
 
 
 class AbstractPlayer:
-    def init(self, sso, elapsedTimer):
+    def __init__(self):
+        pass
+
+    def init(self, sso, timer):
         """
         * Public method to be called at the start of every level of a game.
         * Perform any level-entry initialization here.
@@ -12,7 +15,7 @@ class AbstractPlayer:
         """
         pass
 
-    def act(self, sso, elapsedTimer):
+    def act(self, sso, timer):
         """
         * Method used to determine the next move to be performed by the agent.
         * This method can be used to identify the current state of the game and all
@@ -26,7 +29,7 @@ class AbstractPlayer:
              
         pass
 
-    def result(self, sso, elapsedTimer):
+    def result(self, sso, timer):
         """
         * Method used to perform actions in case of a game end.
         * This is the last thing called when a level is played (the game is already in a terminal state).

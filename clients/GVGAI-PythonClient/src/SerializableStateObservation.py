@@ -2,15 +2,15 @@ from enum import Enum
 from Types import WINNER as WINNER
 from Types import ACTIONS as ACTIONS
 
-class SerializableStateObservation:
 
+class SerializableStateObservation:
     def __init__(self):
         self.phase = Phase()
         self.isValidation = True
 
         self.winner = WINNER()
         self.actions = ACTIONS()
-        
+
         self.gameScore = 0.0
         self.gameTick = 0
         self.gameWinner = self.winner.NO_WINNER
@@ -37,8 +37,6 @@ class SerializableStateObservation:
         portalsPositions = []
         fromAvatarSpritePositions = []
 
+
 class Phase:
     START, INIT, ACT, ABORT, END = range(5)
-
-        
-    
