@@ -19,20 +19,12 @@ public class TestSingleLearning {
 
         //Available controllers:
         String scriptFile;
-//        if (clientType.equals("python")) {
-            if (CompetitionParameters.OS_WIN) {
-                scriptFile = "src\\tracks\\singleLearning\\utils\\runClient_nocompile.bat";
-            } else {
-                scriptFile = CompetitionParameters.USE_SOCKETS ? "src/tracks/singleLearning/utils/runClient_nocompile.sh" :
-                    "src/tracks/singleLearning/utils/runClient_nocompile_pipes.sh";
-            }
-//        } else {
-//            if (CompetitionParameters.OS_WIN) {
-//                scriptFile = "clients\\GVGAI-PythonClient\\src\\utils\\runServer_nocompile_python.sh";
-//            } else {
-//                scriptFile = "clients/GVGAI-PythonClient/src/utils/runServer_nocompile_python.sh";
-//            }
-//        }
+        if (CompetitionParameters.OS_WIN) {
+            scriptFile = "src\\tracks\\singleLearning\\utils\\runClient_nocompile.bat";
+        } else {
+            scriptFile = CompetitionParameters.USE_SOCKETS ? "src/tracks/singleLearning/utils/runClient_nocompile.sh" :
+                "src/tracks/singleLearning/utils/runClient_nocompile_pipes.sh";
+        }
 
         //Port for the socket.
         String port = CompetitionParameters.SOCKET_PORT + "";

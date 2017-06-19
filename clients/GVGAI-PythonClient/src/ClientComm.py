@@ -1,29 +1,40 @@
-import sys, traceback
-import os
-from CompetitionParameters import CompetitionParameters
-from IOSocket import IOSocket
+import logging
+import traceback
+import sys
+import json
+
 from AbstractPlayer import *
+from CompetitionParameters import CompetitionParameters
+from ElapsedCpuTimer import ElapsedCpuTimer
+from IOSocket import IOSocket
 from SerializableStateObservation import *
 
 
 class ClientComm:
-    TOKEN_SEP = '#'
-    
-    def __init__(self, agentname):
+    """
+     * Client communication, set up the socket for a given agent
+    """
+
+    def __init__(self, agentName):
+        self.TOKEN_SEP = '#'
         self.io = IOSocket(CompetitionParameters.SOCKET_PORT)
         self.sso = SerializableStateObservation()
-        self.LOG = False
-        self.agentName = agentname
-        self.lasMessageId = 0
+        self.agentName = agentName
+        self.lastMessageId = 0
+        self.LOG = True
+        self.player = None
 
     def startComm(self):
         self.io.initBuffers()
 
         try:
             self.listen()
-        except:
-            print ('Failed to listen.')
+            print("Start listen [OK]")
+        except Exception as e:
+            logging.exception(e)
+            print("Start listen [FAILED]")
             traceback.print_exc()
+            sys.exit()
 
     """
      * Method that perpetually listens for messages from the server.
@@ -31,30 +42,38 @@ class ClientComm:
      * messages and represents the core response-generation methodology of the agent.
      * @throws IOException
     """
+
     def listen(self):
-        line = ''
+        line = None  # not none
 
-        while (line is not None):
+        while line is None or line is '':
             line = self.io.readLine()
-
+            print("ClientComm: DEBUG: " + line)  # todo
             self.processLine(line)
 
-            if (self.sso.phase == SerializableStateObservation.Phase['START']):
+            if self.sso.phase == Phase.START:
                 self.start()
 
-            if (self.sso.phase == SerializableStateObservation.Phase['INIT']):
+            if self.sso.phase == Phase.INIT:
                 self.init()
 
-            elif (self.sso.phase == SerializableStateObservation.Phase['ACT']):
+            elif self.sso.phase == Phase.END:
                 self.result()
 
+            elif self.sso.phase == Phase.ABORT:
+                self.result()
+
+            elif self.sso.phase == Phase.ACT:
+                self.act()
+
             else:
-                self.io.writeToServer(self.lastMessageId, 'null', self.LOG)
+                self.io.writeToServer(self.lastMessageId, 'ERROR', self.LOG)
 
     """
     Helper method that converts a given dictionary into
     a correct SSO type
     """
+
     def as_sso(self, d):
         self.sso.__dict__.update(d)
         return self.sso
@@ -68,47 +87,54 @@ class ClientComm:
      * @param msg Message received from server to be interpreted.
      * @throws IOException
     """
-    def processLine(self,msg):
+
+    def processLine(self, msg):
         try:
-            if(msg == None):
-                print ('Message is null.')
+            if msg is None:
+                print ("Message is null")
 
             message = msg.split(self.TOKEN_SEP)
 
-            if (len(message) < 2):
+            if len(message) < 2:
+                print ("Message not complete")
                 return
 
             self.lastMessageId = message[0]
             js = message[1]
 
-            if (js == 'START'):
-                self.sso.phase = SerializableStateObservation.Phase['START']
+            if js == 'START':
+                self.sso.phase = Phase.START
             else:
-                self.sso = json.loads(js, object_hook=as_sso)
-        except:
-            print ('Line processing failed.')
+                self.sso = json.loads(js, object_hook=self.as_sso)
+        except Exception as e:
+            logging.exception(e)
+            print("Line processing [FAILED]")
             traceback.print_exc()
+            sys.exit()
 
     """
      * Manages the start of the communication. It starts the whole process, and sets up the timer for the whole run.
     """
-    def start(self):
-        # insert timer stuff here...
 
+    def start(self):
+        # todo insert timer stuff here...
         print ('Starting to play [OK]')
         self.startAgent()
 
     def startAgent(self):
         try:
-            # do not currently know how to do this any better...
+            #  todo do not currently know how to do this any better...
             self.player = AbstractPlayer()
-        except:
-            print ('Agent startup failed.')
+        except Exception as e:
+            logging.exception(e)
+            print("Agent startup [FAILED]")
             traceback.print_exc()
+            sys.exit()
 
     """
      * Manages the init of a game played.
     """
+
     def init(self):
         # insert timer stuff here...
         ect = ElapsedCpuTimer()
@@ -125,6 +151,7 @@ class ClientComm:
      * Manages the action request for an agent. The agent is requested for an action,
      * which is sent back to the server
     """
+
     def act(self):
         # insert timer stuff here...
         ect = ElapsedCpuTimer()
@@ -148,6 +175,7 @@ class ClientComm:
      *    b) It's outside the range [0,4] (in which case we play one at random)
      *    c) or we are in the validation phase (in which case the starting sequence 3-4 continues).
     """
+
     def result(self):
         # insert timer stuff here...
         ect = ElapsedCpuTimer()
@@ -163,6 +191,3 @@ class ClientComm:
             self.io.writeToServer(self.lastMessageId, "END_OVERSPENT", self.LOG)
         else:
             self.io.writeToServer(self.lastMessageId, nextLevel + '', self.LOG)
-        
-
-

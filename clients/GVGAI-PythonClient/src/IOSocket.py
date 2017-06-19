@@ -1,49 +1,69 @@
-import socket
-import sys, traceback
+import logging
 import os
-
-import ClientComm
+import socket
+import sys
+import traceback
 
 
 class IOSocket:
-    
-    def __init__(self,port):  
-        self.port = port
-        self.hostname = '127.0.0.1'
+    """
+     * Socket for communication
+    """
 
-    def initBuffers(self):
+    def __init__(self, port):
+        self.TOKEN_SEP = '#'
+        self.port = port
+        self.hostname = "127.0.0.1"
+        self.logfilename = "logs/clientLog.txt"
         self.connected = False
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+    def initBuffers(self):
         while not self.connected:
             try:
                 print ("Selected host is: " + str(self.hostname))
                 print ("Selected port is: " + str(self.port))
                 self.s.connect((self.hostname, self.port))
                 self.connected = True
-                print ('Client connected to server [OK]')
-            except:
+                print ("Client connected to server [OK]")
+            except Exception as e:
+                logging.exception(e)
+                print("Client connected to server [FAILED]")
                 traceback.print_exc()
                 sys.exit()
-                
-    def writeToFile(line):
-        with open('logs/clientLog.txt','w') as file:
-            file.write(line + os.linesep)
-            file.flush()
+
+    def writeToFile(self, line):
+        with open(self.logfilename, "w") as logfile:
+            logfile.write(line + os.linesep)
+            logfile.flush()
 
     def writeToServer(self, messageId, line, log):
-        msg = messageId + ClientComm.TOKEN_SEP + line
-        self.s.send(bytes(msg))
-        if log:
-            writeToFile(msg)
+        msg = str(messageId) + self.TOKEN_SEP + line
+        try:
+            self.s.send(bytes(msg))
+            print("DEBUG: " + msg)  # todo
+            print("DEBUG: " + bytes(msg))  # todo
+            if log:
+                self.writeToFile(msg)
+        except Exception as e:
+            logging.exception(e)
+            print ("Write " + self.logfilename + " to server [FAILED]")
+            traceback.print_exc()
+            sys.exit()
 
     def readLine(self):
-        return self.s.recv(2048)
-
-    def writeToServer(self, line):
         try:
-            self.s.send(line + os.linesep)
-            self.s.flush()
-        except:
-            print ('Error trying to write ' + file + ' to server.')
+            return self.s.recv(1024)
+        except Exception as e:
+            logging.exception(e)
+            print ("Read from server [FAILED]")
+            traceback.print_exc()
+            sys.exit()
 
+    # def writeToServer(self, line):
+    #     try:
+    #         self.s.send(line + os.linesep)
+    #         self.s.flush()
+    #     except Exception as e:
+    #         logging.exception(e)
+    #         print ("Error trying to write " + self.logfilename + " to server.")

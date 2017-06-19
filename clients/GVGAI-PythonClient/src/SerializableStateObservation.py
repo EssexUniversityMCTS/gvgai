@@ -1,9 +1,12 @@
-from enum import Enum
 from Types import WINNER as WINNER
 from Types import ACTIONS as ACTIONS
 
 
 class SerializableStateObservation:
+    """
+     * Serialized state observation, corresponding to the Java Client code:
+     * GVGAI-JavaClient.src.serialization.SerializableStateObservation
+    """
     def __init__(self):
         self.phase = Phase()
         self.isValidation = True
@@ -39,4 +42,11 @@ class SerializableStateObservation:
 
 
 class Phase:
+    """
+     * Used to control the communication between server and client, corresponding to the Java Client code:
+     * GVGAI-JavaClient.src.serialization.SerializableStateObservation
+    """
+    def __init__(self):
+        pass
+
     START, INIT, ACT, ABORT, END = range(5)

@@ -1,4 +1,7 @@
-class ACTIONS():
+class ACTIONS:
+    """
+     * All action types, corresponding to the server Java code ontology.Types
+    """
     def __init__(self):
         pass
 
@@ -11,7 +14,10 @@ class ACTIONS():
     ACTION_ESCAPE = 6
 
 
-class WINNER():
+class WINNER:
+    """
+     * Winner/Loser types, corresponding to the server Java code ontology.Types
+    """
     def __init__(self):
         pass
 
