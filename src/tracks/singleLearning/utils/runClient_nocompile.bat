@@ -21,7 +21,9 @@ if "%clientType%" == "java" (
 
     rem Run the JavaClient class
     java -agentlib:jdwp=transport=dt_socket,server=y,address=%port%,suspend=n -cp %build_folder%;%gson% utils.JavaClient %agent%  > logs/output_client_redirect.txt 2> logs/output_client_redirect_err.txt
-) else if "%clientType%" == "python" (
+	) 
+
+if "%clientType%" == "python" (
     rem Run the PythonClient class
     python %py_src_folder%\PythonClient.py %agent%  > logs/output_client_redirect_python.txt 2> logs/output_client_redirect_err_python.txt
-)
+	)

@@ -9,10 +9,10 @@ if [ ! -d "$DIRECTORY" ]; then
 fi
 
 #Point at the folder that contains 'examples/'
-SERVER_GAMES_DIR='../../'
+SERVER_GAMES_DIR='../../../'
 
-src_folder='../../src'
-build_folder='server-out'
+src_folder='../../../src'
+build_folder='out'
 gson='lib/gson-2.8.0.jar'
 
 rm -rf $build_folder
