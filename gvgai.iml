@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="Python" name="Python">
+      <configuration sdkName="Python 2.7.10 (/usr/bin/python2.7)" />
+    </facet>
+  </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/out" />
     <output-test url="file://$MODULE_DIR$/test" />
@@ -13,5 +18,6 @@
     <orderEntry type="library" name="gson-2.6.22" level="project" />
     <orderEntry type="library" name="gson-2.6.2" level="project" />
     <orderEntry type="library" name="gson-2.6.21" level="project" />
+    <orderEntry type="library" name="Python 2.7.10 (/usr/bin/python2.7) interpreter library" level="application" />
   </component>
 </module>

@@ -36,7 +36,6 @@ public class LearningMachine {
      */
     public static double[] runOneGame(String game_file, String level_file, boolean visuals,
                                     String[] cmd, String actionFile, int randomSeed) throws IOException {
-//        int trainingPlays = 0;// TODO: 22/05/17 to be removed?
         VGDLFactory.GetInstance().init(); //This always first thing to do.
         VGDLRegistry.GetInstance().init();
 
@@ -46,7 +45,6 @@ public class LearningMachine {
         LearningPlayer player = LearningMachine.createPlayer(cmd);
 //
         //2. Play the training games.
-//        System.out.print(trainingPlays + " ");// TODO: 22/05/17 to be removed?
         double[] finalScore = playOnce(player, actionFile, game_file, level_file, visuals, randomSeed);
 
         return finalScore;

@@ -119,6 +119,7 @@ public class ForwardModel extends Game
      * from a game state (of class Game).
      * @param a_gameState game to take the state from.
      */
+    @SuppressWarnings("unchecked")
     final public void update(Game a_gameState)
     {
         int numSpriteTypes = a_gameState.spriteGroups.length;
@@ -455,6 +456,7 @@ public class ForwardModel extends Game
      * effects, etc). 'this' takes these from a_gameState,
      * @param a_gameState Reference to the original game
      */
+    @SuppressWarnings("unchecked")
     private void initNonVolatile(Game a_gameState)
     {
         //We skip this.resource_colors and sampleRandom.
@@ -940,6 +942,7 @@ public class ForwardModel extends Game
      * @return List of arrays with Observations. Each entry in the array corresponds to a different
      * sprite type.
      */
+    @SuppressWarnings("unchecked")
     private ArrayList<Observation>[] getPositionsFrom(boolean[] groupArray, Vector2d refPosition)
     {
         //First, get how many types we have. Need to consider hidden sprites out.

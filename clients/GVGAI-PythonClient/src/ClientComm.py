@@ -23,6 +23,7 @@ class ClientComm:
         self.lastMessageId = 0
         self.LOG = True
         self.player = None
+        self.global_ect = None
 
     def startComm(self):
         self.io.initBuffers()
@@ -44,9 +45,9 @@ class ClientComm:
     """
 
     def listen(self):
-        line = None  # not none
+        line = ''
 
-        while line is None or line is '':
+        while line is not None:
             line = self.io.readLine()
             print("ClientComm: DEBUG: " + line)  # todo
             self.processLine(line)
@@ -117,14 +118,22 @@ class ClientComm:
     """
 
     def start(self):
-        # todo insert timer stuff here...
-        print ('Starting to play [OK]')
+        self.global_ect = ElapsedCpuTimer()
+        self.global_ect.setMaxTimeMillis(CompetitionParameters.TOTAL_LEARNING_TIME)
+        ect = ElapsedCpuTimer()
+        ect.setMaxTimeMillis(CompetitionParameters.START_TIME)
         self.startAgent()
+        if ect.exceededMaxTime():
+            self.io.writeToServer(self.lastMessageId, "START_FAILED", self.LOG)
+        else:
+            self.io.writeToServer(self.lastMessageId, "START_DONE", self.LOG)
+            print ('Starting to play [OK]')
 
     def startAgent(self):
         try:
             #  todo do not currently know how to do this any better...
             self.player = AbstractPlayer()
+            print("Agent startup [OK]")
         except Exception as e:
             logging.exception(e)
             print("Agent startup [FAILED]")
@@ -136,12 +145,9 @@ class ClientComm:
     """
 
     def init(self):
-        # insert timer stuff here...
         ect = ElapsedCpuTimer()
         ect.setMaxTimeMillis(CompetitionParameters.INITIALIZATION_TIME)
-
         self.player.init(self.sso, ect.copy())
-
         if ect.exceededMaxTime():
             self.io.writeToServer(self.lastMessageId, "INIT_FAILED", self.LOG)
         else:
@@ -153,12 +159,9 @@ class ClientComm:
     """
 
     def act(self):
-        # insert timer stuff here...
         ect = ElapsedCpuTimer()
         ect.setMaxTimeMillis(CompetitionParameters.ACTION_TIME)
-
         action = str(self.player.act(self.sso, ect.copy()))
-
         if ect.exceededMaxTime():
             if ect.elapsedMillis() > CompetitionParameters.ACTION_TIME_DISQ:
                 self.io.writeToServer(self.lastMessageId, "END_OVERSPENT", self.LOG)
@@ -177,11 +180,10 @@ class ClientComm:
     """
 
     def result(self):
-        # insert timer stuff here...
         ect = ElapsedCpuTimer()
 
-        if not global_ect.exceededMaxTime():
-            ect = global_ect.copy()
+        if not self.global_ect.exceededMaxTime():
+            ect = self.global_ect.copy()
         else:
             ect.setMaxTimeMillis(CompetitionParameters.EXTRA_LEARNING_TIME)
 
@@ -190,4 +192,4 @@ class ClientComm:
         if ect.exceededMaxTime():
             self.io.writeToServer(self.lastMessageId, "END_OVERSPENT", self.LOG)
         else:
-            self.io.writeToServer(self.lastMessageId, nextLevel + '', self.LOG)
+            self.io.writeToServer(self.lastMessageId, str(nextLevel), self.LOG)

@@ -16,11 +16,12 @@ class IOSocket:
         self.hostname = "127.0.0.1"
         self.logfilename = "logs/clientLog.txt"
         self.connected = False
-        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.s = None
 
     def initBuffers(self):
         while not self.connected:
             try:
+                self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 print ("Selected host is: " + str(self.hostname))
                 print ("Selected port is: " + str(self.port))
                 self.s.connect((self.hostname, self.port))
@@ -53,7 +54,7 @@ class IOSocket:
 
     def readLine(self):
         try:
-            return self.s.recv(1024)
+            return self.s.recv(2048)
         except Exception as e:
             logging.exception(e)
             print ("Read from server [FAILED]")

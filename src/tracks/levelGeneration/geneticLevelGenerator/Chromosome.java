@@ -57,6 +57,7 @@ public class Chromosome implements Comparable<Chromosome>{
 	 * @param width
 	 * @param height
 	 */
+	@SuppressWarnings("unchecked")
 	public Chromosome(int width, int height){
 		this.level = new ArrayList[height][width];
 		for(int y = 0; y < height; y++){
@@ -90,6 +91,7 @@ public class Chromosome implements Comparable<Chromosome>{
 	/**
 	 * initialize the agents used during evaluating the chromosome
 	 */
+	@SuppressWarnings("unchecked")
 	private void constructAgent(){
 		try{
 			Class agentClass = Class.forName(SharedData.AGENT_NAME);

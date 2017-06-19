@@ -58,5 +58,6 @@ public class Pair<T,U> implements Map.Entry<T, U>, Comparable{
         return (compareTo(obj)==0);
     }
 
+    @SuppressWarnings("unchecked")
     public Pair copy()  { return new Pair(first, second); }
 }

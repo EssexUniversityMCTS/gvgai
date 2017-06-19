@@ -13,6 +13,7 @@ import java.util.LinkedList;
  * Created by Diego Perez, University of Essex.
  * Date: 20/12/11
  */
+@SuppressWarnings("unchecked")
 public class KeyPulse extends KeyHandler {
 
     //Pulses holds the key presses, although they are not mapped to actions until they are released.

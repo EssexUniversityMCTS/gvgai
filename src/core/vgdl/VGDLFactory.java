@@ -192,6 +192,7 @@ public class VGDLFactory
      * @param content potential parameters for the class.
      * @return The game just created.
      */
+    @SuppressWarnings("unchecked")
     public Game createGame(GameContent content)
     {
         try{
@@ -220,6 +221,7 @@ public class VGDLFactory
      * @param dim dimensions of the sprite on the world.
      * @return the new sprite, created and initialized, ready for play!
      */
+    @SuppressWarnings("unchecked")
     public VGDLSprite createSprite(Game game, SpriteContent content, Vector2d position, Dimension dim)
     {
 
@@ -266,6 +268,7 @@ public class VGDLFactory
      * @return the new effect, created and initialized, ready to be triggered!
      * @throws Exception 
      */
+    @SuppressWarnings("unchecked")
     public Effect createEffect(Game game, InteractionContent content) throws Exception
     {
         if(game != null)
@@ -311,6 +314,7 @@ public class VGDLFactory
      * @return the new termination, created and initialized, ready to be checked!
      * @throws Exception 
      */
+    @SuppressWarnings("unchecked")
     public Termination createTermination(Game game, TerminationContent content) throws Exception
     {
         decorateContent(game, content);

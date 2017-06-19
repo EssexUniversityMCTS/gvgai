@@ -706,6 +706,7 @@ public class ArcadeMachine {
      *            for how long the warming up process must last (in
      *            milliseconds).
      */
+		@SuppressWarnings("unchecked")
     public static void warmUp(Game toPlay, long howLong) {
         ElapsedCpuTimer ect = new ElapsedCpuTimer();
         ect.setMaxTimeMillis(howLong);
