@@ -5,7 +5,7 @@
 
 DIRECTORY='./logs'
 if [ ! -d "$DIRECTORY" ]; then
-  mkdir $DIRECTORY
+  mkdir ${DIRECTORY}
 fi
 
 pwd
