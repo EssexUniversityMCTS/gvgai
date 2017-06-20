@@ -4,6 +4,7 @@ import core.competition.CompetitionParameters;
 import tools.ElapsedWallTimer;
 import tracks.LearningMachine;
 
+import java.io.File;
 import java.util.Random;
 
 /**
@@ -35,7 +36,7 @@ public class JavaServer {
         boolean GRID_PHYSICS = true;
 
 
-        System.out.println("Server asked to run at port: " + port + " where games are IN " + gamesPathPrepend);
+        System.out.println("Server asked to run at port: " + port + " where games are IN " + new File(gamesPathPrepend+ "examples").getAbsolutePath());
 
         // All public games (gridphysics)
         if(GRID_PHYSICS) {

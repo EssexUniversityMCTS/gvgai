@@ -6,36 +6,26 @@ import traceback
 from ClientComm import ClientComm
 from CompetitionParameters import CompetitionParameters
 
+if __name__ == "__main__":
+    agentName = 'sampleAgents.Agent'
 
-class TestLearningClient:
-    """
-     * This is the class to run client and server
-    """
+    if CompetitionParameters.OS_WIN:
+        scriptFile = "utils\\runServer_nocompile_python.bat"
+    else:
+        scriptFile = os.path.join("utils", "runServer_nocompile_python.sh")
 
-    def __init__(self):
-        self.agentName = 'SampleRandomAgent'
-
-        if CompetitionParameters.OS_WIN:
-            self.scriptFile = "utils\\runServer_nocompile_python.bat"
-        else:
-            self.scriptFile = os.path.join("utils", "runServer_nocompile_python.sh")
-            # self.scriptFile = os.path.join("../../../src/tracks/singleLearning/utils", "runServer_nocompile_python.sh")
-
-        try:
-            if __name__ == '__main__':
-                p = subprocess.Popen(self.scriptFile)
-                # print("Run server process [OK]")
-                stdout, stderr = p.communicate()
-                print("Run server communicate [OK]")
-                ccomm = ClientComm(self.agentName)
-                print("Start comm with agent " + self.agentName)
-                ccomm.startComm()
-                print("Server process started [OK]")
-        except Exception as e:
-            logging.exception(e)
-            print("Server process started [FAILED]")
-            traceback.print_exc()
-            sys.exit()
-
-
-lc = TestLearningClient()
+    try:
+        if __name__ == '__main__':
+            p = subprocess.Popen(scriptFile)
+            # print("Run server process [OK]")
+            stdout, stderr = p.communicate()
+            print("Run server communicate [OK]")
+            ccomm = ClientComm(agentName)
+            print("Start comm with agent " + agentName)
+            ccomm.startComm()
+            print("Server process started [OK]")
+    except Exception as e:
+        logging.exception(e)
+        print("Server process started [FAILED]")
+        traceback.print_exc()
+        sys.exit()

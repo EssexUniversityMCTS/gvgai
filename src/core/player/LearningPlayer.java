@@ -34,7 +34,9 @@ public class LearningPlayer extends Player {
             this.comm = new SocketComm(port);
         }
         //Else: pipes
-        else this.comm = new PipeComm(proc);
+        else {
+            this.comm = new PipeComm(proc);
+        }
 
     }
 

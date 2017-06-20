@@ -21,5 +21,5 @@ if [ "$clientType" = "java" ]; then
 	java -agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=n -classpath ${build_folder}:${gson} utils.JavaClient ${agent} > logs/output_client_redirect.txt 2> logs/output_client_redirect_err.txt
 elif [ "$clientType" = "python" ]; then
         echo ${agent}
-	python ${py_src_folder}/PythonClient.py ${agent}  > logs/output_client_redirect_python.txt 2> logs/output_client_redirect_err_python.txt &
+	python ${py_src_folder}/PythonClient.py ${agent}  > logs/output_client_redirect_python.txt 2> logs/output_client_redirect_err_python.txt
 fi;
