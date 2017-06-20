@@ -13,7 +13,8 @@ class IOSocket:
     """
 
     def __init__(self, port):
-        self.BUFF_SIZE = 1024000
+        self.BUFF_SIZE = 8192
+        self.END = '\n'
         self.TOKEN_SEP = '#'
         self.port = port
         self.hostname = "127.0.0.1"
@@ -50,7 +51,7 @@ class IOSocket:
         try:
             self.socket.send(bytes(msg))
             if log:
-                self.writeToFile(msg)
+                self.writeToFile(msg.strip('\n'))
         except Exception as e:
             logging.exception(e)
             print ("Write " + self.logfilename + " to server [FAILED]")
@@ -59,10 +60,28 @@ class IOSocket:
 
     def readLine(self):
         try:
-            # return self.recv_timeout
-            return self.socket.recv(1024000)
+            # return self.socket.recv(1024000)
+            totest = self.recv_end()
+            return totest
         except Exception as e:
             logging.exception(e)
             print ("Read from server [FAILED]")
             traceback.print_exc()
             sys.exit()
+
+    def recv_end(self):
+        total_data = []
+        data = ''
+        while True:
+            data = self.socket.recv(8192)
+            if self.END in data:
+                total_data.append(data[:data.find(self.END)])
+                break
+            total_data.append(data)
+            if len(total_data) > 1:
+                last_pair = total_data[-2] + total_data[-1]
+                if self.END in last_pair:
+                    total_data[-2] = last_pair[:last_pair.find(self.END)]
+                    total_data.pop()
+                    break
+        return ''.join(total_data)

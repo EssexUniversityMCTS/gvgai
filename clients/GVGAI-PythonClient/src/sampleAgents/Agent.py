@@ -1,6 +1,6 @@
 import random
 from AbstractPlayer import AbstractPlayer
-from Types import ACTIONS
+from Types import ACTIONS as ACTIONS
 
 
 class Agent(AbstractPlayer):

@@ -125,7 +125,7 @@ class ClientComm:
             self.lastMessageId = message[0]
             js = message[1]
 
-            if js == "START\n":
+            if js == "START":
                 self.sso.phase = Phase.START
             else:
                 js.replace('"', '')
@@ -155,8 +155,6 @@ class ClientComm:
 
     def startAgent(self):
         try:
-            #  todo do not currently know how to do this any better...
-            print("DEBUG: now create player " + self.agentName)
             try:
                 module = importlib.import_module(self.agentName)
                 try:
@@ -229,18 +227,3 @@ class ClientComm:
             self.io.writeToServer(self.lastMessageId, "END_OVERSPENT", self.LOG)
         else:
             self.io.writeToServer(self.lastMessageId, str(nextLevel), self.LOG)
-
-    def my_import(self, name):
-        components = name.split('.')
-        mod = __import__(components[0])
-        for comp in components[1:]:
-            mod = getattr(mod, comp)
-        return mod
-
-    def get_class(self, kls):
-        parts = kls.split('.')
-        module = ".".join(parts[:-1])
-        m = __import__( module )
-        for comp in parts[1:]:
-            m = getattr(m, comp)
-        return m

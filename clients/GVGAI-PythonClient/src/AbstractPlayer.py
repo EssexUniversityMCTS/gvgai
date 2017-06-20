@@ -1,9 +1,7 @@
-from SerializableStateObservation import SerializableStateObservation
-from Types import *
 
 
 class AbstractPlayer:
-    def agentName__init__(self):
+    def __init__(self):
         pass
 
     def init(self, sso, timer):

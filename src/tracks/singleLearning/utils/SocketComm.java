@@ -86,7 +86,6 @@ public class SocketComm extends Comm {
      */
     public void commSend(String msg) throws IOException {
         String message = messageId + TOKEN_SEP + msg + lineSep;
-        System.out.println("DEBUG: SocketComm sent : " + message);
         out.format(message);
         out.flush();
         messageId++;
