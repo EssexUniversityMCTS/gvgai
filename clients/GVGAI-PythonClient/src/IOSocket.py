@@ -46,8 +46,6 @@ class IOSocket:
 
     def writeToServer(self, messageId, line, log):
         msg = str(messageId) + self.TOKEN_SEP + line + "\n"
-        print(msg)
-
         try:
             self.socket.send(bytes(msg))
             if log:

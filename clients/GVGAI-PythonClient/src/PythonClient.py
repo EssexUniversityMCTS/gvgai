@@ -1,3 +1,5 @@
+import sys
+
 from ClientComm import ClientComm
 
 
@@ -7,13 +9,19 @@ class PythonClient:
     """
 
     def __init__(self, args):
-        if len(args) == 1:
-            agentName = args[0]
+        if len(args) > 0:
+            agentName = args
         else:
-            agentName = "sampleAgents.Agent"
+            print("ERROR: Missing argument")
+            sys.exit()
         print("start python client")
         ccomm = ClientComm(agentName)
         ccomm.startComm()
 
 if __name__ == "__main__":
-    lc = PythonClient("sampleAgents.Agent")
+    if len(sys.argv) > 0:
+        print("Run with agent: " + str(sys.argv[1]))
+        agentName = str(sys.argv[1])
+        lc = PythonClient(agentName + ".Agent")
+    else:
+        lc = PythonClient("Agents.Agent")

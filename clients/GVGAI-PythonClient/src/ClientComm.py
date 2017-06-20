@@ -84,12 +84,7 @@ class ClientComm:
                 self.act()
 
             else:
-                print("DEBUG: sso="+line)
                 self.io.writeToServer(self.lastMessageId, 'ERROR', self.LOG)
-
-            print("self.sso.phase is " + str(self.sso.phase))
-
-        print("DEBUG: ClientComm: while finished")
 
     """
     Helper method that converts a given dictionary into
@@ -129,9 +124,7 @@ class ClientComm:
                 self.sso.phase = Phase.START
             else:
                 js.replace('"', '')
-                print("DEBUG: sso="+js)
                 self.sso = json.loads(js, object_hook=self.as_sso)
-                print(self.sso.availableActions)
         except Exception as e:
             logging.exception(e)
             print("Line processing [FAILED]")
