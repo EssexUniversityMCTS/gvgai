@@ -162,9 +162,13 @@ class ClientComm:
                 try:
                     self.player = getattr(module, 'Agent')()
                 except AttributeError:
-                    logging.error('Class does not exist')
+                    logging.error('ERROR: Class does not exist')
+                    traceback.print_exc()
+                    sys.exit()
             except ImportError:
-                logging.error('Module does not exist')
+                logging.error('ERROR: Module does not exist')
+                traceback.print_exc()
+                sys.exit()
             print("Agent startup [OK]")
         except Exception as e:
             logging.exception(e)

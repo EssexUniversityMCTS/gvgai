@@ -1,6 +1,6 @@
 import random
-import AbstractPlayer
-import Types
+from AbstractPlayer import AbstractPlayer
+from Types import ACTIONS
 
 
 class Agent(AbstractPlayer):
@@ -33,7 +33,7 @@ class Agent(AbstractPlayer):
             return ACTIONS.ACTION_ESCAPE
         else:
             index = random.randint(0, len(sso.availableActions) - 1)
-            print("DEBUG: choose action idx=" + index)
+            print("DEBUG: choose action idx=" + str(index))
             print("DEBUG: choose action=" + sso.availableActions[index])
             return sso.availableActions[index]
 
