@@ -30,7 +30,7 @@ class Agent(AbstractPlayer):
 
     def act(self, sso, elapsedTimer):
         if sso.gameTick == 100:
-            return ACTIONS.ACTION_ESCAPE
+            return "ACTION_ESCAPE"
         else:
             index = random.randint(0, len(sso.availableActions) - 1)
             print("DEBUG: choose action idx=" + str(index))
