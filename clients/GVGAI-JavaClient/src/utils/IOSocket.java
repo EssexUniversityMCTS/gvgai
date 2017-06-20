@@ -36,7 +36,6 @@ public class IOSocket extends IO {
             while(!connected)
             {
                 try{
-
                     socket = new Socket(hostname, port);
                     connected = true;
                     System.out.println("Client connected to server [OK]");

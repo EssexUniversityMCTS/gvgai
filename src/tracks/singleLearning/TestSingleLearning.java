@@ -32,9 +32,9 @@ public class TestSingleLearning {
         //Agent to play with
         String agentName;
         if (clientType.equals("python")) {
-            agentName = "agents.random.Agent";
-        } else {
             agentName = "clients/GVGAI-PythonClient/src/sampleAgents/SampleRandomAgent.py";
+        } else {
+            agentName = "agents.random.Agent";
         }
 
 

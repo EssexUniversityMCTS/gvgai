@@ -10,6 +10,11 @@ class PythonClient:
         if len(args) == 1:
             agentName = args[0]
         else:
-            agentName = "SampleRandomAgent"
+            agentName = "Agent"
+
+        print("start python client")
         ccomm = ClientComm(agentName)
         ccomm.startComm()
+
+if __name__ == "__main__":
+    lc = PythonClient("Agent")

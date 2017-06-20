@@ -3,7 +3,7 @@ from Types import *
 
 
 class AbstractPlayer:
-    def __init__(self):
+    def agentName__init__(self):
         pass
 
     def init(self, sso, timer):

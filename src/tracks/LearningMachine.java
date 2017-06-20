@@ -102,7 +102,6 @@ public class LearningMachine {
         Player[] players = new Player[]{player};
         if (visuals)
             score = toPlay.playGame(players, randomSeed, true, 0);
-//            score = toPlay.playGame(players, randomSeed, false, 0);// TODO: 22/05/17 why false???
         else
             score = toPlay.runGame(players, randomSeed);
 
@@ -328,7 +327,13 @@ public class LearningMachine {
 
         if(scriptName != null) {
             Process client;
-            ProcessBuilder builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2]);
+            ProcessBuilder builder;
+            assert (cmd.length==4 || cmd.length==3);
+            if (cmd.length == 4) {
+                builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2], cmd[3]);
+            } else {
+                builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2]);
+            }
             builder.redirectErrorStream(true);
             client = builder.start();
             return new LearningPlayer(client, cmd[2]);

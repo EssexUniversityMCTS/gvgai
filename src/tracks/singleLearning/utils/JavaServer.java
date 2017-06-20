@@ -21,7 +21,7 @@ public class JavaServer {
         //Building the command line
         String cmd[] = new String[]{null, null, port};
 
-        String gamesPathPrepend = "";
+        String gamesPathPrepend = "./";
         if(args.length > 0)
         {
             gamesPathPrepend = args[0];

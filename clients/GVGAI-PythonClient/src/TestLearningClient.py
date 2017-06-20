@@ -19,10 +19,11 @@ class TestLearningClient:
             self.scriptFile = "utils\\runServer_nocompile_python.bat"
         else:
             self.scriptFile = os.path.join("utils", "runServer_nocompile_python.sh")
+            # self.scriptFile = os.path.join("../../../src/tracks/singleLearning/utils", "runServer_nocompile_python.sh")
 
         try:
             if __name__ == '__main__':
-                p = subprocess.Popen(self.scriptFile, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+                p = subprocess.Popen(self.scriptFile)
                 # print("Run server process [OK]")
                 stdout, stderr = p.communicate()
                 print("Run server communicate [OK]")

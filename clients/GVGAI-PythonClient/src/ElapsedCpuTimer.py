@@ -52,7 +52,6 @@ class ElapsedCpuTimer:
     def setMaxTimeMillis(self, timeToSet):
         self.maxTime = timeToSet
         self.oldTime = self.getTime()
-        pass
 
     def remainingTimeMillis(self):
         diff = self.maxTime - self.elapsed()

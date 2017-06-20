@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/out" />
-    <output-test url="file://$MODULE_DIR$/out" />
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="gson-2.6.2" level="project" />
+    <orderEntry type="library" name="gson-2.6.21" level="project" />
+    <orderEntry type="library" name="gson-2.6.23" level="project" />
+    <orderEntry type="library" name="gson-2.6.22" level="project" />
+    <orderEntry type="library" name="gson-2.8.03" level="project" />
+    <orderEntry type="library" name="gson-2.8.02" level="project" />
     <orderEntry type="library" name="gson-2.8.0" level="project" />
+    <orderEntry type="library" name="gson-2.8.04" level="project" />
+    <orderEntry type="library" name="gson-2.8.01" level="project" />
+    <orderEntry type="library" name="gson-2.8.05" level="project" />
   </component>
 </module>

@@ -2,8 +2,8 @@ import logging
 import traceback
 import sys
 import json
+import importlib
 
-from AbstractPlayer import *
 from CompetitionParameters import CompetitionParameters
 from ElapsedCpuTimer import ElapsedCpuTimer
 from IOSocket import IOSocket
@@ -49,26 +49,47 @@ class ClientComm:
 
         while line is not None:
             line = self.io.readLine()
-            print("ClientComm: DEBUG: " + line)  # todo
+            # line = line.rstrip('\n')
             self.processLine(line)
 
             if self.sso.phase == Phase.START:
                 self.start()
 
-            if self.sso.phase == Phase.INIT:
+            elif self.sso.phase == "INIT":
+                self.sso.phase = Phase.INIT
                 self.init()
 
+            elif self.sso.phase == Phase.INIT:
+                self.init()
+
+            elif self.sso.phase == "END":
+                self.sso.phase = Phase.END
+                self.result()
+
             elif self.sso.phase == Phase.END:
+                self.result()
+
+            elif self.sso.phase == "ABORT":
+                self.sso.phase = Phase.ABORT
                 self.result()
 
             elif self.sso.phase == Phase.ABORT:
                 self.result()
 
+            elif self.sso.phase == "ACT":
+                self.sso.phase = Phase.ACT
+                self.act()
+
             elif self.sso.phase == Phase.ACT:
                 self.act()
 
             else:
+                print("DEBUG: sso="+line)
                 self.io.writeToServer(self.lastMessageId, 'ERROR', self.LOG)
+
+            print("self.sso.phase is " + str(self.sso.phase))
+
+        print("DEBUG: ClientComm: while finished")
 
     """
     Helper method that converts a given dictionary into
@@ -93,6 +114,7 @@ class ClientComm:
         try:
             if msg is None:
                 print ("Message is null")
+                return
 
             message = msg.split(self.TOKEN_SEP)
 
@@ -103,10 +125,13 @@ class ClientComm:
             self.lastMessageId = message[0]
             js = message[1]
 
-            if js == 'START':
+            if js == "START\n":
                 self.sso.phase = Phase.START
             else:
+                js.replace('"', '')
+                print("DEBUG: sso="+js)
                 self.sso = json.loads(js, object_hook=self.as_sso)
+                print(self.sso.availableActions)
         except Exception as e:
             logging.exception(e)
             print("Line processing [FAILED]")
@@ -127,12 +152,19 @@ class ClientComm:
             self.io.writeToServer(self.lastMessageId, "START_FAILED", self.LOG)
         else:
             self.io.writeToServer(self.lastMessageId, "START_DONE", self.LOG)
-            print ('Starting to play [OK]')
 
     def startAgent(self):
         try:
             #  todo do not currently know how to do this any better...
-            self.player = AbstractPlayer()
+            print("DEBUG: now create player " + self.agentName)
+            try:
+                module = importlib.import_module(self.agentName)
+                try:
+                    self.player = getattr(module, 'Agent')()
+                except AttributeError:
+                    logging.error('Class does not exist')
+            except ImportError:
+                logging.error('Module does not exist')
             print("Agent startup [OK]")
         except Exception as e:
             logging.exception(e)
@@ -193,3 +225,18 @@ class ClientComm:
             self.io.writeToServer(self.lastMessageId, "END_OVERSPENT", self.LOG)
         else:
             self.io.writeToServer(self.lastMessageId, str(nextLevel), self.LOG)
+
+    def my_import(self, name):
+        components = name.split('.')
+        mod = __import__(components[0])
+        for comp in components[1:]:
+            mod = getattr(mod, comp)
+        return mod
+
+    def get_class(self, kls):
+        parts = kls.split('.')
+        module = ".".join(parts[:-1])
+        m = __import__( module )
+        for comp in parts[1:]:
+            m = getattr(m, comp)
+        return m
