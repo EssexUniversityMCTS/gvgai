@@ -7,15 +7,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="gson-2.6.2" level="project" />
-    <orderEntry type="library" name="gson-2.6.21" level="project" />
-    <orderEntry type="library" name="gson-2.6.23" level="project" />
-    <orderEntry type="library" name="gson-2.6.22" level="project" />
-    <orderEntry type="library" name="gson-2.8.03" level="project" />
-    <orderEntry type="library" name="gson-2.8.02" level="project" />
     <orderEntry type="library" name="gson-2.8.0" level="project" />
-    <orderEntry type="library" name="gson-2.8.04" level="project" />
+    <orderEntry type="library" name="gson-2.6.2" level="project" />
     <orderEntry type="library" name="gson-2.8.01" level="project" />
-    <orderEntry type="library" name="gson-2.8.05" level="project" />
   </component>
 </module>

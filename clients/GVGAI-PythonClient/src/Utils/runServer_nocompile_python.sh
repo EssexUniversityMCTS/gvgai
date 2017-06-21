@@ -3,7 +3,7 @@
 # Got an java.net.BindException: Address already in use (Bind failed) from the server?
 # Maybe a process is running at that port. Check: lsof -i tcp:<port>
 
-DIRECTORY='./logs'
+DIRECTORY='../logs'
 if [ ! -d "$DIRECTORY" ]; then
   mkdir ${DIRECTORY}
 fi
@@ -13,16 +13,16 @@ pwd
 
 SERVER_GAMES_DIR='../../../'
 src_folder='../../../src'
-build_folder='./out'
+build_folder='../out-server'
 
 #SERVER_GAMES_DIR='../../../'
 #src_folder='../../../src'
 #build_folder='./out'
 gson='lib/gson-2.8.0.jar'
 
-rm -rf $build_folder
-mkdir -p $build_folder
+rm -rf ${build_folder}
+mkdir -p ${build_folder}
 find ${src_folder} -name "*.java" > sources.txt
-javac -cp ${gson} -d $build_folder @sources.txt
-#java -agentlib:jdwp=transport=dt_socket,server=y,address=3000,suspend=n -classpath ${build_folder}:${gson} tracks.singleLearning.utils.JavaServer ${SERVER_GAMES_DIR} > ${DIRECTORY}/output_server_redirect.txt 2> ${DIRECTORY}/output_server_redirect_err.txt
-java -classpath ${build_folder}:${gson} tracks.singleLearning.utils.JavaServer ${SERVER_GAMES_DIR} > ${DIRECTORY}/output_server_redirect.txt 2> ${DIRECTORY}/output_server_redirect_err.txt
+javac -cp ${gson} -d ${build_folder} @sources.txt
+java -agentlib:jdwp=transport=dt_socket,server=y,address=3000,suspend=n -classpath ${build_folder}:${gson} tracks.singleLearning.utils.JavaServer ${SERVER_GAMES_DIR} > ${DIRECTORY}/output_server_redirect.txt 2> ${DIRECTORY}/output_server_redirect_err.txt
+#java -classpath ${build_folder}:${gson} tracks.singleLearning.utils.JavaServer ${SERVER_GAMES_DIR} > ${DIRECTORY}/output_server_redirect.txt 2> ${DIRECTORY}/output_server_redirect_err.txt
