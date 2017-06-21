@@ -1,13 +1,14 @@
-import logging
-import traceback
-import sys
-import json
 import importlib
+import json
+import logging
+import sys
+import traceback
+
+from SerializableStateObservation import *
 
 from CompetitionParameters import CompetitionParameters
 from ElapsedCpuTimer import ElapsedCpuTimer
 from IOSocket import IOSocket
-from SerializableStateObservation import *
 
 
 class ClientComm:

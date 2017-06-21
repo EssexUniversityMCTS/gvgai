@@ -1,11 +1,12 @@
 import logging
-import os.path
+import os
 import subprocess
 import sys
-import os
 import traceback
-from ClientComm import ClientComm
+sys.path.append('./utils')
 from CompetitionParameters import CompetitionParameters
+
+from ClientComm import ClientComm
 
 if __name__ == "__main__":
     agentName = 'sampleAgents.Agent'
