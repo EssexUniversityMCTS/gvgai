@@ -3,7 +3,6 @@ import os
 import socket
 import sys
 import traceback
-
 import time
 
 
@@ -24,19 +23,19 @@ class IOSocket:
         self.logfile = open(self.logfilename, "a")
 
     def initBuffers(self):
+        print ("Connecting to host " + str(self.hostname) + " at port " + str(self.port) + " ...")
         while not self.connected:
             try:
                 self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                print ("Selected host is: " + str(self.hostname))
-                print ("Selected port is: " + str(self.port))
                 self.socket.connect((self.hostname, self.port))
                 self.connected = True
                 print ("Client connected to server [OK]")
             except Exception as e:
-                logging.exception(e)
-                print("Client connected to server [FAILED]")
-                traceback.print_exc()
-                sys.exit()
+                time.sleep(1)
+                # logging.exception(e)
+                # print("Client connected to server [FAILED]")
+                # traceback.print_exc()
+                # sys.exit()
 
     def writeToFile(self, line):
         sys.stdout.write(line + os.linesep)

@@ -65,6 +65,7 @@ public class LearningMachine {
         VGDLRegistry.GetInstance().init();
 
         //Create the player.
+        System.out.println("=========== DEBUG: LearningMachine: to create a LearningMachine.createPlayer");
         LearningPlayer player = LearningMachine.createPlayer(cmd);
 
         // Play the training games.
@@ -339,6 +340,8 @@ public class LearningMachine {
             return new LearningPlayer(client, cmd[2]);
         }else{
             assert (CompetitionParameters.USE_SOCKETS);
+            System.out.println("=========== DEBUG: LearningMachine: to create a LearningPlayer");
+
             return new LearningPlayer(null, cmd[2]);
         }
 
