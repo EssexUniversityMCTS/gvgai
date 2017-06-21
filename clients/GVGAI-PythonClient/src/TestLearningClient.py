@@ -1,10 +1,13 @@
 import logging
-import os.path
+import os
 import subprocess
 import sys
 import traceback
-from ClientComm import ClientComm
+sys.path.append('./utils')
+
 from CompetitionParameters import CompetitionParameters
+
+from ClientComm import ClientComm
 
 if __name__ == "__main__":
     agentName = 'sampleAgents.Agent'
@@ -17,8 +20,9 @@ if __name__ == "__main__":
     try:
         if __name__ == '__main__':
             p = subprocess.Popen(scriptFile)
-            # print("Run server process [OK]")
-            stdout, stderr = p.communicate()
+            print("Run server process [OK]")
+            print(str(os.getcwd()))
+            # stdout, stderr = p.communicate()
             print("Run server communicate [OK]")
             ccomm = ClientComm(agentName)
             print("Start comm with agent " + agentName)

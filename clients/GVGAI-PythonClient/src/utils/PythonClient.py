@@ -1,4 +1,5 @@
 import sys
+sys.path.append('../sampleAgents')
 
 from ClientComm import ClientComm
 

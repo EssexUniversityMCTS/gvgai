@@ -9,7 +9,7 @@ agent=$1
 port=$2
 clientType=$3
 src_folder='clients/GVGAI-JavaClient/src'
-py_src_folder='clients/GVGAI-PythonClient/src'
+py_src_folder='clients/GVGAI-PythonClient/src/utils'
 build_folder='clients/GVGAI-JavaClient/out'
 
 
