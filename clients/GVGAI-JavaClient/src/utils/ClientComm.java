@@ -1,6 +1,6 @@
 package utils;
 
-import com.google.gson.Gson;
+import utils.com.google.gson.Gson;
 import serialization.SerializableStateObservation;
 
 import java.io.*;

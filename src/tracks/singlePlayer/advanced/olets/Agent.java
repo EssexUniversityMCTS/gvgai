@@ -27,7 +27,7 @@ public class Agent extends AbstractPlayer {
     /**
      * The Monte Carlo Tree Search agent - the core of the algorithm
      */
-    private final SingleMCTSPlayer mctsPlayer;
+    public SingleMCTSPlayer mctsPlayer;
 
     /**
      * Public constructor with state observation and time due.
@@ -58,7 +58,6 @@ public class Agent extends AbstractPlayer {
      * @return An action for the current state
      */
     public Types.ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
-
         //Set the state observation object as the new root of the tree.
         mctsPlayer.init(stateObs);
 

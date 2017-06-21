@@ -3,6 +3,8 @@ package core.game;
 import java.awt.Dimension;
 import java.util.*;
 
+import core.competition.CompetitionParameters;
+import core.logging.Logger;
 import core.vgdl.SpriteGroup;
 import core.vgdl.VGDLSprite;
 import ontology.Types;
@@ -377,8 +379,9 @@ public class ForwardModel extends Game
 
                 //update avatar sprite.
                 MovingAvatar a = (MovingAvatar) sp;
-                this.avatars[a.getPlayerID()] = a;
-
+                if(a.getKeyHandler() != null){
+                    this.avatars[a.getPlayerID()] = a;
+                }
                 playerList[itype] = true; //maybe use this
                 break;
             case Types.TYPE_RESOURCE:
@@ -709,7 +712,7 @@ public class ForwardModel extends Game
      * Indicates if the game is over or if it hasn't finished yet.
      * @return true if the game is over.
      */
-    public boolean isGameOver() { return getGameWinner() != Types.WINNER.NO_WINNER; }
+    public boolean isGameOver() { return getGameWinner() != Types.WINNER.NO_WINNER || Logger.getInstance().getMessageCount() > CompetitionParameters.MAX_ALLOWED_WARNINGS; }
 
     /**
      * Indicates if the game is over or if it hasn't finished yet.

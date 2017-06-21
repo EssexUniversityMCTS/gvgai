@@ -4,10 +4,10 @@ import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.Gson;
-import com.google.gson.TypeAdapter;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
+import utils.com.google.gson.Gson;
+import utils.com.google.gson.TypeAdapter;
+import utils.com.google.gson.TypeAdapterFactory;
+import utils.com.google.gson.reflect.TypeToken;
 
 /***
  * This class is used to generate GSon objects using the custom ArrayAdapter class rules.

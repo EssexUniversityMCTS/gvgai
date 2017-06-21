@@ -1,6 +1,6 @@
 package core.game;
 
-import com.google.gson.Gson;
+import tools.com.google.gson.Gson;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
 

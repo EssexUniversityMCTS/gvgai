@@ -1,23 +1,19 @@
 package tracks.ruleGeneration;
 
-import tracks.ArcadeMachine;
-
 import java.util.Random;
-
-import core.logging.Logger;
 
 /**
  * Created by dperez on 19/03/2017.
  */
 public class TestRuleGeneration {
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+	//Available Controllers
+	String sampleMCTSController = "tracks.singlePlayer.advanced.sampleMCTS.Agent";
 
         // Available Rule Generator
         String randomRuleGenerator = "tracks.ruleGeneration.randomRuleGenerator.RuleGenerator";
         String constructiveRuleGenerator = "tracks.ruleGeneration.constructiveRuleGenerator.RuleGenerator";
-
-        String sampleMCTSController = "tracks.singlePlayer.advanced.sampleMCTS.Agent";
+        String geneticRuleGenerator = "tracks.ruleGeneration.geneticRuleGenerator.RuleGenerator";
 
         // Available games:
         String gamesPath = "examples/gridphysics/";
@@ -67,3 +63,4 @@ public class TestRuleGeneration {
         }
     }
 }
+
