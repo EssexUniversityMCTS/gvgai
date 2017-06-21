@@ -39,11 +39,8 @@ public class SocketComm extends Comm {
         try{
             //Accepting the socket connection.
             while (socket == null) {
-//                System.out.println("===========to create a ServerSocket");
                 ServerSocket serverSocket = new ServerSocket(port);
-                System.out.println("ServerSocket ready");
                 socket = serverSocket.accept();
-                System.out.println("=============a socket created");
             }
 
 

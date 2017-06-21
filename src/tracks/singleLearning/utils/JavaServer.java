@@ -88,7 +88,6 @@ public class JavaServer {
         //LearningMachine.runOneGame(game, level1, visuals, javaController, recordActionsFile, seed, true);
 
         // 1. This plays a training round for a specified game.
-        System.out.println("=========== DEBUG: LearningMachine: to runMultipleGames");
         LearningMachine.runMultipleGames(game, level_files, cmd, new String[]{null});
 
 

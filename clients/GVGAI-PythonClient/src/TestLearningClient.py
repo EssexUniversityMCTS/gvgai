@@ -4,6 +4,7 @@ import subprocess
 import sys
 import traceback
 sys.path.append('./utils')
+
 from CompetitionParameters import CompetitionParameters
 
 from ClientComm import ClientComm

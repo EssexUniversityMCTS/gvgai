@@ -2,7 +2,10 @@ import importlib
 import json
 import logging
 import sys
+import os
 import traceback
+sys.path.append(os.path.dirname(os.path.realpath(__file__))+'/..')
+sys.path.append('../sampleAgents')
 
 from SerializableStateObservation import *
 
@@ -150,7 +153,7 @@ class ClientComm:
     def startAgent(self):
         try:
             try:
-                module = importlib.import_module(self.agentName)
+                module = importlib.import_module(self.agentName, __name__)
                 try:
                     self.player = getattr(module, 'Agent')()
                 except AttributeError:
