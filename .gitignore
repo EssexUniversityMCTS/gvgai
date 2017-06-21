@@ -28,3 +28,4 @@ production/
 *.txt
 *.png
 *.gif
+*.pyc
