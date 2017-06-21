@@ -75,21 +75,29 @@ During the testing phase, the package can be located in `gvgai/clients/GVGAI-Jav
 * Launch the IDE, open the project `gvgai`.
 
 ### Step 2: (Optional) Advanced settings
-* Set the port for communication: If you don't want to use the default setting with port 8000, please edit `TestSingleLearning.java`.
+* Set the port for communication: If you don't want to use the default setting with port 8000, please edit `CompetitionaParameters.java`.
 * You may need to edit `gvgai/src/tracks/SingleLearning/runClient_nocompile.bat` to specify the path to the sdk.
 * If you move the `GVGAI-JavaClient` project to another folder, please change the path to the build and source folders in `runClient_nocompile.bat` or `runClient_nocompile.sh`. Attention: this will affect the location of the output file ClientLog.txt (see `GVGAI-JavaClient/src/utils/IO.java`).
 
-### Step 3: Set your agent
-If you want to use your own agent, you can pass the name of agent as a parameter to `JavaClient.java`. Otherwise, the sample random agent `gvgai/clients/GVGAI-JavaClient/src/agents/random/Agent.java` will be used.
+### Step 3a: Set your Java agent
+If you want to use your own agent, you can pass the name of agent as a parameter to `JavaClient.java` in `gvgai/clients/GVGAI-JavaClient/src` or `TestSingleLearning.jaba` in `gvgai/src/tracks/singleLearning/utils`. Otherwise, the sample random agent `gvgai/clients/GVGAI-JavaClient/src/agents/random/Agent.java` will be used.
+
+### Step 3b: Set your Python agent
+If you want to use your own agent, you can pass the name of agent as a parameter to `TestLearningClient.py` in `gvgai/clients/GVGAI-PythonClient/src` or `TestSingleLearning.java` in `gvgai/src/tracks/singleLearning/utils`, depending where you will run. Otherwise, the sample random agent `gvgai/clients/GVGAI-PythonClient/src/sampleAgents/Agent.py` will be used.
 
 ### Step 4: Executing from the server
 Run `TestSingleLearning.java` in `gvgai/src/tracks/SingleLearning`. It will compile the client, build the communication and launch the program.
 
-### Step 4b: Executing from the client (Work in progress).
+### Step 4b: Executing from the Java client.
+Run `TestLearningClient.java` in `gvgai/clients/GVGAI-JavaClient/src`. It will compile the client, build the communication and launch the program.
+
+### Step 4b: Executing from the Python client.
+Run `TestLearningClient.py` in `gvgai/clients/GVGAI-PythonClient/src`. It will compile the client, build the communication and launch the program.
 
 
 ## Possible issues and actions
 ### If gson not found
 Please open *Project structure/Libraries*, add the `gvgai/lib/gson-2.8.0.jar`. 
-### FileNotFound exception for logd/ClientLog.txt
+### FileNotFound exception for logs/ClientLog.txt
 Please check the location of the output file ClientLog.txt (see `GVGAI-JavaClient/src/utils/IO.java`).
+Or create manually the folder namely `logs`.
