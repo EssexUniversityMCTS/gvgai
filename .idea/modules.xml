@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/clients/GVGAI-JavaClient/GVGAI-JavaClient.iml" filepath="$PROJECT_DIR$/clients/GVGAI-JavaClient/GVGAI-JavaClient.iml" />
       <module fileurl="file://$PROJECT_DIR$/gvgai.iml" filepath="$PROJECT_DIR$/gvgai.iml" />
     </modules>
   </component>

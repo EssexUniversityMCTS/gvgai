@@ -261,6 +261,7 @@ public class Agent extends AbstractMultiPlayer {
      * Initialize population
      * @param stateObs - current game state
      */
+    @SuppressWarnings("unchecked")
     private void init_pop(StateObservationMulti stateObs) {
 
         double remaining = timer.remainingTimeMillis();

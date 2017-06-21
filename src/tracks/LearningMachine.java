@@ -13,7 +13,9 @@ import ontology.Types;
 import tools.ElapsedCpuTimer;
 import tools.StatSummary;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Random;
 
 /**
@@ -34,7 +36,6 @@ public class LearningMachine {
      */
     public static double[] runOneGame(String game_file, String level_file, boolean visuals,
                                     String[] cmd, String actionFile, int randomSeed) throws IOException {
-//        int trainingPlays = 0;// TODO: 22/05/17 to be removed?
         VGDLFactory.GetInstance().init(); //This always first thing to do.
         VGDLRegistry.GetInstance().init();
 
@@ -44,7 +45,6 @@ public class LearningMachine {
         LearningPlayer player = LearningMachine.createPlayer(cmd);
 //
         //2. Play the training games.
-//        System.out.print(trainingPlays + " ");// TODO: 22/05/17 to be removed?
         double[] finalScore = playOnce(player, actionFile, game_file, level_file, visuals, randomSeed);
 
         return finalScore;
@@ -61,8 +61,6 @@ public class LearningMachine {
      */
     public static void runMultipleGames(String game_file, String[] level_files,
                                             String cmd[], String[] actionFiles) throws IOException {
-//        int trainingPlays = 0;// TODO: 22/05/17 to be removed?
-
         VGDLFactory.GetInstance().init(); //This always first thing to do.
         VGDLRegistry.GetInstance().init();
 
@@ -70,7 +68,6 @@ public class LearningMachine {
         LearningPlayer player = LearningMachine.createPlayer(cmd);
 
         // Play the training games.
-//        System.out.print(trainingPlays + "\n");// TODO: 22/05/17 to be removed?
         runGames(game_file, level_files, 1, player, actionFiles);
     }
 
@@ -105,7 +102,6 @@ public class LearningMachine {
         Player[] players = new Player[]{player};
         if (visuals)
             score = toPlay.playGame(players, randomSeed, true, 0);
-//            score = toPlay.playGame(players, randomSeed, false, 0);// TODO: 22/05/17 why false???
         else
             score = toPlay.runGame(players, randomSeed);
 
@@ -329,10 +325,15 @@ public class LearningMachine {
 
         String scriptName = cmd[0];
 
-        if(scriptName != null)
-        {
+        if(scriptName != null) {
             Process client;
-            ProcessBuilder builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2]);
+            ProcessBuilder builder;
+            assert (cmd.length==4 || cmd.length==3);
+            if (cmd.length == 4) {
+                builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2], cmd[3]);
+            } else {
+                builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2]);
+            }
             builder.redirectErrorStream(true);
             client = builder.start();
             return new LearningPlayer(client, cmd[2]);

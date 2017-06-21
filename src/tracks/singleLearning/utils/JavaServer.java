@@ -4,6 +4,7 @@ import core.competition.CompetitionParameters;
 import tools.ElapsedWallTimer;
 import tracks.LearningMachine;
 
+import java.io.File;
 import java.util.Random;
 
 /**
@@ -19,9 +20,9 @@ public class JavaServer {
         String port = CompetitionParameters.SOCKET_PORT + "";
 
         //Building the command line
-        String cmd[] = new String[]{null, null, port};
+        String cmd[] = new String[]{null, null, port, "python"};
 
-        String gamesPathPrepend = "";
+        String gamesPathPrepend = "./";
         if(args.length > 0)
         {
             gamesPathPrepend = args[0];
@@ -35,7 +36,7 @@ public class JavaServer {
         boolean GRID_PHYSICS = true;
 
 
-        System.out.println("Server asked to run at port: " + port + " where games are IN " + gamesPathPrepend);
+        System.out.println("Server asked to run at port: " + port + " where games are IN " + new File(gamesPathPrepend+ "examples").getAbsolutePath());
 
         // All public games (gridphysics)
         if(GRID_PHYSICS) {

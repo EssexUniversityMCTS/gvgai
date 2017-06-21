@@ -21,7 +21,7 @@ public class TestLearningClient
         {
             scriptFile = "clients\\GVGAI-JavaClient\\src\\utils\\runServer_nocompile.bat";
         }else{
-            scriptFile = "src/utils/runServer_nocompile.sh";
+            scriptFile = "clients/GVGAI-JavaClient/src/utils/runServer_nocompile.sh";
         }
 
         //Agent to play with

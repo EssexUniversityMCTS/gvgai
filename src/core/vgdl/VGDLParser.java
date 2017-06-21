@@ -409,6 +409,7 @@ public class VGDLParser {
 	 * @param parenttypes
 	 *            List of types the parent of elements belong to.
 	 */
+	@SuppressWarnings("unchecked")
 	private void _parseSprites(ArrayList<Node> elements, String parentclass, HashMap<String, String> parentargs,
 							   ArrayList<String> parenttypes) {
 		HashMap<String, String> args = (HashMap<String, String>) parentargs.clone();
@@ -504,6 +505,7 @@ public class VGDLParser {
 	 *            all interactions defined for the game.
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unchecked")
 	private void parseInteractionSet(ArrayList<Node> elements) throws Exception {
 		for (Node n : elements) {
 			InteractionContent ic = (InteractionContent) n.content;

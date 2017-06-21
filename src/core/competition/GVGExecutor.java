@@ -65,6 +65,7 @@ public class GVGExecutor {
         // -g examples/gridphysics/aliens.txt:examples/gridphysics/camelRace.txt -l examples/gridphysics/aliens_lvl0.txt:examples/gridphysics/aliens_lvl1.txt;examples/gridphysics/camelRace_lvl0.txt -ag tracks.singlePlayer.deprecated.sampleMCTS.Agent -res o1.txt:o2.txt -vis 0 -rep 2
     }
 
+    @SuppressWarnings("unchecked")
     public static void parseParameter(String arg1, String arg2)
     {
         if(arg1.equalsIgnoreCase("-g"))

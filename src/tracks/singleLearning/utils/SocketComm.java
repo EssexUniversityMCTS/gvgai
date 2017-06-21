@@ -4,6 +4,8 @@ package tracks.singleLearning.utils;
  * Created by Daniel on 05.04.2017.
  */
 
+import core.competition.CompetitionParameters;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,12 +14,12 @@ import java.util.Scanner;
 public class SocketComm extends Comm {
 
 
-    public int port = 3000; //default
+    public int port = CompetitionParameters.SOCKET_PORT; //default
     private Socket socket;
     private Scanner in;
     private PrintStream out;
     private boolean end;
-
+    BufferedReader br;
 
     /**
      * Public constructor of the player.
@@ -46,7 +48,7 @@ public class SocketComm extends Comm {
             in = new Scanner(socket.getInputStream());
             out = new PrintStream(socket.getOutputStream());
 
-        }catch(java.net.BindException e)
+        } catch(java.net.BindException e)
         {
             System.out.println(e.toString());
             e.printStackTrace();
@@ -96,6 +98,7 @@ public class SocketComm extends Comm {
      */
     public String commRecv() throws IOException {
         String ret = in.nextLine();
+
         //System.out.println("Received in server: " + ret);
         if(ret != null && ret.trim().length() > 0)
         {
@@ -103,7 +106,6 @@ public class SocketComm extends Comm {
             if(messageParts.length < 2) {
                 return null;
             }
-
             int receivedID = Integer.parseInt(messageParts[0]);
             String msg = messageParts[1];
 

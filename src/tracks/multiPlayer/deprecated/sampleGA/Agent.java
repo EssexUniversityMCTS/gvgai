@@ -62,6 +62,7 @@ public class Agent extends AbstractMultiPlayer {
         initGenome(stateObs);
     }
 
+    @SuppressWarnings("unchecked")
     private void initActions(StateObservationMulti stateObs)
     {
         N_ACTIONS = new int[no_players];

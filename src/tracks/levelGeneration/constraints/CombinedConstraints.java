@@ -24,6 +24,7 @@ public class CombinedConstraints extends AbstractConstraint{
 	 * Add multiple constraints to the combined constraints class
 	 * @param conStrings	array of name of the constraint classes needed
 	 */
+	@SuppressWarnings("unchecked")
 	public void addConstraints(String[] conStrings){
 		for(String c:conStrings){
 			try{

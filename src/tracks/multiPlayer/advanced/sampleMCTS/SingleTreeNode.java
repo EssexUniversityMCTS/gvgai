@@ -203,7 +203,7 @@ public class SingleTreeNode
         if(delta > bounds[1])
             bounds[1] = delta;
 
-        //double normDelta = Utils.normalise(delta ,lastBounds[0], lastBounds[1]);
+        //double normDelta = utils.normalise(delta ,lastBounds[0], lastBounds[1]);
 
         return delta;
     }
