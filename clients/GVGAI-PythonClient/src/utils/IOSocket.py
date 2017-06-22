@@ -57,9 +57,8 @@ class IOSocket:
 
     def readLine(self):
         try:
-            # return self.socket.recv(1024000)
-            totest = self.recv_end()
-            return totest
+            msg = self.recv_end()
+            return msg
         except Exception as e:
             logging.exception(e)
             print ("Read from server [FAILED]")
@@ -70,7 +69,7 @@ class IOSocket:
         total_data = []
         data = ''
         while True:
-            data = self.socket.recv(8192)
+            data = self.socket.recv(self.BUFF_SIZE)
             if self.END in data:
                 total_data.append(data[:data.find(self.END)])
                 break

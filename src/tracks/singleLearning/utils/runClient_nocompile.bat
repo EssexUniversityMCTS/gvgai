@@ -8,7 +8,7 @@ set path=%PATH%;C:\Program Files\Java\jdk1.8.0_121\bin
 
 set src_folder=clients\GVGAI-JavaClient\src
 set build_folder=clients\GVGAI-JavaClient\out
-set py_src_folder=clients\GVGAI-PythonClient\src
+set py_src_folder=clients\GVGAI-PythonClient\src\utils
 
 
 if "%clientType%" == "java" (
@@ -17,10 +17,10 @@ if "%clientType%" == "java" (
     javac -d %build_folder% @sources.txt
 
     rem Run the JavaClient class
-    java -agentlib:jdwp=transport=dt_socket,server=y,address=%port%,suspend=n -cp %build_folder% utils.JavaClient %agent%  > logs/output_client_redirect.txt 2> logs/output_client_redirect_err.txt
+    java -cp %build_folder% utils.JavaClient %agent%  > logs/output_client_redirect.txt 2> logs/output_client_redirect_err.txt
 	) 
 
 if "%clientType%" == "python" (
     rem Run the PythonClient class
-    python %py_src_folder%\PythonClient.py %agent%  > logs/output_client_redirect_python.txt 2> logs/output_client_redirect_err_python.txt
+    c:\python27\python.exe %py_src_folder%\PythonClient.py %agent%  > logs/output_client_redirect_python.txt 2> logs/output_client_redirect_err_python.txt
 	)

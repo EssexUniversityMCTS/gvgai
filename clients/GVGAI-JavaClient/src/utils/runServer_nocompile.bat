@@ -13,4 +13,4 @@ dir /s/b %src_folder%\*.java > sources.txt
 javac -d %build_folder% @sources.txt
 
 rem Run the JavaClient class
-java -agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=n -cp %build_folder% tracks.singleLearning.utils.JavaServer %SERVER_GAMES_DIR% > logs/output_server_redirect.txt 2> logs/output_server_redirect_err.txt
+java -cp %build_folder% tracks.singleLearning.utils.JavaServer %SERVER_GAMES_DIR% > logs/output_server_redirect.txt 2> logs/output_server_redirect_err.txt

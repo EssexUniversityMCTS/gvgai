@@ -79,7 +79,7 @@ public class CompetitionParameters
     /**
      * Milliseconds allowed per controller action.
      */
-    public static final int SOCKET_PORT = 3000;
+    public static final int SOCKET_PORT = 8080;
 
     /**
      * Indicates if the overspend should be taken into account or not.

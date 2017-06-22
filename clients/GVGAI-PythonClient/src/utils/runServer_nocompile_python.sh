@@ -20,5 +20,5 @@ mkdir -p ${build_folder}
 
 
 javac -d ${build_folder} @sources.txt
-java -agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=n -classpath ${build_folder} tracks.singleLearning.utils.JavaServer ${SERVER_GAMES_DIR} > ${DIRECTORY}/output_server_redirect.txt 2> ${DIRECTORY}/output_server_redirect_err.txt
+java -classpath ${build_folder} tracks.singleLearning.utils.JavaServer ${SERVER_GAMES_DIR} > ${DIRECTORY}/output_server_redirect.txt 2> ${DIRECTORY}/output_server_redirect_err.txt
 

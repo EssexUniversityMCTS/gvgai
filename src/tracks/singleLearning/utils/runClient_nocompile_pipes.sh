@@ -14,4 +14,4 @@ mkdir -p $build_folder
 find ${src_folder} -name "*.java" > sources.txt
 javac -d $build_folder @sources.txt
 
-java -agentlib:jdwp=transport=dt_socket,server=y,address=${port},suspend=n -classpath ${build_folder} utils.JavaClient ${agent}
+java -agentlib:jdwp=transport=dt_socket,server=y,address=8888,suspend=n -classpath ${build_folder} utils.JavaClient ${agent}

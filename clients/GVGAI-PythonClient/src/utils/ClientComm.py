@@ -53,7 +53,7 @@ class ClientComm:
 
         while line is not None:
             line = self.io.readLine()
-            # line = line.rstrip('\n')
+            line = line.rstrip("\r\n")
             self.processLine(line)
 
             if self.sso.phase == Phase.START:
