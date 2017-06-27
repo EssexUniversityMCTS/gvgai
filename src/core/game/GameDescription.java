@@ -377,7 +377,10 @@ public class GameDescription {
 
 		public SpriteData(HashMap<String, String> parameters) {
 			this.sprites = new ArrayList<String>();
-			this.parameters = parameters;
+			this.parameters = new HashMap<String, String>();
+			for(String key:parameters.keySet()){
+			    this.parameters.put(key, parameters.get(key));
+			}
 		}
 
 		@Override

@@ -3,7 +3,7 @@ package ontology.effects.binary;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
-import ontology.Types;
+import core.logging.*;
 import ontology.effects.Effect;
 import tools.Direction;
 import tools.Vector2d;
@@ -32,6 +32,11 @@ public class BounceDirection extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
+	if(sprite1 == null || sprite2 == null){
+	    Logger.getInstance().addMessage(new Message(Message.WARNING, "Neither 1st not 2nd sprite can be EOS with BounceDirection interaction."));
+	    return;
+	}
+	
         //We need the actual intersection:
         Rectangle interRect = sprite1.rect.intersection(sprite2.rect);
         double padLenght = sprite2.rect.height;

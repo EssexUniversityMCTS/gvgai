@@ -22,17 +22,19 @@ public class DecreaseSpeedToAll extends Effect
     public int itype;
     public double value=0.1;
 
-    public DecreaseSpeedToAll(InteractionContent cnt)
+    public DecreaseSpeedToAll(InteractionContent cnt) throws Exception
     {
         is_stochastic = true;
         this.parseParameters(cnt);
         itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
+        if(itype == -1){
+            throw new Exception("Undefined sprite " + stype);
+        }
     }
 
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
-
         ArrayList<Integer> subtypes = game.getSubTypes(itype);
         for (Integer i: subtypes) {
             Iterator<VGDLSprite> spriteIt = game.getSpriteGroup(i);

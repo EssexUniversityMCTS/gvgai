@@ -3,6 +3,8 @@ package ontology.effects.unary;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.logging.Logger;
+import core.logging.Message;
 import ontology.effects.Effect;
 
 /**
@@ -22,6 +24,10 @@ public class ReverseDirection extends Effect
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
+	if(sprite1 == null){
+	    Logger.getInstance().addMessage(new Message(Message.WARNING, "1st sprite can't be EOS with ReverseDirection interaction."));
+	    return;
+	}
         game.reverseDirection(sprite1);
     }
 }

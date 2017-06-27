@@ -4,6 +4,8 @@ import core.vgdl.VGDLRegistry;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.logging.Logger;
+import core.logging.Message;
 import ontology.effects.unary.TransformTo;
 
 import java.util.ArrayList;
@@ -23,15 +25,23 @@ public class TransformToAll extends TransformTo {
     public String stypeTo;
     public int itypeTo;
 
-    public TransformToAll(InteractionContent cnt)
+    public TransformToAll(InteractionContent cnt) throws Exception
     {
         super(cnt);
         itypeTo = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stypeTo);
+        if(itypeTo == -1){
+            throw new Exception("Undefined sprite " + stypeTo);
+        }
     }
 
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
+	if(sprite2 == null){
+	    Logger.getInstance().addMessage(new Message(Message.WARNING, "2nd sprite can't be EOS with TransformToAll interaction."));
+	    return;
+	}
+	
         //First, we need to get all sprites of type stype.
         Iterator<VGDLSprite> spriteIt = game.getSpriteGroup(itype);
 
