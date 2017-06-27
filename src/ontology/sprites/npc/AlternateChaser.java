@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 import core.vgdl.VGDLRegistry;
 import core.vgdl.VGDLSprite;
@@ -26,8 +27,8 @@ public class AlternateChaser extends RandomNPC
     public boolean fleeing;
     public String stype1;
     public String stype2;
-    public int itype1;
-    public int itype2;
+    public int[] itype1;
+    public int[] itype2;
 
     ArrayList<VGDLSprite> targets;
     ArrayList<Direction> actions;
@@ -58,8 +59,19 @@ public class AlternateChaser extends RandomNPC
     {
         super.postProcess();
         //Define actions here.
-        itype1 =  VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype1);
-        itype2 =  VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype2);
+        String[] stypes1 = stype1.split(",");
+        itype1 = new int[stypes1.length];
+        String[] stypes2 = stype1.split(",");
+        itype2 = new int[stypes2.length];
+
+        for (int i = 0; i<stypes1.length; i++) {
+            itype1[i] = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stypes1[i]);
+        }
+
+        for (int i = 0; i<stypes2.length; i++) {
+            itype2[i] = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stypes2[i]);
+        }
+
     }
 
     public void update(Game game)
@@ -120,22 +132,26 @@ public class AlternateChaser extends RandomNPC
         double bestDist = Double.MAX_VALUE;
 
         int targetSpriteId = -1;
-        int numChasing = game.getNumSprites(itype1);
-        int numFleeing = game.getNumSprites(itype2);
+        int numChasing = 0;
+        for (int i = 0; i < itype1.length; i++)
+            numChasing += game.getNumSprites(itype1[i]);
+        int numFleeing = 0;
+        for (int i = 0; i < itype2.length; i++)
+            numChasing += game.getNumSprites(itype2[i]);
 
         if(numChasing > numFleeing)
         {
-            targetSpriteId = itype1;
+            targetSpriteId = itype1[new Random().nextInt(itype1.length)];
             fleeing = false;
         }else if(numFleeing > numChasing)
         {
-            targetSpriteId = itype2;
+            targetSpriteId = itype2[new Random().nextInt(itype2.length)];
             fleeing = true;
         }
 
         if(targetSpriteId != -1)
         {
-            Iterator<VGDLSprite> spriteIt = game.getSpriteGroup(targetSpriteId);
+            Iterator<VGDLSprite> spriteIt = game.getSubSpritesGroup(targetSpriteId);
             if(spriteIt != null) while(spriteIt.hasNext())
             {
                 VGDLSprite s = spriteIt.next();
@@ -179,8 +195,8 @@ public class AlternateChaser extends RandomNPC
         targetSprite.fleeing = this.fleeing;
         targetSprite.stype1 = this.stype1;
         targetSprite.stype2 = this.stype2;
-        targetSprite.itype1 = this.itype1;
-        targetSprite.itype2 = this.itype2;
+        targetSprite.itype1 = this.itype1.clone();
+        targetSprite.itype2 = this.itype2.clone();
         targetSprite.targets = new ArrayList<VGDLSprite>();
         targetSprite.actions = new ArrayList<Direction>();
         super.copyTo(targetSprite);
@@ -189,8 +205,17 @@ public class AlternateChaser extends RandomNPC
     @Override
     public ArrayList<String> getDependentSprites(){
     	ArrayList<String> result = new ArrayList<String>();
-    	if(stype1 != null) result.add(stype1);
-    	if(stype2 != null) result.add(stype2);
+        String[] stypes1 = stype1.split(",");
+        String[] stypes2 = stype1.split(",");
+
+    	if(stypes1.length > 0) {
+    	    for (String s : stypes1)
+    	        result.add(s);
+        }
+    	if(stypes2.length > 0) {
+            for (String s : stypes2)
+                result.add(s);
+        }
     	
     	return result;
     }
