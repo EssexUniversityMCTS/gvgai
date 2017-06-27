@@ -3,6 +3,8 @@ package ontology.effects.unary;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.logging.Logger;
+import core.logging.Message;
 import ontology.effects.Effect;
 import tools.Vector2d;
 
@@ -22,6 +24,11 @@ public class CloneSprite extends Effect {
 
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game) {
+	if(sprite1 == null){
+	    Logger.getInstance().addMessage(new Message(Message.WARNING, "1st sprite can't be EOS with CloneSprite interaction."));
+	    return;
+	}
+	
         int itype = sprite1.getType();
         Vector2d pos = sprite1.getPosition();
         game.addSprite(itype, pos);

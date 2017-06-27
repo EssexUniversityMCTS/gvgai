@@ -4,6 +4,8 @@ import core.vgdl.VGDLRegistry;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.logging.Logger;
+import core.logging.Message;
 import ontology.effects.Effect;
 
 import java.util.ArrayList;
@@ -22,17 +24,31 @@ public class SpawnIfCounterSubTypes extends Effect {
     public int subTypesNum=-1; // number of subtypes
     public int limit; //number of total sprites
 
-    public SpawnIfCounterSubTypes(InteractionContent cnt)
+    public SpawnIfCounterSubTypes(InteractionContent cnt) throws Exception
     {
         this.parseParameters(cnt);
         eitype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(estype);
+        if(eitype == -1){
+            throw new Exception("Undefined sprite " + estype);
+        }
         citype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stypeCount);
+        if(citype == -1){
+            throw new Exception("Undefined sprite " + stypeCount);
+        }
         itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
+        if(itype == -1){
+            throw new Exception("Undefined sprite " + stype);
+        }
     }
 
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
+	if(sprite1 == null){
+	    Logger.getInstance().addMessage(new Message(Message.WARNING, "1st sprite can't be EOS with SpawnIfCounterSubTypes interaction."));
+	    return;
+	}
+	
         applyScore = false;
         count=false;
 

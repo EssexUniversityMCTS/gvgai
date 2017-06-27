@@ -4,6 +4,8 @@ import core.vgdl.VGDLRegistry;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.logging.Logger;
+import core.logging.Message;
 import ontology.effects.Effect;
 
 import java.util.ArrayList;
@@ -26,15 +28,19 @@ public class SubtractHealthPoints extends Effect
     public String scoreChangeIfKilled;
     private String defScoreChange;
 
-    public SubtractHealthPoints(InteractionContent cnt)
+    public SubtractHealthPoints(InteractionContent cnt) throws Exception
     {
         is_kill_effect = true;
         limit = 0;
         value = 1;
         scoreChangeIfKilled = "0";
         this.parseParameters(cnt);
-        if (!Objects.equals(stype, ""))
+        if (!Objects.equals(stype, "")){
             itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
+            if(itype == -1){
+        	throw new Exception("Undefined sprite " + stype);
+            }
+        }
         defScoreChange = scoreChange;
     }
 
@@ -54,6 +60,12 @@ public class SubtractHealthPoints extends Effect
                         e.printStackTrace();
                     }
                 }
+            }
+        }
+        else{
+            if(sprite1 == null){
+        	Logger.getInstance().addMessage(new Message(Message.WARNING, "1st sprite can't be EOS with SubtractHealthPoints interaction."));
+        	return;
             }
         }
         s.healthPoints -= value;

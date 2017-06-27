@@ -10,6 +10,8 @@ import core.vgdl.VGDLRegistry;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.logging.Logger;
+import core.logging.Message;
 import core.player.Player;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
@@ -36,18 +38,29 @@ public class TransformToSingleton extends Effect {
     public int itype_other;    // type the sprites of type stype are transormed back to
 
 
-    public TransformToSingleton(InteractionContent cnt)
+    public TransformToSingleton(InteractionContent cnt) throws Exception
     {
         takeOrientation = false;
         is_kill_effect = true;
         this.parseParameters(cnt);
         itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
         itype_other = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype_other);
+        if(itype == -1){
+            throw new Exception("Undefined sprite " + stype);
+        }
+        if(itype_other == -1){
+            throw new Exception("Undefined sprite " + stype_other);
+        }
     }
 
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
+	if(sprite1 == null || sprite2 == null){
+	    Logger.getInstance().addMessage(new Message(Message.WARNING, "Neither the 1st nor 2nd sprite can be EOS with TransformToSingleton interaction."));
+	    return;
+	}
+	
         //First, transform all sprites in the game to the itype_other type.
         // (in theory, there should be only 1 or none).
         Iterator<VGDLSprite> itSprites = game.getSpriteGroup(itype);
