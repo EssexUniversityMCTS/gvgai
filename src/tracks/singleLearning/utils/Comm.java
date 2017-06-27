@@ -15,6 +15,19 @@ import java.util.logging.Logger;
 public abstract class Comm extends Thread {
 
     /**
+     * Message type choice (JSON/Image/Both)
+     */
+    public enum MESSAGE_TYPE{
+        JSON, IMAGE, BOTH
+    }
+
+    /**
+     * Variable to store the message type
+     */
+    public MESSAGE_TYPE messageType;
+
+
+    /**
      * Line separator for messages.
      */
     protected String lineSep = System.getProperty("line.separator");
@@ -34,6 +47,9 @@ public abstract class Comm extends Thread {
      */
     public Comm() {
         this.messageId = 0;
+
+        // Set message type to JSON by default
+        this.messageType = MESSAGE_TYPE.JSON;
     }
 
 

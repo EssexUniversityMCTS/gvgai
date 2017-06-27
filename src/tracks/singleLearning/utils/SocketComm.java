@@ -102,12 +102,30 @@ public class SocketComm extends Comm {
         //System.out.println("Received in server: " + ret);
         if(ret != null && ret.trim().length() > 0)
         {
+            // Type of message chosen by player (JSON/Image)
+            String messageType = "";
+
             String messageParts[] = ret.split(TOKEN_SEP);
             if(messageParts.length < 2) {
                 return null;
             }
             int receivedID = Integer.parseInt(messageParts[0]);
             String msg = messageParts[1];
+
+            if (messageParts.length >= 3) {
+                messageType = messageParts[2];
+
+                switch (messageType) {
+                    case "j":
+                        this.messageType = MESSAGE_TYPE.JSON;
+                        break;
+                    case "i":
+                        this.messageType = MESSAGE_TYPE.IMAGE;
+                        break;
+                    case "b":
+                        this.messageType = MESSAGE_TYPE.BOTH;
+                }
+            }
 
             if(receivedID == (messageId-1)) {
                 return msg.trim();

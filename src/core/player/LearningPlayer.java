@@ -59,11 +59,22 @@ public class LearningPlayer extends Player {
     public Types.ACTIONS act(StateObservation so, ElapsedCpuTimer elapsedTimer) {
         //Sending messages.
         try {
-            // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
-            so.currentGameState = Types.GAMESTATES.ACT_STATE;
-            SerializableStateObservation sso = new SerializableStateObservation(so);
+            if (comm.messageType == Comm.MESSAGE_TYPE.JSON) {
+                // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
+                so.currentGameState = Types.GAMESTATES.ACT_STATE;
+                SerializableStateObservation sso = new SerializableStateObservation(so);
 
-            comm.commSend(sso.serialize(null));
+                comm.commSend(sso.serialize(null));
+            } else if (comm.messageType == Comm.MESSAGE_TYPE.IMAGE){
+                // TODO 27/06/2017 Daniel: Insert code for image sending here
+
+            } else if (comm.messageType == Comm.MESSAGE_TYPE.BOTH){
+                // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
+                so.currentGameState = Types.GAMESTATES.ACT_STATE;
+                SerializableStateObservation sso = new SerializableStateObservation(so);
+
+                comm.commSend(sso.serialize(null));
+            }
 
             // Receive the response and set ACTION_NIL as default action
             String response = comm.commRecv();
