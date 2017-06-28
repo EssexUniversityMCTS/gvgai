@@ -712,7 +712,18 @@ public class ForwardModel extends Game
      * Indicates if the game is over or if it hasn't finished yet.
      * @return true if the game is over.
      */
-    public boolean isGameOver() { return getGameWinner() != Types.WINNER.NO_WINNER; }
+    public boolean isGameOver() { return this.isGameOver(false); }
+    
+    /**
+     * Indicates if the game is over or if it hasn't finished yet.
+     * @return true if the game is over.
+     */
+    public boolean isGameOver(boolean checkWarnings) {
+	if(checkWarnings){
+	    return getGameWinner() != Types.WINNER.NO_WINNER || Logger.getInstance().getMessageCount() > CompetitionParameters.MAX_ALLOWED_WARNINGS; 
+	}
+	return getGameWinner() != Types.WINNER.NO_WINNER; 
+    }
 
     /**
      * Indicates if the game is over or if it hasn't finished yet.
