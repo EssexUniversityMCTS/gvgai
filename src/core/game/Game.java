@@ -1726,7 +1726,6 @@ public abstract class Game {
 			return newSprite;
 		}
 
-		Logger.getInstance().addMessage(new Message(Message.WARNING, "You can't have multiple objects of singleton."));
 		return null;
 	}
 
