@@ -44,6 +44,7 @@ public class SpawnIfHasMore  extends Effect {
 	    Logger.getInstance().addMessage(new Message(Message.WARNING, "1st sprite can't be EOS with SpawnIfHasMore interaction."));
 	    return;
 	}
+	
         applyScore = false;
 
         if(game.getRandomGenerator().nextDouble() >= prob) return;
