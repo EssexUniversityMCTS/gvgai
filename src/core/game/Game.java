@@ -1725,7 +1725,7 @@ public abstract class Game {
 			this.addSprite(newSprite, itype);
 			return newSprite;
 		}
-
+		
 		return null;
 	}
 
