@@ -154,19 +154,7 @@ public class StateObservation {
      */
     public boolean isGameOver()
     {
-        return this.isGameOver(false);
-    }
-    
-    /**
-     * Indicates if the game is over or if it hasn't finished yet.
-     * @return true if the game is over.
-     */
-    public boolean isGameOver(boolean checkWarnings)
-    {
-	if(checkWarnings) {
-	    return model.isGameOver() || Logger.getInstance().getMessageCount() > CompetitionParameters.MAX_ALLOWED_WARNINGS;
-	}
-	return model.isGameOver();
+        return model.isGameOver();
     }
 
     /**

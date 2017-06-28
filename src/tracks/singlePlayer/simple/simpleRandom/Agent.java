@@ -18,7 +18,6 @@ import tools.ElapsedCpuTimer;
  * This is a Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
  */
 public class Agent extends AbstractPlayer {
-
     /**
      * Random generator for the agent.
      */

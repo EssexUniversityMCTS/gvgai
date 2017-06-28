@@ -870,7 +870,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		int i =0;
 		int k = 0;
 		for(i=0;i<steps;i++){
-			if(stateObs.isGameOver(true)){
+			if(stateObs.isGameOver()){
 				break;
 			}
 			ElapsedCpuTimer timer = new ElapsedCpuTimer();
