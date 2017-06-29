@@ -37,7 +37,7 @@ public class TransformToRandomChild extends TransformTo {
 	}
 	
         ArrayList<Integer> subtypes = game.getSubTypes(itype);
-        if (!subtypes.isEmpty()) {
+        if (subtypes.size() > 1) {
             int[] types = new int[subtypes.size()-1];
             int j = -1;
             for (Integer i : subtypes) {
