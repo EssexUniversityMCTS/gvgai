@@ -2,6 +2,7 @@ package tracks.singlePlayer;
 
 import java.util.Random;
 
+import core.logging.Logger;
 import tracks.ArcadeMachine;
 
 /**
