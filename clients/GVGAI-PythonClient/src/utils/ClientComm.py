@@ -128,7 +128,7 @@ class ClientComm:
                 self.sso.phase = Phase.START
             else:
                 js.replace('"', '')
-                self.sso = json.loads(js, object_hook=self.as_sso)
+                self.as_sso(json.loads(js))
         except Exception as e:
             logging.exception(e)
             print("Line processing [FAILED]")
