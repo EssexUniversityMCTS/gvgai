@@ -79,7 +79,7 @@ public class TestSingleLearning {
         }
 
         //Other settings
-        boolean visuals = true;
+        boolean visuals = false;
         String recordActionsFile = null; //where to record the actions executed. null if not to save.
         int seed = new Random().nextInt();
 
@@ -99,7 +99,7 @@ public class TestSingleLearning {
         //LearningMachine.runOneGame(game, level1, visuals, javaController, recordActionsFile, seed, true);
 
         // 1. This plays a training round for a specified game.
-        LearningMachine.runMultipleGames(game, level_files, cmd, new String[]{null});
+        LearningMachine.runMultipleGames(game, level_files, cmd, new String[]{null}, visuals);
 
 
 
