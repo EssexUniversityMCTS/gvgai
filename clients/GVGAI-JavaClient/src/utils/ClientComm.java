@@ -146,7 +146,7 @@ public class ClientComm {
                 System.err.println("ClientComm: msg==null");
             }
             String message[] = msg.split(TOKEN_SEP);
-
+            System.out.println(msg+"xx");
             if(message.length < 2)
                 return;
 

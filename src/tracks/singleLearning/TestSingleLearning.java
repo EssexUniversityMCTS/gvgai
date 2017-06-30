@@ -15,7 +15,7 @@ public class TestSingleLearning {
         ElapsedWallTimer wallClock = new ElapsedWallTimer();
 
         // Type of client to test against (Python/Java)
-        String clientType = "python"; //"python";
+        String clientType = "java"; //"python";
 
         //Available controllers:
         String scriptFile;
@@ -94,11 +94,7 @@ public class TestSingleLearning {
             level_files[i] = gamesPath + games[gameIdx] + "_lvl" + i +".txt";
         }
 
-        // 1. This plays a game in a level by the controller (through the "Learning Machine").
-        //int trainingPlays = 100;
-        //LearningMachine.runOneGame(game, level1, visuals, javaController, recordActionsFile, seed, true);
 
-        // 1. This plays a training round for a specified game.
         LearningMachine.runMultipleGames(game, level_files, cmd, new String[]{null}, visuals);
 
 
