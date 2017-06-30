@@ -240,7 +240,10 @@ public class VGDLFactory
         {
             e.printStackTrace();
             System.out.println("Error creating sprite " + content.identifier + " of class " + content.referenceClass);
-        }catch (Exception e)
+        }
+        catch (NullPointerException e){
+        }
+        catch (Exception e)
         {
             e.printStackTrace();
             System.out.println("Error creating sprite " + content.identifier + " of class " + content.referenceClass);
