@@ -1,6 +1,7 @@
 package core.player;
 
 import core.competition.CompetitionParameters;
+import core.game.SerializableImage;
 import core.game.SerializableStateObservation;
 import core.game.StateObservation;
 import core.game.StateObservationMulti;
@@ -66,7 +67,10 @@ public class LearningPlayer extends Player {
 
                 comm.commSend(sso.serialize(null));
             } else if (comm.messageType == Comm.MESSAGE_TYPE.IMAGE){
-                // TODO 27/06/2017 Daniel: Insert code for image sending here
+                // TODO 01/07/2017 Daniel: Add image to serializable image..
+                SerializableImage si = new SerializableImage();
+
+                comm.commSend(si.serialize(null));
 
             } else if (comm.messageType == Comm.MESSAGE_TYPE.BOTH){
                 // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
