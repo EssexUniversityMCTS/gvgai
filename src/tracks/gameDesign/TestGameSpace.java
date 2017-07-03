@@ -24,20 +24,20 @@ public class TestGameSpace {
 
 
         // Available games:
-        String gamesPath = "examples/CE810/";
+        String gamesPath = "examples/gameDesign/";
         String games[] = new String[] {};
         String gameRules[] = new String[] {};
 
 
         // All public games
-        games = new String[] { "aliens", "seaquest", "SpaceJohn" }; 				// 0
+        games = new String[] { "aliens", "seaquest"}; 				// 0
 
         // Other settings
         boolean visuals = true;
         int seed = new Random().nextInt();
 
         // Game and level to play
-        int gameIdx = 2;
+        int gameIdx = 0;
         int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
 
         String game = gamesPath + games[gameIdx] + ".txt";
@@ -57,13 +57,13 @@ public class TestGameSpace {
 
         //0: Assigns values to parameters to play the game. Two ways: random and explicit.
         //0.a: Creating an individual at random:
-        int[] individual = new int[dm.getNumDimensions()];
-        for (int i = 0; i < individual.length; ++i)
-            individual[i] = new Random().nextInt(dm.getDimSize(i));
+//        int[] individual = new int[dm.getNumDimensions()];
+//        for (int i = 0; i < individual.length; ++i)
+//            individual[i] = new Random().nextInt(dm.getDimSize(i));
 
         //0.b: Creating a new individual with an int[]:
-        //    Each parameter will take a value = "lower_bound + i*increment" in the order defined in VGDL
-//      int[] individual = new int[]{0,1,2,14,1,4,9,1,5,5,2,4};
+        //    Each parameter will take a value = "lower_bound + i*increment" as it is printed by printValues(...)
+        int[] individual = new int[]{2, 2, 0, 4, 8, 3, 9, 4};
 
         //We can print a report with the parameters and values:
         dm.printValues(individual);
