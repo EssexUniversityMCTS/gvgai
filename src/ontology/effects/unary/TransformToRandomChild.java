@@ -37,7 +37,7 @@ public class TransformToRandomChild extends TransformTo {
 	}
 	
         ArrayList<Integer> subtypes = game.getSubTypes(itype);
-        if (!subtypes.isEmpty()) {
+        if (subtypes.size() > 1) {
             int[] types = new int[subtypes.size()-1];
             int j = -1;
             for (Integer i : subtypes) {
@@ -45,9 +45,14 @@ public class TransformToRandomChild extends TransformTo {
                     types[++j] = i;
                 }
             }
-
-            VGDLSprite newSprite = game.addSprite(Utils.choice(types, game.getRandomGenerator()), sprite1.getPosition());
-            transformTo(newSprite, sprite1, sprite2, game);
+            try{
+        	VGDLSprite newSprite = game.addSprite(Utils.choice(types, game.getRandomGenerator()), sprite1.getPosition());
+        	transformTo(newSprite, sprite1, sprite2, game);
+            }
+            catch(Exception e){
+        	Logger.getInstance().addMessage(new Message(Message.WARNING, "Can't construct a parent node to the child " + stype + " sprite in TransformToRandomChild interaction."));
+        	return;
+            }
         }
     }
 

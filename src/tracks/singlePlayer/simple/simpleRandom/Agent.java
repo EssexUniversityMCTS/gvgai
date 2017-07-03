@@ -22,6 +22,10 @@ public class Agent extends AbstractPlayer {
      * Random generator for the agent.
      */
     protected Random randomGenerator;
+    /**
+     * List of available actions for the agent
+     */
+    protected ArrayList<Types.ACTIONS> actions;
 
 
     /**
@@ -32,6 +36,7 @@ public class Agent extends AbstractPlayer {
     public Agent(StateObservation so, ElapsedCpuTimer elapsedTimer)
     {
         randomGenerator = new Random();
+        actions = so.getAvailableActions();
     }
 
 
@@ -43,7 +48,6 @@ public class Agent extends AbstractPlayer {
      * @return An action for the current state
      */
     public Types.ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
-        ArrayList<Types.ACTIONS> actions = stateObs.getAvailableActions();
         int index = randomGenerator.nextInt(actions.size());
         return actions.get(index);
     }
