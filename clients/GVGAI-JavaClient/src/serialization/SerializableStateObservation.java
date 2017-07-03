@@ -1,7 +1,12 @@
 package serialization;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.zip.DataFormatException;
+import java.util.zip.Inflater;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,6 +19,11 @@ public class SerializableStateObservation {
     public enum Phase {
         START, INIT, ACT, ABORT, END
     }
+
+    /**
+     * Holds the data for an image of the game
+     */
+    public byte[] imageArray;
 
     /**
      * Indicates the state of the protocol
@@ -62,6 +72,31 @@ public class SerializableStateObservation {
 
     //Default constructor.
     public SerializableStateObservation() {}
+
+    // Optional, helper method to convert a byte array to PNG format
+    public void convertBytesToPng(byte[] pixels) throws IOException, DataFormatException {
+        InputStream in = new ByteArrayInputStream(decompress(pixels));
+        BufferedImage bImageFromConvert = ImageIO.read(in);
+
+        ImageIO.write(bImageFromConvert, "png", new File(
+                "./gamestateByBytes.png"));
+
+    }
+
+    // Helper method to decompress a byte array. Used by convertBytesToPng
+    public byte[] decompress(byte[] data) throws IOException, DataFormatException {
+        Inflater inflater = new Inflater();
+        inflater.setInput(data);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+        byte[] buffer = new byte[1024];
+        while (!inflater.finished()) {
+            int count = inflater.inflate(buffer);
+            outputStream.write(buffer, 0, count);
+        }
+        outputStream.close();
+        byte[] output = outputStream.toByteArray();
+        return output;
+    }
 
 }
 

@@ -68,14 +68,17 @@ public class LearningPlayer extends Player {
                 comm.commSend(sso.serialize(null));
             } else if (comm.messageType == Comm.MESSAGE_TYPE.IMAGE){
                 // TODO 01/07/2017 Daniel: Add image to serializable image..
-                SerializableImage si = new SerializableImage();
-
-                comm.commSend(si.serialize(null));
-
-            } else if (comm.messageType == Comm.MESSAGE_TYPE.BOTH){
                 // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
                 so.currentGameState = Types.GAMESTATES.ACT_STATE;
-                SerializableStateObservation sso = new SerializableStateObservation(so);
+                SerializableStateObservation sso = new SerializableStateObservation(so,null,false);
+
+                comm.commSend(sso.serialize(null));
+
+            } else if (comm.messageType == Comm.MESSAGE_TYPE.BOTH){
+                // TODO 01/07/2017 Daniel: Add image to serializable image..
+                // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
+                so.currentGameState = Types.GAMESTATES.ACT_STATE;
+                SerializableStateObservation sso = new SerializableStateObservation(so, null, true);
 
                 comm.commSend(sso.serialize(null));
             }

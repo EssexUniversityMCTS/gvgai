@@ -116,13 +116,13 @@ public class SocketComm extends Comm {
                 messageType = messageParts[2];
 
                 switch (messageType) {
-                    case "j":
+                    case "MODE=JSON":
                         this.messageType = MESSAGE_TYPE.JSON;
                         break;
-                    case "i":
+                    case "MODE=IMG":
                         this.messageType = MESSAGE_TYPE.IMAGE;
                         break;
-                    case "b":
+                    case "MODE=BOTH":
                         this.messageType = MESSAGE_TYPE.BOTH;
                 }
             }

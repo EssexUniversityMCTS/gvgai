@@ -168,6 +168,11 @@ public class ClientComm {
             // Else, deserialize the json using GSon
             this.sso = gson.fromJson(json, SerializableStateObservation.class);
 
+            // If an image has been received, then save its PNG equivalent
+            if (this.sso.imageArray != null && this.sso.imageArray.length != 0){
+                sso.convertBytesToPng(sso.imageArray);
+            }
+
         } catch (Exception e){
             io.logStackTrace(e);
         }
