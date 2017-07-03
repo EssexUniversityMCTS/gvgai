@@ -140,7 +140,6 @@ public class ClientComm {
     public void processLine(String msg) throws IOException{
 
         try {
-
             //Separate ID and message:
             if (msg==null) {
                 System.err.println("ClientComm: msg==null");
