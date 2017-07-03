@@ -22,5 +22,5 @@ if "%clientType%" == "java" (
 
 if "%clientType%" == "python" (
     rem Run the PythonClient class
-    c:\python27\python.exe %py_src_folder%\PythonClient.py %agent%  > logs/output_client_redirect_python.txt 2> logs/output_client_redirect_err_python.txt
+    c:\python35\python.exe %py_src_folder%\PythonClient.py %agent%  > logs/output_client_redirect_python.txt 2> logs/output_client_redirect_err_python.txt
 	)

@@ -18,6 +18,8 @@ build_folder='client-out'
 rm -rf ${build_folder}
 mkdir -p ${build_folder}
 find ${src_folder} -name "*.java" > sources.txt
-shell_dir=`dirname "$(find . -type f -name runServer_nocompile.sh | head -1)"`
 javac -d ${build_folder} @sources.txt
-java -classpath ${build_folder} TestLearningClient -gameId 0 -shDir ${shDir} -serverDir ${serverDir} -visuals
+# run with screen visualisation
+java -classpath ${build_folder} TestLearningClient -gameId ${gameId} -shDir ${shDir} -serverDir ${serverDir} -visuals
+# run without screen visualisation
+#java -classpath ${build_folder} TestLearningClient -gameId ${gameId} -shDir ${shDir} -serverDir ${serverDir}
