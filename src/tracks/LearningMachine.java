@@ -317,21 +317,13 @@ public class LearningMachine {
      * @return the player, created but NOT initialized, ready to start playing the game.
      */
     private static LearningPlayer createPlayer(String[] cmd) throws IOException {
-
-//        Process client;
-//        ProcessBuilder builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2]);
-//        builder.redirectErrorStream(true);
-//        client = builder.start();
-//        return new LearningPlayer(client, cmd[2]);
-
         String scriptName = cmd[0];
 
         if(scriptName != null) {
             Process client;
             ProcessBuilder builder;
-            assert (cmd.length==4 || cmd.length==3);
-            if (cmd.length == 4) {
-                builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2], cmd[3]);
+            if (cmd.length == 5) {
+                builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2], cmd[3], cmd[4]);
             } else {
                 builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2]);
             }

@@ -7,8 +7,10 @@ fi
 
 agent=$1
 port=$2
-src_folder='clients/GVGAI-JavaClient/src'
-build_folder='clients/GVGAI-JavaClient/out'
+clientType=$3
+src_prefix=$4
+src_folder="${src_prefix}/clients/GVGAI-JavaClient/src"
+build_folder="${src_prefix}/clients/client-out"
 
 mkdir -p $build_folder
 find ${src_folder} -name "*.java" > sources.txt
