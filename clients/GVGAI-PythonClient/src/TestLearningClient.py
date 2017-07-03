@@ -15,6 +15,7 @@ if __name__ == "__main__":
     gameId = 0
     agentName = 'sampleAgents.Agent'
     serverDir = '../../..'
+    visuals = False
 
     if len(sys.argv) > 0:
         parser = argparse.ArgumentParser(description='Test python client')
@@ -22,6 +23,7 @@ if __name__ == "__main__":
         parser.add_argument('-gameId', action="store", dest="gameId", type=int)
         parser.add_argument('-agentName', action="store", dest="agentName")
         parser.add_argument('-serverDir', action="store", dest="serverDir")
+        parser.add_argument('-visuals', action="store_true", dest="visuals")
         parser.parse_args(sys.argv)
 
     print("Run game " + str(gameId) + " with agent " + agentName)
@@ -29,8 +31,8 @@ if __name__ == "__main__":
     if CompetitionParameters.OS_WIN:
         scriptFile = "utils\\runServer_nocompile_python.bat"
     else:
-        scriptFile = os.path.join("utils", "runServer_nocompile_python.sh " + str(gameId) + " " + serverDir)
-
+        scriptFile = os.path.join("utils", "runServer_nocompile_python.sh " + str(gameId) + " " + serverDir +
+                                  " " + str(visuals))
     try:
         p = subprocess.Popen(scriptFile, shell=True)
         print("Run server process [OK]")

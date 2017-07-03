@@ -6,6 +6,7 @@
 game_id=$1
 server_dir_prefix=$2
 games_prefix=$2
+visuals=$3
 
 DIRECTORY='./logs'
 if [ ! -d "$DIRECTORY" ]; then
@@ -21,5 +22,8 @@ rm -rf ${build_folder}
 mkdir -p ${build_folder}
 find ${server_dir} -name "*.java" > sources.txt
 javac -d ${build_folder} @sources.txt
-java -classpath ${build_folder} tracks.singleLearning.utils.JavaServer -gameId ${game_id} -gamesDir ${games_prefix} > ${DIRECTORY}/output_server_redirect.txt 2> ${DIRECTORY}/output_server_redirect_err.txt
-
+if [ ${visuals} ]; then
+    java -classpath ${build_folder} tracks.singleLearning.utils.JavaServer -gameId ${game_id} -gamesDir ${games_prefix} > ${DIRECTORY}/output_server_redirect.txt 2> ${DIRECTORY}/output_server_redirect_err.txt
+else
+    java -classpath ${build_folder} tracks.singleLearning.utils.JavaServer -gameId ${game_id} -gamesDir ${games_prefix} -visuals > ${DIRECTORY}/output_server_redirect.txt 2> ${DIRECTORY}/output_server_redirect_err.txt
+fi

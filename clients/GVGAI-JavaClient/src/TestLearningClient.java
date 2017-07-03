@@ -21,6 +21,7 @@ public class TestLearningClient
         String shDir = "src/utils";
         String serverDir = "../../src";
         String agentName = "agents.random.Agent";         //Agent to play with
+        boolean visuals = false;
         /** Get arguments */
         Map<String, List<String>> params = new HashMap<>();
         List<String> options = null;
@@ -54,7 +55,9 @@ public class TestLearningClient
         if (params.containsKey("agentName")) {
             agentName = params.get("agentName").get(0);
         }
-
+        if (params.containsKey("visuals")) {
+            visuals = true;
+        }
         ElapsedWallTimer wallClock = new ElapsedWallTimer();
 
         //Available controllers:
@@ -66,11 +69,14 @@ public class TestLearningClient
             scriptFile = shDir + "/runServer_nocompile.sh";
         }
 
-
-
         //Start the server side of the communication.
         try{
-            String[] cmd = new String[]{scriptFile, gameId+"", serverDir};
+            String[] cmd;
+            if (visuals) {
+                cmd = new String[]{scriptFile, gameId + "", serverDir, "true"};
+            } else {
+                cmd = new String[]{scriptFile, gameId+"", serverDir, "false"};
+            }
             ProcessBuilder builder = new ProcessBuilder(cmd);
             builder.redirectErrorStream(true);
             builder.start();

@@ -1,7 +1,7 @@
 @echo off
+set gameId=0
 
-set SERVER_GAMES_DIR=..\..\..\
-
+set gamesDir=..\..\..\
 set path=%PATH%;C:\Program Files\Java\jdk1.8.0_121\bin
 
 set src_folder=..\..\..\src
@@ -12,6 +12,6 @@ dir /s/b %src_folder%\*.java > sources.txt
 javac -d %build_folder% @sources.txt
 
 rem Run the JavaClient class
-java -cp %build_folder% tracks.singleLearning.utils.JavaServer %SERVER_GAMES_DIR% > logs/output_server_redirect.txt 2> logs/output_server_redirect_err.txt
+java -cp %build_folder% tracks.singleLearning.utils.JavaServer -gameId %gameId% -gamesDir %gamesDir% > logs/output_server_redirect.txt 2> logs/output_server_redirect_err.txt
 
 cmd /k

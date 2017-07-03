@@ -19,6 +19,8 @@ public class JavaServer {
         String shDir = "src/tracks/singleLearning/utils";
         String clientDir = ".";
         String gamesDir = ".";
+        //Other settings
+        boolean visuals = false;
         /** Get arguments */
         Map<String, List<String>> params = new HashMap<>();
         List<String> options = null;
@@ -54,6 +56,9 @@ public class JavaServer {
         }
         if (params.containsKey("gamesDir")) {
             gamesDir = params.get("gamesDir").get(0);
+        }
+        if (params.containsKey("visuals")) {
+            visuals = true;
         }
         /** Now prepare to start */
         ElapsedWallTimer wallClock = new ElapsedWallTimer();
@@ -103,8 +108,7 @@ public class JavaServer {
                     "lander", "mario", "pong", "ptsp", "racing"};                       //5 - 9
         }
 
-        //Other settings
-        boolean visuals = true;
+
 
         //Game and level to play
         String game = gamesPath + games[gameIdx] + ".txt";

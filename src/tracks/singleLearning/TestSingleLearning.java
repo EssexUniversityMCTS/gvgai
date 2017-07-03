@@ -18,6 +18,8 @@ public class TestSingleLearning {
         String shDir = "src/tracks/singleLearning/utils";
         String clientDir = ".";
         String gamesDir = ".";
+        /** Visualisation */
+        boolean visuals = false;
         //Agent to play with
         String agentName;
         /** Get arguments */
@@ -64,7 +66,9 @@ public class TestSingleLearning {
         if (params.containsKey("agentName")) {
             agentName = params.get("agentName").get(0);
         }
-
+        if (params.containsKey("visuals")) {
+            visuals = true;
+        }
         /** Now prepare to start */
         ElapsedWallTimer wallClock = new ElapsedWallTimer();
         /** Find the write shell to build and run client */
@@ -121,8 +125,6 @@ public class TestSingleLearning {
                     "lander", "mario", "pong", "ptsp", "racing"};                       //5 - 9
         }
 
-        /** Visualisation */
-        boolean visuals = false;
 
         /** Game and level to play */
         String gameName = games[gameIdx];
