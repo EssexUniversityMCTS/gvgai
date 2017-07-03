@@ -11,6 +11,7 @@ if [ ! -d "$DIRECTORY" ]; then
   mkdir ${DIRECTORY}
 fi
 
-# Build the client
-#python TestLearningClient.py -gameId ${game_id} -serverDir ${server_dir} -agentName ${agent_name} -visuals > ${DIRECTORY}/output_client_redirect_python.txt 2> ${DIRECTORY}/output_client_redirect_err_python.txt
-python TestLearningClient.py -gameId ${game_id} -serverDir ${server_dir} -agentName ${agent_name}  > ${DIRECTORY}/output_client_redirect_python.txt 2> ${DIRECTORY}/output_client_redirect_err_python.txt
+# Run the client with visualisation on
+#python TestLearningClient.py -gameId ${game_id} -serverDir ${server_dir} -agentName ${agent_name} -visuals
+# Run the client with visualisation off
+python TestLearningClient.py -gameId ${game_id} -serverDir ${server_dir} -agentName ${agent_name}
