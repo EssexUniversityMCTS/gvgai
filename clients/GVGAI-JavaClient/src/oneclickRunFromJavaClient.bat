@@ -1,15 +1,17 @@
 @echo off
 
+set path=%PATH%;C:\Program Files\Java\jdk1.8.0_121\bin
+
 set gameId=0
 set shDir=utils
-set serverDir=../../..
+set serverDir=..\..\..
 
-set DIRECTORY=./logs
+set DIRECTORY=logs
 if not exist %DIRECTORY% mkdir %DIRECTORY%
 
 
 rem Build the client
-set src_folder=../../
+set src_folder=..\..\
 set build_folder=client-out
 
 
