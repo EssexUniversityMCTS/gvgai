@@ -20,6 +20,6 @@ if not exist %build_folder% mkdir %build_folder%
 dir /s/b %src_folder%\*.java > sources.txt
 javac -d %build_folder% @sources.txt
 rem run with screen visualisation
-java -cp %build_folder% TestLearningClient -gameId %gameId% -shDir %shDir% -serverDir %serverDir% -visuals
+java -cp %build_folder% TestLearningClient -shDir %shDir% -serverDir %serverDir% -visuals
 rem run without screen visualisation
-rem java -cp %build_folder% TestLearningClient -gameId %gameId% -shDir %shDir% -serverDir %serverDir%
+rem java -cp %build_folder% TestLearningClient -shDir %shDir% -serverDir %serverDir%

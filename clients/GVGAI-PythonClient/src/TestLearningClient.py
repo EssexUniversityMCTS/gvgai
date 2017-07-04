@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
     print("Run game " + str(gameId) + " with agent " + agentName)
     if CompetitionParameters.OS_WIN:
-        scriptFile = "utils\\runServer_nocompile_python.bat"
+        scriptFile = "utils\\runServer_nocompile_python.bat " + str(gameId) + " " + serverDir + " " + str(visuals)
     else:
         scriptFile = os.path.join("utils", "runServer_nocompile_python.sh " + str(gameId) + " " + serverDir +
                                   " " + str(visuals))
