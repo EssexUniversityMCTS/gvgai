@@ -27,7 +27,6 @@ if __name__ == "__main__":
         parser.parse_args(sys.argv)
 
     print("Run game " + str(gameId) + " with agent " + agentName)
-
     if CompetitionParameters.OS_WIN:
         scriptFile = "utils\\runServer_nocompile_python.bat"
     else:

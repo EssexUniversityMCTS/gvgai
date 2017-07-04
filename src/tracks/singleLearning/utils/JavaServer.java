@@ -7,6 +7,8 @@ import tracks.LearningMachine;
 import java.io.File;
 import java.util.*;
 
+import static core.competition.CompetitionParameters.IMG_PATH;
+
 /**
  * Created by dperez on 01/06/2017.
  */
@@ -56,6 +58,7 @@ public class JavaServer {
         }
         if (params.containsKey("gamesDir")) {
             gamesDir = params.get("gamesDir").get(0);
+            IMG_PATH = gamesDir + "/" + IMG_PATH;
         }
         if (params.containsKey("visuals")) {
             visuals = true;

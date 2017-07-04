@@ -12,6 +12,6 @@ if [ ! -d "$DIRECTORY" ]; then
 fi
 
 # Run the client with visualisation on
-#python TestLearningClient.py -gameId ${game_id} -serverDir ${server_dir} -agentName ${agent_name} -visuals
+python TestLearningClient.py -serverDir ${server_dir} -visuals
 # Run the client with visualisation off
-python TestLearningClient.py -gameId ${game_id} -serverDir ${server_dir} -agentName ${agent_name}
+# python TestLearningClient.py -serverDir ${server_dir}
