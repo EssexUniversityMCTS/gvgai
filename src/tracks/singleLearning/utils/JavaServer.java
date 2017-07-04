@@ -60,6 +60,10 @@ public class JavaServer {
             gamesDir = params.get("gamesDir").get(0);
             IMG_PATH = gamesDir + "/" + IMG_PATH;
         }
+        if (params.containsKey("imgDir")) {
+            String imgDir = params.get("imgDir").get(0);
+            IMG_PATH = gamesDir + "/" + IMG_PATH;
+        }
         if (params.containsKey("visuals")) {
             visuals = true;
         }

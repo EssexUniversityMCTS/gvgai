@@ -1,12 +1,14 @@
 @echo off
+
 set gameId=0
-set server_dir=..\..\..\
-set agent_name=sampleAgents.Agent
+set shDir=utils
+set serverDir=..\..\..
+
+set DIRECTORY=logs
+if not exist %DIRECTORY% mkdir %DIRECTORY%
 
 rem Run the PythonClient class with visualisation off
-rem C:\Python35\python.exe TestLearningClient.py -serverDir %server_dir%
+rem C:\Python35\python.exe TestLearningClient.py -shDir %shDir% -serverDir %serverDir%
 
 rem Run the PythonClient class with visualisation on
-C:\Python35\python.exe TestLearningClient.py -serverDir %server_dir% -visuals
-
-cmd /k
+C:\Python35\python.exe TestLearningClient.py -shDir %shDir% -serverDir %serverDir% -visuals

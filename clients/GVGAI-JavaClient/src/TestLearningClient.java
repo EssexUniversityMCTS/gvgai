@@ -18,7 +18,7 @@ public class TestLearningClient
         assert (CompetitionParameters.USE_SOCKETS);
         /** Init params */
         int gameId = 0;
-        String shDir = "src/utils";
+        String shDir = "./src/utils";
         String serverDir = "../../src";
         String agentName = "agents.random.Agent";         //Agent to play with
         boolean visuals = false;
@@ -62,34 +62,30 @@ public class TestLearningClient
 
         //Available controllers:
         String scriptFile;
-        if(CompetitionParameters.OS_WIN)
-        {
-            scriptFile = shDir +  "\\runServer_nocompile.bat";
-        }else{
+        if(CompetitionParameters.OS_WIN) {
+            scriptFile = shDir +  "/runServer_nocompile.bat";
+        } else {
             scriptFile = shDir + "/runServer_nocompile.sh";
         }
-
         //Start the server side of the communication.
         try{
             String[] cmd;
             if (visuals) {
                 cmd = new String[]{scriptFile, gameId + "", serverDir, "true"};
             } else {
-                cmd = new String[]{scriptFile, gameId+"", serverDir, "false"};
+                cmd = new String[]{scriptFile, gameId + "", serverDir, "false"};
             }
             ProcessBuilder builder = new ProcessBuilder(cmd);
             builder.redirectErrorStream(true);
             builder.start();
             System.out.println("Server process started [OK]");
-        }catch(IOException e)
-        {
+        } catch(IOException e) {
             e.printStackTrace();
         }
 
         //Start the client side of the communication
         ClientComm ccomm = new ClientComm(agentName);
         ccomm.startComm();
-
         //Report total time spent.
         int minutes = (int) wallClock.elapsedMinutes();
         int seconds = ((int) wallClock.elapsedSeconds()) % 60;
