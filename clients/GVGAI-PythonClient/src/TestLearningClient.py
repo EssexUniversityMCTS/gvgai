@@ -36,7 +36,6 @@ if __name__ == "__main__":
         scriptFile = os.path.join(shDir, "runServer_nocompile_python.sh " + str(gameId) + " " + serverDir +
                                   " " + str(visuals))
     try:
-        print(scriptFile)
         p = subprocess.Popen(scriptFile, shell=True)
         print("Run server process [OK]")
         # print(str(os.getcwd()))
