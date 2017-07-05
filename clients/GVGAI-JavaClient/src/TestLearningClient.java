@@ -19,7 +19,7 @@ public class TestLearningClient
         /** Init params */
         int gameId = 0;
         String shDir = "./src/utils";
-        String serverDir = "../../src";
+        String serverDir = "../..";
         String agentName = "agents.random.Agent";         //Agent to play with
         boolean visuals = false;
         /** Get arguments */
