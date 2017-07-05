@@ -22,4 +22,4 @@ BasicGame key_handler=Pulse square_size=48
     InteractionSet
         avatar  EOS rock walked  > stepBack
         ground avatar > transformTo stype=walked scoreChange=1
-        walked avatar > spawnIfHasMore resource=null limit=0 stype=isincenter
+        walked avatar > spawn stype=isincenter

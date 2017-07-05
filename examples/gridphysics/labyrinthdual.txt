@@ -34,9 +34,9 @@ BasicGame key_handler=Pulse
         avatar trap > killSprite scoreChange=-1
 
     TerminationSet
-        Timeout limit=1000 win=False
         SpriteCounter stype=avatar limit=0 win=False
         SpriteCounter stype=exit limit=0 win=True
+        Timeout limit=1000 win=False
 
     LevelMapping
         x > floor exit
