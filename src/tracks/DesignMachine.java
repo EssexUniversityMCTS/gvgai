@@ -205,6 +205,8 @@ public class DesignMachine {
             pc.setRunningValue(value);
         }
 
+
+        System.out.println(Arrays.toString(parameters));
         printDimensions(parameterContents);
     }
 

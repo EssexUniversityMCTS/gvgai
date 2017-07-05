@@ -49,8 +49,8 @@ public class LearnerExecutor {
     }
 
     String cmd[] = new String[]{null, agentName, port, clientType};
-
-    LearningMachine.runMultipleGames(game, level_files, cmd, new String[]{null});
+    boolean visuals = false;
+    LearningMachine.runMultipleGames(game, level_files, cmd, new String[]{null}, visuals);
     System.out.println("END-GAME");
   }
 }
