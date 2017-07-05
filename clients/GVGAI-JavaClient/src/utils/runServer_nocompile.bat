@@ -16,7 +16,7 @@ javac -d %build_folder% @sources.txt
 
 
 if "%visuals%"=="true" (
-     java -agentlib:jdwp=transport=dt_socket,server=y,address=8888,suspend=n -cp %build_folder% tracks.singleLearning.utils.JavaServer -gameId %game_id% -IMG_PATH = gamesDir + "/" + IMG_PATH; %games_prefix% -visuals > logs/output_server_redirect.txt 2> logs/output_server_redirect_err.txt
+     java -agentlib:jdwp=transport=dt_socket,server=y,address=8888,suspend=n -cp %build_folder% tracks.singleLearning.utils.JavaServer -gameId %game_id% -gamesDir %games_prefix% -visuals > logs/output_server_redirect.txt 2> logs/output_server_redirect_err.txt
  ) else (
      java -agentlib:jdwp=transport=dt_socket,server=y,address=8888,suspend=n -cp %build_folder% tracks.singleLearning.utils.JavaServer -gameId %game_id% -gamesDir %games_prefix% > logs/output_server_redirect.txt 2> logs/output_server_redirect_err.txt
  )
