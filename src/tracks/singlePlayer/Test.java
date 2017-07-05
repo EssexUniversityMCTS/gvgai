@@ -46,8 +46,8 @@ public class Test {
                     "infection", "intersection", "islands", "jaws", "killBillVol1", // 45-49
                     "labyrinth", "labyrinthdual", "lasers", "lasers2", "lemmings", // 50-54
                     "missilecommand", "modality", "overload", "pacman", "painter", // 55-59
-                    "pokemon", "plants", "plaqueattack", "portals", "raceBet", // 60-64
-                    "raceBet2", "realportals", "realsokoban", "rivers", "roadfighter", // 65-69
+                    "pokemon", "plants", "plaqueattack", "portals", "racebet", // 60-64
+                    "racebet2", "realportals", "realsokoban", "rivers", "roadfighter", // 65-69
                     "roguelike", "run", "seaquest", "sheriff", "shipwreck", // 70-74
                     "sokoban", "solarfox", "superman", "surround", "survivezombies", // 75-79
                     "tercio", "thecitadel", "thesnowman", "waitforbreakfast", "watergame", // 80-84
