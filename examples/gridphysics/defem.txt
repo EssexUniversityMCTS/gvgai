@@ -27,11 +27,13 @@ BasicGame
 
     InteractionSet
 
-        cannon avatar      > spawnIfHasMore stype=bullet resource=null limit=0 prob=0.5
+        cannon avatar      > spawn stype=bullet prob=0.5
         enemy bullet       > killSprite scoreChange=1
         avatar enemy       > killSprite
         EOS avatar cannon  > stepBack
         dirEnemy EOS       > reverseDirection
+        randomEnemy EOS    > stepBack
+        chaseEnemy EOS     > stepBack
         bullet enemy EOS   > killSprite
 
 
