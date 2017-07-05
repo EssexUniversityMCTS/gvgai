@@ -59,12 +59,12 @@ BasicGame
     leavingavatar singlefront > transformTo stype=satfront
     leavingavatar singleback > transformTo stype=satback
     leavingavatar singleleft > transformTo stype=satleft
-    leavingavatar singleright > transformTo stype=saright
+    leavingavatar singleright > transformTo stype=satright
 
     standingavatar singlefront > transformTo stype=satfront
     standingavatar singleback > transformTo stype=satback
     standingavatar singleleft > transformTo stype=satleft
-    standingavatar singleright > transformTo stype=saright
+    standingavatar singleright > transformTo stype=satright
 
     waiter table othertable wall EOS > stepBack
     avatar othertable wall EOS table > stepBack
