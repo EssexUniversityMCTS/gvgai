@@ -37,11 +37,6 @@ public class TransformToAll extends TransformTo {
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
-	if(sprite2 == null){
-	    Logger.getInstance().addMessage(new Message(Message.WARNING, "2nd sprite can't be EOS with TransformToAll interaction."));
-	    return;
-	}
-	
         //First, we need to get all sprites of type stype.
         Iterator<VGDLSprite> spriteIt = game.getSpriteGroup(itype);
 

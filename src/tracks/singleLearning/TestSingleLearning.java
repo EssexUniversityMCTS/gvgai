@@ -4,47 +4,94 @@ import core.competition.CompetitionParameters;
 import tools.ElapsedWallTimer;
 import tracks.LearningMachine;
 
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by Daniel on 07.03.2017.
  */
 public class TestSingleLearning {
+
     public static void main(String[] args) throws Exception {
-
-        ElapsedWallTimer wallClock = new ElapsedWallTimer();
-
-        // Type of client to test against (Python/Java)
-        String clientType = "java"; //"python";
-
-        //Available controllers:
-        String scriptFile;
-        if (CompetitionParameters.OS_WIN) {
-            scriptFile = "src\\tracks\\singleLearning\\utils\\runClient_nocompile.bat";
-        } else {
-            scriptFile = CompetitionParameters.USE_SOCKETS ? "src/tracks/singleLearning/utils/runClient_nocompile.sh" :
-                "src/tracks/singleLearning/utils/runClient_nocompile_pipes.sh";
-        }
-
-        //Port for the socket.
-        String port = CompetitionParameters.SOCKET_PORT + "";
-
+        /** Init params */
+        int gameIdx = 0;
+        String clientType = "java"; //"python"; // Type of client to test against (Python/Java)
+        String shDir = "src/tracks/singleLearning/utils";
+        String clientDir = ".";
+        String gamesDir = ".";
+        /** Visualisation */
+        boolean visuals = false;
         //Agent to play with
         String agentName;
+        /** Get arguments */
+        Map<String, List<String>> params = new HashMap<>();
+        List<String> options = null;
+        for (int i = 0; i < args.length; i++) {
+            final String a = args[i];
+            if (a.charAt(0) == '-') {
+                if (a.length() < 2) {
+                    System.err.println("Error at argument " + a);
+                    return;
+                }
+                options = new ArrayList<>();
+                params.put(a.substring(1), options);
+            } else if (options != null) {
+                options.add(a);
+            }
+            else {
+                System.err.println("Illegal parameter usage");
+                return;
+            }
+        }
+        /** Update params */
+        if (params.containsKey("gameId")) {
+            gameIdx = Integer.parseInt(params.get("gameId").get(0));
+        }
+        if (params.containsKey("clientType")) {
+            clientType = params.get("clientType").get(0);
+        }
+        if (params.containsKey("shDir")) {
+            shDir = params.get("shDir").get(0);
+        }
+        if (params.containsKey("clientDir")) {
+            clientDir = params.get("clientDir").get(0);
+        }
+        if (params.containsKey("gamesDir")) {
+            gamesDir = params.get("gamesDir").get(0);
+        }
         if (clientType.equals("python")) {
             agentName = "sampleAgents";
         } else {
             agentName = "agents.random.Agent";
         }
+        if (params.containsKey("agentName")) {
+            agentName = params.get("agentName").get(0);
+        }
+        if (params.containsKey("visuals")) {
+            visuals = true;
+        }
+        /** Now prepare to start */
+        ElapsedWallTimer wallClock = new ElapsedWallTimer();
+        /** Find the write shell to build and run client */
+        String scriptFile;
+        if (CompetitionParameters.OS_WIN) {
+            scriptFile = shDir + "\\runClient_nocompile.bat";
+        } else {
+            scriptFile = CompetitionParameters.USE_SOCKETS ? shDir + "/runClient_nocompile.sh" :
+                shDir + "/runClient_nocompile_pipes.sh";
+        }
+
+        //Port for the socket.
+        String port = CompetitionParameters.SOCKET_PORT + "";
+
 
 
         //Building the command line
-        String cmd[] = new String[]{scriptFile, agentName, port, clientType};
+        String cmd[] = new String[]{scriptFile, agentName, port, clientType, clientDir};
 
 
         // Available games:
-        String gridGamesPath = "examples/gridphysics/";
-        String contGamesPath = "examples/contphysics/";
+        String gridGamesPath = gamesDir + "/examples/gridphysics/";
+        String contGamesPath = gamesDir + "/examples/contphysics/";
         String gamesPath;
         String games[];
         boolean GRID_PHYSICS = true;
@@ -78,28 +125,24 @@ public class TestSingleLearning {
                     "lander", "mario", "pong", "ptsp", "racing"};                       //5 - 9
         }
 
-        //Other settings
-        boolean visuals = false;
-        String recordActionsFile = null; //where to record the actions executed. null if not to save.
-        int seed = new Random().nextInt();
 
-        //Game and level to play
-        int gameIdx = 0;
-        int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
-        String game = gamesPath + games[gameIdx] + ".txt";
-        String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
-
+        /** Game and level to play */
+        String gameName = games[gameIdx];
+        String game = gamesPath + gameName + ".txt";
         String[] level_files = new String[5];
         for (int i = 0; i <= 4; i++){
-            level_files[i] = gamesPath + games[gameIdx] + "_lvl" + i +".txt";
+            level_files[i] = gamesPath + gameName + "_lvl" + i +".txt";
         }
 
+//        System.out.println("Will run " + clientType + " client on game " + gameName +  " (id=" + gameIdx + ")");
+//        System.out.println("shell: " + scriptFile + ", clientDir: " + clientDir);
 
+        /** Start to learn and validate */
         LearningMachine.runMultipleGames(game, level_files, cmd, new String[]{null}, visuals);
 
 
 
-        //Report total time spent.
+        /** Report total time spent */
         int minutes = (int) wallClock.elapsedMinutes();
         int seconds = ((int) wallClock.elapsedSeconds()) % 60;
         System.out.printf("\n \t --> Real execution time: %d minutes, %d seconds of wall time.\n", minutes, seconds);

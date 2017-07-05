@@ -79,7 +79,7 @@ public class CompetitionParameters
     /**
      * Milliseconds allowed per controller action.
      */
-    public static final int SOCKET_PORT = 8080;
+    public static final int SOCKET_PORT = 8888;
 
     /**
      * Indicates if the overspend should be taken into account or not.
@@ -118,7 +118,7 @@ public class CompetitionParameters
     /**
      * Max time a game can run
      */
-    public static final int MAX_TIMESTEPS = 2000;
+    public static final int MAX_TIMESTEPS = 1000;
 
     /**
      * Terminates the program when the playing window is closed

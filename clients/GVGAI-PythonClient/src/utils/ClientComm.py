@@ -129,6 +129,8 @@ class ClientComm:
             else:
                 js.replace('"', '')
                 self.sso = json.loads(js, object_hook=self.as_sso)
+                # print("Phase is " + self.sso.phase)
+                # print("Score is " + str(self.sso.gameScore))
         except Exception as e:
             logging.exception(e)
             print("Line processing [FAILED]")
