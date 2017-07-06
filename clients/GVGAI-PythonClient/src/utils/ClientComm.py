@@ -25,7 +25,7 @@ class ClientComm:
         self.sso = SerializableStateObservation()
         self.agentName = agentName
         self.lastMessageId = 0
-        self.LOG = True
+        self.LOG = False
         self.player = None
         self.global_ect = None
 

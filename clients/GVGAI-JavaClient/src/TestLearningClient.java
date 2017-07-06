@@ -19,7 +19,12 @@ public class TestLearningClient
         /** Init params */
         int gameId = 0;
         String shDir = "./src/utils";
-        String serverDir = "../../src";
+        String serverDir;
+        if (CompetitionParameters.OS_WIN) {
+            serverDir = "..\\..";
+        } else {
+            serverDir = "../..";
+        }
         String agentName = "agents.random.Agent";         //Agent to play with
         boolean visuals = false;
         /** Get arguments */
@@ -62,8 +67,8 @@ public class TestLearningClient
 
         //Available controllers:
         String scriptFile;
-        if(CompetitionParameters.OS_WIN) {
-            scriptFile = shDir +  "/runServer_nocompile.bat";
+        if (CompetitionParameters.OS_WIN) {
+            scriptFile = shDir +  "\\runServer_nocompile.bat";
         } else {
             scriptFile = shDir + "/runServer_nocompile.sh";
         }

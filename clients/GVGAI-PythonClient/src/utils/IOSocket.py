@@ -5,6 +5,8 @@ import sys
 import traceback
 import time
 
+from CompetitionParameters import CompetitionParameters
+
 
 class IOSocket:
     """
@@ -46,7 +48,10 @@ class IOSocket:
     def writeToServer(self, messageId, line, log):
         msg = str(messageId) + self.TOKEN_SEP + line + "\n"
         try:
-            self.socket.send(bytes(msg, 'utf8'))
+            if CompetitionParameters.OS_WIN:
+                self.socket.send(bytes(msg, 'utf8'))
+            else:
+                self.socket.send(bytes(msg))
             if log:
                 self.writeToFile(msg.strip('\n'))
         except Exception as e:

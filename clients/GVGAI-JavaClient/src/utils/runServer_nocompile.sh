@@ -21,6 +21,7 @@ rm -rf ${build_folder}
 mkdir -p ${build_folder}
 find ${server_dir} -name "*.java" > sources.txt
 javac -d ${build_folder} @sources.txt
+
 if [ ${visuals} ]; then
     java -agentlib:jdwp=transport=dt_socket,server=y,address=8888,suspend=n -classpath ${build_folder} tracks.singleLearning.utils.JavaServer -gameId ${game_id} -gamesDir ${games_prefix} -visuals > ${DIRECTORY}/output_server_redirect.txt 2> ${DIRECTORY}/output_server_redirect_err.txt
 else
