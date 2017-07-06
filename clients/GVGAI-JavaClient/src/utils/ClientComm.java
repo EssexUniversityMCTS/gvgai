@@ -120,6 +120,9 @@ public class ClientComm {
 //                io.writeToFile(lastMessageId + "#in result");
                 this.result();
 
+            }else if(sso.phase == SerializableStateObservation.Phase.FINISH) {
+                line = null; //That's it.
+
             } else {
                 io.writeToServer(lastMessageId, "null", LOG);
             }
@@ -160,6 +163,11 @@ public class ClientComm {
             // Happens only on one-time setup
             if (json.equals("START")){
                 this.sso.phase = SerializableStateObservation.Phase.START;
+                return;
+            }
+
+            if (json.equals("FINISH")){
+                this.sso.phase = SerializableStateObservation.Phase.FINISH;
                 return;
             }
 
@@ -281,6 +289,9 @@ public class ClientComm {
         int nextLevel = player.result(sso, ect.copy());
 
 //        io.writeToFile("result timers: global: " + global_ect.elapsedSeconds()  + "(" + global_ect.exceededMaxTime() + ")" +
+//                ", local: " + ect.elapsedSeconds() + "(" + ect.exceededMaxTime() + ")" );
+
+//        System.out.println("result timers: global: " + global_ect.elapsedSeconds()  + "(" + global_ect.exceededMaxTime() + ")" +
 //                ", local: " + ect.elapsedSeconds() + "(" + ect.exceededMaxTime() + ")" );
 
         if(ect.exceededMaxTime())

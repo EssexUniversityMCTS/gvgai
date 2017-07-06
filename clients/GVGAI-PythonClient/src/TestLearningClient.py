@@ -50,7 +50,7 @@ if __name__ == "__main__":
         ccomm = ClientComm(agentName)
         print("Start comm with agent " + agentName)
         ccomm.startComm()
-        print("Server process started [OK]")
+        print("Server process finished [OK]")
     except Exception as e:
         logging.exception(e)
         print("Server process started [FAILED]")

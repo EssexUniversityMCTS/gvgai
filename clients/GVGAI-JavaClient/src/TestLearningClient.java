@@ -72,6 +72,7 @@ public class TestLearningClient
         } else {
             scriptFile = shDir + "/runServer_nocompile.sh";
         }
+
         //Start the server side of the communication.
         try{
             String[] cmd;

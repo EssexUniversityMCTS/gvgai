@@ -49,4 +49,4 @@ class Phase:
     def __init__(self):
         pass
 
-    START, INIT, ACT, ABORT, END = range(5)
+    START, INIT, ACT, ABORT, END, FINISH = range(6)

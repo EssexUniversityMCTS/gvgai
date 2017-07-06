@@ -34,7 +34,6 @@ class ClientComm:
 
         try:
             self.listen()
-            print("Start listen [OK]")
         except Exception as e:
             logging.exception(e)
             print("Start listen [FAILED]")
@@ -87,6 +86,9 @@ class ClientComm:
             elif self.sso.phase == Phase.ACT:
                 self.act()
 
+            elif self.sso.phase == Phase.FINISH:
+                line = None
+
             else:
                 self.io.writeToServer(self.lastMessageId, 'ERROR', self.LOG)
 
@@ -126,6 +128,8 @@ class ClientComm:
 
             if js == "START":
                 self.sso.phase = Phase.START
+            elif js == "FINISH":
+                self.sso.phase = Phase.FINISH
             else:
                 js.replace('"', '')
                 self.sso = json.loads(js, object_hook=self.as_sso)
@@ -221,8 +225,14 @@ class ClientComm:
             ect.setMaxTimeMillis(CompetitionParameters.EXTRA_LEARNING_TIME)
 
         nextLevel = self.player.result(self.sso, ect.copy())
+        # print "Result of a game at " + str(ect.remainingTimeMillis()) + "ms to the end."
 
         if ect.exceededMaxTime():
             self.io.writeToServer(self.lastMessageId, "END_OVERSPENT", self.LOG)
         else:
-            self.io.writeToServer(self.lastMessageId, str(nextLevel), self.LOG)
+
+            if self.global_ect.exceededMaxTime():
+                end_message = "END_VALIDATION" if self.sso.isValidation else "END_TRAINING"
+                self.io.writeToServer(self.lastMessageId, end_message, self.LOG)
+            else:
+                self.io.writeToServer(self.lastMessageId, str(nextLevel), self.LOG)

@@ -225,6 +225,9 @@ public class LearningMachine {
 
         System.out.println("Results in game " + game_file + ", " +
                 vict + " , " + sc);
+
+        //Finally, when the game is over, we need to finish the communication with the client.
+        player.finishPlayerCommunication();
     }
 
     /**
