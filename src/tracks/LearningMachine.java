@@ -372,7 +372,6 @@ public class LearningMachine {
      * @return the player, created and initialized, ready to start playing the game.
      */
     // Not useful for singleLearning
-    // TODO: 23/05/17  Unfinished
     private static LearningPlayer initMultiPlayer(LearningPlayer playerName, String actionFile, StateObservationMulti so, int randomSeed, int id, boolean isHuman)
     {
         return playerName;

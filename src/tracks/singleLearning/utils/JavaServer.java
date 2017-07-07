@@ -66,6 +66,8 @@ public class JavaServer {
         }
         if (params.containsKey("visuals")) {
             visuals = true;
+        } else {
+            visuals = false;
         }
         /** Now prepare to start */
         ElapsedWallTimer wallClock = new ElapsedWallTimer();
