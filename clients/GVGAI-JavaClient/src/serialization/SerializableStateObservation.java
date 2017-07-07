@@ -17,7 +17,7 @@ import java.util.zip.Inflater;
 public class SerializableStateObservation {
 
     public enum Phase {
-        START, INIT, ACT, ABORT, END
+        START, INIT, ACT, ABORT, END, FINISH
     }
 
     /**

@@ -67,6 +67,10 @@ public class ParameterBoolContent extends ParameterContent {
     public void setRunningValue(int value)
     {
         finalBooleanValue = (value == 1);
+
+        if(!(value >= 0 && value <= 1))
+            throw new RuntimeException("finalValue=" + finalBooleanValue + " outside range [0,1]");
+
         if(super.VERBOSE)
             System.out.println("PARAMETER " + this + " set to a FINAL value: " + finalBooleanValue);
         isFinalValueSet = true;

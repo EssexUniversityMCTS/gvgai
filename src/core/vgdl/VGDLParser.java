@@ -92,7 +92,7 @@ public class VGDLParser {
 			try {
 				parseNodes(rootNode);
 			} catch (Exception e) {
-				// TODO: Mike
+			    logger.addMessage(new Message(Message.ERROR, "[PARSE ERROR] " + e.toString()));
 			}
 		}
 
@@ -120,7 +120,7 @@ public class VGDLParser {
 			try {
 				parseNodes(rootNode);
 			} catch (Exception e) {
-				// TODO: Mike
+			    logger.addMessage(new Message(Message.ERROR, "[PARSE ERROR] " + e.toString()));
 			}
 		}
 
@@ -142,25 +142,25 @@ public class VGDLParser {
 					try {
 						parseSpriteSet(n.children);
 					} catch (Exception e) {
-						logger.addMessage(new Message(1, "Sprite Set Error: " + e.toString()));
+						logger.addMessage(new Message(Message.ERROR, "Sprite Set Error: " + e.toString()));
 					}
 				} else if (n.content.identifier.equals("InteractionSet")) {
 					try {
 						parseInteractionSet(n.children);
 					} catch (Exception e) {
-						logger.addMessage(new Message(1, "Interaction Set Error: " + e.getMessage()));
+						logger.addMessage(new Message(Message.ERROR, "Interaction Set Error: " + e.getMessage()));
 					}
 				} else if (n.content.identifier.equals("LevelMapping")) {
 					try {
 						parseLevelMapping(n.children);
 					} catch (Exception e) {
-						logger.addMessage(new Message(1, "Level Mapping Error: " + e.toString()));
+						logger.addMessage(new Message(Message.ERROR, "Level Mapping Error: " + e.toString()));
 					}
 				} else if (n.content.identifier.equals("TerminationSet")) {
 					try {
 						parseTerminationSet(n.children);
 					} catch (Exception e) {
-						logger.addMessage(new Message(1, "Termination Set Error: " + e.toString()));
+						logger.addMessage(new Message(Message.ERROR, "Termination Set Error: " + e.toString()));
 					}
 				}
 			}
@@ -555,8 +555,6 @@ public class VGDLParser {
 							// unknown sprite other than an EOS or TIME effect
 							// is an error
 						} else {
-							System.out.println("[PARSE ERROR] interaction entry references unknown sprite: " + ic.line);
-							// TODO throw exception here
 							throw new Exception("[PARSE ERROR] interaction entry references unknown sprite. Line: "
 									+ ic.lineNumber + " : " + ic.line);
 						}
@@ -573,7 +571,6 @@ public class VGDLParser {
 				}
 
 			} else {
-				System.out.println("[PARSE ERROR] bad format interaction entry: " + ic.line);
 				throw new Exception(
 						"[PARSE ERROR] bad format interaction entry. Line: " + ic.lineNumber + " : " + ic.line);
 			}

@@ -9,6 +9,8 @@ import core.content.*;
 import core.game.BasicGame;
 import core.game.Game;
 import core.game.GameSpace;
+import core.logging.Logger;
+import core.logging.Message;
 import core.termination.*;
 import ontology.Types;
 import ontology.avatar.*;
@@ -238,7 +240,10 @@ public class VGDLFactory
         {
             e.printStackTrace();
             System.out.println("Error creating sprite " + content.identifier + " of class " + content.referenceClass);
-        }catch (Exception e)
+        }
+        catch (NullPointerException e){
+        }
+        catch (Exception e)
         {
             e.printStackTrace();
             System.out.println("Error creating sprite " + content.identifier + " of class " + content.referenceClass);
@@ -329,13 +334,9 @@ public class VGDLFactory
 
         }catch (NoSuchMethodException e)
         {
-            e.printStackTrace();
-            System.out.println("Error creating termination condition " + content.identifier);
             throw new Exception("Line: " + content.lineNumber + " Error creating termination condition " + content.identifier);
         }catch (Exception e)
         {
-            e.printStackTrace();
-            System.out.println("Error creating termination condition " + content.identifier);
             throw new Exception("Line: " + content.lineNumber + " Error creating termination condition " + content.identifier);
         }
     }
@@ -415,9 +416,10 @@ public class VGDLFactory
                     if(isTimeEffect) warn = false;
                 }
 
-                if( warn )
-                    System.out.println("Unknown field (" + parameter + "=" + value +
-                        ") from " + content.toString());
+                if( warn ){
+                    Logger.getInstance().addMessage(new Message(Message.ERROR, "Unknown field (" + parameter + "=" + value +
+                            ") from " + content.toString()));
+                }
             }
         }
 

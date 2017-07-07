@@ -4,6 +4,8 @@ import core.vgdl.VGDLRegistry;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.logging.Logger;
+import core.logging.Message;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.Effect;
 
@@ -28,7 +30,12 @@ public class RemoveScore extends Effect {
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
-        if (Objects.equals(stype, "")) {
+	if(sprite1 == null){
+	    Logger.getInstance().addMessage(new Message(Message.WARNING, "1st sprite can't be EOS with RemoveScore interaction."));
+	    return;
+	}
+	
+        if (itype == -1) {
             if (sprite1.is_avatar) {
                 MovingAvatar a = (MovingAvatar) sprite1;
                 a.setScore(0);

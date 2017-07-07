@@ -22,11 +22,14 @@ public class SetSpeedForAll extends Effect
     public int itype;
     public double value=0;
 
-    public SetSpeedForAll(InteractionContent cnt)
+    public SetSpeedForAll(InteractionContent cnt) throws Exception
     {
         is_stochastic = true;
         this.parseParameters(cnt);
         itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
+        if(itype == -1){
+            throw new Exception("Undefined sprite " + stype);
+        }
     }
 
     @Override

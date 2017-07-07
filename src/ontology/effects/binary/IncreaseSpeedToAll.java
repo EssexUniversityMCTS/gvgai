@@ -24,11 +24,14 @@ public class IncreaseSpeedToAll extends Effect
     public int itype;
     public double value=0.1;
 
-    public IncreaseSpeedToAll(InteractionContent cnt)
+    public IncreaseSpeedToAll(InteractionContent cnt) throws Exception
     {
         is_stochastic = true;
         this.parseParameters(cnt);
         itype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
+        if(itype == -1){
+            throw new Exception("Undefined sprite " + stype);
+        }
     }
 
     @Override

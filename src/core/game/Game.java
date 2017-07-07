@@ -1575,6 +1575,9 @@ public abstract class Game {
 				}
 			}
 		}
+		if(Logger.getInstance().getMessageCount() > CompetitionParameters.MAX_ALLOWED_WARNINGS){
+		    isEnded = true;
+		}
 	}
 
 	/**
@@ -1684,13 +1687,12 @@ public abstract class Game {
 		// Check for singleton Sprites
 		boolean anyother = false;
 		if (!force) {
-
 			for (Integer typeInt : content.itypes) {
 				// If this type is a singleton and we have one already
 				if (singletons[typeInt] && getNumSprites(typeInt) > 0) {
 					// that's it, no more creations of this type.
-					anyother = true;
-					break;
+				    anyother = true;
+				    break;
 				}
 			}
 		}
@@ -1725,8 +1727,7 @@ public abstract class Game {
 			this.addSprite(newSprite, itype);
 			return newSprite;
 		}
-
-		Logger.getInstance().addMessage(new Message(Message.WARNING, "You can't have multiple objects of singleton."));
+		
 		return null;
 	}
 

@@ -78,6 +78,9 @@ public class ParameterIntContent extends ParameterContent {
     public void setRunningValue(int value)
     {
         finalValue = minValue + value * incValue;
+        if(!(finalValue >= minValue && finalValue <= maxValue))
+            throw new RuntimeException("finalValue=" + finalValue + " outside [" + minValue + "," + maxValue + "] range");
+
         if(VERBOSE)
             System.out.println("PARAMETER " + this + " set to a FINAL value: " + finalValue);
 

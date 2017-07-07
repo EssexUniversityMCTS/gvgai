@@ -144,6 +144,25 @@ public abstract class Comm extends Thread {
 
     }
 
+
+    /**
+     * This function is called at the end of the whole process. Closes the communication.
+     * Will give up if no "START_DONE" received after having received 11 responses
+     */
+    public boolean endComm() {
+
+        try {
+
+            //Send the finish message and don't wait for any response.
+            commSend("FINISH");
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return false;
+    }
+
     /**
      * Creates the buffers for communication.
      */

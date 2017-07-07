@@ -4,6 +4,8 @@ import core.vgdl.VGDLRegistry;
 import core.vgdl.VGDLSprite;
 import core.content.InteractionContent;
 import core.game.Game;
+import core.logging.Logger;
+import core.logging.Message;
 import ontology.effects.Effect;
 
 /**
@@ -23,16 +25,24 @@ public class ShieldFrom extends Effect {
     public long iftype;
 
 
-    public ShieldFrom(InteractionContent cnt)
+    public ShieldFrom(InteractionContent cnt) throws Exception
     {
         this.parseParameters(cnt);
         istype = VGDLRegistry.GetInstance().getRegisteredSpriteValue(stype);
+        if(istype == -1){
+            throw new Exception("Undefined sprite " + stype);
+        }
         iftype = ftype.hashCode();
     }
 
     @Override
     public void execute(VGDLSprite sprite1, VGDLSprite sprite2, Game game)
     {
+	if(sprite1 == null){
+	    Logger.getInstance().addMessage(new Message(Message.WARNING, "1st sprite can't be EOS with ShieldFrom interaction."));
+	    return;
+	}
+	
         game.addShield(sprite1.getType(), istype, iftype);
     }
 
