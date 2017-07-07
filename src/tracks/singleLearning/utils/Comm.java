@@ -49,7 +49,7 @@ public abstract class Comm extends Thread {
         this.messageId = 0;
 
         // Set message type to JSON by default
-        this.messageType = MESSAGE_TYPE.JSON;
+        this.messageType = MESSAGE_TYPE.IMAGE;
     }
 
 

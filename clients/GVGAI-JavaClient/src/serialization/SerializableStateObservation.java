@@ -75,11 +75,11 @@ public class SerializableStateObservation {
 
     // Optional, helper method to convert a byte array to PNG format
     public void convertBytesToPng(byte[] pixels) throws IOException, DataFormatException {
-        InputStream in = new ByteArrayInputStream(decompress(pixels));
+        InputStream in = new ByteArrayInputStream(pixels);
         BufferedImage bImageFromConvert = ImageIO.read(in);
 
         ImageIO.write(bImageFromConvert, "png", new File(
-                "./gamestateByBytes.png"));
+                "gamestateByBytes.png"));
 
     }
 

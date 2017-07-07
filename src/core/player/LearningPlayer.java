@@ -11,6 +11,7 @@ import tracks.singleLearning.utils.Comm;
 import tracks.singleLearning.utils.PipeComm;
 import tracks.singleLearning.utils.SocketComm;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 
@@ -70,7 +71,7 @@ public class LearningPlayer extends Player {
                 // TODO 01/07/2017 Daniel: Add image to serializable image..
                 // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
                 so.currentGameState = Types.GAMESTATES.ACT_STATE;
-                SerializableStateObservation sso = new SerializableStateObservation(so,null,false);
+                SerializableStateObservation sso = new SerializableStateObservation(so,new BufferedImage(200,400,BufferedImage.TYPE_INT_ARGB),false);
 
                 comm.commSend(sso.serialize(null));
 
