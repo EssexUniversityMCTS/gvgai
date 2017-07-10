@@ -11,7 +11,11 @@ import tracks.singleLearning.utils.Comm;
 import tracks.singleLearning.utils.PipeComm;
 import tracks.singleLearning.utils.SocketComm;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.WritableRaster;
+import java.io.File;
 import java.io.IOException;
 
 
@@ -29,9 +33,8 @@ public class LearningPlayer extends Player {
      * Learning Player constructor.
      * Creates a new server side communication channel for every player.
      */
-    public LearningPlayer(Process proc, String port){
-        if(CompetitionParameters.USE_SOCKETS)
-        {
+    public LearningPlayer(Process proc, String port) {
+        if (CompetitionParameters.USE_SOCKETS) {
             //Sockets:
             this.comm = new SocketComm(port);
         }
@@ -53,7 +56,7 @@ public class LearningPlayer extends Player {
      * actions accessible from stateObs.getAvailableActions(), or action NIL
      * will be applied.
      *
-     * @param so     Observation of the current state.
+     * @param so           Observation of the current state.
      * @param elapsedTimer Timer when the action returned is due.
      * @return An action for the current state
      */
@@ -98,8 +101,8 @@ public class LearningPlayer extends Player {
                 return Types.ACTIONS.ACTION_ESCAPE;
             }
 
-                // Set the game to the kill state if the response is that of ABORT
-            if (response.equals("ABORT")){
+            // Set the game to the kill state if the response is that of ABORT
+            if (response.equals("ABORT")) {
                 so.currentGameState = Types.GAMESTATES.ABORT_STATE;
                 return Types.ACTIONS.ACTION_ESCAPE;
             }
@@ -114,8 +117,7 @@ public class LearningPlayer extends Player {
     }
 
     /***
-     *
-     * @param so State observation of the current game in its initial state
+     * @param so           State observation of the current game in its initial state
      * @param isValidation true if the level to play is a validation one.
      * @return true if Init worked.
      */
@@ -130,7 +132,7 @@ public class LearningPlayer extends Player {
             comm.commSend(sso.serialize(null));
             String initResponse = comm.commRecv();
 
-            if(initResponse.equals("INIT_FAILED"))
+            if (initResponse.equals("INIT_FAILED"))
                 return false;
             return true;
 
@@ -147,13 +149,12 @@ public class LearningPlayer extends Player {
 
     /**
      * Function called when the game is over. This method must finish before CompetitionParameters.TEAR_DOWN_TIME,
-     *  or the agent will be DISQUALIFIED
+     * or the agent will be DISQUALIFIED
+     *
      * @param stateObs the game state at the end of the game
      * @returns Level to be plated.
-     *
      */
-    public int result(StateObservation stateObs)
-    {
+    public int result(StateObservation stateObs) {
         int result = this.comm.finishGame(stateObs);
         //System.out.println("Client replied: " + result);
         return result;
@@ -161,6 +162,7 @@ public class LearningPlayer extends Player {
 
     /**
      * Starts the communication between the server and the client.
+     *
      * @return true or false, depending on whether the initialization has been successful
      */
     public boolean startPlayerCommunication() {
@@ -183,6 +185,5 @@ public class LearningPlayer extends Player {
 
         return true;
     }
-
 }
 

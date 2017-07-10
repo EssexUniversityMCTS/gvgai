@@ -160,6 +160,23 @@ public class ClientComm {
             lastMessageId = Integer.parseInt(message[0]);
             String json = message[1];
 
+            if (message.length == 3) {
+                String ssoType = message[2];
+                switch (ssoType) {
+                    case "JSON":
+                        lastSsoType = LEARNING_SSO_TYPE.JSON;
+                        break;
+                    case "IMAGE":
+                        lastSsoType = LEARNING_SSO_TYPE.IMAGE;
+                        break;
+                    case "BOTH":
+                        lastSsoType = LEARNING_SSO_TYPE.BOTH;
+                        break;
+                    default:
+                        System.err.println("ClentComm: processLine(): This should never happen.");
+                        break;
+                }
+            }
             //io.writeToFile("message received " + lastMessageId + "#" + json);
 
             //Gson gson = new GsonBuilder().registerTypeAdapterFactory(new ArrayAdapterFactory()).create();
@@ -183,8 +200,11 @@ public class ClientComm {
             // If expect image
             if (lastSsoType == LEARNING_SSO_TYPE.IMAGE || lastSsoType == LEARNING_SSO_TYPE.BOTH) {
                 // If an image has been received, then save its PNG equivalent
+//                sso.convertBytesToPng(sso.imageArray);
                 if (this.sso.imageArray != null && this.sso.imageArray.length != 0) {
                     sso.convertBytesToPng(sso.imageArray);
+                } else {
+                    System.err.println("this.sso.imageArray is null or this.sso.imageArray.length = 0");
                 }
             }
         } catch (Exception e){
@@ -268,7 +288,6 @@ public class ClientComm {
         // Save the player's action in a string
         String action = player.act(sso, ect.copy()).toString();
         lastSsoType = player.lastSsoType;
-        //io.writeToFile("init done");
         if(ect.exceededMaxTime()) {
             if (ect.elapsedMillis() > CompetitionParameters.ACTION_TIME_DISQ) {
                 io.writeToServer(lastMessageId, "END_OVERSPENT", LOG);

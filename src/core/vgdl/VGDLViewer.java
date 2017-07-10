@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -65,7 +67,38 @@ public class VGDLViewer extends JComponent
     public void paintComponent(Graphics gx)
     {
         Graphics2D g = (Graphics2D) gx;
+        paintWithGraphics(g);
+        //For a better graphics, enable this: (be aware this could bring performance issues depending on your HW & OS).
+//        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//
+//        //g.setColor(Types.LIGHTGRAY);
+//        g.setColor(Types.BLACK);
+//        g.fillRect(0, size.height, size.width, size.height);
+//
+//        //Possible efficiency improvement: static image with immovable objects.
+//        /*
+//        BufferedImage mapImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
+//        Graphics2D gImage = mapImage.createGraphics();
+//        */
+//
+//        try {
+//            int[] gameSpriteOrder = game.getSpriteOrder();
+//            if (this.spriteGroups != null) for (Integer spriteTypeInt : gameSpriteOrder) {
+//                if (spriteGroups[spriteTypeInt] != null) {
+//                    ArrayList<VGDLSprite> spritesList = spriteGroups[spriteTypeInt].getSprites();
+//                    for (VGDLSprite sp : spritesList) {
+//                        if (sp != null) sp.draw(g, game);
+//                    }
+//
+//                }
+//            }
+//        }catch(Exception e) {}
+//
+//        g.setColor(Types.BLACK);
+//        player.draw(g);
+    }
 
+    public void paintWithGraphics(Graphics2D g) {
         //For a better graphics, enable this: (be aware this could bring performance issues depending on your HW & OS).
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -124,7 +157,6 @@ public class VGDLViewer extends JComponent
         return size;
     }
 
-
     void saveImage(String fileName)  {
         try {
             // TYPE_INT_ARGB specifies the image format: 8-bit RGBA packed
@@ -132,7 +164,7 @@ public class VGDLViewer extends JComponent
 //            long t = System.currentTimeMillis();
             BufferedImage bi = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D graphics = bi.createGraphics();
-            this.paintComponent(graphics);
+            paintWithGraphics(graphics);
             File file = new File(fileName);
             ImageIO.write(bi, "PNG", file);
 //            System.out.println("Wrote image to: " + fileName);
@@ -143,5 +175,7 @@ public class VGDLViewer extends JComponent
         }
 
     }
+
+
 
 }
