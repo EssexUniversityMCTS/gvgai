@@ -1,5 +1,6 @@
 package core.game;
 
+import core.competition.CompetitionParameters;
 import tools.com.google.gson.Gson;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
@@ -7,6 +8,7 @@ import tools.ElapsedCpuTimer;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.Buffer;
@@ -54,20 +56,20 @@ public class SerializableStateObservation {
     public Observation[][] portalsPositionsArray;
     public Observation[][] fromAvatarSpritesPositionsArray;
 
-    public SerializableStateObservation(StateObservation s, BufferedImage image, Boolean both){
+    public SerializableStateObservation(StateObservation s, Boolean both){
         try {
             if (!both) {
                 // Fill in the persistent variables (Score, tick)
                 buildGameData(s);
 
                 // Create the image bytearray
-                imageArray = imageToByteArray(image);
+                imageArray = imageToByteArray();
             } else {
                 // Fill in the persistent variables (Score, tick)
                 buildGameData(s);
 
                 // Create the image bytearray
-                imageArray = imageToByteArray(image);
+                imageArray = imageToByteArray();
 
                 // Fill in the simple data variables
                 buildDataVariables(s);
@@ -213,10 +215,12 @@ public class SerializableStateObservation {
         //System.out.println(ect.elapsedMillis() + " ms taken to build SSO");
     }
 
-    public static byte[] imageToByteArray(BufferedImage image) throws IOException
+
+
+    public static byte[] imageToByteArray() throws IOException
     {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        ImageIO.write(image, "png", output);
+        ImageIO.write(ImageIO.read(new File(CompetitionParameters.SCREENSHOT_PATH)), "png", output);
         return output.toByteArray();
     }
 

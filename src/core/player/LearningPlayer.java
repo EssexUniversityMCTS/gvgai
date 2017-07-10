@@ -69,17 +69,15 @@ public class LearningPlayer extends Player {
                     comm.commSend(sso.serialize(null));
                     break;
                 case IMAGE:
-                    // TODO 01/07/2017 Daniel: Add image to serializable image..
                     // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
                     so.currentGameState = Types.GAMESTATES.ACT_STATE;
-                    sso = new SerializableStateObservation(so, new BufferedImage(200, 400, BufferedImage.TYPE_INT_ARGB), false);
+                    sso = new SerializableStateObservation(so, false);
                     comm.commSend(sso.serialize(null));
                     break;
                 case BOTH:
-                    // TODO 01/07/2017 Daniel: Add image to serializable image..
                     // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
                     so.currentGameState = Types.GAMESTATES.ACT_STATE;
-                    sso = new SerializableStateObservation(so, null, true);
+                    sso = new SerializableStateObservation(so, true);
                     comm.commSend(sso.serialize(null));
                     break;
                 default:

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
+import core.competition.CompetitionParameters;
 import core.game.Game;
 import core.player.Player;
 import ontology.Types;
@@ -112,7 +113,7 @@ public class VGDLViewer extends JComponent
         }
 
         this.repaint();
-        saveImage("gamestateByBytes.png");
+        saveImage(CompetitionParameters.SCREENSHOT_PATH);
     }
 
     /**
