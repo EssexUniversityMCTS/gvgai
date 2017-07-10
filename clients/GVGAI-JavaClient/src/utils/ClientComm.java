@@ -64,7 +64,6 @@ public class ClientComm {
         io = CompetitionParameters.USE_SOCKETS ? new IOSocket(CompetitionParameters.SOCKET_PORT) : new IOPipe();
         sso = new SerializableStateObservation();
         this.agentName = agentName;
-
     }
 
 

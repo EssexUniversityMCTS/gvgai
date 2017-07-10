@@ -24,13 +24,13 @@ public class Observation {
     /**
      * Position of the observation.
      */
-    public double[] position;
+    public Vector2d position;
 
     /**
      * Reference to the position used for comparing this
      * observation with others.
      */
-    public double[] reference;
+    public Vector2d reference;
 
     /**
      * Distance from this observation to the reference.

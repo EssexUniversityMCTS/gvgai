@@ -93,7 +93,11 @@ public class SerializableStateObservation {
             for (int i = 0; i < s.getObservationGrid().length; i++) {
                 for (int j = 0; j < s.getObservationGrid()[i].length; j++) {
                     row = s.getObservationGrid()[i][j];
-                    observationGrid[i][j] = row.toArray(new Observation[row.size()]);
+                    if (row == null) {
+                        observationGrid[i][j] = new Observation[0];
+                    } else {
+                        observationGrid[i][j] = row.toArray(new Observation[row.size()]);
+                    }
                 }
             }
         }
