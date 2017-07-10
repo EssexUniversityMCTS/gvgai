@@ -132,7 +132,8 @@ class ClientComm:
                 self.sso.phase = Phase.FINISH
             else:
                 js.replace('"', '')
-                self.sso = json.loads(js, object_hook=self.as_sso)
+                self.as_sso(json.loads(js))
+                # self.sso = json.loads(js, object_hook=self.as_sso)
                 # print("Phase is " + self.sso.phase)
                 # print("Score is " + str(self.sso.gameScore))
         except Exception as e:
