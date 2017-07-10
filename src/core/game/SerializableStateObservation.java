@@ -1,9 +1,12 @@
 package core.game;
 
+import core.termination.Termination;
+import ontology.avatar.MovingAvatar;
 import tools.com.google.gson.Gson;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
 
+import java.awt.*;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +23,19 @@ public class SerializableStateObservation {
         START, INIT, ACT, ABORT, END
     }
 
+    // Game variables
+    public int[] spriteOrder;
+    public boolean[] singletons;
+    public Integer[][] iSubTypesArray;
+    public HashMap<Character, ArrayList<String>> charMapping;
+    public ArrayList<Termination> terminations;
+    public int[] resources_limits;
+    public Color[] resources_colors;
+    public boolean is_stochastic;
+    public int num_sprites;
+    public int nextSpriteID;
+
+    // State Observation variables
     public boolean isValidation;
     public float gameScore;
     public int gameTick;
@@ -27,8 +43,10 @@ public class SerializableStateObservation {
     public boolean isGameOver;
     public double[] worldDimension;
     public int blockSize;
+    public int noOfPlayers;
     public float avatarSpeed;
     public double[] avatarOrientation;
+    public double[] avatarPosition;
     public Types.ACTIONS avatarLastAction;
     public int avatarType;
     public int avatarHealthPoints;
@@ -36,6 +54,8 @@ public class SerializableStateObservation {
     public int avatarLimitHealthPoints;
     public boolean isAvatarAlive;
     public Phase phase;
+
+    public boolean isEnded;
 
     public ArrayList<Types.ACTIONS> availableActions;
     public HashMap<Integer, Integer> avatarResources;
@@ -47,9 +67,45 @@ public class SerializableStateObservation {
     public Observation[][] portalsPositionsArray;
     public Observation[][] fromAvatarSpritesPositionsArray;
 
-    public SerializableStateObservation(StateObservation s)
+    public SerializableStateObservation(StateObservation s, Game g)
     {
         setPhase(s.getGameState());
+
+        /**
+         * BLOCK OF GAME VARIABLES
+         * -------------------------------------------------------------------------------------------------------------
+         */
+        spriteOrder = g.getSpriteOrder();
+        singletons = g.singletons;
+        charMapping = g.getCharMapping();
+        terminations = g.getTerminations();
+        resources_limits = g.resources_limits;
+        resources_colors = g.resources_colors;
+        is_stochastic = g.is_stochastic;
+        num_sprites = g.num_sprites;
+        nextSpriteID = g.nextSpriteID;
+
+        // iSubTypes
+        ArrayList<Integer> integerRow;
+        if (g.iSubTypes!=null) {
+            iSubTypesArray = new Integer[g.iSubTypes.length][];
+
+            for (int i = 0; i < g.iSubTypes.length; i++) {
+                integerRow = g.iSubTypes[i];
+                iSubTypesArray[i] = integerRow.toArray(new Integer[integerRow.size()]);
+            }
+        }
+
+        /**
+         * BLOCK OF GAME VARIABLES
+         * -------------------------------------------------------------------------------------------------------------
+         */
+
+
+        /**
+         * BLOCK OF STATE OBSERVATION VARIABLES
+         * -------------------------------------------------------------------------------------------------------------
+         */
         availableActions = s.getAvailableActions();
         gameScore = (float) s.getGameScore();
         gameTick = s.getGameTick();
@@ -67,6 +123,12 @@ public class SerializableStateObservation {
         avatarOrientation[0] = s.getAvatarOrientation().x;
         avatarOrientation[1] = s.getAvatarOrientation().y;
 
+        avatarPosition = new double[2];
+        avatarPosition[0] = s.getAvatarPosition().x;
+        avatarPosition[1] = s.getAvatarPosition().y;
+
+        noOfPlayers = s.getNoPlayers();
+
         avatarResources = s.getAvatarResources();
         avatarLastAction = s.getAvatarLastAction();
         avatarType = s.getAvatarType();
@@ -74,6 +136,8 @@ public class SerializableStateObservation {
         avatarMaxHealthPoints = s.getAvatarMaxHealthPoints();
         avatarLimitHealthPoints = s.getAvatarLimitHealthPoints();
         isAvatarAlive = s.isAvatarAlive();
+
+        isEnded = s.isGameOver();
 
         // Create a row to be used for translation from ArrayList to array
         ArrayList<Observation> row;
@@ -161,6 +225,11 @@ public class SerializableStateObservation {
                 fromAvatarSpritesPositionsArray[i] = row.toArray(new Observation[row.size()]);
             }
         }
+
+        /**
+         * BLOCK OF STATE OBSERVATION VARIABLES
+         * -------------------------------------------------------------------------------------------------------------
+         */
 
         //System.out.println(ect.elapsedMillis() + " ms taken to build SSO");
     }

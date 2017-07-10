@@ -11,6 +11,18 @@ class SerializableStateObservation:
         self.phase = Phase()
         self.isValidation = True
 
+        # Game variables
+        self.spriteOrder = []
+        self.singletons = []
+        self.iSubTypesArray = []
+        self.charMapping = {}
+        self.terminations = []
+        self.resources_limits = []
+        self.resources_colors = []
+        self.is_stochastic = True
+        self.num_sprites = 0
+        self.nextSpriteID = -1
+
         self.winner = WINNER()
         self.actions = ACTIONS()
 
@@ -21,8 +33,10 @@ class SerializableStateObservation:
         self.worldDimension = []
         self.blockSize = 0
 
+        self.noOfPlayers = 0
         self.avatarSpeed = 0.0
         self.avatarOrientation = []
+        self.avatarPosition = []
         self.avatarLastAction = None  # self.actions.ACTION_NIL
         self.avatarType = 0
         self.avatarHealthPoints = 0
@@ -32,13 +46,13 @@ class SerializableStateObservation:
         self.availableActions = []
         self.avatarResources = {}
 
-        observationGrid = []
-        NPCPositions = []
-        immovablePositions = []
-        movablePositions = []
-        resourcesPositions = []
-        portalsPositions = []
-        fromAvatarSpritePositions = []
+        self.observationGrid = []
+        self.NPCPositions = []
+        self.immovablePositions = []
+        self.movablePositions = []
+        self.resourcesPositions = []
+        self.portalsPositions = []
+        self.fromAvatarSpritePositions = []
 
 
 class Phase:

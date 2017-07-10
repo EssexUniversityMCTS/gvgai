@@ -1,5 +1,8 @@
 package serialization;
 
+import utils.Termination;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -14,6 +17,18 @@ public class SerializableStateObservation {
     public enum Phase {
         START, INIT, ACT, ABORT, END, FINISH
     }
+
+    // Game variables
+    public int[] spriteOrder;
+    public boolean[] singletons;
+    public Integer[][] iSubTypesArray;
+    public HashMap<Character, ArrayList<String>> charMapping;
+    public ArrayList<Termination> terminations;
+    public int[] resources_limits;
+    public Color[] resources_colors;
+    public boolean is_stochastic;
+    public int num_sprites;
+    public int nextSpriteID;
 
     /**
      * Indicates the state of the protocol
@@ -38,8 +53,10 @@ public class SerializableStateObservation {
     /**
      * Avatar Phase
      */
+    public int noOfPlayers;
     public float avatarSpeed;
     public double[] avatarOrientation;
+    public double[] avatarPosition;
     public Types.ACTIONS avatarLastAction;
     public int avatarType;
     public int avatarHealthPoints;
