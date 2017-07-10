@@ -7,25 +7,17 @@ import ontology.Types;
 
 import java.io.IOException;
 import java.util.Random;
-import java.util.logging.Logger;
 
 /**
  * Created by dperez on 01/06/2017.
  */
 public abstract class Comm extends Thread {
 
-    /**
-     * Message type choice (JSON/Image/Both)
-     */
-    public enum MESSAGE_TYPE{
-        JSON, IMAGE, BOTH
-    }
 
     /**
      * Variable to store the message type
      */
-    public MESSAGE_TYPE messageType;
-
+    protected Types.LEARNING_SSO_TYPE lastSsoType = Types.LEARNING_SSO_TYPE.JSON; // Type of message chosen by player (JSON/Image)
 
     /**
      * Line separator for messages.
@@ -47,9 +39,6 @@ public abstract class Comm extends Thread {
      */
     public Comm() {
         this.messageId = 0;
-
-        // Set message type to JSON by default
-        this.messageType = MESSAGE_TYPE.IMAGE;
     }
 
 
@@ -182,5 +171,7 @@ public abstract class Comm extends Thread {
      */
     public abstract void commSend(String msg) throws IOException;
 
-
+    public Types.LEARNING_SSO_TYPE getLastSsoType() {
+        return this.lastSsoType;
+    }
 }

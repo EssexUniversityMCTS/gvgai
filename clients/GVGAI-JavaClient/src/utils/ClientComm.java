@@ -1,5 +1,7 @@
 package utils;
 
+import serialization.Types;
+import serialization.Types.LEARNING_SSO_TYPE;
 import utils.com.google.gson.Gson;
 import serialization.SerializableStateObservation;
 
@@ -55,6 +57,11 @@ public class ClientComm {
      * Name of the agent to run
      */
     private String agentName;
+
+    /**
+     * Type of last required sso
+     */
+    private LEARNING_SSO_TYPE lastSsoType = LEARNING_SSO_TYPE.JSON;
 
     /**
      * Creates the client.
@@ -173,11 +180,13 @@ public class ClientComm {
             // Else, deserialize the json using GSon
             this.sso = gson.fromJson(json, SerializableStateObservation.class);
 
-            // If an image has been received, then save its PNG equivalent
-            if (this.sso.imageArray != null && this.sso.imageArray.length != 0){
-                sso.convertBytesToPng(sso.imageArray);
+            // If expect image
+            if (lastSsoType == LEARNING_SSO_TYPE.IMAGE || lastSsoType == LEARNING_SSO_TYPE.BOTH) {
+                // If an image has been received, then save its PNG equivalent
+                if (this.sso.imageArray != null && this.sso.imageArray.length != 0) {
+                    sso.convertBytesToPng(sso.imageArray);
+                }
             }
-
         } catch (Exception e){
             io.logStackTrace(e);
         }
@@ -258,8 +267,8 @@ public class ClientComm {
 
         // Save the player's action in a string
         String action = player.act(sso, ect.copy()).toString();
+        lastSsoType = player.lastSsoType;
         //io.writeToFile("init done");
-
         if(ect.exceededMaxTime()) {
             if (ect.elapsedMillis() > CompetitionParameters.ACTION_TIME_DISQ) {
                 io.writeToServer(lastMessageId, "END_OVERSPENT", LOG);
@@ -268,7 +277,7 @@ public class ClientComm {
                 io.writeToServer(lastMessageId, "ACTION_NIL", LOG);
             }
         } else {
-            io.writeToServer(lastMessageId, action, LOG);
+            io.writeToServer(lastMessageId, action + TOKEN_SEP + player.lastSsoType, LOG);
         }
     }
 

@@ -5,6 +5,7 @@ package tracks.singleLearning.utils;
  */
 
 import core.competition.CompetitionParameters;
+import ontology.Types.LEARNING_SSO_TYPE;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -19,7 +20,6 @@ public class SocketComm extends Comm {
     private Scanner in;
     private PrintStream out;
     private boolean end;
-    BufferedReader br;
 
     /**
      * Public constructor of the player.
@@ -102,9 +102,6 @@ public class SocketComm extends Comm {
         //System.out.println("Received in server: " + ret);
         if(ret != null && ret.trim().length() > 0)
         {
-            // Type of message chosen by player (JSON/Image)
-            String messageType = "";
-
             String messageParts[] = ret.split(TOKEN_SEP);
             if(messageParts.length < 2) {
                 return null;
@@ -113,17 +110,20 @@ public class SocketComm extends Comm {
             String msg = messageParts[1];
 
             if (messageParts.length >= 3) {
-                messageType = messageParts[2];
-
-                switch (messageType) {
-                    case "MODE=JSON":
-                        this.messageType = MESSAGE_TYPE.JSON;
+                String ssoType = messageParts[2];
+                switch (ssoType) {
+                    case "JSON":
+                        this.lastSsoType = LEARNING_SSO_TYPE.JSON;
                         break;
-                    case "MODE=IMG":
-                        this.messageType = MESSAGE_TYPE.IMAGE;
+                    case "IMAGE":
+                        this.lastSsoType = LEARNING_SSO_TYPE.IMAGE;
                         break;
-                    case "MODE=BOTH":
-                        this.messageType = MESSAGE_TYPE.BOTH;
+                    case "BOTH":
+                        this.lastSsoType = LEARNING_SSO_TYPE.BOTH;
+                        break;
+                    default:
+                        System.err.println("SocketComm: commRecv(): This should never happen.");
+                        break;
                 }
             }
 

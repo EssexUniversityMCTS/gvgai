@@ -4,8 +4,12 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
 import core.game.Game;
@@ -108,6 +112,7 @@ public class VGDLViewer extends JComponent
         }
 
         this.repaint();
+        saveImage("gamestateByBytes.png");
     }
 
     /**
@@ -116,6 +121,26 @@ public class VGDLViewer extends JComponent
      */
     public Dimension getPreferredSize() {
         return size;
+    }
+
+
+    void saveImage(String fileName)  {
+        try {
+            // TYPE_INT_ARGB specifies the image format: 8-bit RGBA packed
+            // into integer pixels
+//            long t = System.currentTimeMillis();
+            BufferedImage bi = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+            Graphics2D graphics = bi.createGraphics();
+            this.paintComponent(graphics);
+            File file = new File(fileName);
+            ImageIO.write(bi, "PNG", file);
+//            System.out.println("Wrote image to: " + fileName);
+//            long t2 = System.currentTimeMillis();
+//            System.out.println("Time elapsed = " + (t2 - t) + "ms");
+        } catch (IOException ie) {
+            ie.printStackTrace();
+        }
+
     }
 
 }

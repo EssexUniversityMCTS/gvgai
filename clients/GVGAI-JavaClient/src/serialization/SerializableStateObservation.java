@@ -79,7 +79,7 @@ public class SerializableStateObservation {
         BufferedImage bImageFromConvert = ImageIO.read(in);
 
         ImageIO.write(bImageFromConvert, "png", new File(
-                "gamestateByBytes.png"));
+                "gamestateByBytesTmp.png"));
 
     }
 
