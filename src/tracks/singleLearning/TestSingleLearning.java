@@ -72,8 +72,6 @@ public class TestSingleLearning {
         /** Now prepare to start */
         ElapsedWallTimer wallClock = new ElapsedWallTimer();
 
-        // Type of client to test against (Python/Java)
-        String clientType = "java"; //"python";
 
         //Available controllers:
         /** Find the write shell to build and run client */
