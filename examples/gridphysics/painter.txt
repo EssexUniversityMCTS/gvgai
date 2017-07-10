@@ -26,13 +26,13 @@ BasicGame key_handler=Pulse square_size=60
         avatar EOS > stepBack
         
         prepaint avatar > killSprite
-        ground avatar > spawnIfHasMore stype=prepaint resource=null limit=0
+        ground avatar > spawn stype=prepaint
         prepaint ground > changeResource resource=prepainting value=1
         prepaint ground > spawnIfHasMore resource=prepainting limit=2 stype=paint
         ground prepaint > killIfOtherHasMore resource=prepainting limit=2  scoreChange=1
         
         preground avatar > killSprite
-        paint avatar > spawnIfHasMore stype=preground resource=null limit=0
+        paint avatar > spawn stype=preground
         preground paint > changeResource resource=pregrounding value=1
         preground paint > spawnIfHasMore resource=pregrounding limit=2 stype=ground
         paint preground > killIfOtherHasMore resource=pregrounding limit=2 

@@ -151,5 +151,18 @@ public class LearningPlayer extends Player {
 
         return true;
     }
+
+    /**
+     * Tells the client that this is over. Se finito.
+     */
+    public boolean finishPlayerCommunication() {
+
+        //Initialize the controller.
+        if (!this.comm.endComm())
+            return false;
+
+        return true;
+    }
+
 }
 

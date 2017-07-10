@@ -42,10 +42,10 @@ BasicGame square_size=25
         powerblibturning avatar > killSprite
 
         powerblib blib > killSprite scoreChange=1
-        powerblib avatar > spawnIfHasMore resource=null stype=powerblibturning limit=0
+        powerblib avatar > spawn stype=powerblibturning
         powerblib powerblibturning > changeResource resource=res
 
         enemy wall > reverseDirection
 
-        btm enemyground > spawnIfHasMore resource=null stype=upshot limit=0 prob=0.02
-        top enemyground > spawnIfHasMore resource=null stype=downshot limit=0 prob=0.02
+        btm enemyground > spawn stype=upshot prob=0.02
+        top enemyground > spawn stype=downshot prob=0.02

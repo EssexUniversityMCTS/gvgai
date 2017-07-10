@@ -60,7 +60,7 @@ public class LearningMachine {
      * @param actionFiles filename of the file where the actions of this player, for this game, should be recorded.
      */
     public static void runMultipleGames(String game_file, String[] level_files,
-                                            String cmd[], String[] actionFiles) throws IOException {
+                                            String cmd[], String[] actionFiles, boolean visuals) throws IOException {
         VGDLFactory.GetInstance().init(); //This always first thing to do.
         VGDLRegistry.GetInstance().init();
 
@@ -68,7 +68,7 @@ public class LearningMachine {
         LearningPlayer player = LearningMachine.createPlayer(cmd);
 
         // Play the training games.
-        runGames(game_file, level_files, 1, player, actionFiles);
+        runGames(game_file, level_files, 1, player, actionFiles, visuals);
     }
 
     /**
@@ -112,7 +112,6 @@ public class LearningMachine {
     }
 
 
-    // TODO: 22/05/17 why "Graphics always on"?
     /**
      * Reads and launches a game for a bot to be played. It specifies which levels to play and how many times.
      * Filenames for saving actions can be specified. Graphics always on.
@@ -125,11 +124,10 @@ public class LearningMachine {
      */
     public static StatSummary performance;
     public static void runGames(String game_file, String[] level_files, int level_times,
-                                LearningPlayer player, String[] actionFiles) throws IOException {
+                                LearningPlayer player, String[] actionFiles, boolean visual) throws IOException {
         VGDLFactory.GetInstance().init(); //This always first thing to do.
         VGDLRegistry.GetInstance().init();
 
-        boolean visual = false;
         boolean recordActions = false;
         if (actionFiles != null) {
             recordActions = true;
@@ -173,7 +171,7 @@ public class LearningMachine {
         {
             String level_file = trainingLevels[level_idx];
             for (int i = 0; keepPlaying && i < level_times; ++i) {
-                levelOutcome = playOneLevel(game_file,level_file,i,false, recordActions,levelIdx,
+                levelOutcome = playOneLevel(game_file,level_file,i,false, visual, recordActions,levelIdx,
                                                 players,actionFiles,toPlay,scores,victories);
 //                System.err.println("levelOutcome="+levelOutcome);
                 keepPlaying = (levelOutcome>=0);
@@ -189,7 +187,7 @@ public class LearningMachine {
             System.out.println("Starting Second Phase of Training in " + Types.NUM_TRAINING_LEVELS + " levels.");
             while (levelOutcome >= 0) {
                 // Play the selected level once
-                levelOutcome = playOneLevel(game_file, level_files[levelOutcome], 0, false, recordActions,
+                levelOutcome = playOneLevel(game_file, level_files[levelOutcome], 0, false, visual, recordActions,
                         0, players, actionFiles, toPlay, scores, victories);
             }
         }
@@ -208,7 +206,7 @@ public class LearningMachine {
             String validation_level = validationLevels[level_idx];
             for (int i = 0; keepPlaying && i < level_times; ++i) {
 //                System.err.println("validation_level=" + validation_level);
-                levelOutcome = playOneLevel(game_file,validation_level,i, true, recordActions,levelIdx,players,actionFiles,toPlay,scores,victories);
+                levelOutcome = playOneLevel(game_file,validation_level,i, true, visual, recordActions,levelIdx,players,actionFiles,toPlay,scores,victories);
                 keepPlaying = (levelOutcome!=Types.LEARNING_RESULT_DISQ);
 //                System.err.println("levelOutcome=" + levelOutcome + ", keepPlaying="+keepPlaying);
             }
@@ -227,6 +225,9 @@ public class LearningMachine {
 
         System.out.println("Results in game " + game_file + ", " +
                 vict + " , " + sc);
+
+        //Finally, when the game is over, we need to finish the communication with the client.
+        player.finishPlayerCommunication();
     }
 
     /**
@@ -248,7 +249,7 @@ public class LearningMachine {
      * @return Next level to be played as chosen by the player, or a random substituent.
      * @throws IOException
      */
-    public static int playOneLevel(String game_file, String level_file, int level_time, boolean isValidation, boolean recordActions,
+    public static int playOneLevel(String game_file, String level_file, int level_time, boolean isValidation, boolean isVisual, boolean recordActions,
                                     int levelIdx, LearningPlayer[] players, String[] actionFiles, Game toPlay, StatSummary[] scores,
                                     StatSummary[] victories) throws IOException{
         if (VERBOSE)
@@ -280,8 +281,11 @@ public class LearningMachine {
 
         //Play the game
         //Get array of scores back.
-//        score = toPlay.playGame(players, randomSeed, false, 0);
-        score = toPlay.runGame(players, randomSeed);
+        if(isVisual) {
+            score = toPlay.playGame(players, randomSeed, false, 0);
+        } else {
+            score = toPlay.runGame(players, randomSeed);
+        }
         toPlay.printResult();
 
         //Finally, when the game is over, we need to tear the player down.
@@ -316,21 +320,13 @@ public class LearningMachine {
      * @return the player, created but NOT initialized, ready to start playing the game.
      */
     private static LearningPlayer createPlayer(String[] cmd) throws IOException {
-
-//        Process client;
-//        ProcessBuilder builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2]);
-//        builder.redirectErrorStream(true);
-//        client = builder.start();
-//        return new LearningPlayer(client, cmd[2]);
-
         String scriptName = cmd[0];
 
         if(scriptName != null) {
             Process client;
             ProcessBuilder builder;
-            assert (cmd.length==4 || cmd.length==3);
-            if (cmd.length == 4) {
-                builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2], cmd[3]);
+            if (cmd.length == 5) {
+                builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2], cmd[3], cmd[4]);
             } else {
                 builder = new ProcessBuilder(cmd[0], cmd[1], cmd[2]);
             }
@@ -376,7 +372,6 @@ public class LearningMachine {
      * @return the player, created and initialized, ready to start playing the game.
      */
     // Not useful for singleLearning
-    // TODO: 23/05/17  Unfinished
     private static LearningPlayer initMultiPlayer(LearningPlayer playerName, String actionFile, StateObservationMulti so, int randomSeed, int id, boolean isHuman)
     {
         return playerName;

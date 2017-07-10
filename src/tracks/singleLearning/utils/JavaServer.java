@@ -5,7 +5,9 @@ import tools.ElapsedWallTimer;
 import tracks.LearningMachine;
 
 import java.io.File;
-import java.util.Random;
+import java.util.*;
+
+import static core.competition.CompetitionParameters.IMG_PATH;
 
 /**
  * Created by dperez on 01/06/2017.
@@ -13,30 +15,78 @@ import java.util.Random;
 public class JavaServer {
 
     public static void main(String[] args) throws Exception {
-
+        /** Init params */
+        int gameIdx = 0;
+        String clientType = "java"; //"python"; // Type of client to test against (Python/Java)
+        String shDir = "src/tracks/singleLearning/utils";
+        String clientDir = ".";
+        String gamesDir = ".";
+        //Other settings
+        boolean visuals = false;
+        /** Get arguments */
+        Map<String, List<String>> params = new HashMap<>();
+        List<String> options = null;
+        for (int i = 0; i < args.length; i++) {
+            final String a = args[i];
+            if (a.charAt(0) == '-') {
+                if (a.length() < 2) {
+                    System.err.println("Error at argument " + a);
+                    return;
+                }
+                options = new ArrayList<>();
+                params.put(a.substring(1), options);
+            } else if (options != null) {
+                options.add(a);
+            }
+            else {
+                System.err.println("Illegal parameter usage");
+                return;
+            }
+        }
+        /** Update params */
+        if (params.containsKey("gameId")) {
+            gameIdx = Integer.parseInt(params.get("gameId").get(0));
+        }
+        if (params.containsKey("clientType")) {
+            clientType = params.get("clientType").get(0);
+        }
+        if (params.containsKey("shDir")) {
+            shDir = params.get("shDir").get(0);
+        }
+        if (params.containsKey("clientDir")) {
+            clientDir = params.get("clientDir").get(0);
+        }
+        if (params.containsKey("gamesDir")) {
+            gamesDir = params.get("gamesDir").get(0);
+            IMG_PATH = gamesDir + "/" + IMG_PATH;
+        }
+        if (params.containsKey("imgDir")) {
+            String imgDir = params.get("imgDir").get(0);
+            IMG_PATH = gamesDir + "/" + IMG_PATH;
+        }
+        if (params.containsKey("visuals")) {
+            visuals = true;
+        } else {
+            visuals = false;
+        }
+        /** Now prepare to start */
         ElapsedWallTimer wallClock = new ElapsedWallTimer();
 
         //Port for the socket.
         String port = CompetitionParameters.SOCKET_PORT + "";
 
         //Building the command line
-        String cmd[] = new String[]{null, null, port, "python"};
+        String cmd[] = new String[]{null, null, port, clientType};
 
-        String gamesPathPrepend = "./";
-        if(args.length > 0)
-        {
-            gamesPathPrepend = args[0];
-        }
 
         // Available games:
-        String gridGamesPath = gamesPathPrepend + "examples/gridphysics/";
-        String contGamesPath = gamesPathPrepend + "examples/contphysics/";
+        String gridGamesPath = gamesDir + "/examples/gridphysics/";
+        String contGamesPath = gamesDir + "/examples/contphysics/";
         String gamesPath;
         String games[];
         boolean GRID_PHYSICS = true;
 
-
-        System.out.println("Server asked to run at port: " + port + " where games are IN " + new File(gamesPathPrepend+ "examples").getAbsolutePath());
+        System.out.println("Server asked to run at port: " + port + " where games are IN " + new File(gamesDir+ "/examples").getAbsolutePath());
 
         // All public games (gridphysics)
         if(GRID_PHYSICS) {
@@ -67,28 +117,16 @@ public class JavaServer {
                     "lander", "mario", "pong", "ptsp", "racing"};                       //5 - 9
         }
 
-        //Other settings
-        boolean visuals = true;
-        String recordActionsFile = null; //where to record the actions executed. null if not to save.
-        int seed = new Random().nextInt();
+
 
         //Game and level to play
-        int gameIdx = 0;
-        int levelIdx = 0; //level names from 0 to 4 (game_lvlN.txt).
         String game = gamesPath + games[gameIdx] + ".txt";
-        String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx +".txt";
-
         String[] level_files = new String[5];
         for (int i = 0; i <= 4; i++){
             level_files[i] = gamesPath + games[gameIdx] + "_lvl" + i +".txt";
         }
-
-        // 1. This plays a game in a level by the controller (through the "Learning Machine").
-        //int trainingPlays = 100;
-        //LearningMachine.runOneGame(game, level1, visuals, javaController, recordActionsFile, seed, true);
-
-        // 1. This plays a training round for a specified game.
-        LearningMachine.runMultipleGames(game, level_files, cmd, new String[]{null});
+        // This plays a training round for a specified game.
+        LearningMachine.runMultipleGames(game, level_files, cmd, new String[]{null}, visuals);
 
 
 

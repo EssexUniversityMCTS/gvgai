@@ -2,6 +2,7 @@ package tracks.multiPlayer;
 
 import java.util.Random;
 
+import core.logging.Logger;
 import tracks.ArcadeMachine;
 
 /**
@@ -59,6 +60,7 @@ public class TestMultiPlayer {
 
 	// 1. This starts a game, in a level, played by two humans.
 	ArcadeMachine.playOneGameMulti(game, level1, recordActionsFile, seed);
+	
 
 	// 2. This plays a game in a level by the tracks. If one of the
 	// players is human, change the playerID passed

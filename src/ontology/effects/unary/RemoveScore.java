@@ -35,7 +35,7 @@ public class RemoveScore extends Effect {
 	    return;
 	}
 	
-        if (Objects.equals(stype, "")) {
+        if (itype == -1) {
             if (sprite1.is_avatar) {
                 MovingAvatar a = (MovingAvatar) sprite1;
                 a.setScore(0);

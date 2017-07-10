@@ -61,19 +61,25 @@ public abstract class Content
             String[] allValues = new String[tokens.length];
             int idx = 0;
 
-            for (String token : tokens) {
-                if(pcs.containsKey(token))
-                {
-                    ParameterContent pc = pcs.get(token);
-                    allValues[idx] = pc.getStValue();
-                }else{
-                    allValues[idx] = token;
-                }
-                idx++;
+
+            //For compatibility with N players, this might have more than one value.
+            String[] values = value.split(",");
+            String builtStValue = "";
+            for(int i = 0; i < values.length; ++i)
+            {
+                String v = values[i];
+                if(pcs.containsKey(v)) //Try to decode this parameter
+                    builtStValue +=  pcs.get(v).getStValue();
+                else //If not, we leave it there (it'll fail later, but good for quickly find the error).
+                    builtStValue += v;
+
+                if(i < values.length-1)
+                    builtStValue += ","; //We want the exact number of comas here.
             }
 
-            String allValuesSt = Utils.toStringArray(allValues);
-            this.parameters.put(parameter, allValuesSt);
+            if(builtStValue.length() > 0)
+                this.parameters.put(parameter, builtStValue);
+
         }
     }
 
