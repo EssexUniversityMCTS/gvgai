@@ -25,3 +25,11 @@ class WINNER:
     NO_WINNER = -1
     PLAYER_LOSES = 0
     PLAYER_WINS = 1
+
+class LEARNING_SSO_TYPE:
+    def __init__(self):
+        pass
+
+    IMAGE = 0
+    JSON = 1
+    BOTH = 2

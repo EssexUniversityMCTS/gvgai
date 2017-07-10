@@ -11,4 +11,6 @@ rem Run the PythonClient class with visualisation off
 rem python TestLearningClient.py -shDir %shDir% -serverDir %serverDir%
 
 rem Run the PythonClient class with visualisation on
-python TestLearningClient.py -shDir %shDir% -serverDir %serverDir% -visuals
+C:\Python27\python TestLearningClient.py -shDir %shDir% -serverDir %serverDir% -visuals
+
+cmd /k
