@@ -1,0 +1,64 @@
+BasicGame no_players=2 square_size=30
+    SpriteSet
+        floor > Immovable img=oryx/backBiege hidden=True
+        belt > Immovable img=oryx/space5
+        bomb > Immovable img=newset/bomb shrinkfactor=0.5
+        accelerate > Immovable img=oryx/bookUp
+
+        joint > Passive
+            jointA >
+                jointUpA > img=oryx/space5 orientation=UP
+                jointRightA > img=oryx/space5 orientation=RIGHT
+                jointDownA > img=oryx/space5 orientation=DOWN
+                jointLeftA > img=oryx/space5 orientation=LEFT
+            jointB >
+                jointUpB > img=oryx/space5 orientation=UP
+                jointRightB > img=oryx/space5 orientation=RIGHT
+                jointDownB > img=oryx/space5 orientation=DOWN
+                jointLeftB > img=oryx/space5 orientation=LEFT
+
+        avatar > OngoingShootAvatar stype=break img=newset/man4 rotateInPlace=False
+            avatarA > speed=0.2
+            avatarB > speed=0.2
+        break > Flicker color=RED #invisible=True hidden=True
+            breakA >
+            breakB >
+        wall > Immovable img=oryx/dirtWall autotiling=True
+
+    InteractionSet
+        avatarA jointA > attractGaze align=True
+        avatarB jointB > attractGaze align=True
+        avatarA breakA > decreaseSpeedToAll value=0.005 stype=avatarA
+        avatarB breakB > decreaseSpeedToAll value=0.005 stype=avatarB
+        avatarA accelerate > increaseSpeedToAll value=0.005 stype=avatarA
+        avatarB accelerate > increaseSpeedToAll value=0.005 stype=avatarB
+        avatarA jointA > killIfFast limspeed=0.5
+        avatarB jointB > killIfFast limspeed=0.5
+        avatar bomb > killIfSlow limspeed=0.1
+        avatar belt > killIfFast limspeed=1
+        avatar belt > killIfSlow limspeed=0
+        break avatar > killSprite
+        avatar floor wall > killSprite
+        avatar avatar > killBoth
+
+    LevelMapping
+        A > avatarA belt
+        B > avatarB belt
+        . > floor
+        1 > jointUpA belt
+        2 > jointRightA belt
+        3 > jointDownA belt
+        4 > jointLeftA belt
+        u > jointUpB belt
+        r > jointRightB belt
+        d > jointDownB belt
+        l > jointLeftB belt
+        b > bomb belt
+        a > accelerate belt
+        + > belt
+
+
+    TerminationSet
+        SpriteCounter stype=avatar win=False,False
+        SpriteCounter stype=avatarA win=False,True
+        SpriteCounter stype=avatarB win=True,False

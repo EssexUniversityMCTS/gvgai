@@ -1,0 +1,81 @@
+BasicGame key_handler=Pulse no_players=2 square_size=30
+    SpriteSet
+        floor > Immovable img=newset/chamber_floor hidden=True
+        trap > Immovable img=newset/it_is_a_trap
+
+        cake > Immovable img=newset/cake
+
+        laser > Missile img=newset/shot_laser
+
+        portalShot > Missile singleton=True
+            portalShotBlue > img=newset/shot_portal_blue
+            portalShotOrange > img=newset/shot_portal_orange
+
+        portal > Immovable
+            disabledPortal >
+                portalBlueDisabled > img=newset/chamber_wall_blue
+                portalOrangeDisabled > img=newset/chamber_wall_orange
+
+            workingPortal > Portal
+                portalBlue > stype=portalOrange img=newset/chamber_wall_blue
+                portalOrange > stype=portalBlue img=newset/chamber_wall_orange
+
+        movable >
+            subjectAvatar >
+                noShooterSubject > MovingAvatar
+                    noShooterBlue > img=newset/chell_blue
+                    noShooterOrange > img=newset/chell_orange
+                subject > ShootAvatar
+                    subjectBlue > stype=portalShotBlue img=newset/chell_blue
+                    subjectOrange > stype=portalShotOrange img=newset/chell_orange
+
+            turret > ShootAvatar stype=laser img=newset/turret
+
+        wall > Immovable img=newset/chamber_wall
+
+    LevelMapping
+        . > floor
+        w > wall
+        x > trap
+        A > subjectBlue floor
+        T > turret floor
+        c > cake floor
+
+    InteractionSet
+        movable wall movable EOS > stepBack
+        laser wall > killSprite
+        turret cake portal > stepBack
+        subjectAvatar laser trap > killSprite
+        cake subjectAvatar > killSprite
+        portalShot EOS > killSprite
+
+        # If the portal is enabled, Chell is teleported to the other one
+        subject workingPortal > teleportToExit
+
+        # Disabling shooting avatar after teleport for a brief period of time
+        # This disables infinite loop teleport AND fixes small bug of multiple portal creation
+        subjectBlue workingPortal > addTimer timer=30 ftype=transformToAll stype=noShooterBlue stypeTo=subjectBlue
+        subjectBlue workingPortal > transformTo stype=noShooterBlue
+        subjectOrange workingPortal > addTimer timer=30 ftype=transformToAll stype=noShooterOrange stypeTo=subjectOrange
+        subjectOrange workingPortal > transformTo stype=noShooterOrange
+
+        # Logic to create Portals when shooting to a wall. Still can't believe it is working *.*
+        portalShotBlue wall  > transformToAll stype=subjectBlue stypeTo=subjectOrange
+        portalShotBlue wall  > killSprite
+        wall portalShotBlue > transformToAll stype=portalBlue stypeTo=wall
+        wall portalShotBlue > killAll stype=subjectBlue
+        wall portalShotBlue > transformTo stype=portalBlue
+
+        portalShotOrange wall  > transformToAll stype=subjectOrange stypeTo=subjectBlue
+        portalShotOrange wall  > killSprite
+        wall portalShotOrange > transformToAll stype=portalOrange stypeTo=wall
+        wall portalShotOrange > killAll stype=subjectOrange
+        wall portalShotOrange > transformTo stype=portalOrange
+
+        # shots should not go through Portals
+        #portalShotBlue portal > killSprite
+        #portalShotOrange portal > killSprite
+
+    TerminationSet
+        SpriteCounter stype=cake    limit=0 win=True,False
+        MultiSpriteCounter stype1=subject stype2=noShooterSubject limit=0 win=False,True

@@ -1,0 +1,48 @@
+BasicGame square_size=32 no_players=2
+    SpriteSet
+        background > Immovable img=oryx/space1 hidden=True
+        base    > Immovable    color=WHITE img=oryx/planet
+        avatar  > FlakAvatar
+            avatar1 > stype=sam1 img=oryx/spaceship1
+            avatar2 > stype=sam2 img=oryx/spaceship2
+        missile > Missile
+            sam  > orientation=UP    color=BLUE singleton=True
+                sam1 > img=oryx/bullet1
+                sam2 > img=oryx/bullet2
+            bomb > orientation=DOWN  color=RED  speed=0.5 img=oryx/bullet2
+        alien   > Bomber       stype=bomb   prob=0.01  cooldown=3 speed=0.8
+            alienGreen > img=oryx/alien3
+            alienBlue > img=oryx/alien1
+        portal  > invisible=True hidden=True
+        	portalSlow  > SpawnPoint   stype=alienBlue  cooldown=16   total=20 img=portal
+        	portalFast  > SpawnPoint   stype=alienGreen  cooldown=12   total=20 img=portal
+    
+    LevelMapping
+        . > background
+        0 > background base
+        1 > background portalSlow
+        2 > background portalFast
+        A > background avatar1
+        B > background avatar2
+
+    TerminationSet
+        SpriteCounter      stype=avatar               limit=1 win=False,False
+        MultiSpriteCounter stype1=portal stype2=alien limit=0 win=True,True
+        
+    InteractionSet
+        avatar  EOS  > stepBack
+        avatar avatar > stepBack
+        alien   EOS  > turnAround
+        missile EOS  > killSprite
+
+        base bomb > killBoth
+        base sam1 > killBoth scoreChange=1,0
+        base sam2 > killBoth scoreChange=0,1
+
+        base   alien > killSprite
+        avatar1 alien > killSprite scoreChange=-1,0
+        avatar2 alien > killSprite scoreChange=0,-1
+        avatar1 bomb  > killSprite scoreChange=-1,0
+        avatar2 bomb  > killSprite scoreChange=0,-1
+        alien  sam1   > killSprite scoreChange=2,0
+        alien  sam2   > killSprite scoreChange=0,2

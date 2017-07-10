@@ -42,6 +42,10 @@ public class TestMultiPlayer {
 		"teamescape", "thebridge", "trainride", "treasuremap", "tron", // 30-34
 		"upgrade-x", "uphigh", "warzone", "watchout", "wheelme" }; // 35-39
 
+	// Validation set CEC 2017
+	games = new String[]{"aliens", "circuit", "escape2p", "hunger-games", "portals", // 0-4
+		"rockpaperscissors", "spotted", "towerdefense", "trains", "upchess"};        // 5-9
+
 
 	// Other settings
 	boolean visuals = true;

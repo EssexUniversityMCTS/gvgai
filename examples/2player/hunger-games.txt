@@ -1,0 +1,256 @@
+BasicGame no_players=2 square_size=30 key_handler=Pulse
+
+    SpriteSet
+        land > Immovable hidden=True img=oryx/grass autotiling=True
+
+        #--------------------------fog-of-war------------------------------------------
+
+        fogofwar > Immovable color=DARKGRAY
+            fogA > invisible=False,True hidden=False,True #only A sees fog, B doesn't
+            fogB > invisible=True,False hidden=True,False #only B sees fog, A doesn't
+            noFog > invisible=True hidden=True #no one sees fog
+            fog > invisible=False hidden=False   #everyone sees fog
+
+        removeFog >
+            removeFogA > color=RED invisible=True hidden=True
+                rmFogA > Spreader stype=rmA1 singleton=True
+                rmA1 > Spreader stype=rmA2
+                rmA2 > Flicker
+
+            removeFogB > color=BLUE invisible=True hidden=True
+                rmFogB > Spreader stype=rmB1 singleton=True
+                rmB1 > Spreader stype=rmB2
+                rmB2 > Flicker
+
+        #-----------------------end-of-fog-of-war--------------------------------------
+
+        berryBush > SpawnPoint total=100 prob=0.001 img=oryx/bush5 shrinkfactor=0.5
+            berryBushVisA > hidden=False,True invisible=False,True stype=berryVisA
+            berryBushVisB > hidden=True,False invisible=True,False stype=berryVisB
+            berryBushVis > hidden=False invisible=False stype=berryVis
+            berryBushHid > hidden=True invisible=True stype=berryHid
+
+        resourcepack > Resource #these die after a number of things spawned
+            berry > img=oryx/bush3 shrinkfactor=0.5
+                berryVisA > hidden=False,True invisible=False,True
+                berryVisB > hidden=True,False invisible=True,False
+                berryVis > hidden=False invisible=False
+                berryHid > hidden=True invisible=True
+
+        collectible > Resource
+            ar > img=oryx/arrows2 shrinkfactor=0.8
+                arrowsVisA > hidden=False,True invisible=False,True #A can see them
+                arrowsVisB > hidden=True,False invisible=True,False #B can see them
+                arrowsVis > hidden=False invisible=False
+                arrowsHid > hidden=True invisible=True
+
+        flyfood > Resource color=PINK shrinkfactor=0.5 img=oryx/mushroom2
+        food > Resource color=BLUE shrinkfactor=0.5 img=oryx/mushroom1
+
+        animalSpawn > SpawnPoint stype=bearHid prob=0.0008 invisible=True hidden=True
+        flyingSpawn > SpawnPoint stype=butHid prob=0.001 invisible=True hidden=True
+        arrowSpawn > SpawnPoint invisible=True hidden=True prob=0.001 stype=arrowsHid
+        wolfSpawnA > SpawnPoint total=3 stype=wolfHidA invisible=True hidden=True
+        wolfSpawnB > SpawnPoint total=3 stype=wolfHidB invisible=True hidden=True
+        spawnW > Immovable invisible=True hidden=True
+
+        animal >
+            bear > RandomNPC cons=2 img=oryx/bear1 cooldown=8 speed=0.3 shrinkfactor=0.7
+                bearVisA > hidden=False,True invisible=False,True
+                bearVisB > hidden=True,False invisible=True,False
+                bearVis > hidden=False invisible=False
+                bearHid > hidden=True invisible=True
+        wolf >
+            wolfA > Chaser img=oryx/wolf1 stype=avatarA cooldown=2
+                wolfVisA > hidden=False invisible=False
+                wolfHidA > hidden=False,True invisible=False,True
+            wolfB > Chaser img=oryx/wolf2 stype=avatarB cooldown=2
+                wolfVisB > hidden=False invisible=False
+                wolfHidB > hidden=True,False invisible=True,False
+
+        tree > Immovable color=GREEN img=oryx/tree2
+            treeVisA > hidden=False,True invisible=False,True
+            treeVisB > hidden=True,False invisible=True,False
+            treeVis > hidden=False invisible=False
+            treeHid > hidden=True invisible=True
+
+        wall > Immovable color=BLACK img=oryx/wall3 autotiling=true
+            wallVisA > hidden=False,True invisible=False,True
+            wallVisB > hidden=True,False invisible=True,False
+            wallVis > hidden=False invisible=False
+            wallHid > hidden=True invisible=True
+
+        #-----------------------------avatar-------------------------------------------
+
+        avatar > ShootAvatar speed=1 healthPoints=200 limitHealthPoints=200 frameRate=8
+            avatarA > img=oryx/archer1 color=RED  #always visible to himself
+                avVisA > hidden=False invisible=False stype=shootVisA,hitAvis ammo=arrows     #visible to B too
+                avHidA > hidden=False,True invisible=False,True stype=shootHidA,hitAhid ammo=arrows #hidden from B
+            avatarB > img=oryx/archer2 color=YELLOW  #always visible to himself
+                avVisB > hidden=False invisible=False stype=shootVisB,hitBvis ammo=arrows     #visible to A too
+                avHidB > hidden=True,False invisible=True,False stype=shootHidB,hitBhid ammo=arrows #hidden from A
+
+        hit > Flicker img=oryx/staff1 shrinkfactor=0.5
+            hitA > singleton=True
+                hitAvis > hidden=False invisible=False
+                hitAhid > hidden=False,True invisible=False,True
+            hitB > singleton=True
+                hitBvis > hidden=False invisible=False
+                hitBhid > hidden=True,False invisible=True,False
+
+        shoot > Missile img=oryx/bullet1 speed=1.3 timeToLive=8
+            shootA > singleton=True
+                shootVisA > hidden=False invisible=False
+                shootHidA > hidden=False,True invisible=False,True
+            shootB > singleton=True
+                shootVisB > hidden=False invisible=False
+                shootHidB > hidden=True,False invisible=True,False
+
+        arrows > Resource color=BLUE limit=10
+
+        #-------------------------end-of-avatar-----------------------------------------
+
+        flying > RandomNPC cons=5
+            butterfly > img=newset/butterfly1 frameRate=8 speed=0.6 cooldown=2 shrinkfactor=0.8
+                butVisA > hidden=False,True invisible=False,True
+                butVisB > hidden=True,False invisible=True,False
+                butVis > hidden=False invisible=False
+                butHid > hidden=True invisible=True
+
+    InteractionSet
+
+        spawnW TIME > spawn stype=wolfSpawnA timer=500 repeating=True #prompt=PUPPIES!
+        spawnW TIME > spawn stype=wolfSpawnB timer=500 repeating=True
+        avatarA TIME > subtractHealthPoints timer=5 repeating=True
+        avatarB TIME > subtractHealthPoints timer=5 repeating=True
+
+        #------fog-of-war--------
+        fog removeFogA > transformTo stype=fogB scoreChange=1,0
+        fog removeFogB > transformTo stype=fogA scoreChange=0,1
+        fogA removeFogA > transformTo stype=noFog scoreChange=1,0
+        fogB removeFogB > transformTo stype=noFog scoreChange=0,1
+
+        avatarA fog fogA > spawn stype=rmFogA
+        avatarB fog fogB > spawn stype=rmFogB
+
+        avVisA fog fogB > transformTo stype=avHidA
+        avVisB fog fogA > transformTo stype=avHidB
+        avHidA noFog > transformTo stype=avVisA
+        avHidB noFog > transformTo stype=avVisB
+
+        shootVisA fog fogB > transformTo stype=shootHidA
+        shootVisB fog fogA > transformTo stype=shootHidB
+        shootHidA noFog > transformTo stype=shootVisA
+        shootHidB noFog > transformTo stype=shootVisB
+
+        wolfVisA fog fogB > transformTo stype=wolfHidA
+        wolfVisB fog fogA > transformTo stype=wolfHidB
+        wolfHidA noFog > transformTo stype=wolfVisA
+        wolfHidB noFog > transformTo stype=wolfVisB
+
+        treeHid fogA > transformTo stype=treeVisB
+        treeHid fogB > transformTo stype=treeVisA
+        treeVisA noFog > transformTo stype=treeVis
+        treeVisB noFog > transformTo stype=treeVis
+
+        wallHid fogA > transformTo stype=wallVisB
+        wallHid fogB > transformTo stype=wallVisA
+        wallVisA noFog > transformTo stype=wallVis
+        wallVisB noFog > transformTo stype=wallVis
+
+        berryBushHid fogB > transformTo stype=berryBushVisA
+        berryBushHid fogA > transformTo stype=berryBushVisB
+        berryBushVisA noFog > transformTo stype=berryBushVis
+        berryBushVisB noFog > transformTo stype=berryBushVis
+
+        arrowsHid fogA > transformTo stype=arrowsVisB
+        arrowsHid fogB > transformTo stype=arrowsVisA
+        arrowsVisA noFog > transformTo stype=arrowsVis
+        arrowsVisB noFog > transformTo stype=arrowsVis
+
+        butVisA noFog > transformTo stype=butVis
+        butVisB noFog > transformTo stype=butVis
+        butHid fogA > transformTo stype=butVisB
+        butHid fogB > transformTo stype=butVisA
+        butVis fogA > transformTo stype=butVisA
+        butVis fogB > transformTo stype=butVisB
+        butVisA fog > transformTo stype=butHid
+        butVisB fog > transformTo stype=butHid
+
+        bearVisA noFog > transformTo stype=bearVis
+        bearVisB noFog > transformTo stype=bearVis
+        bearHid fogA > transformTo stype=bearVisB
+        bearHid fogB > transformTo stype=bearVisA
+        bearVis fogA > transformTo stype=bearVisA
+        bearVis fogB > transformTo stype=bearVisB
+        bearVisA fog > transformTo stype=bearHid
+        bearVisB fog > transformTo stype=bearHid
+
+        #------collision---------
+        animal animal avatar EOS wall > stepBack
+        flying flying EOS > stepBack
+        avatarA wall tree > stepBack #stype=removeFogA
+        avatarB wall tree > stepBack #stype=removeFogB
+
+        #------collecting--------
+        avatarA berry > addHealthPointsToMax value=5 scoreChange=1,0
+        avatarB berry > addHealthPointsToMax value=5 scoreChange=0,1
+        berry avatar > killSprite
+
+        avatarA flyfood > addHealthPointsToMax value=15 scoreChange=2,0
+        avatarB flyfood > addHealthPointsToMax value=15 scoreChange=0,2
+        flyfood avatar > killSprite
+
+        avatarA food > addHealthPointsToMax value=30 scoreChange=3,0
+        avatarB food > addHealthPointsToMax value=30 scoreChange=0,3
+        food avatar > killSprite
+
+        avatarA ar > changeResource resource=arrows value=5 scoreChange=5,0
+        avatarB ar > changeResource resource=arrows value=5 scoreChange=0,5
+        ar avatar > killSprite
+
+        #-------killing----------
+        avatarA hitB > subtractHealthPoints value=5 scoreChange=-2,5
+        avatarA shootB > subtractHealthPoints value=10 scoreChange=-5,10
+        avatarB hitA > subtractHealthPoints value=5 scoreChange=5,-2
+        avatarB shootA > subtractHealthPoints value=10 scoreChange=10,-5
+
+        flying hit shoot > spawn stype=flyfood
+        flying hitA shootA > killBoth scoreChange=5,0
+        flying hitB shootB > killBoth scoreChange=0,5
+
+        animal hit shoot > spawn stype=food
+        animal hitA shootA > killBoth scoreChange=10,0
+        animal hitB shootB > killBoth scoreChange=0,10
+
+        wolf hit shoot > spawn stype=food
+        wolf hitA shootA > killBoth scoreChange=15,0
+        wolf hitB shootB > killBoth scoreChange=0,15
+
+        avatarA wolf > subtractHealthPoints value=2 scoreChange=-1,0 #prompt=Woof!
+        avatarB wolf > subtractHealthPoints value=2 scoreChange=0,-1 #prompt=Woof!
+        wolf EOS wall avatar wolf > stepBack
+
+        #-------other------------
+        removeFogA removeFogA > killSprite #avoid a crazy number of sprites
+
+        hit avatar flying animal wolf wall > killSprite #destroy weapon after hitting target; can't go through walls
+        shoot avatar flying animal wolf wall > killSprite #destroy bullet after reaching target; can't go through walls
+    
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False,False
+        SpriteCounter stype=avatarA limit=0 win=False,True
+        SpriteCounter stype=avatarB limit=0 win=True,False
+        Timeout limit=2000 count_score=True
+    
+    LevelMapping
+        _ > land fog
+        A > avHidA land fogB
+        B > avHidB land fogA
+        h > treeHid land fog
+        w > land wallHid fog
+        b > land berryBushHid fog
+        u > land flyingSpawn fog
+        q > land tree animalSpawn fog
+        0 > arrowSpawn land fog
+        f > spawnW land fog

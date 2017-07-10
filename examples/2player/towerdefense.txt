@@ -1,0 +1,120 @@
+BasicGame key_handler=Pulse square_size=30 no_players=2
+    SpriteSet
+        ground > Immovable img=oryx/grass autotiling=True hidden=True
+        path > Immovable img=oryx/space1 hidden=True
+
+        turretSpot > Immovable img=oryx/dirtWall_0
+        turret > SpawnPointMultiSprite prob=0.8 cooldown=20
+            turretH > stypes=missileL,missileR color=PINK img=newset/lasercannon_1
+            turretV > stypes=missileU,missileD color=PINK img=newset/lasercannon
+
+        moving >
+            avatar > ShootAvatar stype=shoot
+                avatarH > img=newset/cop2
+                avatarV > img=newset/shooter1
+            attacker > Missile
+                normal > healthPoints=5 speed=0.15 shrinkfactor=0.7 img=newset/redthug color=RED
+                    aup > orientation=UP
+                    adown > orientation=DOWN
+                    aleft > orientation=LEFT
+                    aright > orientation=RIGHT
+                boss > healthPoints=10 speed=0.07 img=newset/bossthug color=BROWN
+                    bup > orientation=UP
+                    bdown > orientation=DOWN
+                    bleft > orientation=LEFT
+                    bright > orientation=RIGHT
+
+        spawner > SpawnPoint invisible=True hidden=True
+            normalS > prob=1 cooldown=50
+                spawnU > stype=aup
+                spawnD > stype=adown
+                spawnL > stype=aleft
+                spawnR > stype=aright
+            bossS > prob=1 cooldown=500
+                spawnUB > stype=bup
+                spawnDB > stype=bdown
+                spawnLB > stype=bleft
+                spawnRB > stype=bright
+
+        turn > Immovable invisible=True hidden=True
+            turnup > orientation=UP img=dirt
+            turndown > orientation=DOWN img=dirt
+            turnleft > orientation=LEFT img=dirt
+            turnright > orientation=RIGHT img=dirt
+
+        missile > Missile shrinkfactor=0.2 timeToLive=20 speed=0.2
+            missileL > orientation=LEFT img=oryx/orb1
+            missileR > orientation=RIGHT img=oryx/orb1
+            missileU > orientation=UP img=oryx/orb3
+            missileD > orientation=DOWN img=oryx/orb3
+
+        shoot > Flicker
+
+        tower > Immovable img=oryx/cloak2 healthPoints=10 color=LIGHTBLUE
+
+        wall > Immovable img=oryx/wall1
+
+    LevelMapping
+        . > ground
+        p > ground path
+        0 > ground turretSpot
+        w > wall ground
+
+        1 > ground spawnU path
+        2 > ground spawnD path
+        3 > ground spawnL path
+        4 > ground spawnR path
+
+        H > ground avatarH
+        V > ground avatarV
+
+        u > ground turnup
+        l > ground turnleft
+        d > ground turndown
+        r > ground turnright
+
+        t > ground tower
+
+
+    InteractionSet
+        spawnU TIME > spawn stype=spawnUB timer=50
+        spawnD TIME > spawn stype=spawnDB timer=50
+        spawnL TIME > spawn stype=spawnLB timer=50
+        spawnR TIME > spawn stype=spawnRB timer=50
+
+        moving wall turret > stepBack
+        avatar path tower > stepBack
+        missile wall > killSprite
+
+        normal turndown > transformTo stype=adown
+        normal turnup > transformTo stype=aup
+        normal turnright > transformTo stype=aright
+        normal turnleft > transformTo stype=aleft
+        normal turn > stepBack pixelPerfect=True
+
+        boss turndown > transformTo stype=bdown
+        boss turnup > transformTo stype=bup
+        boss turnright > transformTo stype=bright
+        boss turnleft > transformTo stype=bleft
+        boss turn > stepBack pixelPerfect=True
+
+        turretSpot avatarH > transformTo stype=turretH scoreChange=1,0
+        turretSpot avatarV > transformTo stype=turretV scoreChange=0,1
+
+        turretH shoot > transformTo stype=turretSpot killSecond=True scoreChange=-1,0
+        turretV shoot > transformTo stype=turretSpot killSecond=True scoreChange=0,-1
+
+        turretH missileU missileD > transformTo stype=turretSpot killSecond=True scoreChange=0,-2
+        turretV missileL missileR > transformTo stype=turretSpot killSecond=True scoreChange=-2,0
+
+        tower attacker > subtractHealthPoints value=1 scoreChange=-1
+        normal tower > killSprite #boss is guaranteed to kill the tower if it reaches it
+
+        normal missile > subtractHealthPoints value=1 scoreChangeIfKilled=5
+        boss missile > subtractHealthPoints value=1 scoreChangeIfKilled=50
+        missile attacker > killSprite
+        turret turret > killSprite
+
+    TerminationSet
+        SpriteCounter stype=tower limit=0 win=False,Flase
+        Timeout limit=1500 win=True,True

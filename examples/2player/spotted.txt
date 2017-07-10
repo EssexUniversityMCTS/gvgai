@@ -1,0 +1,39 @@
+BasicGame key_handler=Pulse square_size=30 no_players=2
+    SpriteSet
+        floor > Immovable hidden=True img=newset/floor1
+        gold > Immovable color=LIGHTYELLOW shrinkfactor=0.5 img=oryx/gold2
+        exit > Door color=GREEN img=newset/flag1
+            exitA >
+            exitB >
+        avatar > MovingAvatar
+            avatarA > img=newset/redthug
+            avatarB > img=newset/bossthug
+        npc > LOSChaser cons=2 cooldown=5 stype=avatar img=newset/alienShotgun_1
+        wall > Immovable img=oryx/wall3 autotiling=True
+
+    LevelMapping
+        x > exitA exitB floor
+        h > hole floor
+        1 > npc floor
+        0 > gold floor
+        A > avatarA floor
+        B > avatarB floor
+        . > floor
+
+    InteractionSet
+        avatar avatar wall > stepBack
+        npc wall npc > stepBack
+        avatarA npc > killSprite scoreChange=-1,0
+        avatarB npc > killSprite scoreChange=0,-1
+        exitA avatarA > killSprite scoreChange=10,0
+        exitB avatarB > killSprite scoreChange=0,10
+        gold avatarA > killSprite scoreChange=1,0
+        gold avatarB > killSprite scoreChange=0,1
+
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=avatarA limit=0 win=False,True
+        SpriteCounter stype=avatarB limit=0 win=True,False
+        SpriteCounter stype=exitA limit=0 win=True,False
+        SpriteCounter stype=exitB limit=0 win=False,True
+        Timeout limit=1000 count_score=True

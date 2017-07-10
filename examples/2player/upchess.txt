@@ -1,0 +1,88 @@
+BasicGame key_handler=Pulse square_size=50 no_players=2
+    SpriteSet
+        floor > Immovable img=newset/floor2 hidden=True
+        ground > Immovable hidden=True
+            groundW > img=oryx/backGrey
+            groundB > img=oryx/backBlack
+            groundN > img=newset/floor1
+        avatar > MovingAvatar
+            avatarA > img=oryx/knight1
+            avatarB > img=oryx/guard1
+        piece    > Passive
+            pawnA > shrinkfactor=0.7
+                pawn1A > img=newset/pawn1B
+                pawn2A > img=newset/pawn2B
+                pawn3A > img=newset/pawn3B
+            pawnB > shrinkfactor=0.7
+                pawn1B > img=newset/pawn1R
+                pawn2B > img=newset/pawn2R
+                pawn3B > img=newset/pawn3R
+            queen >
+                queenA > img=newset/queenB
+                queenB > img=newset/queenR
+        limit > Immovable hidden=True invisible=True
+
+    LevelMapping
+        1 > pawn1A groundW
+        2 > pawn2A groundW
+        3 > pawn3A groundW
+        4 > pawn1A groundB
+        5 > pawn2A groundB
+        6 > pawn3A groundB
+
+        a > queenA groundW
+        b > queenB groundB
+
+        e > pawn1B groundW
+        r > pawn2B groundW
+        t > pawn3B groundW
+        y > pawn1B groundB
+        u > pawn2B groundB
+        i > pawn3B groundB
+
+        . > groundW
+        + > groundB
+        A > avatarA limit groundN
+        B > avatarB limit groundN
+        - > limit groundN
+		
+    InteractionSet
+        avatar wall EOS avatar queen > stepBack
+        avatarA pawnB > stepBack
+        avatarB pawnA > stepBack
+        pawnA avatarA  > bounceForward
+        pawnB avatarB  > bounceForward
+        pawnA limit queenA   > undoAll
+        pawn2A pawn2A pawn3A > undoAll
+        pawn3A pawn3A pawn1A > undoAll
+        pawnB limit queenB   > undoAll
+        pawn2B pawn2B pawn3B > undoAll
+        pawn3B pawn3B pawn1B > undoAll
+
+        pawn2A pawn1A > transformTo stype=pawn3A killSecond=True scoreChange=2,0
+        pawn1A pawn1A > transformTo stype=pawn2A killSecond=True scoreChange=1,0
+        pawn2B pawn1B > transformTo stype=pawn3B killSecond=True scoreChange=0,2
+        pawn1B pawn1B > transformTo stype=pawn2B killSecond=True scoreChange=0,1
+
+        pawn1A pawn1B > killBoth scoreChange=1
+        pawn2A pawn2B > killBoth scoreChange=2
+        pawn3A pawn3B > killBoth scoreChange=3
+
+        pawn2B pawn1A > transformTo stype=pawn1B killSecond=True scoreChange=-1,1
+        pawn3B pawn1A > transformTo stype=pawn2B killSecond=True scoreChange=-1,2
+        pawn3B pawn2A > transformTo stype=pawn1B killSecond=True scoreChange=-2,1
+
+        pawn2A pawn1B > transformTo stype=pawn1A killSecond=True scoreChange=1,-1
+        pawn3A pawn1B > transformTo stype=pawn2A killSecond=True scoreChange=2,-1
+        pawn3A pawn2B > transformTo stype=pawn1A killSecond=True scoreChange=1,-2
+
+        queenA pawn2B pawn3B > killSprite scoreChange=-5,10
+        queenB pawn2A pawn3A > killSprite scoreChange=10,-5
+        pawn1A queenB > killSprite scoreChange=-1,0
+        pawn1B queenA > killSprite scoreChange=0,-1
+
+    TerminationSet
+        SpriteCounter stype=queen     limit=0 count_score=True
+        SpriteCounter stype=queenA    limit=0 win=False,True
+        SpriteCounter stype=queenB    limit=0 win=True,False
+        Timeout limit=1500 count_score=True
