@@ -46,7 +46,7 @@ public class SerializableStateObservation {
 
     public ArrayList<Types.ACTIONS> availableActions;
     public HashMap<Integer, Integer> avatarResources;
-    public Observation[][][] observationGridArray;
+    public Observation[][][] observationGrid;
     public Observation[][] NPCPositionsArray;
     public Observation[][] immovablePositionsArray;
     public Observation[][] movablePositionsArray;
@@ -136,12 +136,16 @@ public class SerializableStateObservation {
 
         // Observation grid
         if (s.getObservationGrid()!=null) {
-            observationGridArray = new Observation[s.getObservationGrid().length][s.getObservationGrid()[0].length][];
+            observationGrid = new Observation[s.getObservationGrid().length][s.getObservationGrid()[0].length][];
 
             for (int i = 0; i < s.getObservationGrid().length; i++) {
                 for (int j = 0; j < s.getObservationGrid()[i].length; j++) {
                     row = s.getObservationGrid()[i][j];
-                    observationGridArray[i][j] = row.toArray(new Observation[row.size()]);
+                    if (row == null) {
+                        observationGrid[i][j] = new Observation[0];
+                    } else {
+                        observationGrid[i][j] = row.toArray(new Observation[row.size()]);
+                    }
                 }
             }
         }

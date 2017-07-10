@@ -62,13 +62,13 @@ public class SerializableStateObservation {
     /**
      * Observations of the world.
      */
-    public ArrayList<Observation>[][] observationGrid;
-    public ArrayList<Observation>[] NPCPositions;
-    public ArrayList<Observation>[] immovablePositions;
-    public ArrayList<Observation>[] movablePositions;
-    public ArrayList<Observation>[] resourcesPositions;
-    public ArrayList<Observation>[] portalsPositions;
-    public ArrayList<Observation>[] fromAvatarSpritesPositions;
+    public Observation[][][] observationGrid;
+    public Observation[][] NPCPositions;
+    public Observation[][] immovablePositions;
+    public Observation[][] movablePositions;
+    public Observation[][] resourcesPositions;
+    public Observation[][] portalsPositions;
+    public Observation[][] fromAvatarSpritesPositions;
 
     //Default constructor.
     public SerializableStateObservation() {}
