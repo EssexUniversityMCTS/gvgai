@@ -71,6 +71,9 @@ public class TestSingleLearning {
         }
         /** Now prepare to start */
         ElapsedWallTimer wallClock = new ElapsedWallTimer();
+
+
+        //Available controllers:
         /** Find the write shell to build and run client */
         String scriptFile;
         if (CompetitionParameters.OS_WIN) {

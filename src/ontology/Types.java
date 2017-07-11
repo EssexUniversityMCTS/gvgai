@@ -191,6 +191,14 @@ public class Types {
         MOVE
     }
 
+    /**
+     * This is an enum type that specifies the type of sso required
+     */
+    public static enum LEARNING_SSO_TYPE {
+        IMAGE,
+        JSON,
+        BOTH
+    }
 
     public static final int SCORE_DISQ = -1000;
 

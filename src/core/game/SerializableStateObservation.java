@@ -1,10 +1,18 @@
 package core.game;
 
+import core.competition.CompetitionParameters;
+import core.vgdl.VGDLViewer;
 import tools.com.google.gson.Gson;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -19,6 +27,8 @@ public class SerializableStateObservation {
     public enum Phase {
         START, INIT, ACT, ABORT, END
     }
+
+    public byte[] imageArray;
 
     public boolean isValidation;
     public float gameScore;
@@ -47,15 +57,54 @@ public class SerializableStateObservation {
     public Observation[][] portalsPositionsArray;
     public Observation[][] fromAvatarSpritesPositionsArray;
 
+    public SerializableStateObservation(StateObservation s, Boolean both){
+        try {
+            if (!both) {
+                // Fill in the persistent variables (Score, tick)
+                buildGameData(s);
+
+                // Create the image bytearray
+                imageArray = imageToByteArray();
+            } else {
+                // Fill in the persistent variables (Score, tick)
+                buildGameData(s);
+
+                // Create the image bytearray
+                imageArray = imageToByteArray();
+
+                // Fill in the simple data variables
+                buildDataVariables(s);
+
+                // Fill in the data array lists
+                buildDataArraylists(s);
+            }
+        }catch(IOException e){
+            System.out.println("Transforming image to byte array failed. Original error: " + e);
+        }
+    }
+
     public SerializableStateObservation(StateObservation s)
     {
+        // Fill in the persistent variables (Score, tick)
+        buildGameData(s);
+
+        // Fill in the simple data variables
+        buildDataVariables(s);
+
+        // Fill in the data array lists
+        buildDataArraylists(s);
+    }
+
+    private void buildGameData(StateObservation s){
         setPhase(s.getGameState());
         availableActions = s.getAvailableActions();
         gameScore = (float) s.getGameScore();
         gameTick = s.getGameTick();
         gameWinner = s.getGameWinner();
         isGameOver = s.isGameOver();
+    }
 
+    private void buildDataVariables(StateObservation s){
         worldDimension = new double[2];
         worldDimension[0] = s.getWorldDimension().getWidth();
         worldDimension[1] = s.getWorldDimension().getHeight();
@@ -74,11 +123,13 @@ public class SerializableStateObservation {
         avatarMaxHealthPoints = s.getAvatarMaxHealthPoints();
         avatarLimitHealthPoints = s.getAvatarLimitHealthPoints();
         isAvatarAlive = s.isAvatarAlive();
+    }
+
+    private void buildDataArraylists(StateObservation s){
+        ElapsedCpuTimer ect = new ElapsedCpuTimer();
 
         // Create a row to be used for translation from ArrayList to array
         ArrayList<Observation> row;
-
-        ElapsedCpuTimer ect = new ElapsedCpuTimer();
 
         /*
         * The following block is a sequence of iterative attributions
@@ -163,6 +214,15 @@ public class SerializableStateObservation {
         }
 
         //System.out.println(ect.elapsedMillis() + " ms taken to build SSO");
+    }
+
+
+
+    public static byte[] imageToByteArray() throws IOException
+    {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        ImageIO.write(ImageIO.read(new File(CompetitionParameters.SCREENSHOT_PATH)), "png", output);
+        return output.toByteArray();
     }
 
     /***

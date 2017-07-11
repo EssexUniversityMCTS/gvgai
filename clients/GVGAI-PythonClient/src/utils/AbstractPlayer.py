@@ -1,8 +1,8 @@
-
+from Types import LEARNING_SSO_TYPE
 
 class AbstractPlayer:
     def __init__(self):
-        pass
+        self.lastSsoType = LEARNING_SSO_TYPE.JSON
 
     def init(self, sso, timer):
         """
