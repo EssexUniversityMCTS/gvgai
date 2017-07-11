@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -264,5 +265,51 @@ public class SerializableStateObservation {
         } else {
             phase = Phase.START;
         }
+    }
+
+    @Override
+    public String toString() {
+        String observation = "ObservationGrid{\n";
+        if (observationGrid != null) {
+            for (int i = 0; i < observationGrid.length; i++) {
+                for (int j = 0; j < observationGrid[i].length; j++) {
+                    for (Observation obs : observationGrid[i][j]) {
+                        observation += obs.toString();
+                    }
+                }
+            }
+        }
+        observation += "}";
+
+        return "SerializableStateObservation{" +
+                "imageArray=" + Arrays.toString(imageArray) +
+                ", isValidation=" + isValidation +
+                ", gameScore=" + gameScore +
+                ", gameTick=" + gameTick +
+                ", gameWinner=" + gameWinner +
+                ", isGameOver=" + isGameOver +
+                ", worldDimension=" + Arrays.toString(worldDimension) +
+                ", blockSize=" + blockSize +
+                ", noOfPlayers=" + noOfPlayers +
+                ", avatarSpeed=" + avatarSpeed +
+                ", avatarOrientation=" + Arrays.toString(avatarOrientation) +
+                ", avatarPosition=" + Arrays.toString(avatarPosition) +
+                ", avatarLastAction=" + avatarLastAction +
+                ", avatarType=" + avatarType +
+                ", avatarHealthPoints=" + avatarHealthPoints +
+                ", avatarMaxHealthPoints=" + avatarMaxHealthPoints +
+                ", avatarLimitHealthPoints=" + avatarLimitHealthPoints +
+                ", isAvatarAlive=" + isAvatarAlive +
+                ", phase=" + phase +
+                ", availableActions=" + availableActions +
+                ", avatarResources=" + avatarResources +
+                ", observationGrid=" + Arrays.toString(observationGrid) +
+                ", NPCPositions=" + Arrays.toString(NPCPositions) +
+                ", immovablePositions=" + Arrays.toString(immovablePositions) +
+                ", movablePositions=" + Arrays.toString(movablePositions) +
+                ", resourcesPositions=" + Arrays.toString(resourcesPositions) +
+                ", portalsPositions=" + Arrays.toString(portalsPositions) +
+                ", fromAvatarSpritesPositions=" + Arrays.toString(fromAvatarSpritesPositions) +
+                "}\n" + observation;
     }
 }
