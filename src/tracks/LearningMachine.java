@@ -1,6 +1,7 @@
 package tracks;
 
 import core.competition.CompetitionParameters;
+import core.game.BasicGame;
 import core.game.Game;
 import core.game.StateObservation;
 import core.game.StateObservationMulti;
@@ -17,6 +18,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Random;
+
+import static tools.Utils.findMaxDivisor;
 
 /**
  * Created by Daniel on 07.03.2017.
@@ -137,6 +140,11 @@ public class LearningMachine {
         }
 
         Game toPlay = new VGDLParser().parseGame(game_file);
+        if (toPlay instanceof BasicGame) {
+            BasicGame basicGame = (BasicGame) toPlay;
+            CompetitionParameters.windowReduceScale = findMaxDivisor(basicGame.getSquareSize());
+            basicGame.updateScreenSize();
+        }
         int levelIdx = 0;
 
         StatSummary[] victories = new StatSummary[toPlay.getNoPlayers()];

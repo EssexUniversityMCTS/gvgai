@@ -15,10 +15,13 @@ import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
 import core.competition.CompetitionParameters;
+import core.game.BasicGame;
 import core.game.Game;
 import core.player.LearningPlayer;
 import core.player.Player;
 import ontology.Types;
+
+import static tools.Utils.findMaxDivisor;
 
 /**
  * Created with IntelliJ IDEA.
@@ -69,34 +72,6 @@ public class VGDLViewer extends JComponent
     {
         Graphics2D g = (Graphics2D) gx;
         paintWithGraphics(g);
-        //For a better graphics, enable this: (be aware this could bring performance issues depending on your HW & OS).
-//        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//
-//        //g.setColor(Types.LIGHTGRAY);
-//        g.setColor(Types.BLACK);
-//        g.fillRect(0, size.height, size.width, size.height);
-//
-//        //Possible efficiency improvement: static image with immovable objects.
-//        /*
-//        BufferedImage mapImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
-//        Graphics2D gImage = mapImage.createGraphics();
-//        */
-//
-//        try {
-//            int[] gameSpriteOrder = game.getSpriteOrder();
-//            if (this.spriteGroups != null) for (Integer spriteTypeInt : gameSpriteOrder) {
-//                if (spriteGroups[spriteTypeInt] != null) {
-//                    ArrayList<VGDLSprite> spritesList = spriteGroups[spriteTypeInt].getSprites();
-//                    for (VGDLSprite sp : spritesList) {
-//                        if (sp != null) sp.draw(g, game);
-//                    }
-//
-//                }
-//            }
-//        }catch(Exception e) {}
-//
-//        g.setColor(Types.BLACK);
-//        player.draw(g);
     }
 
     public void paintWithGraphics(Graphics2D g) {
@@ -138,7 +113,6 @@ public class VGDLViewer extends JComponent
      */
     public void paint(SpriteGroup[] spriteGroupsGame)
     {
-        //this.spriteGroups = spriteGroupsGame;
         this.spriteGroups = new SpriteGroup[spriteGroupsGame.length];
         for(int i = 0; i < this.spriteGroups.length; ++i)
         {

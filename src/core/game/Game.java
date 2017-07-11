@@ -7,6 +7,7 @@ import java.util.*;
 
 import javax.swing.JOptionPane;
 
+import core.player.LearningPlayer;
 import core.vgdl.SpriteGroup;
 import core.vgdl.VGDLFactory;
 import core.vgdl.VGDLRegistry;
@@ -32,6 +33,8 @@ import ontology.sprites.Resource;
 import tools.*;
 import tools.pathfinder.Node;
 import tools.pathfinder.PathFinder;
+
+import static tools.Utils.findMaxDivisor;
 
 /**
  * Created with IntelliJ IDEA. User: Diego Date: 17/10/13 Time: 13:42 This is a

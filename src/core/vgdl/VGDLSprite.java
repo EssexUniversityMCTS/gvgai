@@ -379,7 +379,6 @@ public abstract class VGDLSprite {
         images = new HashMap<String,ArrayList<Image>>();
 
         this.size = size;
-
         determinePhysics(physicstype, size);
         setRandomColor();
     }
