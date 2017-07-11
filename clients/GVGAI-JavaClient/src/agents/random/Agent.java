@@ -4,12 +4,10 @@ package agents.random;
  * Created by Daniel on 21.05.2017.
  */
 
-import serialization.Observation;
 import serialization.SerializableStateObservation;
 import serialization.Types;
 import utils.ElapsedCpuTimer;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -58,13 +56,14 @@ public class Agent extends utils.AbstractPlayer {
 //            }
 //            n--;
 //        }
+        this.lastSsoType = Types.LEARNING_SSO_TYPE.JSON;
         if (sso.gameTick == 100) {
             return Types.ACTIONS.ACTION_ESCAPE;
         }
 
-        int index = new Random().nextInt(sso.availableActions.size());
+        int index = new Random().nextInt(sso.getAvailableActions().size());
 
-        return sso.availableActions.get(index);
+        return sso.getAvailableActions().get(index);
     }
 
     /**

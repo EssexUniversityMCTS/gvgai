@@ -12,6 +12,7 @@ from SerializableStateObservation import *
 from CompetitionParameters import CompetitionParameters
 from ElapsedCpuTimer import ElapsedCpuTimer
 from IOSocket import IOSocket
+from Types import LEARNING_SSO_TYPE
 
 
 class ClientComm:
@@ -28,6 +29,7 @@ class ClientComm:
         self.LOG = False
         self.player = None
         self.global_ect = None
+        self.lastSsoType = LEARNING_SSO_TYPE.JSON
 
     def startComm(self):
         self.io.initBuffers()
@@ -89,6 +91,9 @@ class ClientComm:
             elif self.sso.phase == Phase.FINISH:
                 line = None
 
+            elif self.sso.phase == "FINISH":
+                line = None
+
             else:
                 self.io.writeToServer(self.lastMessageId, 'ERROR', self.LOG)
 
@@ -135,6 +140,12 @@ class ClientComm:
                 self.sso = json.loads(js, object_hook=self.as_sso)
                 # print("Phase is " + self.sso.phase)
                 # print("Score is " + str(self.sso.gameScore))
+
+            if self.lastSsoType == LEARNING_SSO_TYPE.IMAGE or self.lastSsoType == LEARNING_SSO_TYPE.BOTH:
+                print("hhhhhhhhhhhhhhhhhhhhhh")
+                if self.sso.imageArray:
+                    self.sso.convertBytesToPng(self.sso.imageArray)
+                
         except Exception as e:
             logging.exception(e)
             print("Line processing [FAILED]")
@@ -199,13 +210,15 @@ class ClientComm:
         ect = ElapsedCpuTimer()
         ect.setMaxTimeMillis(CompetitionParameters.ACTION_TIME)
         action = str(self.player.act(self.sso, ect.copy()))
+        self.lastSsoType = self.player.lastSsoType
         if ect.exceededMaxTime():
             if ect.elapsedMillis() > CompetitionParameters.ACTION_TIME_DISQ:
                 self.io.writeToServer(self.lastMessageId, "END_OVERSPENT", self.LOG)
             else:
                 self.io.writeToServer(self.lastMessageId, "ACTION_NIL", self.LOG)
         else:
-            self.io.writeToServer(self.lastMessageId, action, self.LOG)
+            ssoType = str(self.lastSsoType).split('.')
+            self.io.writeToServer(self.lastMessageId, action + "#" + ssoType[1], self.LOG)
 
     """
      * Manages the aresult sent to the agent. The time limit for this call will be TOTAL_LEARNING_TIME

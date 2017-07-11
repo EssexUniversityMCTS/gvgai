@@ -2,12 +2,19 @@ package core.game;
 
 import core.termination.Termination;
 import ontology.avatar.MovingAvatar;
+import core.competition.CompetitionParameters;
+import core.vgdl.VGDLViewer;
 import tools.com.google.gson.Gson;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
-
 import java.awt.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -36,6 +43,8 @@ public class SerializableStateObservation {
     public int nextSpriteID;
 
     // State Observation variables
+    public byte[] imageArray;
+
     public boolean isValidation;
     public float gameScore;
     public int gameTick;
@@ -68,50 +77,54 @@ public class SerializableStateObservation {
     public Observation[][] fromAvatarSpritesPositionsArray;
 
     public SerializableStateObservation(StateObservation s, Game g)
-    {
-        setPhase(s.getGameState());
+    public SerializableStateObservation(StateObservation s, Boolean both){
+        try {
+            if (!both) {
+                // Fill in the persistent variables (Score, tick)
+                buildGameData(s);
 
-        /**
-         * BLOCK OF GAME VARIABLES
-         * -------------------------------------------------------------------------------------------------------------
-         */
-        spriteOrder = g.getSpriteOrder();
-        singletons = g.singletons;
-        charMapping = g.getCharMapping();
-        terminations = g.getTerminations();
-        resources_limits = g.resources_limits;
-        resources_colors = g.resources_colors;
-        is_stochastic = g.is_stochastic;
-        num_sprites = g.num_sprites;
-        nextSpriteID = g.nextSpriteID;
+                // Create the image bytearray
+                imageArray = imageToByteArray();
+            } else {
+                // Fill in the persistent variables (Score, tick)
+                buildGameData(s);
 
-        // iSubTypes
-        ArrayList<Integer> integerRow;
-        if (g.iSubTypes!=null) {
-            iSubTypesArray = new Integer[g.iSubTypes.length][];
+                // Create the image bytearray
+                imageArray = imageToByteArray();
 
-            for (int i = 0; i < g.iSubTypes.length; i++) {
-                integerRow = g.iSubTypes[i];
-                iSubTypesArray[i] = integerRow.toArray(new Integer[integerRow.size()]);
+                // Fill in the simple data variables
+                buildDataVariables(s);
+
+                // Fill in the data array lists
+                buildDataArraylists(s);
             }
+        }catch(IOException e){
+            System.out.println("Transforming image to byte array failed. Original error: " + e);
         }
+    }
 
-        /**
-         * BLOCK OF GAME VARIABLES
-         * -------------------------------------------------------------------------------------------------------------
-         */
+    public SerializableStateObservation(StateObservation s)
+    {
+        // Fill in the persistent variables (Score, tick)
+        buildGameData(s);
 
+        // Fill in the simple data variables
+        buildDataVariables(s);
 
-        /**
-         * BLOCK OF STATE OBSERVATION VARIABLES
-         * -------------------------------------------------------------------------------------------------------------
-         */
+        // Fill in the data array lists
+        buildDataArraylists(s);
+    }
+
+    private void buildGameData(StateObservation s){
+        setPhase(s.getGameState());
         availableActions = s.getAvailableActions();
         gameScore = (float) s.getGameScore();
         gameTick = s.getGameTick();
         gameWinner = s.getGameWinner();
         isGameOver = s.isGameOver();
+    }
 
+    private void buildDataVariables(StateObservation s){
         worldDimension = new double[2];
         worldDimension[0] = s.getWorldDimension().getWidth();
         worldDimension[1] = s.getWorldDimension().getHeight();
@@ -137,12 +150,33 @@ public class SerializableStateObservation {
         avatarLimitHealthPoints = s.getAvatarLimitHealthPoints();
         isAvatarAlive = s.isAvatarAlive();
 
+	/**
+         * BLOCK OF GAME VARIABLES
+         * -------------------------------------------------------------------------------------------------------------
+         */
+        spriteOrder = g.getSpriteOrder();
+        singletons = g.singletons;
+        charMapping = g.getCharMapping();
+        terminations = g.getTerminations();
+        resources_limits = g.resources_limits;
+        resources_colors = g.resources_colors;
+        is_stochastic = g.is_stochastic;
+        num_sprites = g.num_sprites;
+        nextSpriteID = g.nextSpriteID;
+
+        /**
+         * BLOCK OF GAME VARIABLES
+         * -------------------------------------------------------------------------------------------------------------
+         */
+    }
+
+    private void buildDataArraylists(StateObservation s){
+        ElapsedCpuTimer ect = new ElapsedCpuTimer();
+
         isEnded = s.isGameOver();
 
         // Create a row to be used for translation from ArrayList to array
         ArrayList<Observation> row;
-
-        ElapsedCpuTimer ect = new ElapsedCpuTimer();
 
         /*
         * The following block is a sequence of iterative attributions
@@ -226,12 +260,28 @@ public class SerializableStateObservation {
             }
         }
 
-        /**
-         * BLOCK OF STATE OBSERVATION VARIABLES
-         * -------------------------------------------------------------------------------------------------------------
-         */
+	// Game data array
+        // iSubTypes
+        ArrayList<Integer> integerRow;
+        if (g.iSubTypes!=null) {
+            iSubTypesArray = new Integer[g.iSubTypes.length][];
+
+            for (int i = 0; i < g.iSubTypes.length; i++) {
+                integerRow = g.iSubTypes[i];
+                iSubTypesArray[i] = integerRow.toArray(new Integer[integerRow.size()]);
+            }
+        }
 
         //System.out.println(ect.elapsedMillis() + " ms taken to build SSO");
+    }
+
+
+
+    public static byte[] imageToByteArray() throws IOException
+    {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        ImageIO.write(ImageIO.read(new File(CompetitionParameters.SCREENSHOT_PATH)), "png", output);
+        return output.toByteArray();
     }
 
     /***

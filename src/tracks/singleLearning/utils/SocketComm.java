@@ -5,6 +5,7 @@ package tracks.singleLearning.utils;
  */
 
 import core.competition.CompetitionParameters;
+import ontology.Types.LEARNING_SSO_TYPE;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -19,7 +20,6 @@ public class SocketComm extends Comm {
     private Scanner in;
     private PrintStream out;
     private boolean end;
-    BufferedReader br;
 
     /**
      * Public constructor of the player.
@@ -108,6 +108,24 @@ public class SocketComm extends Comm {
             }
             int receivedID = Integer.parseInt(messageParts[0]);
             String msg = messageParts[1];
+
+            if (messageParts.length >= 3) {
+                String ssoType = messageParts[2];
+                switch (ssoType) {
+                    case "JSON":
+                        this.lastSsoType = LEARNING_SSO_TYPE.JSON;
+                        break;
+                    case "IMAGE":
+                        this.lastSsoType = LEARNING_SSO_TYPE.IMAGE;
+                        break;
+                    case "BOTH":
+                        this.lastSsoType = LEARNING_SSO_TYPE.BOTH;
+                        break;
+                    default:
+                        System.err.println("SocketComm: commRecv(): This should never happen.");
+                        break;
+                }
+            }
 
             if(receivedID == (messageId-1)) {
                 return msg.trim();

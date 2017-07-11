@@ -58,5 +58,4 @@ public class CompetitionParameters
      * Milliseconds allowed per controller action.
      */
     public static final int SOCKET_PORT = 8080;//3000;
-
 }

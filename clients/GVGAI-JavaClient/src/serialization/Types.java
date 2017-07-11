@@ -37,4 +37,10 @@ public class Types {
         WINNER(int val) {key=val;}
         public int key() {return key;}
     }
+
+    public static enum LEARNING_SSO_TYPE {
+        IMAGE,
+        JSON,
+        BOTH
+    }
 }
