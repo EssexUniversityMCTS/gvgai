@@ -1,6 +1,7 @@
 package core.game;
 
 import core.competition.CompetitionParameters;
+import core.vgdl.VGDLViewer;
 import tools.com.google.gson.Gson;
 import ontology.Types;
 import tools.ElapsedCpuTimer;

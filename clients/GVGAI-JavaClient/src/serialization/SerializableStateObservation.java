@@ -98,5 +98,9 @@ public class SerializableStateObservation {
         return output;
     }
 
+    public ArrayList<Types.ACTIONS> getAvailableActions()
+    {
+        return this.availableActions;
+    }
 }
 

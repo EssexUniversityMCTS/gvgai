@@ -16,6 +16,7 @@ import javax.swing.JComponent;
 
 import core.competition.CompetitionParameters;
 import core.game.Game;
+import core.player.LearningPlayer;
 import core.player.Player;
 import ontology.Types;
 
@@ -146,7 +147,14 @@ public class VGDLViewer extends JComponent
         }
 
         this.repaint();
-        saveImage(CompetitionParameters.SCREENSHOT_PATH);
+        if (player instanceof LearningPlayer) {
+            LearningPlayer learningPlayer = (LearningPlayer) player;
+            learningPlayer.getLearningSsoType();
+            if (learningPlayer.getLearningSsoType() == Types.LEARNING_SSO_TYPE.IMAGE ||
+                learningPlayer.getLearningSsoType() == Types.LEARNING_SSO_TYPE.BOTH) {
+                saveImage(CompetitionParameters.SCREENSHOT_PATH);
+            }
+        }
     }
 
     /**
@@ -157,7 +165,7 @@ public class VGDLViewer extends JComponent
         return size;
     }
 
-    void saveImage(String fileName)  {
+    public void saveImage(String fileName)  {
         try {
             // TYPE_INT_ARGB specifies the image format: 8-bit RGBA packed
             // into integer pixels
@@ -175,7 +183,5 @@ public class VGDLViewer extends JComponent
         }
 
     }
-
-
 
 }

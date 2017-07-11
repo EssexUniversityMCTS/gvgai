@@ -5,7 +5,7 @@ from AbstractPlayer import AbstractPlayer
 
 class Agent(AbstractPlayer):
     def __init__(self):
-        pass
+        AbstractPlayer.__init__(self)
 
     """
     * Public method to be called at the start of every level of a game.

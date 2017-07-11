@@ -91,6 +91,9 @@ class ClientComm:
             elif self.sso.phase == Phase.FINISH:
                 line = None
 
+            elif self.sso.phase == "FINISH":
+                line = None
+
             else:
                 self.io.writeToServer(self.lastMessageId, 'ERROR', self.LOG)
 
@@ -139,6 +142,7 @@ class ClientComm:
                 # print("Score is " + str(self.sso.gameScore))
 
             if self.lastSsoType == LEARNING_SSO_TYPE.IMAGE or self.lastSsoType == LEARNING_SSO_TYPE.BOTH:
+                print("hhhhhhhhhhhhhhhhhhhhhh")
                 if self.sso.imageArray:
                     self.sso.convertBytesToPng(self.sso.imageArray)
                 
@@ -213,7 +217,8 @@ class ClientComm:
             else:
                 self.io.writeToServer(self.lastMessageId, "ACTION_NIL", self.LOG)
         else:
-            self.io.writeToServer(self.lastMessageId, action + "#" + self.player.lastSsoType, self.LOG)
+            ssoType = str(self.lastSsoType).split('.')
+            self.io.writeToServer(self.lastMessageId, action + "#" + ssoType[1], self.LOG)
 
     """
      * Manages the aresult sent to the agent. The time limit for this call will be TOTAL_LEARNING_TIME

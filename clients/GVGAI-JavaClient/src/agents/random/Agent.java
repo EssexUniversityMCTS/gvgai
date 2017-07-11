@@ -56,14 +56,14 @@ public class Agent extends utils.AbstractPlayer {
 //            }
 //            n--;
 //        }
-        this.lastSsoType = Types.LEARNING_SSO_TYPE.JSON.IMAGE;
+        this.lastSsoType = Types.LEARNING_SSO_TYPE.JSON;
         if (sso.gameTick == 100) {
             return Types.ACTIONS.ACTION_ESCAPE;
         }
 
-        int index = new Random().nextInt(sso.availableActions.size());
+        int index = new Random().nextInt(sso.getAvailableActions().size());
 
-        return sso.availableActions.get(index);
+        return sso.getAvailableActions().get(index);
     }
 
     /**

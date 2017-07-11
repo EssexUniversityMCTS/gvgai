@@ -1,7 +1,6 @@
 package core.player;
 
 import core.competition.CompetitionParameters;
-import core.game.SerializableImage;
 import core.game.SerializableStateObservation;
 import core.game.StateObservation;
 import core.game.StateObservationMulti;
@@ -11,11 +10,6 @@ import tracks.singleLearning.utils.Comm;
 import tracks.singleLearning.utils.PipeComm;
 import tracks.singleLearning.utils.SocketComm;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
-import java.io.File;
 import java.io.IOException;
 
 
@@ -184,6 +178,10 @@ public class LearningPlayer extends Player {
             return false;
 
         return true;
+    }
+
+    public Types.LEARNING_SSO_TYPE getLearningSsoType() {
+        return comm.getLastSsoType();
     }
 }
 

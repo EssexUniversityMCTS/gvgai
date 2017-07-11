@@ -3,7 +3,6 @@ from Types import LEARNING_SSO_TYPE
 class AbstractPlayer:
     def __init__(self):
         self.lastSsoType = LEARNING_SSO_TYPE.JSON
-        pass
 
     def init(self, sso, timer):
         """

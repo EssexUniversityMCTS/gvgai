@@ -1,7 +1,10 @@
+from enum import Enum
+
 class ACTIONS:
     """
      * All action types, corresponding to the server Java code ontology.Types
     """
+
     def __init__(self):
         pass
 
@@ -18,6 +21,7 @@ class WINNER:
     """
      * Winner/Loser types, corresponding to the server Java code ontology.Types
     """
+
     def __init__(self):
         pass
 
@@ -26,10 +30,8 @@ class WINNER:
     PLAYER_LOSES = 0
     PLAYER_WINS = 1
 
-class LEARNING_SSO_TYPE:
-    def __init__(self):
-        pass
 
+class LEARNING_SSO_TYPE(Enum):
     IMAGE = 0
     JSON = 1
     BOTH = 2
