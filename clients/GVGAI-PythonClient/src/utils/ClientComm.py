@@ -5,7 +5,7 @@ import sys
 import os
 import traceback
 sys.path.append(os.path.dirname(os.path.realpath(__file__))+'/..')
-sys.path.append('../sampleAgents')
+sys.path.append('../sampleRandom')
 
 from SerializableStateObservation import *
 

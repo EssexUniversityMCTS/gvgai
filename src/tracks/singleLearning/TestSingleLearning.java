@@ -61,7 +61,7 @@ public class TestSingleLearning {
         if (clientType.equals("python")) {
             agentName = "sampleAgents";
         } else {
-            agentName = "agents.random.Agent";
+            agentName = "sampleRandom.Agent";
         }
         if (params.containsKey("agentName")) {
             agentName = params.get("agentName").get(0);

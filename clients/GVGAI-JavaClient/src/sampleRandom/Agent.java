@@ -1,4 +1,4 @@
-package agents.random;
+package sampleRandom;
 
 /**
  * Created by Daniel on 21.05.2017.
@@ -76,7 +76,7 @@ public class Agent extends utils.AbstractPlayer {
      * or CompetitionParameters.EXTRA_LEARNING_TIME if current global time is beyond TOTAL_LEARNING_TIME)
      * @return The next level of the current game to be played.
      * The level is bound in the range of [0,2]. If the input is any different, then the level
-     * chosen will be ignored, and the game will play a random one instead.
+     * chosen will be ignored, and the game will play a sampleRandom one instead.
      */
     @Override
     public int result(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer){

@@ -305,7 +305,7 @@ public class ClientComm {
      * or EXTRA_LEARNING_TIME if current global time is beyond TOTAL_LEARNING_TIME.
      * The agent is assumed to return the next level to play. It will be ignored if
      *    a) All training levels have not been played yet (in which case the starting sequence 0-1-2 continues).
-     *    b) It's outside the range [0,4] (in which case we play one at random)
+     *    b) It's outside the range [0,4] (in which case we play one at sampleRandom)
      *    c) or we are in the validation phase (in which case the starting sequence 3-4 continues).
      */
     private void result()
