@@ -1,20 +1,15 @@
 package core.game;
 
-import core.termination.Termination;
-import ontology.avatar.MovingAvatar;
 import core.competition.CompetitionParameters;
-import core.vgdl.VGDLViewer;
 import tools.com.google.gson.Gson;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
-import java.awt.*;
+
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -30,21 +25,8 @@ public class SerializableStateObservation {
         START, INIT, ACT, ABORT, END
     }
 
-    // Game variables
-    public int[] spriteOrder;
-    public boolean[] singletons;
-    public Integer[][] iSubTypesArray;
-    public HashMap<Character, ArrayList<String>> charMapping;
-    public ArrayList<Termination> terminations;
-    public int[] resources_limits;
-    public Color[] resources_colors;
-    public boolean is_stochastic;
-    public int num_sprites;
-    public int nextSpriteID;
-
     // State Observation variables
     public byte[] imageArray;
-
     public boolean isValidation;
     public float gameScore;
     public int gameTick;
@@ -64,19 +46,16 @@ public class SerializableStateObservation {
     public boolean isAvatarAlive;
     public Phase phase;
 
-    public boolean isEnded;
-
     public ArrayList<Types.ACTIONS> availableActions;
     public HashMap<Integer, Integer> avatarResources;
     public Observation[][][] observationGrid;
-    public Observation[][] NPCPositionsArray;
-    public Observation[][] immovablePositionsArray;
-    public Observation[][] movablePositionsArray;
-    public Observation[][] resourcesPositionsArray;
-    public Observation[][] portalsPositionsArray;
-    public Observation[][] fromAvatarSpritesPositionsArray;
+    public Observation[][] NPCPositions;
+    public Observation[][] immovablePositions;
+    public Observation[][] movablePositions;
+    public Observation[][] resourcesPositions;
+    public Observation[][] portalsPositions;
+    public Observation[][] fromAvatarSpritesPositions;
 
-    public SerializableStateObservation(StateObservation s, Game g)
     public SerializableStateObservation(StateObservation s, Boolean both){
         try {
             if (!both) {
@@ -149,31 +128,10 @@ public class SerializableStateObservation {
         avatarMaxHealthPoints = s.getAvatarMaxHealthPoints();
         avatarLimitHealthPoints = s.getAvatarLimitHealthPoints();
         isAvatarAlive = s.isAvatarAlive();
-
-	/**
-         * BLOCK OF GAME VARIABLES
-         * -------------------------------------------------------------------------------------------------------------
-         */
-        spriteOrder = g.getSpriteOrder();
-        singletons = g.singletons;
-        charMapping = g.getCharMapping();
-        terminations = g.getTerminations();
-        resources_limits = g.resources_limits;
-        resources_colors = g.resources_colors;
-        is_stochastic = g.is_stochastic;
-        num_sprites = g.num_sprites;
-        nextSpriteID = g.nextSpriteID;
-
-        /**
-         * BLOCK OF GAME VARIABLES
-         * -------------------------------------------------------------------------------------------------------------
-         */
     }
 
     private void buildDataArraylists(StateObservation s){
         ElapsedCpuTimer ect = new ElapsedCpuTimer();
-
-        isEnded = s.isGameOver();
 
         // Create a row to be used for translation from ArrayList to array
         ArrayList<Observation> row;
@@ -202,76 +160,63 @@ public class SerializableStateObservation {
 
         // NPC positions
         if (s.getNPCPositions()!=null) {
-            NPCPositionsArray = new Observation[s.getNPCPositions().length][];
+            NPCPositions = new Observation[s.getNPCPositions().length][];
 
             for (int i = 0; i < s.getNPCPositions().length; i++) {
                 row = s.getNPCPositions()[i];
-                NPCPositionsArray[i] = row.toArray(new Observation[row.size()]);
+                NPCPositions[i] = row.toArray(new Observation[row.size()]);
             }
         }
 
         // Immovable positions
         if (s.getImmovablePositions()!=null) {
-            immovablePositionsArray = new Observation[s.getImmovablePositions().length][];
+            immovablePositions = new Observation[s.getImmovablePositions().length][];
 
             for (int i = 0; i < s.getImmovablePositions().length; i++) {
                 row = s.getImmovablePositions()[i];
-                immovablePositionsArray[i] = row.toArray(new Observation[row.size()]);
+                immovablePositions[i] = row.toArray(new Observation[row.size()]);
             }
         }
 
         // Movable positions
         if(s.getMovablePositions()!=null) {
-            movablePositionsArray = new Observation[s.getMovablePositions().length][];
+            movablePositions = new Observation[s.getMovablePositions().length][];
 
             for (int i = 0; i < s.getMovablePositions().length; i++) {
                 row = s.getMovablePositions()[i];
-                movablePositionsArray[i] = row.toArray(new Observation[row.size()]);
+                movablePositions[i] = row.toArray(new Observation[row.size()]);
             }
         }
 
         // Resource position
         if(s.getResourcesPositions()!=null) {
-            resourcesPositionsArray = new Observation[s.getResourcesPositions().length][];
+            resourcesPositions = new Observation[s.getResourcesPositions().length][];
 
             for (int i = 0; i < s.getResourcesPositions().length; i++) {
                 row = s.getResourcesPositions()[i];
-                resourcesPositionsArray[i] = row.toArray(new Observation[row.size()]);
+                resourcesPositions[i] = row.toArray(new Observation[row.size()]);
             }
         }
 
         // Portal position
         if(s.getPortalsPositions()!=null) {
-            portalsPositionsArray = new Observation[s.getPortalsPositions().length][];
+            portalsPositions = new Observation[s.getPortalsPositions().length][];
 
             for (int i = 0; i < s.getPortalsPositions().length; i++) {
                 row = s.getPortalsPositions()[i];
-                portalsPositionsArray[i] = row.toArray(new Observation[row.size()]);
+                portalsPositions[i] = row.toArray(new Observation[row.size()]);
             }
         }
 
         // Avatar sprite position
         if(s.getFromAvatarSpritesPositions()!=null) {
-            fromAvatarSpritesPositionsArray = new Observation[s.getFromAvatarSpritesPositions().length][];
+            fromAvatarSpritesPositions = new Observation[s.getFromAvatarSpritesPositions().length][];
 
             for (int i = 0; i < s.getFromAvatarSpritesPositions().length; i++) {
                 row = s.getFromAvatarSpritesPositions()[i];
-                fromAvatarSpritesPositionsArray[i] = row.toArray(new Observation[row.size()]);
+                fromAvatarSpritesPositions[i] = row.toArray(new Observation[row.size()]);
             }
         }
-
-	// Game data array
-        // iSubTypes
-        ArrayList<Integer> integerRow;
-        if (g.iSubTypes!=null) {
-            iSubTypesArray = new Integer[g.iSubTypes.length][];
-
-            for (int i = 0; i < g.iSubTypes.length; i++) {
-                integerRow = g.iSubTypes[i];
-                iSubTypesArray[i] = integerRow.toArray(new Integer[integerRow.size()]);
-            }
-        }
-
         //System.out.println(ect.elapsedMillis() + " ms taken to build SSO");
     }
 

@@ -15,18 +15,6 @@ class SerializableStateObservation:
         self.phase = Phase()
         self.isValidation = True
 
-        # Game variables
-        self.spriteOrder = []
-        self.singletons = []
-        self.iSubTypesArray = []
-        self.charMapping = {}
-        self.terminations = []
-        self.resources_limits = []
-        self.resources_colors = []
-        self.is_stochastic = True
-        self.num_sprites = 0
-        self.nextSpriteID = -1
-
         self.winner = WINNER()
         self.actions = ACTIONS()
 
