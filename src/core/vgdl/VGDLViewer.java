@@ -121,6 +121,8 @@ public class VGDLViewer extends JComponent
         }
 
         this.repaint();
+        saveImage(CompetitionParameters.SCREENSHOT_PATH);
+
         if (player instanceof LearningPlayer) {
             LearningPlayer learningPlayer = (LearningPlayer) player;
             learningPlayer.getLearningSsoType();
@@ -148,7 +150,7 @@ public class VGDLViewer extends JComponent
             Graphics2D graphics = bi.createGraphics();
             paintWithGraphics(graphics);
             File file = new File(fileName);
-            ImageIO.write(bi, "PNG", file);
+            ImageIO.write(bi, "png", file);
 //            System.out.println("Wrote image to: " + fileName);
 //            long t2 = System.currentTimeMillis();
 //            System.out.println("Time elapsed = " + (t2 - t) + "ms");

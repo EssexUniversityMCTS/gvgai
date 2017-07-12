@@ -198,14 +198,11 @@ public class ClientComm {
             this.sso = gson.fromJson(json, SerializableStateObservation.class);
 
             // If expect image
-            if (lastSsoType == LEARNING_SSO_TYPE.IMAGE || lastSsoType == LEARNING_SSO_TYPE.BOTH) {
+            if ((sso.phase != SerializableStateObservation.Phase.INIT) &&
+                (lastSsoType == LEARNING_SSO_TYPE.IMAGE || lastSsoType == LEARNING_SSO_TYPE.BOTH)) {
                 // If an image has been received, then save its PNG equivalent
-//                sso.convertBytesToPng(sso.imageArray);
-                if (this.sso.imageArray != null && this.sso.imageArray.length != 0) {
-                    sso.convertBytesToPng(sso.imageArray);
-                } else {
-                    System.err.println("this.sso.imageArray is null or this.sso.imageArray.length = 0");
-                }
+                System.out.println("phase: "+sso.phase +  " lastSsoType=" +lastSsoType );
+                sso.convertBytesToPng(sso.imageArray);
             }
             // Used for debugging
 //            io.writeToFile(sso.toString());
@@ -240,7 +237,7 @@ public class ClientComm {
             io.writeToServer(lastMessageId, "START_FAILED", LOG);
         }else {
             //io.writeToFile("start done");
-            io.writeToServer(lastMessageId, "START_DONE", LOG);
+            io.writeToServer(lastMessageId, "START_DONE" + TOKEN_SEP + player.lastSsoType, LOG);
         }
 
     }
@@ -273,7 +270,7 @@ public class ClientComm {
         {
             io.writeToServer(lastMessageId, "INIT_FAILED", LOG);
         }else {
-            io.writeToServer(lastMessageId, "INIT_DONE", LOG);
+            io.writeToServer(lastMessageId, "INIT_DONE"+TOKEN_SEP + player.lastSsoType, LOG);
         }
     }
 
@@ -340,7 +337,7 @@ public class ClientComm {
                 //Note this is okay, TOTAL_LEARNING_TIME is over, within the rules
                 io.writeToServer(lastMessageId, end_message, LOG);
             }else {
-                io.writeToServer(lastMessageId, nextLevel + "", LOG);
+                io.writeToServer(lastMessageId, nextLevel + TOKEN_SEP + player.lastSsoType, LOG);
             }
         }
     }

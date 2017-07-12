@@ -141,10 +141,10 @@ class ClientComm:
                 # print("Phase is " + self.sso.phase)
                 # print("Score is " + str(self.sso.gameScore))
 
-            if self.lastSsoType == LEARNING_SSO_TYPE.IMAGE or self.lastSsoType == LEARNING_SSO_TYPE.BOTH:
-                print("hhhhhhhhhhhhhhhhhhhhhh")
-                if self.sso.imageArray:
-                    self.sso.convertBytesToPng(self.sso.imageArray)
+            if (self.sso.phase != "INIT"):
+                if self.lastSsoType == LEARNING_SSO_TYPE.IMAGE or self.lastSsoType == LEARNING_SSO_TYPE.BOTH:
+                    if self.sso.imageArray:
+                        self.sso.convertBytesToPng(self.sso.imageArray)
                 
         except Exception as e:
             logging.exception(e)

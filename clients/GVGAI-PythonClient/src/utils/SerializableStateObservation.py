@@ -46,10 +46,13 @@ class SerializableStateObservation:
         self.portalsPositions = []
         self.fromAvatarSpritePositions = []
 
-    def convertBytesToPng(pixels):
-        image = Image.open(io.BytesIO(pixels))
-        image.save("gamestateByBytesTmp.png")
+    def convertBytesToPng(self, pixels):
+        stream = io.BytesIO(pixels)
+        image = Image.open(stream)
+        image.save("gamestateByBytes.png")
 
+        # image = Image.open(io.BytesIO(pixels))
+        # image.save("gamestateByBytes.png")
 
 class Phase:
     """

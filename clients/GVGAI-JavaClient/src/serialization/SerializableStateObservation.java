@@ -1,5 +1,7 @@
 package serialization;
 
+import utils.CompetitionParameters;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -106,12 +108,15 @@ public class SerializableStateObservation {
 
     // Optional, helper method to convert a byte array to PNG format
     public void convertBytesToPng(byte[] pixels) throws IOException, DataFormatException {
-        InputStream in = new ByteArrayInputStream(pixels);
-        BufferedImage bImageFromConvert = ImageIO.read(in);
+        if (pixels != null) {
+            InputStream in = new ByteArrayInputStream(pixels);
+            BufferedImage bImageFromConvert = ImageIO.read(in);
 
-        ImageIO.write(bImageFromConvert, "png", new File(
-                "gamestateByBytesTmp.png"));
-
+            ImageIO.write(bImageFromConvert, "png", new File(
+                CompetitionParameters.SCREENSHOT_PATH));
+        } else {
+            System.err.println("SerializableStateObservation: convertBytesToPng: pixels is null.");
+        }
     }
 
     // Helper method to decompress a byte array. Used by convertBytesToPng

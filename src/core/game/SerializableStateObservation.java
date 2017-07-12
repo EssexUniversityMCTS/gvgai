@@ -223,11 +223,15 @@ public class SerializableStateObservation {
 
 
 
-    public static byte[] imageToByteArray() throws IOException
+    public byte[] imageToByteArray() throws IOException
     {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         ImageIO.write(ImageIO.read(new File(CompetitionParameters.SCREENSHOT_PATH)), "png", output);
-        return output.toByteArray();
+        imageArray = output.toByteArray();
+        if (imageArray==null) {
+            System.out.println("imageArray is null");
+        }
+        return imageArray;
     }
 
     /***
