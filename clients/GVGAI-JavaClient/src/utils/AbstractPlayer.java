@@ -7,7 +7,7 @@ import serialization.Types;
  * Created by dperez on 24/05/2017.
  */
 public abstract class AbstractPlayer {
-    protected Types.LEARNING_SSO_TYPE lastSsoType = Types.LEARNING_SSO_TYPE.JSON;
+    protected Types.LEARNING_SSO_TYPE lastSsoType = Types.LEARNING_SSO_TYPE.IMAGE;
 
     /**
      * Public method to be called at the start of every level of a game.
@@ -41,7 +41,7 @@ public abstract class AbstractPlayer {
      * or CompetitionParameters.EXTRA_LEARNING_TIME if current global time is beyond TOTAL_LEARNING_TIME)
      * @return The next level of the current game to be played.
      * The level is bound in the range of [0,2]. If the input is any different, then the level
-     * chosen will be ignored, and the game will play a random one instead.
+     * chosen will be ignored, and the game will play a sampleRandom one instead.
      */
     public abstract int result(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer);
 }

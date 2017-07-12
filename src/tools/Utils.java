@@ -175,5 +175,13 @@ public class Utils
         }
     }
 
-
+    public static int findMaxDivisor(int value) {
+        int divisor = 1;
+        for (int i=1; i<=Math.sqrt(value)+1; i++) {
+            if (value % i == 0) {
+                divisor = i;
+            }
+        }
+        return divisor;
+    }
 }

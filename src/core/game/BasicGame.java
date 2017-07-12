@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+import core.competition.CompetitionParameters;
 import core.vgdl.VGDLFactory;
 import core.vgdl.VGDLRegistry;
 import core.vgdl.VGDLSprite;
@@ -94,6 +95,14 @@ public class BasicGame extends Game {
 		}
 	}
 
+	public Dimension updateScreenSize() {
+		if (square_size != -1) {
+			block_size = square_size / CompetitionParameters.windowReduceScale;
+			screenSize = new Dimension(size.width * block_size, size.height * block_size);
+		}
+		return screenSize;
+	}
+
 	@Override
 	/**
 	 * Builds a level from this game, reading it from file.
@@ -110,9 +119,9 @@ public class BasicGame extends Game {
 		size.height = desc_lines.length;
 
 		if (square_size != -1) {
-			block_size = square_size;
+			block_size = square_size / CompetitionParameters.windowReduceScale;
 		} else {
-			block_size = Math.max(2, (int) 800.0 / Math.max(size.width, size.height));
+			block_size = Math.max(2, (int) CompetitionParameters.maxWindowSize / Math.max(size.width, size.height));
 		}
 		screenSize = new Dimension(size.width * block_size, size.height * block_size);
 
@@ -272,4 +281,7 @@ public class BasicGame extends Game {
 		return base;
 	}
 
+	public int getSquareSize() {
+		return square_size;
+	}
 }

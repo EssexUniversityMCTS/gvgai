@@ -1,5 +1,5 @@
 import sys
-sys.path.append('../sampleAgents')
+sys.path.append('../sampleRandom')
 
 from ClientComm import ClientComm
 
