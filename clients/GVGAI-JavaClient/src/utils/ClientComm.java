@@ -207,6 +207,8 @@ public class ClientComm {
                     System.err.println("this.sso.imageArray is null or this.sso.imageArray.length = 0");
                 }
             }
+            // Used for debugging
+//            io.writeToFile(sso.toString());
         } catch (Exception e){
             io.logStackTrace(e);
         }

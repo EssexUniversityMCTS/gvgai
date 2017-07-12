@@ -69,6 +69,9 @@ public class LearningPlayer extends Player {
                     // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
                     so.currentGameState = Types.GAMESTATES.ACT_STATE;
                     sso = new SerializableStateObservation(so, false);
+
+                    // Used for debugging
+//                    System.out.println(sso.toString());
                     comm.commSend(sso.serialize(null));
                     break;
                 case BOTH:

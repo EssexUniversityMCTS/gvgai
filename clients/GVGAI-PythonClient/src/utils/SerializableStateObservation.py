@@ -25,8 +25,10 @@ class SerializableStateObservation:
         self.worldDimension = []
         self.blockSize = 0
 
+        self.noOfPlayers = 0
         self.avatarSpeed = 0.0
         self.avatarOrientation = []
+        self.avatarPosition = []
         self.avatarLastAction = None  # self.actions.ACTION_NIL
         self.avatarType = 0
         self.avatarHealthPoints = 0
@@ -36,13 +38,13 @@ class SerializableStateObservation:
         self.availableActions = []
         self.avatarResources = {}
 
-        observationGrid = []
-        NPCPositions = []
-        immovablePositions = []
-        movablePositions = []
-        resourcesPositions = []
-        portalsPositions = []
-        fromAvatarSpritePositions = []
+        self.observationGrid = []
+        self.NPCPositions = []
+        self.immovablePositions = []
+        self.movablePositions = []
+        self.resourcesPositions = []
+        self.portalsPositions = []
+        self.fromAvatarSpritePositions = []
 
     def convertBytesToPng(pixels):
         image = Image.open(io.BytesIO(pixels))

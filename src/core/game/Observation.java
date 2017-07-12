@@ -106,4 +106,16 @@ public class Observation implements Comparable<Observation>
         if(this.category != o.category) return false;
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Observation{" +
+                "category=" + category +
+                ", itype=" + itype +
+                ", obsID=" + obsID +
+                ", position=" + position +
+                ", reference=" + reference +
+                ", sqDist=" + sqDist +
+                "}\n";
+    }
 }

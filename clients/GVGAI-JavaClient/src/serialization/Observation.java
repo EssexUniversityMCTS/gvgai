@@ -36,4 +36,43 @@ public class Observation {
      * Distance from this observation to the reference.
      */
     public double sqDist;
+
+    /**
+     * Getters for each of the fields above.
+     */
+    public int getCategory() {
+        return category;
+    }
+
+    public double getSqDist() {
+        return sqDist;
+    }
+
+    public int getItype() {
+        return itype;
+    }
+
+    public int getObsID() {
+        return obsID;
+    }
+
+    public Vector2d getPosition() {
+        return position;
+    }
+
+    public Vector2d getReference() {
+        return reference;
+    }
+
+    @Override
+    public String toString() {
+        return "Observation{" +
+                "category=" + category +
+                ", itype=" + itype +
+                ", obsID=" + obsID +
+                ", position=" + position +
+                ", reference=" + reference +
+                ", sqDist=" + sqDist +
+                "}\n";
+    }
 }
