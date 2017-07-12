@@ -1,0 +1,3 @@
+Listening for transport dt_socket at address: 8888
+Client connected to server [OK]
+Starting to play [OK]
