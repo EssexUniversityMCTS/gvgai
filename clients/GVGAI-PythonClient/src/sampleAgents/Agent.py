@@ -1,6 +1,7 @@
 import random
 
 from AbstractPlayer import AbstractPlayer
+from Types import *
 
 
 class Agent(AbstractPlayer):
@@ -29,6 +30,7 @@ class Agent(AbstractPlayer):
      """
 
     def act(self, sso, elapsedTimer):
+        self.lastSsoType = LEARNING_SSO_TYPE.IMAGE
         if sso.gameTick == 1000:
             return "ACTION_ESCAPE"
         else:

@@ -3,14 +3,13 @@ from Types import ACTIONS as ACTIONS
 from PIL import Image
 import io
 
-
 class SerializableStateObservation:
     """
      * Serialized state observation, corresponding to the Java Client code:
      * GVGAI-JavaClient.src.serialization.SerializableStateObservation
     """
     def __init__(self):
-        self.imageArray = bytes([])
+        self.imageArray = bytearray([])
         
         self.phase = Phase()
         self.isValidation = True
@@ -46,8 +45,11 @@ class SerializableStateObservation:
         self.portalsPositions = []
         self.fromAvatarSpritePositions = []
 
-    def convertBytesToPng(pixels):
-        image = Image.open(io.BytesIO(pixels))
+    def convertBytesToPng(self, pixels):
+        for i, e in enumerate(pixels):
+            pixels[i] = e & 0xFF
+        
+        image = Image.open(io.BytesIO(bytearray(pixels)))
         image.save("gamestateByBytesTmp.png")
 
 

@@ -12,7 +12,7 @@ from SerializableStateObservation import *
 from CompetitionParameters import CompetitionParameters
 from ElapsedCpuTimer import ElapsedCpuTimer
 from IOSocket import IOSocket
-from Types import LEARNING_SSO_TYPE
+from Types import *
 
 
 class ClientComm:
@@ -29,7 +29,7 @@ class ClientComm:
         self.LOG = False
         self.player = None
         self.global_ect = None
-        self.lastSsoType = LEARNING_SSO_TYPE.JSON
+        self.lastSsoType = LEARNING_SSO_TYPE.IMAGE
 
     def startComm(self):
         self.io.initBuffers()
@@ -142,7 +142,6 @@ class ClientComm:
                 # print("Score is " + str(self.sso.gameScore))
 
             if self.lastSsoType == LEARNING_SSO_TYPE.IMAGE or self.lastSsoType == LEARNING_SSO_TYPE.BOTH:
-                print("hhhhhhhhhhhhhhhhhhhhhh")
                 if self.sso.imageArray:
                     self.sso.convertBytesToPng(self.sso.imageArray)
                 
@@ -217,8 +216,8 @@ class ClientComm:
             else:
                 self.io.writeToServer(self.lastMessageId, "ACTION_NIL", self.LOG)
         else:
-            ssoType = str(self.lastSsoType).split('.')
-            self.io.writeToServer(self.lastMessageId, action + "#" + ssoType[1], self.LOG)
+            ssoType = self.lastSsoType
+            self.io.writeToServer(self.lastMessageId, action + "#" + ssoType, self.LOG)
 
     """
      * Manages the aresult sent to the agent. The time limit for this call will be TOTAL_LEARNING_TIME
