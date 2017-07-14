@@ -16,6 +16,8 @@ import tools.IO;
 import tools.Vector2d;
 import tools.pathfinder.PathFinder;
 
+import static tools.Utils.findMaxDivisor;
+
 /**
  * Created with IntelliJ IDEA. User: Diego Date: 16/10/13 Time: 14:00 This is a
  * Java port from Tom Schaul's VGDL - https://github.com/schaul/py-vgdl
@@ -95,12 +97,15 @@ public class BasicGame extends Game {
 		}
 	}
 
-	public Dimension updateScreenSize() {
+	public void updateScreenSize() {
 		if (square_size != -1) {
+			CompetitionParameters.windowReduceScale = findMaxDivisor(square_size);
 			block_size = square_size / CompetitionParameters.windowReduceScale;
 			screenSize = new Dimension(size.width * block_size, size.height * block_size);
+		} else {
+			CompetitionParameters.maxWindowSize = Math.max(size.width, size.height);
+			block_size = 2;
 		}
-		return screenSize;
 	}
 
 	@Override

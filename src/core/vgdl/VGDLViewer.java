@@ -5,8 +5,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,13 +13,10 @@ import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
 import core.competition.CompetitionParameters;
-import core.game.BasicGame;
 import core.game.Game;
 import core.player.LearningPlayer;
 import core.player.Player;
 import ontology.Types;
-
-import static tools.Utils.findMaxDivisor;
 
 /**
  * Created with IntelliJ IDEA.
@@ -62,6 +57,14 @@ public class VGDLViewer extends JComponent
         this.game = game;
         this.size = game.getScreenSize();
         this.player = player;
+        if (player instanceof LearningPlayer) {
+            LearningPlayer learningPlayer = (LearningPlayer) player;
+            Types.LEARNING_SSO_TYPE ssoType = learningPlayer.getLearningSsoType();
+            if (ssoType == Types.LEARNING_SSO_TYPE.IMAGE ||
+                ssoType == Types.LEARNING_SSO_TYPE.BOTH) {
+                saveImage(CompetitionParameters.SCREENSHOT_FILENAME);
+            }
+        }
     }
 
     /**
@@ -119,16 +122,14 @@ public class VGDLViewer extends JComponent
             this.spriteGroups[i] = new SpriteGroup(spriteGroupsGame[i].getItype());
             this.spriteGroups[i].copyAllSprites(spriteGroupsGame[i].getSprites());
         }
-
         this.repaint();
-        saveImage(CompetitionParameters.SCREENSHOT_PATH);
-
         if (player instanceof LearningPlayer) {
             LearningPlayer learningPlayer = (LearningPlayer) player;
-            learningPlayer.getLearningSsoType();
-            if (learningPlayer.getLearningSsoType() == Types.LEARNING_SSO_TYPE.IMAGE ||
-                learningPlayer.getLearningSsoType() == Types.LEARNING_SSO_TYPE.BOTH) {
-                saveImage(CompetitionParameters.SCREENSHOT_PATH);
+            Types.LEARNING_SSO_TYPE ssoType = learningPlayer.getLearningSsoType();
+
+            if (ssoType == Types.LEARNING_SSO_TYPE.IMAGE ||
+                ssoType == Types.LEARNING_SSO_TYPE.BOTH) {
+                saveImage(CompetitionParameters.SCREENSHOT_FILENAME);
             }
         }
     }
@@ -146,7 +147,7 @@ public class VGDLViewer extends JComponent
             // TYPE_INT_ARGB specifies the image format: 8-bit RGBA packed
             // into integer pixels
 //            long t = System.currentTimeMillis();
-            BufferedImage bi = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+            BufferedImage bi = new BufferedImage( (int) size.getWidth(), (int) size.getHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D graphics = bi.createGraphics();
             paintWithGraphics(graphics);
             File file = new File(fileName);

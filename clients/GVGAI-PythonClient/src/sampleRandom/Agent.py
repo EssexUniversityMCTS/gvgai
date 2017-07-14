@@ -1,11 +1,15 @@
 import random
 
 from AbstractPlayer import AbstractPlayer
+from Types import *
+
+from utils.Types import LEARNING_SSO_TYPE
 
 
 class Agent(AbstractPlayer):
     def __init__(self):
         AbstractPlayer.__init__(self)
+        self.lastSsoType = LEARNING_SSO_TYPE.JSON
 
     """
     * Public method to be called at the start of every level of a game.

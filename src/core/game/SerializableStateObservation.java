@@ -62,16 +62,17 @@ public class SerializableStateObservation {
             if (!both) {
                 // Fill in the persistent variables (Score, tick)
                 buildGameData(s);
-
-                // Create the image bytearray
-                imageArray = imageToByteArray();
+                if(phase != Phase.START) {
+                    // Create the image bytearray
+                    imageArray = imageToByteArray();
+                }
             } else {
                 // Fill in the persistent variables (Score, tick)
                 buildGameData(s);
-
-                // Create the image bytearray
-                imageArray = imageToByteArray();
-
+                if(phase != Phase.START) {
+                    // Create the image bytearray
+                    imageArray = imageToByteArray();
+                }
                 // Fill in the simple data variables
                 buildDataVariables(s);
 
@@ -223,13 +224,17 @@ public class SerializableStateObservation {
 
 
 
-    public byte[] imageToByteArray() throws IOException
-    {
+    public byte[] imageToByteArray() throws IOException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        ImageIO.write(ImageIO.read(new File(CompetitionParameters.SCREENSHOT_PATH)), "png", output);
-        imageArray = output.toByteArray();
-        if (imageArray==null) {
-            System.out.println("imageArray is null");
+        File pngfile = new File(CompetitionParameters.SCREENSHOT_FILENAME);
+        if (pngfile != null) {
+            ImageIO.write(ImageIO.read(pngfile), "png", output);
+            imageArray = output.toByteArray();
+            if (imageArray == null) {
+                System.out.println("SerializableStateObservation: imageToByteArray(): imageArray is null");
+            }
+        } else {
+            System.err.println("SerializableStateObservation: imageToByteArray(): pngfile is null");
         }
         return imageArray;
     }

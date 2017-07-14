@@ -7,7 +7,7 @@ import serialization.Types;
  * Created by dperez on 24/05/2017.
  */
 public abstract class AbstractPlayer {
-    protected Types.LEARNING_SSO_TYPE lastSsoType = Types.LEARNING_SSO_TYPE.IMAGE;
+    protected Types.LEARNING_SSO_TYPE lastSsoType = Types.LEARNING_SSO_TYPE.JSON;
 
     /**
      * Public method to be called at the start of every level of a game.

@@ -112,8 +112,8 @@ public class SerializableStateObservation {
             InputStream in = new ByteArrayInputStream(pixels);
             BufferedImage bImageFromConvert = ImageIO.read(in);
 
-            ImageIO.write(bImageFromConvert, "png", new File(
-                CompetitionParameters.SCREENSHOT_PATH));
+            ImageIO.write(bImageFromConvert, "PNG", new File(
+                CompetitionParameters.SCREENSHOT_FILENAME));
         } else {
             System.err.println("SerializableStateObservation: convertBytesToPng: pixels is null.");
         }

@@ -142,7 +142,6 @@ public class LearningMachine {
         Game toPlay = new VGDLParser().parseGame(game_file);
         if (toPlay instanceof BasicGame) {
             BasicGame basicGame = (BasicGame) toPlay;
-            CompetitionParameters.windowReduceScale = findMaxDivisor(basicGame.getSquareSize());
             basicGame.updateScreenSize();
         }
         int levelIdx = 0;

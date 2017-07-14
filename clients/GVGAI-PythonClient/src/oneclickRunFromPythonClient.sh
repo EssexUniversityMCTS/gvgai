@@ -1,6 +1,6 @@
 #!/bin/bash
 
-game_id=2
+game_id=0
 server_dir=../../..
 agent_name=sampleRandom.Agent
 sh_dir=utils

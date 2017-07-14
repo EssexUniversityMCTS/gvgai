@@ -24,7 +24,7 @@ if __name__ == "__main__":
     parser.add_argument('-agentName', action="store", dest='agentName', default='sampleRandom.Agent')
     parser.add_argument('-serverDir', action="store", dest='serverDir', default=serverDirDefault)
     parser.add_argument('-shDir', action="store", dest='shDir', default='utils')
-    parser.add_argument('-visuals', action="store_true", dest='visuals', default=True)
+    parser.add_argument('-visuals', action="store_true", dest='visuals', default=False)
     args = parser.parse_args(sys.argv)
     # set variables
     gameId = args.gameId

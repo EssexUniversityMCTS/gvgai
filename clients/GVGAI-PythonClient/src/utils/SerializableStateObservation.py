@@ -1,5 +1,6 @@
 from Types import WINNER as WINNER
 from Types import ACTIONS as ACTIONS
+from CompetitionParameters import CompetitionParameters as CompetitionParameters
 from PIL import Image
 import io
 
@@ -10,7 +11,7 @@ class SerializableStateObservation:
      * GVGAI-JavaClient.src.serialization.SerializableStateObservation
     """
     def __init__(self):
-        self.imageArray = bytes([])
+        self.imageArray = bytearray([])
         
         self.phase = Phase()
         self.isValidation = True
@@ -47,12 +48,10 @@ class SerializableStateObservation:
         self.fromAvatarSpritePositions = []
 
     def convertBytesToPng(self, pixels):
-        stream = io.BytesIO(pixels)
-        image = Image.open(stream)
-        image.save("gamestateByBytes.png")
-
-        # image = Image.open(io.BytesIO(pixels))
-        # image.save("gamestateByBytes.png")
+        for i, e in enumerate(pixels):
+            pixels[i] = e & 0xFF
+        image = Image.open(io.BytesIO(bytearray(pixels)))
+        image.save(CompetitionParameters.SCREENSHOT_FILENAME)
 
 class Phase:
     """

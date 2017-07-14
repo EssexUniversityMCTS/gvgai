@@ -107,7 +107,7 @@ public class CompetitionParameters
     /**
      * Path to the temporary game screenshot.
      */
-    public static String SCREENSHOT_PATH = "gameStateByBytes.png";
+    public static String SCREENSHOT_FILENAME = "gameStateByBytes.png";
 
     /**
      * Delay for human play.

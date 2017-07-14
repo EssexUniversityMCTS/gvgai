@@ -23,3 +23,4 @@ class CompetitionParameters:
     TOTAL_LEARNING_TIME = 5*MILLIS_IN_MIN
     EXTRA_LEARNING_TIME = 1000
     SOCKET_PORT = 8080
+    SCREENSHOT_FILENAME = "gameStateByBytes.png"

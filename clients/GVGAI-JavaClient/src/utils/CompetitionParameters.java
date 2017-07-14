@@ -59,5 +59,5 @@ public class CompetitionParameters
      */
     public static final int SOCKET_PORT = 8080;//3000;
 
-    public static String SCREENSHOT_PATH = "gameStateByBytes.png";
+    public static String SCREENSHOT_FILENAME = "gameStateByBytes.png";
 }

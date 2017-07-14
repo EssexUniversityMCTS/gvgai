@@ -160,26 +160,8 @@ public class ClientComm {
             lastMessageId = Integer.parseInt(message[0]);
             String json = message[1];
 
-            if (message.length == 3) {
-                String ssoType = message[2];
-                switch (ssoType) {
-                    case "JSON":
-                        lastSsoType = LEARNING_SSO_TYPE.JSON;
-                        break;
-                    case "IMAGE":
-                        lastSsoType = LEARNING_SSO_TYPE.IMAGE;
-                        break;
-                    case "BOTH":
-                        lastSsoType = LEARNING_SSO_TYPE.BOTH;
-                        break;
-                    default:
-                        System.err.println("ClentComm: processLine(): This should never happen.");
-                        break;
-                }
-            }
             //io.writeToFile("message received " + lastMessageId + "#" + json);
 
-            //Gson gson = new GsonBuilder().registerTypeAdapterFactory(new ArrayAdapterFactory()).create();
             Gson gson = new Gson();
 
             // Set the state to "START" in case the connexion (not game) is in the initialization phase.
@@ -201,7 +183,6 @@ public class ClientComm {
             if ((sso.phase != SerializableStateObservation.Phase.INIT) &&
                 (lastSsoType == LEARNING_SSO_TYPE.IMAGE || lastSsoType == LEARNING_SSO_TYPE.BOTH)) {
                 // If an image has been received, then save its PNG equivalent
-                System.out.println("phase: "+sso.phase +  " lastSsoType=" +lastSsoType );
                 sso.convertBytesToPng(sso.imageArray);
             }
             // Used for debugging
@@ -248,6 +229,7 @@ public class ClientComm {
             Class<? extends AbstractPlayer> controllerClass = Class.forName(agentName).asSubclass(AbstractPlayer.class);
             Constructor controllerArgsConstructor = controllerClass.getConstructor();
             player = (AbstractPlayer) controllerArgsConstructor.newInstance();
+            this.lastSsoType = player.lastSsoType;
         }catch (Exception e)
         {
             io.writeToFile(e.toString());
@@ -265,7 +247,7 @@ public class ClientComm {
 
         // Perform level-entry initialization here
         player.init(sso, ect.copy());
-
+        this.lastSsoType = player.lastSsoType;
         if(ect.exceededMaxTime())
         {
             io.writeToServer(lastMessageId, "INIT_FAILED", LOG);
@@ -286,7 +268,7 @@ public class ClientComm {
 
         // Save the player's action in a string
         String action = player.act(sso, ect.copy()).toString();
-        lastSsoType = player.lastSsoType;
+        this.lastSsoType = player.lastSsoType;
         if(ect.exceededMaxTime()) {
             if (ect.elapsedMillis() > CompetitionParameters.ACTION_TIME_DISQ) {
                 io.writeToServer(lastMessageId, "END_OVERSPENT", LOG);
@@ -318,7 +300,7 @@ public class ClientComm {
 
         // Submit result and wait for next level.
         int nextLevel = player.result(sso, ect.copy());
-
+        this.lastSsoType = player.lastSsoType;
 //        io.writeToFile("result timers: global: " + global_ect.elapsedSeconds()  + "(" + global_ect.exceededMaxTime() + ")" +
 //                ", local: " + ect.elapsedSeconds() + "(" + ect.exceededMaxTime() + ")" );
 

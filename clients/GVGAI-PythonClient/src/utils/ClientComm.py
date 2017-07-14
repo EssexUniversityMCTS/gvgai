@@ -123,7 +123,6 @@ class ClientComm:
                 return
 
             message = msg.split(self.TOKEN_SEP)
-
             if len(message) < 2:
                 print ("Message not complete")
                 return
@@ -138,13 +137,11 @@ class ClientComm:
             else:
                 js.replace('"', '')
                 self.sso = json.loads(js, object_hook=self.as_sso)
-                # print("Phase is " + self.sso.phase)
-                # print("Score is " + str(self.sso.gameScore))
 
-            if (self.sso.phase != "INIT"):
-                if self.lastSsoType == LEARNING_SSO_TYPE.IMAGE or self.lastSsoType == LEARNING_SSO_TYPE.BOTH:
-                    if self.sso.imageArray:
-                        self.sso.convertBytesToPng(self.sso.imageArray)
+            if self.lastSsoType == LEARNING_SSO_TYPE.IMAGE or self.lastSsoType == "IMAGE" \
+                    or self.lastSsoType == LEARNING_SSO_TYPE.BOTH or self.lastSsoType == "BOTH":
+                if self.sso.imageArray:
+                    self.sso.convertBytesToPng(self.sso.imageArray)
                 
         except Exception as e:
             logging.exception(e)
@@ -165,7 +162,8 @@ class ClientComm:
         if ect.exceededMaxTime():
             self.io.writeToServer(self.lastMessageId, "START_FAILED", self.LOG)
         else:
-            self.io.writeToServer(self.lastMessageId, "START_DONE", self.LOG)
+            print("start(self): " + self.lastSsoType)
+            self.io.writeToServer(self.lastMessageId, "START_DONE" + "#" + self.lastSsoType, self.LOG)
 
     def startAgent(self):
         try:
@@ -173,6 +171,7 @@ class ClientComm:
                 module = importlib.import_module(self.agentName, __name__)
                 try:
                     self.player = getattr(module, 'Agent')()
+                    self.lastSsoType = self.player.lastSsoType
                 except AttributeError:
                     logging.error('ERROR: Class does not exist')
                     traceback.print_exc()
@@ -196,10 +195,11 @@ class ClientComm:
         ect = ElapsedCpuTimer()
         ect.setMaxTimeMillis(CompetitionParameters.INITIALIZATION_TIME)
         self.player.init(self.sso, ect.copy())
+        self.lastSsoType = self.player.lastSsoType
         if ect.exceededMaxTime():
             self.io.writeToServer(self.lastMessageId, "INIT_FAILED", self.LOG)
         else:
-            self.io.writeToServer(self.lastMessageId, "INIT_DONE", self.LOG)
+            self.io.writeToServer(self.lastMessageId, "INIT_DONE" + "#" + self.lastSsoType, self.LOG)
 
     """
      * Manages the action request for an agent. The agent is requested for an action,
@@ -215,10 +215,9 @@ class ClientComm:
             if ect.elapsedMillis() > CompetitionParameters.ACTION_TIME_DISQ:
                 self.io.writeToServer(self.lastMessageId, "END_OVERSPENT", self.LOG)
             else:
-                self.io.writeToServer(self.lastMessageId, "ACTION_NIL", self.LOG)
+                self.io.writeToServer(self.lastMessageId, "ACTION_NIL" + "#" + self.lastSsoType, self.LOG)
         else:
-            ssoType = str(self.lastSsoType).split('.')
-            self.io.writeToServer(self.lastMessageId, action + "#" + ssoType[1], self.LOG)
+            self.io.writeToServer(self.lastMessageId, action + "#" + self.lastSsoType, self.LOG)
 
     """
      * Manages the aresult sent to the agent. The time limit for this call will be TOTAL_LEARNING_TIME
@@ -239,7 +238,7 @@ class ClientComm:
 
         nextLevel = self.player.result(self.sso, ect.copy())
         # print "Result of a game at " + str(ect.remainingTimeMillis()) + "ms to the end."
-
+        self.lastSsoType = self.player.lastSsoType
         if ect.exceededMaxTime():
             self.io.writeToServer(self.lastMessageId, "END_OVERSPENT", self.LOG)
         else:
@@ -248,4 +247,4 @@ class ClientComm:
                 end_message = "END_VALIDATION" if self.sso.isValidation else "END_TRAINING"
                 self.io.writeToServer(self.lastMessageId, end_message, self.LOG)
             else:
-                self.io.writeToServer(self.lastMessageId, str(nextLevel), self.LOG)
+                self.io.writeToServer(self.lastMessageId, str(nextLevel) + "#" + self.lastSsoType, self.LOG)

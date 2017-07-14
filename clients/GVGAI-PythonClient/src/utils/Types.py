@@ -1,4 +1,3 @@
-from enum import Enum
 
 class ACTIONS:
     """
@@ -31,7 +30,10 @@ class WINNER:
     PLAYER_WINS = 1
 
 
-class LEARNING_SSO_TYPE(Enum):
-    IMAGE = 0
-    JSON = 1
-    BOTH = 2
+class LEARNING_SSO_TYPE():
+    def __init__(self):
+        pass
+
+    IMAGE = "IMAGE"
+    JSON = "JSON"
+    BOTH = "BOTH"

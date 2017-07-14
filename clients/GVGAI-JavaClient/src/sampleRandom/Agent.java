@@ -22,7 +22,9 @@ public class Agent extends utils.AbstractPlayer {
      * Public method to be called at the start of the communication. No game has been initialized yet.
      * Perform one-time setup here.
      */
-    public Agent(){}
+    public Agent(){
+        lastSsoType = Types.LEARNING_SSO_TYPE.JSON;
+    }
 
 
     /**
