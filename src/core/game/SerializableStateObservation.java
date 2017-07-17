@@ -50,12 +50,27 @@ public class SerializableStateObservation {
     public ArrayList<Types.ACTIONS> availableActions;
     public HashMap<Integer, Integer> avatarResources;
     public Observation[][][] observationGrid;
+    public int observationGridNum;
+    public int observationGridMaxRow;
+    public int observationGridMaxCol;
     public Observation[][] NPCPositions;
+    public int NPCPositionsNum;
+    public int NPCPositionsMaxRow;
     public Observation[][] immovablePositions;
+    public int immovablePositionsNum;
+    public int immovablePositionsMaxRow;
     public Observation[][] movablePositions;
+    public int movablePositionsNum;
+    public int movablePositionsMaxRow;
     public Observation[][] resourcesPositions;
+    public int resourcesPositionsNum;
+    public int resourcesPositionsMaxRow;
     public Observation[][] portalsPositions;
+    public int portalsPositionsNum;
+    public int portalsPositionsMaxRow;
     public Observation[][] fromAvatarSpritesPositions;
+    public int fromAvatarSpritesPositionsNum;
+    public int fromAvatarSpritesPositionsMaxRow;
 
     public SerializableStateObservation(StateObservation s, Boolean both){
         try {
@@ -146,25 +161,38 @@ public class SerializableStateObservation {
 
         // Observation grid
         if (s.getObservationGrid()!=null) {
-            observationGrid = new Observation[s.getObservationGrid().length][s.getObservationGrid()[0].length][];
-
-            for (int i = 0; i < s.getObservationGrid().length; i++) {
-                for (int j = 0; j < s.getObservationGrid()[i].length; j++) {
-                    row = s.getObservationGrid()[i][j];
-                    if (row == null) {
-                        observationGrid[i][j] = new Observation[0];
-                    } else {
-                        observationGrid[i][j] = row.toArray(new Observation[row.size()]);
+            observationGridNum = s.getObservationGrid().length;
+            observationGridMaxRow = s.getObservationGrid()[0].length;
+            observationGridMaxCol = 0;
+            for (int i = 0; i < observationGridNum; i++) {
+                for (int j = 0; j < observationGridMaxRow; j++) {
+                    int rowSize = s.getObservationGrid()[i][j].size();
+                    if (rowSize>observationGridMaxCol) {
+                        observationGridMaxCol = rowSize;
                     }
+                }
+            }
+            observationGrid = new Observation[observationGridNum][observationGridMaxRow][observationGridMaxCol];
+            for (int i = 0; i < observationGridNum; i++) {
+                for (int j = 0; j < observationGridMaxRow; j++) {
+                    row = s.getObservationGrid()[i][j];
+                    observationGrid[i][j] = row.toArray(new Observation[row.size()]);
                 }
             }
         }
 
         // NPC positions
         if (s.getNPCPositions()!=null) {
-            NPCPositions = new Observation[s.getNPCPositions().length][];
-
-            for (int i = 0; i < s.getNPCPositions().length; i++) {
+            NPCPositionsNum = s.getNPCPositions().length;
+            NPCPositionsMaxRow = 0;
+            for (int i = 0; i < NPCPositionsNum; i++) {
+                int rowSize = s.getNPCPositions()[i].size();
+                if (rowSize>NPCPositionsMaxRow) {
+                    NPCPositionsMaxRow = rowSize;
+                }
+            }
+            NPCPositions = new Observation[NPCPositionsNum][NPCPositionsMaxRow];
+            for (int i = 0; i < NPCPositionsNum; i++) {
                 row = s.getNPCPositions()[i];
                 NPCPositions[i] = row.toArray(new Observation[row.size()]);
             }
@@ -172,8 +200,15 @@ public class SerializableStateObservation {
 
         // Immovable positions
         if (s.getImmovablePositions()!=null) {
-            immovablePositions = new Observation[s.getImmovablePositions().length][];
-
+            immovablePositionsNum = s.getImmovablePositions().length;
+            immovablePositionsMaxRow = 0;
+            for (int i = 0; i < s.getImmovablePositions().length; i++) {
+                int rowSize = s.getImmovablePositions()[i].size();
+                if (rowSize>immovablePositionsMaxRow) {
+                    immovablePositionsMaxRow = rowSize;
+                }
+            }
+            immovablePositions = new Observation[immovablePositionsNum][immovablePositionsMaxRow];
             for (int i = 0; i < s.getImmovablePositions().length; i++) {
                 row = s.getImmovablePositions()[i];
                 immovablePositions[i] = row.toArray(new Observation[row.size()]);
@@ -182,9 +217,16 @@ public class SerializableStateObservation {
 
         // Movable positions
         if(s.getMovablePositions()!=null) {
-            movablePositions = new Observation[s.getMovablePositions().length][];
-
-            for (int i = 0; i < s.getMovablePositions().length; i++) {
+            movablePositionsNum = s.getMovablePositions().length;
+            movablePositionsMaxRow = 0;
+            for (int i = 0; i < movablePositionsNum; i++) {
+                int rowSize = s.getMovablePositions()[i].size();
+                if (rowSize>movablePositionsMaxRow) {
+                    movablePositionsMaxRow = rowSize;
+                }
+            }
+            movablePositions = new Observation[movablePositionsNum][movablePositionsMaxRow];
+            for (int i = 0; i < movablePositionsNum; i++) {
                 row = s.getMovablePositions()[i];
                 movablePositions[i] = row.toArray(new Observation[row.size()]);
             }
@@ -192,9 +234,16 @@ public class SerializableStateObservation {
 
         // Resource position
         if(s.getResourcesPositions()!=null) {
-            resourcesPositions = new Observation[s.getResourcesPositions().length][];
-
-            for (int i = 0; i < s.getResourcesPositions().length; i++) {
+            resourcesPositionsNum = s.getResourcesPositions().length;
+            resourcesPositionsMaxRow = 0;
+            for (int i = 0; i < resourcesPositionsNum; i++) {
+                int rowSize = s.getResourcesPositions()[i].size();
+                if (rowSize>resourcesPositionsMaxRow) {
+                    resourcesPositionsMaxRow = rowSize;
+                }
+            }
+            resourcesPositions = new Observation[resourcesPositionsNum][resourcesPositionsMaxRow];
+            for (int i = 0; i < resourcesPositionsNum; i++) {
                 row = s.getResourcesPositions()[i];
                 resourcesPositions[i] = row.toArray(new Observation[row.size()]);
             }
@@ -202,9 +251,16 @@ public class SerializableStateObservation {
 
         // Portal position
         if(s.getPortalsPositions()!=null) {
-            portalsPositions = new Observation[s.getPortalsPositions().length][];
-
-            for (int i = 0; i < s.getPortalsPositions().length; i++) {
+            portalsPositionsNum = s.getPortalsPositions().length;
+            portalsPositionsMaxRow = 0;
+            for (int i = 0; i < portalsPositionsNum; i++) {
+                int rowSize = s.getPortalsPositions()[i].size();
+                if (rowSize>portalsPositionsMaxRow) {
+                    portalsPositionsMaxRow = rowSize;
+                }
+            }
+            portalsPositions = new Observation[portalsPositionsNum][portalsPositionsMaxRow];
+            for (int i = 0; i < portalsPositionsNum; i++) {
                 row = s.getPortalsPositions()[i];
                 portalsPositions[i] = row.toArray(new Observation[row.size()]);
             }
@@ -212,14 +268,20 @@ public class SerializableStateObservation {
 
         // Avatar sprite position
         if(s.getFromAvatarSpritesPositions()!=null) {
-            fromAvatarSpritesPositions = new Observation[s.getFromAvatarSpritesPositions().length][];
-
-            for (int i = 0; i < s.getFromAvatarSpritesPositions().length; i++) {
+            fromAvatarSpritesPositionsNum = s.getFromAvatarSpritesPositions().length;
+            fromAvatarSpritesPositionsMaxRow = 0;
+            for (int i=0; i<fromAvatarSpritesPositionsNum; i++) {
+                int rowSize = s.getFromAvatarSpritesPositions()[i].size();
+                if (rowSize>fromAvatarSpritesPositionsMaxRow) {
+                    fromAvatarSpritesPositionsMaxRow = rowSize;
+                }
+            }
+            fromAvatarSpritesPositions = new Observation[fromAvatarSpritesPositionsNum][fromAvatarSpritesPositionsMaxRow];
+            for (int i = 0; i < fromAvatarSpritesPositionsNum; i++) {
                 row = s.getFromAvatarSpritesPositions()[i];
                 fromAvatarSpritesPositions[i] = row.toArray(new Observation[row.size()]);
             }
         }
-        //System.out.println(ect.elapsedMillis() + " ms taken to build SSO");
     }
 
 
@@ -258,7 +320,6 @@ public class SerializableStateObservation {
                 gson.toJson(this, new FileWriter(filename));
             }catch (Exception e){}
         }
-
         return message;
     }
 

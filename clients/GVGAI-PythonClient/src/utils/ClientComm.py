@@ -4,10 +4,11 @@ import logging
 import sys
 import os
 import traceback
+
+from utils.SerializableStateObservation import SerializableStateObservation, Phase, Observation
+
 sys.path.append(os.path.dirname(os.path.realpath(__file__))+'/..')
 sys.path.append('../sampleRandom')
-
-from SerializableStateObservation import *
 
 from CompetitionParameters import CompetitionParameters
 from ElapsedCpuTimer import ElapsedCpuTimer
@@ -106,6 +107,67 @@ class ClientComm:
         self.sso.__dict__.update(d)
         return self.sso
 
+    def parse_json(self, input):
+        parsed_input = json.loads(input)
+        self.sso.__dict__.update(parsed_input)
+        if parsed_input.get('observationGrid'):
+            self.sso.observationGrid = [[[None for j in range(self.sso.observationGridMaxCol)]
+                                         for i in range(self.sso.observationGridMaxRow)]
+                                        for k in range(self.sso.observationGridNum)]
+            for i in range(self.sso.observationGridNum):
+                for j in range(len(parsed_input['observationGrid'][i])):
+                    for k in range(len(parsed_input['observationGrid'][i][j])):
+                        self.sso.observationGrid[i][j][k] = Observation(parsed_input['observationGrid'][i][j][k])
+
+        if parsed_input.get('NPCPositions'):
+            self.sso.NPCPositions = [[None for j in
+                                            range(self.sso.NPCPositionsMaxRow)] for i in
+                                           range(self.sso.NPCPositionsNum)]
+            for i in range(self.sso.NPCPositionsNum):
+                for j in range(len(parsed_input['NPCPositions'][i])):
+                    self.sso.NPCPositions[i][j] = Observation(parsed_input['NPCPositions'][i][j])
+
+        if parsed_input.get('immovablePositions'):
+            self.sso.immovablePositions = [[None for j in
+                                            range(self.sso.immovablePositionsMaxRow)] for i in
+                                           range(self.sso.immovablePositionsNum)]
+            for i in range(self.sso.immovablePositionsNum):
+                for j in range(len(parsed_input['immovablePositions'][i])):
+                    self.sso.immovablePositions[i][j] = Observation(parsed_input['immovablePositions'][i][j])
+
+        if parsed_input.get('movablePositions'):
+            self.sso.movablePositions = [[None for j in
+                                            range(self.sso.movablePositionsMaxRow)] for i in
+                                           range(self.sso.movablePositionsNum)]
+            for i in range(self.sso.movablePositionsNum):
+                for j in range(len(parsed_input['movablePositions'][i])):
+                    self.sso.movablePositions[i][j] = Observation(parsed_input['movablePositions'][i][j])
+
+        if parsed_input.get('resourcesPositions'):
+            self.sso.resourcesPositions = [[None for j in
+                                            range(self.sso.resourcesPositionsMaxRow)] for i in
+                                           range(self.sso.resourcesPositionsNum)]
+            for i in range(self.sso.resourcesPositionsNum):
+                for j in range(len(parsed_input['resourcesPositions'][i])):
+                    self.sso.resourcesPositions[i][j] = Observation(parsed_input['resourcesPositions'][i][j])
+
+        if parsed_input.get('portalsPositions'):
+            self.sso.portalsPositions = [[None for j in
+                                            range(self.sso.portalsPositionsMaxRow)] for i in
+                                           range(self.sso.portalsPositionsNum)]
+            for i in range(self.sso.portalsPositionsNum):
+                for j in range(len(parsed_input['portalsPositions'][i])):
+                    self.sso.portalsPositions[i][j] = Observation(parsed_input['portalsPositions'][i][j])
+
+        if parsed_input.get('fromAvatarSpritesPositions'):
+            self.sso.fromAvatarSpritesPositions = [[None for j in
+                                            range(self.sso.fromAvatarSpritesPositionsMaxRow)] for i in
+                                           range(self.sso.fromAvatarSpritesPositionsNum)]
+            for i in range(self.sso.fromAvatarSpritesPositionsNum):
+                for j in range(len(parsed_input['fromAvatarSpritesPositions'][i])):
+                    self.sso.fromAvatarSpritesPositions[i][j] = Observation(parsed_input['fromAvatarSpritesPositions'][i][j])
+
+
     """
      * Method that interprets the received messages from the server's side.
      * A message can either be a string (in the case of initialization), or
@@ -136,7 +198,8 @@ class ClientComm:
                 self.sso.phase = Phase.FINISH
             else:
                 js.replace('"', '')
-                self.sso = json.loads(js, object_hook=self.as_sso)
+                self.parse_json(js)
+                # self.sso = json.loads(js, object_hook=self.as_sso)
 
             if self.lastSsoType == LEARNING_SSO_TYPE.IMAGE or self.lastSsoType == "IMAGE" \
                     or self.lastSsoType == LEARNING_SSO_TYPE.BOTH or self.lastSsoType == "BOTH":
@@ -162,7 +225,6 @@ class ClientComm:
         if ect.exceededMaxTime():
             self.io.writeToServer(self.lastMessageId, "START_FAILED", self.LOG)
         else:
-            print("start(self): " + self.lastSsoType)
             self.io.writeToServer(self.lastMessageId, "START_DONE" + "#" + self.lastSsoType, self.LOG)
 
     def startAgent(self):

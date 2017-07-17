@@ -39,6 +39,16 @@ public class Observation implements Comparable<Observation>
      */
     public double sqDist;
 
+    public Observation() {
+        // used for learning track
+        category = -1;
+        itype = -1;
+        obsID = -1;
+        position = new Vector2d();
+        reference = null;
+        sqDist = -1;
+    }
+
     /**
      * New observation. It is the observation of a sprite, recording its ID and position.
      * @param itype type of the sprite of this observation
