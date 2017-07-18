@@ -11,7 +11,6 @@ import core.vgdl.VGDLSprite;
 import core.logging.Logger;
 import core.logging.Message;
 import core.content.GameContent;
-import ontology.Types;
 import tools.IO;
 import tools.Vector2d;
 import tools.pathfinder.PathFinder;
@@ -97,17 +96,6 @@ public class BasicGame extends Game {
 		}
 	}
 
-	public void updateScreenSize() {
-		if (square_size != -1) {
-			CompetitionParameters.windowReduceScale = findMaxDivisor(square_size);
-			block_size = square_size / CompetitionParameters.windowReduceScale;
-			screenSize = new Dimension(size.width * block_size, size.height * block_size);
-		} else {
-			CompetitionParameters.maxWindowSize = Math.max(size.width, size.height);
-			block_size = 2;
-		}
-	}
-
 	@Override
 	/**
 	 * Builds a level from this game, reading it from file.
@@ -124,9 +112,13 @@ public class BasicGame extends Game {
 		size.height = desc_lines.length;
 
 		if (square_size != -1) {
-			block_size = square_size / CompetitionParameters.windowReduceScale;
+			block_size = square_size;
 		} else {
-			block_size = Math.max(2, (int) CompetitionParameters.maxWindowSize / Math.max(size.width, size.height));
+			block_size = Math.max(2, (int) CompetitionParameters.MAX_WINDOW_SIZE / Math.max(size.width, size.height));
+		}
+
+		if (CompetitionParameters.IS_LEARNING) {
+			block_size =CompetitionParameters.LEARNING_BLOCK_SIZE;
 		}
 		screenSize = new Dimension(size.width * block_size, size.height * block_size);
 
