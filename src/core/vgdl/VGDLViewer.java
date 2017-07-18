@@ -43,7 +43,7 @@ public class VGDLViewer extends JComponent
      */
     public Player player;
 
-    public boolean justImage = true;
+    public boolean justImage = false;
 
     /**
      * Creates the viewer for the game.
