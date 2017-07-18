@@ -973,13 +973,6 @@ public abstract class Game {
 		// Create and initialize the panel for the graphics.
 		VGDLViewer view = new VGDLViewer(this, players[humanID]);
 		view.justImage = true;
-//		JEasyFrame frame;
-//		frame = new JEasyFrame(view, "Java-VGDL");
-//		frame.setSize(0,0);
-
-//		frame.addKeyListener(ki);
-//		frame.addWindowListener(wi);
-//		frame.pack();
 		wi.windowClosed = false;
 
 		// Determine the delay for playing with a good fps.
@@ -1009,14 +1002,7 @@ public abstract class Game {
 			// Draw all sprites in the panel.
 			view.paint(this.spriteGroups);
 
-			// Update the frame title to reflect current score and tick.
-//			this.setTitle(frame);
-
 			if (firstRun && isHuman) {
-				/*if (CompetitionParameters.dialogBoxOnStartAndEnd) {
-					JOptionPane.showMessageDialog(frame, "Click OK to start.");
-				}*/
-
 				firstRun = false;
 			}
 		}
@@ -1024,11 +1010,6 @@ public abstract class Game {
 
 		// Update the forward model for the game state sent to the controller.
 		fwdModel.update(this);
-
-		// performs the same event as the exit button were clicked
-		// closes the frame after game is over
-//		frame.dispose();
-//		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 
 		return handleResult();
 	}

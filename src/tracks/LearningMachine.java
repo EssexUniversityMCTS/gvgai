@@ -137,10 +137,6 @@ public class LearningMachine {
         }
 
         Game toPlay = new VGDLParser().parseGame(game_file);
-        if (toPlay instanceof BasicGame) {
-            BasicGame basicGame = (BasicGame) toPlay;
-//            basicGame.updateScreenSize();
-        }
         int levelIdx = 0;
 
         StatSummary[] victories = new StatSummary[toPlay.getNoPlayers()];
@@ -288,7 +284,6 @@ public class LearningMachine {
         if(isVisual) {
             score = toPlay.playGame(players, randomSeed, false, 0);
         } else {
-
             score = toPlay.playOnlineGame(players, randomSeed, false, 0);
 //            score = toPlay.runGame(players, randomSeed);
         }
