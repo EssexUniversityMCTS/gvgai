@@ -14,12 +14,8 @@ import ontology.Types;
 import tools.ElapsedCpuTimer;
 import tools.StatSummary;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Random;
-
-import static tools.Utils.findMaxDivisor;
 
 /**
  * Created by Daniel on 07.03.2017.
@@ -292,7 +288,9 @@ public class LearningMachine {
         if(isVisual) {
             score = toPlay.playGame(players, randomSeed, false, 0);
         } else {
-            score = toPlay.runGame(players, randomSeed);
+
+            score = toPlay.playOnlineGame(players, randomSeed, false, 0);
+//            score = toPlay.runGame(players, randomSeed);
         }
         toPlay.printResult();
 

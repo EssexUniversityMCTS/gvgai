@@ -1,22 +1,18 @@
 package core.vgdl;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
-import javax.swing.JComponent;
-
 import core.competition.CompetitionParameters;
 import core.game.Game;
 import core.player.LearningPlayer;
 import core.player.Player;
 import ontology.Types;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -47,6 +43,7 @@ public class VGDLViewer extends JComponent
      */
     public Player player;
 
+    public boolean justImage = true;
 
     /**
      * Creates the viewer for the game.
@@ -84,12 +81,6 @@ public class VGDLViewer extends JComponent
         //g.setColor(Types.LIGHTGRAY);
         g.setColor(Types.BLACK);
         g.fillRect(0, size.height, size.width, size.height);
-
-        //Possible efficiency improvement: static image with immovable objects.
-        /*
-        BufferedImage mapImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
-        Graphics2D gImage = mapImage.createGraphics();
-        */
 
         try {
             int[] gameSpriteOrder = game.getSpriteOrder();
@@ -144,21 +135,17 @@ public class VGDLViewer extends JComponent
 
     public void saveImage(String fileName)  {
         try {
-            // TYPE_INT_ARGB specifies the image format: 8-bit RGBA packed
-            // into integer pixels
-//            long t = System.currentTimeMillis();
             BufferedImage bi = new BufferedImage( (int) size.getWidth(), (int) size.getHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D graphics = bi.createGraphics();
             paintWithGraphics(graphics);
             File file = new File(fileName);
+            if (justImage) {
+                graphics.dispose();
+            }
             ImageIO.write(bi, "png", file);
-//            System.out.println("Wrote image to: " + fileName);
-//            long t2 = System.currentTimeMillis();
-//            System.out.println("Time elapsed = " + (t2 - t) + "ms");
         } catch (IOException ie) {
             ie.printStackTrace();
         }
 
     }
-
 }

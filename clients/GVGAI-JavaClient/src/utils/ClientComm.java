@@ -1,11 +1,10 @@
 package utils;
 
-import serialization.Types;
+import serialization.SerializableStateObservation;
 import serialization.Types.LEARNING_SSO_TYPE;
 import utils.com.google.gson.Gson;
-import serialization.SerializableStateObservation;
 
-import java.io.*;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 
 /**
@@ -180,7 +179,8 @@ public class ClientComm {
             this.sso = gson.fromJson(json, SerializableStateObservation.class);
 
             // If expect image
-            if ((sso.phase != SerializableStateObservation.Phase.INIT) &&
+            if ((sso.phase != SerializableStateObservation.Phase.INIT
+                && sso.phase != SerializableStateObservation.Phase.ABORT) &&
                 (lastSsoType == LEARNING_SSO_TYPE.IMAGE || lastSsoType == LEARNING_SSO_TYPE.BOTH)) {
                 // If an image has been received, then save its PNG equivalent
                 sso.convertBytesToPng(sso.imageArray);

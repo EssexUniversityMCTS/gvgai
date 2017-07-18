@@ -201,10 +201,11 @@ class ClientComm:
                 self.parse_json(js)
                 # self.sso = json.loads(js, object_hook=self.as_sso)
 
-            if self.lastSsoType == LEARNING_SSO_TYPE.IMAGE or self.lastSsoType == "IMAGE" \
-                    or self.lastSsoType == LEARNING_SSO_TYPE.BOTH or self.lastSsoType == "BOTH":
-                if self.sso.imageArray:
-                    self.sso.convertBytesToPng(self.sso.imageArray)
+            if self.sso.phase == "ACT":
+                if self.lastSsoType == LEARNING_SSO_TYPE.IMAGE or self.lastSsoType == "IMAGE" \
+                        or self.lastSsoType == LEARNING_SSO_TYPE.BOTH or self.lastSsoType == "BOTH":
+                    if self.sso.imageArray:
+                        self.sso.convertBytesToPng(self.sso.imageArray)
                 
         except Exception as e:
             logging.exception(e)
