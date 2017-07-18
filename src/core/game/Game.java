@@ -1,20 +1,5 @@
 package core.game;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.util.*;
-
-import javax.swing.JOptionPane;
-
-import core.player.LearningPlayer;
-import core.vgdl.SpriteGroup;
-import core.vgdl.VGDLFactory;
-import core.vgdl.VGDLRegistry;
-import core.vgdl.VGDLSprite;
-import core.vgdl.VGDLViewer;
-import core.logging.Logger;
-import core.logging.Message;
 import core.competition.CompetitionParameters;
 import core.content.Content;
 import core.content.GameContent;
@@ -23,8 +8,11 @@ import core.content.SpriteContent;
 import core.game.GameDescription.InteractionData;
 import core.game.GameDescription.SpriteData;
 import core.game.GameDescription.TerminationData;
+import core.logging.Logger;
+import core.logging.Message;
 import core.player.Player;
 import core.termination.Termination;
+import core.vgdl.*;
 import ontology.Types;
 import ontology.avatar.MovingAvatar;
 import ontology.effects.Effect;
@@ -34,7 +22,9 @@ import tools.*;
 import tools.pathfinder.Node;
 import tools.pathfinder.PathFinder;
 
-import static tools.Utils.findMaxDivisor;
+import javax.swing.*;
+import java.awt.*;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA. User: Diego Date: 17/10/13 Time: 13:42 This is a
@@ -972,6 +962,73 @@ public abstract class Game {
 
 		// Update the forward model for the game state sent to the controller.
 		fwdModel.update(this);
+
+		return handleResult();
+	}
+
+	public double[] playOnlineGame(Player[] players, int randomSeed, boolean isHuman, int humanID) {
+		// Prepare some structures and references for this game.
+		prepareGame(players, randomSeed, humanID);
+
+		// Create and initialize the panel for the graphics.
+		VGDLViewer view = new VGDLViewer(this, players[humanID]);
+		view.justImage = true;
+//		JEasyFrame frame;
+//		frame = new JEasyFrame(view, "Java-VGDL");
+//		frame.setSize(0,0);
+
+//		frame.addKeyListener(ki);
+//		frame.addWindowListener(wi);
+//		frame.pack();
+		wi.windowClosed = false;
+
+		// Determine the delay for playing with a good fps.
+		double delay = CompetitionParameters.LONG_DELAY;
+		for (Player player : players)
+			if (player instanceof tracks.singlePlayer.tools.human.Agent) {
+				delay = 1000.0 / CompetitionParameters.DELAY; // in milliseconds
+				break;
+			}
+
+		boolean firstRun = true;
+
+		// Play until the game is ended
+		while (!isEnded && !wi.windowClosed) {
+			// Determine the time to adjust framerate.
+			long then = System.currentTimeMillis();
+
+			this.gameCycle(); // Execute a game cycle.
+
+			// Get the remaining time to keep fps.
+			long now = System.currentTimeMillis();
+			int remaining = (int) Math.max(0, delay - (now - then));
+
+			// Wait until de next cycle.
+			waitStep(remaining);
+
+			// Draw all sprites in the panel.
+			view.paint(this.spriteGroups);
+
+			// Update the frame title to reflect current score and tick.
+//			this.setTitle(frame);
+
+			if (firstRun && isHuman) {
+				/*if (CompetitionParameters.dialogBoxOnStartAndEnd) {
+					JOptionPane.showMessageDialog(frame, "Click OK to start.");
+				}*/
+
+				firstRun = false;
+			}
+		}
+
+
+		// Update the forward model for the game state sent to the controller.
+		fwdModel.update(this);
+
+		// performs the same event as the exit button were clicked
+		// closes the frame after game is over
+//		frame.dispose();
+//		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 
 		return handleResult();
 	}
