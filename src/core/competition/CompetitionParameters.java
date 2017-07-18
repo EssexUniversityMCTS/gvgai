@@ -154,7 +154,7 @@ public class CompetitionParameters
     public static final int KEY_PULSE = 1;
     public static int KEY_HANDLER = KEY_INPUT;
 
-    public static int windowReduceScale = 1;
-    public static double maxWindowSize = 800.0;
-    public static boolean resizeWindow = false;
+    public static double MAX_WINDOW_SIZE = 800.0;
+    public static int LEARNING_BLOCK_SIZE = 10;
+    public static boolean IS_LEARNING = false;
 }
