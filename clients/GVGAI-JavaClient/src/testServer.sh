@@ -12,5 +12,11 @@ DIRECTORY='./logs'
 if [ ! -d "$DIRECTORY" ]; then
   mkdir ${DIRECTORY}
 fi
-javac  -Xlint:unchecked $(find "."  | grep \\\.java$)
-java -Xms512m -Xmx2048m TestLearningClient -gameId ${gameId} -shDir ${shDir} -serverDir ${serverDir} -visuals
+
+build_folder='build'
+
+rm -rf ${build_folder}
+mkdir -p ${build_folder}
+
+javac -d build -Xlint:unchecked $(find "."  | grep \\\.java$)
+java -classpath build: -Xms512m -Xmx2048m TestLearningClient -gameId ${gameId} -shDir ${shDir} -serverDir ${serverDir} -visuals

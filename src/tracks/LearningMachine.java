@@ -212,7 +212,7 @@ public class LearningMachine {
             }
             level_idx++;
         }
-
+        System.out.println("End Validation in " + validationLevels.length + " levels.");
         String vict = "", sc = "";
         for (int i = 0; i < toPlay.no_players; i++) {
             vict += victories[i].mean();
