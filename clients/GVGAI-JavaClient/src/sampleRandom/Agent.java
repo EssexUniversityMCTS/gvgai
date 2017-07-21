@@ -23,7 +23,7 @@ public class Agent extends utils.AbstractPlayer {
      * Perform one-time setup here.
      */
     public Agent(){
-        lastSsoType = Types.LEARNING_SSO_TYPE.JSON;
+        lastSsoType = Types.LEARNING_SSO_TYPE.BOTH;
     }
 
 
@@ -58,7 +58,7 @@ public class Agent extends utils.AbstractPlayer {
 //            }
 //            n--;
 //        }
-        this.lastSsoType = Types.LEARNING_SSO_TYPE.IMAGE;
+        this.lastSsoType = Types.LEARNING_SSO_TYPE.BOTH;
         if (sso.gameTick == 5) {
             return Types.ACTIONS.ACTION_ESCAPE;
         }

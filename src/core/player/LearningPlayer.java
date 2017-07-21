@@ -63,6 +63,8 @@ public class LearningPlayer extends Player {
                 case JSON:
                     so.currentGameState = Types.GAMESTATES.ACT_STATE;
                     sso = new SerializableStateObservation(so);
+                    // Used for debugging
+                    System.out.println(sso.toString());
                     comm.commSend(sso.serialize(null));
                     break;
                 case IMAGE:
@@ -78,6 +80,8 @@ public class LearningPlayer extends Player {
                     // Set the game state to the appropriate state and the millisecond counter, then send the serialized observation.
                     so.currentGameState = Types.GAMESTATES.ACT_STATE;
                     sso = new SerializableStateObservation(so, true);
+                    // Used for debugging
+                    System.out.println(sso.toString());
                     comm.commSend(sso.serialize(null));
                     break;
                 default:

@@ -6,6 +6,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
@@ -425,6 +426,56 @@ public class SerializableStateObservation {
         }
         observation += "}";
 
+        String npcpositions = "NPCPositions{\n";
+        if (NPCPositions != null) {
+            for (int i = 0; i < NPCPositions.length; i++) {
+                for (Observation obs : NPCPositions[i]) {
+                    npcpositions += obs.toString();
+                }
+            }
+        }
+        npcpositions += "}";
+
+        String immovablepos = "ImmovablePositions{\n";
+        if (immovablePositions != null) {
+            for (int i = 0; i < immovablePositions.length; i++) {
+                for (Observation obs : immovablePositions[i]) {
+                    immovablepos += obs.toString();
+                }
+            }
+        }
+        immovablepos += "}";
+
+        String movablepos = "MovablePositions{\n";
+        if (movablePositions != null) {
+            for (int i = 0; i < movablePositions.length; i++) {
+                for (Observation obs : movablePositions[i]) {
+                    movablepos += obs.toString();
+                }
+            }
+        }
+        movablepos += "}";
+
+        String resourcespos = "ResourcesPositions{\n";
+        if (resourcesPositions != null) {
+            for (int i = 0; i < resourcesPositions.length; i++) {
+                for (Observation obs : resourcesPositions[i]) {
+                    resourcespos += obs.toString();
+                }
+            }
+        }
+        resourcespos += "}";
+
+        String portalpos = "PortalsPositions{\n";
+        if (portalsPositions != null) {
+            for (int i = 0; i < portalsPositions.length; i++) {
+                for (Observation obs : portalsPositions[i]) {
+                    portalpos += obs.toString();
+                }
+            }
+        }
+        portalpos += "}";
+
         return "SerializableStateObservation{" +
                 "imageArray=" + java.util.Arrays.toString(imageArray) +
                 ", phase=" + phase +
@@ -454,7 +505,7 @@ public class SerializableStateObservation {
                 ", resourcesPositions=" + java.util.Arrays.toString(resourcesPositions) +
                 ", portalsPositions=" + java.util.Arrays.toString(portalsPositions) +
                 ", fromAvatarSpritesPositions=" + java.util.Arrays.toString(fromAvatarSpritesPositions) +
-                "}\n" + observation;
+                "}\n" + observation + "}\n" + npcpositions + "}\n" + immovablepos + "}\n" + movablepos + "}\n" + resourcespos + "}\n" + portalpos;
     }
 }
 

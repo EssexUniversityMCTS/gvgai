@@ -188,7 +188,7 @@ public class ClientComm {
             // Used for debugging
             if (sso.phase == SerializableStateObservation.Phase.ACT) {
                 io.writeToFile("lastMessageId="+ lastMessageId + "\n");
-                io.writeToFile(sso.toString());
+                io.writeToFile(this.sso.toString());
             }
         } catch (Exception e){
             io.logStackTrace(e);

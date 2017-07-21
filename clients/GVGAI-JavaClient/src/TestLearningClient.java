@@ -17,7 +17,7 @@ public class TestLearningClient
     {
         assert (CompetitionParameters.USE_SOCKETS);
         /** Init params */
-        int gameId = 2;
+        int gameId = 75;
         String shDir = "./src/utils";
         String serverDir;
         if (CompetitionParameters.OS_WIN) {
