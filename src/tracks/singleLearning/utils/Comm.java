@@ -32,7 +32,7 @@ public abstract class Comm extends Thread {
     /**
      * Message ID
      */
-    protected long messageId;
+    public static long messageId;
 
     /**
      * Default constructor

@@ -59,7 +59,7 @@ public class Agent extends utils.AbstractPlayer {
 //            n--;
 //        }
         this.lastSsoType = Types.LEARNING_SSO_TYPE.IMAGE;
-        if (sso.gameTick == 100) {
+        if (sso.gameTick == 5) {
             return Types.ACTIONS.ACTION_ESCAPE;
         }
 

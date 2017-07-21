@@ -186,7 +186,10 @@ public class ClientComm {
                 sso.convertBytesToPng(sso.imageArray);
             }
             // Used for debugging
-//            io.writeToFile(sso.toString());
+            if (sso.phase == SerializableStateObservation.Phase.ACT) {
+                io.writeToFile("lastMessageId="+ lastMessageId + "\n");
+                io.writeToFile(sso.toString());
+            }
         } catch (Exception e){
             io.logStackTrace(e);
         }

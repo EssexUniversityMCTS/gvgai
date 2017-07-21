@@ -4,6 +4,7 @@ import core.competition.CompetitionParameters;
 import tools.com.google.gson.Gson;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
+import tracks.singleLearning.utils.SocketComm;
 
 import javax.imageio.ImageIO;
 import java.io.ByteArrayOutputStream;
@@ -352,7 +353,9 @@ public class SerializableStateObservation {
         observation += "}";
 
         return "SerializableStateObservation{" +
+                "messageid=" + SocketComm.messageId + "\n" +
                 "imageArray=" + Arrays.toString(imageArray) +
+                ", phase=" + phase +
                 ", isValidation=" + isValidation +
                 ", gameScore=" + gameScore +
                 ", gameTick=" + gameTick +
@@ -370,7 +373,6 @@ public class SerializableStateObservation {
                 ", avatarMaxHealthPoints=" + avatarMaxHealthPoints +
                 ", avatarLimitHealthPoints=" + avatarLimitHealthPoints +
                 ", isAvatarAlive=" + isAvatarAlive +
-                ", phase=" + phase +
                 ", availableActions=" + availableActions +
                 ", avatarResources=" + avatarResources +
                 ", observationGrid=" + Arrays.toString(observationGrid) +

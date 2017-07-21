@@ -71,7 +71,7 @@ public class LearningPlayer extends Player {
                     sso = new SerializableStateObservation(so, false);
 
                     // Used for debugging
-//                    System.out.println(sso.toString());
+                    System.out.println(sso.toString());
                     comm.commSend(sso.serialize(null));
                     break;
                 case BOTH:
