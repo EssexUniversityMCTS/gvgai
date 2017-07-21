@@ -1176,6 +1176,29 @@ public abstract class Game {
 	}
 
 	/**
+	 * Prints the result of the game, indicating the game id, level id, winner, the score and the
+	 * number of game ticks played, in this order.
+	 */
+	public void printLearningResult(int levelIdx, boolean isValidation) {
+		String sb1 = "";
+		String sb2 = "";
+		for (int i = 0; i < no_players; i++) {
+			if (avatars[i] != null) {
+				sb1 += "Player" + i + ":" + avatars[i].getWinState().key() + ", ";
+				sb2 += "Player" + i + "-Score:" + avatars[i].getScore() + ", ";
+			} else {
+				sb1 += "Player" + i + ":-100, ";
+				sb2 += "Player" + i + "-Score:" + Types.SCORE_DISQ + ", ";
+			}
+		}
+		if (isValidation) {
+			System.out.println("[VALIDATION] Result (1->win; 0->lose): level:" + levelIdx + ", " + sb1 + sb2 + "timesteps:" + this.getGameTick());
+		} else {
+			System.out.println("[TRAINING] Result (1->win; 0->lose): level:" + levelIdx + ", " + sb1 + sb2 + "timesteps:" + this.getGameTick());
+		}
+	}
+
+	/**
 	 * Returns the complete result of the game (victory, score, timestep).
 	 * Indicated in triplets, one per player.
 	 *

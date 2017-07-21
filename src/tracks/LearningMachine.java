@@ -166,7 +166,7 @@ public class LearningMachine {
 
         level_idx = 0;
         int levelOutcome = 0;
-        System.out.println("Starting First Phase of Training in " + Types.NUM_TRAINING_LEVELS + " levels.");
+        System.out.println("[PHASE] Starting First Phase of Training in " + Types.NUM_TRAINING_LEVELS + " levels.");
         while(keepPlaying && level_idx < trainingLevels.length)
         {
             String level_file = trainingLevels[level_idx];
@@ -184,7 +184,7 @@ public class LearningMachine {
 
         if(levelOutcome != Types.LEARNING_FINISH_ROUND) {
             //We only continue playing if the round is not over.
-            System.out.println("Starting Second Phase of Training in " + Types.NUM_TRAINING_LEVELS + " levels.");
+            System.out.println("[PHASE] Starting Second Phase of Training in " + Types.NUM_TRAINING_LEVELS + " levels.");
             while (levelOutcome >= 0) {
                 // Play the selected level once
                 levelOutcome = playOneLevel(game_file, level_files[levelOutcome], 0, false, visual, recordActions,
@@ -197,7 +197,7 @@ public class LearningMachine {
 
         // Validation time
         // Establish the level files for level 3 and 4
-        System.out.println("Starting Validation in " + validationLevels.length + " levels.");
+        System.out.println("[PHASE] Starting Validation in " + validationLevels.length + " levels.");
         level_idx = 0; levelOutcome = 0;
         keepPlaying=true;
 //        System.err.println("At beginning, keepPlaying="+keepPlaying + ",level_idx="+level_idx);
@@ -212,7 +212,7 @@ public class LearningMachine {
             }
             level_idx++;
         }
-        System.out.println("End Validation in " + validationLevels.length + " levels.");
+        System.out.println("[PHASE] End Validation in " + validationLevels.length + " levels.");
         String vict = "", sc = "";
         for (int i = 0; i < toPlay.no_players; i++) {
             vict += victories[i].mean();
@@ -223,7 +223,7 @@ public class LearningMachine {
             }
         }
 
-        System.out.println("Results in game " + game_file + ", " +
+        System.out.println("[LOG] Results in game " + game_file + ", " +
                 vict + " , " + sc);
 
         //Finally, when the game is over, we need to finish the communication with the client.
@@ -274,7 +274,7 @@ public class LearningMachine {
             //Something went wrong in the constructor, controller disqualified
             toPlay.getAvatars()[0].disqualify(true);
             toPlay.handleResult();
-            toPlay.printResult();
+            toPlay.printLearningResult(levelIdx, isValidation);
             return -1;
         }
         players[0] = learningPlayer;
@@ -287,7 +287,7 @@ public class LearningMachine {
             score = toPlay.playOnlineGame(players, randomSeed, false, 0);
 //            score = toPlay.runGame(players, randomSeed);
         }
-        toPlay.printResult();
+        toPlay.printLearningResult(levelIdx, isValidation);
 
         //Finally, when the game is over, we need to tear the player down.
         LearningMachine.tearPlayerDown(players[0], toPlay);

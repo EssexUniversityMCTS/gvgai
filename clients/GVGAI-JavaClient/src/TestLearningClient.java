@@ -70,7 +70,7 @@ public class TestLearningClient
         if (CompetitionParameters.OS_WIN) {
             scriptFile = shDir +  "\\runServer_nocompile.bat";
         } else {
-            scriptFile = shDir + "/runServer_compile.sh";
+            scriptFile = shDir + "/runServer_nocompile.sh";
         }
 
         //Start the server side of the communication.
