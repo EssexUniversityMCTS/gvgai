@@ -59,6 +59,7 @@ class SerializableStateObservation:
         image = Image.open(io.BytesIO(bytearray(pixels)))
         image.save(CompetitionParameters.SCREENSHOT_FILENAME)
 
+
 class Phase:
     """
      * Used to control the communication between server and client, corresponding to the Java Client code:
@@ -68,6 +69,7 @@ class Phase:
         pass
 
     START, INIT, ACT, ABORT, END, FINISH = range(6)
+
 
 class Observation:
     """

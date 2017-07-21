@@ -23,6 +23,7 @@ if __name__ == "__main__":
     parser.add_argument('-gameId', action="store", dest='gameId', type=int, default=0)
     parser.add_argument('-agentName', action="store", dest='agentName', default='sampleRandom.Agent')
     parser.add_argument('-serverDir', action="store", dest='serverDir', default=serverDirDefault)
+    parser.add_argument('-serverJar', action="store", dest='serverJar', default='')
     parser.add_argument('-shDir', action="store", dest='shDir', default='utils')
     parser.add_argument('-visuals', action="store_true", dest='visuals', default=False)
     args = parser.parse_args(sys.argv)
@@ -35,11 +36,15 @@ if __name__ == "__main__":
     gamesDir = serverDir
 
     print("Run game " + str(gameId) + " with agent " + agentName)
-    if CompetitionParameters.OS_WIN:
-        scriptFile = shDir + "\\runServer_nocompile_python.bat " + str(gameId) + " " + str(serverDir) + " " + str(visuals)
+    if args.serverJar == '':
+        if CompetitionParameters.OS_WIN:
+            scriptFile = shDir + "\\runServer_nocompile_python.bat " + str(gameId) + " " + str(serverDir) + " " + str(visuals)
+        else:
+            scriptFile = os.path.join(shDir, "runServer_nocompile_python.sh " + str(gameId) + " " + str(serverDir) +
+                                      " " + str(visuals))
     else:
-        scriptFile = os.path.join(shDir, "runServer_nocompile_python.sh " + str(gameId) + " " + str(serverDir) +
-                                  " " + str(visuals))
+        scriptFile = os.path.join(shDir, "runServer_compile.sh " + str(args.serverJar) + " " + str(gameId) + " " + str(serverDir))
+
     try:
         print("scriptFile to run is: "+scriptFile)
         p = subprocess.Popen(scriptFile, shell=True)

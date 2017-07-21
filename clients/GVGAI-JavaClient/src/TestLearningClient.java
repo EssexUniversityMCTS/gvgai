@@ -20,6 +20,7 @@ public class TestLearningClient
         int gameId = 2;
         String shDir = "./src/utils";
         String serverDir;
+        String serverJar = "";
         if (CompetitionParameters.OS_WIN) {
             serverDir = "..\\..";
         } else {
@@ -63,24 +64,32 @@ public class TestLearningClient
         if (params.containsKey("visuals")) {
             visuals = true;
         }
+        if (params.containsKey("serverJar")) {
+            serverJar = params.get("serverJar").get(0);
+        }
         ElapsedWallTimer wallClock = new ElapsedWallTimer();
 
         //Available controllers:
         String scriptFile;
-        if (CompetitionParameters.OS_WIN) {
-            scriptFile = shDir +  "\\runServer_nocompile.bat";
-        } else {
-            scriptFile = shDir + "/runServer_nocompile.sh";
-        }
-
-        //Start the server side of the communication.
-        try{
-            String[] cmd;
+        String[] cmd;
+        if (serverJar == "") {
+            if (CompetitionParameters.OS_WIN) {
+                scriptFile = shDir + "\\runServer_nocompile.bat";
+            } else {
+                scriptFile = shDir + "/runServer_nocompile.sh";
+            }
             if (visuals) {
                 cmd = new String[]{scriptFile, gameId + "", serverDir, "true"};
             } else {
                 cmd = new String[]{scriptFile, gameId + "", serverDir, "false"};
             }
+        } else {
+            scriptFile = shDir + "/runServer_compile.sh";
+            cmd = new String[]{scriptFile, serverJar, gameId + "", serverDir};
+        }
+
+        //Start the server side of the communication.
+        try{
             ProcessBuilder builder = new ProcessBuilder(cmd);
             builder.redirectErrorStream(true);
             builder.start();
