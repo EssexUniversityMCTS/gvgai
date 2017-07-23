@@ -86,7 +86,7 @@ public class JavaServer {
         String games[];
         boolean GRID_PHYSICS = true;
 
-        System.out.println("Server asked to run at port: " + port + " where games are IN " + new File(gamesDir+ "/examples").getAbsolutePath());
+        System.out.println("[LOG] Server asked to run at port: " + port + " where games are IN " + new File(gamesDir+ "/examples").getAbsolutePath());
 
         // All public games (gridphysics)
         if(GRID_PHYSICS) {
@@ -126,6 +126,7 @@ public class JavaServer {
             level_files[i] = gamesPath + games[gameIdx] + "_lvl" + i +".txt";
         }
         // This plays a training round for a specified game.
+        System.out.println("[GAME] Game idx:" + gameIdx + ", game name:" + games[gameIdx]);
         LearningMachine.runMultipleGames(game, level_files, cmd, new String[]{null}, visuals);
 
 

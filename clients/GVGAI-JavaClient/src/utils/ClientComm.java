@@ -149,11 +149,11 @@ public class ClientComm {
 
         try {
             //Separate ID and message:
-            if (msg==null) {
+            if (msg == null) {
                 System.err.println("ClientComm: msg==null");
             }
             String message[] = msg.split(TOKEN_SEP);
-            if(message.length < 2)
+            if (message.length < 2)
                 return;
 
             lastMessageId = Integer.parseInt(message[0]);
@@ -165,12 +165,12 @@ public class ClientComm {
 
             // Set the state to "START" in case the connexion (not game) is in the initialization phase.
             // Happens only on one-time setup
-            if (json.equals("START")){
+            if (json.equals("START")) {
                 this.sso.phase = SerializableStateObservation.Phase.START;
                 return;
             }
 
-            if (json.equals("FINISH")){
+            if (json.equals("FINISH")) {
                 this.sso.phase = SerializableStateObservation.Phase.FINISH;
                 return;
             }
@@ -179,11 +179,12 @@ public class ClientComm {
             this.sso = gson.fromJson(json, SerializableStateObservation.class);
 
             // If expect image
-            if ((sso.phase != SerializableStateObservation.Phase.INIT
-                && sso.phase != SerializableStateObservation.Phase.ABORT) &&
-                (lastSsoType == LEARNING_SSO_TYPE.IMAGE || lastSsoType == LEARNING_SSO_TYPE.BOTH)) {
-                // If an image has been received, then save its PNG equivalent
-                sso.convertBytesToPng(sso.imageArray);
+            if (lastSsoType == LEARNING_SSO_TYPE.IMAGE || lastSsoType == LEARNING_SSO_TYPE.BOTH) {
+                if ((sso.phase != SerializableStateObservation.Phase.INIT
+                    && sso.phase != SerializableStateObservation.Phase.ABORT)) {
+                    // If an image has been received, then save its PNG equivalent
+                    sso.convertBytesToPng(sso.imageArray);
+                }
             }
             // Used for debugging
 //            io.writeToFile(sso.toString());

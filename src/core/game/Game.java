@@ -973,13 +973,6 @@ public abstract class Game {
 		// Create and initialize the panel for the graphics.
 		VGDLViewer view = new VGDLViewer(this, players[humanID]);
 		view.justImage = true;
-//		JEasyFrame frame;
-//		frame = new JEasyFrame(view, "Java-VGDL");
-//		frame.setSize(0,0);
-
-//		frame.addKeyListener(ki);
-//		frame.addWindowListener(wi);
-//		frame.pack();
 		wi.windowClosed = false;
 
 		// Determine the delay for playing with a good fps.
@@ -1009,14 +1002,7 @@ public abstract class Game {
 			// Draw all sprites in the panel.
 			view.paint(this.spriteGroups);
 
-			// Update the frame title to reflect current score and tick.
-//			this.setTitle(frame);
-
 			if (firstRun && isHuman) {
-				/*if (CompetitionParameters.dialogBoxOnStartAndEnd) {
-					JOptionPane.showMessageDialog(frame, "Click OK to start.");
-				}*/
-
 				firstRun = false;
 			}
 		}
@@ -1024,11 +1010,6 @@ public abstract class Game {
 
 		// Update the forward model for the game state sent to the controller.
 		fwdModel.update(this);
-
-		// performs the same event as the exit button were clicked
-		// closes the frame after game is over
-//		frame.dispose();
-//		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 
 		return handleResult();
 	}
@@ -1192,6 +1173,29 @@ public abstract class Game {
 		System.out.println("Result (1->win; 0->lose): " + sb1 + sb2 + "timesteps:" + this.getGameTick());
 		// System.out.println("Result (1->win; 0->lose):"+ winner.key() + ",
 		// Score:" + score + ", timesteps:" + this.getGameTick());
+	}
+
+	/**
+	 * Prints the result of the game, indicating the game id, level id, winner, the score and the
+	 * number of game ticks played, in this order.
+	 */
+	public void printLearningResult(int levelIdx, boolean isValidation) {
+		String sb1 = "";
+		String sb2 = "";
+		for (int i = 0; i < no_players; i++) {
+			if (avatars[i] != null) {
+				sb1 += "Player" + i + ":" + avatars[i].getWinState().key() + ", ";
+				sb2 += "Player" + i + "-Score:" + avatars[i].getScore() + ", ";
+			} else {
+				sb1 += "Player" + i + ":-100, ";
+				sb2 += "Player" + i + "-Score:" + Types.SCORE_DISQ + ", ";
+			}
+		}
+		if (isValidation) {
+			System.out.println("[VALIDATION] Result (1->win; 0->lose): level:" + levelIdx + ", " + sb1 + sb2 + "timesteps:" + this.getGameTick());
+		} else {
+			System.out.println("[TRAINING] Result (1->win; 0->lose): level:" + levelIdx + ", " + sb1 + sb2 + "timesteps:" + this.getGameTick());
+		}
 	}
 
 	/**
