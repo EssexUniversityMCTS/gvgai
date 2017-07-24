@@ -271,6 +271,7 @@ public class ClientComm {
         String action = player.act(sso, ect.copy()).toString();
         this.lastSsoType = player.lastSsoType;
         if(ect.exceededMaxTime()) {
+//            System.out.println("spent:"+ect.elapsedMillis() + ">" + CompetitionParameters.ACTION_TIME_DISQ);
             if (ect.elapsedMillis() > CompetitionParameters.ACTION_TIME_DISQ) {
                 io.writeToServer(lastMessageId, "END_OVERSPENT", LOG);
             } else {
@@ -294,11 +295,12 @@ public class ClientComm {
     {
         ElapsedCpuTimer ect = new ElapsedCpuTimer();
 
-        if(!global_ect.exceededMaxTime())
+        if(!global_ect.exceededMaxTime()) {
             ect = global_ect.copy();
-        else
+        }
+        else {
             ect.setMaxTimeMillis(CompetitionParameters.EXTRA_LEARNING_TIME);
-
+        }
         // Submit result and wait for next level.
         int nextLevel = player.result(sso, ect.copy());
         this.lastSsoType = player.lastSsoType;

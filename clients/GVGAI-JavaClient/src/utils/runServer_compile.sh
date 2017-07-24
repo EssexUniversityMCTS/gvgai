@@ -9,4 +9,4 @@ games_prefix=$3
 log_dir="logs"
 
 
-java -jar -agentlib:jdwp=transport=dt_socket,server=y,address=8888,suspend=n ${server_jar} -gameId ${game_id} -gamesDir ${games_prefix} > ${log_dir}/output_server_redirect_game${game_id}.txt 2> ${log_dir}/output_server_redirect_err_game${game_id}.txt
+java -cp ${server_jar} -agentlib:jdwp=transport=dt_socket,server=y,address=8888,suspend=n tracks.singleLearning.utils.JavaServer -gameId ${game_id} -gamesDir ${games_prefix} > ${log_dir}/output_server_redirect_game${game_id}.txt 2> ${log_dir}/output_server_redirect_err_game${game_id}.txt
