@@ -1,7 +1,6 @@
 package tracks;
 
 import core.competition.CompetitionParameters;
-import core.game.BasicGame;
 import core.game.Game;
 import core.game.StateObservation;
 import core.game.StateObservationMulti;
@@ -171,7 +170,7 @@ public class LearningMachine {
         {
             String level_file = trainingLevels[level_idx];
             for (int i = 0; keepPlaying && i < level_times; ++i) {
-                levelOutcome = playOneLevel(game_file,level_file,i,false, visual, recordActions,levelIdx,
+                levelOutcome = playOneLevel(game_file,level_file,i,false, visual, recordActions,level_idx,
                                                 players,actionFiles,toPlay,scores,victories);
 //                System.err.println("levelOutcome="+levelOutcome);
                 keepPlaying = (levelOutcome>=0);
@@ -188,7 +187,7 @@ public class LearningMachine {
             while (levelOutcome >= 0) {
                 // Play the selected level once
                 levelOutcome = playOneLevel(game_file, level_files[levelOutcome], 0, false, visual, recordActions,
-                        0, players, actionFiles, toPlay, scores, victories);
+                    levelOutcome, players, actionFiles, toPlay, scores, victories);
             }
         }
 
@@ -206,7 +205,7 @@ public class LearningMachine {
             String validation_level = validationLevels[level_idx];
             for (int i = 0; keepPlaying && i < level_times; ++i) {
 //                System.err.println("validation_level=" + validation_level);
-                levelOutcome = playOneLevel(game_file,validation_level,i, true, visual, recordActions,levelIdx,players,actionFiles,toPlay,scores,victories);
+                levelOutcome = playOneLevel(game_file,validation_level,i, true, visual, recordActions,level_idx+Types.NUM_TRAINING_LEVELS,players,actionFiles,toPlay,scores,victories);
                 keepPlaying = (levelOutcome!=Types.LEARNING_RESULT_DISQ);
 //                System.err.println("levelOutcome=" + levelOutcome + ", keepPlaying="+keepPlaying);
             }
@@ -223,8 +222,8 @@ public class LearningMachine {
             }
         }
 
-        System.out.println("[LOG] Results in game " + game_file + ", " +
-                vict + " , " + sc);
+//        System.out.println("[LOG] Results in game " + game_file + ", " +
+//                vict + " , " + sc);
 
         //Finally, when the game is over, we need to finish the communication with the client.
         player.finishPlayerCommunication();
@@ -271,6 +270,7 @@ public class LearningMachine {
 
         // If the player cannot be initialized, disqualify the controller
         if (learningPlayer == null) {
+            System.out.println("Something went wrong in the constructor, controller disqualified");
             //Something went wrong in the constructor, controller disqualified
             toPlay.getAvatars()[0].disqualify(true);
             toPlay.handleResult();
@@ -304,7 +304,7 @@ public class LearningMachine {
 
         // Sends results to player and retrieve the next level to be played
         int level = players[0].result(so);
-
+//        System.out.println("LearningMachine required level="+level);
         //reset the game.
         toPlay.reset();
 

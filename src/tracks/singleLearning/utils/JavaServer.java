@@ -4,8 +4,10 @@ import core.competition.CompetitionParameters;
 import tools.ElapsedWallTimer;
 import tracks.LearningMachine;
 
-import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static core.competition.CompetitionParameters.IMG_PATH;
 
@@ -86,7 +88,7 @@ public class JavaServer {
         String games[];
         boolean GRID_PHYSICS = true;
 
-        System.out.println("[LOG] Server asked to run at port: " + port + " where games are IN " + new File(gamesDir+ "/examples").getAbsolutePath());
+//        System.out.println("[LOG] Server asked to run at port: " + port + " where games are IN " + new File(gamesDir+ "/examples").getAbsolutePath());
 
         // All public games (gridphysics)
         if(GRID_PHYSICS) {
@@ -126,7 +128,7 @@ public class JavaServer {
             level_files[i] = gamesPath + games[gameIdx] + "_lvl" + i +".txt";
         }
         // This plays a training round for a specified game.
-        System.out.println("[GAME] Game idx:" + gameIdx + ", game name:" + games[gameIdx]);
+        System.out.println("[GAME] Game idx:" + gameIdx);
         LearningMachine.runMultipleGames(game, level_files, cmd, new String[]{null}, visuals);
 
 
