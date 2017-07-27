@@ -3,7 +3,8 @@
 # Got an java.net.BindException: Address already in use (Bind failed) from the server?
 # Maybe a process is running at that port. Check: lsof -i tcp:<port>
 
-gameId=0
+
+gameId=55
 shDir='utils'
 serverDir='../../..'
 DIRECTORY='./logs'
