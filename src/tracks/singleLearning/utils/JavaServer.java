@@ -47,7 +47,7 @@ public class JavaServer {
         }
         /** Update params */
         if (params.containsKey("gameId")) {
-            gameIdx = Integer.parseInt(params.get("gameId").get(0))-1;
+            gameIdx = Integer.parseInt(params.get("gameId").get(0));
         }
         if (params.containsKey("clientType")) {
             clientType = params.get("clientType").get(0);
