@@ -197,19 +197,22 @@ public class LearningMachine {
         // Validation time
         // Establish the level files for level 3 and 4
         System.out.println("[PHASE] Starting Validation in " + validationLevels.length + " levels.");
-        level_idx = 0; levelOutcome = 0;
-        keepPlaying=true;
+
+        for (int valid_idx=0; valid_idx<CompetitionParameters.validation_times; valid_idx++) {
+            level_idx = 0;
+            levelOutcome = 0;
+            keepPlaying = true;
 //        System.err.println("At beginning, keepPlaying="+keepPlaying + ",level_idx="+level_idx);
-        while(keepPlaying && level_idx < validationLevels.length)
-        {
-            String validation_level = validationLevels[level_idx];
-            for (int i = 0; keepPlaying && i < level_times; ++i) {
+            while (keepPlaying && level_idx < validationLevels.length) {
+                String validation_level = validationLevels[level_idx];
+                for (int i = 0; keepPlaying && i < level_times; ++i) {
 //                System.err.println("validation_level=" + validation_level);
-                levelOutcome = playOneLevel(game_file,validation_level,i, true, visual, recordActions,level_idx+Types.NUM_TRAINING_LEVELS,players,actionFiles,toPlay,scores,victories);
-                keepPlaying = (levelOutcome!=Types.LEARNING_RESULT_DISQ);
+                    levelOutcome = playOneLevel(game_file, validation_level, i, true, visual, recordActions, level_idx + Types.NUM_TRAINING_LEVELS, players, actionFiles, toPlay, scores, victories);
+                    keepPlaying = (levelOutcome != Types.LEARNING_RESULT_DISQ);
 //                System.err.println("levelOutcome=" + levelOutcome + ", keepPlaying="+keepPlaying);
+                }
+                level_idx++;
             }
-            level_idx++;
         }
         System.out.println("[PHASE] End Validation in " + validationLevels.length + " levels.");
         String vict = "", sc = "";
