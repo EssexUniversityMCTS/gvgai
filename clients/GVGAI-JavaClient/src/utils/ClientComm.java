@@ -269,6 +269,9 @@ public class ClientComm {
 
         // Save the player's action in a string
         String action = player.act(sso, ect.copy()).toString();
+        if (action == null || action == "") {
+            action = "ACTION_NIL";
+        }
         this.lastSsoType = player.lastSsoType;
         if(ect.exceededMaxTime()) {
 //            System.out.println("spent:"+ect.elapsedMillis() + ">" + CompetitionParameters.ACTION_TIME_DISQ);
