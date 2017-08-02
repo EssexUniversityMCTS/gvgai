@@ -51,7 +51,7 @@ class SerializableStateObservation:
         self.movablePositions = []
         self.resourcesPositions = []
         self.portalsPositions = []
-        self.fromAvatarSpritePositions = []
+        self.fromAvatarSpritesPositions = []
 
     def convertBytesToPng(self, pixels):
         for i, e in enumerate(pixels):
