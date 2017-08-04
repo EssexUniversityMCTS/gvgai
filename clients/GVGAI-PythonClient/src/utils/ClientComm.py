@@ -191,6 +191,7 @@ class ClientComm:
 
             self.lastMessageId = message[0]
             js = message[1]
+            self.sso = SerializableStateObservation()
 
             if js == "START":
                 self.sso.phase = Phase.START
