@@ -26,6 +26,8 @@ if __name__ == "__main__":
     parser.add_argument('-serverJar', action="store", dest='serverJar', default='')
     parser.add_argument('-shDir', action="store", dest='shDir', default='utils')
     parser.add_argument('-visuals', action="store_true", dest='visuals', default=False)
+    parser.add_argument('-gameFile', action="store", dest='gameFile', required=False, default='')
+    parser.add_argument('-levelFile', action="store", dest='levelFile', required=False, default='')
     args = parser.parse_args(sys.argv)
     # set variables
     gameId = args.gameId
@@ -34,6 +36,8 @@ if __name__ == "__main__":
     shDir = args.shDir
     visuals = args.visuals
     gamesDir = serverDir
+    gameFile = args.gameFile
+    levelFile = args.levelFile
 
     print("Run game " + str(gameId) + " with agent " + agentName)
     if args.serverJar == '':
@@ -43,7 +47,8 @@ if __name__ == "__main__":
             scriptFile = os.path.join(shDir, "runServer_nocompile_python.sh " + str(gameId) + " " + str(serverDir) +
                                       " " + str(visuals))
     else:
-        scriptFile = os.path.join(shDir, "runServer_compile.sh " + str(args.serverJar) + " " + str(gameId) + " " + str(serverDir))
+        # scriptFile = os.path.join(shDir, "runServer_compile.sh " + str(args.serverJar) + " " + str(gameId) + " " + str(serverDir))
+        scriptFile = os.path.join(shDir, "runServer_compile.sh " + str(args.serverJar) + " " + str(gameId) + " " + str(serverDir) + " " + gameFile + " " + levelFile)
 
     try:
         print("scriptFile to run is: "+scriptFile)

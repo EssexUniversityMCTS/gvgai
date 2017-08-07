@@ -104,6 +104,7 @@ public class SocketComm extends Comm {
         {
             String messageParts[] = ret.split(TOKEN_SEP);
             if(messageParts.length < 2) {
+                System.err.println("SocketComm: commRecv(): received message incomplete.");
                 return null;
             }
             int receivedID = Integer.parseInt(messageParts[0]);
@@ -134,11 +135,12 @@ public class SocketComm extends Comm {
                 return commRecv();
             }else{
                 //A message from the future? Ignore and return null;
+                System.err.println("SocketComm: commRecv: Communication Error! A message from the future!");
                 return null;
             }
+        } else {
+            return commRecv();
         }
-        System.err.println("I will return null");
-        return null;
     }
 
 }

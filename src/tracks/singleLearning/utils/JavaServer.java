@@ -64,7 +64,7 @@ public class JavaServer {
         }
         if (params.containsKey("imgDir")) {
             String imgDir = params.get("imgDir").get(0);
-            IMG_PATH = gamesDir + "/" + IMG_PATH;
+            IMG_PATH = imgDir + "/" + IMG_PATH;
         }
         if (params.containsKey("visuals")) {
             visuals = true;
@@ -128,7 +128,7 @@ public class JavaServer {
             level_files[i] = gamesPath + games[gameIdx] + "_lvl" + i +".txt";
         }
         // This plays a training round for a specified game.
-        System.out.println("[GAME] Game idx:" + gameIdx);
+        System.out.println("[GAME] Game idx:" + gameIdx + " game name " + games[gameIdx]);
         LearningMachine.runMultipleGames(game, level_files, cmd, new String[]{null}, visuals);
 
 
