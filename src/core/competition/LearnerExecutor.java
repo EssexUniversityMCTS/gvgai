@@ -55,6 +55,7 @@ public class LearnerExecutor {
     if (params.containsKey("gamesDir")) {
       IMG_PATH = params.get("gamesDir").get(0) + "/" + IMG_PATH;
     }
+
     if (params.containsKey("gameFile")) {
       gameFile = params.get("gameFile").get(0);
     }

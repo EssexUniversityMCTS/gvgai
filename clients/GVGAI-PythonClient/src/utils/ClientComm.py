@@ -273,6 +273,9 @@ class ClientComm:
         ect = ElapsedCpuTimer()
         ect.setMaxTimeMillis(CompetitionParameters.ACTION_TIME)
         action = str(self.player.act(self.sso, ect.copy()))
+        if (not action) or (action == ""):
+            action = "ACTION_NIL"
+
         self.lastSsoType = self.player.lastSsoType
         if ect.exceededMaxTime():
             if ect.elapsedMillis() > CompetitionParameters.ACTION_TIME_DISQ:

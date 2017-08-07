@@ -103,6 +103,7 @@ public class TestLearningClient
             builder.redirectErrorStream(true);
             builder.start();
             System.out.println("Server process started [OK]");
+            System.out.println("Agent name:" + agentName);
         } catch(IOException e) {
             e.printStackTrace();
         }
