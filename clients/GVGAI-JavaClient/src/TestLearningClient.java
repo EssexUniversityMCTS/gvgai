@@ -21,6 +21,8 @@ public class TestLearningClient
         String shDir = "./src/utils";
         String serverDir;
         String serverJar = "";
+        String gameFile = "";
+        String levelFile = "";
         if (CompetitionParameters.OS_WIN) {
             serverDir = "..\\..";
         } else {
@@ -67,6 +69,12 @@ public class TestLearningClient
         if (params.containsKey("serverJar")) {
             serverJar = params.get("serverJar").get(0);
         }
+        if (params.containsKey("gameFile")) {
+            gameFile = params.get("gameFile").get(0);
+        }
+        if (params.containsKey("levelFile")) {
+            levelFile = params.get("levelFile").get(0);
+        }
         ElapsedWallTimer wallClock = new ElapsedWallTimer();
 
         //Available controllers:
@@ -85,7 +93,8 @@ public class TestLearningClient
             }
         } else {
             scriptFile = shDir + "/runServer_compile.sh";
-            cmd = new String[]{scriptFile, serverJar, gameId + "", serverDir};
+//            cmd = new String[]{scriptFile, serverJar, gameId + "", serverDir};
+            cmd = new String[]{scriptFile, serverJar, gameId + "", serverDir,gameFile,levelFile};
         }
 
         //Start the server side of the communication.
@@ -94,6 +103,7 @@ public class TestLearningClient
             builder.redirectErrorStream(true);
             builder.start();
             System.out.println("Server process started [OK]");
+            System.out.println("Agent name:" + agentName);
         } catch(IOException e) {
             e.printStackTrace();
         }

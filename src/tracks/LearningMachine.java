@@ -33,7 +33,7 @@ public class LearningMachine {
      * @param randomSeed sampleRandom seed for the sampleRandom generator.
      */
     public static double[] runOneGame(String game_file, String level_file, boolean visuals,
-                                    String[] cmd, String actionFile, int randomSeed) throws IOException {
+                                      String[] cmd, String actionFile, int randomSeed) throws IOException {
         VGDLFactory.GetInstance().init(); //This always first thing to do.
         VGDLRegistry.GetInstance().init();
         CompetitionParameters.IS_LEARNING = true;
@@ -59,7 +59,7 @@ public class LearningMachine {
      * @param actionFiles filename of the file where the actions of this player, for this game, should be recorded.
      */
     public static void runMultipleGames(String game_file, String[] level_files,
-                                            String cmd[], String[] actionFiles, boolean visuals) throws IOException {
+                                        String cmd[], String[] actionFiles, boolean visuals) throws IOException {
         VGDLFactory.GetInstance().init(); //This always first thing to do.
         VGDLRegistry.GetInstance().init();
         CompetitionParameters.IS_LEARNING = true;
@@ -82,7 +82,7 @@ public class LearningMachine {
      * @throws IOException
      */
     private static double[] playOnce(LearningPlayer player, String actionFile, String game_file, String level_file,
-                                   boolean visuals, int randomSeed) throws IOException {
+                                     boolean visuals, int randomSeed) throws IOException {
         //Create the game.
         Game toPlay = new VGDLParser().parseGame(game_file);
         toPlay.buildLevel(level_file, randomSeed);
@@ -131,8 +131,8 @@ public class LearningMachine {
         if (actionFiles != null) {
             recordActions = true;
             assert actionFiles.length >= level_files.length * level_times :
-                    "runGames (actionFiles.length<level_files.length*level_times): " +
-                            "you must supply an action file for each game instance to be played, or null.";
+                "runGames (actionFiles.length<level_files.length*level_times): " +
+                    "you must supply an action file for each game instance to be played, or null.";
         }
 
         Game toPlay = new VGDLParser().parseGame(game_file);
@@ -171,7 +171,7 @@ public class LearningMachine {
             String level_file = trainingLevels[level_idx];
             for (int i = 0; keepPlaying && i < level_times; ++i) {
                 levelOutcome = playOneLevel(game_file,level_file,i,false, visual, recordActions,level_idx,
-                                                players,actionFiles,toPlay,scores,victories);
+                    players,actionFiles,toPlay,scores,victories);
 //                System.err.println("levelOutcome="+levelOutcome);
                 keepPlaying = (levelOutcome>=0);
             }
@@ -197,19 +197,22 @@ public class LearningMachine {
         // Validation time
         // Establish the level files for level 3 and 4
         System.out.println("[PHASE] Starting Validation in " + validationLevels.length + " levels.");
-        level_idx = 0; levelOutcome = 0;
-        keepPlaying=true;
+
+        for (int valid_idx=0; valid_idx<CompetitionParameters.validation_times; valid_idx++) {
+            level_idx = 0;
+            levelOutcome = 0;
+            keepPlaying = true;
 //        System.err.println("At beginning, keepPlaying="+keepPlaying + ",level_idx="+level_idx);
-        while(keepPlaying && level_idx < validationLevels.length)
-        {
-            String validation_level = validationLevels[level_idx];
-            for (int i = 0; keepPlaying && i < level_times; ++i) {
+            while (keepPlaying && level_idx < validationLevels.length) {
+                String validation_level = validationLevels[level_idx];
+                for (int i = 0; keepPlaying && i < level_times; ++i) {
 //                System.err.println("validation_level=" + validation_level);
-                levelOutcome = playOneLevel(game_file,validation_level,i, true, visual, recordActions,level_idx+Types.NUM_TRAINING_LEVELS,players,actionFiles,toPlay,scores,victories);
-                keepPlaying = (levelOutcome!=Types.LEARNING_RESULT_DISQ);
+                    levelOutcome = playOneLevel(game_file, validation_level, i, true, visual, recordActions, level_idx + Types.NUM_TRAINING_LEVELS, players, actionFiles, toPlay, scores, victories);
+                    keepPlaying = (levelOutcome != Types.LEARNING_RESULT_DISQ);
 //                System.err.println("levelOutcome=" + levelOutcome + ", keepPlaying="+keepPlaying);
+                }
+                level_idx++;
             }
-            level_idx++;
         }
         System.out.println("[PHASE] End Validation in " + validationLevels.length + " levels.");
         String vict = "", sc = "";
@@ -249,8 +252,8 @@ public class LearningMachine {
      * @throws IOException
      */
     public static int playOneLevel(String game_file, String level_file, int level_time, boolean isValidation, boolean isVisual, boolean recordActions,
-                                    int levelIdx, LearningPlayer[] players, String[] actionFiles, Game toPlay, StatSummary[] scores,
-                                    StatSummary[] victories) throws IOException{
+                                   int levelIdx, LearningPlayer[] players, String[] actionFiles, Game toPlay, StatSummary[] scores,
+                                   StatSummary[] victories) throws IOException{
         if (VERBOSE)
             System.out.println(" ** Playing game " + game_file + ", level " + level_file + " (" + level_time + ") **");
 
@@ -260,7 +263,7 @@ public class LearningMachine {
         //build the level in the game.
         toPlay.buildLevel(level_file, randomSeed);
 
-        String filename = recordActions ? actionFiles[levelIdx * level_time] : null; // TODO: 22/05/17 check this 
+        String filename = recordActions ? actionFiles[levelIdx * level_time] : null; // TODO: 22/05/17 check this
 
         // Score array to hold handled results.
         double[] score;
