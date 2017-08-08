@@ -41,7 +41,7 @@ class ElapsedCpuTimer:
         return self.elapsedMinutes() / 60
 
     def getTime(self):
-        return time.time()
+        return time.time()*1000000000
 
     """
      * Return current time in millesecond
