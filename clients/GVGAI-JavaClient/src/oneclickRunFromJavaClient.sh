@@ -24,4 +24,4 @@ javac -d ${build_folder} @sources.txt
 # run with screen visualisation on
 #java -classpath ${build_folder} TestLearningClient -shDir ${shDir} -serverDir ${serverDir} -gameId ${gameId} -visuals
 # run without screen visualisation off
-java -classpath ${build_folder} TestLearningClient -shDir ${shDir} -serverDir ${serverDir} -gameId ${gameId} -agentName sampleLearner.Agent
+java -classpath ${build_folder} TestLearningClient -shDir ${shDir} -serverDir ${serverDir} -gameId ${gameId} -agentName sampleRandom.Agent
