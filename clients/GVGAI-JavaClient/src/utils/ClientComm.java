@@ -120,7 +120,7 @@ public class ClientComm {
                 this.act();
 
             }else if( (sso.phase == SerializableStateObservation.Phase.ABORT) ||
-                      (sso.phase == SerializableStateObservation.Phase.END) ){
+                (sso.phase == SerializableStateObservation.Phase.END) ){
 
 //                io.writeToFile(lastMessageId + "#in result");
                 this.result();
@@ -332,4 +332,3 @@ public class ClientComm {
 
 
 }
-

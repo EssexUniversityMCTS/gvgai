@@ -4,10 +4,11 @@
 # Maybe a process is running at that port. Check: lsof -i tcp:<port>
 
 
-gameId=55
+gameId=0
 shDir='utils'
 serverDir='../../..'
 DIRECTORY='./logs'
+
 if [ ! -d "$DIRECTORY" ]; then
   mkdir ${DIRECTORY}
 fi
@@ -23,4 +24,4 @@ javac -d ${build_folder} @sources.txt
 # run with screen visualisation on
 #java -classpath ${build_folder} TestLearningClient -shDir ${shDir} -serverDir ${serverDir} -gameId ${gameId} -visuals
 # run without screen visualisation off
-java -classpath ${build_folder} TestLearningClient -shDir ${shDir} -serverDir ${serverDir} -gameId ${gameId}
+java -classpath ${build_folder} TestLearningClient -shDir ${shDir} -serverDir ${serverDir} -gameId ${gameId} -agentName sampleLearner.Agent

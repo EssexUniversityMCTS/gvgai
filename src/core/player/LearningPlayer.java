@@ -187,4 +187,3 @@ public class LearningPlayer extends Player {
         return comm.getLastSsoType();
     }
 }
-
