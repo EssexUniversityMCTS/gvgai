@@ -87,7 +87,7 @@ public class LearningPlayer extends Player {
 
             // Receive the response and set ACTION_NIL as default action
             String response = comm.commRecv();
-            if (response == null)
+            if (response == null || response == "")
                 response = Types.ACTIONS.ACTION_NIL.toString();
 
             //System.out.println("Received ACTION: " + response + "; ACT (Server) Response time: "
@@ -187,4 +187,3 @@ public class LearningPlayer extends Player {
         return comm.getLastSsoType();
     }
 }
-

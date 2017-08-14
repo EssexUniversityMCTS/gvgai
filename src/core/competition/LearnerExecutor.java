@@ -1,9 +1,12 @@
 package core.competition;
 
+import tools.ElapsedWallTimer;
 import tracks.LearningMachine;
 
 import java.io.IOException;
-import java.util.Random;
+import java.util.*;
+
+import static core.competition.CompetitionParameters.IMG_PATH;
 
 /**
  * Created by Jialin Liu on 23/06/2017.
@@ -15,42 +18,70 @@ import java.util.Random;
  */
 public class LearnerExecutor {
   public static void main(String[] args) throws IOException {
-    String gamesPathPrepend = args[0];
-    String game = args[1];
-    String agentName = args[2];
-    String clientType = args[3];
-    String action_file = args[4];
-    String port = args[5];
-    System.out.println("gamesPathPrepend: " + gamesPathPrepend);
-    System.out.println("Game: " + game);
-    System.out.println("Agent Name: " + agentName);
-    System.out.println("Client Type: " + clientType);
-    System.out.println("Agent Action file: " + action_file );
-    System.out.println("Port: " + port);
-
-    // Available games:
-    String gridGamesPath = gamesPathPrepend + "examples/gridphysics/";
-    String contGamesPath = gamesPathPrepend + "examples/contphysics/";
-    String gamesPath;
-
-    boolean GRID_PHYSICS = true;
-    // All public games (gridphysics)
-    if(GRID_PHYSICS) {
-      gamesPath = gridGamesPath;
-    }else{
-      gamesPath = contGamesPath;
-    }
-
-    //Game and level to play
-    game = gamesPath + game + ".txt";
-    String[] level_files = new String[5];
-    for (int i = 0; i <= 4; i++){
-      level_files[i] = gamesPath + game + "_lvl" + i +".txt";
-    }
-
-    String cmd[] = new String[]{null, agentName, port, clientType};
+    /** Init params */
+    int gameIdx = 0;
+    String clientType = "java"; //"python"; // Type of client to test against (Python/Java)
+    String gameFile = "";
+    String[] levelFile = new String[5];
     boolean visuals = false;
-    LearningMachine.runMultipleGames(game, level_files, cmd, new String[]{null}, visuals);
-    System.out.println("END-GAME");
+
+    /** Get arguments */
+    Map<String, List<String>> params = new HashMap<>();
+    List<String> options = null;
+    for (int i = 0; i < args.length; i++) {
+      final String a = args[i];
+      if (a.charAt(0) == '-') {
+        if (a.length() < 2) {
+          System.err.println("Error at argument " + a);
+          return;
+        }
+        options = new ArrayList<>();
+        params.put(a.substring(1), options);
+      } else if (options != null) {
+        options.add(a);
+      }
+      else {
+        System.err.println("Illegal parameter usage");
+        return;
+      }
+    }
+    /** Update params */
+    if (params.containsKey("gameId")) {
+      gameIdx = Integer.parseInt(params.get("gameId").get(0));
+    }
+    if (params.containsKey("clientType")) {
+      clientType = params.get("clientType").get(0);
+    }
+    if (params.containsKey("gamesDir")) {
+      IMG_PATH = params.get("gamesDir").get(0) + "/" + IMG_PATH;
+    }
+
+    if (params.containsKey("gameFile")) {
+      gameFile = params.get("gameFile").get(0);
+    }
+    if (params.containsKey("levelFile")) {
+      String levelFileStr = params.get("levelFile").get(0);
+      String[] levelFileSplitted = levelFileStr.split(":");
+      for (int i=0; i<5; i++) {
+        levelFile[i] = levelFileSplitted[i];
+      }
+    }
+    /** Now prepare to start */
+    ElapsedWallTimer wallClock = new ElapsedWallTimer();
+
+    //Port for the socket.
+    String port = CompetitionParameters.SOCKET_PORT + "";
+
+    //Building the command line
+    String cmd[] = new String[]{null, null, port, clientType};
+
+
+    System.out.println("[GAME] Game idx:" + gameIdx);
+    LearningMachine.runMultipleGames(gameFile, levelFile, cmd, new String[]{null}, visuals);
+
+    //Report total time spent.
+    int minutes = (int) wallClock.elapsedMinutes();
+    int seconds = ((int) wallClock.elapsedSeconds()) % 60;
+    System.out.printf("\n \t --> Real execution time: %d minutes, %d seconds of wall time.\n", minutes, seconds);
   }
 }

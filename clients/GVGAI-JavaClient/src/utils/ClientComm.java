@@ -120,7 +120,7 @@ public class ClientComm {
                 this.act();
 
             }else if( (sso.phase == SerializableStateObservation.Phase.ABORT) ||
-                      (sso.phase == SerializableStateObservation.Phase.END) ){
+                (sso.phase == SerializableStateObservation.Phase.END) ){
 
 //                io.writeToFile(lastMessageId + "#in result");
                 this.result();
@@ -275,7 +275,7 @@ public class ClientComm {
         this.lastSsoType = player.lastSsoType;
         if(ect.exceededMaxTime()) {
 //            System.out.println("spent:"+ect.elapsedMillis() + ">" + CompetitionParameters.ACTION_TIME_DISQ);
-            if (ect.elapsedMillis() > CompetitionParameters.ACTION_TIME_DISQ) {
+            if (ect.elapsedNanos() > CompetitionParameters.ACTION_TIME_DISQ*1000000.0) {
                 io.writeToServer(lastMessageId, "END_OVERSPENT", LOG);
             } else {
                 //Overspent.
@@ -332,4 +332,3 @@ public class ClientComm {
 
 
 }
-

@@ -64,7 +64,7 @@ public class JavaServer {
         }
         if (params.containsKey("imgDir")) {
             String imgDir = params.get("imgDir").get(0);
-            IMG_PATH = gamesDir + "/" + IMG_PATH;
+            IMG_PATH = imgDir + "/" + IMG_PATH;
         }
         if (params.containsKey("visuals")) {
             visuals = true;
@@ -94,29 +94,29 @@ public class JavaServer {
         if(GRID_PHYSICS) {
             gamesPath = gridGamesPath;
             games = new String[]{"aliens", "angelsdemons", "assemblyline", "avoidgeorge", "bait", // 0-4
-                    "beltmanager", "blacksmoke", "boloadventures", "bomber", "bomberman", // 5-9
-                    "boulderchase", "boulderdash", "brainman", "butterflies", "cakybaky", // 10-14
-                    "camelRace", "catapults", "chainreaction", "chase", "chipschallenge", // 15-19
-                    "clusters", "colourescape", "chopper", "cookmepasta", "cops", // 20-24
-                    "crossfire", "defem", "defender", "digdug", "dungeon", // 25-29
-                    "eighthpassenger", "eggomania", "enemycitadel", "escape", "factorymanager", // 30-34
-                    "firecaster", "fireman", "firestorms", "freeway", "frogs", // 35-39
-                    "garbagecollector", "gymkhana", "hungrybirds", "iceandfire", "ikaruga", // 40-44
-                    "infection", "intersection", "islands", "jaws", "killBillVol1", // 45-49
-                    "labyrinth", "labyrinthdual", "lasers", "lasers2", "lemmings", // 50-54
-                    "missilecommand", "modality", "overload", "pacman", "painter", // 55-59
-                    "pokemon", "plants", "plaqueattack", "portals", "raceBet", // 60-64
-                    "raceBet2", "realportals", "realsokoban", "rivers", "roadfighter", // 65-69
-                    "roguelike", "run", "seaquest", "sheriff", "shipwreck", // 70-74
-                    "sokoban", "solarfox", "superman", "surround", "survivezombies", // 75-79
-                    "tercio", "thecitadel", "thesnowman", "waitforbreakfast", "watergame", // 80-84
-                    "waves", "whackamole", "wildgunman", "witnessprotection", "wrapsokoban", // 85-89
-                    "zelda", "zenpuzzle"}; // 90, 91
+                "beltmanager", "blacksmoke", "boloadventures", "bomber", "bomberman", // 5-9
+                "boulderchase", "boulderdash", "brainman", "butterflies", "cakybaky", // 10-14
+                "camelRace", "catapults", "chainreaction", "chase", "chipschallenge", // 15-19
+                "clusters", "colourescape", "chopper", "cookmepasta", "cops", // 20-24
+                "crossfire", "defem", "defender", "digdug", "dungeon", // 25-29
+                "eighthpassenger", "eggomania", "enemycitadel", "escape", "factorymanager", // 30-34
+                "firecaster", "fireman", "firestorms", "freeway", "frogs", // 35-39
+                "garbagecollector", "gymkhana", "hungrybirds", "iceandfire", "ikaruga", // 40-44
+                "infection", "intersection", "islands", "jaws", "killBillVol1", // 45-49
+                "labyrinth", "labyrinthdual", "lasers", "lasers2", "lemmings", // 50-54
+                "missilecommand", "modality", "overload", "pacman", "painter", // 55-59
+                "pokemon", "plants", "plaqueattack", "portals", "raceBet", // 60-64
+                "raceBet2", "realportals", "realsokoban", "rivers", "roadfighter", // 65-69
+                "roguelike", "run", "seaquest", "sheriff", "shipwreck", // 70-74
+                "sokoban", "solarfox", "superman", "surround", "survivezombies", // 75-79
+                "tercio", "thecitadel", "thesnowman", "waitforbreakfast", "watergame", // 80-84
+                "waves", "whackamole", "wildgunman", "witnessprotection", "wrapsokoban", // 85-89
+                "zelda", "zenpuzzle"}; // 90, 91
 
         }else{
             gamesPath = contGamesPath;
             games = new String[]{"artillery", "asteroids", "bird", "bubble", "candy",   //0 - 4
-                    "lander", "mario", "pong", "ptsp", "racing"};                       //5 - 9
+                "lander", "mario", "pong", "ptsp", "racing"};                       //5 - 9
         }
 
 
@@ -128,7 +128,7 @@ public class JavaServer {
             level_files[i] = gamesPath + games[gameIdx] + "_lvl" + i +".txt";
         }
         // This plays a training round for a specified game.
-        System.out.println("[GAME] Game idx:" + gameIdx);
+        System.out.println("[GAME] Game idx:" + gameIdx + " game name " + games[gameIdx]);
         LearningMachine.runMultipleGames(game, level_files, cmd, new String[]{null}, visuals);
 
 

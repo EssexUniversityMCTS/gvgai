@@ -121,8 +121,8 @@ class ClientComm:
 
         if parsed_input.get('NPCPositions'):
             self.sso.NPCPositions = [[None for j in
-                                            range(self.sso.NPCPositionsMaxRow)] for i in
-                                           range(self.sso.NPCPositionsNum)]
+                                      range(self.sso.NPCPositionsMaxRow)] for i in
+                                     range(self.sso.NPCPositionsNum)]
             for i in range(self.sso.NPCPositionsNum):
                 for j in range(len(parsed_input['NPCPositions'][i])):
                     self.sso.NPCPositions[i][j] = Observation(parsed_input['NPCPositions'][i][j])
@@ -137,8 +137,8 @@ class ClientComm:
 
         if parsed_input.get('movablePositions'):
             self.sso.movablePositions = [[None for j in
-                                            range(self.sso.movablePositionsMaxRow)] for i in
-                                           range(self.sso.movablePositionsNum)]
+                                          range(self.sso.movablePositionsMaxRow)] for i in
+                                         range(self.sso.movablePositionsNum)]
             for i in range(self.sso.movablePositionsNum):
                 for j in range(len(parsed_input['movablePositions'][i])):
                     self.sso.movablePositions[i][j] = Observation(parsed_input['movablePositions'][i][j])
@@ -153,16 +153,16 @@ class ClientComm:
 
         if parsed_input.get('portalsPositions'):
             self.sso.portalsPositions = [[None for j in
-                                            range(self.sso.portalsPositionsMaxRow)] for i in
-                                           range(self.sso.portalsPositionsNum)]
+                                          range(self.sso.portalsPositionsMaxRow)] for i in
+                                         range(self.sso.portalsPositionsNum)]
             for i in range(self.sso.portalsPositionsNum):
                 for j in range(len(parsed_input['portalsPositions'][i])):
                     self.sso.portalsPositions[i][j] = Observation(parsed_input['portalsPositions'][i][j])
 
         if parsed_input.get('fromAvatarSpritesPositions'):
             self.sso.fromAvatarSpritesPositions = [[None for j in
-                                            range(self.sso.fromAvatarSpritesPositionsMaxRow)] for i in
-                                           range(self.sso.fromAvatarSpritesPositionsNum)]
+                                                    range(self.sso.fromAvatarSpritesPositionsMaxRow)] for i in
+                                                   range(self.sso.fromAvatarSpritesPositionsNum)]
             for i in range(self.sso.fromAvatarSpritesPositionsNum):
                 for j in range(len(parsed_input['fromAvatarSpritesPositions'][i])):
                     self.sso.fromAvatarSpritesPositions[i][j] = Observation(parsed_input['fromAvatarSpritesPositions'][i][j])
@@ -192,6 +192,7 @@ class ClientComm:
             self.lastMessageId = message[0]
             js = message[1]
 
+            self.sso = SerializableStateObservation()
             if js == "START":
                 self.sso.phase = Phase.START
             elif js == "FINISH":
@@ -206,7 +207,7 @@ class ClientComm:
                         or self.lastSsoType == LEARNING_SSO_TYPE.BOTH or self.lastSsoType == "BOTH":
                     if self.sso.imageArray:
                         self.sso.convertBytesToPng(self.sso.imageArray)
-                
+
         except Exception as e:
             logging.exception(e)
             print("Line processing [FAILED]")
@@ -273,9 +274,12 @@ class ClientComm:
         ect = ElapsedCpuTimer()
         ect.setMaxTimeMillis(CompetitionParameters.ACTION_TIME)
         action = str(self.player.act(self.sso, ect.copy()))
+        if (not action) or (action == ""):
+            action = "ACTION_NIL"
+
         self.lastSsoType = self.player.lastSsoType
         if ect.exceededMaxTime():
-            if ect.elapsedMillis() > CompetitionParameters.ACTION_TIME_DISQ:
+            if ect.elapsedNanos() > CompetitionParameters.ACTION_TIME_DISQ*1000000:
                 self.io.writeToServer(self.lastMessageId, "END_OVERSPENT", self.LOG)
             else:
                 self.io.writeToServer(self.lastMessageId, "ACTION_NIL" + "#" + self.lastSsoType, self.LOG)

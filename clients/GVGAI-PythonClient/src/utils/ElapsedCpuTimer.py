@@ -26,13 +26,13 @@ class ElapsedCpuTimer:
         return self.getTime() - self.oldTime
 
     def elapsedNanos(self):
-        return self.elapsed()*1000000
-
-    def elapsedMillis(self):
         return self.elapsed()
 
+    def elapsedMillis(self):
+        return self.elapsed() / 1000000
+
     def elapsedSeconds(self):
-        return self.elapsed()/1000
+        return self.elapsedMillis()/1000
 
     def elapsedMinutes(self):
         return self.elapsedSeconds() / 60.0
@@ -41,7 +41,7 @@ class ElapsedCpuTimer:
         return self.elapsedMinutes() / 60
 
     def getTime(self):
-        return self.getCpuTime()
+        return time.time()*1000000000
 
     """
      * Return current time in millesecond
@@ -50,7 +50,7 @@ class ElapsedCpuTimer:
         return int(round(time.time() * 1000))
 
     def setMaxTimeMillis(self, timeToSet):
-        self.maxTime = timeToSet
+        self.maxTime = timeToSet * 1000000
         self.oldTime = self.getTime()
 
     def remainingTimeMillis(self):
