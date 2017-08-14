@@ -622,43 +622,44 @@ public class ArcadeMachine {
             ect.setMaxTimeMillis(CompetitionParameters.INITIALIZATION_TIME);
 
             if (so.getNoPlayers() < 2) { // single player
-            // Get the class and the constructor with arguments
-            // (StateObservation, long).
-            Class<? extends AbstractPlayer> controllerClass = Class.forName(playerName)
-                .asSubclass(AbstractPlayer.class);
-            Class[] gameArgClass = new Class[] { StateObservation.class, ElapsedCpuTimer.class };
-            Constructor controllerArgsConstructor = controllerClass.getConstructor(gameArgClass);
+				// Get the class and the constructor with arguments
+				// (StateObservation, long).
+				Class<? extends AbstractPlayer> controllerClass = Class.forName(playerName)
+					.asSubclass(AbstractPlayer.class);
+				Class[] gameArgClass = new Class[] { StateObservation.class, ElapsedCpuTimer.class };
+				Constructor controllerArgsConstructor = controllerClass.getConstructor(gameArgClass);
 
-            // Call the constructor with the appropriate parameters.
-            Object[] constructorArgs = new Object[] { so, ect.copy() };
+				// Call the constructor with the appropriate parameters.
+				Object[] constructorArgs = new Object[] { so, ect.copy() };
 
-            player = (AbstractPlayer) controllerArgsConstructor.newInstance(constructorArgs);
-            player.setPlayerID(playerID);
+				player = (AbstractPlayer) controllerArgsConstructor.newInstance(constructorArgs);
+				player.setPlayerID(playerID);
 
             } else { // multi player
-            // Get the class and the constructor with arguments
-            // (StateObservation, long, int).
-            Class<? extends AbstractMultiPlayer> controllerClass = Class.forName(playerName)
-                .asSubclass(AbstractMultiPlayer.class);
-            Class[] gameArgClass = new Class[] { StateObservationMulti.class, ElapsedCpuTimer.class, int.class };
-            Constructor controllerArgsConstructor = controllerClass.getConstructor(gameArgClass);
+				// Get the class and the constructor with arguments
+				// (StateObservation, long, int).
+				Class<? extends AbstractMultiPlayer> controllerClass = Class.forName(playerName)
+					.asSubclass(AbstractMultiPlayer.class);
+				Class[] gameArgClass = new Class[] { StateObservationMulti.class, ElapsedCpuTimer.class, int.class };
+				Constructor controllerArgsConstructor = controllerClass.getConstructor(gameArgClass);
 
-            // Call the constructor with the appropriate parameters.
-            Object[] constructorArgs = new Object[] { (StateObservationMulti) so.copy(), ect.copy(), playerID };
+				// Call the constructor with the appropriate parameters.
+				Object[] constructorArgs = new Object[] { (StateObservationMulti) so.copy(), ect.copy(), playerID };
 
-            player = (AbstractMultiPlayer) controllerArgsConstructor.newInstance(constructorArgs);
-            player.setPlayerID(playerID);
+				player = (AbstractMultiPlayer) controllerArgsConstructor.newInstance(constructorArgs);
+				player.setPlayerID(playerID);
             }
+
             // Check if we returned on time, and act in consequence.
             long timeTaken = ect.elapsedMillis();
-            if (ect.exceededMaxTime()) {
-            long exceeded = -ect.remainingTimeMillis();
-            System.out.println("Controller initialization time out (" + exceeded + ").");
+            if (CompetitionParameters.TIME_CONSTRAINED && ect.exceededMaxTime()) {
+				long exceeded = -ect.remainingTimeMillis();
+				System.out.println("Controller initialization time out (" + exceeded + ").");
 
-            return null;
+				return null;
             } else {
-            if (VERBOSE)
-                System.out.println("Controller initialization time: " + timeTaken + " ms.");
+				if (VERBOSE)
+					System.out.println("Controller initialization time: " + timeTaken + " ms.");
             }
 
             // This code can throw many exceptions (no time related):
