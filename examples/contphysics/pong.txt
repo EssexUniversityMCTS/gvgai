@@ -14,7 +14,8 @@ BasicGame
             normalBall > speed=25
             slowBall > speed=15
 
-    TerminationSet # from the perspective of player 1 (on the left)
+    TerminationSet
+
         SpriteCounter stype=othergoal limit=0 win=True
         SpriteCounter stype=mygoal limit=0 win=False
            

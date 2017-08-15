@@ -1640,7 +1640,11 @@ public abstract class Game {
 			}
 		}
 		if(Logger.getInstance().getMessageCount() > CompetitionParameters.MAX_ALLOWED_WARNINGS){
+			System.out.println("Finishing the game due to number of warnings: " + Logger.getInstance().getMessageCount() +
+			 ". Messages will be flushed.");
+			Logger.getInstance().printMessages();
 		    isEnded = true;
+		    Logger.getInstance().flushMessages();
 		}
 	}
 

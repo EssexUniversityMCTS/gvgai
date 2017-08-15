@@ -184,7 +184,7 @@ public class BasicGame extends Game {
 					}
 				}
 				else if(c != ' '){
-					Logger.getInstance().addMessage(new Message(Message.WARNING, "\"" + c + "\" isnot defined in the level mapping."));
+					Logger.getInstance().addMessage(new Message(Message.WARNING, "\"" + c + "\" is not defined in the level mapping."));
 				}
 			}
 		}

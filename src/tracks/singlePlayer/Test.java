@@ -29,7 +29,7 @@ public class Test {
         String contGamesPath = "examples/contphysics/";
         String gamesPath;
 		String games[];
-        boolean GRID_PHYSICS = true;
+        boolean GRID_PHYSICS = false;
 
         // All public games (gridphysics)
 		if(GRID_PHYSICS) {
