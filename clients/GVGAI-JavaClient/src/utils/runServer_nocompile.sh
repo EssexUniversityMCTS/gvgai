@@ -23,7 +23,7 @@ find ${server_dir} -name "*.java" > sources.txt
 javac -d ${build_folder} @sources.txt
 
 if [ ${visuals} = "true" ]; then
-    java -agentlib:jdwp=transport=dt_socket,server=y,address=8888,suspend=n -classpath ${build_folder} tracks.singleLearning.utils.JavaServer -gameId ${game_id} -gamesDir ${games_prefix} -visuals > ${DIRECTORY}/output_server_redirect.txt 2> ${DIRECTORY}/output_server_redirect_err.txt
+    java -agentlib:jdwp=transport=dt_socket,server=y,address=8888,suspend=n -classpath ${build_folder} tracks.singleLearning.utils.JavaServer -gameId ${game_id} -gamesDir ${games_prefix} -visuals > ${DIRECTORY}/output_server_redirect_game${game_id}.txt 2> ${DIRECTORY}/output_server_redirect_err_game${game_id}.txt
 else
-    java -agentlib:jdwp=transport=dt_socket,server=y,address=8888,suspend=n -classpath ${build_folder} tracks.singleLearning.utils.JavaServer -gameId ${game_id} -gamesDir ${games_prefix} > ${DIRECTORY}/output_server_redirect.txt 2> ${DIRECTORY}/output_server_redirect_err.txt
+    java -agentlib:jdwp=transport=dt_socket,server=y,address=8888,suspend=n -classpath ${build_folder} tracks.singleLearning.utils.JavaServer -gameId ${game_id} -gamesDir ${games_prefix} > ${DIRECTORY}/output_server_redirect_game${game_id}.txt 2> ${DIRECTORY}/output_server_redirect_err_game${game_id}.txt
 fi

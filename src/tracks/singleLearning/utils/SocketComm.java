@@ -142,7 +142,7 @@ public class SocketComm extends Comm {
                 return commRecv();
             }
         } else {
-            return commRecv();
+            return null;
         }
     }
 

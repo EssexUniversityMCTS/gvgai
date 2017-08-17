@@ -113,6 +113,7 @@ public abstract class Comm extends Thread {
             response = commRecv();
             if (response==null) {
                 //Odd. We don't like this, things went wrong.
+                System.err.println("No message received");
                 return false;
             } else if(response.equalsIgnoreCase("START_FAILED"))
             {

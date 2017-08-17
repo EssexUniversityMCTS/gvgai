@@ -178,10 +178,13 @@ public class LearningMachine {
             level_idx++;
         }
 
-        if(levelOutcome == Types.LEARNING_RESULT_DISQ)
+        if(levelOutcome == Types.LEARNING_RESULT_DISQ) {
+            printDisqLearningResult();
+            player.finishPlayerCommunication();
             return;
+        }
 
-        if(levelOutcome != Types.LEARNING_FINISH_ROUND) {
+        if(levelOutcome != Types.LEARNING_FINISH_ROUND && keepPlaying) {
             //We only continue playing if the round is not over.
             System.out.println("[PHASE] Starting Second Phase of Training in " + Types.NUM_TRAINING_LEVELS + " levels.");
             while (levelOutcome >= 0) {
@@ -191,8 +194,11 @@ public class LearningMachine {
             }
         }
 
-        if(levelOutcome == Types.LEARNING_RESULT_DISQ)
+        if(levelOutcome == Types.LEARNING_RESULT_DISQ) {
+            printDisqLearningResult();
+            player.finishPlayerCommunication();
             return;
+        }
 
         // Validation time
         // Establish the level files for level 3 and 4
@@ -200,7 +206,6 @@ public class LearningMachine {
 
         for (int valid_idx=0; valid_idx<CompetitionParameters.validation_times; valid_idx++) {
             level_idx = 0;
-            levelOutcome = 0;
             keepPlaying = true;
 //        System.err.println("At beginning, keepPlaying="+keepPlaying + ",level_idx="+level_idx);
             while (keepPlaying && level_idx < validationLevels.length) {
@@ -427,5 +432,15 @@ public class LearningMachine {
         return true;
     }
 
+    public static void printDisqLearningResult() {
+        System.out.println("[PHASE] Starting Validation in 2 levels.");
+        for (int levelIdx = 3; levelIdx < 5; levelIdx++) {
+            String sb1 = "";
+            String sb2 = "";
+            sb1 += "Player" + 0 + ":-100, ";
+            sb2 += "Player" + 0 + "-Score:" + Types.SCORE_DISQ + ", ";
+            System.out.println("[VALIDATION] Result (1->win; 0->lose): level:" + levelIdx + ", " + sb1 + sb2 + "timesteps:" + 0);
+        }
+    }
 
 }

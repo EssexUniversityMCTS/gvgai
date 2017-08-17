@@ -60,11 +60,14 @@ public class State {
         }
 
         // check actions
-        if (available_actions_.size() != state_to_compare.getAvailableActions().size()) {
+        ArrayList<ACTIONS> available_actions = state_to_compare.getAvailableActions();
+        if (available_actions_.size() != available_actions.size()) {
             return false;
         }
-        ArrayList<ACTIONS> cloned_actions =
-            (ArrayList<ACTIONS>) state_to_compare.getAvailableActions().clone();
+        ArrayList<ACTIONS> cloned_actions = new ArrayList<ACTIONS>();
+        for (ACTIONS action: available_actions) {
+            cloned_actions.add(action);
+        }
         for (ACTIONS action: available_actions_) {
             if (!cloned_actions.remove(action)) {
                 return false;
