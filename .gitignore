@@ -4,7 +4,6 @@
 .settings/
 
 # Intellij
-.idea/
 .idea
 *.iml
 *.iws
@@ -55,3 +54,9 @@ clients/GVGAI-JavaClient/logs/clientLog.txt
 clients/GVGAI-PythonClient/src/logs/output_server_redirect.txt
 
 clients/GVGAI-PythonClient/src/logs/clientLog.txt
+.class
+.iml
+
+*.class
+
+*.zip
