@@ -284,8 +284,8 @@ public class LearningMachine {
         if(isVisual) {
             score = toPlay.playGame(players, randomSeed, false, 0);
         } else {
-            score = toPlay.playOnlineGame(players, randomSeed, false, 0);
-//            score = toPlay.runGame(players, randomSeed);
+            //score = toPlay.playOnlineGame(players, randomSeed, false, 0);
+            score = toPlay.runGame(players, randomSeed);
         }
         toPlay.printLearningResult(levelIdx, isValidation);
 
