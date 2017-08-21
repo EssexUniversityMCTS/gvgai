@@ -21,6 +21,7 @@ import ontology.sprites.Resource;
 import tools.*;
 import tools.pathfinder.Node;
 import tools.pathfinder.PathFinder;
+import tracks.singlePlayer.OnlineMachine;
 
 import javax.swing.*;
 import java.awt.*;
@@ -966,14 +967,13 @@ public abstract class Game {
 		return handleResult();
 	}
 
-	public double[] playOnlineGame(Player[] players, int randomSeed, boolean isHuman, int humanID) {
+	public double[] playOnlineGame(OnlineMachine om, Player[] players, int randomSeed, boolean isHuman, int humanID) {
 		// Prepare some structures and references for this game.
 		prepareGame(players, randomSeed, humanID);
 
 		// Create and initialize the panel for the graphics.
-		VGDLViewer view = new VGDLViewer(this, players[humanID]);
-		view.justImage = true;
-		wi.windowClosed = false;
+		om.view = new VGDLViewer(this, players[humanID]);
+		om.view.justImage = true;
 
 		// Determine the delay for playing with a good fps.
 		double delay = CompetitionParameters.LONG_DELAY;
@@ -986,7 +986,7 @@ public abstract class Game {
 		boolean firstRun = true;
 
 		// Play until the game is ended
-		while (!isEnded && !wi.windowClosed) {
+		while (!isEnded) {
 			// Determine the time to adjust framerate.
 			long then = System.currentTimeMillis();
 
@@ -1000,7 +1000,7 @@ public abstract class Game {
 			waitStep(remaining);
 
 			// Draw all sprites in the panel.
-			view.paint(this.spriteGroups);
+			om.view.paint(this.spriteGroups);
 
 			if (firstRun && isHuman) {
 				firstRun = false;

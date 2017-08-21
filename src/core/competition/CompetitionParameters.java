@@ -101,7 +101,7 @@ public class CompetitionParameters
     /**
      * Path to sprite images.
      */
-    public static String IMG_PATH = "sprites/";
+    public static String IMG_PATH = "/home/vgdl/java-vgdl/sprites/";
 
 
     /**
@@ -117,7 +117,7 @@ public class CompetitionParameters
     /**
      * Longer delay for human play.
      */
-    public static int LONG_DELAY = 25;
+    public static int LONG_DELAY = 50;
 
 
     /**
