@@ -96,47 +96,50 @@ public class SocketComm extends Comm {
      *
      * @return the response got from the client, or null if no response was received after due time.
      */
-    public String commRecv() throws IOException {
-        String ret = in.nextLine();
-
-        //System.out.println("Received in server: " + ret);
-        if(ret != null && ret.trim().length() > 0)
-        {
-            String messageParts[] = ret.split(TOKEN_SEP);
-            if(messageParts.length < 2) {
-                System.err.println("SocketComm: commRecv(): received message incomplete.");
-                return null;
-            }
-            int receivedID = Integer.parseInt(messageParts[0]);
-            String msg = messageParts[1];
-
-            if (messageParts.length >= 3) {
-                String ssoType = messageParts[2];
-                switch (ssoType) {
-                    case "JSON":
-                        this.lastSsoType = LEARNING_SSO_TYPE.JSON;
-                        break;
-                    case "IMAGE":
-                        this.lastSsoType = LEARNING_SSO_TYPE.IMAGE;
-                        break;
-                    case "BOTH":
-                        this.lastSsoType = LEARNING_SSO_TYPE.BOTH;
-                        break;
-                    default:
-                        System.err.println("SocketComm: commRecv(): This should never happen.");
-                        break;
+    public String commRecv() {
+        String ret = null;
+        if (in.hasNextLine()) {
+            ret = in.nextLine();
+            //System.out.println("Received in server: " + ret);
+            if (ret != null && ret.trim().length() > 0) {
+                String messageParts[] = ret.split(TOKEN_SEP);
+                if (messageParts.length < 2) {
+                    System.err.println("SocketComm: commRecv(): received message incomplete.");
+                    return null;
                 }
-            }
+                int receivedID = Integer.parseInt(messageParts[0]);
+                String msg = messageParts[1];
 
-            if(receivedID == (messageId-1)) {
-                return msg.trim();
-            } else if (receivedID < (messageId-1)) {
-                //Previous message, ignore and keep waiting.
+                if (messageParts.length >= 3) {
+                    String ssoType = messageParts[2];
+                    switch (ssoType) {
+                        case "JSON":
+                            this.lastSsoType = LEARNING_SSO_TYPE.JSON;
+                            break;
+                        case "IMAGE":
+                            this.lastSsoType = LEARNING_SSO_TYPE.IMAGE;
+                            break;
+                        case "BOTH":
+                            this.lastSsoType = LEARNING_SSO_TYPE.BOTH;
+                            break;
+                        default:
+                            System.err.println("SocketComm: commRecv(): This should never happen.");
+                            break;
+                    }
+                }
+
+                if (receivedID == (messageId - 1)) {
+                    return msg.trim();
+                } else if (receivedID < (messageId - 1)) {
+                    //Previous message, ignore and keep waiting.
+                    return commRecv();
+                } else {
+                    //A message from the future? Ignore and return null;
+                    System.err.println("SocketComm: commRecv: Communication Error! A message from the future!");
+                    return null;
+                }
+            } else {
                 return commRecv();
-            }else{
-                //A message from the future? Ignore and return null;
-                System.err.println("SocketComm: commRecv: Communication Error! A message from the future!");
-                return null;
             }
         } else {
             return commRecv();
