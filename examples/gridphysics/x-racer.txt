@@ -1,0 +1,63 @@
+BasicGame square_size=30
+    SpriteSet
+        floor > Immovable img=newset/highway3 hidden=True
+        street > Immovable img=newset/street3 hidden=True
+        moving >
+
+            motorbike >
+                avatar  > OngoingShootAvatar speed=0.2 color=YELLOW img=newset/camel1 healthPoints=50 limitHealthPoints=50 stype=boost
+                    avatarFast > MissileAvatar speed=0.5
+                mbike   > Missile orientation=RIGHT  img=newset/camel2
+                    mbikeSlow > speed=0.2
+                    mbikeMed > speed=0.4
+                    mbikeFast > speed=0.6
+            cars >
+                carSlow  > Missile orientation=LEFT speed=0.5 img=newset/car1
+                carFast  > Missile orientation=LEFT speed=0.75 img=newset/car2
+                truck    > Missile orientation=LEFT speed=0.9 img=newset/firetruckL
+            statics >
+                tree > Missile orientation=LEFT speed=0.8 img=newset/tree2
+                goal > Missile orientation=LEFT speed=0.5 img=newset/exit2 portal=True
+
+        portal      > BomberRandomMissile invisible=True hidden=True stypeMissile=carSlow,carFast,truck cooldown=15 prob=0.5 total=80
+        bikePortal  > BomberRandomMissile invisible=True hidden=True stypeMissile=mbikeSlow,mbikeMed,mbikeFast cooldown=20 prob=0.6  total=400
+
+        goalPortal > SpawnPoint invisible=True hidden=True stype=goal prob=1 total=1 cooldown=25
+        treePortal   > SpawnPoint invisible=True hidden=True stype=tree cooldown=2 total=400
+
+        winnerNPC > Immovable color=RED img=oryx/sparkle2
+        winnerPlayer > Immovable color=PINK img=oryx/sparkle1
+
+        boost > OrientedFlicker invisible=True hidden=True limit=1 singleton=True
+
+    InteractionSet
+        avatar EOS  > stepBack
+        avatar cars tree > subtractHealthPoints
+        avatar TIME > transformToAll stype=portal stypeTo=goalPortal nextExecution=500 timer=500 repeating=False
+        mbike cars tree > killSprite
+        tree EOS    > killSprite
+        cars EOS    > killSprite
+        statics EOS > killSprite
+
+        mbike goal > transformTo stype=winnerNPC
+        avatar goal > spawn stype=winnerPlayer
+        goal avatar > killSprite
+
+        avatar boost > addTimer timer=10 ftype=transformToAll stype=avatarFast stypeTo=avatar forceOrientation=True
+        avatar boost > transformTo stype=avatarFast killSecond=True forceOrientation=True
+
+    LevelMapping
+        b > bikePortal floor
+        A > avatar floor
+        x > tree street
+        p > portal floor
+        t > treePortal street
+        s > carSlow floor
+        c > carFast floor
+        . > floor
+        + > street
+
+    TerminationSet
+        MultiSpriteCounter stype1=winnerPlayer limit=1 win=True
+        MultiSpriteCounter stype1=winnerNPC limit=1 win=False
+        SpriteCounter stype=avatar limit=0 win=False

@@ -1,0 +1,45 @@
+BasicGame obs=wall
+    SpriteSet
+        ground > Immovable img=oryx/floor3 autotiling=True hidden=True
+        ghostspawn > SpawnPoint stype=ghost img=newset/hole1 portal=True total=10
+        moving > 
+            avatar > ShootAvatar orientation=LEFT stype=missile img=newset/humanShotgun
+            ghost > PathChaser singleton=True stype=standing img=oryx/ghost1 cooldown=4
+            civilian >
+                standing > RandomNPC speed=0.5 img=newset/man4
+                fleeing > PathChaser stype=escape img=newset/cursedman cooldown=2
+
+        missile > Missile img=oryx/orb1 shrinkfactor=0.4 timeToLive=15
+        wall > Immovable img=oryx/wall3
+        escape > Door img=oryx/dooropen1
+
+    LevelMapping
+        . > ground
+        A > avatar ground
+        g > ghostspawn ground
+        e > escape ground
+        w > wall ground
+        c > standing ground
+        f > fleeing
+
+    InteractionSet
+        avatar wall EOS > stepBack pixelPerfect=True
+        ghost wall > stepBack pixelPerfect=True
+        civilian wall > stepBack pixelPerfect=True
+        standing escape > stepBack pixelPerfect=True
+
+        ghost missile > killBoth scoreChange=10
+        avatar ghost > killSprite scoreChange=-100
+        missile wall EOS > killSprite
+
+        standing ghost > align
+        standing ghost > transformTo stype=fleeing scoreChange=-1
+        fleeing avatar > transformTo stype=standing scoreChange=1
+
+        fleeing escape > killSprite scoreChange=-10
+
+
+    TerminationSet
+        MultiSpriteCounter stype1=ghostspawn stype2=ghost limit=0 win=True
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=civilian limit=0 win=False

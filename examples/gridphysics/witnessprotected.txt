@@ -1,0 +1,87 @@
+BasicGame square_size=30
+    SpriteSet
+
+        floor > Immovable img=oryx/backBiege hidden=True
+        base    > Immovable    color=WHITE img=oryx/wall6
+        avatar  > OrientedAvatar healthPoints=20 img=newset/girl2 speed=0.4
+        protector > Bomber stype=missile prob=0 orientation=RIGHT speed=0.25 img=newset/cop1
+
+        turn > Immovable invisible=True hidden=True
+            turnleft > orientation=LEFT img=dirt
+            turnright > orientation=RIGHT img=dirt
+            turnup > orientation=UP img=dirt
+            turndown > orientation=DOWN img=dirt
+
+        bandit > Bomber prob=0.4 cooldown=3 speed=1
+            bleftd > orientation=LEFT spawnorientation=DOWN stype=missile img=newset/bandit1h
+            brightu > orientation=RIGHT spawnorientation=UP stype=missile img=newset/bandit1
+            bleftu > orientation=LEFT spawnorientation=UP stype=missile img=newset/bandit1h
+            brightd > orientation=RIGHT spawnorientation=DOWN stype=missile img=newset/bandit1
+
+
+        door1 > Door
+            doorClosed1 > Immovable img=oryx/doorclosed1
+            doorOpened1 > Immovable img=oryx/dooropen1
+        door2 > Door
+            doorClosed2 > Immovable img=oryx/doorclosed1
+            doorOpened2 > Immovable img=oryx/dooropen1
+        switch > Immovable img=oryx/wall3_0
+            switch1 >
+            switch2 >
+
+        missile > Missile img=oryx/orb1 shrinkfactor=0.5 speed=0.6
+        exit > Door img=oryx/door2
+        wall > Immovable img=oryx/dirtwall autotiling=True
+
+    LevelMapping
+        0 > floor base
+        l > floor bleftd
+        r > floor brightd
+        . > floor bleftu
+        , > floor brightu
+        A > floor avatar
+        1 > floor turnup
+        2 > floor turnleft
+        3 > floor turndown
+        4 > floor turnright
+        n > floor running
+        e > floor exit
+        p > floor protector
+        g > floor doorClosed1
+        h > floor doorClosed2
+        a > floor switch1
+        b > floor switch2
+        _ > floor
+        x > floor protector turnleft
+
+
+    TerminationSet
+        SpriteCounter      stype=avatar           limit=0 win=False
+        SpriteCounter      stype=exit             limit=0 win=True
+        
+    InteractionSet
+
+        avatar  base protector > stepBack
+        avatar  wall > stepBack
+
+        base missile > killBoth
+        missile EOS wall > killSprite
+
+        bleftd turnright > transformTo stype=brightd
+        bleftu turnright > transformTo stype=brightu
+        brightd turnleft > transformTo stype=bleftd
+        brightu turnleft > transformTo stype=bleftu
+
+        protector turn > attractGaze align=True
+        avatar missile > subtractHealthPoints
+        missile avatar protector > killSprite
+        protector exit > killSprite
+
+
+        avatar doorClosed1 doorClosed2 > stepBack
+        protector doorClosed1 doorClosed2 avatar > stepBack
+        avatar switch1 > transformToAll stype=doorClosed1 stypeTo=doorOpened1
+        avatar switch2 > transformToAll stype=doorClosed2 stypeTo=doorOpened2
+
+
+        exit avatar > killSprite

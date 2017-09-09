@@ -1,0 +1,97 @@
+BasicGame key_handler=Pulse
+    SpriteSet
+        floor > Immovable img=oryx/floor3 hidden=True
+        cliff > Immovable color=BLACK
+        avatar > ShootAvatar stype=boulder rotateInPlace=true img=oryx/archer1
+
+        code > Immovable
+            redcode > img=oryx/slime3
+            greencode > img=oryx/slime2
+            bluecode > img=oryx/slime1
+            redcodeX > img=oryx/slime3
+            greencodeX > img=oryx/slime2
+            bluecodeX > img=oryx/slime1
+
+        blocks > Immovable shrinkfactor=0.7
+            red > img=oryx/diamond2
+                red1 > img=oryx/slime3
+                red2 > img=oryx/slime3
+                red3 > img=oryx/slime3
+            green > img=oryx/diamond3
+                green1 > img=oryx/slime2
+                green2 > img=oryx/slime2
+                green3 > img=oryx/slime2
+            blue >  img=oryx/diamond1
+                blue1 > img=oryx/slime1
+                blue2 > img=oryx/slime1
+                blue3 > img=oryx/slime1
+
+
+        mirror > Immovable img=oryx/diamond3
+           mup > orientation=UP img=newset/mirror_u
+           mdown > orientation=DOWN img=newset/mirror_d
+           mright > orientation=RIGHT img=newset/mirror_r
+           mleft > orientation=LEFT img=newset/mirror_l
+           mswap >
+
+        boulder > Missile color=BLUE img=oryx/orb2 shrinkfactor=0.3
+        wall > Immovable img=oryx/wall3 autotiling=True
+
+    LevelMapping
+        . > floor
+        , > cliff
+        A > floor avatar
+        u > floor mup
+        d > floor mdown
+        h > floor mright
+        l > floor mleft
+        r > floor redcode
+        g > floor greencode
+        b > floor bluecode
+        1 > floor red1
+        2 > floor red2
+        3 > floor red3
+        4 > floor green1
+        5 > floor green2
+        6 > floor green3
+        7 > floor blue1
+        8 > floor blue2
+        9 > floor blue3
+
+    InteractionSet
+
+        avatar wall > stepBack
+        mirror avatar  > bounceForward
+        mirror wall > undoAll
+
+        mirror cliff > killSprite
+        avatar cliff > killSprite
+
+        boulder wall EOS > killSprite
+        boulder mirror > attractGaze align=True
+
+        red boulder > transformTo stype=redcodeX
+        green boulder > transformTo stype=greencodeX
+        blue boulder > transformTo stype=bluecodeX
+
+        redcode boulder > transformIfCount stype=red1 stypeCount=code geq=3 scoreChange=1
+        redcode boulder > transformIfCount stype=red2 stypeCount=code geq=2 scoreChange=1
+        redcode boulder > transformIfCount stype=red3 stypeCount=code geq=1 scoreChange=1
+
+        bluecode boulder > transformIfCount stype=blue1 stypeCount=code geq=3 scoreChange=1
+        bluecode boulder > transformIfCount stype=blue2 stypeCount=code geq=2 scoreChange=1
+        bluecode boulder > transformIfCount stype=blue3 stypeCount=code geq=1 scoreChange=1
+
+        greencode boulder > transformIfCount stype=green1 stypeCount=code geq=3 scoreChange=1
+        greencode boulder > transformIfCount stype=green2 stypeCount=code geq=2 scoreChange=1
+        greencode boulder > transformIfCount stype=green3 stypeCount=code geq=1 scoreChange=1
+
+        redcodeX boulder > transformTo stype=redcode scoreChange=-1
+        greencodeX boulder > transformTo stype=greencode scoreChange=-1
+        bluecodeX boulder > transformTo stype=bluecode scoreChange=-1
+
+
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        MultiSpriteCounterSubTypes stype1=blocks limit=6 subTypesNum=3 win=True
+        Timeout limit=1500 win=False

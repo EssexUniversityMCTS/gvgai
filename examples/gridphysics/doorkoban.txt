@@ -1,0 +1,62 @@
+BasicGame key_handler=Pulse square_size=50
+
+    SpriteSet
+        floor > Immovable img=newset/floor2 hidden=True
+        avatar > MovingAvatar img=oryx/knight1
+
+        box > Passive
+            box0    >  img=newset/block2
+            box1    >  img=newset/block2
+            box2    >  img=newset/block2
+            box3    >  img=newset/block2
+
+        hole   > Immovable color=DARKBLUE img=oryx/cspell4
+            hole0 >
+            hole1 >
+            hole2 >
+            hole3 >
+
+        door > Door img=oryx/doorclosed1
+            door0 >
+            door1 >
+            door2 >
+            door3 >
+
+        exit > Door img=oryx/dooropen1
+
+        wall > Immovable img=oryx/wall3 autotiling=True
+
+    LevelMapping
+        0 > floor hole0
+        1 > floor hole1
+        2 > floor hole2
+        3 > floor hole3
+        * > box0 floor
+        + > box1 floor
+        - > box2 floor
+        / > box3 floor
+        a > door0 floor
+        b > door1 floor
+        c > door2 floor
+        d > door3 floor
+
+        A > avatar floor
+        . > floor
+        w > wall
+        e > exit floor
+
+    InteractionSet
+        avatar wall door > stepBack
+        box avatar  > bounceForward
+        box wall box door  > undoAll
+        box0 hole0 > killAll stype=door0 scoreChange=1
+        box1 hole1 > killAll stype=door1 scoreChange=2
+        box2 hole2 > killAll stype=door2 scoreChange=4
+        box3 hole3 > killAll stype=door3 scoreChange=8
+        box hole > killBoth
+        exit avatar > killSprite scoreChange=16
+
+    TerminationSet
+        SpriteCounter stype=exit    limit=0 win=True
+        Timeout limit=1000 win=False
+

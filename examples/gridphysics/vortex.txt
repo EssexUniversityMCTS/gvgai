@@ -1,0 +1,59 @@
+BasicGame square_size=30
+    SpriteSet
+        floor > Immovable img=oryx/grass autotiling=True hidden=True
+        water > Immovable color=BLUE img=oryx/seaWater
+            southfacing > orientation=DOWN  color=RED
+            northfacing > orientation=UP  color=ORANGE
+            eastfacing  > orientation=RIGHT color=YELLOW
+            westfacing  > orientation=LEFT color=YELLOW
+
+        vortex >
+            stopvortex > Immovable img=newset/whirlpool2
+            hiddenvortex > Immovable invisible=True hidden=True
+
+        avatar >
+            moving > MovingAvatar img=newset/man4
+            falling > MissileAvatar img=newset/man3 speed=1
+
+        exit > Immovable color=GREEN img=oryx/dooropen1 portal=True
+        wall > Immovable img=oryx/bush5
+        box  > Passive img=newset/block3
+        treasure > Immovable img=oryx/treasure2
+        wall > Immovable img=oryx/tree1
+
+
+    LevelMapping
+        . > floor
+        A > moving stopvortex floor
+        n > stopvortex floor
+        1 > northfacing floor
+        2 > eastfacing floor
+        3 > southfacing floor
+        4 > westfacing floor
+        x > box floor
+        e > exit floor
+        t > treasure floor
+        w > wall floor
+        h > hiddenvortex floor
+
+    InteractionSet
+
+        moving wall > stepBack
+        box avatar  > bounceForward
+        box wall box  > undoAll
+
+        water box > transformTo stype=hiddenvortex
+        box hiddenvortex > killSprite scoreChange=1
+
+        moving water > transformTo stype=falling
+        falling vortex > transformTo stype=moving
+        exit avatar  > killSprite
+
+        falling water > attractGaze prob=1
+
+        treasure avatar > killSprite scoreChange=10
+
+    TerminationSet
+        SpriteCounter stype=exit    limit=0 win=True
+        SpriteCounter stype=avatar  limit=0 win=False
+        Timeout limit=1000 win=False

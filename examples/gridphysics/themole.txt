@@ -1,0 +1,99 @@
+BasicGame square_size=30
+    SpriteSet
+        floor > Immovable img=oryx/backGrey hidden=True
+
+        hole > Passive color=BLUE portal=True
+            holedown > img=newset/hole1
+            holeup > img=newset/hole4
+
+        wall >
+            overWall >
+                overgroundWall > Immovable img=oryx/wall6
+                overgroundWallHdn > Immovable invisible=True hidden=True
+
+            underWall >
+                undergroundWall > Immovable img=oryx/wall5
+                undergroundWallHdn > Immovable invisible=True hidden=True
+
+
+        enemy > speed=0.4
+            overEnemy >
+                overgroundEnemy > RandomNPC cooldown=2 cons=2 img=oryx/guard1
+                overgroundEnemyHdn > RandomNPC cooldown=2 cons=2 invisible=True hidden=True
+
+            underEnemy >
+                undergroundEnemy > RandomNPC cooldown=2 cons=3 img=oryx/freak1
+                undergroundEnemyHdn > RandomNPC cooldown=2 cons=3 invisible=True hidden=True
+
+
+        gem >
+            overGem >
+                overgroundGem > Immovable img=oryx/diamond1
+                overgroundGemHdn > Immovable invisible=True hidden=True
+
+            underEnemy >
+                undergroundGem > Immovable img=oryx/diamond2
+                undergroundGemHdn > Immovable invisible=True hidden=True
+
+        good > Resource color=GOLD limit=10
+
+        avatar > OngoingShootAvatar speed=0.4
+            overground > img=oryx/dwarf1 stype=holedown
+            underground > img=oryx/druid1 stype=holeup
+
+
+    LevelMapping
+        A > overground floor
+        . > floor
+        o > overgroundEnemy floor
+        u > undergroundEnemyHdn floor
+        x > overgroundWall undergroundWallHdn
+        w > overgroundWall floor
+        m > undergroundWallHdn floor
+        1 > overgroundGem floor
+        2 > undergroundGemHdn floor
+		
+    InteractionSet
+        overground overgroundWall > stepBack
+        underground undergroundWall > stepBack
+        avatar EOS > wrapAround
+
+        overground overgroundEnemy > killSprite scoreChange=-1
+        underground undergroundEnemy > killSprite scoreChange=-1
+
+        hole hole > killBoth
+        hole underWall > killSprite
+        hole overWall > killSprite
+
+        overgroundEnemy overgroundWall > stepBack pixelPerfect=True
+        undergroundEnemy undergroundWall > stepBack pixelPerfect=True
+        overgroundEnemyHdn overgroundWallHdn > stepBack pixelPerfect=True
+        undergroundEnemyHdn undergroundWallHdn > stepBack pixelPerfect=True
+
+        # MOVING UNDERGROUND
+        overground holedown > transformToAll stype=overgroundGem stypeTo=overgroundGemHdn
+        overground holedown > transformToAll stype=undergroundGemHdn stypeTo=undergroundGem
+        overground holedown > transformToAll stype=overgroundEnemy stypeTo=overgroundEnemyHdn
+        overground holedown > transformToAll stype=undergroundEnemyHdn stypeTo=undergroundEnemy
+        overground holedown > transformToAll stype=overgroundWall stypeTo=overgroundWallHdn
+        overground holedown > transformToAll stype=undergroundWallHdn stypeTo=undergroundWall
+        overground holedown > align
+        overground holedown > transformTo stype=underground forceOrientation=true
+
+        # MOVING OVERGROUND
+        underground holeup > transformToAll stype=undergroundGem stypeTo=undergroundGemHdn
+        underground holeup > transformToAll stype=overgroundGemHdn stypeTo=overgroundGem
+        underground holeup > transformToAll stype=undergroundEnemy stypeTo=undergroundEnemyHdn
+        underground holeup > transformToAll stype=overgroundEnemyHdn stypeTo=overgroundEnemy
+        underground holeup > transformToAll stype=undergroundWall stypeTo=undergroundWallHdn
+        underground holeup > transformToAll stype=overgroundWallHdn stypeTo=overgroundWall
+        underground holeup > align
+        underground holeup > transformTo stype=overground forceOrientation=true
+
+        overground overgroundGem > changeResource resource=good value=1 killResource=True scoreChange=1
+        underground undergroundGem > changeResource resource=good value=1 killResource=True scoreChange=1
+
+
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=gem limit=0 win=True

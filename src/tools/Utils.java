@@ -184,4 +184,33 @@ public class Utils
         }
         return divisor;
     }
+
+    /**
+     * Processes a file with game names (containing full path).
+     * Assumes that the input is csv, with each line with the format:
+     *   N, fullPath
+     * Where N is the index and fullPath the full path to the file, including extension (.txt).
+     * @returns double String array, such as [fullPath][gameName]
+     */
+    public static String[][] readGames(String filename)
+    {
+        String[] lines = new IO().readFile(filename);
+        String[][] allGames = new String[lines.length][2];
+        int idx = 0;
+
+        for(String line : lines)
+        {
+            String path = line.split(",")[1];
+            int loc = path.lastIndexOf("/");
+            String gameName = path.substring(loc + 1, path.length() - 4);
+
+            allGames[idx][0] = path;
+            allGames[idx][1] = gameName;
+
+            idx++;
+        }
+
+        return allGames;
+    }
+
 }

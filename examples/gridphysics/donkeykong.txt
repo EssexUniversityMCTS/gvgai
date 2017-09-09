@@ -1,0 +1,73 @@
+BasicGame square_size=20
+    SpriteSet
+        back > Immovable img=oryx/backLBlue hidden=True
+        floor > Immovable img=oryx/floor1 orientation=RIGHT hidden=True
+        ground > Immovable img=oryx/floor1 orientation=RIGHT hidden=True
+        ladder > Immovable img=newset/ladder2 orientation=DOWN hidden=True
+        goal  > Door color=GREEN img=newset/exit2
+
+        rightBarrelSpawn > BomberRandomMissile stypeMissile=breakableBarrelR,toughBarrelR cooldown=50 invisible=True hidden=True
+        leftBarrelSpawn > BomberRandomMissile stypeMissile=breakableBarrelL,toughBarrelL cooldown=50 invisible=True hidden=True
+
+        barrel  > Missile
+            downBarrel  > orientation=DOWN speed=0.8
+                downBarrelBR > img=oryx/barrel1
+                downBarrelBL > img=oryx/barrel1
+                downBarrelTR > img=oryx/barrel2
+                downBarrelTL > img=oryx/barrel2
+            rollingBarrel >
+                breakableBarrel > speed=0.25 img=oryx/barrel1
+                    breakableBarrelR > orientation=RIGHT
+                    breakableBarrelL > orientation=LEFT
+                toughBarrel > speed=0.25 img=oryx/barrel2
+                    toughBarrelR > orientation=RIGHT
+                    toughBarrelL > orientation=LEFT
+
+        avatar > ShootAvatar speed=0.5 stype=arrow frameRate=8 img=oryx/spelunky
+        arrow > Missile img=newset/arrow speed=0.75 singleton=True
+        donkey > RandomNPC speed=0.001 img=newset/monkey2 frameRate=6
+        wall > Immovable color=BLACK img=oryx/wall1
+        
+    InteractionSet
+
+        avatar wall eos > stepBack
+        avatar downBarrel rollingBarrel > killSprite
+
+        downBarrel floor > attractGaze align=True
+        downBarrelBR floor > transformTo stype=breakableBarrelR
+        downBarrelBL floor > transformTo stype=breakableBarrelL
+        downBarrelTR floor > transformTo stype=toughBarrelR
+        downBarrelTL floor > transformTo stype=toughBarrelL
+
+        rollingBarrel ladder > attractGaze align=True
+        breakableBarrelR ladder > transformTo stype=downBarrelBR
+        breakableBarrelL ladder > transformTo stype=downBarrelBL
+        toughBarrelR ladder > transformTo stype=downBarrelTR
+        toughBarrelL ladder > transformTo stype=downBarrelTL
+
+        rollingBarrel wall > reverseDirection
+        rollingBarrel eos > killSprite
+        arrow wall eos > killSprite
+
+        arrow breakableBarrel > killBoth scoreChange=1
+
+        goal avatar  > killSprite scoreChange=1
+
+
+    
+    TerminationSet
+        SpriteCounter stype=goal   limit=0 win=True
+        SpriteCounter stype=avatar limit=0 win=False
+    
+    LevelMapping
+        _ > back
+        g > goal ground
+        w > wall
+        l > ladder ground
+        A > ground avatar
+        * > rightBarrelSpawn ground
+        x > leftBarrelSpawn ground
+        . > floor
+        d > donkey ground
+
+

@@ -1,0 +1,42 @@
+BasicGame square_size=25
+    SpriteSet
+        background > Immovable img=oryx/space1 hidden=True
+        avatar > OngoingAvatar speed=0.5 img=oryx/spaceship1 healthPoints=15 limitHealthPoints=20
+        nebula > Immovable img=oryx/explosion2
+        blackhole > Passive portal=True img=newset/whirlpool3
+        turret > RandomBomber stype=bomb prob=0.4 cooldown=3 speed=0.001 rotateInPlace=True img=newset/satellite
+        bomb > Missile color=RED speed=0.9 img=oryx/circleEffect1 shrinkfactor=0.7
+        planet > Passive
+            emptyPlanet > img=oryx/planet
+            busyPlanet > img=oryx/planet1
+        atmosphere > Passive  hidden=True invisible=True
+
+    LevelMapping
+        A > avatar background
+        . > background
+        b > blackhole background
+        t > turret background
+        p > emptyPlanet background
+        w > nebula background
+        a > atmosphere background
+		
+    InteractionSet
+
+        avatar nebula > subtractHealthPoints scoreChange=-1
+        avatar EOS > killSprite
+
+        avatar bomb > attractGaze
+        avatar bomb > subtractHealthPoints
+        bomb avatar > killSprite
+
+        avatar emptyPlanet > align
+        emptyPlanet avatar > transformTo stype=busyPlanet
+        avatar planet > addHealthPoints
+
+        avatar atmosphere > addTimer timer=2 ftype=transformToAll stype=busyPlanet stypeTo=emptyPlanet
+        blackhole avatar > killSprite scoreChange=1
+
+    TerminationSet
+        SpriteCounter stype=avatar limit=0 win=False
+        SpriteCounter stype=blackhole limit=0 win=True
+        Timeout limit=1000 win=False

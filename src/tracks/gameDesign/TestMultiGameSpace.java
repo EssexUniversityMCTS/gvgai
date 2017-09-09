@@ -1,5 +1,6 @@
 package tracks.gameDesign;
 
+import tools.Utils;
 import tracks.ArcadeMachine;
 import tracks.DesignMachine;
 
@@ -24,29 +25,23 @@ public class TestMultiGameSpace {
         String sampleRHEA = "tracks.multiPlayer.advanced.sampleRHEA.Agent";
         String sampleRS = "tracks.multiPlayer.advanced.sampleRS.Agent";
 
-
-        // Available games:
-        String gamesPath = "examples/gameDesign/";
-        String games[] = new String[]{};
-        String gameRules[] = new String[]{};
-
-
-        // All public games
-        games = new String[]{"ghostbusters", "fatty"};                // 0
-        gameRules = new String[]{};     // 0
-
-
-        // Other settings
+        // Game settings
         boolean visuals = true;
         int seed = new Random().nextInt();
+
+        //Load available games
+        String spGamesCollection =  "examples/all_games_gd2p.csv";
+        String[][] games = Utils.readGames(spGamesCollection);
+
 
         // Game and level to play
         int gameIdx = 0;
         int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
         String controllers = sampleRHEA + " " + sampleRHEA;
 
-        String game = gamesPath + games[gameIdx] + ".txt";
-        String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
+        String gameName = games[gameIdx][1];
+        String game = games[gameIdx][0];
+        String level1 = game.replace(gameName, gameName + "_lvl" + levelIdx);
 
         String recordActionsFile =  null;// "actions_" + games[gameIdx] + "_lvl";
         // + levelIdx + "_" + seed + ".txt";

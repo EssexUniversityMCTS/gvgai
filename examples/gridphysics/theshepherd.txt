@@ -1,0 +1,56 @@
+BasicGame obs=wall,fence
+    SpriteSet
+        floor > Immovable hidden=True img=oryx/grass autotiling=True
+        sheep >
+            notamed >
+                scared > Fleeing speed=1.0 stype=avatar color=BLUE img=oryx/bird1
+                seeking > PathChaser speed=1.0 stype=entry img=oryx/bird1
+            tamed > RandomNPC speed=0.1 cons=2 img=oryx/bird2
+            aux > Immovable hidden=True invisible=True
+        avatar > ShootAvatar stype=dogtreat ammo=treats img=oryx/princess1
+        dog > img=oryx/wolf1
+            hungry > PathChaser stype=dogtreat
+            help > PathChaser stype=scared
+        dogtreat > Immovable img=oryx/belt2 shrinkfactor=0.5 singleton=True
+        treats > Resource value=1 limit=1 img=oryx/belt2 color=BROWN
+        entry > Immovable invisible=True hidden=True
+        door > Door img=oryx/dooropen1
+        fence > Immovable img=oryx/spike2
+        wall > Immovable img=oryx/tree2
+
+    InteractionSet
+        sheep wall fence > stepBack
+        notamed notamed > stepBack
+        avatar wall fence > stepBack
+        dog wall fence > stepBack
+        tamed avatar > bounceForward
+        dogtreat avatar > bounceForward
+        dogtreat wall fence > killSprite
+
+        hungry dogtreat > transformTo stype=help killSecond=True #dog helps after eating a treat
+
+        #sheep runs to pen if caught by helpful dog, dog becomes hungry again
+        scared help > transformTo stype=aux
+        help aux > transformTo stype=hungry
+        aux hungry > transformTo stype=seeking
+
+        tamed door > stepBack
+        sheep fence > stepBack
+        scared entry  > transformTo stype=tamed scoreChange=5
+        seeking entry > transformTo stype=tamed scoreChange=1
+
+        treats avatar > collectResource killResource=False
+
+    LevelMapping
+        0 > scared floor
+        . > floor
+        A > floor avatar
+        d > hungry floor
+        e > entry floor
+        + > door floor
+        f > fence floor
+        t > treats floor
+        w > floor wall
+
+    TerminationSet
+        SpriteCounter stype=notamed win=True

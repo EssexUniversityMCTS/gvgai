@@ -1,5 +1,6 @@
 package tracks.gameDesign;
 
+import tools.Utils;
 import tracks.DesignMachine;
 
 import java.util.Random;
@@ -11,7 +12,8 @@ import java.util.Random;
 public class TestGameSpace {
 
     public static void main(String[] args) {
-        // Available tracks:
+
+        // Available controllers:
         String sampleRandomController = "tracks.singlePlayer.simple.sampleRandom.Agent";
         String doNothingController = "tracks.singlePlayer.simple.doNothing.Agent";
         String sampleOneStepController = "tracks.singlePlayer.simple.sampleonesteplookahead.Agent";
@@ -22,26 +24,22 @@ public class TestGameSpace {
         String sampleOLETSController = "tracks.singlePlayer.advanced.olets.Agent";
         String repeatOLETS = "tracks.singlePlayer.tools.repeatOLETS.Agent";
 
-
-        // Available games:
-        String gamesPath = "examples/gameDesign/";
-        String games[] = new String[] {};
-        String gameRules[] = new String[] {};
-
-
-        // All public games
-        games = new String[] { "aliens", "seaquest"}; 				// 0
-
-        // Other settings
+        // Game settings
         boolean visuals = true;
         int seed = new Random().nextInt();
+
+        //Load available games
+        String spGamesCollection =  "examples/all_games_gd.csv";
+        String[][] games = Utils.readGames(spGamesCollection);
+
 
         // Game and level to play
         int gameIdx = 0;
         int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
 
-        String game = gamesPath + games[gameIdx] + ".txt";
-        String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
+        String gameName = games[gameIdx][1];
+        String game = games[gameIdx][0];
+        String level1 = game.replace(gameName, gameName + "_lvl" + levelIdx);
 
         String recordActionsFile = null;// "actions_" + games[gameIdx] + "_lvl"
                         // + levelIdx + "_" + seed + ".txt";

@@ -1,0 +1,27 @@
+BasicGame square_size=32
+    SpriteSet
+        alienBlue > Bomber  cooldown=3 prob=0.01 img=oryx/alien1 stype=bomb speed=0.8
+        background > Immovable  hidden=True img=oryx/space1
+        portalFast > SpawnPoint  total=20 img=portal hidden=True stype=alienGreen cooldown=12 invisible=True
+        portalSlow > SpawnPoint  total=20 img=portal hidden=True stype=alienBlue cooldown=16 invisible=True
+        alienGreen > Bomber  cooldown=3 prob=0.01 img=oryx/alien3 stype=bomb speed=0.8
+        avatar > FlakAvatar  img=oryx/spaceship1 stype=sam
+        bomb > Missile  orientation=DOWN img=oryx/bullet2 color=RED speed=0.5
+        wall > Immovable  solid=True color=DARKGRAY
+        sam > Missile  singleton=True orientation=UP img=oryx/bullet1 color=BLUE
+        base > Immovable  color=WHITE img=oryx/planet
+    LevelMapping
+        . > background
+        0 > background base
+        1 > background portalSlow
+        2 > background portalFast
+        A > background avatar
+    TerminationSet
+        Timeout limit=1023 win=True
+        SpriteCounter stype=avatar limit=0 win=False
+    InteractionSet
+        background base > reverseDirection scoreChange=-2
+        background avatar > subtractHealthPoints scoreChange=-2
+        portalSlow EOS > bounceForward
+        background EOS > turnAround
+        background EOS > undoAll

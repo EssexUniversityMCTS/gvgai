@@ -3,6 +3,7 @@ package tracks.singlePlayer;
 import java.util.Random;
 
 import core.logging.Logger;
+import tools.Utils;
 import tracks.ArcadeMachine;
 
 /**
@@ -24,52 +25,20 @@ public class Test {
         String sampleRHEAController = "tracks.singlePlayer.advanced.sampleRHEA.Agent";
 		String sampleOLETSController = "tracks.singlePlayer.advanced.olets.Agent";
 
-		// Available games:
-		String gridGamesPath = "examples/gridphysics/";
-        String contGamesPath = "examples/contphysics/";
-        String gamesPath;
-		String games[];
-        boolean GRID_PHYSICS = false;
+		//Load available games
+		String spGamesCollection =  "examples/all_games_sp.csv";
+		String[][] games = Utils.readGames(spGamesCollection);
 
-        // All public games (gridphysics)
-		if(GRID_PHYSICS) {
-		    gamesPath = gridGamesPath;
-            games = new String[]{"aliens", "angelsdemons", "assemblyline", "avoidgeorge", "bait", // 0-4
-                    "beltmanager", "blacksmoke", "boloadventures", "bomber", "bomberman", // 5-9
-                    "boulderchase", "boulderdash", "brainman", "butterflies", "cakybaky", // 10-14
-                    "camelRace", "catapults", "chainreaction", "chase", "chipschallenge", // 15-19
-                    "clusters", "colourescape", "chopper", "cookmepasta", "cops", // 20-24
-                    "crossfire", "defem", "defender", "digdug", "dungeon", // 25-29
-                    "eighthpassenger", "eggomania", "enemycitadel", "escape", "factorymanager", // 30-34
-                    "firecaster", "fireman", "firestorms", "freeway", "frogs", // 35-39
-                    "garbagecollector", "gymkhana", "hungrybirds", "iceandfire", "ikaruga", // 40-44
-                    "infection", "intersection", "islands", "jaws", "killBillVol1", // 45-49
-                    "labyrinth", "labyrinthdual", "lasers", "lasers2", "lemmings", // 50-54
-                    "missilecommand", "modality", "overload", "pacman", "painter", // 55-59
-                    "pokemon", "plants", "plaqueattack", "portals", "racebet", // 60-64
-                    "racebet2", "realportals", "realsokoban", "rivers", "roadfighter", // 65-69
-                    "roguelike", "run", "seaquest", "sheriff", "shipwreck", // 70-74
-                    "sokoban", "solarfox", "superman", "surround", "survivezombies", // 75-79
-                    "tercio", "thecitadel", "thesnowman", "waitforbreakfast", "watergame", // 80-84
-                    "waves", "whackamole", "wildgunman", "witnessprotection", "wrapsokoban", // 85-89
-                    "zelda", "zenpuzzle"}; // 90, 91
-
-        }else{
-            gamesPath = contGamesPath;
-            games = new String[]{"artillery", "asteroids", "bird", "bubble", "candy",   //0 - 4
-                    "lander", "mario", "pong", "ptsp", "racing"};                       //5 - 9
-        }
-
-
-		// Other settings
+		//Game settings
 		boolean visuals = true;
 		int seed = new Random().nextInt();
 
 		// Game and level to play
 		int gameIdx = 0;
 		int levelIdx = 0; // level names from 0 to 4 (game_lvlN.txt).
-		String game = gamesPath + games[gameIdx] + ".txt";
-		String level1 = gamesPath + games[gameIdx] + "_lvl" + levelIdx + ".txt";
+		String gameName = games[gameIdx][1];
+		String game = games[gameIdx][0];
+		String level1 = game.replace(gameName, gameName + "_lvl" + levelIdx);
 
 		String recordActionsFile = null;// "actions_" + games[gameIdx] + "_lvl"
 						// + levelIdx + "_" + seed + ".txt";
@@ -77,7 +46,7 @@ public class Test {
 						// executed. null if not to save.
 
 		// 1. This starts a game, in a level, played by a human.
-		 ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
+		ArcadeMachine.playOneGame(game, level1, recordActionsFile, seed);
 
 		// 2. This plays a game in a level by the controller.
 //		ArcadeMachine.runOneGame(game, level1, visuals, sampleRHEAController, recordActionsFile, seed, 0);
@@ -88,25 +57,27 @@ public class Test {
 	//	 ArcadeMachine.replayGame(game, level1, visuals, readActionsFile);
 
 		// 4. This plays a single game, in N levels, M times :
-	//	String level2 = gamesPath + games[gameIdx] + "_lvl" + 1 +".txt";
-	//	int M = 10;
-	//	for(int i=0; i<games.length; i++){
-	//		game = gamesPath + games[i] + ".txt";
-	//		level1 = gamesPath + games[i] + "_lvl" + levelIdx +".txt";
-	//		ArcadeMachine.runGames(game, new String[]{level1}, M, sampleMCTSController, null);
-	//	}
+//		String level2 = new String(game).replace(gameName, gameName + "_lvl" + 1);
+//		int M = 10;
+//		for(int i=0; i<games.length; i++){
+//			game = games[i][0];
+//			gameName = games[i][1];
+//			level1 = game.replace(gameName, gameName + "_lvl" + levelIdx);
+//			ArcadeMachine.runGames(game, new String[]{level1}, M, sampleMCTSController, null);
+//		}
 
 		//5. This plays N games, in the first L levels, M times each. Actions to file optional (set saveActions to true).
-//		int N = games.length, L = 1, M = 1;
+//		int N = games.length, L = 2, M = 1;
 //		boolean saveActions = false;
 //		String[] levels = new String[L];
 //		String[] actionFiles = new String[L*M];
 //		for(int i = 0; i < N; ++i)
 //		{
 //			int actionIdx = 0;
-//			game = gamesPath + games[i] + ".txt";
+//			game = games[i][0];
+//			gameName = games[i][1];
 //			for(int j = 0; j < L; ++j){
-//				levels[j] = gamesPath + games[i] + "_lvl" + j +".txt";
+//				levels[j] = game.replace(gameName, gameName + "_lvl" + j);
 //				if(saveActions) for(int k = 0; k < M; ++k)
 //				actionFiles[actionIdx++] = "actions_game_" + i + "_level_" + j + "_" + k + ".txt";
 //			}
