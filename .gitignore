@@ -55,3 +55,6 @@ clients/GVGAI-JavaClient/logs/clientLog.txt
 clients/GVGAI-PythonClient/src/logs/output_server_redirect.txt
 
 clients/GVGAI-PythonClient/src/logs/clientLog.txt
+
+#Super secret folder with private games, in the privte repository
+examples/super_secret
