@@ -43,7 +43,7 @@ public class Agent extends AbstractMultiPlayer {
      */
     public Agent(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer, int playerID) {
         randomGenerator = new Random();
-        heuristic = new WinScoreHeuristic(stateObs);
+        heuristic = new WinScoreHeuristic();
         this.timer = elapsedTimer;
 
         // Get multiplayer game parameters

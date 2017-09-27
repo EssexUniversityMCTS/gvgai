@@ -40,7 +40,7 @@ public class Agent extends AbstractPlayer {
      */
     public Agent(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
         randomGenerator = new Random();
-        heuristic = new WinScoreHeuristic(stateObs);
+        heuristic = new WinScoreHeuristic();
         this.timer = elapsedTimer;
 
         // INITIALISE POPULATION

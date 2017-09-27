@@ -15,12 +15,6 @@ public class WinScoreHeuristic extends StateHeuristic {
     private static final double HUGE_NEGATIVE = -1000.0;
     private static final double HUGE_POSITIVE =  1000.0;
 
-    double initialNpcCounter = 0;
-
-    public WinScoreHeuristic(StateObservation stateObs) {
-
-    }
-
     public double evaluateState(StateObservation stateObs) {
         boolean gameOver = stateObs.isGameOver();
         Types.WINNER win = stateObs.getGameWinner();

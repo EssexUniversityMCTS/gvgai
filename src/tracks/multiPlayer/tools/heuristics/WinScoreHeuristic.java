@@ -15,12 +15,6 @@ public class WinScoreHeuristic extends StateHeuristicMulti {
     private static final double HUGE_NEGATIVE = -1000.0;
     private static final double HUGE_POSITIVE =  1000.0;
 
-    double initialNpcCounter = 0;
-
-    public WinScoreHeuristic(StateObservationMulti stateObs) {
-
-    }
-
     public double evaluateState(StateObservationMulti stateObs, int playerID) {
         boolean gameOver = stateObs.isGameOver();
         Types.WINNER win = stateObs.getMultiGameWinner()[playerID];
