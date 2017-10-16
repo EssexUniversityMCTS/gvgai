@@ -25,7 +25,6 @@ production/
 *.class
 *.xml
 *.html
-*.png
 *.gif
 *.pyc
 
