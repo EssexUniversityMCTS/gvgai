@@ -198,7 +198,7 @@ public class LearningMachine {
         // Establish the level files for level 3 and 4
         System.out.println("[PHASE] Starting Validation in " + validationLevels.length + " levels.");
 
-        for (int valid_idx=0; valid_idx<CompetitionParameters.validation_times; valid_idx++) {
+        for (int valid_idx = 0; valid_idx<CompetitionParameters.VALIDATION_TIMES; valid_idx++) {
             level_idx = 0;
             levelOutcome = 0;
             keepPlaying = true;

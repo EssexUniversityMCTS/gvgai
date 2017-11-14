@@ -20,6 +20,6 @@ dir /s/b %src_folder%\*.java > sources.txt
 javac -d %build_folder% @sources.txt
 
 rem run with screen visualisation
-java -cp %build_folder% TestLearningClient -shDir %shDir% -serverDir %serverDir% -visuals
+java -cp %build_folder% TestLearningClient -shDir %shDir% -serverDir %serverDir% -gameId %gameId% -agentName sampleLearner.Agent -visuals
 rem run without screen visualisation
 rem java -cp %build_folder% TestLearningClient -shDir %shDir% -serverDir %serverDir%

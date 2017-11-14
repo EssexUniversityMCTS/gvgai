@@ -157,5 +157,5 @@ public class CompetitionParameters
     public static double MAX_WINDOW_SIZE = 800.0;
     public static int LEARNING_BLOCK_SIZE = 10;
     public static boolean IS_LEARNING = false;
-    public static final int validation_times = 10;
+    public static final int VALIDATION_TIMES = 10;
 }

@@ -170,13 +170,11 @@ public class ArcadeMachine {
 
 		// This, the last thing to do in this method, always:
 		toPlay.handleResult();
-		toPlay.printResult();
+		// TODO: 18/10/2017 the line below is commented for test
+//		toPlay.printResult();
 
 		return toPlay.getFullResult();
 	}
-
-
-
 
     /**
      * Runs a replay given a game, level and file with the actions to execute.
@@ -227,12 +225,15 @@ public class ArcadeMachine {
 
 		for (int i = 0; i < no_players; i++) {
 			if (no_players > 1) {
-			// multi player
-			players[i] = ArcadeMachine.createMultiPlayer(agentName, null, toPlay.getObservationMulti(i), -1, i,
+				// multi player
+				players[i] = ArcadeMachine.createMultiPlayer(agentName, null, toPlay.getObservationMulti(i), -1, i,
 				false);
 			} else {
-			// single player
-			players[i] = ArcadeMachine.createPlayer(agentName, null, toPlay.getObservation(), -1, false);
+				// single player
+				players[i] = ArcadeMachine.createPlayer(agentName, null, toPlay.getObservation(), -1, false);
+
+				if (players[i] instanceof tracks.singlePlayer.advanced.sampleMCTS.Agent) {
+				}
 			}
 
 			if (players[i] == null) {
@@ -753,10 +754,10 @@ public class ArcadeMachine {
                 acts[i] = action;
 
                 if (no_players > 1) {
-                // multi player
-                ((StateObservationMulti) stCopy).advance(acts);
+                	// multi player
+                	((StateObservationMulti) stCopy).advance(acts);
                 } else {
-                stCopy.advance(action);
+                	stCopy.advance(action);
                 }
 
                 copyStats++;
@@ -917,5 +918,4 @@ public class ArcadeMachine {
 			return true;
 		return false;
 	}
-
 }

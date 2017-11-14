@@ -36,3 +36,4 @@ BasicGame square_size=32
         avatar alien > killSprite scoreChange=-1
         avatar bomb  > killSprite scoreChange=-1
         alien  sam   > killSprite scoreChange=2
+
