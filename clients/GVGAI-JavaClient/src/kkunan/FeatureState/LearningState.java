@@ -7,7 +7,7 @@ public interface LearningState {
 
 
     static double[] generateFeatureFromState(AvatarInfoState learningstate){
-       return learningstate.generatedFeatureFromState();
+        return learningstate.generatedFeatureFromState();
     }
 
     double[] generatedFeatureFromState();

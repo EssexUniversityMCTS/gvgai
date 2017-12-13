@@ -4,37 +4,27 @@ import serialization.SerializableStateObservation;
 import serialization.Types;
 import utils.ElapsedCpuTimer;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-/**
- * This class has been built with a simple design in mind.
- * It is to be used to store player agent information,
- * to be later used by the client to send and receive information
- * to and from the server.
- */
+/*
+Brief description of the controller
+      Simple decayed e-Greedy algorithm that keep tracks of average reward changes for each action,
+      and pick the best one with probability 1-epsilon
+*/
 public class Agent extends utils.AbstractPlayer {
 
-    /**
-     * Public method to be called at the start of the communication. No game has been initialized yet.
-     * Perform one-time setup here.
-     */
-
-    // TODO: 30/06/2017 More optimize with Priority Queue, later
-    // TODO: 30/06/2017 Might also be better to create a class to keep these all, or use stat summary
     HashMap<Types.ACTIONS, Double> averageIncreasedReward;
     HashMap<Types.ACTIONS, Integer> counter;
-//    ArrayList<Types.ACTIONS> actionsNoEscape;
     int totalCount;
+
 
     public Agent(){
         averageIncreasedReward = new HashMap<>();
         counter = new HashMap<>();
-//        actionsNoEscape = new ArrayList<>();
+
     }
     double prevReward;
-//    Types.ACTIONS prevAction;
     double EPSILON = 0.5;
     Random random = new Random();
 
@@ -49,24 +39,20 @@ public class Agent extends utils.AbstractPlayer {
     public void init(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer){
 
         prevReward = 0;
-        // so you doesn't let me do this in the constructor? Fine, I'll do in the first level
-        if(averageIncreasedReward.size()==0)
-        for(Types.ACTIONS action : sso.availableActions)
-        {
-        //    System.out.println(elapsedTimer.remainingTimeMillis());
-            if(
-//                    !action.equals(Types.ACTIONS.ACTION_ESCAPE) &&
-                        !action.equals(Types.ACTIONS.ACTION_NIL))
-            {
-                averageIncreasedReward.put(action,0.0);
-                counter.put(action,0);
-                totalCount = 0;
-//                actionsNoEscape.add(action);
-        //        System.out.println(elapsedTimer.remainingTimeMillis());
-            }
-        }
 
-//        prevAction = null;
+        // so you doesn't let me do this in the constructor? Fine, I'll do in the first level
+        // put all non-nil available actions as keys into each mapper, to initialize
+        if(averageIncreasedReward.size()==0)
+            for(Types.ACTIONS action : sso.availableActions)
+            {
+                if(!action.equals(Types.ACTIONS.ACTION_NIL))
+                {
+                    averageIncreasedReward.put(action,0.0);
+                    counter.put(action,0);
+                    totalCount = 0;
+                }
+            }
+
     }
 
     /**
@@ -82,22 +68,20 @@ public class Agent extends utils.AbstractPlayer {
     @Override
     public Types.ACTIONS act(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer){
 
-//        System.out.println(sso.avatarLastAction);
-        //first step
+        //first step, or when nil was the last action, pick next action randomly
         if(sso.avatarLastAction.equals(Types.ACTIONS.ACTION_NIL))
         {
             Types.ACTIONS action= sso.availableActions.get(random.nextInt(sso.availableActions.size()));
             prevReward = sso.gameScore;
-//            prevAction = action;
-//
-//            System.out.println(action);
 
             totalCount++;
             return action;
         }
 
+        //update hashmaps
         update(sso.gameScore,sso.avatarLastAction);
 
+        //select next action using UCB for probability EPSILON
         Types.ACTIONS action;
         if(random.nextDouble() < EPSILON)
         {
@@ -108,34 +92,31 @@ public class Agent extends utils.AbstractPlayer {
             action = ucbPick();
         }
 
-//        prevAction = action;
-//        System.out.println("PICK ACTION "+action+", EPSILON="+EPSILON);
-
+        //decreasing EPSILON more when we know more about the game we are playing (really?)
         if(EPSILON>0.1)
             EPSILON -= 0.0001;
 
         totalCount++;
-//        System.out.println("hello");
         return action;
     }
 
+    //pure greedy without ucb, not quite good but left here for tribute
     public Types.ACTIONS greedyPick()
     {
         double max = -Double.MAX_VALUE;
         Types.ACTIONS maxAction = Types.ACTIONS.ACTION_ESCAPE;
         for(Types.ACTIONS action : averageIncreasedReward.keySet())
         {
-            System.out.print(action+":"+averageIncreasedReward.get(action)+", "+counter.get(action)+" | ");
             if(averageIncreasedReward.get(action)>max) {
                 max = averageIncreasedReward.get(action);
                 maxAction = action;
             }
         }
-        System.out.println("MAX ACTION: "+maxAction);
 
         return maxAction;
     }
 
+    // Pick next action using UCB equation
     public Types.ACTIONS ucbPick()
     {
         double maxUCB = -Double.MAX_VALUE;
@@ -158,7 +139,6 @@ public class Agent extends utils.AbstractPlayer {
     }
 
     private void update(double curReward, Types.ACTIONS prevAction){
-//        double curReward = sso.gameScore;
         double difReward = curReward-prevReward;
         prevReward = curReward;
         int counterPrevAction = counter.get(prevAction);
@@ -190,8 +170,6 @@ public class Agent extends utils.AbstractPlayer {
         {
             update(-100,sso.avatarLastAction);
         }
-
-        // TODO: 03/07/2017 do whatever learning here before return the next level 
 
         return level;
     }

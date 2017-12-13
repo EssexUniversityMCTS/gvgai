@@ -7,17 +7,19 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 /**
- * Created by SteepMike on 11/07/2017.
+ * Created by Mike on 11/07/2017.
  */
+
+
 public class AvatarInfoState implements LearningState {
     public float avatarSpeed;
     public double[] avatarOrientation;
-//    public double[] avatarPosition;
+    //    public double[] avatarPosition;
     public Types.ACTIONS avatarLastAction;
     public int avatarType;
     public int avatarHealthPoints;
     public int avatarMaxHealthPoints;
-//    public int avatarLimitHealthPoints;
+    //    public int avatarLimitHealthPoints;
     public boolean isAvatarAlive;
     public HashMap<Integer, Integer> avatarResources;
 
@@ -28,20 +30,18 @@ public class AvatarInfoState implements LearningState {
 
     private static int resultLength;
 
+    //brute force, getting everything that relate to avatar from state observation, and set to state
     public AvatarInfoState(SerializableStateObservation sso)
     {
         this.avatarSpeed = sso.avatarSpeed;
         this.avatarOrientation = new double[sso.avatarOrientation.length];
         System.arraycopy(sso.avatarOrientation,0,this.avatarOrientation,0,sso.avatarOrientation.length);
 
-//        this.avatarPosition = new double[sso.avatarPosition.length];
-//        System.arraycopy(sso.avatarPosition,0,this.avatarPosition,0,sso.avatarPosition.length);
 
         this.avatarLastAction = sso.avatarLastAction;
         this.avatarType = sso.avatarType;
         this.avatarHealthPoints = sso.avatarHealthPoints;
         this.avatarMaxHealthPoints = sso.avatarMaxHealthPoints;
-//        this.avatarLimitHealthPoints = sso.avatarLimitHealthPoints;
         this.isAvatarAlive = sso.isAvatarAlive;
         this.avatarResources = new HashMap<>();
         avatarResources.putAll(sso.avatarResources);
@@ -60,6 +60,7 @@ public class AvatarInfoState implements LearningState {
     }
 
     @Override
+    //this is super necessary to do the equals bit, or it won't even call the method
     public int hashCode(){
         return avatarLastAction.ordinal()*10;
     }
@@ -67,26 +68,26 @@ public class AvatarInfoState implements LearningState {
     @Override
     public boolean equals(Object state)
     {
+        //consider two states are the same when the speed is a bit different,
+        //same orientation, same last action, same type, health a bit different,
+        //same max health point (is this really necessary?), alive or dead, same resources
         AvatarInfoState anotherState = (AvatarInfoState)state;
-//        System.out.println("equals call");
         return (Math.abs(avatarSpeed - anotherState.avatarSpeed) <= SPEED_FILTER)
                 && Arrays.equals(avatarOrientation,anotherState.avatarOrientation)
-//                && Arrays.equals(avatarPosition,anotherState.avatarPosition)
                 && avatarLastAction.equals(anotherState.avatarLastAction)
                 && avatarType == anotherState.avatarType
                 && Math.abs(avatarHealthPoints - anotherState.avatarHealthPoints) <= HEATHPOINT_FILTER
                 && avatarMaxHealthPoints == anotherState.avatarMaxHealthPoints
                 && (isAvatarAlive == anotherState.isAvatarAlive)
                 && avatarResources.equals(anotherState.avatarResources)
-
                 ;
     }
 
     @Override
+    //a long feature array to use in q-learning
     public double[] generatedFeatureFromState() {
         double[] result = new double[resultLength];
         try {
-
 
             result[0] = avatarSpeed;
 
@@ -96,30 +97,13 @@ public class AvatarInfoState implements LearningState {
                 i++;
             }
 
-//            int j = 0;
-//            while (j < learningstate.avatarPosition.length) {
-//                result[i++] = learningstate.avatarPosition[j];
-//                j++;
-//            }
-
             result[i + avatarLastAction.ordinal()] = 1;
             i += Types.ACTIONS.values().length;
             result[i++] = avatarType;
             result[i++] = avatarHealthPoints;
             result[i++] = avatarMaxHealthPoints;
-//        result[i++] = learningstate.avatarLimitHealthPoints;
             result[i++] = isAvatarAlive ? 1 : 0;
 
-
-
-//        resultLength += 1; //speed
-//        resultLength += sso.avatarOrientation.length;
-//        resultLength += Types.ACTIONS.values().length;
-//        resultLength += 1; //avatar type
-//        resultLength += 1; //health point
-//        resultLength += 1; //max health point
-//        resultLength += 1; //limit health point
-//        resultLength += 1; //isAvatarAlive
         }catch (Exception e)
         {
             System.out.println("something wrong in genFeature");
