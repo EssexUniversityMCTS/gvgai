@@ -24,9 +24,8 @@ public class TestMultiPlayer {
 		String sampleRHEAController = "tracks.multiPlayer.advanced.sampleRHEA.Agent";
 		String humanController = "tracks.multiPlayer.tools.human.Agent";
 
-		// Set here the tracks used in the games (need 2 separated by space).
-		String controllers = humanController + " " + humanController;
-		// String tracks = sampleMCTSController + " " + sampleMCTSController;
+		// Set here the controllers used in the games (need 2 separated by space).
+		String controllers = sampleMCTSController + " " + sampleMCTSController;
 
 		//Load available games
 		String spGamesCollection =  "examples/all_games_2p.csv";
