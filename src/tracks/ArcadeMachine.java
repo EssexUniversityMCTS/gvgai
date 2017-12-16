@@ -154,7 +154,9 @@ public class ArcadeMachine {
 			}
 
 			// Get the score for the result.
-			return toPlay.handleResult();
+			toPlay.handleResult();
+			toPlay.printResult();
+			return toPlay.getFullResult();
 			}
 		}
 
