@@ -14,19 +14,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-/**
- * This class has been built with a simple design in mind.
- * It is to be used to store player agent information,
- * to be later used by the client to send and receive information
- * to and from the server.
- */
+/*
+Brief description of the controller
+      Simple Q-learning using 'most' of the Avatar information.
+      Limit health point was not used because it was difficult to scale.
+      Avatar position was not used because the screen sizes can be different, so nothing to rely on in that case.
+
+*/
 public class Agent extends utils.AbstractPlayer {
-
-
-    /**
-     * Public method to be called at the start of the communication. No game has been initialized yet.
-     * Perform one-time setup here.
-     */
 
     boolean veryFirstTime = true;
     Random random;
@@ -43,17 +38,10 @@ public class Agent extends utils.AbstractPlayer {
         random = new Random();
     }
 
-    /**
-     * Public method to be called at the start of every level of a game.
-     * Perform any level-entry initialization here.
-     * @param sso Phase Observation of the current game.
-     * @param elapsedTimer Timer (1s)
-     */
     @Override
     public void init(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer){
         if(veryFirstTime)
         {
-            // TODO: 05/07/2017 do whatever initialize the things
             previousState = null;
             previousReward = 0;
         }
@@ -72,7 +60,7 @@ public class Agent extends utils.AbstractPlayer {
      */
     @Override
     public Types.ACTIONS act(SerializableStateObservation sso, ElapsedCpuTimer elapsedTimer){
-//        System.out.println("start "+elapsedTimer.remainingTimeMillis());
+
         LearningState currentState = new AvatarInfoState(sso);
 
         //2nd step onwards, "assume" that we have previous state stored (and should be)
@@ -82,17 +70,18 @@ public class Agent extends utils.AbstractPlayer {
             HashMap<Types.ACTIONS,Double> mapper = QValues.get(previousState);
             Types.ACTIONS lastAction = sso.avatarLastAction;
 
+            //update the previous values if we have one stored
             if(mapper.containsKey(lastAction))
             {
                 double oldQ = mapper.get(lastAction);
                 double plusReward = sso.gameScore-previousReward;
 
+                //actual Q-learning equation
                 double newQ = oldQ + ALPHA*(plusReward + GAMMA*(getMaxQNext(previousState))-oldQ);
-//                System.out.println(plusReward+" "+oldQ+" "+getMaxQNext(previousState)+" "+newQ);
-//                System.out.println("new "+newQ+", old "+oldQ);
                 mapper.replace(lastAction,newQ);
             }
 
+            //or just put game score if we haven't found this before
             else
             {
                 mapper.put(lastAction,new Double(sso.gameScore));
@@ -100,6 +89,9 @@ public class Agent extends utils.AbstractPlayer {
         }
 
         Types.ACTIONS toActAction;
+
+        //bad style of code, but I like it
+        //basically just put new key in mapper if we don't have it
         if(QValues.containsKey(currentState))
         {
 
@@ -111,21 +103,20 @@ public class Agent extends utils.AbstractPlayer {
             QValues.put(currentState,mapper);
         }
 
+        //get the best action with probability 1-EPSILON, if we're still learning, if validating, just pick the best we know
         if(random.nextDouble() > EPSILON || sso.isValidation) {
             toActAction = getMaxAction(currentState, sso.availableActions);
         }
+        //otherwise pick randomly
         else toActAction = sso.availableActions.get(random.nextInt(sso.availableActions.size()));
 
-//        System.out.println(toActAction);
-//        printList(AvatarInfoState.generateFeatureFromState(currentState));
-//        System.out.println(QValues.keySet().size());
         previousState = currentState;
         previousReward = sso.gameScore;
 
-        System.out.println(sso.gameTick+": done "+elapsedTimer.elapsedMillis()+" "+elapsedTimer.remainingTimeMillis());
         return toActAction;
     }
 
+    //just a normal find the best action that seems unnecessary long
     private Types.ACTIONS getMaxAction(LearningState state, ArrayList<Types.ACTIONS> actions) {
         int index = random.nextInt(actions.size());
         try {
@@ -141,8 +132,6 @@ public class Agent extends utils.AbstractPlayer {
             Types.ACTIONS maxAction = mapper.keySet().iterator().next();
 
             for (Types.ACTIONS action : mapper.keySet()) {
-//                System.out.println(maxAction+" "+mapper.get(maxAction)+", "+action+" "+mapper.get(action));
-
                 if (mapper.get(maxAction) < mapper.get(action))
                     maxAction = action;
             }
@@ -155,8 +144,8 @@ public class Agent extends utils.AbstractPlayer {
         return actions.get(index);
     }
 
+    //Another get max, but for the next possible states, given the current one
     private double getMaxQNext(LearningState state) {
-
         try {
             if (!QValues.containsKey(state))
                 return 0;
