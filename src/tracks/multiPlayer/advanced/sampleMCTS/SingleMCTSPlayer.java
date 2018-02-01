@@ -5,6 +5,9 @@ import java.util.Random;
 import core.game.StateObservationMulti;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
+import utilsUI.DrawingAgent;
+import utilsUI.ParameterSet;
+import utilsUI.ParameterSetTS;
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,12 +48,11 @@ public class SingleMCTSPlayer
      * Inits the tree with the new observation state in the root.
      * @param a_gameState current state of the game.
      */
-    public void init(StateObservationMulti a_gameState)
+    public void init(StateObservationMulti a_gameState, ParameterSet params, DrawingAgent drawingAgent)
     {
         //Set the game observation to a newly root node.
         //System.out.println("learning_style = " + learning_style);
-        m_root = new SingleTreeNode(m_rnd, NUM_ACTIONS, actions, id, oppID, no_players);
-        m_root.rootState = a_gameState;
+        m_root = new SingleTreeNode(m_rnd, NUM_ACTIONS, actions, id, oppID, no_players, (ParameterSetTS)params, a_gameState, drawingAgent);
     }
 
     /**

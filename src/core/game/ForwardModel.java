@@ -1054,7 +1054,7 @@ public class ForwardModel extends Game
 
     /*
     * Returns a list with observations of resources.
-     * @param refPosition Reference position to use when sorting this array,
+     * @utilsUI refPosition Reference position to use when sorting this array,
      *                    by ascending distance to this point.
     * @return a list with observations of resources.
     */
@@ -1064,7 +1064,7 @@ public class ForwardModel extends Game
 
     /*
      * Returns a list with observations of portals.
-     * @param refPosition Reference position to use when sorting this array,
+     * @utilsUI refPosition Reference position to use when sorting this array,
      *                    by ascending distance to this point.
      * @return a list with observations of portals.
      */

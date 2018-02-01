@@ -174,7 +174,7 @@ class ClientComm:
      * a json object containing an encapsulated state observation.
      * This method deserializes the json object into a local state observation
      * instance.
-     * @param msg Message received from server to be interpreted.
+     * @utilsUI msg Message received from server to be interpreted.
      * @throws IOException
     """
 

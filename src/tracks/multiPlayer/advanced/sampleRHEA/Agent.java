@@ -4,27 +4,18 @@ import core.game.StateObservationMulti;
 import core.player.AbstractMultiPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
-import tracks.multiPlayer.tools.heuristics.StateHeuristicMulti;
-import tracks.multiPlayer.tools.heuristics.WinScoreHeuristic;
+import tools.Vector2d;
+import tracks.multiPlayer.tools.heuristics.SimpleStateHeuristic;
+import utilsUI.DrawingAgent;
+import utilsUI.ParameterSetEvo;
+import tracks.multiPlayer.tools.heuristics.*;
 
+import java.awt.*;
 import java.util.*;
 
+import static utilsUI.Constants.*;
+
 public class Agent extends AbstractMultiPlayer {
-
-    // variable
-    private int POPULATION_SIZE = 10;
-    private int SIMULATION_DEPTH = 10;
-    private int CROSSOVER_TYPE = UNIFORM_CROSS;
-    private double DISCOUNT = 1; //0.99;
-
-    // set
-    private boolean REEVALUATE = false;
-    //    private boolean REPLACE = false;
-    private int MUTATION = 1;
-    private int TOURNAMENT_SIZE = 2;
-    private int NO_PARENTS = 2;
-    private int RESAMPLE = 1;
-    private int ELITISM = 1;
 
     // constants
     private final long BREAK_MS = 10;
@@ -32,23 +23,24 @@ public class Agent extends AbstractMultiPlayer {
     static final int POINT1_CROSS = 0;
     static final int UNIFORM_CROSS = 1;
 
+    // algorithm logic
     private Individual[] population, nextPop;
     private int NUM_INDIVIDUALS;
     private int[] N_ACTIONS;
     private HashMap<Integer, Types.ACTIONS>[] action_mapping;
+    private StateHeuristicMulti heuristic;
 
+    // others
     private ElapsedCpuTimer timer;
     private Random randomGenerator;
-
-    private StateHeuristicMulti heuristic;
     private double acumTimeTakenEval = 0,avgTimeTakenEval = 0, avgTimeTaken = 0, acumTimeTaken = 0;
     private int numEvals = 0, numIters = 0;
     private boolean keepIterating = true;
     private long remaining;
+    private DrawingAgent drawingAgent;
 
-
-    //Multiplayer game parameters
-    int playerID, opponentID, noPlayers;
+    // multi-player game parameters
+    private int playerID, opponentID, noPlayers;
 
     /**
      * Public constructor with state observation and time due.
@@ -57,18 +49,34 @@ public class Agent extends AbstractMultiPlayer {
      * @param elapsedTimer Timer for the controller creation.
      */
     public Agent(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer, int playerID) {
+        params = new ParameterSetEvo();
         randomGenerator = new Random();
-        heuristic = new WinScoreHeuristic(stateObs);
+        switch(params.HEURISTIC_TYPE){
+            case HEURISTIC_SIMPLESTATE: heuristic = new SimpleStateHeuristic(stateObs); break;
+            case HEURISTIC_WINSCORE:
+            default: heuristic = new WinScoreHeuristic(stateObs);
+        }
         this.timer = elapsedTimer;
 
-        // Get multiplayer game parameters
+        // Get multi player game parameters
         this.playerID = playerID;
         noPlayers = stateObs.getNoPlayers();
         opponentID = (playerID+1)%noPlayers;
+
+        // Set up drawing
+        if (DrawingAgent.drawing) {
+            drawingAgent = new DrawingAgent(stateObs, playerID);
+        }
     }
 
     @Override
     public Types.ACTIONS act(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer) {
+
+        // Set up for drawing in this game tick
+        if (DrawingAgent.drawing && drawingAgent != null) {
+            drawingAgent.init(stateObs, playerID);
+        }
+
         this.timer = elapsedTimer;
         avgTimeTaken = 0;
         acumTimeTaken = 0;
@@ -102,8 +110,10 @@ public class Agent extends AbstractMultiPlayer {
     private void runIteration(StateObservationMulti stateObs) {
         ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
 
-        if (REEVALUATE) {
-            for (int i = 0; i < ELITISM; i++) {
+        ParameterSetEvo params = (ParameterSetEvo)this.params;
+
+        if (params.REEVALUATE) {
+            for (int i = 0; i < params.ELITISM; i++) {
                 if (remaining > 2*avgTimeTakenEval && remaining > BREAK_MS) { // if enough time to evaluate one more individual
                     evaluate(population[i], heuristic, stateObs);
                 } else {keepIterating = false;}
@@ -111,12 +121,12 @@ public class Agent extends AbstractMultiPlayer {
         }
 
         if (NUM_INDIVIDUALS > 1) {
-            for (int i = ELITISM; i < NUM_INDIVIDUALS; i++) {
+            for (int i = params.ELITISM; i < NUM_INDIVIDUALS; i++) {
                 if (remaining > 2*avgTimeTakenEval && remaining > BREAK_MS) { // if enough time to evaluate one more individual
                     Individual newind;
 
                     newind = crossover();
-                    newind = newind.mutate(MUTATION);
+                    newind = newind.mutate(params.MUTATION);
 
                     // evaluate new individual, insert into population
                     add_individual(newind, nextPop, i, stateObs);
@@ -141,7 +151,7 @@ public class Agent extends AbstractMultiPlayer {
                 }
             });
         } else if (NUM_INDIVIDUALS == 1){
-            Individual newind = new Individual(SIMULATION_DEPTH, N_ACTIONS[playerID], randomGenerator).mutate(MUTATION);
+            Individual newind = new Individual(params.SIMULATION_DEPTH, N_ACTIONS[playerID], randomGenerator).mutate(params.MUTATION);
             evaluate(newind, heuristic, stateObs);
             if (newind.value > population[0].value)
                 nextPop[0] = newind;
@@ -163,12 +173,12 @@ public class Agent extends AbstractMultiPlayer {
      * @return - value of last state reached
      */
     private double evaluate(Individual individual, StateHeuristicMulti heuristic, StateObservationMulti state) {
-
+        ParameterSetEvo params = (ParameterSetEvo)this.params;
         ElapsedCpuTimer elapsedTimerIterationEval = new ElapsedCpuTimer();
 
         StateObservationMulti st = state.copy();
         int i;
-        for (i = 0; i < SIMULATION_DEPTH; i++) {
+        for (i = 0; i < params.SIMULATION_DEPTH; i++) {
             double acum = 0, avg;
             if (! st.isGameOver()) {
                 ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
@@ -181,6 +191,12 @@ public class Agent extends AbstractMultiPlayer {
                     else advanceActs[k] = action_mapping[k].get(randomGenerator.nextInt(N_ACTIONS[k]));
                 }
                 st.advance(advanceActs);
+
+                // Draw simulations
+                if (DrawingAgent.drawing && drawingAgent != null) {
+                    Vector2d pos = state.getAvatarPosition(playerID);
+                    drawingAgent.updatePosThinking(pos);
+                }
 
                 acum += elapsedTimerIteration.elapsedMillis();
                 avg = acum / (i+1);
@@ -195,7 +211,7 @@ public class Agent extends AbstractMultiPlayer {
         double value = heuristic.evaluateState(first, playerID);
 
         // Apply discount factor
-        value *= Math.pow(DISCOUNT,i);
+        value *= Math.pow(params.DISCOUNT_FACTOR,i);
 
         individual.value = value;
 
@@ -211,21 +227,22 @@ public class Agent extends AbstractMultiPlayer {
      * @return - the individual resulting from crossover applied to the specified population
      */
     private Individual crossover() {
+        ParameterSetEvo params = (ParameterSetEvo)this.params;
         Individual newind = null;
         if (NUM_INDIVIDUALS > 1) {
-            newind = new Individual(SIMULATION_DEPTH, N_ACTIONS[playerID], randomGenerator);
-            Individual[] tournament = new Individual[TOURNAMENT_SIZE];
-            Individual[] parents = new Individual[NO_PARENTS];
+            newind = new Individual(params.SIMULATION_DEPTH, N_ACTIONS[playerID], randomGenerator);
+            Individual[] tournament = new Individual[params.TOURNAMENT_SIZE];
+            Individual[] parents = new Individual[params.NO_PARENTS];
 
             ArrayList<Individual> list = new ArrayList<>();
-            if (NUM_INDIVIDUALS > TOURNAMENT_SIZE) {
-                list.addAll(Arrays.asList(population).subList(ELITISM, NUM_INDIVIDUALS));
+            if (NUM_INDIVIDUALS > params.TOURNAMENT_SIZE) {
+                list.addAll(Arrays.asList(population).subList(params.ELITISM, NUM_INDIVIDUALS));
             } else {
                 list.addAll(Arrays.asList(population));
             }
 
             //Select a number of random distinct individuals for tournament and sort them based on value
-            for (int i = 0; i < TOURNAMENT_SIZE; i++) {
+            for (int i = 0; i < params.TOURNAMENT_SIZE; i++) {
                 int index = randomGenerator.nextInt(list.size());
                 tournament[i] = list.get(index);
                 list.remove(index);
@@ -233,11 +250,11 @@ public class Agent extends AbstractMultiPlayer {
             Arrays.sort(tournament);
 
             //get best individuals in tournament as parents
-            if (NO_PARENTS <= TOURNAMENT_SIZE) {
-                for (int i = 0; i < NO_PARENTS; i++) {
+            if (params.NO_PARENTS <= params.TOURNAMENT_SIZE) {
+                for (int i = 0; i < params.NO_PARENTS; i++) {
                     parents[i] = list.get(i);
                 }
-                newind.crossover(parents, CROSSOVER_TYPE);
+                newind.crossover(parents, params.CROSSOVER_TYPE);
             } else {
                 System.out.println("WARNING: Number of parents must be LESS than tournament size.");
             }
@@ -263,7 +280,7 @@ public class Agent extends AbstractMultiPlayer {
      */
     @SuppressWarnings("unchecked")
     private void init_pop(StateObservationMulti stateObs) {
-
+        ParameterSetEvo params = (ParameterSetEvo)this.params;
         double remaining = timer.remainingTimeMillis();
 
         N_ACTIONS = new int[noPlayers];
@@ -280,11 +297,11 @@ public class Agent extends AbstractMultiPlayer {
             action_mapping[i].put(k, Types.ACTIONS.ACTION_NIL);
         }
 
-        population = new Individual[POPULATION_SIZE];
-        nextPop = new Individual[POPULATION_SIZE];
-        for (int i = 0; i < POPULATION_SIZE; i++) {
+        population = new Individual[params.POPULATION_SIZE];
+        nextPop = new Individual[params.POPULATION_SIZE];
+        for (int i = 0; i < params.POPULATION_SIZE; i++) {
             if (i == 0 || remaining > avgTimeTakenEval && remaining > BREAK_MS) {
-                population[i] = new Individual(SIMULATION_DEPTH, N_ACTIONS[playerID], randomGenerator);
+                population[i] = new Individual(params.SIMULATION_DEPTH, N_ACTIONS[playerID], randomGenerator);
                 evaluate(population[i], heuristic, stateObs);
                 remaining = timer.remainingTimeMillis();
                 NUM_INDIVIDUALS = i+1;
@@ -320,6 +337,12 @@ public class Agent extends AbstractMultiPlayer {
     private Types.ACTIONS get_best_action(Individual[] pop) {
         int bestAction = pop[0].actions[0];
         return action_mapping[playerID].get(bestAction);
+    }
+
+    public void draw(Graphics2D g) {
+        if (DrawingAgent.drawing) {
+            drawingAgent.draw(g, DRAW_ET);
+        }
     }
 
 }

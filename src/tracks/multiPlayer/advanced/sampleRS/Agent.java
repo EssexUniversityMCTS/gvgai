@@ -4,36 +4,42 @@ import core.game.StateObservationMulti;
 import core.player.AbstractMultiPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
+import tools.Vector2d;
+import tracks.multiPlayer.tools.heuristics.SimpleStateHeuristic;
+import utilsUI.DrawingAgent;
+import utilsUI.ParameterSet;
 import tracks.multiPlayer.tools.heuristics.StateHeuristicMulti;
 import tracks.multiPlayer.tools.heuristics.WinScoreHeuristic;
 
 import java.util.*;
 
-public class Agent extends AbstractMultiPlayer {
+import static utilsUI.Constants.HEURISTIC_SIMPLESTATE;
+import static utilsUI.Constants.HEURISTIC_WINSCORE;
 
-    // variable
-    private int SIMULATION_DEPTH = 10;
-    private double DISCOUNT = 1; //0.99;
+public class Agent extends AbstractMultiPlayer {
 
     // constants
     private final long BREAK_MS = 10;
     public static final double epsilon = 1e-6;
 
+    // algorithm logic
     private ArrayList<Individual> population;
     private int NUM_INDIVIDUALS;
     private int[] N_ACTIONS;
     private HashMap<Integer, Types.ACTIONS>[] action_mapping;
 
+    // others
     private ElapsedCpuTimer timer;
     private Random randomGenerator;
+    private DrawingAgent drawingAgent;
 
     private StateHeuristicMulti heuristic;
     private double acumTimeTakenEval = 0,avgTimeTakenEval = 0;
     private int numEvals = 0;
     private long remaining;
 
-
-    int playerID, opponentID, noPlayers;
+    // multi-player vars
+    private int playerID, opponentID, noPlayers;
 
     /**
      * Public constructor with state observation and time due.
@@ -42,21 +48,37 @@ public class Agent extends AbstractMultiPlayer {
      * @param elapsedTimer Timer for the controller creation.
      */
     public Agent(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer, int playerID) {
+        params = new ParameterSet();
         randomGenerator = new Random();
-        heuristic = new WinScoreHeuristic(stateObs);
+        switch(params.HEURISTIC_TYPE){
+            case HEURISTIC_SIMPLESTATE: heuristic = new SimpleStateHeuristic(stateObs); break;
+            case HEURISTIC_WINSCORE:
+            default: heuristic = new WinScoreHeuristic(stateObs);
+        }
         this.timer = elapsedTimer;
 
-        // Get multiplayer game parameters
+        // Get multi-player game parameters
         this.playerID = playerID;
         noPlayers = stateObs.getNoPlayers();
         opponentID = (playerID+1)%noPlayers;
 
         // INITIALISE POPULATION
         init_pop(stateObs);
+
+        // Set up drawing
+        if (DrawingAgent.drawing) {
+            drawingAgent = new DrawingAgent(stateObs, playerID);
+        }
     }
 
     @Override
     public Types.ACTIONS act(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer) {
+
+        // Set up for drawing in this game tick
+        if (DrawingAgent.drawing && drawingAgent != null) {
+            drawingAgent.init(stateObs, playerID);
+        }
+
         this.timer = elapsedTimer;
         numEvals = 0;
         acumTimeTakenEval = 0;
@@ -86,7 +108,7 @@ public class Agent extends AbstractMultiPlayer {
 
         StateObservationMulti st = state.copy();
         int i;
-        for (i = 0; i < SIMULATION_DEPTH; i++) {
+        for (i = 0; i < params.SIMULATION_DEPTH; i++) {
             double acum = 0, avg;
             if (! st.isGameOver()) {
                 ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
@@ -99,6 +121,11 @@ public class Agent extends AbstractMultiPlayer {
                     else advanceActs[k] = action_mapping[k].get(randomGenerator.nextInt(N_ACTIONS[k]));
                 }
                 st.advance(advanceActs);
+
+                if (DrawingAgent.drawing) {
+                    Vector2d pos = state.getAvatarPosition(playerID);
+                    drawingAgent.updatePosThinking(pos);
+                }
 
                 acum += elapsedTimerIteration.elapsedMillis();
                 avg = acum / (i+1);
@@ -113,7 +140,7 @@ public class Agent extends AbstractMultiPlayer {
         double value = heuristic.evaluateState(first, playerID);
 
         // Apply discount factor
-        value *= Math.pow(DISCOUNT,i);
+        value *= Math.pow(params.DISCOUNT_FACTOR,i);
 
         individual.value = value;
 
@@ -165,7 +192,7 @@ public class Agent extends AbstractMultiPlayer {
 
         population = new ArrayList<>();
         do {
-            Individual newInd = new Individual(SIMULATION_DEPTH, N_ACTIONS[playerID], randomGenerator);
+            Individual newInd = new Individual(params.SIMULATION_DEPTH, N_ACTIONS[playerID], randomGenerator);
             evaluate(newInd, heuristic, stateObs);
             population.add(newInd);
             remaining = timer.remainingTimeMillis();

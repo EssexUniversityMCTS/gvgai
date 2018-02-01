@@ -100,7 +100,7 @@ public class LearningMachine {
 
         Player[] players = new Player[]{player};
         if (visuals)
-            score = toPlay.playGame(players, randomSeed, true, 0);
+            score = toPlay.playGame(null, null, players, randomSeed, true, 0);
         else
             score = toPlay.runGame(players, randomSeed);
 
@@ -285,7 +285,7 @@ public class LearningMachine {
         //Play the game
         //Get array of scores back.
         if(isVisual) {
-            score = toPlay.playGame(players, randomSeed, false, 0);
+            score = toPlay.playGame(null, null, players, randomSeed, false, 0);
         } else {
             score = toPlay.playOnlineGame(players, randomSeed, false, 0);
 //            score = toPlay.runGame(players, randomSeed);

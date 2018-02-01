@@ -135,12 +135,12 @@ public class DesignMachine {
 
 			if (no_players > 1) {
 			// multi player
-			players[i] = ArcadeMachine.createMultiPlayer(names[i], actionFile, toPlay.getObservationMulti(i),
-				randomSeed, i, humans[i]);
+			players[i] = ArcadeMachine.createMultiPlayer(names[i], actionFile, null, toPlay.getObservationMulti(i),
+				randomSeed, i, humans[i], null);
 			} else {
 			// single player
-			players[i] = ArcadeMachine.createPlayer(names[i], actionFile, toPlay.getObservation(), randomSeed,
-				humans[i]);
+			players[i] = ArcadeMachine.createPlayer(names[i], actionFile, null, toPlay.getObservation(), randomSeed,
+				humans[i], null);
 			}
 
 			if (players[i] == null) {
@@ -162,12 +162,12 @@ public class DesignMachine {
 		// Then, play the game.
 		double[] score;
 		if (visuals)
-			score = toPlay.playGame(players, randomSeed, anyHuman, playerID);
+			score = toPlay.playGame(null, null, players, randomSeed, anyHuman, playerID);
 		else
 			score = toPlay.runGame(players, randomSeed);
 
 		// Finally, when the game is over, we need to tear the players down.
-		ArcadeMachine.tearPlayerDown(toPlay, players, actionFile, randomSeed, true);
+		ArcadeMachine.tearPlayerDown(toPlay, players, actionFile.split(" "), randomSeed, true);
 
 		// This, the last thing to do in this method, always:
 		toPlay.handleResult();

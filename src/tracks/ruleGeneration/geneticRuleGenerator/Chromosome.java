@@ -185,7 +185,7 @@ public class Chromosome implements Comparable<Chromosome>{
 				if(params.size() == 0) {
 					
 				} 
-				// if one param, remove it
+				// if one utilsUI, remove it
 				else if(params.size() == 1) {
 					String fixedRule = "";
 					for(String part : splitDeleteFromMe) {
@@ -420,7 +420,7 @@ public class Chromosome implements Comparable<Chromosome>{
 				ArrayList<String> params = new ArrayList<String>();
 				for(String param : splitDeleteFromMe) {
 					// we can assume that if one of the split strings contains an = sign that it is a parameter
-					// the extra rule here is that it is not a "limit" or a "win" param. We cannot remove those!
+					// the extra rule here is that it is not a "limit" or a "win" utilsUI. We cannot remove those!
 					if(param.contains("=") && !param.contains("limit") && !param.contains("win")){
 						params.add(param);
 					}

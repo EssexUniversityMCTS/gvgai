@@ -101,7 +101,8 @@ public class Types {
         ACTION_DOWN(new int[]{KeyEvent.VK_DOWN, KeyEvent.VK_S}),
         ACTION_RIGHT(new int[]{KeyEvent.VK_RIGHT, KeyEvent.VK_D}),
         ACTION_USE(new int[]{KeyEvent.VK_SPACE, KeyEvent.VK_SHIFT}),
-        ACTION_ESCAPE(new int[]{KeyEvent.VK_ESCAPE, KeyEvent.VK_ESCAPE});
+        ACTION_ESCAPE(new int[]{KeyEvent.VK_ESCAPE, KeyEvent.VK_ESCAPE}),
+        ACTION_PAUSE(new int[]{KeyEvent.VK_P, KeyEvent.VK_P});
 
         private int[] key;
 
@@ -120,6 +121,7 @@ public class Types {
             else if (strKey.equalsIgnoreCase("ACTION_RIGHT")) return ACTION_RIGHT;
             else if (strKey.equalsIgnoreCase("ACTION_USE")) return ACTION_USE;
             else if (strKey.equalsIgnoreCase("ACTION_ESCAPE")) return ACTION_ESCAPE;
+            else if (strKey.equalsIgnoreCase("ACTION_PAUSE")) return ACTION_PAUSE;
             else return ACTION_NIL;
         }
 

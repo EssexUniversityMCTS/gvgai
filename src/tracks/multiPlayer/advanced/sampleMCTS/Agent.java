@@ -7,6 +7,8 @@ import core.game.StateObservationMulti;
 import core.player.AbstractMultiPlayer;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
+import utilsUI.DrawingAgent;
+import utilsUI.ParameterSetTS;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,6 +24,7 @@ public class Agent extends AbstractMultiPlayer {
     public int id, oppID, no_players;
 
     protected SingleMCTSPlayer mctsPlayer;
+    private DrawingAgent drawingAgent;
 
     /**
      * Public constructor with state observation and time due.
@@ -30,14 +33,14 @@ public class Agent extends AbstractMultiPlayer {
      */
     public Agent(StateObservationMulti so, ElapsedCpuTimer elapsedTimer, int playerID)
     {
-        //get game information
+        params = new ParameterSetTS();
 
+        // Get game information
         no_players = so.getNoPlayers();
         id = playerID;
         oppID = (id + 1) % so.getNoPlayers();
 
-        //Get the actions for all players in a static array.
-
+        // Get the actions for all players in a static array.
         NUM_ACTIONS = new int[no_players];
         actions = new Types.ACTIONS[no_players][];
         for (int i = 0; i < no_players; i++) {
@@ -51,9 +54,13 @@ public class Agent extends AbstractMultiPlayer {
             NUM_ACTIONS[i] = actions[i].length;
         }
 
-        //Create the player.
-
+        // Create the player.
         mctsPlayer = getPlayer(so, elapsedTimer, NUM_ACTIONS, actions, id, oppID, no_players);
+
+        // Set up drawing
+        if (DrawingAgent.drawing) {
+            drawingAgent = new DrawingAgent(so, playerID);
+        }
     }
 
     public SingleMCTSPlayer getPlayer(StateObservationMulti so, ElapsedCpuTimer elapsedTimer, int[] NUM_ACTIONS, Types.ACTIONS[][] actions, int id, int oppID, int no_players) {
@@ -70,8 +77,13 @@ public class Agent extends AbstractMultiPlayer {
      */
     public Types.ACTIONS act(StateObservationMulti stateObs, ElapsedCpuTimer elapsedTimer) {
 
+        // Set up for drawing in this game tick
+        if (DrawingAgent.drawing && drawingAgent != null) {
+            drawingAgent.init(stateObs, id);
+        }
+
         //Set the state observation object as the new root of the tree.
-        mctsPlayer.init(stateObs);
+        mctsPlayer.init(stateObs, params, drawingAgent);
 
         //Determine the action using MCTS...
         int action = mctsPlayer.run(elapsedTimer);

@@ -5,6 +5,7 @@ import core.game.StateObservation;
 import core.game.StateObservationMulti;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
+import utilsUI.ParameterSet;
 
 import java.awt.*;
 import java.io.BufferedWriter;
@@ -19,6 +20,11 @@ import java.util.ArrayList;
 public abstract class Player {
 
     /**
+     * Parameter set
+     */
+    public ParameterSet params;
+
+    /**
      * playerID
      */
     private int playerID;
@@ -26,12 +32,13 @@ public abstract class Player {
     /**
      * File where the actions played in a given game are stored.
      */
-    private String actionFile;
+    private String actionFile, analysisFile;
 
     /**
      * Writer for the actions file.
      */
     private BufferedWriter writer;
+    protected BufferedWriter analysisWriter;
 
     /**
      * Set this variable to FALSE to avoid core.logging the actions to a file.
@@ -47,6 +54,7 @@ public abstract class Player {
      * List of actions to be dumped.
      */
     private ArrayList<Types.ACTIONS> allActions;
+    private ArrayList<Double> allScores;
 
     /**
      * Random seed of the game.
@@ -116,6 +124,43 @@ public abstract class Player {
     }
 
     /**
+     * This function sets up the controller to save the actions executed in a given game.
+     * @param actionFile file to save the actions to.
+     * @param randomSeed Seed for the sampleRandom generator of the game to be played.
+     * @param isHuman Indicates if the player is a human or not.
+     */
+    public void setup(String actionFile, String analysisFile, int randomSeed, boolean isHuman, ParameterSet params) {
+        this.actionFile = actionFile;
+        this.analysisFile = analysisFile;
+        this.randomSeed = randomSeed;
+        this.isHuman = isHuman;
+        this.params = params;
+
+        if(this.actionFile!=null && SHOULD_LOG)
+        {
+            allActions = new ArrayList<>();
+            allScores = new ArrayList<>();
+        }
+
+        try {
+            if((this.analysisFile != null && !analysisFile.equals("")) && SHOULD_LOG) {
+                //TODO: possibly check if file exists and create "file (N+1)" new file instead
+                analysisWriter = new BufferedWriter(new FileWriter(new File(this.analysisFile))); // override previous file
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            if((this.actionFile != null && !actionFile.equals("")) && SHOULD_LOG) {
+                writer = new BufferedWriter(new FileWriter(new File(this.actionFile)));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Closes the agent, writing actions to file.
      */
     final public void teardown(Game played) {
@@ -130,6 +175,9 @@ public abstract class Player {
                     writer.write(act.toString() + "\n");
 
                 writer.close();
+            }
+            if((this.analysisFile != null && !analysisFile.equals("")) && SHOULD_LOG) {
+                analysisWriter.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -146,6 +194,27 @@ public abstract class Player {
         if(this.actionFile!=null && SHOULD_LOG)
         {
             allActions.add(action);
+            try {
+                String score = "";
+                if (!allScores.isEmpty()) score += allScores.get(allScores.size()-1);
+                writer.write(action.toString() + " " + score + "\n");
+//                writer.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+    /**
+     * Logs game score
+     * @param score the score to log.
+     */
+    final public void logScore(double score) {
+        if(this.actionFile!=null && SHOULD_LOG)
+        {
+            allScores.add(score);
         }
 
     }

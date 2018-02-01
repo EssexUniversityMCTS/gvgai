@@ -24,7 +24,12 @@ import tools.pathfinder.PathFinder;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.*;
+
+import static utilsUI.TestUI.pauseGame;
+import static utilsUI.TestUI.stopGame;
 
 /**
  * Created with IntelliJ IDEA. User: Diego Date: 17/10/13 Time: 13:42 This is a
@@ -193,6 +198,11 @@ public abstract class Game {
 	 * Indicates if the game is ended.
 	 */
 	protected boolean isEnded;
+
+	/**
+	 * Indicates if the game is paused.
+	 */
+	protected boolean isPaused;
 
 	/**
 	 * State observation for this game.
@@ -884,16 +894,32 @@ public abstract class Game {
 	 * @return the score of the game played.
 	 */
 
-	public double[] playGame(Player[] players, int randomSeed, boolean isHuman, int humanID) {
+	public double[] playGame(JFrame frame, JPanel gamePanel, Player[] players, int randomSeed, boolean isHuman, int humanID) {
 		// Prepare some structures and references for this game.
 		prepareGame(players, randomSeed, humanID);
 
 		// Create and initialize the panel for the graphics.
 		VGDLViewer view = new VGDLViewer(this, players[humanID]);
-		JEasyFrame frame;
-		frame = new JEasyFrame(view, "Java-VGDL");
+		if (frame != null) {
+			GridBagConstraints c = new GridBagConstraints();
+			c.gridy = 7;
+			c.gridx = 0;
+			c.gridwidth = 4;
+			gamePanel.add(view,c);
+			frame.pack();
+		} else {
+			frame = new JEasyFrame(view, "Java-VGDL");
+		}
 
-		frame.addKeyListener(ki);
+        gamePanel.addKeyListener(ki);
+        gamePanel.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == Types.ACTIONS.ACTION_PAUSE.getKey()[0]) {
+					pause();
+				}
+			}
+		});
 		frame.addWindowListener(wi);
 		wi.windowClosed = false;
 
@@ -912,20 +938,24 @@ public abstract class Game {
 			// Determine the time to adjust framerate.
 			long then = System.currentTimeMillis();
 
-			this.gameCycle(); // Execute a game cycle.
+			if (!isPaused) {
+				this.gameCycle(); // Execute a game cycle.
 
-			// Get the remaining time to keep fps.
-			long now = System.currentTimeMillis();
-			int remaining = (int) Math.max(0, delay - (now - then));
+				// Get the remaining time to keep fps.
+				long now = System.currentTimeMillis();
+				int remaining = (int) Math.max(0, delay - (now - then));
 
-			// Wait until de next cycle.
-			waitStep(remaining);
+				// Wait until de next cycle.
+				waitStep(remaining);
 
-			// Draw all sprites in the panel.
-			view.paint(this.spriteGroups);
+				// Draw all sprites in the panel.
+				view.paint(this.spriteGroups);
 
-			// Update the frame title to reflect current score and tick.
-			this.setTitle(frame);
+				// Update the frame title to reflect current score and tick.
+				this.setTitle(frame);
+			} else {
+				frame.setTitle("PAUSED");
+			}
 
 			if (firstRun && isHuman) {
 				if (CompetitionParameters.dialogBoxOnStartAndEnd) {
@@ -934,30 +964,13 @@ public abstract class Game {
 
 				firstRun = false;
 			}
-		}
 
-		if (isHuman && !wi.windowClosed && CompetitionParameters.killWindowOnEnd) {
-			if (CompetitionParameters.dialogBoxOnStartAndEnd) {
-				if (no_players == 1) {
-					String sb = "GAMEOVER: YOU LOSE.";
-					if (avatars[humanID] != null) {
-						sb = "GAMEOVER: YOU "
-								+ ((avatars[humanID].getWinState() == Types.WINNER.PLAYER_WINS) ? "WIN." : "LOSE.");
-					}
-					JOptionPane.showMessageDialog(frame, sb);
-				} else {
-					String sb = "";
-					for (int i = 0; i < no_players; i++) {
-						if (avatars[i] != null && avatars[i].getWinState() == Types.WINNER.PLAYER_WINS) {
-							sb += "Player " + i + "; ";
-						}
-					}
-					if (sb.equals(""))
-						sb = "NONE";
-					JOptionPane.showMessageDialog(frame, "GAMEOVER - WINNER: " + sb);
-				}
+			if (stopGame) {
+				abort();
 			}
-			frame.dispose();
+			if (pauseGame) {
+				pause();
+			}
 		}
 
 		// Update the forward model for the game state sent to the controller.
@@ -1020,7 +1033,7 @@ public abstract class Game {
 	 * @param frame
 	 *            The frame whose title needs to be set.
 	 */
-	private void setTitle(JEasyFrame frame) {
+	private void setTitle(JFrame frame) {
 		String sb = "";
 		sb += "Java-VGDL: ";
 		for (int i = 0; i < no_players; i++) {
@@ -1249,6 +1262,14 @@ public abstract class Game {
 		isEnded = true;
 	}
 
+
+	/**
+	 * Pauses a game.
+	 */
+	public void pause() {
+		isPaused = !isPaused;
+		pauseGame = !pauseGame;
+	}
 
 
 	/**

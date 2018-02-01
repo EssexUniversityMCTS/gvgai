@@ -187,8 +187,8 @@ public class LevelGenMachine
         ArcadeMachine.warmUp(toPlay, CompetitionParameters.WARMUP_TIME);
 
         // Create the player.
-        AbstractPlayer player = ArcadeMachine.createPlayer(agentName, actionFile, toPlay.getObservation(), randomSeed,
-                isHuman);
+        AbstractPlayer player = ArcadeMachine.createPlayer(agentName, actionFile, null, toPlay.getObservation(), randomSeed,
+                isHuman, null);
 
         if (player == null) {
             // Something went wrong in the constructor, controller disqualified
@@ -215,12 +215,12 @@ public class LevelGenMachine
         p[0] = player;
 
         if (visuals)
-            score = toPlay.playGame(p, randomSeed, isHuman, 0)[0];
+            score = toPlay.playGame(null, null, p, randomSeed, isHuman, 0)[0];
         else
             score = toPlay.runGame(p, randomSeed)[0];
 
         // Finally, when the game is over, we need to tear the player down.
-        ArcadeMachine.tearPlayerDown(toPlay, p, actionFile, randomSeed, true);
+        ArcadeMachine.tearPlayerDown(toPlay, p, actionFile.split(" "), randomSeed, true);
 
         double result = toPlay.handleResult()[0];
         toPlay.printResult();
@@ -270,8 +270,8 @@ public class LevelGenMachine
             ArcadeMachine.warmUp(toPlay, CompetitionParameters.WARMUP_TIME);
 
             // Create the player.
-            AbstractPlayer player = ArcadeMachine.createPlayer(agentName, filename, toPlay.getObservation(), randomSeed,
-                    isHuman);
+            AbstractPlayer player = ArcadeMachine.createPlayer(agentName, filename, null, toPlay.getObservation(), randomSeed,
+                    isHuman, null);
 
             // Add player to player array.
             AbstractPlayer[] p = new AbstractPlayer[1];
@@ -300,14 +300,14 @@ public class LevelGenMachine
                  * just 1 score for the player, the first element in the score
                  * array is returned.
                  */
-                score = toPlay.playGame(p, randomSeed, isHuman, 0)[0];
+                score = toPlay.playGame(null, null, p, randomSeed, isHuman, 0)[0];
             }
 
             scores.add(score);
 
             // Finally, when the game is over, we need to tear the player down.
             if (player != null)
-                ArcadeMachine.tearPlayerDown(toPlay, p, filename, randomSeed, true);
+                ArcadeMachine.tearPlayerDown(toPlay, p, filename.split(" "), randomSeed, true);
 
             // reset the game.
             toPlay.reset();

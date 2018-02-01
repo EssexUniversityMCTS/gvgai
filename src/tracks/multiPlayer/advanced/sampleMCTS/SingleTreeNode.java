@@ -6,6 +6,15 @@ import core.game.StateObservationMulti;
 import ontology.Types;
 import tools.ElapsedCpuTimer;
 import tools.Utils;
+import tools.Vector2d;
+import tracks.multiPlayer.tools.heuristics.SimpleStateHeuristic;
+import tracks.multiPlayer.tools.heuristics.StateHeuristicMulti;
+import tracks.multiPlayer.tools.heuristics.WinScoreHeuristic;
+import utilsUI.DrawingAgent;
+import utilsUI.ParameterSetTS;
+
+import static utilsUI.Constants.HEURISTIC_SIMPLESTATE;
+import static utilsUI.Constants.HEURISTIC_WINSCORE;
 
 public class SingleTreeNode
 {
@@ -22,21 +31,24 @@ public class SingleTreeNode
     protected double[] bounds = new double[]{Double.MAX_VALUE, -Double.MAX_VALUE};
     public int childIdx;
 
-    public int MCTS_ITERATIONS = 100;
-    public int ROLLOUT_DEPTH = 10;
-    public double K = Math.sqrt(2);
-    public double REWARD_DISCOUNT = 1.00;
     public int[] NUM_ACTIONS;
     public Types.ACTIONS[][] actions;
     public int id, oppID, no_players;
 
     public StateObservationMulti rootState;
+    private StateHeuristicMulti heuristic;
+    private DrawingAgent drawingAgent;
 
-    public SingleTreeNode(Random rnd, int[] NUM_ACTIONS, Types.ACTIONS[][] actions, int id, int oppID, int no_players) {
-        this(null, -1, rnd, id, oppID, no_players, NUM_ACTIONS, actions);
+    ParameterSetTS params;
+
+    public SingleTreeNode(Random rnd, int[] NUM_ACTIONS, Types.ACTIONS[][] actions, int id, int oppID, int no_players,
+                          ParameterSetTS params, StateObservationMulti stateObs, DrawingAgent drawingagent) {
+        this(null, -1, rnd, id, oppID, no_players, NUM_ACTIONS, actions, params, stateObs, drawingagent);
     }
 
-    public SingleTreeNode(SingleTreeNode parent, int childIdx, Random rnd, int id, int oppID, int no_players, int[] NUM_ACTIONS, Types.ACTIONS[][] actions) {
+    public SingleTreeNode(SingleTreeNode parent, int childIdx, Random rnd, int id, int oppID, int no_players,
+                          int[] NUM_ACTIONS, Types.ACTIONS[][] actions, ParameterSetTS params,
+                          StateObservationMulti stateObs, DrawingAgent drawingagent) {
         this.id = id;
         this.oppID = oppID;
         this.no_players = no_players;
@@ -51,6 +63,13 @@ public class SingleTreeNode
         this.NUM_ACTIONS = NUM_ACTIONS;
         children = new SingleTreeNode[NUM_ACTIONS[id]];
         this.actions = actions;
+        this.params = params;
+
+        switch(params.HEURISTIC_TYPE){
+            case HEURISTIC_SIMPLESTATE: heuristic = new SimpleStateHeuristic(stateObs); break;
+            case HEURISTIC_WINSCORE:
+            default: heuristic = new WinScoreHeuristic(stateObs);
+        }
     }
 
 
@@ -86,7 +105,7 @@ public class SingleTreeNode
 
         SingleTreeNode cur = this;
 
-        while (!state.isGameOver() && cur.m_depth < ROLLOUT_DEPTH)
+        while (!state.isGameOver() && cur.m_depth < params.SIMULATION_DEPTH)
         {
             if (cur.notFullyExpanded()) {
                 return cur.expand(state);
@@ -126,9 +145,10 @@ public class SingleTreeNode
         Types.ACTIONS[] oppActions = actions[oppID];
         acts[oppID] = oppActions[new Random().nextInt(oppActions.length)];
 
-        state.advance(acts);
+        advance(state, acts, drawingAgent);
 
-        SingleTreeNode tn = new SingleTreeNode(this,bestAction,this.m_rnd, id, oppID, no_players, NUM_ACTIONS, actions);
+        SingleTreeNode tn = new SingleTreeNode(this,bestAction,this.m_rnd, id, oppID, no_players, NUM_ACTIONS,
+                actions, params, state, drawingAgent);
         children[bestAction] = tn;
         return tn;
     }
@@ -146,7 +166,7 @@ public class SingleTreeNode
             //System.out.println("norm child value: " + childValue);
 
             double uctValue = childValue +
-                    K * Math.sqrt(Math.log(this.nVisits + 1) / (child.nVisits + this.epsilon));
+                    params.K * Math.sqrt(Math.log(this.nVisits + 1) / (child.nVisits + this.epsilon));
 
             uctValue = Utils.noise(uctValue, this.epsilon, this.m_rnd.nextDouble());     //break ties randomly
 
@@ -174,7 +194,7 @@ public class SingleTreeNode
         Types.ACTIONS[] oppActions = actions[oppID];
         acts[oppID] = oppActions[new Random().nextInt(oppActions.length)];
 
-        state.advance(acts);
+        advance(state, acts, drawingAgent);
 
         return selected;
     }
@@ -191,12 +211,13 @@ public class SingleTreeNode
             for (int i = 0; i < no_players; i++) {
                 acts[i] = actions[i][m_rnd.nextInt(NUM_ACTIONS[i])];
             }
-            state.advance(acts);
+            advance(state, acts, drawingAgent);
+
             thisDepth++;
         }
 
 
-        double delta = value(state);
+        double delta = heuristic.evaluateState(state, id);
 
         if(delta < bounds[0])
             bounds[0] = delta;
@@ -208,26 +229,9 @@ public class SingleTreeNode
         return delta;
     }
 
-    public double value(StateObservationMulti a_gameState) {
-
-        boolean gameOver = a_gameState.isGameOver();
-
-
-        Types.WINNER win = a_gameState.getMultiGameWinner()[id];
-        double rawScore = a_gameState.getGameScore(id);
-
-        if(gameOver && win == Types.WINNER.PLAYER_LOSES)
-            rawScore += HUGE_NEGATIVE;
-
-        if(gameOver && win == Types.WINNER.PLAYER_WINS)
-            rawScore += HUGE_POSITIVE;
-
-        return rawScore;
-    }
-
     public boolean finishRollout(StateObservationMulti rollerState, int depth)
     {
-        if(depth >= ROLLOUT_DEPTH)      //rollout end condition.
+        if(depth >= params.SIMULATION_DEPTH)      //rollout end condition.
             return true;
 
         if(rollerState.isGameOver())               //end of game
@@ -328,5 +332,14 @@ public class SingleTreeNode
         }
 
         return false;
+    }
+
+    void advance(StateObservationMulti state, Types.ACTIONS[] acts, DrawingAgent drawingAgent) {
+        state.advance(acts);
+        // Draw simulations
+        if (DrawingAgent.drawing && drawingAgent != null) {
+            Vector2d pos = state.getAvatarPosition(id);
+            drawingAgent.updatePosThinking(pos);
+        }
     }
 }

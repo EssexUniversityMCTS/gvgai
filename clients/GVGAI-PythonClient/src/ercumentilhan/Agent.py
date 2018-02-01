@@ -82,8 +82,8 @@ class Agent(AbstractPlayer):
         """
         Method to be called at the start of every level of a game.
 
-        :param sso: observation of the current state of the game
-        :param elapsed_timer: the timer
+        :utilsUI sso: observation of the current state of the game
+        :utilsUI elapsed_timer: the timer
         :return:
         """
 
@@ -128,9 +128,9 @@ class Agent(AbstractPlayer):
         """
         Executes a step of the learning algorithm.
 
-        :param state_features: state features
-        :param reward: transition reward
-        :param action_probabilities: action probabilities from the "state_features" according to the current policy
+        :utilsUI state_features: state features
+        :utilsUI reward: transition reward
+        :utilsUI action_probabilities: action probabilities from the "state_features" according to the current policy
         """
         q_previous = self.w[0].dot(self.previous_state_features_extended)
 
@@ -161,8 +161,8 @@ class Agent(AbstractPlayer):
         """
         Method used to determine the next move to be performed by the agent.
 
-        :param sso: observation of the current state of the game
-        :param elapsed_timer: the timer
+        :utilsUI sso: observation of the current state of the game
+        :utilsUI elapsed_timer: the timer
         :return: index of the action to be taken
         """
         # Training mode
@@ -202,7 +202,7 @@ class Agent(AbstractPlayer):
         Converts an input vector into another same sized output vector of real values in the range [0,1] that add up to
         1.
 
-        :param x: input vector
+        :utilsUI x: input vector
         :return: output vector
         """
         e_x = np.exp(x - np.max(x))
@@ -212,7 +212,7 @@ class Agent(AbstractPlayer):
         """
         Determines the action to be taken based on state features by using softmax policy.
 
-        :param state_features: state features
+        :utilsUI state_features: state features
         :return: selected action, probabilities for the actions
         """
         action_values = np.zeros((self.n_actions,), dtype=np.float32)
@@ -254,7 +254,7 @@ class Agent(AbstractPlayer):
         """
         Scans the given state observation and adds the observed item types to the set.
 
-        :param sso: observation of the current state of the game
+        :utilsUI sso: observation of the current state of the game
         """
         if sso.avatarType != 0:
             self.item_types.add(sso.avatarType)
@@ -287,7 +287,7 @@ class Agent(AbstractPlayer):
         """
         Extracts a set of features from a given state observation.
 
-        :param sso: observation of the current state of the game
+        :utilsUI sso: observation of the current state of the game
         :return: state features vector
         """
         features = np.zeros((self.f_length_full,), dtype=np.float32)
@@ -400,8 +400,8 @@ class Agent(AbstractPlayer):
         """
         Extends the given feature vector by multiplying its size and filling up with zeros for the other actions.
 
-        :param state_features: state features
-        :param action_index: index of relevant action
+        :utilsUI state_features: state features
+        :utilsUI action_index: index of relevant action
         :return: extended state features vector
         """
         extended_state_features = np.zeros((self.n_actions*self.f_length_full,), dtype=np.float32)
@@ -417,8 +417,8 @@ class Agent(AbstractPlayer):
         Method used to perform actions in case of a game end.
         This is the last thing called when a level is played (the game is already in a terminal state).
 
-        :param sso: observation of the current state of the game
-        :param elapsed_timer: the timer
+        :utilsUI sso: observation of the current state of the game
+        :utilsUI elapsed_timer: the timer
         :return: id of the next level to be played
         """
         self.n_plays += 1

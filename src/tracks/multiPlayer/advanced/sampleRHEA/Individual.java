@@ -9,8 +9,6 @@ public class Individual implements Comparable{
     protected double value;
     private Random gen;
 
-    private boolean MUT_BIAS = false;
-
     public Individual(int L, int n, Random gen) {
         actions = new int[L];
         for (int i = 0; i < L; i++) {
