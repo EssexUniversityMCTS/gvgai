@@ -37,6 +37,8 @@ public class IOSocket extends IO {
             {
                 try{
                     socket = new Socket(hostname, port);
+                    // Send immediately. (Disable Nagle's algorithm)
+                    socket.setTcpNoDelay(true);
                     connected = true;
                     System.out.println("Client connected to server [OK]");
                 }catch (ConnectException e) {
