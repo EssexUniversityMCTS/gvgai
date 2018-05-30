@@ -1,4 +1,4 @@
-# THIS IS AN OLD REPOSITORY
+# THIS IS AN OLD (DEPRECATED, NOT IN USE) REPOSITORY
 
 The competition now runs with the code here: https://github.com/GAIGResearch/GVGAI
 
