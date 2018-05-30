@@ -1,3 +1,10 @@
+THIS IS AN OLD REPOSITORY
+
+The competition now runs with the code here: https://github.com/GAIGResearch/GVGAI
+
+And the Learning track runs with the code in here: https://github.com/rubenrtorrado/GVGAI_GYM
+
+
 gvgai
 =====
 
