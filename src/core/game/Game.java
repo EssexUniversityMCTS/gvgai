@@ -259,6 +259,9 @@ public abstract class Game {
 	 * Default constructor.
 	 */
 	public Game() {
+		
+		System.out.println("WARNING!!! You are using an old codebase. The new one is in https://github.com/GAIGResearch/GVGAI");
+		
 		// data structures to hold the game definition.
 		definedEffects = new ArrayList<Pair<Integer, Integer>>();
 		definedEOSEffects = new ArrayList<Integer>();
