@@ -29,6 +29,7 @@ class IOSocket:
         while not self.connected:
             try:
                 self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                self.socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1) # Send immediately. (Disable Nagle's algorithm)
                 self.socket.connect((self.hostname, self.port))
                 self.connected = True
                 print ("Client connected to server [OK]")

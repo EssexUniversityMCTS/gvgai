@@ -42,6 +42,8 @@ public class SocketComm extends Comm {
             while (socket == null) {
                 ServerSocket serverSocket = new ServerSocket(port);
                 socket = serverSocket.accept();
+                // Send immediately. (Disable Nagle's algorithm)
+                socket.setTcpNoDelay(true);
             }
 
 
