@@ -45,6 +45,10 @@ public class VGDLViewer extends JComponent
 
     public boolean justImage = false;
 
+    public BufferedImage image;
+
+    // used to draw the title on the bottom of the screen
+    public static final int bottomPadding = 50;
     /**
      * Creates the viewer for the game.
      * @param game game to be displayed
@@ -146,6 +150,50 @@ public class VGDLViewer extends JComponent
         } catch (IOException ie) {
             ie.printStackTrace();
         }
+
+    }
+
+    public void paintImage(SpriteGroup[] spriteGroupsGame){
+        this.spriteGroups = new SpriteGroup[spriteGroupsGame.length];
+        for(int i = 0; i < this.spriteGroups.length; ++i)
+        {
+            this.spriteGroups[i] = new SpriteGroup(spriteGroupsGame[i].getItype());
+            this.spriteGroups[i].copyAllSprites(spriteGroupsGame[i].getSprites());
+        }
+
+        // this should reset the image
+        BufferedImage img = new BufferedImage((int)size.getWidth(), (int)size.getHeight()+50, (int)BufferedImage.TYPE_INT_RGB);
+
+        Graphics2D g = (Graphics2D)img.getGraphics();
+
+        try {
+            int[] gameSpriteOrder = game.getSpriteOrder();
+            if (this.spriteGroups != null) for (Integer spriteTypeInt : gameSpriteOrder) {
+                if (spriteGroups[spriteTypeInt] != null) {
+                    ArrayList<VGDLSprite> spritesList = spriteGroups[spriteTypeInt].getSprites();
+                    for (VGDLSprite sp : spritesList) {
+                        if (sp != null) sp.draw(g, game);
+                    }
+
+                }
+            }
+        }catch(Exception e) {}
+
+        g.setColor(Types.BLACK);
+        player.draw(g);
+        g.setColor(Color.white);
+        if (!game.isGameOver()){
+            g.drawString("tick: " + game.getGameTick() + " score: " + game.getAvatars()[0].getScore(), bottomPadding/2, (int)size.getHeight()+(bottomPadding/2));
+        } else {
+            if (game.getAvatar(0).getWinState() == Types.WINNER.PLAYER_WINS){
+                g.drawString("PLAYER WINS!",bottomPadding/2 , (int)size.getHeight()+(bottomPadding/2));
+            }
+            else {
+                g.drawString("PLAYER LOSES!", bottomPadding/2, (int)size.getHeight()+(bottomPadding/2));
+            }
+        }
+
+        image = img;
 
     }
 }
