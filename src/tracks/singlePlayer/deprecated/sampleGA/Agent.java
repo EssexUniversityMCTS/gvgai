@@ -206,7 +206,7 @@ public class Agent extends AbstractPlayer {
         this.timer = elapsedTimer;
         numSimulations = 0;
 
-        Types.ACTIONS lastGoodAction = microbial(stateObs, SIMULATION_DEPTH, new WinScoreHeuristic(stateObs), 100);
+        Types.ACTIONS lastGoodAction = microbial(stateObs, SIMULATION_DEPTH, new WinScoreHeuristic(), 100);
 
         return lastGoodAction;
     }

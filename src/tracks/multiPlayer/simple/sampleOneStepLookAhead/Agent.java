@@ -53,7 +53,7 @@ public class Agent extends AbstractMultiPlayer {
 
         //A random non-suicidal action by the opponent.
         Types.ACTIONS oppAction = getOppNotLosingAction(stateObs, id, oppID);
-        SimpleStateHeuristic heuristic =  new SimpleStateHeuristic(stateObs);
+        SimpleStateHeuristic heuristic = new SimpleStateHeuristic();
 
         for (Types.ACTIONS action : stateObs.getAvailableActions(id)) {
 

@@ -17,12 +17,6 @@ import java.util.HashMap;
  */
 public class SimpleStateHeuristic extends StateHeuristicMulti {
 
-    double initialNpcCounter = 0;
-
-    public SimpleStateHeuristic(StateObservationMulti stateObs) {
-
-    }
-
     public double evaluateState(StateObservationMulti stateObs, int playerID) {
         Vector2d avatarPosition = stateObs.getAvatarPosition(playerID);
         ArrayList<Observation>[] npcPositions = stateObs.getNPCPositions(avatarPosition);

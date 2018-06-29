@@ -17,12 +17,6 @@ import tools.Vector2d;
  */
 public class SimpleStateHeuristic extends StateHeuristic {
 
-    double initialNpcCounter = 0;
-
-    public SimpleStateHeuristic(StateObservation stateObs) {
-
-    }
-
     public double evaluateState(StateObservation stateObs) {
         Vector2d avatarPosition = stateObs.getAvatarPosition();
         ArrayList<Observation>[] npcPositions = stateObs.getNPCPositions(avatarPosition);
