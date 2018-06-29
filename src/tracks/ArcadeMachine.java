@@ -907,7 +907,6 @@ public class ArcadeMachine {
 
             if (VERBOSE)
             System.out.println("Controller tear down time: " + timeTaken + " ms.");
-            return true;
         }
 
         return true;
